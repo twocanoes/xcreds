@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "oidclite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://gitlab.com/Mactroll/OIDCLite",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b0fb99a161456d4eb353858f73d487790f9c98a7"
+      }
+    }
+  ],
+  "version" : 2
+}

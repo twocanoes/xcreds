@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="xCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="k1y-g2-hDK" id="OP0-sn-o5u"/>
+                <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
+                <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="628" height="613"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
+                <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                        <rect key="frame" x="0.0" y="64" width="628" height="555"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="628" id="RJ9-kb-xRi"/>
+                            <constraint firstAttribute="height" constant="555" id="idm-c7-eyh"/>
+                        </constraints>
+                        <wkWebViewConfiguration key="configuration">
+                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                            <wkPreferences key="preferences"/>
+                        </wkWebViewConfiguration>
+                    </wkWebView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1y-g2-hDK">
+                        <rect key="frame" x="276" y="17" width="76" height="32"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ksj-eV-tj1">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickCancel:" target="-2" id="wA4-1u-JJQ"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" constant="64" id="9PT-Ry-kTm"/>
+                    <constraint firstAttribute="bottom" secondItem="k1y-g2-hDK" secondAttribute="bottom" constant="24" id="ATg-sW-cni"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="centerX" secondItem="k1y-g2-hDK" secondAttribute="centerX" id="V0g-Vn-36f"/>
+                    <constraint firstItem="k1y-g2-hDK" firstAttribute="centerX" secondItem="2LH-tE-efn" secondAttribute="centerX" id="cLg-fL-hLA"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="142" y="302.5"/>
+        </window>
+    </objects>
+</document>
