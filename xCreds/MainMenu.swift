@@ -30,7 +30,7 @@ class MainMenu: NSObject, NSMenuDelegate {
         super.init()
         buildMenu()
         self.statusBarItem.menu = mainMenu
-        self.statusBarItem.button?.title = "🔄"
+        self.statusBarItem.button?.title = "🔘"
         mainMenu.delegate = self
 
     }
