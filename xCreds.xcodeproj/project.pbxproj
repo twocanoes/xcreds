@@ -25,7 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		76EE069A27FD1D00009E0F3A /* xCreds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xCreds.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		76EE069A27FD1D00009E0F3A /* XCreds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCreds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76EE069D27FD1D00009E0F3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76EE069F27FD1D01009E0F3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76EE06A227FD1D01009E0F3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
-				76EE069C27FD1D00009E0F3A /* xCreds */,
+				76EE069C27FD1D00009E0F3A /* XCreds */,
 				76EE069B27FD1D00009E0F3A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,12 +67,12 @@
 		76EE069B27FD1D00009E0F3A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				76EE069A27FD1D00009E0F3A /* xCreds.app */,
+				76EE069A27FD1D00009E0F3A /* XCreds.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		76EE069C27FD1D00009E0F3A /* xCreds */ = {
+		76EE069C27FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXGroup;
 			children = (
 				76EE06AB27FD1D92009E0F3A /* TokenManager.swift */,
@@ -92,15 +92,15 @@
 				76EE06A127FD1D01009E0F3A /* MainMenu.xib */,
 				76EE06A427FD1D01009E0F3A /* xCreds.entitlements */,
 			);
-			path = xCreds;
+			path = XCreds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		76EE069927FD1D00009E0F3A /* xCreds */ = {
+		76EE069927FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 76EE06A727FD1D01009E0F3A /* Build configuration list for PBXNativeTarget "xCreds" */;
+			buildConfigurationList = 76EE06A727FD1D01009E0F3A /* Build configuration list for PBXNativeTarget "XCreds" */;
 			buildPhases = (
 				76EE069627FD1D00009E0F3A /* Sources */,
 				76EE069727FD1D00009E0F3A /* Frameworks */,
@@ -110,12 +110,12 @@
 			);
 			dependencies = (
 			);
-			name = xCreds;
+			name = XCreds;
 			packageProductDependencies = (
 				76EE06C427FD1FB2009E0F3A /* OIDCLite */,
 			);
 			productName = xCreds;
-			productReference = 76EE069A27FD1D00009E0F3A /* xCreds.app */;
+			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -133,7 +133,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */;
+			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -149,7 +149,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				76EE069927FD1D00009E0F3A /* xCreds */,
+				76EE069927FD1D00009E0F3A /* XCreds */,
 			);
 		};
 /* End PBXProject section */
@@ -318,14 +318,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = xCreds/xCreds.entitlements;
+				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1248;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = xCreds/Info.plist;
+				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -346,14 +346,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = xCreds/xCreds.entitlements;
+				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1248;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = xCreds/Info.plist;
+				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -372,7 +372,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */ = {
+		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76EE06A527FD1D01009E0F3A /* Debug */,
@@ -381,7 +381,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76EE06A727FD1D01009E0F3A /* Build configuration list for PBXNativeTarget "xCreds" */ = {
+		76EE06A727FD1D01009E0F3A /* Build configuration list for PBXNativeTarget "XCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76EE06A827FD1D01009E0F3A /* Debug */,
