@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<dict>
+		<key>identifier</key>
+		<string>Layout.ED28A313-0EA9-4192-9652-7AA315AA59ED</string>
+		<key>options</key>
+		<dict>
+			<key>fontSize</key>
+			<integer>12</integer>
+			<key>iconSize</key>
+			<integer>128</integer>
+			<key>layoutItems</key>
+			<array>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.1F40890E-6379-429C-902A-F52E81C1B604</string>
+					<key>name</key>
+					<string>XCreds.pkg</string>
+					<key>position</key>
+					<string>{304, 96}</string>
+					<key>type</key>
+					<string>file</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.9F03F118-1251-4179-9D61-1091A7F850A6</string>
+					<key>name</key>
+					<string>Documentation</string>
+					<key>position</key>
+					<string>{144, 320}</string>
+					<key>type</key>
+					<string>file</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.3125D295-9961-40A5-A990-E098A423D71A</string>
+					<key>name</key>
+					<string>Uninstaller</string>
+					<key>position</key>
+					<string>{320, 320}</string>
+					<key>type</key>
+					<string>file</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.19C61CBE-0A4A-4AFC-87F7-228B0913D85C</string>
+					<key>name</key>
+					<string>Legal</string>
+					<key>position</key>
+					<string>{512, 320}</string>
+					<key>type</key>
+					<string>file</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.0AEAED19-1696-44FA-B375-05AEF81CA833</string>
+					<key>position</key>
+					<string>{75.078125, 458.642578125}</string>
+					<key>rtf</key>
+					<string>{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 $\{DATE\}}</string>
+					<key>size</key>
+					<string>{118.15625, 21.28515625}</string>
+					<key>type</key>
+					<string>text</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.5747FF97-6356-4318-84CF-6B8008FD617F</string>
+					<key>position</key>
+					<string>{442.083984375, 462.75}</string>
+					<key>rtf</key>
+					<string>{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qr\partightenfactor0
+
+\f0\fs24 \cf0 Version: $\{APP_VERSION\} ($\{APP_SHORT_VERSION_STRING\})}</string>
+					<key>size</key>
+					<string>{340.14453125, 37.203125}</string>
+					<key>type</key>
+					<string>text</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.3430069F-246D-45AB-BCEF-B9C85FDFD038</string>
+					<key>position</key>
+					<string>{392, 505}</string>
+					<key>rtf</key>
+					<string>{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf320
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qr
+
+\f0\fs24 \cf0 $\{APP_BASENAME\} $\{APP_VERSION\}}</string>
+					<key>size</key>
+					<string>{240, 18}</string>
+					<key>type</key>
+					<string>text</string>
+				</dict>
+				<dict>
+					<key>identifier</key>
+					<string>LayoutItem.7FDD4C8D-1A72-4322-91F7-A52C239C0996</string>
+					<key>position</key>
+					<string>{384.5, 424}</string>
+					<key>rtf</key>
+					<string>{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf320
+{\fonttbl}
+{\colortbl;\red255\green255\blue255;}
+}</string>
+					<key>size</key>
+					<string>{129, 16}</string>
+					<key>type</key>
+					<string>text</string>
+				</dict>
+			</array>
+			<key>windowInsets</key>
+			<string>{0, 0}</string>
+			<key>windowOriginTopLeft</key>
+			<string>{100, 100}</string>
+		</dict>
+	</dict>
+	<key>documentCreator</key>
+	<string>DropDMG 3.6.4b1</string>
+	<key>documentType</key>
+	<string>com.c-command.DropDMG.Layout</string>
+	<key>formatVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
