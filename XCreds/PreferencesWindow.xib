@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController" customModule="xCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
                 <outlet property="window" destination="e3r-XM-xJP" id="3Kl-qd-Sux"/>
             </connections>
@@ -17,7 +17,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="495"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" wantsLayer="YES" id="ZbF-tC-vpZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="495"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -76,7 +76,11 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.discoveryURL" id="93H-Jf-Fbo"/>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.discoveryURL" id="6Ds-MA-qon">
+                                <dictionary key="options">
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                </dictionary>
+                            </binding>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ie3-c5-0dg">
@@ -88,7 +92,11 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.clientID" id="0YK-Ib-z5J"/>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.clientID" id="Qd7-Zh-x2k">
+                                <dictionary key="options">
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                </dictionary>
+                            </binding>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jKS-Pk-WEb">
@@ -100,7 +108,11 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.clientSecret" id="ZnX-Dx-duz"/>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.clientSecret" id="bfe-no-BAo">
+                                <dictionary key="options">
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                </dictionary>
+                            </binding>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="twf-nz-gw1">
@@ -112,7 +124,11 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.scopes" id="Vx8-OQ-KJG"/>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.scopes" id="F3B-bY-hoU">
+                                <dictionary key="options">
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                </dictionary>
+                            </binding>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c5n-8F-u5N">
@@ -124,7 +140,11 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.redirectURI" id="Jhq-DK-idH"/>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.redirectURI" id="Wgl-Ll-byg">
+                                <dictionary key="options">
+                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                </dictionary>
+                            </binding>
                         </connections>
                     </textField>
                     <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eFs-Sl-grE">
