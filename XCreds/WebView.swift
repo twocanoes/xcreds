@@ -214,9 +214,12 @@ extension WebViewController: OIDCLiteDelegate {
         UserDefaults.standard.set(tokens.accessToken, forKey: PrefKeys.accessToken.rawValue)
         UserDefaults.standard.set(tokens.idToken, forKey: PrefKeys.idToken.rawValue)
         UserDefaults.standard.set(tokens.refreshToken, forKey: PrefKeys.refreshToken.rawValue)
-1
+
+
         RunLoop.main.perform {
             self.window?.close()
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self)
+
         }
     }
 }
