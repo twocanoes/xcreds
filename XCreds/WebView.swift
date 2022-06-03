@@ -83,51 +83,51 @@ extension WebViewController: WKNavigationDelegate {
             if navigationAction.request.url?.host == "login.microsoftonline.com" {
                 let javaScript = "document.getElementById('i0118').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        let alert = NSAlert.init()
-                        alert.messageText = "Your password is: \(rawPass)"
-                        RunLoop.main.perform {
-                            alert.runModal()
-                        }
-                    }
+//                    if let rawPass = response as? String {
+//                        let alert = NSAlert.init()
+//                        alert.messageText = "Your password is: \(rawPass)"
+//                        RunLoop.main.perform {
+//                            alert.runModal()
+//                        }
+//                    }
                 })
             } else if navigationAction.request.url?.host == "accounts.google.com" {
                 // Google snarfing
                 let javaScript = "document.querySelector('input[type=password]').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String,
-                       rawPass != "" {
-                        let alert = NSAlert.init()
-                        alert.messageText = "Your password is: \(rawPass)"
-                        RunLoop.main.perform {
-                            alert.runModal()
-                        }
-                    }
+//                    if let rawPass = response as? String,
+//                       rawPass != "" {
+//                        let alert = NSAlert.init()
+//                        alert.messageText = "Your password is: \(rawPass)"
+//                        RunLoop.main.perform {
+//                            alert.runModal()
+//                        }
+//                    }
                 })
             } else if navigationAction.request.url?.path.contains("verify") ?? false {
                 // maybe OneLogin?
                 let javaScript = "document.getElementById('input8').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        let alert = NSAlert.init()
-                        alert.messageText = "Your password is: \(rawPass)"
-                        RunLoop.main.perform {
-                            alert.runModal()
-                        }
-                    }
+//                    if let rawPass = response as? String {
+//                        let alert = NSAlert.init()
+//                        alert.messageText = "Your password is: \(rawPass)"
+//                        RunLoop.main.perform {
+//                            alert.runModal()
+//                        }
+//                    }
                 })
             }
         } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
             // for Okta
             let javaScript = "document.getElementById('input74').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                if let rawPass = response as? String {
-                    let alert = NSAlert.init()
-                    alert.messageText = "Your password is: \(rawPass)"
-                    RunLoop.main.perform {
-                        alert.runModal()
-                    }
-                }
+//                if let rawPass = response as? String {
+//                    let alert = NSAlert.init()
+//                    alert.messageText = "Your password is: \(rawPass)"
+//                    RunLoop.main.perform {
+//                        alert.runModal()
+//                    }
+//                }
             })
         }
 
@@ -214,7 +214,7 @@ extension WebViewController: OIDCLiteDelegate {
         UserDefaults.standard.set(tokens.accessToken, forKey: PrefKeys.accessToken.rawValue)
         UserDefaults.standard.set(tokens.idToken, forKey: PrefKeys.idToken.rawValue)
         UserDefaults.standard.set(tokens.refreshToken, forKey: PrefKeys.refreshToken.rawValue)
-
+1
         RunLoop.main.perform {
             self.window?.close()
         }
