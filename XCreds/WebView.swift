@@ -81,7 +81,7 @@ extension WebViewController: WKNavigationDelegate {
         if navigationAction.request.httpMethod == "POST" {
             // Azure snarfing
             if navigationAction.request.url?.host == "login.microsoftonline.com" {
-                let javaScript = "document.getElementById('i0118').value"
+                var javaScript = "document.getElementById('i0118').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
@@ -89,9 +89,15 @@ extension WebViewController: WKNavigationDelegate {
 //                        let alert = NSAlert.init()
 //                        alert.messageText = "Your password is: \(rawPass)"
 //                        RunLoop.main.perform {
-//                            alert.runModal()
+//                                alert.runModal()
 //                        }
 //                    }
+                })
+                javaScript = "document.getElementById('confirmNewPassword').value"
+                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                    if let rawPass = response as? String {
+                        self.password=rawPass
+                    }
                 })
             } else if navigationAction.request.url?.host == "accounts.google.com" {
                 // Google snarfing
