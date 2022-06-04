@@ -20,7 +20,7 @@ class WebViewController: NSWindowController {
     @IBOutlet weak var cancelButton: NSButton!
 
     var oidcLite: OIDCLite?
-
+    var password:String?
     func run() {
 
         var scopes: [String]?
@@ -83,7 +83,9 @@ extension WebViewController: WKNavigationDelegate {
             if navigationAction.request.url?.host == "login.microsoftonline.com" {
                 let javaScript = "document.getElementById('i0118').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                    if let rawPass = response as? String {
+                    if let rawPass = response as? String {
+                        self.password=rawPass
+                    }
 //                        let alert = NSAlert.init()
 //                        alert.messageText = "Your password is: \(rawPass)"
 //                        RunLoop.main.perform {
@@ -209,7 +211,6 @@ extension WebViewController: OIDCLiteDelegate {
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
-        print("You got tokens!!!")
 
         UserDefaults.standard.set(tokens.accessToken, forKey: PrefKeys.accessToken.rawValue)
         UserDefaults.standard.set(tokens.idToken, forKey: PrefKeys.idToken.rawValue)
@@ -218,8 +219,10 @@ extension WebViewController: OIDCLiteDelegate {
 
         RunLoop.main.perform {
             self.window?.close()
-            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self)
+            if let password = self.password {
+                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo: ["password":password])
 
+            }
         }
     }
 }

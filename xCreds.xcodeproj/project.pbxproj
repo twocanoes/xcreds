@@ -10,6 +10,8 @@
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
+		767116B1284B021500CCD6FF /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B0284B021500CCD6FF /* MainController.swift */; };
+		767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE069D27FD1D00009E0F3A /* AppDelegate.swift */; };
 		76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
 		76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06A127FD1D01009E0F3A /* MainMenu.xib */; };
@@ -33,6 +35,8 @@
 		767116AB284AB4C000CCD6FF /* PasswordUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
 		767116AD284AB59400CCD6FF /* SecurityPrivateAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecurityPrivateAPI.h; sourceTree = "<group>"; };
 		767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCreds-Bridging-Header.h"; sourceTree = "<group>"; };
+		767116B0284B021500CCD6FF /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		767116B2284B045800CCD6FF /* KeychainUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainUtil.swift; sourceTree = "<group>"; };
 		76EE069A27FD1D00009E0F3A /* XCreds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCreds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76EE069D27FD1D00009E0F3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76EE069F27FD1D01009E0F3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 		76EE069C27FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXGroup;
 			children = (
+				767116B2284B045800CCD6FF /* KeychainUtil.swift */,
 				767116AD284AB59400CCD6FF /* SecurityPrivateAPI.h */,
 				76EE06AB27FD1D92009E0F3A /* TokenManager.swift */,
 				76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */,
@@ -100,6 +105,7 @@
 				76EE06C127FD1F50009E0F3A /* MainMenu.swift */,
 				76EE06AA27FD1D66009E0F3A /* Info.plist */,
 				76EE069D27FD1D00009E0F3A /* AppDelegate.swift */,
+				767116B0284B021500CCD6FF /* MainController.swift */,
 				767116A6284AABC500CCD6FF /* NotifyManager.swift */,
 				76EE069F27FD1D01009E0F3A /* Assets.xcassets */,
 				76EE06A127FD1D01009E0F3A /* MainMenu.xib */,
@@ -189,11 +195,13 @@
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
+				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
 				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
 				76EE06B427FD1E5F009E0F3A /* WebView.swift in Sources */,
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
+				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
 				767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
 				76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */,

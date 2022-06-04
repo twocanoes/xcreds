@@ -42,14 +42,14 @@ class CheckTokenMenuItem: NSMenuItem {
     }
 
     @objc func doAction() {
-        let alert = NSAlert()
-
-        if TokenManager.shared.getNewAccessToken() {
-            alert.messageText = "Success!"
-        } else {
-            alert.messageText = "Failure!"
-        }
-
-        alert.runModal()
+//        let alert = NSAlert()
+//
+//        if TokenManager.shared.getNewAccessToken() {
+//            alert.messageText = "Success!"
+//        } else {
+//            alert.messageText = "Failure!"
+//        }
+//
+//        alert.runModal()
     }
 }

@@ -63,7 +63,6 @@ class PasswordUtils: NSObject {
 
     class func verifyCurrentUserPassword(password:String) -> Bool {
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-
         do {
             try currentUser?.verifyPassword(password)
         }
@@ -92,7 +91,7 @@ class PasswordUtils: NSObject {
         }
         return true
     }
-    static func changeKeychainPassword(_ oldPassword: String, newPassword1: String, newPassword2: String) throws {
+    static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword1: String, newPassword2: String) throws {
         if (newPassword1 != newPassword2) {
             throw PasswordError.invalidParamater("New passwords do not match.")
         }
@@ -116,6 +115,14 @@ class PasswordUtils: NSObject {
         if err != noErr {
             throw PasswordError.invalidResult("Error unlocking default keychain.")
         }
+
+        do {
+            try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword1)
+        } catch  {
+            throw PasswordError.unknownError("error changing password")
+
+        }
+
 
         err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword1.count), newPassword1)
 

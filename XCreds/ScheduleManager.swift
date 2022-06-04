@@ -19,15 +19,29 @@ class ScheduleManager {
         }
 
         timer=Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
-            if TokenManager.shared.getNewAccessToken() {
-                NotifyManager.shared.sendMessage(message: "Azure password unchanged")
-            } else {
-                timer.invalidate()
-                NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
-                mainMenu.webView = WebViewController()
-                mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-                mainMenu.webView?.run()
-            }
+            TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
+
+                if hadConnectionError==true {
+                    NotifyManager.shared.sendMessage(message: "Could not check token.")
+
+                    return
+                }
+                else if isSuccessful == true {
+                    NotifyManager.shared.sendMessage(message: "Azure password unchanged")
+
+                }
+                else {
+                    timer.invalidate()
+                    NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
+                    DispatchQueue.main.async {
+                        mainMenu.webView = WebViewController()
+                        mainMenu.webView?.window!.forceToFrontAndFocus(nil)
+                        mainMenu.webView?.run()
+
+                    }
+
+                }
+            })
         })
     }
     func stopCredentialCheck()  {

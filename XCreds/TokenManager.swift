@@ -6,6 +6,7 @@
 //
 import Foundation
 
+
 struct RefreshTokenResponse: Codable {
     let accessToken, expiresIn, expiresOn, refreshToken, extExpiresIn,tokenType: String
 
@@ -26,13 +27,14 @@ class TokenManager {
     let defaults = UserDefaults.standard
     var timer: Timer?
 
-    func getNewAccessToken() -> Bool {
+    func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
-        var result = false
 
-        guard let url = URL(string: defaults.string(forKey: PrefKeys.tokenEndpoint.rawValue) ?? "") else { return false }
+        guard let url = URL(string: defaults.string(forKey: PrefKeys.tokenEndpoint.rawValue) ?? "") else {
+            completion(false,true)
+            return
+        }
 
-        let sema = DispatchSemaphore(value: 0)
         var req = URLRequest(url: url)
 
         let refreshToken = defaults.string(forKey: PrefKeys.refreshToken.rawValue) ?? ""
@@ -52,8 +54,8 @@ class TokenManager {
         let task = URLSession.shared.dataTask(with: req) { data, response, error in
           guard let data = data else {
             print(String(describing: error))
-            sema.signal()
-            return
+              completion(false,true)
+              return
           }
             if let response = response as? HTTPURLResponse {
                 if response.statusCode == 200 {
@@ -61,22 +63,27 @@ class TokenManager {
                     do {
 
                         let json = try decoder.decode(RefreshTokenResponse.self, from: data)
-                        result = true
                         let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
                         UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
                         UserDefaults.standard.set(json.refreshToken, forKey: PrefKeys.refreshToken.rawValue)
                         UserDefaults.standard.set(json.accessToken, forKey: PrefKeys.accessToken.rawValue)
+                        completion(true,false)
 
                     }
                     catch {
-                        print(String(data: data, encoding: .utf8) as Any)                    }
+                        print(String(data: data, encoding: .utf8) as Any)
+                        completion(true,false)
+                        return
+                    }
+
+                }
+                else {
+                    completion(false,false)
+
                 }
             }
-          sema.signal()
         }
 
         task.resume()
-        sema.wait()
-        return result
     }
 }
