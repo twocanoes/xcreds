@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */; };
+		764D8127284BC1C300B3EE54 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
+		764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
+		764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */; };
+		764D812D284BCC7400B3EE54 /* VerifyOIDCPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
@@ -30,6 +35,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordWindowController.swift; sourceTree = "<group>"; };
+		764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginPasswordWindowController.xib; sourceTree = "<group>"; };
+		764D8128284BCAB100B3EE54 /* Window+Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Window+Shake.swift"; sourceTree = "<group>"; };
+		764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyOIDCPasswordWindowController.swift; sourceTree = "<group>"; };
+		764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyOIDCPassword.xib; sourceTree = "<group>"; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
 		767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		767116AB284AB4C000CCD6FF /* PasswordUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
@@ -87,11 +97,16 @@
 		76EE069C27FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXGroup;
 			children = (
+				764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */,
+				764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */,
+				764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */,
+				764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */,
 				767116B2284B045800CCD6FF /* KeychainUtil.swift */,
 				767116AD284AB59400CCD6FF /* SecurityPrivateAPI.h */,
 				76EE06AB27FD1D92009E0F3A /* TokenManager.swift */,
 				76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */,
 				76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */,
+				764D8128284BCAB100B3EE54 /* Window+Shake.swift */,
 				76EE06B127FD1E24009E0F3A /* WebView.xib */,
 				76EE06B327FD1E5F009E0F3A /* WebView.swift */,
 				767116AB284AB4C000CCD6FF /* PasswordUtils.swift */,
@@ -180,6 +195,8 @@
 			files = (
 				76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */,
 				76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */,
+				764D812D284BCC7400B3EE54 /* VerifyOIDCPassword.xib in Resources */,
+				764D8127284BC1C300B3EE54 /* LoginPasswordWindowController.xib in Resources */,
 				76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */,
 				76EE06B227FD1E24009E0F3A /* WebView.xib in Resources */,
 			);
@@ -196,8 +213,11 @@
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
+				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
 				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
+				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
 				76EE06B427FD1E5F009E0F3A /* WebView.swift in Sources */,
+				764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */,
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,

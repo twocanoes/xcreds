@@ -10,11 +10,13 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         mainMenu.statusBarItem.menu = mainMenu.mainMenu
+
 
         mainController = MainController.init()
         mainController?.run()

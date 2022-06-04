@@ -17,11 +17,34 @@ class MainController: NSObject {
             //now we set the password.
 
             DispatchQueue.main.async {
-                if let userInfo = notification.userInfo, let newPassword = userInfo["password"] as? String {
-                    let password = self.localPassword()
+                if let userInfo = notification.userInfo, let cloudPassword = userInfo["password"] as? String {
+                    let localPassword = self.localPassword()
 
-                    if let password = password {
-                        try? PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword1: newPassword, newPassword2: newPassword)
+                    if let localPassword = localPassword {
+                        let verifyOIDPassword = VerifyOIDCPassword.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                        NSApp.activate(ignoringOtherApps: true)
+
+                        while true {
+                            let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                            if response == .cancel {
+                                verifyOIDPassword.window?.close()
+                                break
+                            }
+                            let verifyCloudPassword = verifyOIDPassword.password
+
+                            if verifyCloudPassword == cloudPassword {
+                                try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
+                                verifyOIDPassword.window?.close()
+                                break;
+
+                            }
+                            else {
+                                verifyOIDPassword.window?.shake(self)
+                            }
+
+                        }
+
+
                     }
 
                     ScheduleManager.shared.startCredentialCheck()
@@ -43,32 +66,31 @@ class MainController: NSObject {
                 return password
             }
         }
+        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+
         while (true){
+            NSApp.activate(ignoringOtherApps: true)
+            let response = NSApp.runModal(for: passwordWindowController.window!)
 
-            let alertController = NSAlert()
-
-            alertController.messageText = "Please enter your local password"
-            alertController.addButton(withTitle: "OK")
-            alertController.addButton(withTitle: "Cancel")
-
-            let localPassword = NSSecureTextField(frame: CGRect(x: 0, y: 0, width: 200, height: 24))
-
-            alertController.accessoryView = localPassword
-            localPassword.becomeFirstResponder()
-
-            let response = alertController.runModal()
-
-
-            if response == .alertSecondButtonReturn {
+            if response == .cancel {
                 break
             }
-            let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password: localPassword.stringValue)
+            let localPassword = passwordWindowController.password
+            guard let localPassword = localPassword else {
+                continue
+            }
+            let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
             if isPasswordValid==true {
-                let err = keychainUtil.setPassword("xcreds", pass: localPassword.stringValue)
+                passwordWindowController.window?.close()
+                let err = keychainUtil.setPassword("xcreds", pass: localPassword)
                 if err != OSStatus(errSecSuccess) {
                     return nil
                 }
-                return localPassword.stringValue
+                return localPassword
+            }
+            else{
+                passwordWindowController.window?.shake(self)
             }
         }
 

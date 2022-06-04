@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="xCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="k1y-g2-hDK" id="OP0-sn-o5u"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
