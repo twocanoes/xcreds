@@ -37,10 +37,16 @@ class TokenManager {
 
         var req = URLRequest(url: url)
 
-        let refreshToken = defaults.string(forKey: PrefKeys.refreshToken.rawValue) ?? ""
-        let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue) ?? ""
+        let keychainUtil = KeychainUtil()
 
-        var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID)"
+        let refreshToken = try? keychainUtil.findPassword(PrefKeys.refreshToken.rawValue)
+
+        //defaults.string(forKey: PrefKeys.refreshToken.rawValue) ?? ""
+        let clientID = try? keychainUtil.findPassword(PrefKeys.clientID.rawValue)
+
+        //defaults.string(forKey: PrefKeys.clientID.rawValue) ?? ""
+
+        var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken ?? "")&client_id=\(clientID ?? "")"
         if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
             parameters.append("&client_secret=\(clientSecret)")
         }
@@ -64,9 +70,15 @@ class TokenManager {
 
                         let json = try decoder.decode(RefreshTokenResponse.self, from: data)
                         let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
-                        UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
-                        UserDefaults.standard.set(json.refreshToken, forKey: PrefKeys.refreshToken.rawValue)
-                        UserDefaults.standard.set(json.accessToken, forKey: PrefKeys.accessToken.rawValue)
+                        let keychainUtil = KeychainUtil()
+
+                        let _ = keychainUtil.setPassword(PrefKeys.expirationDate.rawValue, pass: expirationDate.ISO8601Format())
+
+                        let _ = keychainUtil.setPassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken)
+
+
+                        let _ = keychainUtil.setPassword(PrefKeys.accessToken.rawValue, pass: json.accessToken)
+
                         completion(true,false)
 
                     }

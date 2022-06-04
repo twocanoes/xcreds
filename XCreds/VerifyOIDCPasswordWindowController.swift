@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class VerifyOIDCPassword: NSWindowController {
+class VerifyOIDCPasswordWindowController: NSWindowController {
 
     @IBOutlet weak var passwordTextField: NSSecureTextField!
 

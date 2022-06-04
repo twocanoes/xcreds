@@ -218,15 +218,18 @@ extension WebViewController: OIDCLiteDelegate {
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
 
-        UserDefaults.standard.set(tokens.accessToken, forKey: PrefKeys.accessToken.rawValue)
-        UserDefaults.standard.set(tokens.idToken, forKey: PrefKeys.idToken.rawValue)
-        UserDefaults.standard.set(tokens.refreshToken, forKey: PrefKeys.refreshToken.rawValue)
-
-
         RunLoop.main.perform {
             self.window?.close()
             if let password = self.password {
-                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo: ["password":password])
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:
+                    [
+                        "password":password,
+                        PrefKeys.accessToken.rawValue:tokens.accessToken ?? "",
+                        PrefKeys.idToken.rawValue:tokens.idToken ?? "",
+                        PrefKeys.refreshToken.rawValue:tokens.refreshToken ?? ""
+
+                    ]
+            )
 
             }
         }

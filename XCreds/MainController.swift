@@ -17,11 +17,31 @@ class MainController: NSObject {
             //now we set the password.
 
             DispatchQueue.main.async {
-                if let userInfo = notification.userInfo, let cloudPassword = userInfo["password"] as? String {
+                let keychainUtil = KeychainUtil()
+
+                guard let userInfo = notification.userInfo else {
+                    return
+                }
+
+                if let accessToken = userInfo[PrefKeys.accessToken.rawValue] as? String {
+                    let _ = keychainUtil.setPassword(PrefKeys.accessToken.rawValue, pass: accessToken)
+                }
+
+                if let idToken = userInfo[PrefKeys.idToken.rawValue] as? String {
+                    let _ = keychainUtil.setPassword(PrefKeys.idToken.rawValue, pass: idToken)
+                }
+
+                if let refreshToken = userInfo[PrefKeys.refreshToken.rawValue] as? String {
+                    let _ = keychainUtil.setPassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
+                }
+
+
+
+                if let cloudPassword = userInfo["password"] as? String {
                     let localPassword = self.localPassword()
 
                     if let localPassword = localPassword {
-                        let verifyOIDPassword = VerifyOIDCPassword.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                        let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
                         NSApp.activate(ignoringOtherApps: true)
 
                         while true {
@@ -59,7 +79,7 @@ class MainController: NSObject {
     func localPassword() -> String? {
         let keychainUtil = KeychainUtil()
 
-        let password = try? keychainUtil.findPassword("xcreds")
+        let password = try? keychainUtil.findPassword("local password")
 
         if let password = password {
             if PasswordUtils.verifyCurrentUserPassword(password: password) == true {
@@ -83,7 +103,7 @@ class MainController: NSObject {
             let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
             if isPasswordValid==true {
                 passwordWindowController.window?.close()
-                let err = keychainUtil.setPassword("xcreds", pass: localPassword)
+                let err = keychainUtil.setPassword("local password", pass: localPassword)
                 if err != OSStatus(errSecSuccess) {
                     return nil
                 }
