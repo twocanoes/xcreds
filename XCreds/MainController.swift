@@ -9,6 +9,15 @@ import Cocoa
 
 class MainController: NSObject {
     func run() -> Void {
+
+        let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
+
+        if let defaultsPath = defaultsPath {
+
+            let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
+            UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
+        }
+
         // make sure we have the local password, else prompt. we don't need to save it
         // just make sure we prompt if not in the keychain. if the user cancels, then it will
         // prompt when using OAuth.
@@ -24,15 +33,15 @@ class MainController: NSObject {
                 }
 
                 if let accessToken = userInfo[PrefKeys.accessToken.rawValue] as? String {
-                    let _ = keychainUtil.setPassword(PrefKeys.accessToken.rawValue, pass: accessToken)
+                    let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken)
                 }
 
                 if let idToken = userInfo[PrefKeys.idToken.rawValue] as? String {
-                    let _ = keychainUtil.setPassword(PrefKeys.idToken.rawValue, pass: idToken)
+                    let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken)
                 }
 
                 if let refreshToken = userInfo[PrefKeys.refreshToken.rawValue] as? String {
-                    let _ = keychainUtil.setPassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
+                    let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
                 }
 
 
@@ -103,8 +112,8 @@ class MainController: NSObject {
             let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
             if isPasswordValid==true {
                 passwordWindowController.window?.close()
-                let err = keychainUtil.setPassword("local password", pass: localPassword)
-                if err != OSStatus(errSecSuccess) {
+                let err = keychainUtil.updatePassword("local password", pass: localPassword)
+                if err == false {
                     return nil
                 }
                 return localPassword

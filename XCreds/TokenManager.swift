@@ -42,9 +42,7 @@ class TokenManager {
         let refreshToken = try? keychainUtil.findPassword(PrefKeys.refreshToken.rawValue)
 
         //defaults.string(forKey: PrefKeys.refreshToken.rawValue) ?? ""
-        let clientID = try? keychainUtil.findPassword(PrefKeys.clientID.rawValue)
-
-        //defaults.string(forKey: PrefKeys.clientID.rawValue) ?? ""
+        let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue) ?? ""
 
         var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken ?? "")&client_id=\(clientID ?? "")"
         if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
@@ -70,14 +68,11 @@ class TokenManager {
 
                         let json = try decoder.decode(RefreshTokenResponse.self, from: data)
                         let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
+                        UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
+
                         let keychainUtil = KeychainUtil()
-
-                        let _ = keychainUtil.setPassword(PrefKeys.expirationDate.rawValue, pass: expirationDate.ISO8601Format())
-
-                        let _ = keychainUtil.setPassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken)
-
-
-                        let _ = keychainUtil.setPassword(PrefKeys.accessToken.rawValue, pass: json.accessToken)
+                        let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken)
+                        let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: json.accessToken)
 
                         completion(true,false)
 

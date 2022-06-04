@@ -18,7 +18,12 @@ class ScheduleManager {
             return
         }
 
-        timer=Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
+        var rate = UserDefaults.standard.integer(forKey: PrefKeys.refreshRate.rawValue)
+
+        if rate < 5 {
+            rate = 5
+        }
+        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate), repeats: true, block: { timer in
             TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
                 if hadConnectionError==true {
