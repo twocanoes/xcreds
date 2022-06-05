@@ -18,25 +18,21 @@
         <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="628" height="613"/>
+            <rect key="contentRect" x="453" y="250" width="628" height="613"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
-                        <rect key="frame" x="0.0" y="64" width="628" height="555"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="628" id="RJ9-kb-xRi"/>
-                            <constraint firstAttribute="height" constant="555" id="idm-c7-eyh"/>
-                        </constraints>
+                        <rect key="frame" x="0.0" y="64" width="628" height="549"/>
                         <wkWebViewConfiguration key="configuration">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences"/>
                         </wkWebViewConfiguration>
                     </wkWebView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1y-g2-hDK">
-                        <rect key="frame" x="276" y="17" width="76" height="32"/>
+                        <rect key="frame" x="539" y="13" width="76" height="32"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ksj-eV-tj1">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -50,10 +46,12 @@ Gw
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" constant="64" id="9PT-Ry-kTm"/>
-                    <constraint firstAttribute="bottom" secondItem="k1y-g2-hDK" secondAttribute="bottom" constant="24" id="ATg-sW-cni"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="centerX" secondItem="k1y-g2-hDK" secondAttribute="centerX" id="V0g-Vn-36f"/>
-                    <constraint firstItem="k1y-g2-hDK" firstAttribute="centerX" secondItem="2LH-tE-efn" secondAttribute="centerX" id="cLg-fL-hLA"/>
+                    <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
+                    <constraint firstAttribute="trailing" secondItem="k1y-g2-hDK" secondAttribute="trailing" constant="20" symbolic="YES" id="7i7-Zq-FS8"/>
+                    <constraint firstAttribute="bottom" secondItem="k1y-g2-hDK" secondAttribute="bottom" constant="20" symbolic="YES" id="S7Q-4g-cc3"/>
+                    <constraint firstItem="k1y-g2-hDK" firstAttribute="top" secondItem="p1x-1L-05D" secondAttribute="bottom" constant="24" id="bK2-wq-WpJ"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="gmG-FO-hZc"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="142" y="302.5"/>

@@ -30,8 +30,16 @@ class SignInMenuItem: NSMenuItem {
 
     @objc func doAction() {
 
-        mainMenu.webView = WebViewController()
-        mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-        mainMenu.webView?.run()
+        if UserDefaults.standard.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && UserDefaults.standard.value(forKey: PrefKeys.clientID.rawValue) != nil {
+            if (mainMenu.webView==nil){
+                mainMenu.webView = WebViewController()
+            }
+            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
+            mainMenu.webView?.run()
+        }
+        else {
+
+            PrefsMenuItem().doAction()
+        }
     }
 }

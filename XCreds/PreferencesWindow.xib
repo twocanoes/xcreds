@@ -13,17 +13,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController representsSharedInstance="YES" id="5Ar-2a-lNk"/>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="e3r-XM-xJP">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="e3r-XM-xJP">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="139"/>
+            <rect key="contentRect" x="560" y="551" width="494" height="173"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
             <view key="contentView" wantsLayer="YES" id="ZbF-tC-vpZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="139"/>
+                <rect key="frame" x="0.0" y="0.0" width="494" height="173"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h4y-Ta-Cvg">
-                        <rect key="frame" x="23" y="116" width="90" height="16"/>
+                        <rect key="frame" x="23" y="150" width="90" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="DiscoveryURL" id="lS2-NV-sCW">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -32,7 +32,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B0L-lU-7n3">
-                        <rect key="frame" x="57" y="89" width="56" height="16"/>
+                        <rect key="frame" x="57" y="123" width="56" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="Client ID" id="JyJ-Id-S9x">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -41,7 +41,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cBA-rI-7yf">
-                        <rect key="frame" x="119" y="113" width="341" height="21"/>
+                        <rect key="frame" x="119" y="147" width="355" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="9Si-gZ-wo5">
                             <font key="font" metaFont="system"/>
@@ -57,7 +57,7 @@
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ie3-c5-0dg">
-                        <rect key="frame" x="119" y="89" width="341" height="21"/>
+                        <rect key="frame" x="119" y="123" width="355" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="pgf-ba-xBF">
                             <font key="font" metaFont="system"/>
@@ -84,7 +84,7 @@
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6cE-Yr-0bd">
-                        <rect key="frame" x="23" y="62" width="210" height="16"/>
+                        <rect key="frame" x="23" y="96" width="210" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="Check for password change every" id="bZ8-Xb-oG5">
                             <font key="font" metaFont="system"/>
@@ -93,7 +93,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="exK-od-VQg">
-                        <rect key="frame" x="239" y="59" width="51" height="21"/>
+                        <rect key="frame" x="239" y="93" width="51" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="oP1-XG-OoD">
                             <font key="font" metaFont="system"/>
@@ -109,7 +109,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzp-d3-Q7K">
-                        <rect key="frame" x="296" y="62" width="56" height="16"/>
+                        <rect key="frame" x="296" y="96" width="56" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="seconds" id="R3c-k5-x0H">
                             <font key="font" metaFont="system"/>
@@ -117,9 +117,31 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNl-22-uJH">
+                        <rect key="frame" x="23" y="71" width="217" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Show Debug Push Notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="dRK-Of-hFQ">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.showDebug" id="p8B-ky-oMA"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZG-WX-diX">
+                        <rect key="frame" x="23" y="49" width="451" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Require Cloud Password Confirmation before changing local password" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="369-w0-EY8">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.verifyPassword" id="SKG-85-tJm"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="119" y="190.5"/>
+            <point key="canvasLocation" x="191" y="192"/>
         </window>
         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dXE-Xt-nIV">
             <rect key="frame" x="0.0" y="0.0" width="90" height="16"/>
@@ -129,7 +151,7 @@
                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
             </textFieldCell>
-            <point key="canvasLocation" x="10" y="367"/>
+            <point key="canvasLocation" x="49" y="340"/>
         </textField>
     </objects>
 </document>

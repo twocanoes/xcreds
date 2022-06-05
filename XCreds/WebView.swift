@@ -208,6 +208,7 @@ extension WebViewController: WKNavigationDelegate {
 
         return dictionary
     }
+
 }
 
 extension WebViewController: OIDCLiteDelegate {

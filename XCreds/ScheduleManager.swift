@@ -56,10 +56,10 @@ class ScheduleManager {
                     NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
                 }
                 DispatchQueue.main.async {
-                    mainMenu.webView = WebViewController()
-                    mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-                    mainMenu.webView?.run()
-
+//                    mainMenu.webView = WebViewController()
+//                    mainMenu.webView?.window!.forceToFrontAndFocus(nil)
+//                    mainMenu.webView?.run()
+                    SignInMenuItem().doAction()
                 }
 
             }

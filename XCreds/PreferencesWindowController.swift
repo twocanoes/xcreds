@@ -17,9 +17,11 @@ class PreferencesWindowController: NSWindowController {
     }
 
     @IBAction func clearTokensClicked(_ sender: Any) {
-        UserDefaults.standard.set(nil, forKey: PrefKeys.accessToken.rawValue)
-        UserDefaults.standard.set(nil, forKey: PrefKeys.idToken.rawValue)
-        UserDefaults.standard.set(nil, forKey: PrefKeys.refreshToken.rawValue)
+        let keychainUtil = KeychainUtil()
+        let _ = keychainUtil.findAndDelete(PrefKeys.accessToken.rawValue)
+        let _ = keychainUtil.findAndDelete(PrefKeys.idToken.rawValue)
+        let _ = keychainUtil.findAndDelete(PrefKeys.refreshToken.rawValue)
+
     }
 
 }
