@@ -43,11 +43,15 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.removeAllItems()
 
         // add menu items
+        let aboutMenuItem = NSMenuItem(title: "About", action:#selector(NSApp.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
+
 
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
-        mainMenu.addItem(NSMenuItem.separator())
         mainMenu.addItem(PrefsMenuItem())
+        mainMenu.addItem(aboutMenuItem)
+        mainMenu.addItem(quitMenuItem)
 
     }
 
