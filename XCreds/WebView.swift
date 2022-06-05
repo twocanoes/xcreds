@@ -214,6 +214,8 @@ extension WebViewController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
         print("Auth failure :(")
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {

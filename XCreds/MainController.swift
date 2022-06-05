@@ -63,6 +63,11 @@ class MainController: NSObject {
 
                             if verifyCloudPassword == cloudPassword {
                                 try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
+                                let err = keychainUtil.updatePassword("local password", pass: localPassword)
+                                if err == false {
+                                    //TODO: Log Error
+                                }
+
                                 verifyOIDPassword.window?.close()
                                 break;
 

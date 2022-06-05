@@ -45,9 +45,7 @@ class ScheduleManager {
 
             }
             else {
-                if let timer = self.timer {
-                    timer.invalidate()
-                }
+                self.stopCredentialCheck()
                 NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
                 DispatchQueue.main.async {
                     mainMenu.webView = WebViewController()
