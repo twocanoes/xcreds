@@ -6,5 +6,9 @@
 	<string>xcreds://auth/</string>
 	<key>refreshRate</key>
 	<string>60</string>
+	<key>showDebug</key>
+	<false/>
+	<key>verifyPassword</key>
+	<true/>
 </dict>
 </plist>

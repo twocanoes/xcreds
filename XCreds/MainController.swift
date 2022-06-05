@@ -50,32 +50,38 @@ class MainController: NSObject {
                     let localPassword = self.localPassword()
 
                     if let localPassword = localPassword {
-                        let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-                        NSApp.activate(ignoringOtherApps: true)
+                        if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                            NSApp.activate(ignoringOtherApps: true)
 
-                        while true {
-                            let response = NSApp.runModal(for: verifyOIDPassword.window!)
-                            if response == .cancel {
-                                verifyOIDPassword.window?.close()
-                                break
-                            }
-                            let verifyCloudPassword = verifyOIDPassword.password
-
-                            if verifyCloudPassword == cloudPassword {
-                                try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
-                                let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
-                                if err == false {
-                                    //TODO: Log Error
+                            while true {
+                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                                if response == .cancel {
+                                    verifyOIDPassword.window?.close()
+                                    break
+                                }
+                                let verifyCloudPassword = verifyOIDPassword.password
+                                if verifyCloudPassword == cloudPassword {
+                                    try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
+                                    let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
+                                    if err == false {
+                                        //TODO: Log Error
+                                    }
+                                    verifyOIDPassword.window?.close()
+                                    break;
+                                }
+                                else {
+                                    verifyOIDPassword.window?.shake(self)
                                 }
 
-                                verifyOIDPassword.window?.close()
-                                break;
-
                             }
-                            else {
-                                verifyOIDPassword.window?.shake(self)
+                        }
+                        else {
+                            try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
+                            let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
+                            if err == false {
+                                //TODO: Log Error
                             }
-
                         }
 
 

@@ -36,17 +36,25 @@ class ScheduleManager {
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
-                NotifyManager.shared.sendMessage(message: "Could not check token.")
+                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+
+                    NotifyManager.shared.sendMessage(message: "Could not check token.")
+                }
 
                 return
             }
             else if isSuccessful == true {
-                NotifyManager.shared.sendMessage(message: "Azure password unchanged")
+                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+                    NotifyManager.shared.sendMessage(message: "Azure password unchanged")
+                }
 
             }
             else {
                 self.stopCredentialCheck()
-                NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
+                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+
+                    NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
+                }
                 DispatchQueue.main.async {
                     mainMenu.webView = WebViewController()
                     mainMenu.webView?.window!.forceToFrontAndFocus(nil)
