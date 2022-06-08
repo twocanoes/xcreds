@@ -30,7 +30,8 @@ class MainMenu: NSObject, NSMenuDelegate {
         super.init()
         buildMenu()
         self.statusBarItem.menu = mainMenu
-        self.statusBarItem.button?.title = "🔘"
+        self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
+//        self.statusBarItem.button?.title = "🔘"
         mainMenu.delegate = self
 
     }
