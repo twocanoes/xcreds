@@ -51,7 +51,9 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.addItem(CheckTokenMenuItem())
         mainMenu.addItem(PrefsMenuItem())
         mainMenu.addItem(NSMenuItem.separator())
-        mainMenu.addItem(quitMenuItem)
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuit.rawValue)==true{
+            mainMenu.addItem(quitMenuItem)
+        }
 
     }
 

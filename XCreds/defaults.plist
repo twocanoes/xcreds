@@ -5,10 +5,16 @@
 	<key>redirectURI</key>
 	<string>xcreds://auth/</string>
 	<key>refreshRate</key>
-	<string>60</string>
+	<string>10800</string>
 	<key>showDebug</key>
 	<false/>
 	<key>verifyPassword</key>
+	<true/>
+	<key>LogFileName</key>
+	<string>xcreds.log</string>
+	<key>shouldShowQuit</key>
+	<true/>
+	<key>shouldShowPreferencesOnStart</key>
 	<true/>
 </dict>
 </plist>

@@ -38,8 +38,9 @@ class SignInMenuItem: NSMenuItem {
             mainMenu.webView?.run()
         }
         else {
-
-            PrefsMenuItem().doAction()
+            if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{
+                PrefsMenuItem().doAction()
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ class PrefsMenuItem: NSMenuItem {
 
     override var title: String {
         get {
-            "Preferences..."
+            "Show Settings..."
         }
         set {
             return

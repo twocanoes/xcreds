@@ -18,8 +18,8 @@ class ScheduleManager {
         }
         var rate = UserDefaults.standard.integer(forKey: PrefKeys.refreshRate.rawValue)
 
-        if rate < 5 {
-            rate = 5
+        if rate < 3600 {
+            rate = 3600
         }
         timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate), repeats: true, block: { timer in
             self.checkToken()

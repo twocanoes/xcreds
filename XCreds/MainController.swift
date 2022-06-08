@@ -57,8 +57,18 @@ class MainController: NSObject {
                             while true {
                                 let response = NSApp.runModal(for: verifyOIDPassword.window!)
                                 if response == .cancel {
-                                    verifyOIDPassword.window?.close()
-                                    break
+
+                                    let alert = NSAlert()
+                                    alert.addButton(withTitle: "Skip Updating Password")
+                                    alert.addButton(withTitle: "Cancel")
+                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
+                                    let resp = alert.runModal()
+                                    if resp == .alertFirstButtonReturn {
+                                        NSApp.stopModal(withCode: .cancel)
+                                        verifyOIDPassword.window?.close()
+                                        break
+
+                                    }
                                 }
                                 let verifyCloudPassword = verifyOIDPassword.password
                                 if verifyCloudPassword == cloudPassword {

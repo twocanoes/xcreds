@@ -45,6 +45,7 @@ class WebViewController: NSWindowController {
         }
 
         clearCookies()
+
         if let url = oidcLite?.createLoginURL() {
             self.webView.load(URLRequest(url: url))
         }

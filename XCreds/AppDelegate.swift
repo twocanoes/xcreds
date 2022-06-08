@@ -15,11 +15,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var mainController:MainController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        mainMenu.statusBarItem.menu = mainMenu.mainMenu
 
 
         mainController = MainController.init()
         mainController?.run()
+        mainMenu.statusBarItem.menu = mainMenu.mainMenu
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

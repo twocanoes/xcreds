@@ -1,5 +1,5 @@
 #!/bin/bash
 
 pushd ./build_resources/buildscripts/
-./build.sh
+SKIP_DMG=1 ./build.sh
 popd
