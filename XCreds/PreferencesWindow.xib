@@ -17,7 +17,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="560" y="551" width="494" height="173"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
             <view key="contentView" wantsLayer="YES" id="ZbF-tC-vpZ">
                 <rect key="frame" x="0.0" y="0.0" width="494" height="173"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -101,7 +101,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.refreshRate" id="KzI-Fl-T5R">
+                            <binding destination="5Ar-2a-lNk" name="value" keyPath="values.refreshRateHours" id="cW0-SZ-EbD">
                                 <dictionary key="options">
                                     <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                 </dictionary>
@@ -109,9 +109,9 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzp-d3-Q7K">
-                        <rect key="frame" x="296" y="96" width="56" height="16"/>
+                        <rect key="frame" x="296" y="96" width="39" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="seconds" id="R3c-k5-x0H">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="hours" id="R3c-k5-x0H">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
