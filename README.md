@@ -52,7 +52,7 @@ The easiest way configure is to use [Profile Creator](https://github.com/Profile
 See the [video on youtube](https://youtu.be/6V5MCQNWVTE)
 
 ## Support
-Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is available from Twocanoes Software. 
+Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is [available from Twocanoes Software](https://twocanoes.com/products/mac/xcreds/).
 
 ## Thanks
 
