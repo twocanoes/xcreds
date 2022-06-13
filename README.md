@@ -8,7 +8,7 @@ Configuration and setting is handled from a config profile. See the Preferences 
 
 We recommend you use a preference manifest and use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) with the  [supplied manifest](https://twocanoes-app-resources.s3.amazonaws.com/xcreds/com.twocanoes.xcreds.plist).
 
-A sample configuration profile is available to download as well.
+A sample configuration profile is [available to download](https://twocanoes-app-resources.s3.amazonaws.com/xcreds/xcreds.mobileconfig) as well.
 
 
 
