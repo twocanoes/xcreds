@@ -4,7 +4,8 @@
 //
 //  Created by Timothy Perfitt on 6/4/22.
 //
-
+// https://stackoverflow.com/a/50267597
+// thanks to Mike James https://stackoverflow.com/users/531419/mike-james
 import Foundation
 import Cocoa
 
