@@ -76,7 +76,7 @@ class WebViewController: NSWindowController {
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("WebDel:: Deciding Policy for: \(navigationAction.request.url?.absoluteString ?? "None")")
+//        print("WebDel:: Deciding Policy for: \(navigationAction.request.url?.absoluteString ?? "None")")
 
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {

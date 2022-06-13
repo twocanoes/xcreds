@@ -4,8 +4,8 @@
 <dict>
 	<key>redirectURI</key>
 	<string>xcreds://auth/</string>
-	<key>refreshRate</key>
-	<string>10800</string>
+	<key>refreshRateHours</key>
+	<string>3</string>
 	<key>showDebug</key>
 	<false/>
 	<key>verifyPassword</key>

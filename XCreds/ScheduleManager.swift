@@ -16,12 +16,12 @@ class ScheduleManager {
         if let timer = timer, timer.isValid==true {
             return
         }
-        var rate = UserDefaults.standard.integer(forKey: PrefKeys.refreshRate.rawValue)
+        var rate = UserDefaults.standard.integer(forKey: PrefKeys.refreshRateHours.rawValue)
 
-        if rate < 3600 {
-            rate = 3600
+        if rate < 1 {
+            rate = 1
         }
-        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate), repeats: true, block: { timer in
+        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate*60*60), repeats: true, block: { timer in
             self.checkToken()
         })
         self.checkToken()

@@ -8,5 +8,5 @@
 import Foundation
 
 enum PrefKeys: String {
-    case clientID, clientSecret, discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRate, showDebug, verifyPassword, shouldShowQuit, shouldShowPreferencesOnStart
+    case clientID, clientSecret, discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuit, shouldShowPreferencesOnStart
 }
