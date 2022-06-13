@@ -49,7 +49,7 @@ The easiest way configure is to use [Profile Creator](https://github.com/Profile
 
 
 ## Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6V5MCQNWVTE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+See the [video on youtube](https://youtu.be/6V5MCQNWVTE)
 
 ## Support
 Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is available from Twocanoes Software. 
