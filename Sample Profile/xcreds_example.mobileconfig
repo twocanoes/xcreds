@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Configures XCreds configuration preferences</string>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.27BDECFE-2520-4034-8593-DB45364B0A28.com.twocanoes.xcreds.06A2A167-4F35-4447-A4EB-1FD5AD7BDBA6</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>06A2A167-4F35-4447-A4EB-1FD5AD7BDBA6</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>clientID</key>
+			<string>5487c4cd-949a-402d-9eee-ae8fb696b415</string>
+			<key>discoveryURL</key>
+			<string>https://login.microsoftonline.com/common/.well-known/openid-configuration</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>XCreds</string>
+	<key>PayloadDisplayName</key>
+	<string>xcreds</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreator.27BDECFE-2520-4034-8593-DB45364B0A28</string>
+	<key>PayloadOrganization</key>
+	<string>Twocanoes</string>
+	<key>PayloadScope</key>
+	<string>User</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>27BDECFE-2520-4034-8593-DB45364B0A28</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
