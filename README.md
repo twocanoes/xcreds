@@ -45,7 +45,7 @@ The easiest way configure is to use [Profile Creator](https://github.com/Profile
 
 *shouldShowQuit* (bool): Show Quit in the menu item menu. Default value: true
 
-*shouldShowPreferencesOnStart* (bool): Show Settings on start if none are defined. Default value: true
+*shouldShowPreferencesOnStart* (bool): Show Settings on start if none are defined. Default value: false
 
 
 ## Video
