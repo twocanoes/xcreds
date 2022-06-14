@@ -6,9 +6,9 @@ XCreds works by keeping your local Mac password in sync with your Identity Provi
 ## Configuration
 Configuration and setting is handled from a config profile. See the Preferences section below for details on each key. The discovery URL and client ID values are required. All others are optional. 
 
-We recommend you use a preference manifest and use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) with the  [supplied manifest](https://twocanoes-app-resources.s3.amazonaws.com/xcreds/com.twocanoes.xcreds.plist).
+We recommend you use a preference manifest and use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) with the  [supplied manifest](https://github.com/twocanoes/xcreds/releases).
 
-A sample configuration profile is [available to download](https://twocanoes-app-resources.s3.amazonaws.com/xcreds/xcreds.mobileconfig) as well.
+A sample configuration profile is [available to download](https://github.com/twocanoes/xcreds/releases) as well.
 
 
 
@@ -31,7 +31,7 @@ XCreds is a menu item macOS application that works like this:
 1. The cloud password entered is then used to set the local password and change the login keychain password.
 
 ## Preferences
-The easiest way configure is to use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) using the [supplied manifest](https://twocanoes-app-resources.s3.amazonaws.com/xcreds/com.twocanoes.xcreds.plist). The following keys can then be set and managed:
+The easiest way configure is to use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) using the [supplied manifest](https://github.com/twocanoes/xcreds/releases). The following keys can then be set and managed:
 
 *redirectURI* (string): the URI passed back to the webview after successful authentication. Default value: "xcreds://auth/"
 
