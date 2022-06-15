@@ -16,5 +16,7 @@
 	<true/>
 	<key>shouldShowPreferencesOnStart</key>
 	<false/>
+	<key>shouldSetGoogleAccessTypeToOffline</key>
+	<false/>
 </dict>
 </plist>

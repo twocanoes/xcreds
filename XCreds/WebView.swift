@@ -34,8 +34,14 @@ class WebViewController: NSWindowController {
         if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
+        //
+        var additionalParameters:[String:String]? = nil
 
-        oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: ["profile", "openid", "offline_access"])
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
+            additionalParameters = ["access_type":"offline", "prompt":"consent"]
+        }
+
+        oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         webView.navigationDelegate = self
         oidcLite?.delegate = self
         oidcLite?.getEndpoints()
@@ -104,6 +110,10 @@ extension WebViewController: WKNavigationDelegate {
                 // Google snarfing
                 let javaScript = "document.querySelector('input[type=password]').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                    if let rawPass = response as? String {
+                        self.password=rawPass
+                    }
+
 //                    if let rawPass = response as? String,
 //                       rawPass != "" {
 //                        let alert = NSAlert.init()

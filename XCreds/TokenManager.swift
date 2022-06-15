@@ -77,7 +77,6 @@ class TokenManager {
 
                         }
                         catch {
-                            print(String(data: data, encoding: .utf8) as Any)
                             completion(true,false)
                             return
                         }
