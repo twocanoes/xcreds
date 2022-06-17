@@ -362,9 +362,9 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>boolean</string>
 			<key>pfm_title</key>
-			<string>Quit Menu Item</string>
+			<string>Show Quit Menu Item</string>
 			<key>pfm_description</key>
-			<string>Show Quit Menu Item.</string>
+			<string>Show Quit Menu Item in the menu.</string>
 			<key>pfm_default</key>
 			<true/>
 		</dict>
@@ -380,6 +380,35 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<false/>
 		</dict>
+		
+		<dict>
+			<key>pfm_name</key>
+			<string>shouldHideAboutMenu</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+			<key>pfm_title</key>
+			<string>Hide About Menu</string>
+			<key>pfm_description</key>
+			<string>Hide the about menu</string>
+			<key>pfm_default</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>pfm_name</key>
+			<string>passwordChangeURL</string>
+			<key>pfm_type</key>
+			<string>string</string>
+			<key>pfm_title</key>
+			<string>Password Change URL for Menu</string>
+			<key>pfm_description</key>
+			<string>Add a menu item for changing the password that will open this URL when the menu item is selected.</string>
+			<!-- This value will be automatically set as the value until the user changes it. -->
+			<key>pfm_default</key>
+			<string></string>
+			
+		</dict>
+
+		
 	</array>
 </dict>
 </plist>

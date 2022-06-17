@@ -12,8 +12,8 @@
 	<true/>
 	<key>LogFileName</key>
 	<string>xcreds.log</string>
-	<key>shouldShowQuit</key>
-	<true/>
+	<key>shouldHideQuit</key>
+	<false/>
 	<key>shouldShowPreferencesOnStart</key>
 	<false/>
 	<key>shouldSetGoogleAccessTypeToOffline</key>
