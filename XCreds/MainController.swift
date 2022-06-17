@@ -42,6 +42,9 @@ class MainController: NSObject {
 
                 if let refreshToken = userInfo[PrefKeys.refreshToken.rawValue] as? String {
                     let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
+                        mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    
+
                 }
 
 

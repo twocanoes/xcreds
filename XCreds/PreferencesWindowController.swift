@@ -21,6 +21,8 @@ class PreferencesWindowController: NSWindowController {
         let _ = keychainUtil.findAndDelete(PrefKeys.accessToken.rawValue)
         let _ = keychainUtil.findAndDelete(PrefKeys.idToken.rawValue)
         let _ = keychainUtil.findAndDelete(PrefKeys.refreshToken.rawValue)
+            mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
+
 
     }
 

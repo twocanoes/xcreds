@@ -44,9 +44,14 @@ class ScheduleManager {
                 return
             }
             else if isSuccessful == true {
+
                 if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
                     NotifyManager.shared.sendMessage(message: "Azure password unchanged")
                 }
+                DispatchQueue.main.async {
+                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                }
+
 
             }
             else {
