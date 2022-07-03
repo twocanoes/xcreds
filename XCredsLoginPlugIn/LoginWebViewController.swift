@@ -35,6 +35,16 @@ class LoginWebViewController: WebViewController {
     @objc override var windowNibName: NSNib.Name {
         return NSNib.Name("LoginWebView")
     }
+    func loginTransition() {
+
+        NSAnimationContext.runAnimationGroup({ (context) in
+            context.duration = 1.0
+            context.allowsImplicitAnimation = true
+            self.window?.alphaValue = 0.0
+        }, completionHandler: {
+            self.window?.close()
+        })
+    }
 
 }
 

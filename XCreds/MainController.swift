@@ -27,6 +27,7 @@ class MainController: NSObject {
 
             DispatchQueue.main.async {
                 let keychainUtil = KeychainUtil()
+                mainMenu.webView?.window?.close()
 
                 guard let tokenInfo = notification.userInfo else {
                     return

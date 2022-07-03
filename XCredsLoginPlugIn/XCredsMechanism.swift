@@ -29,7 +29,10 @@ import os.log
             self.setContextString(type: kAuthorizationEnvironmentUsername, value: "tperfitt")
             self.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
             self.allowLogin()
+            RunLoop.main.perform {
+                self.webViewController.loginTransition()
 
+            }
         }
         setupPrefs()
 

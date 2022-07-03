@@ -222,16 +222,8 @@ extension WebViewController: OIDCLiteDelegate {
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
         TCSLog("tokenResponse")
         RunLoop.main.perform {
-            self.window?.close()
             if let password = self.password {
                 TCSLog("password received")
-//                let tokensDict = [
-//                    "password":password,
-//                    PrefKeys.accessToken.rawValue:tokens.accessToken ?? "",
-//                    PrefKeys.idToken.rawValue:tokens.idToken ?? "",
-//                    PrefKeys.refreshToken.rawValue:tokens.refreshToken ?? ""
-//
-//                ]
                 let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
                 self.tokensUpdated(tokens: returnTokens)
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
