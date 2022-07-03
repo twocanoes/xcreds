@@ -77,6 +77,9 @@ class WebViewController: NSWindowController {
             }
         }
     }
+    func tokensUpdated(tokens: Tokens){
+//to be overridden by superclasses
+    }
 }
 
 extension WebViewController: WKNavigationDelegate {
@@ -205,6 +208,7 @@ extension WebViewController: WKNavigationDelegate {
         return dictionary
     }
 
+
 }
 
 extension WebViewController: OIDCLiteDelegate {
@@ -221,15 +225,18 @@ extension WebViewController: OIDCLiteDelegate {
             self.window?.close()
             if let password = self.password {
                 TCSLog("password received")
-            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:
-                    [
-                        "password":password,
-                        PrefKeys.accessToken.rawValue:tokens.accessToken ?? "",
-                        PrefKeys.idToken.rawValue:tokens.idToken ?? "",
-                        PrefKeys.refreshToken.rawValue:tokens.refreshToken ?? ""
+//                let tokensDict = [
+//                    "password":password,
+//                    PrefKeys.accessToken.rawValue:tokens.accessToken ?? "",
+//                    PrefKeys.idToken.rawValue:tokens.idToken ?? "",
+//                    PrefKeys.refreshToken.rawValue:tokens.refreshToken ?? ""
+//
+//                ]
+                let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
+                self.tokensUpdated(tokens: returnTokens)
+                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
 
-                    ]
-            )
+                )
 
             }
         }

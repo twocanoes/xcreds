@@ -30,6 +30,8 @@
 		766355DC287133C7002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
 		766355DE28713486002E3867 /* LoginWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766355DD28713485002E3867 /* LoginWebView.xib */; };
 		766355E328713C4A002E3867 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
+		766355E5287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
+		766355E6287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
@@ -73,6 +75,7 @@
 		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugIn/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
 		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
+		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
 		767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		767116AB284AB4C000CCD6FF /* PasswordUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
@@ -195,6 +198,7 @@
 				764D8128284BCAB100B3EE54 /* Window+Shake.swift */,
 				76EE06B127FD1E24009E0F3A /* WebView.xib */,
 				76EE06B327FD1E5F009E0F3A /* WebView.swift */,
+				766355E4287148C1002E3867 /* Tokens.swift */,
 				767116AB284AB4C000CCD6FF /* PasswordUtils.swift */,
 				76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */,
 				764D812E284C06AB00B3EE54 /* defaults.plist */,
@@ -341,6 +345,7 @@
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
 				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
+				766355E6287148C1002E3867 /* Tokens.swift in Sources */,
 				766355CC2870E9AD002E3867 /* WebView.swift in Sources */,
 				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
 				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
@@ -371,6 +376,7 @@
 				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
 				767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
+				766355E5287148C1002E3867 /* Tokens.swift in Sources */,
 				76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */,
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,

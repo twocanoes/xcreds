@@ -32,13 +32,9 @@ class LoginWebViewController: WebViewController {
 
     }
 
-
     @objc override var windowNibName: NSNib.Name {
         return NSNib.Name("LoginWebView")
     }
-
-
-
 
 }
 

@@ -28,28 +28,29 @@ class MainController: NSObject {
             DispatchQueue.main.async {
                 let keychainUtil = KeychainUtil()
 
-                guard let userInfo = notification.userInfo else {
+                guard let tokenInfo = notification.userInfo else {
                     return
                 }
 
-                if let accessToken = userInfo[PrefKeys.accessToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken)
+                guard let tokens = tokenInfo["tokens"] as? Tokens else {
+                    return
+                }
+                if tokens.accessToken.count>0{
+                    let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken)
                 }
 
-                if let idToken = userInfo[PrefKeys.idToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken)
+                if tokens.idToken.count>0{
+                    let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken)
                 }
-
-                if let refreshToken = userInfo[PrefKeys.refreshToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
-                        mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                
+                if tokens.refreshToken.count>0 {
+                    let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken)
+                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
                     
-
+                    
                 }
-
-
-
-                if let cloudPassword = userInfo["password"] as? String {
+                let cloudPassword = tokens.password
+                if cloudPassword.count>0 {
                     let localPassword = self.localPassword()
 
                     if let localPassword = localPassword {
