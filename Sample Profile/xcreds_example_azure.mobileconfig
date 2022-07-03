@@ -34,7 +34,7 @@
 	<key>PayloadOrganization</key>
 	<string>Twocanoes</string>
 	<key>PayloadScope</key>
-	<string>User</string>
+	<string>System</string>
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>

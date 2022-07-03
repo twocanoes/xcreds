@@ -15,6 +15,21 @@
 		764D812F284C06AB00B3EE54 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
 		764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */; };
 		764D8133284D14A500B3EE54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.rtf */; };
+		766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */; };
+		766355C92870D70D002E3867 /* XCredsMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355C82870D70D002E3867 /* XCredsMechanism.swift */; };
+		766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
+		766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
+		766355CC2870E9AD002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
+		766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 766355CD2870E9D3002E3867 /* OIDCLite */; };
+		766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */; };
+		766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */; };
+		766355D42870F29A002E3867 /* TestWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355D22870F29A002E3867 /* TestWindowController.swift */; };
+		766355D52870F29A002E3867 /* TestWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766355D32870F29A002E3867 /* TestWindowController.xib */; };
+		766355D928711C51002E3867 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
+		766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355DA287132E9002E3867 /* LoginWebViewController.swift */; };
+		766355DC287133C7002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
+		766355DE28713486002E3867 /* LoginWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766355DD28713485002E3867 /* LoginWebView.xib */; };
+		766355E328713C4A002E3867 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
@@ -31,7 +46,6 @@
 		76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */; };
 		76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		76EE06B227FD1E24009E0F3A /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B127FD1E24009E0F3A /* WebView.xib */; };
-		76EE06B427FD1E5F009E0F3A /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
 		76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */; };
 		76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */; };
 		76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */; };
@@ -49,6 +63,16 @@
 		764D812E284C06AB00B3EE54 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = defaults.plist; sourceTree = "<group>"; };
 		764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMenuItem.swift; sourceTree = "<group>"; };
 		764D8132284D14A500B3EE54 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XCredsLoginPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugIn/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
+		766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCredsLoginPlugin.m; path = XCredsLoginPlugIn/XCredsLoginPlugin.m; sourceTree = SOURCE_ROOT; };
+		766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCredsLoginPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
+		766355C82870D70D002E3867 /* XCredsMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsMechanism.swift; sourceTree = "<group>"; };
+		766355D22870F29A002E3867 /* TestWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestWindowController.swift; path = XCredsLoginPlugIn/TestWindowController.swift; sourceTree = "<group>"; };
+		766355D32870F29A002E3867 /* TestWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TestWindowController.xib; path = XCredsLoginPlugIn/TestWindowController.xib; sourceTree = "<group>"; };
+		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugIn/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
+		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
+		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
 		767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		767116AB284AB4C000CCD6FF /* PasswordUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
@@ -82,6 +106,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		766355BA2870CA6A002E3867 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76EE069727FD1D00009E0F3A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -93,6 +125,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		766355C72870D1B5002E3867 /* XCredsLogin */ = {
+			isa = PBXGroup;
+			children = (
+				766355E128713C47002E3867 /* LoginWindow.swift */,
+				766355DD28713485002E3867 /* LoginWebView.xib */,
+				766355DA287132E9002E3867 /* LoginWebViewController.swift */,
+				766355C82870D70D002E3867 /* XCredsMechanism.swift */,
+				766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */,
+				766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */,
+			);
+			name = XCredsLogin;
+			path = ../XCredsLoginPlugIn;
+			sourceTree = "<group>";
+		};
 		76DD6D112859978F00A700ED /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +157,8 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				766355D22870F29A002E3867 /* TestWindowController.swift */,
+				766355D32870F29A002E3867 /* TestWindowController.xib */,
 				76DD6D112859978F00A700ED /* Packages */,
 				76EE069C27FD1D00009E0F3A /* XCreds */,
 				76EE069B27FD1D00009E0F3A /* Products */,
@@ -122,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				76EE069A27FD1D00009E0F3A /* XCreds.app */,
+				766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,7 +192,6 @@
 				767116AD284AB59400CCD6FF /* SecurityPrivateAPI.h */,
 				76EE06AB27FD1D92009E0F3A /* TokenManager.swift */,
 				76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */,
-				76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */,
 				764D8128284BCAB100B3EE54 /* Window+Shake.swift */,
 				76EE06B127FD1E24009E0F3A /* WebView.xib */,
 				76EE06B327FD1E5F009E0F3A /* WebView.swift */,
@@ -153,6 +201,7 @@
 				767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */,
 				76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */,
 				76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */,
+				76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */,
 				76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */,
 				767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */,
 				76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */,
@@ -165,6 +214,8 @@
 				76EE069F27FD1D01009E0F3A /* Assets.xcassets */,
 				76EE06A127FD1D01009E0F3A /* MainMenu.xib */,
 				76EE06A427FD1D01009E0F3A /* xCreds.entitlements */,
+				766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */,
+				766355C72870D1B5002E3867 /* XCredsLogin */,
 			);
 			path = XCreds;
 			sourceTree = "<group>";
@@ -172,6 +223,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		766355BC2870CA6A002E3867 /* XCredsLoginPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 766355C02870CA6A002E3867 /* Build configuration list for PBXNativeTarget "XCredsLoginPlugin" */;
+			buildPhases = (
+				766355B92870CA6A002E3867 /* Sources */,
+				766355BA2870CA6A002E3867 /* Frameworks */,
+				766355BB2870CA6A002E3867 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = XCredsLoginPlugin;
+			packageProductDependencies = (
+				766355CD2870E9D3002E3867 /* OIDCLite */,
+			);
+			productName = XCredsLoginPlugin;
+			productReference = 766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		76EE069927FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 76EE06A727FD1D01009E0F3A /* Build configuration list for PBXNativeTarget "XCreds" */;
@@ -203,6 +274,10 @@
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
+					766355BC2870CA6A002E3867 = {
+						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
+					};
 					76EE069927FD1D00009E0F3A = {
 						CreatedOnToolsVersion = 13.3;
 					};
@@ -224,11 +299,23 @@
 			projectRoot = "";
 			targets = (
 				76EE069927FD1D00009E0F3A /* XCreds */,
+				766355BC2870CA6A002E3867 /* XCredsLoginPlugin */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		766355BB2870CA6A002E3867 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				766355D928711C51002E3867 /* defaults.plist in Resources */,
+				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
+				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
+				766355DE28713486002E3867 /* LoginWebView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76EE069827FD1D00009E0F3A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -247,6 +334,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		766355B92870CA6A002E3867 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
+				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
+				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
+				766355CC2870E9AD002E3867 /* WebView.swift in Sources */,
+				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
+				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
+				766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				766355C92870D70D002E3867 /* XCredsMechanism.swift in Sources */,
+				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76EE069627FD1D00009E0F3A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -260,7 +363,6 @@
 				76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */,
 				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
 				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
-				76EE06B427FD1E5F009E0F3A /* WebView.swift in Sources */,
 				764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */,
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
@@ -273,6 +375,7 @@
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				766355DC287133C7002E3867 /* WebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +400,65 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		766355BE2870CA6A002E3867 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		766355BF2870CA6A002E3867 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		76EE06A527FD1D01009E0F3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -418,7 +580,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1274;
+				CURRENT_PROJECT_VERSION = 1276;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -447,7 +609,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1274;
+				CURRENT_PROJECT_VERSION = 1276;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -471,6 +633,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		766355C02870CA6A002E3867 /* Build configuration list for PBXNativeTarget "XCredsLoginPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				766355BE2870CA6A002E3867 /* Debug */,
+				766355BF2870CA6A002E3867 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -492,6 +663,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		766355CD2870E9D3002E3867 /* OIDCLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OIDCLite;
+		};
 		76DD6D13285997DA00A700ED /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OIDCLite;

@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-
+//        ManagedPreferences.shared.preference(forKey: .clientID)
         mainController = MainController.init()
         mainController?.run()
         mainMenu.statusBarItem.menu = mainMenu.mainMenu

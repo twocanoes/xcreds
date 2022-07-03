@@ -21,7 +21,7 @@ class WebViewController: NSWindowController {
 
     var oidcLite: OIDCLite?
     var password:String?
-    func run() {
+    func loadPage() {
 
         var scopes: [String]?
         var clientSecret: String?
@@ -40,7 +40,7 @@ class WebViewController: NSWindowController {
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
             additionalParameters = ["access_type":"offline", "prompt":"consent"]
         }
-
+        TCSLog("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
         oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         webView.navigationDelegate = self
         oidcLite?.delegate = self
@@ -82,23 +82,18 @@ class WebViewController: NSWindowController {
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-//        print("WebDel:: Deciding Policy for: \(navigationAction.request.url?.absoluteString ?? "None")")
+        TCSLog("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
             // Azure snarfing
+            TCSLog("Azure")
             if navigationAction.request.url?.host == "login.microsoftonline.com" {
                 var javaScript = "document.getElementById('i0118').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
                     }
-//                        let alert = NSAlert.init()
-//                        alert.messageText = "Your password is: \(rawPass)"
-//                        RunLoop.main.perform {
-//                                alert.runModal()
-//                        }
-//                    }
                 })
                 javaScript = "document.getElementById('confirmNewPassword').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
@@ -108,32 +103,20 @@ extension WebViewController: WKNavigationDelegate {
                 })
             } else if navigationAction.request.url?.host == "accounts.google.com" {
                 // Google snarfing
+                TCSLog("Google")
                 let javaScript = "document.querySelector('input[type=password]').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
                     }
 
-//                    if let rawPass = response as? String,
-//                       rawPass != "" {
-//                        let alert = NSAlert.init()
-//                        alert.messageText = "Your password is: \(rawPass)"
-//                        RunLoop.main.perform {
-//                            alert.runModal()
-//                        }
-//                    }
                 })
             } else if navigationAction.request.url?.path.contains("verify") ?? false {
                 // maybe OneLogin?
+                TCSLog("Other Provider")
+
                 let javaScript = "document.getElementById('input8').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                    if let rawPass = response as? String {
-//                        let alert = NSAlert.init()
-//                        alert.messageText = "Your password is: \(rawPass)"
-//                        RunLoop.main.perform {
-//                            alert.runModal()
-//                        }
-//                    }
                 })
             }
         } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
@@ -184,9 +167,11 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        print("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
+        TCSLog("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
         if let redirectURI = oidcLite?.redirectURI {
+            TCSLog("redirectURI: \(redirectURI)")
+            TCSLog("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
                 var code = ""
                 let fullCommand = webView.url?.absoluteString ?? ""
@@ -225,16 +210,17 @@ extension WebViewController: WKNavigationDelegate {
 extension WebViewController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
-        print("Auth failure :(")
+        TCSLog("authFailure: \(message)")
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
 
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
-
+        TCSLog("tokenResponse")
         RunLoop.main.perform {
             self.window?.close()
             if let password = self.password {
+                TCSLog("password received")
             NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:
                     [
                         "password":password,

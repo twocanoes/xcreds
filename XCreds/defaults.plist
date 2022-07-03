@@ -12,11 +12,13 @@
 	<true/>
 	<key>LogFileName</key>
 	<string>xcreds.log</string>
-	<key>shouldHideQuit</key>
-	<false/>
 	<key>shouldShowPreferencesOnStart</key>
 	<false/>
 	<key>shouldSetGoogleAccessTypeToOffline</key>
 	<false/>
+	<key>shouldShowAboutMenu</key>
+	<true/>
+	<key>shouldShowQuitMenu</key>
+	<true/>
 </dict>
 </plist>

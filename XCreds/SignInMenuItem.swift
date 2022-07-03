@@ -35,7 +35,7 @@ class SignInMenuItem: NSMenuItem {
                 mainMenu.webView = WebViewController()
             }
             mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-            mainMenu.webView?.run()
+            mainMenu.webView?.loadPage()
         }
         else {
             if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{

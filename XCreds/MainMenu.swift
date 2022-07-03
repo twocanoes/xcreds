@@ -44,7 +44,7 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.removeAllItems()
 
         // add menu items
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldHideAboutMenu.rawValue)==false{
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue)==true{
             mainMenu.addItem(AboutMenuItem())
             mainMenu.addItem(NSMenuItem.separator())
             firstItemShown = true
@@ -62,7 +62,7 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
         mainMenu.addItem(PrefsMenuItem())
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldHideQuit.rawValue)==false{
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
             let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
 
             mainMenu.addItem(NSMenuItem.separator())
