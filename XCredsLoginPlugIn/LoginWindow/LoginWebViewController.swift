@@ -11,14 +11,17 @@ import WebKit
 import OIDCLite
 
 class LoginWebViewController: WebViewController {
+
+    var delegate: XCredsMechanismProtocol?
     override func windowDidLoad() {
         super.windowDidLoad()
         setupLoginWindowAppearance()
         loadPage()
     }
     fileprivate func setupLoginWindowAppearance() {
-        self.window?.level = .screenSaver
+        self.window?.level = .popUpMenu
         self.window?.orderFrontRegardless()
+        TCSLog("ordering loignwindow front")
 
         self.window?.backgroundColor = NSColor.black
 
@@ -45,7 +48,23 @@ class LoginWebViewController: WebViewController {
             self.window?.close()
         })
     }
+   
+    override func tokensUpdated(tokens: Tokens) {
 
+        TCSLog("updating username and password")
+        guard let delegate = delegate else {
+            return
+        }
+
+        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: "tperfitt")
+        delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
+        delegate.allowLogin()
+        RunLoop.main.perform {
+            self.loginTransition()
+
+        }
+
+    }
 }
 
 

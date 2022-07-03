@@ -16,7 +16,6 @@
 		764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */; };
 		764D8133284D14A500B3EE54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.rtf */; };
 		766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */; };
-		766355C92870D70D002E3867 /* XCredsMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355C82870D70D002E3867 /* XCredsMechanism.swift */; };
 		766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		766355CC2870E9AD002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
@@ -37,6 +36,19 @@
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
 		767116B1284B021500CCD6FF /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B0284B021500CCD6FF /* MainController.swift */; };
 		767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
+		76BEF7D52871F36C0013E2A1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7D42871F36C0013E2A1 /* main.swift */; };
+		76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */; };
+		76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */; };
+		76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */; };
+		76BEF7E4287202090013E2A1 /* RestartX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E2287202080013E2A1 /* RestartX.png */; };
+		76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E3287202080013E2A1 /* RestartX@2x.png */; };
+		76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E6287202AF0013E2A1 /* ShutdownX.png */; };
+		76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E7287202AF0013E2A1 /* ShutdownX@2x.png */; };
+		76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */; };
+		76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */; };
+		76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */; };
+		76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
+		76BEF7F82872504C0013E2A1 /* ContextAndHintHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */; };
 		76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		76DD6D17285997F300A700ED /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76DD6D16285997F300A700ED /* OIDCLite */; };
@@ -56,6 +68,28 @@
 		76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06C127FD1F50009E0F3A /* MainMenu.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		76BEF7D92871F3870013E2A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 76BEF7D12871F36C0013E2A1;
+			remoteInfo = FakeTrue;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		76BEF7D02871F36C0013E2A1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginPasswordWindowController.xib; sourceTree = "<group>"; };
@@ -69,11 +103,10 @@
 		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugIn/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
 		766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCredsLoginPlugin.m; path = XCredsLoginPlugIn/XCredsLoginPlugin.m; sourceTree = SOURCE_ROOT; };
 		766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCredsLoginPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
-		766355C82870D70D002E3867 /* XCredsMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsMechanism.swift; sourceTree = "<group>"; };
 		766355D22870F29A002E3867 /* TestWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestWindowController.swift; path = XCredsLoginPlugIn/TestWindowController.swift; sourceTree = "<group>"; };
 		766355D32870F29A002E3867 /* TestWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TestWindowController.xib; path = XCredsLoginPlugIn/TestWindowController.xib; sourceTree = "<group>"; };
-		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugIn/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
-		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
+		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugIn/LoginWindow/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
+		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWindow/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
@@ -83,6 +116,21 @@
 		767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCreds-Bridging-Header.h"; sourceTree = "<group>"; };
 		767116B0284B021500CCD6FF /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		767116B2284B045800CCD6FF /* KeychainUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainUtil.swift; sourceTree = "<group>"; };
+		76BEF7D22871F36C0013E2A1 /* FakeTrue */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FakeTrue; sourceTree = BUILT_PRODUCTS_DIR; };
+		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
+		76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSReturnWindow.h; sourceTree = "<group>"; };
+		76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginWindowControls.xib; sourceTree = "<group>"; };
+		76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindowControlsWindowController.swift; sourceTree = "<group>"; };
+		76BEF7E2287202080013E2A1 /* RestartX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RestartX.png; sourceTree = "<group>"; };
+		76BEF7E3287202080013E2A1 /* RestartX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RestartX@2x.png"; sourceTree = "<group>"; };
+		76BEF7E6287202AF0013E2A1 /* ShutdownX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ShutdownX.png; sourceTree = "<group>"; };
+		76BEF7E7287202AF0013E2A1 /* ShutdownX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShutdownX@2x.png"; sourceTree = "<group>"; };
+		76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsLoginMechanism.swift; sourceTree = "<group>"; };
+		76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsBaseMechanism.swift; sourceTree = "<group>"; };
+		76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsPowerControlMechanism.swift; sourceTree = "<group>"; };
+		76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTaskWrapper.swift; sourceTree = "<group>"; };
+		76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextAndHintHandling.swift; sourceTree = "<group>"; };
 		76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUnifiedLogger.m; sourceTree = "<group>"; };
 		76D7ADFA284EB15100332EBC /* TCSUnifiedLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSUnifiedLogger.h; sourceTree = "<group>"; };
 		76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+TCSRealHomeFolder.m"; sourceTree = "<group>"; };
@@ -117,6 +165,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		76BEF7CF2871F36C0013E2A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76EE069727FD1D00009E0F3A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,15 +186,59 @@
 		766355C72870D1B5002E3867 /* XCredsLogin */ = {
 			isa = PBXGroup;
 			children = (
-				766355E128713C47002E3867 /* LoginWindow.swift */,
-				766355DD28713485002E3867 /* LoginWebView.xib */,
-				766355DA287132E9002E3867 /* LoginWebViewController.swift */,
-				766355C82870D70D002E3867 /* XCredsMechanism.swift */,
+				76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */,
+				76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */,
 				766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */,
 				766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */,
+				76BEF7F028724E520013E2A1 /* LoginWindow */,
+				76BEF7EF28724E280013E2A1 /* Mechanisms */,
 			);
 			name = XCredsLogin;
 			path = ../XCredsLoginPlugIn;
+			sourceTree = "<group>";
+		};
+		76BEF7D32871F36C0013E2A1 /* FakeTrue */ = {
+			isa = PBXGroup;
+			children = (
+				76BEF7D42871F36C0013E2A1 /* main.swift */,
+			);
+			path = FakeTrue;
+			sourceTree = "<group>";
+		};
+		76BEF7EF28724E280013E2A1 /* Mechanisms */ = {
+			isa = PBXGroup;
+			children = (
+				76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */,
+				76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */,
+				76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */,
+			);
+			path = Mechanisms;
+			sourceTree = "<group>";
+		};
+		76BEF7F028724E520013E2A1 /* LoginWindow */ = {
+			isa = PBXGroup;
+			children = (
+				76BEF7F128724EB60013E2A1 /* images */,
+				76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */,
+				76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */,
+				76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */,
+				766355DA287132E9002E3867 /* LoginWebViewController.swift */,
+				766355E128713C47002E3867 /* LoginWindow.swift */,
+				766355DD28713485002E3867 /* LoginWebView.xib */,
+				76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */,
+			);
+			path = LoginWindow;
+			sourceTree = "<group>";
+		};
+		76BEF7F128724EB60013E2A1 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				76BEF7E6287202AF0013E2A1 /* ShutdownX.png */,
+				76BEF7E7287202AF0013E2A1 /* ShutdownX@2x.png */,
+				76BEF7E2287202080013E2A1 /* RestartX.png */,
+				76BEF7E3287202080013E2A1 /* RestartX@2x.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		76DD6D112859978F00A700ED /* Packages */ = {
@@ -164,6 +263,7 @@
 				766355D32870F29A002E3867 /* TestWindowController.xib */,
 				76DD6D112859978F00A700ED /* Packages */,
 				76EE069C27FD1D00009E0F3A /* XCreds */,
+				76BEF7D32871F36C0013E2A1 /* FakeTrue */,
 				76EE069B27FD1D00009E0F3A /* Products */,
 				76DD6D15285997F300A700ED /* Frameworks */,
 			);
@@ -174,6 +274,7 @@
 			children = (
 				76EE069A27FD1D00009E0F3A /* XCreds.app */,
 				766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */,
+				76BEF7D22871F36C0013E2A1 /* FakeTrue */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,6 +339,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				76BEF7DA2871F3870013E2A1 /* PBXTargetDependency */,
 			);
 			name = XCredsLoginPlugin;
 			packageProductDependencies = (
@@ -246,6 +348,23 @@
 			productName = XCredsLoginPlugin;
 			productReference = 766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */;
 			productType = "com.apple.product-type.bundle";
+		};
+		76BEF7D12871F36C0013E2A1 /* FakeTrue */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76BEF7D82871F36C0013E2A1 /* Build configuration list for PBXNativeTarget "FakeTrue" */;
+			buildPhases = (
+				76BEF7CE2871F36C0013E2A1 /* Sources */,
+				76BEF7CF2871F36C0013E2A1 /* Frameworks */,
+				76BEF7D02871F36C0013E2A1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FakeTrue;
+			productName = FakeTrue;
+			productReference = 76BEF7D22871F36C0013E2A1 /* FakeTrue */;
+			productType = "com.apple.product-type.tool";
 		};
 		76EE069927FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXNativeTarget;
@@ -275,12 +394,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					766355BC2870CA6A002E3867 = {
 						CreatedOnToolsVersion = 13.4.1;
 						LastSwiftMigration = 1340;
+					};
+					76BEF7D12871F36C0013E2A1 = {
+						CreatedOnToolsVersion = 13.4.1;
 					};
 					76EE069927FD1D00009E0F3A = {
 						CreatedOnToolsVersion = 13.3;
@@ -304,6 +426,7 @@
 			targets = (
 				76EE069927FD1D00009E0F3A /* XCreds */,
 				766355BC2870CA6A002E3867 /* XCredsLoginPlugin */,
+				76BEF7D12871F36C0013E2A1 /* FakeTrue */,
 			);
 		};
 /* End PBXProject section */
@@ -315,8 +438,13 @@
 			files = (
 				766355D928711C51002E3867 /* defaults.plist in Resources */,
 				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
+				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
+				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
 				766355DE28713486002E3867 /* LoginWebView.xib in Resources */,
+				76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */,
+				76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */,
+				76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,16 +470,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
+				76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */,
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
+				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
+				76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */,
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
 				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
+				76BEF7F82872504C0013E2A1 /* ContextAndHintHandling.swift in Sources */,
 				766355E6287148C1002E3867 /* Tokens.swift in Sources */,
 				766355CC2870E9AD002E3867 /* WebView.swift in Sources */,
 				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
 				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
 				766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
-				766355C92870D70D002E3867 /* XCredsMechanism.swift in Sources */,
+				76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */,
+				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
 				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76BEF7CE2871F36C0013E2A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76BEF7D52871F36C0013E2A1 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +530,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		76BEF7DA2871F3870013E2A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 76BEF7D12871F36C0013E2A1 /* FakeTrue */;
+			targetProxy = 76BEF7D92871F3870013E2A1 /* PBXContainerItemProxy */;
+		};
 		76DD6D14285997DA00A700ED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 76DD6D13285997DA00A700ED /* OIDCLite */;
@@ -462,6 +609,28 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		76BEF7D62871F36C0013E2A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		76BEF7D72871F36C0013E2A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -644,6 +813,15 @@
 			buildConfigurations = (
 				766355BE2870CA6A002E3867 /* Debug */,
 				766355BF2870CA6A002E3867 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76BEF7D82871F36C0013E2A1 /* Build configuration list for PBXNativeTarget "FakeTrue" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76BEF7D62871F36C0013E2A1 /* Debug */,
+				76BEF7D72871F36C0013E2A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

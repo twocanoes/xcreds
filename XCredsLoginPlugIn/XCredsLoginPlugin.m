@@ -10,7 +10,7 @@
 XCredsLoginPlugin *authorizationPlugin = nil;
 
 os_log_t pluginLog = nil;
-XCredsMechanism *loginWindowMechanism = nil;
+XCredsLoginMechanism *loginWindowMechanism = nil;
 
 
 
@@ -108,6 +108,8 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fPlugin = (PluginRecord *)inPlugin;
     mechanism->fMechID = mechanismId;
     mechanism->fLoginWindow = (strcmp(mechanismId, "LoginWindow") == 0);
+    mechanism->fPowerControl = (strcmp(mechanismId, "PowerControl") == 0);
+
     *outMechanism = mechanism;
 
     return errSecSuccess;
@@ -120,11 +122,16 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
 
     if (mechanism->fLoginWindow) {
-        loginWindowMechanism = [[XCredsMechanism alloc] initWithMechanism:mechanism];
-        [loginWindowMechanism show];
+        loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
+        [loginWindowMechanism run];
 
     }
+    else if (mechanism->fPowerControl){
+        NSLog(@"Calling PowerControl");
+        XCredsPowerControlMechanism *powerControl = [[XCredsPowerControlMechanism alloc] initWithMechanism:mechanism];
+        [powerControl run];
 
+    }
     return noErr;
 }
 

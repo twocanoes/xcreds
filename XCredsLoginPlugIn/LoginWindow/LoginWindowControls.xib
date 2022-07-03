@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LoginWindowControlsWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
+            <connections>
+                <outlet property="window" destination="wkO-FS-5uW" id="ui3-ZB-mfw"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="wkO-FS-5uW" customClass="TCSReturnWindow">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="25" y="25" width="872" height="109"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <view key="contentView" id="Tpj-ss-EMv">
+                <rect key="frame" x="0.0" y="0.0" width="872" height="109"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="sxl-0U-ne5">
+                        <rect key="frame" x="186" y="16" width="500" height="78"/>
+                        <subviews>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6f9-0z-Xqg">
+                                <rect key="frame" x="153" y="1" width="67" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="Shutdown" bezelStyle="rounded" image="ShutdownX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="WRj-LR-MaW">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="shutdownClick:" target="-2" id="W7Z-F0-i5A"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HyD-ug-de2">
+                                <rect key="frame" x="24" y="1" width="67" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="Restart" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="UQm-h8-fbd">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="restartClick:" target="-2" id="NIy-Js-LHD"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LW1-vo-EUl">
+                                <rect key="frame" x="277" y="1" width="67" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="WiFi" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="pVM-6f-Z04">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2By-DW-YEU">
+                                <rect key="frame" x="401" y="1" width="90" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="Login Window" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="c0y-fU-B6x">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="500" id="aKl-rA-eDh"/>
+                            <constraint firstAttribute="height" constant="78" id="cmM-6M-FrE"/>
+                        </constraints>
+                    </customView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="sxl-0U-ne5" firstAttribute="centerY" secondItem="Tpj-ss-EMv" secondAttribute="centerY" constant="-0.5" id="2Wq-KM-ceX"/>
+                    <constraint firstItem="sxl-0U-ne5" firstAttribute="centerX" secondItem="Tpj-ss-EMv" secondAttribute="centerX" id="eIH-vl-2ht"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="-602" y="703.5"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="RestartX" width="32" height="32"/>
+        <image name="ShutdownX" width="32" height="32"/>
+    </resources>
+</document>

@@ -38,6 +38,8 @@ struct MechanismRecord {
     const PluginRecord *            fPlugin;
     AuthorizationString             fMechID;
     Boolean                         fLoginWindow;
+    Boolean                         fPowerControl;
+
 };
 
 typedef struct MechanismRecord MechanismRecord;
