@@ -29,6 +29,10 @@ void TCSLog(NSString *string)
 + (TCSUnifiedLogger *)sharedLogger
 {
     static TCSUnifiedLogger *sharedLogger;
+
+    if (sharedLogger !=nil){
+        return sharedLogger;
+    }
     NSFileManager *fm = [NSFileManager defaultManager];
 
     NSString *logFolderPath = [[[NSUserDefaults standardUserDefaults] objectForKey:@"LogFolderPath"] stringByExpandingTildeInPath];

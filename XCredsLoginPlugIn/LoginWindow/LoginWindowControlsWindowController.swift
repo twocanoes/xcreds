@@ -49,6 +49,16 @@ class LoginWindowControlsWindowController: NSWindowController {
         delegate.setHint(type: .user, hint: SpecialUsers.shutdown.rawValue)
         delegate.allowLogin()
     }
+    @IBAction func resetToStandardLoginWindow(_ sender: Any) {
+        TCSLog("resetting to standard login window")
+        guard let delegate = delegate else {
+            TCSLog("No delegate set for resetToStandardLoginWindow")
+            return
+        }
+        delegate.setHint(type: .user, hint: SpecialUsers.standardLoginWindow.rawValue)
+        delegate.allowLogin()
+    }
+
 
 }
 

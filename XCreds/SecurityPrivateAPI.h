@@ -9,7 +9,7 @@
 #ifndef SecurityPrivateAPI_h
 #define SecurityPrivateAPI_h
 
-// So we can use SecKeychainChangePassword() in NoMADUser
+// So we can use SecKeychainChangePassword() 
 #import <Security/Security.h>
 extern OSStatus SecKeychainChangePassword(SecKeychainRef keychainRef, UInt32 oldPasswordLength, const void* oldPassword, UInt32 newPasswordLength, const void* newPassword);
 

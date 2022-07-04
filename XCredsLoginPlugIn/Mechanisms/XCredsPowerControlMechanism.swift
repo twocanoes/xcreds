@@ -13,6 +13,7 @@ enum SpecialUsers: String {
     case sleep
     case restart
     case shutdown
+    case standardLoginWindow
 }
 
 class XCredsPowerControlMechanism: XCredsBaseMechanism {
@@ -21,7 +22,15 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
         TCSLog("PowerControl mech starting")
 
         guard let userName = xcredsUser else {
-            TCSLog("No username was set somehow, pass the login to the next mech.")
+            if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
+                TCSLog("setting standard login back to XCreds login")
+                let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
+            }
+            else {
+                TCSLog("No username was set somehow, pass the login to the next mech.")
+
+            }
+
             let _ = allowLogin()
             return
         }
@@ -38,8 +47,21 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
         case SpecialUsers.restart.rawValue:
             TCSLog("Restarting system")
             let _ = cliTask("/sbin/shutdown -r now")
+
+        case SpecialUsers.standardLoginWindow.rawValue:
+            TCSLog("Setting back to login window")
+            let res = AuthorizationDBManager.shared.replace(right:"XCredsLoginPlugin:LoginWindow", withNewRight: "loginwindow:login")
+
+            if res == false {
+                TCSLog("could not restore loginwindow right")
+                denyLogin()
+                return
+            }
+            let _ = cliTask("/usr/bin/killall loginwindow")
+
         default:
             TCSLog("No special users named. pass login to the next mech.")
+
             let _ = allowLogin()
         }
     }

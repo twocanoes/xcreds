@@ -21,11 +21,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="872" height="109"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="sxl-0U-ne5">
-                        <rect key="frame" x="186" y="16" width="500" height="78"/>
+                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-0U-ne5">
+                        <rect key="frame" x="252" y="20" width="369" height="78"/>
                         <subviews>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6f9-0z-Xqg">
-                                <rect key="frame" x="153" y="1" width="67" height="64"/>
+                                <rect key="frame" x="151" y="1" width="67" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Shutdown" bezelStyle="rounded" image="ShutdownX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="WRj-LR-MaW">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -37,7 +37,7 @@
                                 </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HyD-ug-de2">
-                                <rect key="frame" x="24" y="1" width="67" height="64"/>
+                                <rect key="frame" x="37" y="1" width="67" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Restart" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="UQm-h8-fbd">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -48,33 +48,27 @@
                                     <action selector="restartClick:" target="-2" id="NIy-Js-LHD"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LW1-vo-EUl">
-                                <rect key="frame" x="277" y="1" width="67" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="bevel" title="WiFi" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="pVM-6f-Z04">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2By-DW-YEU">
-                                <rect key="frame" x="401" y="1" width="90" height="64"/>
+                                <rect key="frame" x="244" y="1" width="119" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="bevel" title="Login Window" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="c0y-fU-B6x">
+                                <buttonCell key="cell" type="bevel" title="Mac Login Window" bezelStyle="rounded" image="loginwindow" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="c0y-fU-B6x">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="resetToStandardLoginWindow:" target="-2" id="BdF-GG-oFz"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" constant="500" id="aKl-rA-eDh"/>
+                            <constraint firstAttribute="width" constant="341" id="aKl-rA-eDh"/>
                             <constraint firstAttribute="height" constant="78" id="cmM-6M-FrE"/>
                         </constraints>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="sxl-0U-ne5" firstAttribute="centerY" secondItem="Tpj-ss-EMv" secondAttribute="centerY" constant="-0.5" id="2Wq-KM-ceX"/>
+                    <constraint firstItem="sxl-0U-ne5" firstAttribute="centerY" secondItem="Tpj-ss-EMv" secondAttribute="centerY" constant="-4.5" id="2Wq-KM-ceX"/>
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="centerX" secondItem="Tpj-ss-EMv" secondAttribute="centerX" id="eIH-vl-2ht"/>
                 </constraints>
             </view>
@@ -84,5 +78,6 @@
     <resources>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
+        <image name="loginwindow" width="41" height="31.5"/>
     </resources>
 </document>

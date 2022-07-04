@@ -41,7 +41,7 @@ protocol XCredsMechanismProtocol {
             guard let userName = getHint(type: .user) as? String else {
                 return nil
             }
-            TCSLog("Computed nomadUser accessed: %{public}@")
+            TCSLog("Computed user accessed")
             return userName
         }
     }

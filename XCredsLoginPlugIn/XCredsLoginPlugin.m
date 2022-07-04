@@ -24,8 +24,7 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
                                 AuthorizationEngineRef inEngine,
                                 AuthorizationMechanismId mechanismId,
                                 AuthorizationMechanismRef *outMechanism) {
-    [[TCSUnifiedLogger sharedLogger] setLogFolderName:@"/private/tmp"];
-    [[TCSUnifiedLogger sharedLogger] setLogFileName:@"xcreds.log"];
+    [[TCSUnifiedLogger sharedLogger] setLogFileURL:[NSURL fileURLWithPath:@"/tmp/xcreds.log"]];
     [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismCreate:inPlugin
