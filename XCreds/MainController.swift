@@ -26,7 +26,6 @@ class MainController: NSObject {
             //now we set the password.
 
             DispatchQueue.main.async {
-                let keychainUtil = KeychainUtil()
                 mainMenu.webView?.window?.close()
 
                 guard let tokenInfo = notification.userInfo else {
@@ -36,77 +35,54 @@ class MainController: NSObject {
                 guard let tokens = tokenInfo["tokens"] as? Tokens else {
                     return
                 }
-                if tokens.accessToken.count>0{
-                    let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken)
-                }
-
-                if tokens.idToken.count>0{
-                    let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken)
-                }
-                
                 if tokens.refreshToken.count>0 {
-                    let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken)
                     mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
-                    
-                    
                 }
-                let cloudPassword = tokens.password
-                if cloudPassword.count>0 {
-                    let localPassword = self.localPassword()
+                var updatePassword = true
+                if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                    let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                    NSApp.activate(ignoringOtherApps: true)
 
-                    if let localPassword = localPassword {
-                        if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
-                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-                            NSApp.activate(ignoringOtherApps: true)
+                    while true {
+                        let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                        if response == .cancel {
 
-                            while true {
-                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
-                                if response == .cancel {
-
-                                    let alert = NSAlert()
-                                    alert.addButton(withTitle: "Skip Updating Password")
-                                    alert.addButton(withTitle: "Cancel")
-                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
-                                    let resp = alert.runModal()
-                                    if resp == .alertFirstButtonReturn {
-                                        NSApp.stopModal(withCode: .cancel)
-                                        verifyOIDPassword.window?.close()
-                                        break
-
-                                    }
-                                }
-                                let verifyCloudPassword = verifyOIDPassword.password
-                                if verifyCloudPassword == cloudPassword {
-                                    try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
-                                    let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
-                                    if err == false {
-                                        //TODO: Log Error
-                                    }
-                                    verifyOIDPassword.window?.close()
-                                    break;
-                                }
-                                else {
-                                    verifyOIDPassword.window?.shake(self)
-                                }
+                            let alert = NSAlert()
+                            alert.addButton(withTitle: "Skip Updating Password")
+                            alert.addButton(withTitle: "Cancel")
+                            alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
+                            let resp = alert.runModal()
+                            if resp == .alertFirstButtonReturn {
+                                NSApp.stopModal(withCode: .cancel)
+                                verifyOIDPassword.window?.close()
+                                updatePassword=false
+                                break
 
                             }
                         }
-                        else {
+                        let verifyCloudPassword = verifyOIDPassword.password
+                        if verifyCloudPassword == cloudPassword {
                             try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
                             let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
+                            updatePassword=true
                             if err == false {
                                 //TODO: Log Error
                             }
+                            verifyOIDPassword.window?.close()
+                            break;
+                        }
+                        else {
+                            verifyOIDPassword.window?.shake(self)
                         }
 
-
                     }
-
-                    ScheduleManager.shared.startCredentialCheck()
                 }
+//check for updatepassword and see if we need to pass with tokens to update passwords
+                //add tokens xyzzy
+                ScheduleManager.shared.startCredentialCheck()
+
             }
         }
-        ScheduleManager.shared.startCredentialCheck()
 
     }
 

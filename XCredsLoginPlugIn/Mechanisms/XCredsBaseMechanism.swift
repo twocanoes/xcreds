@@ -1,4 +1,5 @@
 import Cocoa
+import OpenDirectory
 
 protocol XCredsMechanismProtocol {
     func allowLogin()
@@ -45,6 +46,47 @@ protocol XCredsMechanismProtocol {
             return userName
         }
     }
+    var usernameContext: String? {
+        get {
+            var value : UnsafePointer<AuthorizationValue>? = nil
+            var flags = AuthorizationContextFlags()
+            var err: OSStatus = noErr
+            err = mechCallbacks.GetContextValue(
+                mechEngine, kAuthorizationEnvironmentUsername, &flags, &value)
+
+            if err != errSecSuccess {
+                return nil
+            }
+
+            guard let username = NSString.init(bytes: value!.pointee.data!,
+                                               length: value!.pointee.length,
+                                               encoding: String.Encoding.utf8.rawValue)
+                else { return nil }
+
+            return username.replacingOccurrences(of: "\0", with: "") as String
+        }
+    }
+
+    var passwordContext: String? {
+        get {
+            var value : UnsafePointer<AuthorizationValue>? = nil
+            var flags = AuthorizationContextFlags()
+            var err: OSStatus = noErr
+            err = mechCallbacks.GetContextValue(
+                mechEngine, kAuthorizationEnvironmentPassword, &flags, &value)
+
+            if err != errSecSuccess {
+                return nil
+            }
+            guard let pass = NSString.init(bytes: value!.pointee.data!,
+                                           length: value!.pointee.length,
+                                           encoding: String.Encoding.utf8.rawValue)
+                else { return nil }
+
+            return pass.replacingOccurrences(of: "\0", with: "") as String
+        }
+    }
+
 
     func allowLogin() {
         TCSLog("\(#function) \(#file):\(#line)")
@@ -129,6 +171,75 @@ protocol XCredsMechanismProtocol {
         }
 
         return nil
+    }
+    //MARK: - Directory Service Utilities
+
+    /// Checks to see if a given user exits in the DSLocal OD node.
+    ///
+    /// - Parameter name: The shortname of the user to check as a `String`.
+    /// - Returns: `true` if the user already exists locally. Otherwise `false`.
+    class func checkForLocalUser(name: String) -> Bool {
+        os_log("Checking for local username", log: noLoMechlog, type: .debug)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+//            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+        let isLocal = records.isEmpty ? false : true
+//        os_log("Results of local user check %{public}@", log: noLoMechlog, type: .debug, isLocal.description)
+        return isLocal
+    }
+
+    class func verifyUser(name: String, auth: String) -> Bool {
+        os_log("Finding user record", log: noLoMechlog, type: .debug)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        var isValid = false
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+            isValid = ((try records.first?.verifyPassword(auth)) != nil)
+        } catch {
+            let errorText = error.localizedDescription
+            TCSLog("ODError while trying to check for local user: \(errorText)")
+            return false
+        }
+        return isValid
+    }
+
+
+    /// Gets shortname from a UUID
+    ///
+    /// - Parameters:
+    ///   - uuid: the uuid of the user to check as a `String`.
+    /// - Returns: shortname of the user or nil.
+    class func getShortname(uuid: String) -> String? {
+
+        os_log("Checking for username from UUID", log: noLoMechlog, type: .debug)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeGUID, matchType: ODMatchType(kODMatchEqualTo), queryValues: uuid, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+//            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return nil
+        }
+
+        if records.count != 1 {
+            return nil
+        } else {
+            return records.first?.recordName
+        }
     }
 
 }

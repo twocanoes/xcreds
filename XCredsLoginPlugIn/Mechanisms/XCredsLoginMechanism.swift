@@ -1,5 +1,5 @@
 import Cocoa
-import os.log
+
 
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
     @objc var loginWindow: XCredsLoginMechanism!
@@ -32,5 +32,13 @@ import os.log
         }
         loginWindowControlsWindowController.delegate=self
 
+    }
+    override func allowLogin() {
+        loginWindowControlsWindowController.close()
+        super.allowLogin()
+    }
+    override func denyLogin() {
+        loginWindowControlsWindowController.close()
+        super.denyLogin()
     }
 }

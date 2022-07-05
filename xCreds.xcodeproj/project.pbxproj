@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */; };
+		7632E3A12873497C00E37923 /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
+		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
+		7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */; };
 		764D8127284BC1C300B3EE54 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
 		764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
@@ -69,6 +73,10 @@
 		76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */; };
 		76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */; };
 		76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06C127FD1F50009E0F3A /* MainMenu.swift */; };
+		76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
+		76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
+		76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */; };
+		76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +102,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsKeychainAdd.swift; sourceTree = "<group>"; };
+		7632E3A02873497C00E37923 /* LogShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogShim.swift; path = Mechanisms/LogShim.swift; sourceTree = "<group>"; };
 		764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginPasswordWindowController.xib; sourceTree = "<group>"; };
 		764D8128284BCAB100B3EE54 /* Window+Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Window+Shake.swift"; sourceTree = "<group>"; };
@@ -192,6 +202,7 @@
 		766355C72870D1B5002E3867 /* XCredsLogin */ = {
 			isa = PBXGroup;
 			children = (
+				7632E3A02873497C00E37923 /* LogShim.swift */,
 				76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */,
 				76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */,
 				766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */,
@@ -214,6 +225,7 @@
 		76BEF7EF28724E280013E2A1 /* Mechanisms */ = {
 			isa = PBXGroup;
 			children = (
+				7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */,
 				76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */,
 				76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */,
 				76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */,
@@ -451,6 +463,7 @@
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
 				76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */,
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
+				76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */,
 				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
 				766355DE28713486002E3867 /* LoginWebView.xib in Resources */,
 				76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */,
@@ -481,10 +494,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */,
 				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
+				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
+				7632E3A12873497C00E37923 /* LogShim.swift in Sources */,
 				76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */,
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
+				76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */,
 				76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */,
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
 				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
@@ -494,8 +511,11 @@
 				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
 				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
 				766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */,
 				76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */,
 				76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */,
+				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
+				7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */,
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
 				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
 			);

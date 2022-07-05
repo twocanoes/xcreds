@@ -11,7 +11,8 @@
 @import Foundation;
 @import Security.AuthorizationPlugin;
 @import Security.AuthSession;
-@import os.log;
+extern OSStatus SecKeychainChangePassword(SecKeychainRef keychainRef, UInt32 oldPasswordLength, const void* oldPassword, UInt32 newPasswordLength, const void* newPassword);
+
 
 // Plugin constants
 

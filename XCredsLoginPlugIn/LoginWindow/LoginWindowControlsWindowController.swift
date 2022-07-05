@@ -12,9 +12,9 @@ class LoginWindowControlsWindowController: NSWindowController {
 
     override func windowDidLoad() {
         super.windowDidLoad()
-        setupLoginWindowAppearance()
+        setupLoginWindowControlsAppearance()
     }
-    fileprivate func setupLoginWindowAppearance() {
+    fileprivate func setupLoginWindowControlsAppearance() {
         self.window?.level = .screenSaver
         TCSLog("ordering controls front")
         self.window?.orderFrontRegardless()
@@ -25,7 +25,9 @@ class LoginWindowControlsWindowController: NSWindowController {
         self.window?.canBecomeVisibleWithoutLogin = true
 
         let screenRect = NSScreen.screens[0].frame
-        let windowRec = NSMakeRect(0, 0, screenRect.width, self.window?.frame.height ?? 100)
+        let windowRec = NSMakeRect(0, 0, screenRect.width, self.window?.frame.height ?? 109)
+        TCSLog("height is \(windowRec))")
+
         self.window?.setFrame(windowRec, display: true, animate: false)
 
     }
@@ -58,6 +60,7 @@ class LoginWindowControlsWindowController: NSWindowController {
         delegate.setHint(type: .user, hint: SpecialUsers.standardLoginWindow.rawValue)
         delegate.allowLogin()
     }
+
 
 
 }

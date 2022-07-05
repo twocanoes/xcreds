@@ -9,7 +9,7 @@
 #import "XCredsLoginPlugin-Swift.h"
 XCredsLoginPlugin *authorizationPlugin = nil;
 
-os_log_t pluginLog = nil;
+//os_log_t pluginLog = nil;
 XCredsLoginMechanism *loginWindowMechanism = nil;
 
 

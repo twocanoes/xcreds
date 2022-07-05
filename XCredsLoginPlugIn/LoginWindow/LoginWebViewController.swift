@@ -21,7 +21,6 @@ class LoginWebViewController: WebViewController {
     fileprivate func setupLoginWindowAppearance() {
         self.window?.level = .popUpMenu
         self.window?.orderFrontRegardless()
-        TCSLog("ordering loignwindow front")
 
         self.window?.backgroundColor = NSColor.black
 
@@ -48,20 +47,84 @@ class LoginWebViewController: WebViewController {
             self.window?.close()
         })
     }
-   
-    override func tokensUpdated(tokens: Tokens) {
 
-        TCSLog("updating username and password")
-        guard let delegate = delegate else {
+    override func tokensUpdated(tokens: Tokens) {
+//if we have tokens, that means that authentication was successful.
+        //we have to check the password here so we can prompt.
+
+        
+        let isLocal = try? PasswordUtils.isUserLocal("tperfitt")
+
+        guard let isLocal = isLocal else {
+            TCSLog("cannot find if user is local")
             return
         }
 
+        if isLocal == false {
+            TCSLog("User is not on system. for now, just abort")
+            delegate?.denyLogin()
+
+            return
+        }
+        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: tokens.password)
+
+        if isValidPassword==false{
+            TCSLog("local password is different from cloud password. ")
+
+            let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+            if passwordWindowController.window==nil {
+TCSLog("no window!")
+            }
+            passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+            passwordWindowController.window?.isMovable = false
+            passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
+            while (true){
+//                NSApp.activate(ignoringOtherApps: true)
+                DispatchQueue.main.async{
+                    TCSLog("resetting level")
+                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
+                }
+                TCSLog("showing modal")
+
+                let response = NSApp.runModal(for: passwordWindowController.window!)
+
+                TCSLog("modal done")
+                if response == .cancel {
+                    break
+                }
+                let localPassword = passwordWindowController.password
+                guard let localPassword = localPassword else {
+                    continue
+                }
+                let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: localPassword)
+
+                if isValidPassword==true {
+                    TCSLog("setting password to migrate later")
+                    delegate?.setHint(type: .migratePass, hint: localPassword)
+                    passwordWindowController.window?.close()
+                    break
+
+                }
+                else{
+                    passwordWindowController.window?.shake(self)
+                }
+            }
+
+        }
+        TCSLog("updating username, password, and tokens")
+        guard let delegate = delegate else {
+            return
+        }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: "tperfitt")
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
+
+        delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
+
         delegate.allowLogin()
         RunLoop.main.perform {
             self.loginTransition()
-
         }
 
     }

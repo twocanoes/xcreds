@@ -82,6 +82,12 @@ void TCSLog(NSString *string)
     }
     return sharedLogger;
 }
+//os_log("Unable to get home directory path.", log: "", type: .error)
+- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
+
+}
+
+
 - (void)logString:(NSString *)inStr level:(LogLevel)level
 {
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];
