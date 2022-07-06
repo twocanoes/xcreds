@@ -41,11 +41,11 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             tokens.refreshToken = tokenArray[1]
             tokens.accessToken = tokenArray[2]
 
-            TCSLog("got tokens")
+            TCSLogWithMark("got tokens")
 
         }
         else {
-            TCSLog("no tokens")
+            TCSLogWithMark("no tokens")
         }
      
         let (uid, home) = checkUIDandHome(name: username)

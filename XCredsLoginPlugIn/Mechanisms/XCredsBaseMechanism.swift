@@ -12,7 +12,7 @@ protocol XCredsMechanismProtocol {
     let mechEngine: AuthorizationEngineRef
     let mech: MechanismRecord?
     @objc init(mechanism: UnsafePointer<MechanismRecord>) {
-        TCSLog("\(#function) \(#file):\(#line)")
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
         self.mech = mechanism.pointee
         self.mechCallbacks = mechanism.pointee.fPlugin.pointee.fCallbacks.pointee
         self.mechEngine = mechanism.pointee.fEngine
@@ -42,7 +42,7 @@ protocol XCredsMechanismProtocol {
             guard let userName = getHint(type: .user) as? String else {
                 return nil
             }
-            TCSLog("Computed user accessed")
+            TCSLogWithMark("Computed user accessed")
             return userName
         }
     }
@@ -89,27 +89,27 @@ protocol XCredsMechanismProtocol {
 
 
     func allowLogin() {
-        TCSLog("\(#function) \(#file):\(#line)")
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
         let error = mechCallbacks.SetResult(mechEngine, .allow)
         if error != noErr {
-            TCSLog("Error: \(error)")
+            TCSLogWithMark("Error: \(error)")
         }
     }
 
     // disallow login
     func denyLogin() {
-        TCSLog("\(#function) \(#file):\(#line)")
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
 
         let error = mechCallbacks.SetResult(mechEngine, .deny)
         if error != noErr {
-            TCSLog("Error: \(error)")
+            TCSLogWithMark("Error: \(error)")
 
         }
     }
 
     func setHint(type: HintType, hint: Any) {
         guard (hint is String || hint is [String] || hint is Bool) else {
-            TCSLog("Login Set hint failed: data type of hint is not supported")
+            TCSLogWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }
         let data = NSKeyedArchiver.archivedData(withRootObject: hint)
@@ -117,7 +117,7 @@ protocol XCredsMechanismProtocol {
 
         let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
         guard err == errSecSuccess else {
-            TCSLog("NoMAD Login Set hint failed with: %{public}@")
+            TCSLogWithMark("NoMAD Login Set hint failed with: %{public}@")
             return
         }
     }
@@ -127,13 +127,13 @@ protocol XCredsMechanismProtocol {
         var err: OSStatus = noErr
         err = mechCallbacks.GetHintValue((mech?.fEngine)!, type.rawValue, &value)
         if err != errSecSuccess {
-            TCSLog("Couldn't retrieve hint value: %{public}@")
+            TCSLogWithMark("Couldn't retrieve hint value: %{public}@")
             return nil
         }
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
-            TCSLog("Couldn't unpack hint value: %{public}@")
+            TCSLogWithMark("Couldn't unpack hint value: %{public}@")
                 return nil
         }
         return result
@@ -150,7 +150,7 @@ protocol XCredsMechanismProtocol {
         var value = AuthorizationValue(length: (data?.count)!, data: UnsafeMutableRawPointer(mutating: (data! as NSData).bytes.bindMemory(to: Void.self, capacity: (data?.count)!)))
         let err = mechCallbacks.SetContextValue((mech?.fEngine)!, type, .extractable, &value)
         guard err == errSecSuccess else {
-            TCSLog("Set context value failed with: %{public}@")
+            TCSLogWithMark("Set context value failed with: %{public}@")
             return
         }
     }
@@ -160,14 +160,14 @@ protocol XCredsMechanismProtocol {
         var flags = AuthorizationContextFlags()
         let err = mechCallbacks.GetContextValue((mech?.fEngine)!, type, &flags, &value)
         if err != errSecSuccess {
-            TCSLog("Couldn't retrieve context value: %{public}@")
+            TCSLogWithMark("Couldn't retrieve context value: %{public}@")
             return nil
         }
         if type == "longname" {
             return String.init(bytesNoCopy: value!.pointee.data!, length: value!.pointee.length, encoding: .utf8, freeWhenDone: false)
         } else {
             let item = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
-            TCSLog("get context error: %{public}@")
+            TCSLogWithMark("get context error: %{public}@")
         }
 
         return nil
@@ -208,7 +208,7 @@ protocol XCredsMechanismProtocol {
             isValid = ((try records.first?.verifyPassword(auth)) != nil)
         } catch {
             let errorText = error.localizedDescription
-            TCSLog("ODError while trying to check for local user: \(errorText)")
+            TCSLogWithMark("ODError while trying to check for local user: \(errorText)")
             return false
         }
         return isValid

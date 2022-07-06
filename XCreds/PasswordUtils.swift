@@ -153,10 +153,10 @@ class PasswordUtils: NSObject {
     /// `ODNode` to DSLocal for queries and account manipulation.
     public class var localNode: ODNode? {
         do {
-            TCSLog("Finding the DSLocal node")
+            TCSLogWithMark("Finding the DSLocal node")
             return try ODNode.init(session: ODSession.default(), type: ODNodeType(kODNodeTypeLocalNodes))
         } catch {
-            TCSLog("ODError creating local node.")
+            TCSLogWithMark("ODError creating local node.")
             return nil
         }
     }
@@ -192,7 +192,7 @@ class PasswordUtils: NSObject {
             let castError = error as NSError
             switch castError.code {
             case Int(kODErrorCredentialsInvalid.rawValue):
-                TCSLog("Tested password for user account: %{public}@ is not valid.")
+                TCSLogWithMark("Tested password for user account: %{public}@ is not valid.")
                 return false
             default:
                 throw error
@@ -208,7 +208,7 @@ class PasswordUtils: NSObject {
     /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error or the user is not local.
     public class func getLocalRecord(_ shortName: String) throws -> ODRecord {
         do {
-            TCSLog("Building OD query for name \(shortName)")
+            TCSLogWithMark("Building OD query for name \(shortName)")
             let query = try ODQuery.init(node: localNode,
                                          forRecordTypes: kODRecordTypeUsers,
                                          attribute: kODAttributeTypeRecordName,
@@ -219,17 +219,17 @@ class PasswordUtils: NSObject {
             let records = try query.resultsAllowingPartial(false) as! [ODRecord]
 
             if records.count > 1 {
-                TCSLog("More than one local user found for name.")
+                TCSLogWithMark("More than one local user found for name.")
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLog("No local user found. Passing on demobilizing allow login.")
+                TCSLogWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
-            TCSLog("Found local user: \(record)")
+            TCSLogWithMark("Found local user: \(record)")
             return record
         } catch {
-            TCSLog("ODError while trying to check for local user: %{public}@")
+            TCSLogWithMark("ODError while trying to check for local user: %{public}@")
             throw error
         }
     }
@@ -249,7 +249,7 @@ class PasswordUtils: NSObject {
                                          maximumResults: 0)
             return try query.resultsAllowingPartial(false) as! [ODRecord]
         } catch {
-            TCSLog("ODError while finding local users.")
+            TCSLogWithMark("ODError while finding local users.")
             throw error
         }
     }
@@ -269,7 +269,7 @@ class PasswordUtils: NSObject {
             }
             return nonSystem
         } catch {
-            TCSLog("ODError while finding local users.")
+            TCSLogWithMark("ODError while finding local users.")
             throw error
         }
     }

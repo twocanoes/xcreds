@@ -40,7 +40,7 @@ class WebViewController: NSWindowController {
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
             additionalParameters = ["access_type":"offline", "prompt":"consent"]
         }
-        TCSLog("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
+        TCSLogWithMark("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
         oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         webView.navigationDelegate = self
         oidcLite?.delegate = self
@@ -85,12 +85,12 @@ class WebViewController: NSWindowController {
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        TCSLog("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
+        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
             // Azure snarfing
-            TCSLog("Azure")
+            TCSLogWithMark("Azure")
             if navigationAction.request.url?.host == "login.microsoftonline.com" {
                 var javaScript = "document.getElementById('i0118').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
@@ -106,7 +106,7 @@ extension WebViewController: WKNavigationDelegate {
                 })
             } else if navigationAction.request.url?.host == "accounts.google.com" {
                 // Google snarfing
-                TCSLog("Google")
+                TCSLogWithMark("Google")
                 let javaScript = "document.querySelector('input[type=password]').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
@@ -116,7 +116,7 @@ extension WebViewController: WKNavigationDelegate {
                 })
             } else if navigationAction.request.url?.path.contains("verify") ?? false {
                 // maybe OneLogin?
-                TCSLog("Other Provider")
+                TCSLogWithMark("Other Provider")
 
                 let javaScript = "document.getElementById('input8').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
@@ -170,11 +170,11 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        TCSLog("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
+        TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
         if let redirectURI = oidcLite?.redirectURI {
-            TCSLog("redirectURI: \(redirectURI)")
-            TCSLog("URL: \(webView.url?.absoluteString ?? "NONE")")
+            TCSLogWithMark("redirectURI: \(redirectURI)")
+            TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
                 var code = ""
                 let fullCommand = webView.url?.absoluteString ?? ""
@@ -214,16 +214,16 @@ extension WebViewController: WKNavigationDelegate {
 extension WebViewController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
-        TCSLog("authFailure: \(message)")
+        TCSLogWithMark("authFailure: \(message)")
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
 
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
-        TCSLog("tokenResponse")
+        TCSLogWithMark("tokenResponse")
         RunLoop.main.perform {
             if let password = self.password {
-                TCSLog("password received")
+                TCSLogWithMark("password received")
                 let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
                 self.tokensUpdated(tokens: returnTokens)
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]

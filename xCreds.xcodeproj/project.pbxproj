@@ -77,6 +77,9 @@
 		76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
 		76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */; };
 		76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
+		76EECD002875135900483C66 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* Logger.swift */; };
+		76EECD012875135900483C66 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* Logger.swift */; };
+		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,6 +173,7 @@
 		76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsMenuItem.swift; sourceTree = "<group>"; };
 		76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTokenMenuItem.swift; sourceTree = "<group>"; };
 		76EE06C127FD1F50009E0F3A /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		76EECCFF2875135900483C66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +311,7 @@
 				76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */,
 				76D7ADFA284EB15100332EBC /* TCSUnifiedLogger.h */,
 				76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */,
+				76EECCFF2875135900483C66 /* Logger.swift */,
 				764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */,
 				764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */,
 				764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */,
@@ -514,6 +519,7 @@
 				7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */,
 				76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */,
 				76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */,
+				76EECD012875135900483C66 /* Logger.swift in Sources */,
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
 				7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */,
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
@@ -533,6 +539,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
@@ -540,6 +547,7 @@
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
 				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
 				76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */,
+				76EECD002875135900483C66 /* Logger.swift in Sources */,
 				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
 				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
 				764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */,

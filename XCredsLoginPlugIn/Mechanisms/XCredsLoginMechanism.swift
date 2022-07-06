@@ -13,13 +13,13 @@ import Cocoa
   
 
     @objc override func run() {
-        TCSLog("\(#function) \(#file):\(#line)")
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
         NSApp.activate(ignoringOtherApps: true)
 
         webViewController = LoginWebViewController(windowNibName: NSNib.Name("LoginWebView"))
 
         guard webViewController.window != nil else {
-            TCSLog("could not create xcreds window")
+            TCSLogWithMark("could not create xcreds window")
             return
         }
         webViewController.delegate=self
@@ -27,7 +27,7 @@ import Cocoa
         loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
 
         guard loginWindowControlsWindowController.window != nil else {
-            TCSLog("could not create loginWindowControlsWindowController window")
+            TCSLogWithMark("could not create loginWindowControlsWindowController window")
             return
         }
         loginWindowControlsWindowController.delegate=self

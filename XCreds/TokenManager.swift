@@ -27,40 +27,38 @@ class TokenManager {
     let defaults = UserDefaults.standard
     var timer: Timer?
 
-//    func saveTokensToKeychain(tokens:Tokens) -> Bool {
-//        let keychainUtil = KeychainUtil()
-//
-//        if tokens.accessToken.count>0{
-//            let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken)
-//        }
-//
-//        if tokens.idToken.count>0{
-//            let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken)
-//        }
-//
-//        if tokens.refreshToken.count>0 {
-//            let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken)
-//
-//
-//        }
-//        let cloudPassword = tokens.password
-////        if cloudPassword.count>0 {
-////            let localPassword = self.localPassword()
-////
-////            if let localPassword = localPassword {
-////
-//////                try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
-//////                let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
-//////                if err == false {
-//////                    //TODO: Log Error
-//////                }
-////
-////
-////
-////            }
-////
-////        }
-//    }
+    func saveTokensToKeychain(tokens:Tokens) -> Bool {
+        let keychainUtil = KeychainUtil()
+
+        if tokens.accessToken.count>0{
+            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken) == false {
+                return false
+            }
+        }
+
+        if tokens.idToken.count>0{
+            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken) == false {
+                return false
+            }
+        }
+
+        if tokens.refreshToken.count>0 {
+            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken) == false {
+                return false
+            }
+
+
+
+        }
+        let cloudPassword = tokens.password
+        
+        if cloudPassword.count>0 {
+            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.refreshToken) == false {
+                return false
+            }
+        }
+        return true
+    }
     func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
         guard let url = URL(string: defaults.string(forKey: PrefKeys.tokenEndpoint.rawValue) ?? "") else {
@@ -117,7 +115,7 @@ class TokenManager {
 
                     }
                     else {
-                        TCSLog("got status code of \(response.statusCode)")
+                        TCSLogWithMark("got status code of \(response.statusCode)")
                         completion(false,false)
 
                     }
@@ -127,9 +125,10 @@ class TokenManager {
             task.resume()
         }
         else {
-            TCSLog("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshToken ?? "empty")")
+            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshToken ?? "empty")")
             completion(false,false)
 
         }
     }
 }
+

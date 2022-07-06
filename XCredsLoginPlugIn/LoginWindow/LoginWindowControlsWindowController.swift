@@ -16,7 +16,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     }
     fileprivate func setupLoginWindowControlsAppearance() {
         self.window?.level = .screenSaver
-        TCSLog("ordering controls front")
+        TCSLogWithMark("ordering controls front")
         self.window?.orderFrontRegardless()
         
         self.window?.titlebarAppearsTransparent = true
@@ -26,15 +26,15 @@ class LoginWindowControlsWindowController: NSWindowController {
 
         let screenRect = NSScreen.screens[0].frame
         let windowRec = NSMakeRect(0, 0, screenRect.width, self.window?.frame.height ?? 109)
-        TCSLog("height is \(windowRec))")
+        TCSLogWithMark("height is \(windowRec))")
 
         self.window?.setFrame(windowRec, display: true, animate: false)
 
     }
     @IBAction func restartClick(_ sender: Any) {
-        TCSLog("Setting restart user")
+        TCSLogWithMark("Setting restart user")
         guard let delegate = delegate else {
-            TCSLog("No delegate set for restart")
+            TCSLogWithMark("No delegate set for restart")
 
             return
         }
@@ -43,18 +43,18 @@ class LoginWindowControlsWindowController: NSWindowController {
     }
 
     @IBAction func shutdownClick(_ sender: Any) {
-        TCSLog("Setting shutdown user")
+        TCSLogWithMark("Setting shutdown user")
         guard let delegate = delegate else {
-            TCSLog("No delegate set for shutdown")
+            TCSLogWithMark("No delegate set for shutdown")
             return
         }
         delegate.setHint(type: .user, hint: SpecialUsers.shutdown.rawValue)
         delegate.allowLogin()
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
-        TCSLog("resetting to standard login window")
+        TCSLogWithMark("resetting to standard login window")
         guard let delegate = delegate else {
-            TCSLog("No delegate set for resetToStandardLoginWindow")
+            TCSLogWithMark("No delegate set for resetToStandardLoginWindow")
             return
         }
         delegate.setHint(type: .user, hint: SpecialUsers.standardLoginWindow.rawValue)

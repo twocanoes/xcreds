@@ -56,12 +56,12 @@ class LoginWebViewController: WebViewController {
         let isLocal = try? PasswordUtils.isUserLocal("tperfitt")
 
         guard let isLocal = isLocal else {
-            TCSLog("cannot find if user is local")
+            TCSLogWithMark("cannot find if user is local")
             return
         }
 
         if isLocal == false {
-            TCSLog("User is not on system. for now, just abort")
+            TCSLogWithMark("User is not on system. for now, just abort")
             delegate?.denyLogin()
 
             return
@@ -69,12 +69,12 @@ class LoginWebViewController: WebViewController {
         let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: tokens.password)
 
         if isValidPassword==false{
-            TCSLog("local password is different from cloud password. ")
+            TCSLogWithMark("local password is different from cloud password. ")
 
             let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
             if passwordWindowController.window==nil {
-TCSLog("no window!")
+TCSLogWithMark("no window!")
             }
             passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
             passwordWindowController.window?.isMovable = false
@@ -83,14 +83,14 @@ TCSLog("no window!")
             while (true){
 //                NSApp.activate(ignoringOtherApps: true)
                 DispatchQueue.main.async{
-                    TCSLog("resetting level")
+                    TCSLogWithMark("resetting level")
                     passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
                 }
-                TCSLog("showing modal")
+                TCSLogWithMark("showing modal")
 
                 let response = NSApp.runModal(for: passwordWindowController.window!)
 
-                TCSLog("modal done")
+                TCSLogWithMark("modal done")
                 if response == .cancel {
                     break
                 }
@@ -101,7 +101,7 @@ TCSLog("no window!")
                 let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: localPassword)
 
                 if isValidPassword==true {
-                    TCSLog("setting password to migrate later")
+                    TCSLogWithMark("setting password to migrate later")
                     delegate?.setHint(type: .migratePass, hint: localPassword)
                     passwordWindowController.window?.close()
                     break
@@ -113,7 +113,7 @@ TCSLog("no window!")
             }
 
         }
-        TCSLog("updating username, password, and tokens")
+        TCSLogWithMark("updating username, password, and tokens")
         guard let delegate = delegate else {
             return
         }
