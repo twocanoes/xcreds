@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7632909D2876674100CF8857 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
 		7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */; };
 		7632E3A12873497C00E37923 /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
 		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
@@ -80,6 +81,8 @@
 		76EECD002875135900483C66 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* Logger.swift */; };
 		76EECD012875135900483C66 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* Logger.swift */; };
 		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
+		76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
+		76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +108,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7632909B2876673500CF8857 /* DataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsKeychainAdd.swift; sourceTree = "<group>"; };
 		7632E3A02873497C00E37923 /* LogShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogShim.swift; path = Mechanisms/LogShim.swift; sourceTree = "<group>"; };
 		764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordWindowController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 		76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTokenMenuItem.swift; sourceTree = "<group>"; };
 		76EE06C127FD1F50009E0F3A /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		76EECCFF2875135900483C66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Base64URLEncoded.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +211,7 @@
 		766355C72870D1B5002E3867 /* XCredsLogin */ = {
 			isa = PBXGroup;
 			children = (
+				76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */,
 				7632E3A02873497C00E37923 /* LogShim.swift */,
 				76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */,
 				76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */,
@@ -215,7 +221,7 @@
 				76BEF7EF28724E280013E2A1 /* Mechanisms */,
 			);
 			name = XCredsLogin;
-			path = ../XCredsLoginPlugIn;
+			path = XCredsLoginPlugIn;
 			sourceTree = "<group>";
 		};
 		76BEF7D32871F36C0013E2A1 /* FakeTrue */ = {
@@ -284,9 +290,11 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				7632909B2876673500CF8857 /* DataExtension.swift */,
 				766355D22870F29A002E3867 /* TestWindowController.swift */,
 				766355D32870F29A002E3867 /* TestWindowController.xib */,
 				76DD6D112859978F00A700ED /* Packages */,
+				766355C72870D1B5002E3867 /* XCredsLogin */,
 				76EE069C27FD1D00009E0F3A /* XCreds */,
 				76BEF7D32871F36C0013E2A1 /* FakeTrue */,
 				76EE069B27FD1D00009E0F3A /* Products */,
@@ -346,7 +354,6 @@
 				76EE06A127FD1D01009E0F3A /* MainMenu.xib */,
 				76EE06A427FD1D01009E0F3A /* xCreds.entitlements */,
 				766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */,
-				766355C72870D1B5002E3867 /* XCredsLogin */,
 			);
 			path = XCreds;
 			sourceTree = "<group>";
@@ -506,6 +513,7 @@
 				76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */,
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
+				7632909D2876674100CF8857 /* DataExtension.swift in Sources */,
 				76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */,
 				76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */,
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
@@ -523,6 +531,7 @@
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
 				7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */,
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
+				76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
 				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -563,6 +572,7 @@
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
 				766355DC287133C7002E3867 /* WebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

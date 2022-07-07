@@ -13,6 +13,8 @@
 @import Security.AuthSession;
 extern OSStatus SecKeychainChangePassword(SecKeychainRef keychainRef, UInt32 oldPasswordLength, const void* oldPassword, UInt32 newPasswordLength, const void* newPassword);
 
+extern OSStatus SecKeychainItemSetAccessWithPassword(SecKeychainItemRef item, SecAccessRef access, UInt32 passLength, const void* password);
+
 
 // Plugin constants
 
@@ -40,6 +42,8 @@ struct MechanismRecord {
     AuthorizationString             fMechID;
     Boolean                         fLoginWindow;
     Boolean                         fPowerControl;
+    Boolean                         fKeychainAdd;
+
 
 };
 

@@ -27,38 +27,72 @@ class TokenManager {
     let defaults = UserDefaults.standard
     var timer: Timer?
 
-    func saveTokensToKeychain(tokens:Tokens) -> Bool {
+    func saveTokensToKeychain(tokens:Tokens, setACL:Bool=false, password:String?=nil) -> Bool {
         let keychainUtil = KeychainUtil()
 
         if tokens.accessToken.count>0{
+            TCSLogWithMark("Saving Access Token")
             if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken) == false {
+                TCSLogWithMark("Error Updating Access Token")
+
                 return false
             }
-        }
+            if setACL==true, let password = password {
+                TCSLogWithMark("Updating ACL")
+                    keychainUtil.updateACL(password:password)
+                }
+            }
 
         if tokens.idToken.count>0{
+            TCSLogWithMark("Saving idToken Token")
             if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken) == false {
+                TCSLogWithMark("Error Updating idToken Token")
+
                 return false
             }
+            if setACL==true, let password = password {
+                TCSLogWithMark("Updating ACL")
+
+                keychainUtil.updateACL(password:password)
+            }
         }
+
 
         if tokens.refreshToken.count>0 {
+            TCSLogWithMark("Saving refresh Token")
+
             if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken) == false {
+                TCSLogWithMark("Error Updating refreshToken Token")
+
                 return false
             }
+            if setACL==true, let password = password {
+                TCSLogWithMark("Updating ACL")
 
-
-
+                keychainUtil.updateACL(password:password)
+            }
         }
+
         let cloudPassword = tokens.password
         
         if cloudPassword.count>0 {
-            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.refreshToken) == false {
+            TCSLogWithMark("Saving cloud password")
+
+            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.password) == false {
+                TCSLogWithMark("Error Updating password")
+
                 return false
             }
+            if setACL==true, let password = password {
+                TCSLogWithMark("Updating ACL")
+
+                keychainUtil.updateACL(password:password)
+            }
+
         }
         return true
     }
+
     func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
         guard let url = URL(string: defaults.string(forKey: PrefKeys.tokenEndpoint.rawValue) ?? "") else {

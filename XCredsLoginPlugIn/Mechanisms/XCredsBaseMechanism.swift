@@ -40,6 +40,8 @@ protocol XCredsMechanismProtocol {
     var xcredsUser: String? {
         get {
             guard let userName = getHint(type: .user) as? String else {
+                TCSLogWithMark("no username!")
+
                 return nil
             }
             TCSLogWithMark("Computed user accessed")

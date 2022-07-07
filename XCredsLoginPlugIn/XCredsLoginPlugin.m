@@ -108,6 +108,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fMechID = mechanismId;
     mechanism->fLoginWindow = (strcmp(mechanismId, "LoginWindow") == 0);
     mechanism->fPowerControl = (strcmp(mechanismId, "PowerControl") == 0);
+    mechanism->fKeychainAdd = (strcmp(mechanismId, "KeychainAdd") == 0);
 
     *outMechanism = mechanism;
 
@@ -129,6 +130,12 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
         NSLog(@"Calling PowerControl");
         XCredsPowerControlMechanism *powerControl = [[XCredsPowerControlMechanism alloc] initWithMechanism:mechanism];
         [powerControl run];
+
+    }
+    else if (mechanism->fKeychainAdd){
+        NSLog(@"Calling fKeychainAdd");
+        XCredsKeychainAdd *keychainAdd = [[XCredsKeychainAdd alloc] initWithMechanism:mechanism];
+        [keychainAdd run];
 
     }
     return noErr;

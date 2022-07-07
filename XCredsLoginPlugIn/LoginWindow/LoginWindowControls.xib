@@ -21,7 +21,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="872" height="109"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sxl-0U-ne5">
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="sxl-0U-ne5">
                         <rect key="frame" x="252" y="20" width="369" height="78"/>
                         <subviews>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6f9-0z-Xqg">
@@ -62,7 +62,7 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" constant="341" id="aKl-rA-eDh"/>
+                            <constraint firstAttribute="width" constant="369" id="aKl-rA-eDh"/>
                             <constraint firstAttribute="height" constant="78" id="cmM-6M-FrE"/>
                         </constraints>
                     </customView>
@@ -72,7 +72,7 @@
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="centerX" secondItem="Tpj-ss-EMv" secondAttribute="centerX" id="eIH-vl-2ht"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-602" y="703.5"/>
+            <point key="canvasLocation" x="-622" y="729"/>
         </window>
     </objects>
     <resources>

@@ -52,7 +52,11 @@ class LoginWebViewController: WebViewController {
 //if we have tokens, that means that authentication was successful.
         //we have to check the password here so we can prompt.
 
-        
+        guard let delegate = delegate else {
+            TCSLogWithMark("invalid delegate")
+            return
+        }
+
         let isLocal = try? PasswordUtils.isUserLocal("tperfitt")
 
         guard let isLocal = isLocal else {
@@ -62,19 +66,20 @@ class LoginWebViewController: WebViewController {
 
         if isLocal == false {
             TCSLogWithMark("User is not on system. for now, just abort")
-            delegate?.denyLogin()
-
+            delegate.denyLogin()
             return
         }
         let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: tokens.password)
 
         if isValidPassword==false{
-            TCSLogWithMark("local password is different from cloud password. ")
+            TCSLogWithMark("local password is different from cloud password. Prompting for local password.")
 
             let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
             if passwordWindowController.window==nil {
-TCSLogWithMark("no window!")
+                TCSLogWithMark("no passwordWindowController window")
+                delegate.denyLogin()
+                return
             }
             passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
             passwordWindowController.window?.isMovable = false
@@ -101,8 +106,22 @@ TCSLogWithMark("no window!")
                 let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: localPassword)
 
                 if isValidPassword==true {
-                    TCSLogWithMark("setting password to migrate later")
-                    delegate?.setHint(type: .migratePass, hint: localPassword)
+                    let localUser = try? PasswordUtils.getLocalRecord("tperfitt")
+                    guard let localUser = localUser else {
+                        TCSLogWithMark("invalid local user")
+                        delegate.denyLogin()
+                        return
+                    }
+                    do {
+                        try localUser.changePassword(localPassword, toPassword: tokens.password)
+                    }
+                    catch {
+                        TCSLogWithMark("Error setting local password to cloud password")
+                        delegate.denyLogin()
+                        return
+                    }
+                    TCSLogWithMark("setting original password to use to unlock keychain later")
+                    delegate.setHint(type: .migratePass, hint: localPassword)
                     passwordWindowController.window?.close()
                     break
 
@@ -114,18 +133,16 @@ TCSLogWithMark("no window!")
 
         }
         TCSLogWithMark("updating username, password, and tokens")
-        guard let delegate = delegate else {
-            return
-        }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: "tperfitt")
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
 
         delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
 
-        delegate.allowLogin()
         RunLoop.main.perform {
             self.loginTransition()
         }
+        delegate.allowLogin()
+
 
     }
 }

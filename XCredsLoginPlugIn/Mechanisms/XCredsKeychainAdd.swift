@@ -10,16 +10,13 @@ import Cocoa
 import Security
 
 import OpenDirectory
-
-
 // headless mech to add items to a keychain
-let keychainAddLog = ""
 class XCredsKeychainAdd : XCredsBaseMechanism {
     
     let fm = FileManager.default
     var username = ""
     var userpass = ""
-    let kItemName = "NoMAD"
+    let kItemName = "xcreds"
     
     @objc override func run() {
         // get username and password
@@ -27,10 +24,9 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         // add items
         var err : OSStatus?
         var userKeychainTemp : SecKeychain?
-//        var userKeychain: SecKeychain?
+        var userKeychain: SecKeychain?
         username = usernameContext ?? ""
         userpass = passwordContext ?? ""
-//        delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
 
         var tokens = Tokens()
         let tokenArray = getHint(type: .tokens) as? Array<String>
@@ -40,56 +36,51 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             tokens.idToken = tokenArray[0]
             tokens.refreshToken = tokenArray[1]
             tokens.accessToken = tokenArray[2]
-
+            tokens.password = userpass
             TCSLogWithMark("got tokens")
 
         }
         else {
             TCSLogWithMark("no tokens")
         }
-     
+
         let (uid, home) = checkUIDandHome(name: username)
 
+        TCSLogWithMark("uid: \(uid ?? 9999 )")
+
         guard let homeDir = home else {
-            os_log("Unable to get home directory path.", log: keychainAddLog, type: .error)
+            TCSLogWithMark("Unable to get home directory path.")
             allowLogin()
             return
         }
-
+        TCSLogWithMark("checking UID")
         guard let userUID = uid else {
-            os_log("Unable to get uid.", log: keychainAddLog, type: .error)
+            TCSLogWithMark("Unable to get uid.")
             allowLogin()
             return
         }
 
         // switch uid to user so we have access to home directory and other things
+        TCSLogWithMark("Set UID")
+
         seteuid(userUID)
 
         // check to ensure the keychain is there
+        TCSLogWithMark("Getting Home Dir")
+
         let userKeychainPath = homeDir + "/Library/Keychains/login.keychain-db"
-        if !fm.fileExists(atPath: userKeychainPath) {
-            // if we're not set to create a keychain, move on
-//            if getManagedPreference(key: .KeychainCreate) as? Bool == true {
-//                os_log("No login.keychain-db, creating one", log: keychainAddLog)
-//                SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
-//            } else {
-                os_log("No login.keychain-db, skipping KeychainAdd", log: keychainAddLog, type: .default)
-                allowLogin()
-                return
-//            }
-        }
-        
+        TCSLogWithMark("finding path")
         // now test it we can unlock the keychain
         let tempPath = userKeychainPath + Date().timeIntervalSinceNow.description
-        
+        TCSLogWithMark("Link old keychain")
         // need to do this on a hardlink to not prevent the keychain reset from working by leaving a handle open
         link(userKeychainPath, tempPath)
         
-        os_log("Getting Temp Keychain reference.", log: keychainAddLog, type: .info)
+        TCSLogWithMark("Getting Temp Keychain reference.")
         
         err = SecKeychainOpen(tempPath, &userKeychainTemp)
 
-        os_log("Unlocking Temp Keychain.", log: keychainAddLog, type: .info)
+        TCSLogWithMark("Unlocking Temp Keychain.")
         
         err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
         
@@ -100,12 +91,12 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         userKeychainTemp = nil
         
         if err != noErr {
-            os_log("Unable to unlock keychain reference.", log: keychainAddLog, type: .default)
+            TCSLogWithMark("Unable to unlock keychain reference.")
             // check if we should reset
             
             if let resetPass = getHint(type: .migratePass) as? String {
                 
-                os_log("Resetting keychain with migrated user/pass.", log: keychainAddLog)
+                TCSLogWithMark("Resetting keychain with migrated user/pass.")
                 
                 var myKeychain : SecKeychain?
                 
@@ -114,238 +105,100 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
                 err = SecKeychainChangePassword(myKeychain, UInt32(resetPass.count), resetPass, UInt32(userpass.count), userpass)
                 
                 if err != 0 {
-                    os_log("Unable to reset keychain with migrated user/pass.", log: keychainAddLog, type: .error)
+                    TCSLogWithMark("Unable to reset keychain with migrated user/pass.")
                     
-//                    if (getManagedPreference(key: .KeychainReset) as? Bool ?? true ) {
-//                        os_log("Resetting keychain password.", log: keychainAddLog, type: .info)
-//                        clearKeychain(path: homeDir)
-//                    }
                 }
             }
-//            else if (getManagedPreference(key: .KeychainReset) as? Bool ?? true ) {
-//                os_log("Resetting keychain password.", log: keychainAddLog, type: .info)
-//                clearKeychain(path: homeDir)
-//            }
             else {
-                os_log("Keychain is locked, exiting.", log: keychainAddLog, type: .info)
+                TCSLogWithMark("Keychain is locked, exiting.")
                 allowLogin()
                 return
             }
         }
         
-//        if getManagedPreference(key: .KeychainAddNoMAD) as? Bool == true {
+
+        // keychain unlock worked, now to get the real one
+
+        TCSLogWithMark("Getting Keychain reference.")
+
+        err = SecKeychainOpen(userKeychainPath, &userKeychain)
+
+        TCSLogWithMark("Unlocking Keychain.")
+
+        err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
+
+        var keychainItem: SecKeychainItem? = nil
+
+//        var kItemAccount = usernameContext ?? ""
 //
-//            // keychain unlock worked, now to get the real one
+//        let kItemPass = passwordContext
 //
-//            os_log("Getting Keychain reference.", log: keychainAddLog)
+//        //set up an item dictionary
 //
-//            err = SecKeychainOpen(userKeychainPath, &userKeychain)
+//        var itemAttrs = [ String : AnyObject ]()
 //
-//            os_log("Unlocking Keychain.", log: keychainAddLog)
+//        // get app paths
 //
-//            err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
+//        //var access : SecAccess? = nil
 //
-//            var keychainItem: SecKeychainItem? = nil
+//        //var nomadProTrust : SecTrustedApplication? = nil
 //
-//            var kItemAccount = usernameContext ?? ""
 //
-////            if let domain = getManagedPreference(key: .ADDomain) as? String {
-////                kItemAccount += "@" + domain.uppercased()
-////            }
+//        itemAttrs[kSecAttrType as String] = "genp" as AnyObject
+//        //itemAttrs[kSecValueRef as String ] = kItemPass as AnyObject
+//        itemAttrs[kSecAttrLabel as String] = "xcreds" as AnyObject
+//        itemAttrs[kSecAttrService as String] = "xcreds" as AnyObject
+//        itemAttrs[kSecAttrAccount as String] = "local password" as AnyObject
 //
-//            let kItemPass = passwordContext
+//        // set up the base search dictionary
 //
-//            // set up an item dictionary
+//        var itemSearch: [String:AnyObject] = [
+//            kSecClass as String: kSecClassGenericPassword as AnyObject,
+//            kSecMatchLimit as String : kSecMatchLimitAll as AnyObject,
+//            kSecReturnAttributes as String: true as AnyObject,
+//            kSecReturnRef as String : true as AnyObject,
+//        ]
 //
-//            var itemAttrs = [ String : AnyObject ]()
+//        itemSearch[kSecAttrService as String] = kItemName as AnyObject
+//        itemSearch[kSecAttrAccount as String] = kItemAccount as AnyObject
 //
-//            // get app paths
 //
-//            //var access : SecAccess? = nil
+//        //            // now to create
+//        err = SecKeychainAddGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, UInt32((kItemPass?.count)!), kItemPass!, &keychainItem)
 //
-//            var nomadTrust : SecTrustedApplication? = nil
-//            //var nomadProTrust : SecTrustedApplication? = nil
+//        if err != 0 {
+//            TCSLogWithMark("Unable to create item")
 //
-//            var secApps = [ SecTrustedApplication ]()
+//            // this is most likely because an item is already there, so lets delete then recreate
 //
-//            //var accountName = ""
-//            //var serviceName = ""
+//            err = SecKeychainFindGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, nil, nil, &keychainItem)
 //
-//            if fm.fileExists(atPath: "/Applications/NoMAD.app", isDirectory: nil) {
-//                err = SecTrustedApplicationCreateFromPath("/Applications/NoMAD.app", &nomadTrust)
-//                if err == 0 {
-//                    secApps.append(nomadTrust!)
-//                }
-//            }
-////            else if let customNoMADLocation = getManagedPreference(key: .CustomNoMADLocation) as? String {
-////                err = SecTrustedApplicationCreateFromPath(customNoMADLocation, &nomadTrust)
-////                if err == 0 {
-////                    secApps.append(nomadTrust!)
-////                }
-////            }
-//            else {
-//                os_log("Checking for NoMAD anywhere on the device.", log: keychainAddLog, type: .error)
-//                let ws = NSWorkspace.shared
-//                if let customPath = ws.absolutePathForApplication(withBundleIdentifier: "com.trusourcelabs.NoMAD")  {
-//                    err = SecTrustedApplicationCreateFromPath(customPath, &nomadTrust)
-//                    if err == 0 {
-//                        secApps.append(nomadTrust!)
-//                    }
-//                } else {
-//                    os_log("Unable to get custom NoMAD path", log: keychainAddLog, type: .error)
-//
-//                }
-//            }
-//
-//            itemAttrs[kSecAttrType as String] = "genp" as AnyObject
-//            //itemAttrs[kSecValueRef as String ] = kItemPass as AnyObject
-//            itemAttrs[kSecAttrLabel as String] = "NoMAD" as AnyObject
-//            itemAttrs[kSecAttrService as String] = "NoMAD" as AnyObject
-//            itemAttrs[kSecAttrAccount as String] = kItemAccount as AnyObject
-//
-//            // set up the base search dictionary
-//
-//            var itemSearch: [String:AnyObject] = [
-//                kSecClass as String: kSecClassGenericPassword as AnyObject,
-//                kSecMatchLimit as String : kSecMatchLimitAll as AnyObject,
-//                kSecReturnAttributes as String: true as AnyObject,
-//                kSecReturnRef as String : true as AnyObject,
-//                ]
-//
-//            itemSearch[kSecAttrService as String] = kItemName as AnyObject
-//            itemSearch[kSecAttrAccount as String] = kItemAccount as AnyObject
-//
+//            err = SecKeychainItemDelete(keychainItem!)
 //
 //            // now to create
+//
+//            TCSLogWithMark("Creating new keychain item.")
 //
 //            err = SecKeychainAddGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, UInt32((kItemPass?.count)!), kItemPass!, &keychainItem)
 //
 //            if err != 0 {
-//                os_log("Unable to create item", log: keychainAddLog, type: .error)
+//                TCSLogWithMark("Unable to create new keychain item.")
 //
-//                // this is most likely because an item is already there, so lets delete then recreate
-//
-//                err = SecKeychainFindGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, nil, nil, &keychainItem)
-//
-//                err = SecKeychainItemDelete(keychainItem!)
-//
-//                // now to create
-//
-//                os_log("Creating new keychain item.", log: keychainAddLog, type: .default)
-//
-//                err = SecKeychainAddGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, UInt32((kItemPass?.count)!), kItemPass!, &keychainItem)
-//
-//                if err != 0 {
-//                    os_log("Unable to create new keychain item.", log: keychainAddLog, type: .info)
-//
-//                    allowLogin()
-//                    return
-//                }
-//            }
-//
-//            // now to set all the ACLs
-//
-//            // Decode ACL
-//
-//            var myACLs : CFArray? = nil
-//            var itemAccess: SecAccess? = nil
-//
-//            err = SecKeychainItemCopyAccess(keychainItem!, &itemAccess)
-//
-//            SecAccessCopyACLList(itemAccess!, &myACLs)
-//
-//            var appList: CFArray? = nil
-//            var desc: CFString? = nil
-//
-//            var prompt = SecKeychainPromptSelector()
-//
-//            for acl in myACLs as! Array<SecACL> {
-//                SecACLCopyContents(acl, &appList, &desc, &prompt)
-//                let authArray = SecACLCopyAuthorizations(acl)
-//
-//                if (authArray as! [String]).contains("ACLAuthorizationDecrypt") {
-//
-//                    os_log("Found AUTHORIZATION_CHANGE_ACL.", log: keychainAddLog, type: .info)
-//
-//                    SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
-//                    continue
-//                }
-//
-//                if !(authArray as! [String]).contains("ACLAuthorizationPartitionID") {
-//                    continue
-//                }
-//
-//                os_log("Found ACLAuthorizationPartitionID.", log: keychainAddLog, type: .info)
-//
-//                // pull in the description that's really a functional plist <sigh>
-//
-//                let rawData = Data.init(fromHexEncodedString: desc! as String)
-//                var format: PropertyListSerialization.PropertyListFormat = .xml
-//
-//                var propertyListObject = [ String: [String]]()
-//
-//                do {
-//                    propertyListObject = try PropertyListSerialization.propertyList(from: rawData!, options: [], format: &format) as! [ String: [String]]
-//                } catch {
-//                    os_log("No teamid in ACLAuthorizationPartitionID.", log: keychainAddLog, type: .error)
-//                }
-//
-//                let teamIds = [ "teamid:AAPZK3CB24", "teamid:VRPY9KHGX6" ]
-//
-//                propertyListObject["Partitions"] = teamIds
-//
-//                // now serialize it back into a plist
-//
-//                let xmlObject = try? PropertyListSerialization.data(fromPropertyList: propertyListObject as Any, format: format, options: 0)
-//
-//                // now that all ACLs has been adjusted, we can update the item
-//
-//                err = SecACLSetContents(acl, appList, xmlObject!.hexEncodedString() as CFString, prompt)
-//
-//                // smack it again to set the ACL
-//
-//                err = SecKeychainItemSetAccessWithPassword(keychainItem!, itemAccess!, UInt32((kItemPass?.count)!), kItemPass)
-//            }
-//
-//            guard let nomadDefaults = UserDefaults.init(suiteName: "com.trusourcelabs.NoMAD") else {
-//                os_log("Could not get NoMAD Pref suite.", log: keychainAddLog, type: .debug)
 //                allowLogin()
 //                return
 //            }
-//
-//            os_log("Setting LasUser pref to %{public}@", log: keychainAddLog, type: .debug, kItemAccount)
-//            nomadDefaults.set(usernameContext, forKey: "LastUser")
-//
-//            if err != 0 {
-//                os_log("Error setting up keychain item.", log: keychainAddLog, type: .error)
-//            }
 //        }
-        // Always complete the login process
+        TCSLogWithMark("saving tokens to keychain")
+        if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:userpass )==false {
+            TCSLogWithMark("Error saving tokens to keychain")
+        }
+
+
+
+
         allowLogin()
+
     }
-
-
-//    func clearKeychain(path: String) {
-//
-//        // find the hardware UUID to kill the local items keychain
-//        let service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-//        guard let hardwareRaw = IORegistryEntryCreateCFProperty(service, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0) else { return }
-//        let uuid = hardwareRaw.takeRetainedValue() as? String ?? ""
-//
-//        if uuid != "" {
-//            // we have a uuid, now delete the folder
-//            os_log("Removing local items keychin in order to purge it.", log: keychainAddLog)
-//            do {
-//                try fm.removeItem(atPath: path + "/Library/Keychains/" + uuid)
-//            } catch {
-//                os_log("Unable to remove Local Items folder.", log: keychainAddLog)
-//            }
-//        }
-//
-//        os_log("Resetting keychain.", log: keychainAddLog)
-//
-//        SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
-//    }
 
     
     // Create keychain item
@@ -366,22 +219,22 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             records = try query.resultsAllowingPartial(false) as! [ODRecord]
         } catch {
             let errorText = error.localizedDescription
-//            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            //            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
             return (nil, nil)
         }
 
         if records.count > 1 {
-            os_log("More than one record. ", log: keychainAddLog, type: .info)
+            TCSLogWithMark("More than one record. ")
         }
-            do {
-                let home = try records.first?.values(forAttribute: kODAttributeTypeNFSHomeDirectory) as? [String] ?? nil
-                let uid = try records.first?.values(forAttribute: kODAttributeTypeUniqueID) as? [String] ?? nil
-                
-                let uidt = uid_t.init(Double.init((uid?.first) ?? "0")! )
-                return ( uidt, home?.first ?? nil)
-            } catch {
-                os_log("Unable to get home.", log: keychainAddLog, type: .error)
-                return (nil, nil)
-            }
+        do {
+            let home = try records.first?.values(forAttribute: kODAttributeTypeNFSHomeDirectory) as? [String] ?? nil
+            let uid = try records.first?.values(forAttribute: kODAttributeTypeUniqueID) as? [String] ?? nil
+
+            let uidt = uid_t.init(Double.init((uid?.first) ?? "0")! )
+            return ( uidt, home?.first ?? nil)
+        } catch {
+            TCSLogWithMark("Unable to get home.")
+            return (nil, nil)
         }
     }
+}

@@ -192,7 +192,7 @@ class PasswordUtils: NSObject {
             let castError = error as NSError
             switch castError.code {
             case Int(kODErrorCredentialsInvalid.rawValue):
-                TCSLogWithMark("Tested password for user account: %{public}@ is not valid.")
+                TCSLogWithMark("Tested password for user account: \(userName) is not valid.")
                 return false
             default:
                 throw error

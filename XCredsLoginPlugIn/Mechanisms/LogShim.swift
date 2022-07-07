@@ -6,7 +6,6 @@
 //
 
 import Foundation
-//os_log("Unable to get uid.", log: keychainAddLog, type: .error)
 
 let noLoMechlog = ""
 enum ErrorType {

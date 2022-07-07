@@ -21,7 +21,7 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
     @objc override func run() {
         TCSLogWithMark("PowerControl mech starting")
 
-        guard let userName = xcredsUser else {
+        guard let userName = usernameContext else {
             if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
                 TCSLogWithMark("setting standard login back to XCreds login")
                 let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
