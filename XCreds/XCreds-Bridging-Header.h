@@ -8,6 +8,7 @@
 #ifndef XCreds_Bridging_Header_h
 #define XCreds_Bridging_Header_h
 #import "SecurityPrivateAPI.h"
+#import "XCredsLoginPlugin.h"
 
 #import "TCSUnifiedLogger.h"
 #endif /* XCreds_Bridging_Header_h */

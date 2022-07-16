@@ -12,13 +12,19 @@ import Foundation
 import SystemConfiguration
 import IOKit
 
-public func cliTask( _ command: String, arguments: [String]? = nil) -> String {
-
+/// A simple wrapper around NSTask
+///
+/// - Parameters:
+///   - command: The `String` of the command to run. A full path to the binary is not required. Arguments can be in the main string.
+///   - arguments: An optional `Array` of `String` values that represent the arguments given to the command. Defaults to 'nil'.
+///   - waitForTermination: An optional `Bool` Should the the output be delayed until the task exits. Deafults to 'true'.
+/// - Returns: The combined result of standard output and standard error from the command.
+public func cliTask(_ command: String, arguments: [String]? = nil, waitForTermination: Bool = true) -> String {
 
     var commandLaunchPath: String
     var commandPieces: [String]
 
-    if ( arguments == nil ) {
+    if arguments == nil {
         // turn the command into an array and get the first element as the launch path
         commandPieces = command.components(separatedBy: " ")
         // loop through the components and see if any end in \
@@ -26,7 +32,6 @@ public func cliTask( _ command: String, arguments: [String]? = nil) -> String {
 
             // we need to rebuild the string with the right components
             var x = 0
-
             for line in commandPieces {
                 if line.last == "\\" {
                     commandPieces[x] = commandPieces[x].replacingOccurrences(of: "\\", with: " ") + commandPieces.remove(at: x+1)
@@ -53,6 +58,7 @@ public func cliTask( _ command: String, arguments: [String]? = nil) -> String {
 
     let myTask = Process()
     let myPipe = Pipe()
+    let myInputPipe = Pipe()
     let myErrorPipe = Pipe()
 
     // Setup and Launch!
@@ -60,16 +66,18 @@ public func cliTask( _ command: String, arguments: [String]? = nil) -> String {
     myTask.launchPath = commandLaunchPath
     myTask.arguments = commandPieces
     myTask.standardOutput = myPipe
-    // myTask.standardInput = myInputPipe
+    myTask.standardInput = myInputPipe
     myTask.standardError = myErrorPipe
 
     myTask.launch()
-    myTask.waitUntilExit()
+    if waitForTermination == true {
+        myTask.waitUntilExit()
+    }
 
     let data = myPipe.fileHandleForReading.readDataToEndOfFile()
     let error = myErrorPipe.fileHandleForReading.readDataToEndOfFile()
-    let outputError = NSString(data: error, encoding: String.Encoding.utf8.rawValue) as! String
-    let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as! String
+    let outputError = NSString(data: error, encoding: String.Encoding.utf8.rawValue)! as String
+    let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
 
     return output + outputError
 }

@@ -6,8 +6,13 @@ protocol XCredsMechanismProtocol {
     func denyLogin()
     func setContextString(type: String, value: String)
     func setHint(type: HintType, hint: Any)
+    func reload()
 }
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
+    func reload() {
+        fatalError()
+    }
+
     let mechCallbacks: AuthorizationCallbacks
     let mechEngine: AuthorizationEngineRef
     let mech: MechanismRecord?
@@ -36,7 +41,15 @@ protocol XCredsMechanismProtocol {
 
 
     }
-
+    var xcredsPass: String? {
+        get {
+            guard let userPass = getHint(type: .pass) as? String else {
+                return nil
+            }
+            os_log("Computed xcredsPass accessed: %@", log: noLoMechlog, type: .debug)
+            return userPass
+        }
+    }
     var xcredsUser: String? {
         get {
             guard let userName = getHint(type: .user) as? String else {
@@ -123,6 +136,16 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
+    var nomadGroups: [String]? {
+        get {
+            guard let userGroups = getHint(type: .groups) as? [String] else {
+                os_log("noMADGroups value is empty", log: noLoMechlog, type: .debug)
+                return nil
+            }
+            os_log("Computed nomadgroups accessed: %{public}@", log: noLoMechlog, type: .debug)
+            return userGroups
+        }
+    }
 
     func getHint(type: HintType) -> Any? {
         var value : UnsafePointer<AuthorizationValue>? = nil
@@ -141,6 +164,88 @@ protocol XCredsMechanismProtocol {
         return result
     }
 
+    /// Adds a new alias to an existing local record
+    ///
+    /// - Parameters:
+    ///   - name: the shortname of the user to check as a `String`.
+    ///   - alias: The password of the user to check as a `String`.
+    /// - Returns: `true` if user:pass combo is valid, false if not.
+    class func addAlias(name: String, alias: String) -> Bool {
+        os_log("Checking for local username", log: noLoMechlog, type: .error)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+
+        let isLocal = records.isEmpty ? false : true
+        os_log("Results of local user check  %{public}@", log: noLoMechlog, type: .error, isLocal.description)
+
+        if !isLocal {
+            return isLocal
+        }
+
+        // now to update the alias
+        do {
+                if let currentAlias = try records.first?.values(forAttribute: kODAttributeTypeRecordName) as? [String] {
+                    if !currentAlias.contains(alias) {
+                      try records.first?.addValue(alias, toAttribute: kODAttributeTypeRecordName)
+                    }
+                } else {
+                    try records.first?.addValue(alias, toAttribute: kODAttributeTypeRecordName)
+                }
+        } catch {
+            os_log("Unable to add alias to record")
+            return false
+        }
+
+        return true
+    }
+
+    /// Updates a timestamp on a local account
+    ///
+    /// - Parameters:
+    ///   - name: the shortname of the user to check as a `String`.
+    ///   - time: The time to add  as a `String`.
+    /// - Returns: `true` if time attribute can be added, false if not.
+    class func updateSignIn(name: String, time: AnyObject ) -> Bool {
+        os_log("Checking for local username", log: noLoMechlog, type: .default)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+
+        let isLocal = records.isEmpty ? false : true
+        os_log("Results of local user check %{public}@", log: noLoMechlog, type: .default, isLocal.description)
+
+        if !isLocal {
+            return isLocal
+        }
+
+        // now to update the attribute
+
+        do {
+            try records.first?.setValue(time, forAttribute: kODAttributeNetworkSignIn)
+        } catch {
+            os_log("Unable to add sign in time to record", log: noLoMechlog, type: .error)
+            return false
+        }
+
+        return true
+    }
     /// Set one of the known `AuthorizationTags` values to be used during mechanism evaluation.
     ///
     /// - Parameters:

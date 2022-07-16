@@ -26,7 +26,7 @@ class MainController: NSObject {
         let _ = localPassword()
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
             //now we set the password.
-
+             Mark()
             DispatchQueue.main.async {
                 mainMenu.webView?.window?.close()
 
@@ -38,7 +38,11 @@ class MainController: NSObject {
                     return
                 }
                 if tokens.refreshToken.count>0 {
-                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    Mark()
+                    DispatchQueue.main.async {
+                        mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    }
+
                 }
                 let localPassword = self.localPassword()
                 if (localPassword != tokens.password){
@@ -88,7 +92,7 @@ class MainController: NSObject {
 
                     }
                 }
-                if TokenManager.shared.saveTokensToKeychain(tokens: tokens) == false {
+                if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:tokens.password ) == false {
                     TCSLogWithMark("error saving tokens to keychain")
                 }
                 ScheduleManager.shared.startCredentialCheck()
@@ -126,7 +130,7 @@ class MainController: NSObject {
             let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
             if isPasswordValid==true {
                 passwordWindowController.window?.close()
-                let err = keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: localPassword)
+                let err = keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: localPassword, shouldUpdateACL: true)
                 if err == false {
                     return nil
                 }

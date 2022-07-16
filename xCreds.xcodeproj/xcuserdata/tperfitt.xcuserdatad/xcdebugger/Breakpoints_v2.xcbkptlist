@@ -7,80 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EA731DDB-82DE-4686-B77D-F5722C971636"
+            uuid = "53F45A9C-7F38-4042-B338-F2F17B67A195"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds/TokenManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "run()"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "saveTokensToKeychain(tokens:setACL:password:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "093D43B9-CACF-425C-9E83-AF361E5D59B6"
+            uuid = "906FB117-05B2-4456-9B30-6484AB72F584"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds/KeychainUtil.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "run()"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "updatePassword(_:pass:shouldUpdateACL:keychainPassword:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F68FC888-8413-4673-96FF-7ECDE959AFB5"
+            uuid = "89AAA5B7-BDF3-45C4-9935-1C0B577CFEEF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/WebView.swift"
+            filePath = "XCreds/TokenManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "tokenResponse(tokens:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6657E228-37C9-4F91-ADBF-39DA55EFF17C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "run()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2953ACC0-B76F-4CCE-A9F5-4EA70BCFED2E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "applicationDidFinishLaunching(_:)"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "getNewAccessToken(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

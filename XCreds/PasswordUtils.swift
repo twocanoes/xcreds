@@ -176,6 +176,51 @@ class PasswordUtils: NSObject {
         }
         return true
     }
+    public class func doesUserHomeExist(_ name: String) throws -> Bool {
+        // first get the user record
+
+        os_log("Checking for existing home directory", log: noLoMechlog, type: .debug)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return true
+        }
+
+        os_log("Record search returned", log: noLoMechlog, type: .info)
+
+        if records.isEmpty {
+            os_log("No user found to delete, success!", log: noLoMechlog, type: .debug)
+            return true
+        } else if records.count > 1 {
+            os_log("Multiple users found, failing local user removal", log: noLoMechlog, type: .info)
+            return false
+        }
+
+        if let homePaths = records.first?.value(forKey: kODAttributeTypeNFSHomeDirectory) as? [String] {
+
+            os_log("Home path found", log: noLoMechlog, type: .info)
+
+            let fm = FileManager.default
+
+            if let homePath = homePaths.first {
+                if fm.fileExists(atPath: homePath) {
+                    os_log("Home is: %{public}@", log: noLoMechlog, type: .info, homePath)
+                    return true
+
+                } else {
+                    return false
+                }
+            }
+        }
+        return false
+    }
+
 
     /// Checks a local username and password to see if they are valid.
     ///

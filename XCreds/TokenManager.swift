@@ -20,6 +20,17 @@ struct RefreshTokenResponse: Codable {
     }
 }
 
+struct IDToken:Codable {
+    let iss, sub,aud,name,given_name,family_name:String
+    let iat, exp:Int
+    let email:String?
+    let unique_name:String?
+
+    enum CodingKeys: String, CodingKey {
+        case iss,sub,aud,name,given_name,family_name,email,iat,exp, unique_name
+
+    }
+}
 class TokenManager {
 
     static let shared = TokenManager()
@@ -32,28 +43,19 @@ class TokenManager {
 
         if tokens.accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
-            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken) == false {
+            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating Access Token")
 
                 return false
             }
-            if setACL==true, let password = password {
-                TCSLogWithMark("Updating ACL")
-                    keychainUtil.updateACL(password:password)
-                }
-            }
 
+        }
         if tokens.idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken) == false {
+            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating idToken Token")
 
                 return false
-            }
-            if setACL==true, let password = password {
-                TCSLogWithMark("Updating ACL")
-
-                keychainUtil.updateACL(password:password)
             }
         }
 
@@ -61,15 +63,10 @@ class TokenManager {
         if tokens.refreshToken.count>0 {
             TCSLogWithMark("Saving refresh Token")
 
-            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken) == false {
+            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating refreshToken Token")
 
                 return false
-            }
-            if setACL==true, let password = password {
-                TCSLogWithMark("Updating ACL")
-
-                keychainUtil.updateACL(password:password)
             }
         }
 
@@ -78,15 +75,10 @@ class TokenManager {
         if cloudPassword.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.password) == false {
+            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating password")
 
                 return false
-            }
-            if setACL==true, let password = password {
-                TCSLogWithMark("Updating ACL")
-
-                keychainUtil.updateACL(password:password)
             }
 
         }
@@ -106,8 +98,9 @@ class TokenManager {
 
         let refreshToken = try? keychainUtil.findPassword(PrefKeys.refreshToken.rawValue)
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
+        let keychainPassword = try? keychainUtil.findPassword(PrefKeys.password.rawValue)
 
-        if let refreshToken = refreshToken, let clientID = clientID {
+        if let refreshToken = refreshToken, let clientID = clientID, let keychainPassword = keychainPassword {
 
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
@@ -136,8 +129,8 @@ class TokenManager {
                             UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
 
                             let keychainUtil = KeychainUtil()
-                            let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken)
-                            let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: json.accessToken)
+                            let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
+                            let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
 
                             completion(true,false)
 

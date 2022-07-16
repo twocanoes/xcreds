@@ -19,9 +19,24 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>XCredsLoginPlugin_TestDeploy.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>authrights.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>7631935C287D22C700D36BF7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>766355BC2870CA6A002E3867</key>
 		<dict>
 			<key>primary</key>

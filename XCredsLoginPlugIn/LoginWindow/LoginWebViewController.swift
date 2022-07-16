@@ -15,23 +15,30 @@ class LoginWebViewController: WebViewController {
     var delegate: XCredsMechanismProtocol?
     override func windowDidLoad() {
         super.windowDidLoad()
+        TCSLogWithMark("loading webview for login")
         setupLoginWindowAppearance()
+        TCSLogWithMark("loading page")
         loadPage()
     }
     fileprivate func setupLoginWindowAppearance() {
-        self.window?.level = .popUpMenu
-        self.window?.orderFrontRegardless()
+        DispatchQueue.main.async {
+            TCSLogWithMark("setting up window")
 
-        self.window?.backgroundColor = NSColor.black
-
-        self.window?.titlebarAppearsTransparent = true
-
-        self.window?.isMovable = false
-        self.window?.canBecomeVisibleWithoutLogin = true
-
-        let screenRect = NSScreen.screens[0].frame
-        self.window?.setFrame(screenRect, display: true, animate: false)
-
+            
+            self.window?.level = .popUpMenu
+            self.window?.orderFrontRegardless()
+            
+            self.window?.backgroundColor = NSColor.black
+            
+            self.window?.titlebarAppearsTransparent = true
+            
+            self.window?.isMovable = false
+            self.window?.canBecomeVisibleWithoutLogin = true
+            
+            let screenRect = NSScreen.screens[0].frame
+            self.window?.setFrame(screenRect, display: true, animate: false)
+        }
+        
     }
 
     @objc override var windowNibName: NSNib.Name {
@@ -39,13 +46,18 @@ class LoginWebViewController: WebViewController {
     }
     func loginTransition() {
 
-        NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 1.0
-            context.allowsImplicitAnimation = true
-            self.window?.alphaValue = 0.0
-        }, completionHandler: {
-            self.window?.close()
-        })
+        let screenRect = NSScreen.screens[0].frame
+        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
+        progressIndicator.style = .spinning
+        progressIndicator.startAnimation(self)
+        webView.addSubview(progressIndicator)
+//        NSAnimationContext.runAnimationGroup({ (context) in
+//            context.duration = 1.0
+//            context.allowsImplicitAnimation = true
+//            self.window?.alphaValue = 0.0
+//        }, completionHandler: {
+//            self.window?.close()
+//        })
     }
 
     override func tokensUpdated(tokens: Tokens) {
@@ -56,11 +68,73 @@ class LoginWebViewController: WebViewController {
             TCSLogWithMark("invalid delegate")
             return
         }
+        var username:String
+        let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
 
-        let isLocal = try? PasswordUtils.isUserLocal("tperfitt")
+        if let defaultsUsername = defaultsUsername {
+            username = defaultsUsername
+        }
+        else {
+            let idToken = tokens.idToken
+
+            let array = idToken.components(separatedBy: ".")
+
+            if array.count != 3 {
+                TCSLogWithMark("idToken is invalid")
+                delegate.denyLogin()
+
+
+            }
+            let body = array[1]
+            guard let data = base64UrlDecode(value:body ) else {
+                TCSLogWithMark("error decoding id token base64")
+                delegate.denyLogin()
+                return
+            }
+
+            let decoder = JSONDecoder()
+            var idTokenObject:IDToken
+            do {
+                idTokenObject = try decoder.decode(IDToken.self, from: data)
+
+            }
+            catch {
+                TCSLogWithMark("error decoding idtoken")
+                delegate.denyLogin()
+                return
+
+            }
+
+            var emailString:String
+
+
+            if idTokenObject.email != nil {
+                emailString=idTokenObject.email!
+            }
+            else if idTokenObject.unique_name != nil {
+                emailString=idTokenObject.unique_name!
+            }
+            else {
+                TCSLogWithMark("no username found or invalid")
+                delegate.denyLogin()
+                return
+
+            }
+            guard let tUsername = emailString.components(separatedBy: "@").first else {
+                TCSLogWithMark("email address invalid")
+                delegate.denyLogin()
+                return
+
+            }
+
+            TCSLogWithMark("username found: \(tUsername)")
+            username = tUsername
+        }
+        let isLocal = try? PasswordUtils.isUserLocal(username)
 
         guard let isLocal = isLocal else {
             TCSLogWithMark("cannot find if user is local")
+            delegate.denyLogin()
             return
         }
 
@@ -69,7 +143,23 @@ class LoginWebViewController: WebViewController {
             delegate.denyLogin()
             return
         }
-        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: tokens.password)
+
+        let hasHome = try? PasswordUtils.doesUserHomeExist(username)
+        guard let hasHome = hasHome else {
+            TCSLogWithMark("home dir nil")
+            delegate.denyLogin()
+            return
+        }
+
+        if hasHome == false {
+            TCSLogWithMark("User has no home. for now, just abort")
+            delegate.denyLogin()
+            return
+        }
+
+
+
+        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
 
         if isValidPassword==false{
             TCSLogWithMark("local password is different from cloud password. Prompting for local password.")
@@ -103,10 +193,10 @@ class LoginWebViewController: WebViewController {
                 guard let localPassword = localPassword else {
                     continue
                 }
-                let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: "tperfitt", userPass: localPassword)
+                let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
 
                 if isValidPassword==true {
-                    let localUser = try? PasswordUtils.getLocalRecord("tperfitt")
+                    let localUser = try? PasswordUtils.getLocalRecord(username)
                     guard let localUser = localUser else {
                         TCSLogWithMark("invalid local user")
                         delegate.denyLogin()
@@ -133,7 +223,7 @@ class LoginWebViewController: WebViewController {
 
         }
         TCSLogWithMark("updating username, password, and tokens")
-        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: "tperfitt")
+        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: username)
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
 
         delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])

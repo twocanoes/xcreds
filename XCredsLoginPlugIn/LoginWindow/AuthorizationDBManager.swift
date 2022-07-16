@@ -31,7 +31,7 @@ class AuthorizationDBManager: NSObject {
         let err = AuthorizationRightGet("system.login.console", &rightsInfo)
 
         if err != noErr {
-            TCSLogWithMark("eror getting right")
+            TCSLogWithMark("error getting right")
             return nil
         }
         let rightInfo = rightsInfo as? Dictionary<String, Any>
@@ -62,7 +62,6 @@ class AuthorizationDBManager: NSObject {
     func setConsoleRights(rights:Array<String>) -> Bool {
 
         var rightInfo: CFDictionary?
-
         let err = AuthorizationRightGet("system.login.console", &rightInfo)
 
         if err != noErr {
@@ -94,12 +93,11 @@ class AuthorizationDBManager: NSObject {
     }
     func replace(right:String, withNewRight newRight:String) -> Bool {
 
-    var consoleRights = consoleRights()
+        var consoleRights = consoleRights()
         let positionOfOldRight = consoleRights.firstIndex(of: right)
 
         guard let positionOfOldRight = positionOfOldRight else {
             TCSLogWithMark("error positionOfOldRight")
-
             return false
         }
 
@@ -108,6 +106,23 @@ class AuthorizationDBManager: NSObject {
         return setConsoleRights(rights: consoleRights)
 
     }
+    func remove(right:String) -> Bool {
+
+        var consoleRights = consoleRights()
+        let positionOfOldRight = consoleRights.firstIndex(of: right)
+
+        guard let positionOfOldRight = positionOfOldRight else {
+            TCSLogWithMark("error positionOfOldRight")
+
+            return false
+        }
+
+        consoleRights.remove(at: positionOfOldRight)
+
+        return setConsoleRights(rights: consoleRights)
+
+    }
+
     func rightExists(right:String)->Bool{
         let consoleRights = consoleRights()
         let positionOfRight = consoleRights.firstIndex(of: right)
@@ -122,28 +137,42 @@ class AuthorizationDBManager: NSObject {
     }
     func insertRight(newRight:String, afterRight right:String) -> Bool {
         var consoleRights = consoleRights()
+        TCSLogWithMark("finding right \(right)")
+
         let positionOfRight = consoleRights.firstIndex(of: right)
 
         guard let positionOfRight = positionOfRight else {
-            TCSLogWithMark("error positionOfRight")
+            TCSLogWithMark("error positionOfRight. Not defined")
 
             return false
         }
-        consoleRights.insert(newRight, at: positionOfRight+1)
+        if positionOfRight+1 == consoleRights.count || consoleRights[positionOfRight+1] != newRight {
 
-        return true
+            consoleRights.insert(newRight, at: positionOfRight+1)
+        }
+        else {
+            print("right already exists")
+        }
+
+
+        return setConsoleRights(rights: consoleRights)
     }
     func insertRight(newRight:String, beforeRight right:String) -> Bool {
         var consoleRights = consoleRights()
         let positionOfRight = consoleRights.firstIndex(of: right)
-
         guard let positionOfRight = positionOfRight else {
-            TCSLogWithMark("error positionOfRight2")
+            TCSLogWithMark("error positionOfRight. Not defined")
 
             return false
         }
-        consoleRights.insert(newRight, at: positionOfRight)
+        //makes sure it is not last and then check to see if it already exists
+        if positionOfRight==0 || consoleRights[positionOfRight-1] != newRight {
+            consoleRights.insert(newRight, at: positionOfRight)
 
+        }
+        else {
+            print("right already exists")
+        }
         let success = setConsoleRights(rights: consoleRights)
         return success
     }

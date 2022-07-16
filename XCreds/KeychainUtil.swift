@@ -49,12 +49,15 @@ class KeychainUtil {
 
     func findPassword(_ name: String) throws -> String {
 
+        TCSLogWithMark("Finding Password")
         myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(name.count), name, &passLength, &passPtr, &myKeychainItem)
 
         if myErr == OSStatus(errSecSuccess) {
             let password = NSString(bytes: passPtr!, length: Int(passLength), encoding: String.Encoding.utf8.rawValue)
+            TCSLogWithMark("Password found")
             return password as! String
         } else {
+            TCSLogWithMark("Password not found")
             throw KeychainError.noStoredPassword
         }
     }
@@ -68,16 +71,34 @@ class KeychainUtil {
         return myErr
     }
 
-    func updatePassword(_ name: String, pass: String) -> Bool {
+    func updatePassword(_ name: String, pass: String, shouldUpdateACL:Bool=false, keychainPassword:String?=nil ) -> Bool {
         if (try? findPassword(name)) != nil {
-            deletePassword()
+            TCSLogWithMark("Deleting password")
+            let _ = deletePassword()
         }
+        TCSLogWithMark("setting new password")
+
         myErr = setPassword(name, pass: pass)
-        if myErr == OSStatus(errSecSuccess) {
-            return true
-        } else {
+        if myErr != OSStatus(errSecSuccess) {
+            TCSLogWithMark("setting new password FAILURE")
             return false
         }
+        TCSLogWithMark("setting new password success")
+
+        if shouldUpdateACL==true {
+            if let keychainPassword = keychainPassword {
+                TCSLogWithMark("Updating ACL for \(name)")
+
+                updateACL(password:keychainPassword)
+            }
+            else {
+                TCSLogWithMark("ERROR Updating ACL")
+
+                return false
+            }
+            
+        }
+        return true
     }
 
     // delete the password from the keychain
@@ -131,6 +152,19 @@ class KeychainUtil {
                 secApps.append(trust!)
             }
         }
+        if FileManager.default.fileExists(atPath: "/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", isDirectory: nil) {
+            err = SecTrustedApplicationCreateFromPath("/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", &trust)
+            if err == 0 {
+                secApps.append(trust!)
+            }
+        }
+        if FileManager.default.fileExists(atPath: "/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.arm64.xpc", isDirectory: nil) {
+            err = SecTrustedApplicationCreateFromPath("/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.arm64.xpc", &trust)
+            if err == 0 {
+                secApps.append(trust!)
+            }
+        }
+
         for acl in myACLs as! Array<SecACL> {
             SecACLCopyContents(acl, &appList, &desc, &prompt)
             let authArray = SecACLCopyAuthorizations(acl)
@@ -160,7 +194,7 @@ class KeychainUtil {
             } catch {
                 TCSLogWithMark("No teamid in ACLAuthorizationPartitionID.")
             }
-            let teamIds = [ "teamid:UXP6YEHSPW" ]
+            let teamIds = [ "apple:", "teamid:UXP6YEHSPW" ]
 
             propertyListObject["Partitions"] = teamIds
 

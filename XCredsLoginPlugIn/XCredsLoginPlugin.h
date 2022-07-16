@@ -13,6 +13,10 @@
 @import Security.AuthSession;
 extern OSStatus SecKeychainChangePassword(SecKeychainRef keychainRef, UInt32 oldPasswordLength, const void* oldPassword, UInt32 newPasswordLength, const void* newPassword);
 
+extern OSStatus SecKeychainResetLogin(UInt32 passwordLength,
+                                      const void* password,
+                                      Boolean resetSearchList);
+
 extern OSStatus SecKeychainItemSetAccessWithPassword(SecKeychainItemRef item, SecAccessRef access, UInt32 passLength, const void* password);
 
 

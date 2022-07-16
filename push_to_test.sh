@@ -1,8 +1,14 @@
 #!/bin/bash +x 
-set -e
+
+set -x
 SECURITY_PLUGIN_PATH="/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle"
-ssh root@sign.local rm -rf  "${SECURITY_PLUGIN_PATH}"
-scp -r "${BUILD_ROOT}/Debug/XCredsLoginPlugin.bundle" root@sign.local:"${SECURITY_PLUGIN_PATH}"
-ssh root@sign.local killall -9 SecurityAgent
+
+echo running ssh
+ssh -J tcadmin@simac.local root@test001.local rm -rf  "${SECURITY_PLUGIN_PATH}"
+
+echo copying files
+scp -r -J tcadmin@simac.local "${BUILD_ROOT}/Release/XCredsLoginPlugin.bundle" root@test001.local:"${SECURITY_PLUGIN_PATH}" 
+
+ssh -J tcadmin@simac.local root@test001.local killall -9 SecurityAgent
 
 exit 0

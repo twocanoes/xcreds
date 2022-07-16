@@ -67,9 +67,20 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         // check to ensure the keychain is there
         TCSLogWithMark("Getting Home Dir")
-
         let userKeychainPath = homeDir + "/Library/Keychains/login.keychain-db"
         TCSLogWithMark("finding path")
+        if !fm.fileExists(atPath: userKeychainPath) {
+            // if we're not set to create a keychain, move on
+            if getManagedPreference(key: .KeychainCreate) as? Bool == true {
+                os_log("No login.keychain-db, creating one", log: "keychainAddLog")
+                SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
+            } else {
+                os_log("No login.keychain-db, skipping KeychainAdd", log: "keychainAddLog", type: .default)
+                allowLogin()
+                return
+            }
+        }
+
         // now test it we can unlock the keychain
         let tempPath = userKeychainPath + Date().timeIntervalSinceNow.description
         TCSLogWithMark("Link old keychain")
@@ -125,9 +136,13 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         TCSLogWithMark("Unlocking Keychain.")
 
-        err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
+        err = SecKeychainUnlock(userKeychain, UInt32(userpass.count), userpass, true)
 
-        var keychainItem: SecKeychainItem? = nil
+        if err != noErr {
+            TCSLogWithMark("error unlocking keychain!")
+
+        }
+//        var keychainItem: SecKeychainItem? = nil
 
 //        var kItemAccount = usernameContext ?? ""
 //
@@ -192,9 +207,6 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:userpass )==false {
             TCSLogWithMark("Error saving tokens to keychain")
         }
-
-
-
 
         allowLogin()
 

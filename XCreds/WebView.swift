@@ -169,6 +169,14 @@ extension WebViewController: WKNavigationDelegate {
         decisionHandler(.allow)
     }
 
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        TCSLogWithMark(error.localizedDescription)
+
+
+    }
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        TCSLogWithMark(error.localizedDescription)
+    }
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
