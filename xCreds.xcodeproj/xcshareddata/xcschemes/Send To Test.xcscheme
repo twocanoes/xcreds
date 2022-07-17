@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "76BEF7D12871F36C0013E2A1"
-               BuildableName = "FakeTrue"
-               BlueprintName = "FakeTrue"
+               BlueprintIdentifier = "766F4C4C2883B88F0021F548"
+               BuildableName = "Send To Test"
+               BlueprintName = "Send To Test"
                ReferencedContainer = "container:XCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,9 +31,9 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      buildConfiguration = "Release"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "76BEF7D12871F36C0013E2A1"
-            BuildableName = "FakeTrue"
-            BlueprintName = "FakeTrue"
+            BlueprintIdentifier = "7631935C287D22C700D36BF7"
+            BuildableName = "authrights"
+            BlueprintName = "authrights"
             ReferencedContainer = "container:XCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -57,16 +57,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "76BEF7D12871F36C0013E2A1"
-            BuildableName = "FakeTrue"
-            BlueprintName = "FakeTrue"
+            BlueprintIdentifier = "766F4C4C2883B88F0021F548"
+            BuildableName = "Send To Test"
+            BlueprintName = "Send To Test"
             ReferencedContainer = "container:XCreds.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

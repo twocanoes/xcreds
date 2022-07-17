@@ -55,6 +55,8 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
                 denyLogin()
                 return
             }
+            let _ = cliTask("/usr/bin/killall 'XCreds Login Overlay'")
+
             let _ = cliTask("/usr/bin/killall loginwindow")
 
         default:
