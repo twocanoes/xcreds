@@ -1,52 +1,23 @@
 # XCreds: Sync Your Cloud Password to your Mac
 
-## Overview
-XCreds works by keeping your local Mac password in sync with your Identity Provider password. If you use Azure or Google or other identity provider, XCreds will make sure the password is the same. XCreds runs in the background and checks if the cloud password has been changed. If it detects the password has changed, it prompts to login to the cloud provider and updates the local password and the keychain password automatically.
+## How It Works
+XCreds has 2 components: the XCreds app that runs in user space and XCreds Login Window that is a security agent that runs when the user is logging in to their mac. Both the security agent and the app share keychain items in the user's keychain to key track of the current local password and the tokens from the cloud provider. Both items prompt the user withe a web view to authenticate to their cloud provider, verify log in was successful and then updates the local password and user keychain passwords as needed. 
 
-## Configuration
-Configuration and setting is handled from a config profile. See the Preferences section below for details on each key. The discovery URL and client ID values are required. All others are optional. 
+## Requirements
+XCreds currently works with Azure and Google cloud as an OIDC identity provider. It has been testing on macOS Monterey but should support earlier version of macOS.
 
-We recommend you use a preference manifest and use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) with the  [supplied manifest](https://github.com/twocanoes/xcreds/releases).
+## Components
+XCreds consists of XCreds Login and XCreds app. They do similar tasks but run at different times. 
 
-A sample configuration profile is [available to download](https://github.com/twocanoes/xcreds/releases) as well.
+### XCreds Login
+XCreds Login is a Security Agent that replaces the login window on macOS to provide authentication to the cloud provider. It presents a web view at the login window and fully supports multi-factor authentication. When authentication completes, the web view receives Open Id Connect (OIDC) tokens and stores those tokens in the login keychain. If the local password and the cloud password are different, the local password is updated to match the cloud password and the login keychain password is updated a well. The local password is then stored in the user keychain so that any password changes in the future can be updated silently. Only the security agent and the XCreds app are given permission to access the password and tokens.
 
+### XCreds App
+The XCreds app runs when the user logs in. On first launch, it checks to see if xcreds tokens as available in the login keychain. If they are, the refresh token is used to see if it is still valid. If it is invalid (due to a remote password change), the user is prompted with a web view to authenticate with their cloud credentials. If they authenticate successfully, the tokens are updated in the login keychain and the password is check to see if it has been changed. If it changed, the local account and login keychain is updated to match the cloud password. 
 
+## Setup and Configuration
 
-## Azure Setup
-See the [wiki](https://github.com/twocanoes/xcreds/wiki) for Azure instructions
-
-# Download
-Download XCreds from the [github release page](https://github.com/twocanoes/xcreds/releases)
-
-
-## How it works
-XCreds is a menu item macOS application that works like this:
-
-1. On first launch, it prompts the user for their local macOS password and saves it to the keychain where the app can retrieve it later. The password is verified to be correct against local directory services.
-
-1. The user is prompted via a webview to log into their cloud provider. 
-
-1. Once authenticated, OAuth tokens are returned verifying the authentication succeeded. These tokens are saved to the keychain. 
-
-1. The cloud password entered is then used to set the local password and change the login keychain password.
-
-## Preferences
-The easiest way configure is to use [Profile Creator](https://github.com/ProfileCreator/ProfileCreator) using the [supplied manifest](https://github.com/twocanoes/xcreds/releases). The following keys can then be set and managed:
-
-*redirectURI* (string): the URI passed back to the webview after successful authentication. Default value: "xcreds://auth/"
-
-*refreshRateHours* (string): The number of hours between checks. Default value: "3".
-
-*showDebug* (bool): Show push notifications for authentication progress. Default value: false
-
-*verifyPassword* (bool): When cloud password is changed and the local keychain password and local user account needs to be changed, a verification dialog can be shown to verify the password. Default value: true
-
-*LogFileName* (string): The name of the log file in ~/Library/Logs/. Default value: "xcreds.log"
-
-*shouldShowQuit* (bool): Show Quit in the menu item menu. Default value: true
-
-*shouldShowPreferencesOnStart* (bool): Show Settings on start if none are defined. Default value: false
-
+See the [admin guide](https://github.com/twocanoes/xcreds/wiki/AdminGuide) on the wiki.
 
 ## Video
 See the [video on youtube](https://youtu.be/6V5MCQNWVTE)
