@@ -10,35 +10,41 @@
 			<key>PayloadDisplayName</key>
 			<string>XCreds</string>
 			<key>PayloadIdentifier</key>
-			<string>com.github.erikberglund.ProfileCreator.27BDECFE-2520-4034-8593-DB45364B0A28.com.twocanoes.xcreds.06A2A167-4F35-4447-A4EB-1FD5AD7BDBA6</string>
+			<string>com.github.erikberglund.ProfileCreator.47F59CD0-E476-4016-A8C6-82837B61C7CE.com.twocanoes.xcreds.F5B79C66-146F-4F8A-9237-CAF10606615C.11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
 			<key>PayloadOrganization</key>
 			<string></string>
 			<key>PayloadType</key>
 			<string>com.twocanoes.xcreds</string>
 			<key>PayloadUUID</key>
-			<string>06A2A167-4F35-4447-A4EB-1FD5AD7BDBA6</string>
+			<string>11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>clientID</key>
 			<string>5487c4cd-949a-402d-9eee-ae8fb696b415</string>
 			<key>discoveryURL</key>
 			<string>https://login.microsoftonline.com/common/.well-known/openid-configuration</string>
+			<key>redirectURI</key>
+			<string>https://127.0.0.1/xcreds</string>
+			<key>scopes</key>
+			<string>profile openid email offline_access</string>
+			<key>shouldShowQuitMenu</key>
+			<false/>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>XCreds</string>
+	<string>azure xcreds</string>
 	<key>PayloadDisplayName</key>
-	<string>xcreds</string>
+	<string>azure xcreds</string>
 	<key>PayloadIdentifier</key>
-	<string>com.github.erikberglund.ProfileCreator.27BDECFE-2520-4034-8593-DB45364B0A28</string>
+	<string>com.github.erikberglund.ProfileCreatorAF7B74FE-BF9D-4789-9E78-519C49324120</string>
 	<key>PayloadOrganization</key>
-	<string>Twocanoes</string>
+	<string>twocanoes</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>27BDECFE-2520-4034-8593-DB45364B0A28</string>
+	<string>7620DBF9-295B-4DFF-B0AE-0629207ECF5A</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
