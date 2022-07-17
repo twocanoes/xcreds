@@ -1,5 +1,18 @@
 #!/bin/bash
 
+script_path="$0"
+script_folder=$(dirname "${script_path}")
+authrights_path="${script_folder}"/authrights
+plugin_path="${script_folder}"/XCredsLoginPlugin.bundle
+plugin_resources_path="${plugin_path}"/Contents/Resources
+overlay_path="${script_folder}"/"XCreds Login Overlay.app"
+overlay_resources_path="${overlay_path}"/Contents/Resources
+auth_backup_folder=/Library/"Application Support"/xcreds
+rights_backup_path="${auth_backup_folder}"/rights.bak
+launch_agent_config_name="com.twocanoes.xcreds-overlay.plist"
+launch_agent_destination_path="/Library/LaunchAgents/"
+launch_agent_source_path="${overlay_resources_path}"/"${launch_agent_config_name}"
+
 f_install=0
 f_remove=0
 
@@ -21,12 +34,6 @@ if [ $(id -u) -ne 0 ]; then
 	exit -1
 fi
 
-script_path="$0"
-script_folder=$(dirname "${script_path}")
-authrights_path="${script_folder}"/authrights
-plugin_path="${script_folder}"/XCredsLoginPlugin.bundle
-auth_backup_folder=/Library/"Application Support"/xcreds
-rights_backup_path="${auth_backup_folder}"/rights.bak
 
 if [ $f_install -eq 1 ] && [ $f_remove -eq 1 ]; then
 	echo "you can't specify both -i and -r"
@@ -50,6 +57,11 @@ if [ $f_install -eq 1 ]; then
 		chown -R root:wheel "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle
 	fi
 	
+	if [ ! -e "${launch_agent_destination_path}"/"${launch_agent_config_name}" ]; then
+	
+		cp "${launch_agent_source_path}" "${launch_agent_destination_path}"
+#		/bin/launchctl load "${launch_agent_destination_path}"/"${launch_agent_config_name}" 
+	fi
 	if [ -e ${authrights_path} ]; then
 		"${authrights_path}" -r "loginwindow:login" "XCredsLoginPlugin:LoginWindow" 
 		"${authrights_path}" -a  "XCredsLoginPlugin:LoginWindow" "XCredsLoginPlugin:PowerControl,privileged" 
@@ -71,6 +83,12 @@ elif [ $f_remove -eq 1 ]; then
 		rm -rf "/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle"
 		
 	fi
+	
+	if [ -e "${launch_agent_destination_path}"/"${launch_agent_config_name}" ]; then
+#		/bin/launchctl unload "${launch_agent_destination_path}"/"${launch_agent_config_name}" 
+		rm "${launch_agent_destination_path}"/"${launch_agent_config_name}"
+	fi
+	
 	
 	
 else 

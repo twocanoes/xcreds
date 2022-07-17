@@ -12,7 +12,7 @@
 	<false/>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Applications/XCreds.app/Contents/MacOS/XCreds</string>
+		<string>/Applications/XCreds.app/Contents/Resources/XCreds Login Overlay.app/Contents/MacOS/XCreds Login Overlay</string>
 	</array>
 </dict>
 </plist>
