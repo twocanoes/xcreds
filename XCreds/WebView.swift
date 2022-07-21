@@ -87,21 +87,50 @@ extension WebViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
+
+        let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
+        let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue)
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
-            // Azure snarfing
-            TCSLogWithMark("Azure")
-            if navigationAction.request.url?.host == "login.microsoftonline.com" {
-                var javaScript = "document.getElementById('i0118').value"
+            if let customURL = customURL as? String, let customPasswordElementID = customPasswordElementID as? String , navigationAction.request.url?.host == customURL {
+                TCSLogWithMark(customURL.sanitized())
+
+                let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
                     }
+                    else {
+                        TCSLogWithMark("No password found")
+                        return
+                    }
                 })
+
+            }
+
+            // Azure snarfing
+            else if navigationAction.request.url?.host == "login.microsoftonline.com" {
+                TCSLogWithMark("Azure")
+
+                var javaScript = "document.getElementById('i0118').value"
+                ///passwordInput
+                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                    if let rawPass = response as? String {
+                        self.password=rawPass
+                    }
+                    else {
+                        TCSLogWithMark("No password found")
+
+                    }
+                })
+                
                 javaScript = "document.getElementById('confirmNewPassword').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
+                    }
+                    else {
+                        TCSLogWithMark("No confirmNewPassword found")
                     }
                 })
             } else if navigationAction.request.url?.host == "accounts.google.com" {
@@ -112,6 +141,11 @@ extension WebViewController: WKNavigationDelegate {
                     if let rawPass = response as? String {
                         self.password=rawPass
                     }
+                    else {
+                        TCSLogWithMark("No password found")
+
+                    }
+
 
                 })
             } else if navigationAction.request.url?.path.contains("verify") ?? false {
@@ -122,49 +156,16 @@ extension WebViewController: WKNavigationDelegate {
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                 })
             }
+            else {
+                TCSLogWithMark("Unknown Provider")
+                TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
+            }
         } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
             // for Okta
             let javaScript = "document.getElementById('input74').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                if let rawPass = response as? String {
-//                    let alert = NSAlert.init()
-//                    alert.messageText = "Your password is: \(rawPass)"
-//                    RunLoop.main.perform {
-//                        alert.runModal()
-//                    }
-//                }
             })
         }
-
-        // this is cleaner, but only works with Azure
-
-        /*
-         if navigationAction.request.httpMethod == "POST" {
-         if let bodyData = navigationAction.request.httpBody,
-         let bodyString = String(data: bodyData, encoding: .utf8) {
-         if let queryDict = queryToDict(query: bodyString) {
-         var cleanedDict = [String:String]()
-
-         for queryPair in queryDict {
-         if let valueClean = queryPair.value.removingPercentEncoding,
-         let noB64 = Data(base64Encoded: valueClean),
-         let noB64String = String(data: noB64, encoding: .utf8) {
-         cleanedDict[queryPair.key] = noB64String
-         } else {
-         cleanedDict[queryPair.key] = queryPair.value
-         }
-         }
-
-         if let password = cleanedDict["passwd"] {
-         print("Password is.... \(password)")
-         let alert = NSAlert()
-         alert.messageText = "Your password is: \(password.removingPercentEncoding ?? "Unkown")"
-         alert.runModal()
-         }
-         }
-         }
-         }
-         */
 
         decisionHandler(.allow)
     }
@@ -239,6 +240,32 @@ extension WebViewController: OIDCLiteDelegate {
                 )
 
             }
+            else {
+                TCSLogWithMark("no password!")
+                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+
+            }
         }
     }
+}
+extension String {
+    func sanitized() -> String {
+        // see for ressoning on charachrer sets https://superuser.com/a/358861
+        let invalidCharacters = CharacterSet(charactersIn: "\\/:*?\"<>| ")
+            .union(.newlines)
+            .union(.illegalCharacters)
+            .union(.controlCharacters)
+
+        return self
+            .components(separatedBy: invalidCharacters)
+            .joined(separator: "")
+    }
+
+    mutating func sanitize() -> Void {
+        self = self.sanitized()
+    }
+
+
+
+
 }

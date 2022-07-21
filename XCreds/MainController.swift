@@ -35,6 +35,10 @@ class MainController: NSObject {
                 }
 
                 guard let tokens = tokenInfo["tokens"] as? Tokens else {
+                    let alert = NSAlert()
+                    alert.addButton(withTitle: "OK")
+                    alert.messageText="Invalid tokens or password not determined. Please check the log."
+                    alert.runModal()
                     return
                 }
                 if tokens.refreshToken.count>0 {
