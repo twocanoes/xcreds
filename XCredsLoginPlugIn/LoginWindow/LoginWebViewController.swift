@@ -99,7 +99,8 @@ class LoginWebViewController: WebViewController {
 
             }
             catch {
-                TCSLogWithMark("error decoding idtoken")
+                TCSLogWithMark("error decoding idtoken:")
+                TCSLogWithMark("Token:\(body)")
                 delegate.denyLogin()
                 return
 
@@ -109,7 +110,7 @@ class LoginWebViewController: WebViewController {
 
 
             if idTokenObject.email != nil {
-                emailString=idTokenObject.email!
+                emailString=idTokenObject.email!.lowercased()
             }
             else if idTokenObject.unique_name != nil {
                 emailString=idTokenObject.unique_name!
@@ -120,7 +121,7 @@ class LoginWebViewController: WebViewController {
                 return
 
             }
-            guard let tUsername = emailString.components(separatedBy: "@").first else {
+            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
                 TCSLogWithMark("email address invalid")
                 delegate.denyLogin()
                 return

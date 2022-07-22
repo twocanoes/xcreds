@@ -21,10 +21,10 @@ struct RefreshTokenResponse: Codable {
 }
 
 struct IDToken:Codable {
-    let iss, sub,aud,name,given_name,family_name:String
+    let iss,sub,aud:String
     let iat, exp:Int
     let email:String?
-    let unique_name:String?
+    let unique_name, given_name,family_name,name:String?
 
     enum CodingKeys: String, CodingKey {
         case iss,sub,aud,name,given_name,family_name,email,iat,exp, unique_name
