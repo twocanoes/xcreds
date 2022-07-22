@@ -38,6 +38,13 @@ protocol XCredsMechanismProtocol {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
+        let infoPlist = Bundle.main.infoDictionary
+
+        if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+            TCSLogWithMark("Build \(build)")
+
+        }
+
 
 
     }
