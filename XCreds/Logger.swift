@@ -13,7 +13,7 @@ func TCSLogWithMark(_ message: String = "",
     
     let comp = file.components(separatedBy: "/")
     if let lastPart = comp.last{
-        TCSLog("\(date) FILE:\(lastPart) LINE:\(line) FUNCTION:\(function) message:\(message)")
+        TCSLog("\(date) FILE:\(lastPart) LINE:\(line) FUNCTION:\(function) \(message)")
 
     }
 

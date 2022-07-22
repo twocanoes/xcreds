@@ -99,7 +99,7 @@ class LoginWebViewController: WebViewController {
 
             }
             catch {
-                TCSLogWithMark("error decoding idtoken:")
+                TCSLogWithMark("error decoding idtoken::")
                 TCSLogWithMark("Token:\(body)")
                 delegate.denyLogin()
                 return

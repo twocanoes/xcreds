@@ -17,6 +17,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
 
+        let infoPlist = Bundle.main.infoDictionary
+
+        if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+            TCSLogWithMark("Build \(build)")
+
+        }
+
 //        ManagedPreferences.shared.preference(forKey: .clientID)
         mainController = MainController.init()
         mainController?.run()
