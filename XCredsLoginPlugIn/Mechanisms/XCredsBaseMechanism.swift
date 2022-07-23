@@ -57,6 +57,25 @@ protocol XCredsMechanismProtocol {
             return userPass
         }
     }
+    var xcredsFirst: String? {
+        get {
+            guard let firstName = getHint(type: .firstName) as? String else {
+                return nil
+            }
+            os_log("Computed nomadFirst accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
+            return firstName
+        }
+    }
+
+    var xcredsLast: String? {
+        get {
+            guard let lastName = getHint(type: .lastName) as? String else {
+                return nil
+            }
+            os_log("Computed nomadLast accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
+            return lastName
+        }
+    }
     var xcredsUser: String? {
         get {
             guard let userName = getHint(type: .user) as? String else {
@@ -302,7 +321,7 @@ protocol XCredsMechanismProtocol {
             records = try query.resultsAllowingPartial(false) as! [ODRecord]
         } catch {
             let errorText = error.localizedDescription
-//            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
             return false
         }
         let isLocal = records.isEmpty ? false : true

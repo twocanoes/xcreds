@@ -47,6 +47,7 @@ struct MechanismRecord {
     Boolean                         fLoginWindow;
     Boolean                         fPowerControl;
     Boolean                         fKeychainAdd;
+    Boolean                         fCreateUser;
 
 
 };

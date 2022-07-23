@@ -14,9 +14,9 @@ enum HintType: String {
     case user
     case domain
     case pass
-    case first
-    case last
-    case full
+    case firstName
+    case lastName
+    case fullName
     case groups
     case uid
     case gid

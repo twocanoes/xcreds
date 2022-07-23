@@ -12,8 +12,16 @@ enum PrefKeys: String {
 }
 func getManagedPreference(key: Preferences) -> Any? {
 
+
+    if let preference = UserDefaults.standard.value(forKey: key.rawValue)  {
+        os_log("Found managed preference: %{public}@", type: .debug, key.rawValue)
+        return preference
+    }
+
+
     return nil
 }
+
 enum Preferences: String {
     /// The desired AD domain as a `String`.
     case ADDomain

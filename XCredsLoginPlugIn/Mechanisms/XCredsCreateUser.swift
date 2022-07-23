@@ -7,12 +7,13 @@
 //
 
 import OpenDirectory
-//import os.log
-let createUserLog = "createUserLog"
-let uiLog = "uiLog"
+
+
 /// Mechanism to create a local user and homefolder.
-class CreateUser: XCredsBaseMechanism {
-    
+class XCredsCreateUser: XCredsBaseMechanism {
+
+    let createUserLog = "createUserLog"
+    let uiLog = "uiLog"
     //MARK: - Properties
     let session = ODSession.default()
     
@@ -31,7 +32,7 @@ class CreateUser: XCredsBaseMechanism {
     let nativeAttrsDetails = ["dsAttrTypeNative:AvatarRepresentation": "",
                               "dsAttrTypeNative:unlockOptions": "0"]
     
-    @objc override  func run() {
+    @objc override   func run() {
         os_log("CreateUser mech starting", log: createUserLog, type: .debug)
         
         // check if we are a guest account
@@ -61,7 +62,7 @@ class CreateUser: XCredsBaseMechanism {
             }
         }
         
-        if xcredsPass != nil && !XCredsBaseMechanism.checkForLocalUser(name: xcredsUser!) {
+        if xcredsPass != nil && !XCredsCreateUser.checkForLocalUser(name: xcredsUser!) {
             
             var secureTokenCreds = [String:String]()
             if getManagedPreference(key: .ManageSecureTokens) as? Bool ?? false {
@@ -69,7 +70,7 @@ class CreateUser: XCredsBaseMechanism {
             }
             
             guard let uid = findFirstAvaliableUID() else {
-                os_log("Could not find an avaliable UID", log: createUserLog, type: .debug)
+                os_log("Could not find an available UID", log: createUserLog, type: .debug)
                 return
             }
             
@@ -82,7 +83,7 @@ class CreateUser: XCredsBaseMechanism {
             
             os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
             if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
-//                os_log("Found a CreateAdminIfGroupMember key value: %{public}@ ", log: uiLog, type: .debug, adminGroups)
+                os_log("Found a CreateAdminIfGroupMember key value:  ", log: uiLog, type: .debug)
                 nomadGroups?.forEach { group in
                     if adminGroups.contains(group) {
                         isAdmin = true
@@ -92,18 +93,18 @@ class CreateUser: XCredsBaseMechanism {
             }
             var customAttributes = [String: String]()
             
-            let nomadMetaPrefix = "_nomad"
+            let metaPrefix = "_xcreds"
             
-            customAttributes["dsAttrTypeNative:\(nomadMetaPrefix)_didCreateUser"] = "1"
+            customAttributes["dsAttrTypeNative:\(metaPrefix)_didCreateUser"] = "1"
             
             let currentDate = ISO8601DateFormatter().string(from: Date())
-            customAttributes["dsAttrTypeNative:\(nomadMetaPrefix)_creationDate"] = currentDate
+            customAttributes["dsAttrTypeNative:\(metaPrefix)_creationDate"] = currentDate
             
 //            customAttributes["dsAttrTypeNative:\(nomadMetaPrefix)_domain"] = nomadDomain!
             
             createUser(shortName: xcredsUser!,
-                       first: "XCreds.first",
-                       last: "XCreds.last",
+                       first: xcredsFirst!,
+                       last: xcredsLast!,
                        pass: xcredsPass!,
                        uid: uid,
                        gid: "20",
@@ -196,7 +197,7 @@ class CreateUser: XCredsBaseMechanism {
             }
             
             // Set the login timestamp if requested
-            setTimestampFor(xcredsUser as? String ?? "")
+            setTimestampFor(xcredsUser ?? "")
         }
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
@@ -252,9 +253,9 @@ class CreateUser: XCredsBaseMechanism {
         }
         
         if getManagedPreference(key: .UseCNForFullName) as? Bool ?? false {
-            attrs[kODAttributeTypeFullName] = [getHint(type: .full) as? String ?? ""]
+            attrs[kODAttributeTypeFullName] = [getHint(type: .fullName) as? String ?? ""]
         } else if getManagedPreference(key: .UseCNForFullNameFallback) as? Bool ?? false && "\(first) \(last)" == " " {
-            attrs[kODAttributeTypeFullName] = [getHint(type: .full) as? String ?? ""]
+            attrs[kODAttributeTypeFullName] = [getHint(type: .fullName) as? String ?? ""]
         }
         
         
@@ -403,7 +404,7 @@ class CreateUser: XCredsBaseMechanism {
         if getManagedPreference(key: .AliasUPN) as? Bool ?? false {
             if let upn = getHint(type: .kerberos_principal) as? String {
                 os_log("Adding UPN as an alias: %{public}@", log: createUserLog, type: .debug, upn)
-                let result = XCredsBaseMechanism.addAlias(name: shortName, alias: upn.lowercased())
+                let result = XCredsCreateUser.addAlias(name: shortName, alias: upn.lowercased())
                 os_log("Adding UPN result: %{public}@", log: createUserLog, type: .debug, result.description)
             }
         }
@@ -411,7 +412,7 @@ class CreateUser: XCredsBaseMechanism {
         if getManagedPreference(key: .AliasNTName) as? Bool ?? false {
             if let ntName = getHint(type: .ntName) as? String {
                 os_log("Adding NTName as an alias: %{public}@", log: createUserLog, type: .debug, ntName)
-                let result = XCredsBaseMechanism.addAlias(name: shortName, alias: ntName)
+                let result = XCredsCreateUser.addAlias(name: shortName, alias: ntName)
                 os_log("Adding NTName result: %{public}@", log: createUserLog, type: .debug, result.description)
             }
         }
@@ -600,10 +601,10 @@ class CreateUser: XCredsBaseMechanism {
         }
     }
     
-    fileprivate func setTimestampFor(_ xcredsUser: String) {
+    fileprivate func setTimestampFor(_ nomadUser: String) {
         // Add network sign in stamp
         if let signInTime = getHint(type: .networkSignIn) {
-            if XCredsBaseMechanism.updateSignIn(name: xcredsUser, time: signInTime as AnyObject) {
+            if XCredsCreateUser.updateSignIn(name: nomadUser, time: signInTime as AnyObject) {
                 os_log("Sign in time updated", log: createUserLog, type: .default)
             } else {
                 os_log("Dould not add timestamp", log: createUserLog, type: .error)

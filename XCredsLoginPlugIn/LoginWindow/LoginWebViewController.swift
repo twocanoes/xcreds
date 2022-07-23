@@ -71,40 +71,44 @@ class LoginWebViewController: WebViewController {
         var username:String
         let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
 
+        let idToken = tokens.idToken
+
+        let array = idToken.components(separatedBy: ".")
+
+        if array.count != 3 {
+            TCSLogWithMark("idToken is invalid")
+            delegate.denyLogin()
+
+
+        }
+        let body = array[1]
+        guard let data = base64UrlDecode(value:body ) else {
+            TCSLogWithMark("error decoding id token base64")
+            delegate.denyLogin()
+            return
+        }
+
+        
+        let decoder = JSONDecoder()
+        var idTokenObject:IDToken
+        do {
+            idTokenObject = try decoder.decode(IDToken.self, from: data)
+
+        }
+        catch {
+            TCSLogWithMark("error decoding idtoken::")
+            TCSLogWithMark("Token:\(body)")
+            delegate.denyLogin()
+            return
+
+        }
+
+
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
         else {
-            let idToken = tokens.idToken
 
-            let array = idToken.components(separatedBy: ".")
-
-            if array.count != 3 {
-                TCSLogWithMark("idToken is invalid")
-                delegate.denyLogin()
-
-
-            }
-            let body = array[1]
-            guard let data = base64UrlDecode(value:body ) else {
-                TCSLogWithMark("error decoding id token base64")
-                delegate.denyLogin()
-                return
-            }
-
-            let decoder = JSONDecoder()
-            var idTokenObject:IDToken
-            do {
-                idTokenObject = try decoder.decode(IDToken.self, from: data)
-
-            }
-            catch {
-                TCSLogWithMark("error decoding idtoken::")
-                TCSLogWithMark("Token:\(body)")
-                delegate.denyLogin()
-                return
-
-            }
 
             var emailString:String
 
@@ -131,6 +135,20 @@ class LoginWebViewController: WebViewController {
             TCSLogWithMark("username found: \(tUsername)")
             username = tUsername
         }
+
+        if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
+
+        }
+        if let firstName = idTokenObject.given_name {
+            delegate.setHint(type: .firstName, hint:firstName)
+
+        }
+        if let lastName = idTokenObject.family_name {
+            delegate.setHint(type: .lastName, hint:lastName)
+
+        }
+
         let isLocal = try? PasswordUtils.isUserLocal(username)
 
         guard let isLocal = isLocal else {

@@ -66,7 +66,9 @@ if [ $f_install -eq 1 ]; then
 		"${authrights_path}" -r "loginwindow:login" "XCredsLoginPlugin:LoginWindow" 
 		"${authrights_path}" -a  "XCredsLoginPlugin:LoginWindow" "XCredsLoginPlugin:PowerControl,privileged" 
 		"${authrights_path}" -a  "loginwindow:done" "XCredsLoginPlugin:KeychainAdd,privileged"
-		
+
+      "${authrights_path}" -a  "builtin:login-begin" "XCredsLoginPlugin:CreateUser,privileged"
+
 	else
 		echo "could not find authrights tool"
 		exit -1

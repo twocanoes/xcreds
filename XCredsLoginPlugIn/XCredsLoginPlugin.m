@@ -109,7 +109,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fLoginWindow = (strcmp(mechanismId, "LoginWindow") == 0);
     mechanism->fPowerControl = (strcmp(mechanismId, "PowerControl") == 0);
     mechanism->fKeychainAdd = (strcmp(mechanismId, "KeychainAdd") == 0);
-
+    mechanism->fKeychainAdd = (strcmp(mechanismId, "CreateUser") == 0);
     *outMechanism = mechanism;
 
     return errSecSuccess;
@@ -136,6 +136,12 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
         NSLog(@"Calling fKeychainAdd");
         XCredsKeychainAdd *keychainAdd = [[XCredsKeychainAdd alloc] initWithMechanism:mechanism];
         [keychainAdd run];
+
+    }
+    else if (mechanism->fCreateUser){
+        NSLog(@"Calling CreateUser");
+        XCredsCreateUser *createUser = [[XCredsCreateUser alloc] initWithMechanism:mechanism];
+        [createUser run];
 
     }
     return noErr;
