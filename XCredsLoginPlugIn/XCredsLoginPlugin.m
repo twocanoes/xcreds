@@ -109,7 +109,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fLoginWindow = (strcmp(mechanismId, "LoginWindow") == 0);
     mechanism->fPowerControl = (strcmp(mechanismId, "PowerControl") == 0);
     mechanism->fKeychainAdd = (strcmp(mechanismId, "KeychainAdd") == 0);
-    mechanism->fKeychainAdd = (strcmp(mechanismId, "CreateUser") == 0);
+    mechanism->fCreateUser = (strcmp(mechanismId, "CreateUser") == 0);
     *outMechanism = mechanism;
 
     return errSecSuccess;

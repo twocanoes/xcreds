@@ -156,12 +156,12 @@ class LoginWebViewController: WebViewController {
             delegate.denyLogin()
             return
         }
-
-        if isLocal == false {
-            TCSLogWithMark("User is not on system. for now, just abort")
-            delegate.denyLogin()
-            return
-        }
+//
+//        if isLocal == false {
+//            TCSLogWithMark("User is not on system. for now, just abort")
+//            delegate.denyLogin()
+//            return
+//        }
 
         let hasHome = try? PasswordUtils.doesUserHomeExist(username)
         guard let hasHome = hasHome else {
@@ -170,11 +170,11 @@ class LoginWebViewController: WebViewController {
             return
         }
 
-        if hasHome == false {
-            TCSLogWithMark("User has no home. for now, just abort")
-            delegate.denyLogin()
-            return
-        }
+//        if hasHome == false {
+//            TCSLogWithMark("User has no home. for now, just abort")
+//            delegate.denyLogin()
+//            return
+//        }
 
 
 
@@ -241,9 +241,18 @@ class LoginWebViewController: WebViewController {
             }
 
         }
-        TCSLogWithMark("updating username, password, and tokens")
+        TCSLogWithMark("updating username:\(username), password, and tokens")
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: username)
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
+        delegate.setHint(type: .user, hint: username)
+        delegate.setHint(type: .pass, hint: tokens.password)
+//        setHint(type: .noMADFirst, hint: user.firstName)
+//        setHint(type: .noMADLast, hint: user.lastName)
+//        setHint(type: .noMADDomain, hint: domainName)
+//        setHint(type: .noMADGroups, hint: user.groups)
+        delegate.setHint(type: .fullName, hint: idTokenObject.unique_name ?? username)
+        delegate.setHint(type: .firstName, hint: idTokenObject.given_name ?? "")
+        delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
 
         delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
 

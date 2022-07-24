@@ -38,11 +38,20 @@ protocol XCredsMechanismProtocol {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
-        let infoPlist = Bundle.main.infoDictionary
 
-        if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-            TCSLogWithMark("Build \(build)")
+        let allBundles = Bundle.allBundles
 
+        for currentBundle in allBundles {
+            if currentBundle.bundlePath.contains("XCreds") {
+                let infoPlist = currentBundle.infoDictionary
+                if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+                    TCSLogWithMark("-------------------------------------")
+                    TCSLogWithMark("XCreds Login Build Number: \(build)")
+                    TCSLogWithMark("-------------------------------------")
+                    break
+                }
+
+            }
         }
 
 
@@ -83,7 +92,6 @@ protocol XCredsMechanismProtocol {
 
                 return nil
             }
-            TCSLogWithMark("Computed user accessed")
             return userName
         }
     }
@@ -178,7 +186,7 @@ protocol XCredsMechanismProtocol {
         var err: OSStatus = noErr
         err = mechCallbacks.GetHintValue((mech?.fEngine)!, type.rawValue, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("Couldn't retrieve hint value: %{public}@")
+            TCSLogWithMark("Couldn't retrieve hint value: \(type.rawValue)")
             return nil
         }
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
