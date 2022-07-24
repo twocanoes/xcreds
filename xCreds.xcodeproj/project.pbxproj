@@ -131,13 +131,6 @@
 			remoteGlobalIDString = 7631935C287D22C700D36BF7;
 			remoteInfo = authrights;
 		};
-		766F4C502883B8AC0021F548 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 76EE069927FD1D00009E0F3A;
-			remoteInfo = XCreds;
-		};
 		76DC0A7A28837152007C42B2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -471,14 +464,13 @@
 /* Begin PBXLegacyTarget section */
 		766F4C4C2883B88F0021F548 /* Send To Test */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "${PROJECT_DIR}/app_to_test.sh";
+			buildArgumentsString = app_to_test.sh;
 			buildConfigurationList = 766F4C4D2883B88F0021F548 /* Build configuration list for PBXLegacyTarget "Send To Test" */;
 			buildPhases = (
 			);
 			buildToolPath = /bin/bash;
-			buildWorkingDirectory = "";
+			buildWorkingDirectory = /Users/tperfitt/Documents/Projects/xcreds;
 			dependencies = (
-				766F4C512883B8AC0021F548 /* PBXTargetDependency */,
 			);
 			name = "Send To Test";
 			passBuildSettingsInEnvironment = 1;
@@ -555,10 +547,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
-				76319379287E204500D36BF7 /* PBXTargetDependency */,
-				76319376287E19A500D36BF7 /* PBXTargetDependency */,
 				76DD6D14285997DA00A700ED /* PBXTargetDependency */,
+				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
+				76319376287E19A500D36BF7 /* PBXTargetDependency */,
+				76319379287E204500D36BF7 /* PBXTargetDependency */,
 			);
 			name = XCreds;
 			packageProductDependencies = (
@@ -792,11 +784,6 @@
 			target = 7631935C287D22C700D36BF7 /* authrights */;
 			targetProxy = 76319378287E204500D36BF7 /* PBXContainerItemProxy */;
 		};
-		766F4C512883B8AC0021F548 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 76EE069927FD1D00009E0F3A /* XCreds */;
-			targetProxy = 766F4C502883B8AC0021F548 /* PBXContainerItemProxy */;
-		};
 		76DC0A7B28837152007C42B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 76DC0A6428836EB1007C42B2 /* XCreds Login Overlay */;
@@ -860,7 +847,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -890,7 +877,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -948,7 +935,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -978,7 +965,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1121,7 +1108,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1150,7 +1137,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3023;
+				CURRENT_PROJECT_VERSION = 3095;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;

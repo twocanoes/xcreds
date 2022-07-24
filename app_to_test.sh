@@ -3,10 +3,17 @@
 
 set -e
 set -x 
+a=123
+BUILD_DIR="/tmp/xcreds"
+DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
 
-ssh -J tcadmin@simac.local root@test001.local rm -rf "/Applications/XCreds.app"
 
-scp -r -J tcadmin@simac.local "${BUILD_ROOT}"/Release/XCreds.app root@test001.local:/Applications/ 
+agvtool bump
+xcodebuild  -scheme "XCreds"  -configuration "Release" -derivedDataPath  "${DERIVED_DATA_DIR}"
+
+ssh -J tcadmin@simac.local root@test001.local 'bash -c "if [ -e "/Applications/XCreds.app" ] ; then echo removing; rm -rf "/Applications/XCreds.app"; fi"'
+
+scp -r -J tcadmin@simac.local "${DERIVED_DATA_DIR}"/Build/Products/Release/XCreds.app root@test001.local:/Applications/ 
 
 #ssh -J tcadmin@simac.local root@test001.local reboot || exit 0
 
