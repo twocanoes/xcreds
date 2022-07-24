@@ -93,7 +93,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
         
         if getManagedPreference(key: .EnableFDERecoveryKey) as? Bool == true {
             
-            var recoveryPath = "/var/db/NoMADFDE"
+            var recoveryPath = "/var/db/FDE"
             
             if let newPath = getManagedPreference(key: .EnableFDERecoveryKeyPath) as? String {
                 recoveryPath = newPath
@@ -114,7 +114,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
                 }
             }
             
-            recoveryPath += "/NoMADFDESetup.plist"
+            recoveryPath += "/FDESetup.plist"
             
             do {
                 os_log("Attempting to write key to: %{public}@", log: enableFDELog, type: .default, recoveryPath)
@@ -183,7 +183,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
             
             if getManagedPreference(key: .EnableFDERecoveryKey) as? Bool == true {
                 
-                var recoveryPath = "/var/db/NoMADFDE"
+                var recoveryPath = "/var/db/FDE"
                 
                 if let newPath = getManagedPreference(key: .EnableFDERecoveryKeyPath) as? String {
                     recoveryPath = newPath
@@ -204,7 +204,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
                     }
                 }
                 
-                recoveryPath += "/NoMADFDESetup.plist"
+                recoveryPath += "/FDESetup.plist"
                 
                 do {
                     os_log("Attempting to write key to: %{public}@", log: enableFDELog, type: .default, recoveryPath)

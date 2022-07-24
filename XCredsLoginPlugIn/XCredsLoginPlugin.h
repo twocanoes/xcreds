@@ -46,6 +46,7 @@ struct MechanismRecord {
     AuthorizationString             fMechID;
     Boolean                         fLoginWindow;
     Boolean                         fPowerControl;
+    Boolean                         fEnableFDE;
     Boolean                         fKeychainAdd;
     Boolean                         fCreateUser;
 
