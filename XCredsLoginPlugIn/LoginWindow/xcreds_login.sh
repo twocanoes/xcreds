@@ -17,6 +17,14 @@ f_install=0
 f_remove=0
 f_restore=0
 
+remove_rights () {
+    "${authrights_path}" -r  "XCredsLoginPlugin:LoginWindow" "loginwindow:login"
+    "${authrights_path}" -d  "XCredsLoginPlugin:PowerControl,privileged"
+    "${authrights_path}" -d "XCredsLoginPlugin:KeychainAdd,privileged"
+    "${authrights_path}" -d  "XCredsLoginPlugin:CreateUser,privileged"
+    "${authrights_path}" -d  "XCredsLoginPlugin:EnableFDE,privileged"
+
+}
 while getopts ":ire" o; do
 	case "${o}" in
 		i)
@@ -67,6 +75,7 @@ if [ $f_install -eq 1 ]; then
 		cp "${launch_agent_source_path}" "${launch_agent_destination_path}"
 	fi
 	if [ -e ${authrights_path} ]; then
+         remove_rights
         "${authrights_path}" -r "loginwindow:login" "XCredsLoginPlugin:LoginWindow"
         "${authrights_path}" -a  "XCredsLoginPlugin:LoginWindow" "XCredsLoginPlugin:PowerControl,privileged"
         "${authrights_path}" -a  "loginwindow:done" "XCredsLoginPlugin:KeychainAdd,privileged"
@@ -81,11 +90,7 @@ if [ $f_install -eq 1 ]; then
 	
 elif [ $f_remove -eq 1 ]; then
 
-    "${authrights_path}" -r  "XCredsLoginPlugin:LoginWindow" "loginwindow:login"
-    "${authrights_path}" -d  "XCredsLoginPlugin:PowerControl,privileged"
-    "${authrights_path}" -d "XCredsLoginPlugin:KeychainAdd,privileged"
-    "${authrights_path}" -d  "XCredsLoginPlugin:CreateUser,privileged"
-    "${authrights_path}" -d  "XCredsLoginPlugin:EnableFDE,privileged"
+    remove_rights
 
 	if [ -e  "/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle" ]; then
 		rm -rf "/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle"

@@ -45,7 +45,6 @@ struct AuthRights: ParsableCommand {
 
         if deleteRight == 1 {
             if manager.remove(right: right)==false {
-
                 print("error removing right")
             }
 
@@ -74,8 +73,6 @@ struct AuthRights: ParsableCommand {
         }
         else {
             print("No placement option specified")
-
-
         }
     }
 }

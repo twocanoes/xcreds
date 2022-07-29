@@ -89,10 +89,11 @@ extension WebViewController: WKNavigationDelegate {
 
 
         let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
-        let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue)
+        let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue) as? String ?? "passwordInput"
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
-            if let customURL = customURL as? String, let customPasswordElementID = customPasswordElementID as? String , navigationAction.request.url?.host == customURL {
+            TCSLogWithMark("POST")
+            if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
                 TCSLogWithMark(customURL.sanitized())
 
                 let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
@@ -161,10 +162,22 @@ extension WebViewController: WKNavigationDelegate {
                 TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
             }
         } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
+            TCSLogWithMark("GET with Token/redirect")
             // for Okta
             let javaScript = "document.getElementById('input74').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
             })
+        }
+        else {
+            TCSLogWithMark(navigationAction.request.httpMethod ?? "Unknown method")
+            TCSLogWithMark("path = \(navigationAction.request.url?.path ?? "no path")");
+
+            let javaScript = "document.documentElement.outerHTML.toString()"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                TCSLogWithMark(response as? String ?? "No HTML")
+            })
+
+
         }
 
         decisionHandler(.allow)

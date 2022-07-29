@@ -13,9 +13,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
-
+    var wifiWindowController:WifiWindowController?
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-
 
         let infoPlist = Bundle.main.infoDictionary
 

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="WifiWindowController" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="credentialsWindow" destination="lLG-Bl-vZe" id="OXn-89-N40"/>
+                <outlet property="networkConnectionSpinner" destination="Z7T-Xy-w9X" id="nGG-sI-Zj8"/>
+                <outlet property="networkPassword" destination="iXc-w6-KVu" id="igd-gX-Ai2"/>
+                <outlet property="networkPasswordLabel" destination="bbs-5k-6Qs" id="Ibt-6i-QHU"/>
+                <outlet property="networkUsername" destination="ju4-Cc-cV9" id="VTm-O0-0RK"/>
+                <outlet property="networkUsernameLabel" destination="cST-FL-tNs" id="Q7b-m4-MFi"/>
+                <outlet property="networkWifiPopup" destination="vwT-dQ-vyr" id="SUF-IL-RMQ"/>
+                <outlet property="wifiCredentialTitleLabel" destination="Tjq-cj-K2q" id="mkK-jQ-i7r"/>
+                <outlet property="wifiPopupMenu" destination="58J-Jm-X2j" id="EtJ-Gw-8uZ"/>
+                <outlet property="window" destination="QEp-dc-tSh" id="t7T-qq-1E5"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="QEp-dc-tSh">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="144" y="174" width="450" height="356"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <view key="contentView" id="82w-TR-3gA">
+                <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="brE-li-Fg3">
+                        <rect key="frame" x="83" y="49" width="284" height="223"/>
+                        <subviews>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Z7T-Xy-w9X">
+                                <rect key="frame" x="137" y="68" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iR4-yt-s83">
+                                <rect key="frame" x="259" y="101" width="37" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRefreshFreestandingTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Ekl-sd-DJK">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="searchButton:" target="-2" id="CUS-s8-IAg"/>
+                                </connections>
+                            </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-eC-ymc">
+                                <rect key="frame" x="97" y="129" width="91" height="97"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="91" id="DGN-3X-sra"/>
+                                    <constraint firstAttribute="width" constant="91" id="Rh5-9o-cuK"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="globe" catalog="system" id="Yzt-2U-PjT"/>
+                            </imageView>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwT-dQ-vyr">
+                                <rect key="frame" x="28" y="94" width="236" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="Choose Network" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="ejl-yP-KaF" id="gAm-ea-iCE">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="58J-Jm-X2j">
+                                        <items>
+                                            <menuItem title="Choose Network" state="on" id="ejl-yP-KaF"/>
+                                            <menuItem title="Item 2" id="qUq-Yo-uy1"/>
+                                            <menuItem title="Item 3" id="iYg-8m-GqD"/>
+                                        </items>
+                                        <connections>
+                                            <outlet property="delegate" destination="-2" id="LyO-Pq-bte"/>
+                                        </connections>
+                                    </menu>
+                                    <connections>
+                                        <action selector="menuItemSelected:" target="-2" id="nIa-ZQ-8j6"/>
+                                    </connections>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VOb-lv-VeC">
+                                <rect key="frame" x="5" y="94.5" width="23" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="wifi" catalog="system" id="2Jg-hD-hZt"/>
+                            </imageView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-OG-WIQ">
+                                <rect key="frame" x="121" y="3" width="48" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
+                                    <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
+                                </constraints>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="UsA-xf-nXF">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="orderOut:" target="QEp-dc-tSh" id="5AN-s0-1oe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="284" id="2tT-CM-f1g"/>
+                            <constraint firstAttribute="height" constant="188" id="I2A-qs-Isw"/>
+                            <constraint firstItem="rQj-eC-ymc" firstAttribute="leading" secondItem="brE-li-Fg3" secondAttribute="leading" constant="97" id="ZVO-Sq-Fz2"/>
+                            <constraint firstItem="rQj-eC-ymc" firstAttribute="top" secondItem="brE-li-Fg3" secondAttribute="top" id="ck0-Qd-AQ9"/>
+                            <constraint firstAttribute="trailing" secondItem="rQj-eC-ymc" secondAttribute="trailing" constant="96" id="h5H-wu-huH"/>
+                            <constraint firstAttribute="bottom" secondItem="kuQ-OG-WIQ" secondAttribute="bottom" constant="6" id="j95-bp-174"/>
+                            <constraint firstAttribute="trailing" secondItem="kuQ-OG-WIQ" secondAttribute="trailing" constant="115" id="mrR-I6-9lQ"/>
+                        </constraints>
+                    </customView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerX" secondItem="82w-TR-3gA" secondAttribute="centerX" id="2fO-Lk-ZFa"/>
+                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerY" secondItem="82w-TR-3gA" secondAttribute="centerY" constant="16.5" id="R9C-rw-N18"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="279" y="-429"/>
+        </window>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="lLG-Bl-vZe">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="144" y="174" width="480" height="198"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <view key="contentView" id="Dza-jC-NB8">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-NK-A2W">
+                        <rect key="frame" x="20" y="154" width="4" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" id="Pku-Kx-wjy">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-cj-K2q">
+                        <rect key="frame" x="28" y="137" width="434" height="47"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="47" id="uYQ-Hk-yD8"/>
+                        </constraints>
+                        <textFieldCell key="cell" selectable="YES" title="The wifi network &quot;Europa&quot; requires a password. Please enter it below:" id="WTE-UB-iIn">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cgl-qV-y0O">
+                        <rect key="frame" x="381" y="13" width="86" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="uVD-yY-HTS"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Join" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cPE-0Q-pm2">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="connect:" target="-2" id="hSO-Mr-Vz4"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mVP-CL-XEv">
+                        <rect key="frame" x="297" y="13" width="86" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="E5I-gG-M9v"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0jZ-wI-6zS">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent">s</string>
+                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="wifiCredentialCancelButtonPressed:" target="-2" id="axX-HP-CGX"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ju4-Cc-cV9">
+                        <rect key="frame" x="167" y="107" width="293" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Username" drawsBackground="YES" id="AWi-NV-QKq">
+                            <font key="font" metaFont="message"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
+                        <rect key="frame" x="28" y="109" width="124" height="17"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Username:" id="2MT-3V-4C7">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
+                        <rect key="frame" x="28" y="84" width="124" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Password:" id="gPn-og-da2">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <secureTextField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
+                        <rect key="frame" x="166" y="82" width="294" height="21"/>
+                        <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="ytx-J6-yi1">
+                            <font key="font" metaFont="message"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <allowedInputSourceLocales>
+                                <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                            </allowedInputSourceLocales>
+                        </secureTextFieldCell>
+                    </secureTextField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="trailing" secondItem="iXc-w6-KVu" secondAttribute="trailing" id="851-Ej-Mek"/>
+                    <constraint firstItem="cST-FL-tNs" firstAttribute="trailing" secondItem="bbs-5k-6Qs" secondAttribute="trailing" id="ETg-kG-VRZ"/>
+                    <constraint firstItem="Tjq-cj-K2q" firstAttribute="leading" secondItem="cST-FL-tNs" secondAttribute="leading" id="HTn-AO-uti"/>
+                    <constraint firstItem="Y2g-NK-A2W" firstAttribute="leading" secondItem="Dza-jC-NB8" secondAttribute="leading" constant="22" id="HuV-sd-pwl"/>
+                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="top" secondItem="Tjq-cj-K2q" secondAttribute="bottom" constant="8" id="MdM-a7-vXf"/>
+                    <constraint firstItem="bbs-5k-6Qs" firstAttribute="top" secondItem="cST-FL-tNs" secondAttribute="bottom" constant="9" id="PB3-XW-peS"/>
+                    <constraint firstItem="mVP-CL-XEv" firstAttribute="top" secondItem="iXc-w6-KVu" secondAttribute="bottom" constant="42" id="Rom-9J-kFj"/>
+                    <constraint firstItem="Y2g-NK-A2W" firstAttribute="top" secondItem="Dza-jC-NB8" secondAttribute="top" constant="28" id="TIP-q5-HGp"/>
+                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="leading" secondItem="cST-FL-tNs" secondAttribute="trailing" constant="17" id="W0O-tI-1Yb"/>
+                    <constraint firstItem="Tjq-cj-K2q" firstAttribute="trailing" secondItem="ju4-Cc-cV9" secondAttribute="trailing" id="Z1x-lW-vZt"/>
+                    <constraint firstItem="Tjq-cj-K2q" firstAttribute="leading" secondItem="Y2g-NK-A2W" secondAttribute="trailing" constant="8" symbolic="YES" id="ZfP-cE-ULA"/>
+                    <constraint firstItem="iXc-w6-KVu" firstAttribute="trailing" secondItem="Cgl-qV-y0O" secondAttribute="trailing" id="aDx-J2-Dzc"/>
+                    <constraint firstItem="mVP-CL-XEv" firstAttribute="baseline" secondItem="Cgl-qV-y0O" secondAttribute="baseline" id="eiY-ga-hJQ"/>
+                    <constraint firstItem="iXc-w6-KVu" firstAttribute="top" secondItem="ju4-Cc-cV9" secondAttribute="bottom" constant="4" id="ghe-p6-nei"/>
+                    <constraint firstItem="cST-FL-tNs" firstAttribute="top" secondItem="Tjq-cj-K2q" secondAttribute="bottom" constant="11" id="iz3-ph-UoI"/>
+                    <constraint firstAttribute="trailing" secondItem="Tjq-cj-K2q" secondAttribute="trailing" constant="20" symbolic="YES" id="kM1-R6-wcM"/>
+                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="centerX" secondItem="iXc-w6-KVu" secondAttribute="centerX" id="ruh-8D-Wf3"/>
+                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="baseline" secondItem="cST-FL-tNs" secondAttribute="firstBaseline" id="tu7-he-y3N"/>
+                    <constraint firstItem="Cgl-qV-y0O" firstAttribute="leading" secondItem="mVP-CL-XEv" secondAttribute="trailing" constant="12" symbolic="YES" id="x00-6e-tqS"/>
+                    <constraint firstAttribute="bottom" secondItem="mVP-CL-XEv" secondAttribute="bottom" constant="20" symbolic="YES" id="yGC-lr-KZQ"/>
+                    <constraint firstItem="cST-FL-tNs" firstAttribute="leading" secondItem="bbs-5k-6Qs" secondAttribute="leading" id="yUP-zO-kDB"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="-323" y="-467"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="NSRefreshFreestandingTemplate" width="15" height="15"/>
+        <image name="NSStopProgressFreestandingTemplate" width="15" height="15"/>
+        <image name="globe" catalog="system" width="15" height="15"/>
+        <image name="wifi" catalog="system" width="17" height="13"/>
+    </resources>
+</document>

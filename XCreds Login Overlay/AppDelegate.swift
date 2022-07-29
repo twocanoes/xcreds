@@ -69,13 +69,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
  */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        window.level = .modalPanel
-        window.canBecomeVisibleWithoutLogin=true
-        NSApp.activate(ignoringOtherApps: true)
-        window.hidesOnDeactivate=false
-        window.isOpaque=false
-        window.orderFrontRegardless()
+
+      
 
 
         var statusWindowRect=window.frame

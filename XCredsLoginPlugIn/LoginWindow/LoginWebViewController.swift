@@ -9,22 +9,52 @@ import Foundation
 import Cocoa
 import WebKit
 import OIDCLite
-
+import Network
 class LoginWebViewController: WebViewController {
-
+    let uiLog = "uiLog"
+    let monitor = NWPathMonitor()
     var delegate: XCredsMechanismProtocol?
     override func windowDidLoad() {
         super.windowDidLoad()
+        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+            TCSLogWithMark("Resolution changed. Resetting size")
+            self.setupLoginWindowAppearance()
+
+        }
         TCSLogWithMark("loading webview for login")
         setupLoginWindowAppearance()
+
         TCSLogWithMark("loading page")
+        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+            TCSLogWithMark("Resolution changed. Resetting size")
+            self.setupLoginWindowAppearance()
+
+        }
+
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+
+                TCSLogWithMark("network changed")
+                DispatchQueue.main.async {
+
+                    self.loadPage()
+                }
+
+            } else {
+                TCSLogWithMark("No connection.")
+            }
+
+            print(path.isExpensive)
+        }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+
         loadPage()
     }
     fileprivate func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
             TCSLogWithMark("setting up window")
 
-            
             self.window?.level = .popUpMenu
             self.window?.orderFrontRegardless()
             
