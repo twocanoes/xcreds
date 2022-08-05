@@ -28,5 +28,7 @@
 	<true/>
 	<key>shouldShowMacLoginButton</key>
 	<string>1</string>
+	<key>KeychainCreate</key>
+	<true/>
 </dict>
 </plist>
