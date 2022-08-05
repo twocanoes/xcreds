@@ -12,7 +12,13 @@ class SignInMenuItem: NSMenuItem {
 
     override var title: String {
         get {
-            "Sign In..."
+            if mainMenu.signedIn==true {
+                return "Refresh..."
+            }
+            else {
+                return "Sign In..."
+            }
+
         }
         set {
             return

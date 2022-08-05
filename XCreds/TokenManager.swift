@@ -5,7 +5,7 @@
 //  Created by Timothy Perfitt on 4/5/22.
 //
 import Foundation
-
+import OIDCLite
 
 struct RefreshTokenResponse: Codable {
     let accessToken, expiresIn, expiresOn, refreshToken, extExpiresIn,tokenType: String
@@ -37,6 +37,38 @@ class TokenManager {
 
     let defaults = UserDefaults.standard
     var timer: Timer?
+    private var oidcLocal:OIDCLite?
+    func oidc() -> OIDCLite {
+        var scopes: [String]?
+
+        var additionalParameters:[String:String]? = nil
+        var clientSecret:String?
+
+        if let oidcPrivate = oidcLocal {
+            return oidcPrivate
+        }
+        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
+           clientSecretRaw != "" {
+            clientSecret = clientSecretRaw
+        }
+
+        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
+            scopes = scopesRaw.components(separatedBy: " ")
+        }
+        //
+
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
+            additionalParameters = ["access_type":"offline", "prompt":"consent"]
+        }
+
+        let oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        oidcLite.getEndpoints()
+
+        oidcLocal = oidcLite
+        return oidcLite
+
+
+    }
 
     func saveTokensToKeychain(tokens:Tokens, setACL:Bool=false, password:String?=nil) -> Bool {
         let keychainUtil = KeychainUtil()
@@ -84,10 +116,24 @@ class TokenManager {
         }
         return true
     }
+    func tokenEndpoint() -> String? {
 
+        let prefTokenEndpoint = UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue)
+        if  prefTokenEndpoint != nil {
+            return prefTokenEndpoint
+        }
+
+
+        if let tokenEndpoint = oidc().OIDCTokenEndpoint {
+            UserDefaults.standard.set(tokenEndpoint, forKey: PrefKeys.tokenEndpoint.rawValue)
+            return tokenEndpoint
+        }
+        return nil
+    }
     func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
-        guard let url = URL(string: defaults.string(forKey: PrefKeys.tokenEndpoint.rawValue) ?? "") else {
+
+        guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
             completion(false,true)
             return
         }

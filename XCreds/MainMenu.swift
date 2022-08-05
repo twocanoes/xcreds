@@ -18,6 +18,8 @@ class MainMenu: NSObject, NSMenuDelegate {
     var menuOpen = false // is the menu open?
     var menuBuilt: Date? // last time menu was built
 
+    var signedIn = false
+    
     let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     // windows
@@ -69,6 +71,13 @@ class MainMenu: NSObject, NSMenuDelegate {
             mainMenu.addItem(quitMenuItem)
         }
 
+        if signedIn == true {
+            statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+
+        }
+        else {
+            statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
+        }
     }
 
     //MARK: NSMenuDelegate

@@ -30,11 +30,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="brE-li-Fg3">
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="brE-li-Fg3">
                         <rect key="frame" x="83" y="49" width="284" height="223"/>
                         <subviews>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Z7T-Xy-w9X">
-                                <rect key="frame" x="137" y="68" width="16" height="16"/>
+                                <rect key="frame" x="134" y="68" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iR4-yt-s83">
@@ -48,7 +48,7 @@
                                     <action selector="searchButton:" target="-2" id="CUS-s8-IAg"/>
                                 </connections>
                             </button>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-eC-ymc">
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-eC-ymc">
                                 <rect key="frame" x="97" y="129" width="91" height="97"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="91" id="DGN-3X-sra"/>
@@ -83,7 +83,7 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="wifi" catalog="system" id="2Jg-hD-hZt"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-OG-WIQ">
-                                <rect key="frame" x="121" y="3" width="48" height="51"/>
+                                <rect key="frame" x="118" y="3" width="48" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
                                     <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
@@ -102,18 +102,18 @@ Gw
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="width" constant="284" id="2tT-CM-f1g"/>
-                            <constraint firstAttribute="height" constant="188" id="I2A-qs-Isw"/>
+                            <constraint firstAttribute="height" constant="223" id="I2A-qs-Isw"/>
                             <constraint firstItem="rQj-eC-ymc" firstAttribute="leading" secondItem="brE-li-Fg3" secondAttribute="leading" constant="97" id="ZVO-Sq-Fz2"/>
                             <constraint firstItem="rQj-eC-ymc" firstAttribute="top" secondItem="brE-li-Fg3" secondAttribute="top" id="ck0-Qd-AQ9"/>
                             <constraint firstAttribute="trailing" secondItem="rQj-eC-ymc" secondAttribute="trailing" constant="96" id="h5H-wu-huH"/>
                             <constraint firstAttribute="bottom" secondItem="kuQ-OG-WIQ" secondAttribute="bottom" constant="6" id="j95-bp-174"/>
-                            <constraint firstAttribute="trailing" secondItem="kuQ-OG-WIQ" secondAttribute="trailing" constant="115" id="mrR-I6-9lQ"/>
+                            <constraint firstAttribute="trailing" secondItem="kuQ-OG-WIQ" secondAttribute="trailing" constant="118" id="mrR-I6-9lQ"/>
                         </constraints>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="brE-li-Fg3" firstAttribute="centerX" secondItem="82w-TR-3gA" secondAttribute="centerX" id="2fO-Lk-ZFa"/>
-                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerY" secondItem="82w-TR-3gA" secondAttribute="centerY" constant="16.5" id="R9C-rw-N18"/>
+                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerY" secondItem="82w-TR-3gA" secondAttribute="centerY" constant="17.5" id="R9C-rw-N18"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="279" y="-429"/>

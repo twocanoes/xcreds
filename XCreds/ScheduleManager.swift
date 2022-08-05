@@ -33,6 +33,14 @@ class ScheduleManager {
         }
     }
     func checkToken()  {
+//        // we have not resolved the tokenEndpoint yet, so pop up a window
+//        if UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue) == nil {
+//            DispatchQueue.main.async {
+//                SignInMenuItem().doAction()
+//            }
+//            return
+//        }
+
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
@@ -49,7 +57,8 @@ class ScheduleManager {
                     NotifyManager.shared.sendMessage(message: "Azure password unchanged")
                 }
                 DispatchQueue.main.async {
-                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    mainMenu.signedIn=true
+                    mainMenu.buildMenu()
                 }
 
 
@@ -61,9 +70,7 @@ class ScheduleManager {
                     NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
                 }
                 DispatchQueue.main.async {
-//                    mainMenu.webView = WebViewController()
-//                    mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-//                    mainMenu.webView?.run()
+
                     SignInMenuItem().doAction()
                 }
 

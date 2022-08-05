@@ -82,6 +82,7 @@
 		76CB907E288112C200C70D0C /* xcreds_login.sh in Resources */ = {isa = PBXBuildFile; fileRef = 76CB907C288112AF00C70D0C /* xcreds_login.sh */; };
 		76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
+		76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
 		76DC0A6828836EB1007C42B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DC0A6728836EB1007C42B2 /* AppDelegate.swift */; };
 		76DC0A6A28836EB2007C42B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76DC0A6928836EB2007C42B2 /* Assets.xcassets */; };
 		76DC0A6D28836EB2007C42B2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76DC0A6B28836EB2007C42B2 /* MainMenu.xib */; };
@@ -639,6 +640,7 @@
 				766355D928711C51002E3867 /* defaults.plist in Resources */,
 				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
+				76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */,
 				76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */,
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
 				76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */,
@@ -867,7 +869,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -898,7 +900,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -957,7 +959,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -987,7 +989,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1130,7 +1132,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1159,7 +1161,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3150;
+				CURRENT_PROJECT_VERSION = 3194;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;

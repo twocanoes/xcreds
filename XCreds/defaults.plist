@@ -20,5 +20,13 @@
 	<true/>
 	<key>shouldShowQuitMenu</key>
 	<true/>
+	<key>shouldShowVersionInfo</key>
+	<true/>
+	<key>shouldShowSupportStatus</key>
+	<string>1</string>
+	<key>shouldShowConfigureWifiButton</key>
+	<true/>
+	<key>shouldShowMacLoginButton</key>
+	<string>1</string>
 </dict>
 </plist>

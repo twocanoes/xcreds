@@ -19,40 +19,41 @@ class WebViewController: NSWindowController {
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
 
-    var oidcLite: OIDCLite?
     var password:String?
     func loadPage() {
+//
+//        var scopes: [String]?
+//        var clientSecret: String?
+//
+//        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
+//           clientSecretRaw != "" {
+//            clientSecret = clientSecretRaw
+//        }
+//
+//        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
+//            scopes = scopesRaw.components(separatedBy: " ")
+//        }
+//        //
+//        var additionalParameters:[String:String]? = nil
+//
+//        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
+//            additionalParameters = ["access_type":"offline", "prompt":"consent"]
+//        }
+//        TCSLogWithMark("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
+//        oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+//        webView.navigationDelegate = self
+//        oidcLite?.delegate = self
+//        oidcLite?.getEndpoints()
+//
+//        if let tokenEndpoint = oidcLite?.OIDCTokenEndpoint {
+//            UserDefaults.standard.set(tokenEndpoint, forKey: PrefKeys.tokenEndpoint.rawValue)
+//        }
+                webView.navigationDelegate = self
 
-        var scopes: [String]?
-        var clientSecret: String?
-
-        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
-           clientSecretRaw != "" {
-            clientSecret = clientSecretRaw
-        }
-
-        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
-            scopes = scopesRaw.components(separatedBy: " ")
-        }
-        //
-        var additionalParameters:[String:String]? = nil
-
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
-            additionalParameters = ["access_type":"offline", "prompt":"consent"]
-        }
-        TCSLogWithMark("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
-        oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
-        webView.navigationDelegate = self
-        oidcLite?.delegate = self
-        oidcLite?.getEndpoints()
-
-        if let tokenEndpoint = oidcLite?.OIDCTokenEndpoint {
-            UserDefaults.standard.set(tokenEndpoint, forKey: PrefKeys.tokenEndpoint.rawValue)
-        }
-
+        TokenManager.shared.oidc().delegate = self
         clearCookies()
 
-        if let url = oidcLite?.createLoginURL() {
+        if let url = TokenManager.shared.oidc().createLoginURL() {
             self.webView.load(URLRequest(url: url))
         }
     }
@@ -172,10 +173,10 @@ extension WebViewController: WKNavigationDelegate {
             TCSLogWithMark(navigationAction.request.httpMethod ?? "Unknown method")
             TCSLogWithMark("path = \(navigationAction.request.url?.path ?? "no path")");
 
-            let javaScript = "document.documentElement.outerHTML.toString()"
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                TCSLogWithMark(response as? String ?? "No HTML")
-            })
+//            let javaScript = "document.documentElement.outerHTML.toString()"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                TCSLogWithMark(response as? String ?? "No HTML")
+//            })
 
 
         }
@@ -194,7 +195,7 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
-        if let redirectURI = oidcLite?.redirectURI {
+         let redirectURI = TokenManager.shared.oidc().redirectURI 
             TCSLogWithMark("redirectURI: \(redirectURI)")
             TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
@@ -204,12 +205,12 @@ extension WebViewController: WKNavigationDelegate {
                 for part in pathParts {
                     if part.contains("code=") {
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
-                        oidcLite?.getToken(code: code)
+                        TokenManager.shared.oidc().getToken(code: code)
                         return
                     }
                 }
             }
-        }
+
     }
 
     private func queryToDict(query: String) -> [String:String]? {

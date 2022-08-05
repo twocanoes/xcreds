@@ -10,12 +10,40 @@ import Cocoa
 class LoginWindowControlsWindowController: NSWindowController {
     var delegate: XCredsMechanismProtocol?
 
+    @IBOutlet weak var registrationStatusTextField: NSTextField?
+    @IBOutlet weak var macLoginWindowGribColumn: NSGridColumn?
+    @IBOutlet weak var wifiGridColumn: NSGridColumn?
     let uiLog = "uiLog"
+    @IBOutlet weak var versionTextField: NSTextField?
 
     var wifiWindowController:WifiWindowController?
     override func windowDidLoad() {
         super.windowDidLoad()
         setupLoginWindowControlsAppearance()
+        /*
+         NSDictionary *infoDict=[[NSBundle mainBundle] infoDictionary];
+
+         NSString *verString=[infoDict valueForKey:@"CFBundleShortVersionString"];
+
+         NSString *buildString=[infoDict valueForKey:@"CFBundleVersion"];
+
+         */
+        let allBundles = Bundle.allBundles
+        versionTextField?.stringValue = ""
+        for currentBundle in allBundles {
+            if currentBundle.bundlePath.contains("XCreds") {
+                let infoPlist = currentBundle.infoDictionary
+                if let infoPlist = infoPlist,
+                   let verString = infoPlist["CFBundleShortVersionString"],
+                   let buildString = infoPlist["CFBundleVersion"]
+                {
+                    versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
+
+                }
+
+            }
+        }
+
         NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
             self.setupLoginWindowControlsAppearance()
@@ -26,6 +54,17 @@ class LoginWindowControlsWindowController: NSWindowController {
     }
     fileprivate func setupLoginWindowControlsAppearance() {
         DispatchQueue.main.async {
+
+            self.wifiGridColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+
+            self.macLoginWindowGribColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
+
+            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+
+            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+
+            self.registrationStatusTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowSupportStatus.rawValue)
+
 
             self.window?.level = .screenSaver
             TCSLogWithMark("ordering controls front")

@@ -54,8 +54,6 @@ protocol XCredsMechanismProtocol {
             }
         }
 
-
-
     }
     var xcredsPass: String? {
         get {
