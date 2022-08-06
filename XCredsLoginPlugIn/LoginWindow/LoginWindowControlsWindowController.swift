@@ -15,7 +15,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
     let uiLog = "uiLog"
     @IBOutlet weak var versionTextField: NSTextField?
-
+    var loadPageURL:URL?
     var wifiWindowController:WifiWindowController?
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -130,6 +130,17 @@ class LoginWindowControlsWindowController: NSWindowController {
 //        windowContentView.addSubview(wifiView)
     }
 
+    @IBAction func refreshButtonPressed(_ sender: Any) {
+        TCSLogWithMark("refreshButtonPressed")
+        guard let delegate = delegate else {
+            TCSLogWithMark("No delegate set for shutdown")
+            return
+        }
+        TCSLogWithMark("refreshing")
+
+        delegate.reload()
+
+    }
 
     @IBAction func restartClick(_ sender: Any) {
         TCSLogWithMark("Setting restart user")

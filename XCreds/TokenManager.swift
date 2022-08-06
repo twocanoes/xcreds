@@ -40,30 +40,28 @@ class TokenManager {
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
         var scopes: [String]?
-
         var additionalParameters:[String:String]? = nil
         var clientSecret:String?
 
         if let oidcPrivate = oidcLocal {
+            oidcPrivate.getEndpoints()
+
             return oidcPrivate
         }
         if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
            clientSecretRaw != "" {
             clientSecret = clientSecretRaw
         }
-
         if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
         //
-
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
             additionalParameters = ["access_type":"offline", "prompt":"consent"]
         }
 
         let oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
-
         oidcLocal = oidcLite
         return oidcLite
 

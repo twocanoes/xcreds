@@ -97,7 +97,6 @@ class AuthorizationDBManager: NSObject {
         let positionOfOldRight = consoleRights.firstIndex(of: right)
 
         guard let positionOfOldRight = positionOfOldRight else {
-            TCSLogWithMark("error positionOfOldRight")
             return false
         }
 
@@ -112,7 +111,6 @@ class AuthorizationDBManager: NSObject {
         let positionOfOldRight = consoleRights.firstIndex(of: right)
 
         guard let positionOfOldRight = positionOfOldRight else {
-            TCSLogWithMark("error positionOfOldRight")
 
             return false
         }
@@ -137,7 +135,7 @@ class AuthorizationDBManager: NSObject {
     }
     func insertRight(newRight:String, afterRight right:String) -> Bool {
         var consoleRights = consoleRights()
-        TCSLogWithMark("finding right \(right)")
+//        TCSLogWithMark("finding right \(right)")
 
         let positionOfRight = consoleRights.firstIndex(of: right)
 

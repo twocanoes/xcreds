@@ -10,7 +10,10 @@ import Cocoa
         super.init(mechanism: mechanism)
 
     }
-  
+    override func reload() {
+        TCSLogWithMark("reload in controller")
+        webViewController.loadPage()
+    }
 
     @objc override func run() {
         TCSLogWithMark("\(#function) \(#file):\(#line)")

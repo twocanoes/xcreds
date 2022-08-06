@@ -21,40 +21,27 @@ class WebViewController: NSWindowController {
 
     var password:String?
     func loadPage() {
-//
-//        var scopes: [String]?
-//        var clientSecret: String?
-//
-//        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
-//           clientSecretRaw != "" {
-//            clientSecret = clientSecretRaw
-//        }
-//
-//        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
-//            scopes = scopesRaw.components(separatedBy: " ")
-//        }
-//        //
-//        var additionalParameters:[String:String]? = nil
-//
-//        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
-//            additionalParameters = ["access_type":"offline", "prompt":"consent"]
-//        }
-//        TCSLogWithMark("redirect URI: \(UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? "NONE")")
-//        oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
-//        webView.navigationDelegate = self
-//        oidcLite?.delegate = self
-//        oidcLite?.getEndpoints()
-//
-//        if let tokenEndpoint = oidcLite?.OIDCTokenEndpoint {
-//            UserDefaults.standard.set(tokenEndpoint, forKey: PrefKeys.tokenEndpoint.rawValue)
-//        }
-                webView.navigationDelegate = self
-
+        
+        webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
-
         if let url = TokenManager.shared.oidc().createLoginURL() {
+            TCSLogWithMark()
             self.webView.load(URLRequest(url: url))
+        }
+        else {
+            let allBundles = Bundle.allBundles
+            for currentBundle in allBundles {
+                TCSLogWithMark(currentBundle.bundlePath)
+                if currentBundle.bundlePath.contains("XCreds") {
+                    TCSLogWithMark()
+                    let loadPageURL = currentBundle.url(forResource: "loadpage", withExtension: "html")
+                    TCSLogWithMark(loadPageURL?.debugDescription ?? "none")
+                    self.webView.load(URLRequest(url:loadPageURL!))
+                    break
+
+                }
+            }
         }
     }
 
@@ -195,7 +182,7 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
-         let redirectURI = TokenManager.shared.oidc().redirectURI 
+         let redirectURI = TokenManager.shared.oidc().redirectURI
             TCSLogWithMark("redirectURI: \(redirectURI)")
             TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
