@@ -45,7 +45,7 @@ struct AuthRights: ParsableCommand {
 
         if deleteRight == 1 {
             if manager.remove(right: right)==false {
-                print("error removing right")
+//                print("error removing right")
             }
 
         }
@@ -57,7 +57,7 @@ struct AuthRights: ParsableCommand {
             }
         }
         else if afterThisRight != nil {
-            print("inserting right after")
+//            print("inserting right after")
             if manager.insertRight(newRight: right, afterRight: afterThisRight!)==false{
 
                 print("error inserting after right")
