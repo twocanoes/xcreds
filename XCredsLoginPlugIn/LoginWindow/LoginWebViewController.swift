@@ -14,9 +14,12 @@ class LoginWebViewController: WebViewController {
     let uiLog = "uiLog"
     let monitor = NWPathMonitor()
     var delegate: XCredsMechanismProtocol?
+    var resolutionObserver:Any?
+    var loginProgressWindowController:LoginProgressWindowController?
     override func windowDidLoad() {
         super.windowDidLoad()
-        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+        
+        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
             self.setupLoginWindowAppearance()
 
@@ -25,11 +28,6 @@ class LoginWebViewController: WebViewController {
         setupLoginWindowAppearance()
 
         TCSLogWithMark("loading page")
-        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
-            TCSLogWithMark("Resolution changed. Resetting size")
-            self.setupLoginWindowAppearance()
-
-        }
 
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
@@ -75,12 +73,22 @@ class LoginWebViewController: WebViewController {
         return NSNib.Name("LoginWebView")
     }
     func loginTransition() {
+//
+//        let screenRect = NSScreen.screens[0].frame
+//        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
+//        progressIndicator.style = .spinning
+//        progressIndicator.startAnimation(self)
+//        webView.addSubview(progressIndicator)
 
-        let screenRect = NSScreen.screens[0].frame
-        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-        progressIndicator.style = .spinning
-        progressIndicator.startAnimation(self)
-        webView.addSubview(progressIndicator)
+        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
+        if let loginProgressWindowController = loginProgressWindowController {
+            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
+
+
+        }
+        self.window?.close()
+
+
 //        NSAnimationContext.runAnimationGroup({ (context) in
 //            context.duration = 1.0
 //            context.allowsImplicitAnimation = true
@@ -285,6 +293,9 @@ class LoginWebViewController: WebViewController {
         delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
 
         delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
+        if let resolutionObserver = resolutionObserver {
+            NotificationCenter.default.removeObserver(resolutionObserver)
+        }
 
         RunLoop.main.perform {
             self.loginTransition()

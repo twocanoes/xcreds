@@ -16,18 +16,17 @@ class LoginWindowControlsWindowController: NSWindowController {
     let uiLog = "uiLog"
     @IBOutlet weak var versionTextField: NSTextField?
     var loadPageURL:URL?
+    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
+    func dismiss() {
+        if let resolutionObserver = resolutionObserver {
+            NotificationCenter.default.removeObserver(resolutionObserver)
+        }
+        self.window?.close()
+    }
     override func windowDidLoad() {
         super.windowDidLoad()
         setupLoginWindowControlsAppearance()
-        /*
-         NSDictionary *infoDict=[[NSBundle mainBundle] infoDictionary];
-
-         NSString *verString=[infoDict valueForKey:@"CFBundleShortVersionString"];
-
-         NSString *buildString=[infoDict valueForKey:@"CFBundleVersion"];
-
-         */
         let allBundles = Bundle.allBundles
         versionTextField?.stringValue = ""
         for currentBundle in allBundles {
@@ -44,7 +43,7 @@ class LoginWindowControlsWindowController: NSWindowController {
             }
         }
 
-        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
             self.setupLoginWindowControlsAppearance()
 

@@ -37,7 +37,8 @@ import Cocoa
 
     }
     override func allowLogin() {
-        loginWindowControlsWindowController.close()
+
+        loginWindowControlsWindowController.dismiss()
         super.allowLogin()
     }
     override func denyLogin() {

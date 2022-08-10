@@ -111,6 +111,8 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fEnableFDE = (strcmp(mechanismId, "EnableFDE") == 0);
     mechanism->fKeychainAdd = (strcmp(mechanismId, "KeychainAdd") == 0);
     mechanism->fCreateUser = (strcmp(mechanismId, "CreateUser") == 0);
+    mechanism->fLoginDone = (strcmp(mechanismId, "LoginDone") == 0);
+
     *outMechanism = mechanism;
 
     return errSecSuccess;
@@ -151,6 +153,13 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
         [createUser run];
 
     }
+    else if (mechanism->fLoginDone){
+        NSLog(@"Calling LoginDone");
+        XCredsLoginDone *loginDone = [[XCredsLoginDone alloc] initWithMechanism:mechanism];
+        [loginDone run];
+
+    }
+
     return noErr;
 }
 

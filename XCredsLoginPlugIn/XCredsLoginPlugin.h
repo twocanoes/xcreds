@@ -49,7 +49,7 @@ struct MechanismRecord {
     Boolean                         fEnableFDE;
     Boolean                         fKeychainAdd;
     Boolean                         fCreateUser;
-
+    Boolean                             fLoginDone;
 
 };
 

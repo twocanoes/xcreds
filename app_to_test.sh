@@ -22,4 +22,4 @@ ssh root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_logi
 ssh  root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -i
 
 #ssh  root@"${REMOTE_MAC}" killall -9 SecurityAgent || echo "unable to kill"
-ssh root@"${REMOTE_MAC}" reboot
+#ssh root@"${REMOTE_MAC}" reboot
