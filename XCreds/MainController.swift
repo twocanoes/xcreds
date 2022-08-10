@@ -17,6 +17,7 @@ class MainController: NSObject {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
+        
 
         // make sure we have the local password, else prompt. we don't need to save it
         // just make sure we prompt if not in the keychain. if the user cancels, then it will

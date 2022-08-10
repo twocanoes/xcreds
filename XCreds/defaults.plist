@@ -30,7 +30,7 @@
 	<string>1</string>
 	<key>KeychainCreate</key>
 	<true/>
-	<key>loginWindowBackgroundImagePath</key>
-	<string>/System/Library/Desktop Pictures/Monterey Graphic.heic</string>
+	<key>loginWindowBackgroundImageURL</key>
+	<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
 </dict>
 </plist>
