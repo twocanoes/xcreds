@@ -80,9 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.canBecomeVisibleWithoutLogin=true
         window.hidesOnDeactivate=false
         window.isOpaque=false
-        window .orderFront(self)
-
-
+        window.orderFrontRegardless()
 
     }
 
