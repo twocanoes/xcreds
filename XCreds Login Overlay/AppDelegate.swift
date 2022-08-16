@@ -70,17 +70,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
  */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-      
-
 
         var statusWindowRect=window.frame
         let screenRect = NSScreen.screens[0].visibleFrame
 
-
         statusWindowRect.size.width=screenRect.size.width
         statusWindowRect.origin=screenRect.origin;
         window.setFrame(statusWindowRect, display: true, animate: false)
-        window.makeKeyAndOrderFront(self)
+        window.canBecomeVisibleWithoutLogin=true
+        window.hidesOnDeactivate=false
+        window.isOpaque=false
+        window .orderFront(self)
+
+
 
     }
 

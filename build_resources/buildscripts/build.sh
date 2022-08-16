@@ -37,5 +37,5 @@ cp -R "${temp_folder}/${PRODUCT_NAME}.xcarchive/dSYMs/" "${PROJECT_FOLDER}/produ
 
 cp -Rv "${SRC_PATH}/build_resources/" "${BUILD_FOLDER}"
 
-exit
+
 /Users/tperfitt/Documents/Projects/build/build.sh  "${BUILD_FOLDER}" "${temp_folder}" "${PRODUCT_NAME}" "${BUILD_FOLDER}/XCreds.app" "${SCRIPT_FOLDER}/build_post.sh"
