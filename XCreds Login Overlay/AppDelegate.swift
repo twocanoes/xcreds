@@ -73,13 +73,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         var statusWindowRect=window.frame
         let screenRect = NSScreen.screens[0].visibleFrame
-
         statusWindowRect.size.width=screenRect.size.width
         statusWindowRect.origin=screenRect.origin;
         window.setFrame(statusWindowRect, display: true, animate: false)
         window.canBecomeVisibleWithoutLogin=true
         window.hidesOnDeactivate=false
         window.isOpaque=false
+        window.level = .modalPanel
+        NSApp.activate(ignoringOtherApps: true)
         window.orderFrontRegardless()
 
     }
