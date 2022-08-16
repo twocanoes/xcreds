@@ -685,7 +685,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="25" y="25" width="872" height="109"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
             <view key="contentView" id="1nr-Jh-HO9">
                 <rect key="frame" x="0.0" y="0.0" width="872" height="109"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -727,7 +727,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="362" height="190"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
             <view key="contentView" id="MiV-8U-Ioy">
                 <rect key="frame" x="0.0" y="0.0" width="362" height="190"/>
                 <autoresizingMask key="autoresizingMask"/>

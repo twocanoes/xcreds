@@ -19,13 +19,6 @@ popd
 temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
 BUILD_FOLDER="${temp_folder}/build"
 
-#buildNumber=$(($buildNumber + 1))
-
-
-#codesign --verbose --force -o runtime --sign "Developer ID Application: Twocanoes Software, Inc. (UXP6YEHSPW)" "${SRC_PATH}/build_resources/AdditionalPackagesResources/OpenDirectory/Modules/com.twocanoes.sconeod.xpc/Contents/MacOS/dsconfigel"
-
-
-#codesign --verbose --force -o runtime --sign "Developer ID Application: Twocanoes Software, Inc. (UXP6YEHSPW)" "${SRC_PATH}/build_resources/AdditionalPackagesResources/OpenDirectory/Modules/com.twocanoes.sconeod.xpc"
 
 
 
@@ -33,8 +26,6 @@ xcodebuild archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${P
 
 
 xcodebuild -exportArchive -archivePath "${temp_folder}/${PRODUCT_NAME}.xcarchive"  -exportOptionsPlist "${SRC_PATH}/build_resources/exportOptions.plist" -exportPath "${BUILD_FOLDER}" 
-
-#
 
 
 echo saving symbols
@@ -46,4 +37,5 @@ cp -R "${temp_folder}/${PRODUCT_NAME}.xcarchive/dSYMs/" "${PROJECT_FOLDER}/produ
 
 cp -Rv "${SRC_PATH}/build_resources/" "${BUILD_FOLDER}"
 
+exit
 /Users/tperfitt/Documents/Projects/build/build.sh  "${BUILD_FOLDER}" "${temp_folder}" "${PRODUCT_NAME}" "${BUILD_FOLDER}/XCreds.app" "${SCRIPT_FOLDER}/build_post.sh"

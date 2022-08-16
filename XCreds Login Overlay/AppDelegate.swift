@@ -80,6 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusWindowRect.size.width=screenRect.size.width
         statusWindowRect.origin=screenRect.origin;
         window.setFrame(statusWindowRect, display: true, animate: false)
+        window.makeKeyAndOrderFront(self)
 
     }
 
