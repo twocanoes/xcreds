@@ -21,6 +21,9 @@ class ScheduleManager {
         if rate < 1 {
             rate = 1
         }
+        else if rate > 168 {
+            rate = 168
+        }
         timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate*60*60), repeats: true, block: { timer in
             self.checkToken()
         })

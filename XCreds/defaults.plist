@@ -5,7 +5,7 @@
 	<key>redirectURI</key>
 	<string>xcreds://auth/</string>
 	<key>refreshRateHours</key>
-	<string>3</string>
+	<integer>4</integer>
 	<key>showDebug</key>
 	<false/>
 	<key>verifyPassword</key>
