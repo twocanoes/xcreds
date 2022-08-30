@@ -75,36 +75,40 @@ extension WebViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
-
         let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
         let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue) as? String ?? "passwordInput"
+        if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
+            TCSLogWithMark("customURL")
+            TCSLogWithMark(customURL.sanitized())
+            
+            let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    TCSLogWithMark("Setting password")
+
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("No password found")
+                    return
+                }
+            })
+
+        }
+
         // if it's a POST let's see what we're posting...
-        if navigationAction.request.httpMethod == "POST" {
+        else if navigationAction.request.httpMethod == "POST" {
             TCSLogWithMark("POST")
-            if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
-                TCSLogWithMark(customURL.sanitized())
-
-                let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
-                        return
-                    }
-                })
-
-            }
 
             // Azure snarfing
-            else if navigationAction.request.url?.host == "login.microsoftonline.com" {
+            if navigationAction.request.url?.host == "login.microsoftonline.com" {
                 TCSLogWithMark("Azure")
 
                 var javaScript = "document.getElementById('i0118').value"
                 ///passwordInput
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
+                        TCSLogWithMark("Setting password")
                         self.password=rawPass
                     }
                     else {
@@ -116,6 +120,7 @@ extension WebViewController: WKNavigationDelegate {
                 javaScript = "document.getElementById('confirmNewPassword').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
+                        TCSLogWithMark("Setting password")
                         self.password=rawPass
                     }
                     else {
@@ -128,6 +133,7 @@ extension WebViewController: WKNavigationDelegate {
                 let javaScript = "document.querySelector('input[type=password]').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
+                        TCSLogWithMark("Setting password")
                         self.password=rawPass
                     }
                     else {
@@ -159,13 +165,6 @@ extension WebViewController: WKNavigationDelegate {
         else {
             TCSLogWithMark(navigationAction.request.httpMethod ?? "Unknown method")
             TCSLogWithMark("path = \(navigationAction.request.url?.path ?? "no path")");
-
-//            let javaScript = "document.documentElement.outerHTML.toString()"
-//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                TCSLogWithMark(response as? String ?? "No HTML")
-//            })
-
-
         }
 
         decisionHandler(.allow)
@@ -182,22 +181,21 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
-         let redirectURI = TokenManager.shared.oidc().redirectURI
-            TCSLogWithMark("redirectURI: \(redirectURI)")
-            TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
-            if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
-                var code = ""
-                let fullCommand = webView.url?.absoluteString ?? ""
-                let pathParts = fullCommand.components(separatedBy: "&")
-                for part in pathParts {
-                    if part.contains("code=") {
-                        code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
-                        TokenManager.shared.oidc().getToken(code: code)
-                        return
-                    }
+        let redirectURI = TokenManager.shared.oidc().redirectURI
+        TCSLogWithMark("redirectURI: \(redirectURI)")
+        TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
+        if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+            var code = ""
+            let fullCommand = webView.url?.absoluteString ?? ""
+            let pathParts = fullCommand.components(separatedBy: "&")
+            for part in pathParts {
+                if part.contains("code=") {
+                    code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
+                    TokenManager.shared.oidc().getToken(code: code)
+                    return
                 }
             }
-
+        }
     }
 
     private func queryToDict(query: String) -> [String:String]? {
