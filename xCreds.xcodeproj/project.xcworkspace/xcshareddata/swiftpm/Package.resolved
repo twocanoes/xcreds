@@ -1,14 +1,16 @@
 {
-  "pins" : [
-    {
-      "identity" : "oidclite",
-      "kind" : "remoteSourceControl",
-      "location" : "https://gitlab.com/Mactroll/OIDCLite",
-      "state" : {
-        "branch" : "main",
-        "revision" : "b0fb99a161456d4eb353858f73d487790f9c98a7"
+  "object": {
+    "pins": [
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "df9ee6676cd5b3bf5b330ec7568a5644f547201b",
+          "version": "1.1.3"
+        }
       }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }

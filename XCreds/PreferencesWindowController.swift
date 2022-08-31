@@ -22,6 +22,9 @@ class PreferencesWindowController: NSWindowController {
         let _ = keychainUtil.findAndDelete(PrefKeys.idToken.rawValue)
         let _ = keychainUtil.findAndDelete(PrefKeys.refreshToken.rawValue)
 
+
+        mainMenu.signedIn=false
+        mainMenu.buildMenu()
     }
 
 }

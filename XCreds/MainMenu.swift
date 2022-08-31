@@ -18,6 +18,8 @@ class MainMenu: NSObject, NSMenuDelegate {
     var menuOpen = false // is the menu open?
     var menuBuilt: Date? // last time menu was built
 
+    var signedIn = false
+    
     let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     // windows
@@ -31,31 +33,51 @@ class MainMenu: NSObject, NSMenuDelegate {
         buildMenu()
         self.statusBarItem.menu = mainMenu
         self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
-//        self.statusBarItem.button?.title = "🔘"
         mainMenu.delegate = self
 
     }
 
     func buildMenu() {
 
+        var firstItemShown = false
         if menuOpen { return }
 
         menuBuilt = Date()
         mainMenu.removeAllItems()
 
         // add menu items
-        let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue)==true{
+            mainMenu.addItem(AboutMenuItem())
+            mainMenu.addItem(NSMenuItem.separator())
+            firstItemShown = true
+        }
+        if let passwordChangeURLString = UserDefaults.standard.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+            if firstItemShown == false {
+                mainMenu.addItem(NSMenuItem.separator())
+                firstItemShown = true
 
-        mainMenu.addItem(AboutMenuItem())
-        mainMenu.addItem(NSMenuItem.separator())
+            }
+            mainMenu.addItem(ChangePasswordMenuItem())
+            mainMenu.addItem(NSMenuItem.separator())
+
+        }
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
         mainMenu.addItem(PrefsMenuItem())
-        mainMenu.addItem(NSMenuItem.separator())
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuit.rawValue)==true{
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
+            let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
+
+            mainMenu.addItem(NSMenuItem.separator())
             mainMenu.addItem(quitMenuItem)
         }
 
+        if signedIn == true {
+            statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+
+        }
+        else {
+            statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
+        }
     }
 
     //MARK: NSMenuDelegate

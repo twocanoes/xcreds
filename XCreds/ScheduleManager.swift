@@ -21,6 +21,9 @@ class ScheduleManager {
         if rate < 1 {
             rate = 1
         }
+        else if rate > 168 {
+            rate = 168
+        }
         timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate*60*60), repeats: true, block: { timer in
             self.checkToken()
         })
@@ -33,6 +36,14 @@ class ScheduleManager {
         }
     }
     func checkToken()  {
+//        // we have not resolved the tokenEndpoint yet, so pop up a window
+//        if UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue) == nil {
+//            DispatchQueue.main.async {
+//                SignInMenuItem().doAction()
+//            }
+//            return
+//        }
+
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
@@ -44,9 +55,15 @@ class ScheduleManager {
                 return
             }
             else if isSuccessful == true {
+
                 if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
                     NotifyManager.shared.sendMessage(message: "Azure password unchanged")
                 }
+                DispatchQueue.main.async {
+                    mainMenu.signedIn=true
+                    mainMenu.buildMenu()
+                }
+
 
             }
             else {
@@ -56,9 +73,7 @@ class ScheduleManager {
                     NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
                 }
                 DispatchQueue.main.async {
-//                    mainMenu.webView = WebViewController()
-//                    mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-//                    mainMenu.webView?.run()
+
                     SignInMenuItem().doAction()
                 }
 

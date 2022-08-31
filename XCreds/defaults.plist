@@ -5,16 +5,32 @@
 	<key>redirectURI</key>
 	<string>xcreds://auth/</string>
 	<key>refreshRateHours</key>
-	<string>3</string>
+	<integer>3</integer>
 	<key>showDebug</key>
 	<false/>
 	<key>verifyPassword</key>
 	<true/>
 	<key>LogFileName</key>
 	<string>xcreds.log</string>
-	<key>shouldShowQuit</key>
-	<true/>
 	<key>shouldShowPreferencesOnStart</key>
 	<false/>
+	<key>shouldSetGoogleAccessTypeToOffline</key>
+	<false/>
+	<key>shouldShowAboutMenu</key>
+	<true/>
+	<key>shouldShowQuitMenu</key>
+	<true/>
+	<key>shouldShowVersionInfo</key>
+	<true/>
+	<key>shouldShowSupportStatus</key>
+	<string>1</string>
+	<key>shouldShowConfigureWifiButton</key>
+	<true/>
+	<key>shouldShowMacLoginButton</key>
+	<string>1</string>
+	<key>KeychainCreate</key>
+	<true/>
+	<key>loginWindowBackgroundImageURL</key>
+	<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
 </dict>
 </plist>

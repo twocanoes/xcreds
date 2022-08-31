@@ -12,7 +12,13 @@ class SignInMenuItem: NSMenuItem {
 
     override var title: String {
         get {
-            "Sign In..."
+            if mainMenu.signedIn==true {
+                return "Refresh..."
+            }
+            else {
+                return "Sign In..."
+            }
+
         }
         set {
             return
@@ -35,7 +41,7 @@ class SignInMenuItem: NSMenuItem {
                 mainMenu.webView = WebViewController()
             }
             mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-            mainMenu.webView?.run()
+            mainMenu.webView?.loadPage()
         }
         else {
             if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{

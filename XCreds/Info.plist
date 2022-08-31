@@ -4,5 +4,7 @@
 <dict>
 	<key>LSUIElement</key>
 	<true/>
+	<key>LogFileName</key>
+	<string>xcreds.log</string>
 </dict>
 </plist>

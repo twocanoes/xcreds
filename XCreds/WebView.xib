@@ -8,15 +8,14 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
-                <outlet property="cancelButton" destination="k1y-g2-hDK" id="OP0-sn-o5u"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
@@ -24,37 +23,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
-                        <rect key="frame" x="0.0" y="64" width="628" height="549"/>
-                        <wkWebViewConfiguration key="configuration">
+                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                            <wkPreferences key="preferences"/>
+                            <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                         </wkWebViewConfiguration>
-                    </wkWebView>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1y-g2-hDK">
-                        <rect key="frame" x="539" y="13" width="76" height="32"/>
-                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ksj-eV-tj1">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-Gw
-</string>
-                        </buttonCell>
                         <connections>
-                            <action selector="clickCancel:" target="-2" id="wA4-1u-JJQ"/>
+                            <outlet property="UIDelegate" destination="-2" id="Qhy-Dl-wsg"/>
                         </connections>
-                    </button>
+                    </wkWebView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
-                    <constraint firstAttribute="trailing" secondItem="k1y-g2-hDK" secondAttribute="trailing" constant="20" symbolic="YES" id="7i7-Zq-FS8"/>
-                    <constraint firstAttribute="bottom" secondItem="k1y-g2-hDK" secondAttribute="bottom" constant="20" symbolic="YES" id="S7Q-4g-cc3"/>
-                    <constraint firstItem="k1y-g2-hDK" firstAttribute="top" secondItem="p1x-1L-05D" secondAttribute="bottom" constant="24" id="bK2-wq-WpJ"/>
                     <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
                     <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="gmG-FO-hZc"/>
+                    <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" id="vCP-fw-q3U"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="142" y="302.5"/>
+            <point key="canvasLocation" x="250" y="297.5"/>
         </window>
     </objects>
 </document>

@@ -29,6 +29,10 @@ void TCSLog(NSString *string)
 + (TCSUnifiedLogger *)sharedLogger
 {
     static TCSUnifiedLogger *sharedLogger;
+
+    if (sharedLogger !=nil){
+        return sharedLogger;
+    }
     NSFileManager *fm = [NSFileManager defaultManager];
 
     NSString *logFolderPath = [[[NSUserDefaults standardUserDefaults] objectForKey:@"LogFolderPath"] stringByExpandingTildeInPath];
@@ -78,6 +82,12 @@ void TCSLog(NSString *string)
     }
     return sharedLogger;
 }
+//os_log("Unable to get home directory path.", log: "", type: .error)
+- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
+
+}
+
+
 - (void)logString:(NSString *)inStr level:(LogLevel)level
 {
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];

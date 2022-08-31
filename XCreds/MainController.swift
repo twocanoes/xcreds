@@ -17,99 +17,101 @@ class MainController: NSObject {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
+        
 
         // make sure we have the local password, else prompt. we don't need to save it
         // just make sure we prompt if not in the keychain. if the user cancels, then it will
         // prompt when using OAuth.
+        // don't need to save it. just need to prompt and it gets saved
+        // in the keychain
         let _ = localPassword()
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
             //now we set the password.
-
+             Mark()
             DispatchQueue.main.async {
-                let keychainUtil = KeychainUtil()
+                mainMenu.webView?.window?.close()
 
-                guard let userInfo = notification.userInfo else {
+                guard let tokenInfo = notification.userInfo else {
                     return
                 }
 
-                if let accessToken = userInfo[PrefKeys.accessToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken)
+                guard let tokens = tokenInfo["tokens"] as? Tokens else {
+                    let alert = NSAlert()
+                    alert.addButton(withTitle: "OK")
+                    alert.messageText="Invalid tokens or password not determined. Please check the log."
+                    alert.runModal()
+                    return
                 }
+                if tokens.refreshToken.count>0 {
+                    Mark()
+                    DispatchQueue.main.async {
+                        mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    }
 
-                if let idToken = userInfo[PrefKeys.idToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken)
                 }
+                let localPassword = self.localPassword()
+                if (localPassword != tokens.password){
+                    var updatePassword = true
+                    if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                        let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                        NSApp.activate(ignoringOtherApps: true)
 
-                if let refreshToken = userInfo[PrefKeys.refreshToken.rawValue] as? String {
-                    let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken)
-                }
+                        while true {
+                            let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                            if response == .cancel {
 
-
-
-                if let cloudPassword = userInfo["password"] as? String {
-                    let localPassword = self.localPassword()
-
-                    if let localPassword = localPassword {
-                        if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
-                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-                            NSApp.activate(ignoringOtherApps: true)
-
-                            while true {
-                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
-                                if response == .cancel {
-
-                                    let alert = NSAlert()
-                                    alert.addButton(withTitle: "Skip Updating Password")
-                                    alert.addButton(withTitle: "Cancel")
-                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
-                                    let resp = alert.runModal()
-                                    if resp == .alertFirstButtonReturn {
-                                        NSApp.stopModal(withCode: .cancel)
-                                        verifyOIDPassword.window?.close()
-                                        break
-
-                                    }
-                                }
-                                let verifyCloudPassword = verifyOIDPassword.password
-                                if verifyCloudPassword == cloudPassword {
-                                    try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
-                                    let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
-                                    if err == false {
-                                        //TODO: Log Error
-                                    }
+                                let alert = NSAlert()
+                                alert.addButton(withTitle: "Skip Updating Password")
+                                alert.addButton(withTitle: "Cancel")
+                                alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
+                                let resp = alert.runModal()
+                                if resp == .alertFirstButtonReturn {
+                                    NSApp.stopModal(withCode: .cancel)
                                     verifyOIDPassword.window?.close()
-                                    break;
-                                }
-                                else {
-                                    verifyOIDPassword.window?.shake(self)
-                                }
+                                    updatePassword=false
+                                    break
 
+                                }
                             }
-                        }
-                        else {
-                            try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: cloudPassword, newPassword2: cloudPassword)
-                            let err = keychainUtil.updatePassword("local password", pass: cloudPassword)
-                            if err == false {
-                                //TODO: Log Error
+                            let verifyCloudPassword = verifyOIDPassword.password
+                            if verifyCloudPassword == tokens.password {
+
+                                updatePassword=true
+
+                                verifyOIDPassword.window?.close()
+                                break;
                             }
+                            else {
+                                verifyOIDPassword.window?.shake(self)
+                            }
+
                         }
+                    }
+                    if updatePassword {
+                        guard let localPassword = self.localPassword() else {
+                            TCSLogWithMark("error getting local password")
+                            return
+                        }
+                        try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: tokens.password, newPassword2: tokens.password)
 
 
                     }
-
-                    ScheduleManager.shared.startCredentialCheck()
                 }
+                if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:tokens.password ) == false {
+                    TCSLogWithMark("error saving tokens to keychain")
+                }
+                ScheduleManager.shared.startCredentialCheck()
+
             }
         }
         ScheduleManager.shared.startCredentialCheck()
-
     }
 
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
     func localPassword() -> String? {
         let keychainUtil = KeychainUtil()
 
-        let password = try? keychainUtil.findPassword("local password")
+        let password = try? keychainUtil.findPassword(PrefKeys.password.rawValue)
 
         if let password = password {
             if PasswordUtils.verifyCurrentUserPassword(password: password) == true {
@@ -133,7 +135,7 @@ class MainController: NSObject {
             let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
             if isPasswordValid==true {
                 passwordWindowController.window?.close()
-                let err = keychainUtil.updatePassword("local password", pass: localPassword)
+                let err = keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: localPassword, shouldUpdateACL: true)
                 if err == false {
                     return nil
                 }

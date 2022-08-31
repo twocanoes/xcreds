@@ -772,13 +772,17 @@
 			<dict>
 				<key>POSTINSTALL_PATH</key>
 				<dict>
+					<key>PATH</key>
+					<string>/Users/tperfitt/Documents/Projects/xcreds/build_resources/Packages/XCreds/scripts/postinstall.sh</string>
 					<key>PATH_TYPE</key>
-					<integer>1</integer>
+					<integer>0</integer>
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>
+					<key>PATH</key>
+					<string>/Users/tperfitt/Documents/Projects/xcreds/build_resources/Packages/XCreds/scripts/preinstall.sh</string>
 					<key>PATH_TYPE</key>
-					<integer>1</integer>
+					<integer>0</integer>
 				</dict>
 				<key>RESOURCES</key>
 				<array/>
