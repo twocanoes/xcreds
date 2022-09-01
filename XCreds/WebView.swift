@@ -76,15 +76,15 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
 
-        let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
-        let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue) as? String ?? "passwordInput"
+        let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
+        let passwordElementID = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String ?? "passwordInput"
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
             TCSLogWithMark("POST")
-            if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
-                TCSLogWithMark(customURL.sanitized())
+            if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName {
+                TCSLogWithMark(idpHostName.sanitized())
 
-                let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
+                let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
                         self.password=rawPass
