@@ -20,7 +20,7 @@ The XCreds app runs when the user logs in. On first launch, it checks to see if 
 See the [admin guide](https://github.com/twocanoes/xcreds/wiki/AdminGuide) on the wiki.
 
 ## Video
-See the [video on youtube](https://youtu.be/6V5MCQNWVTE)
+See the [video on youtube](https://www.youtube.com/watch?v=qtPy5ddp9kg&list=PLFtGGT240LAMYGcueZT76BySBQRFCzdce)
 
 ## Support
 Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is [available from Twocanoes Software](https://twocanoes.com/products/mac/xcreds/).
