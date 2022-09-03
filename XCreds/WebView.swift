@@ -21,7 +21,7 @@ class WebViewController: NSWindowController {
 
     var password:String?
     func loadPage() {
-        
+
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
@@ -76,13 +76,13 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
 
-        let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
+        let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
         let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue) as? String ?? "passwordInput"
         // if it's a POST let's see what we're posting...
         if navigationAction.request.httpMethod == "POST" {
             TCSLogWithMark("POST")
-            if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
-                TCSLogWithMark(customURL.sanitized())
+            if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName {
+                TCSLogWithMark(idpHostName.sanitized())
 
                 let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
@@ -112,7 +112,7 @@ extension WebViewController: WKNavigationDelegate {
 
                     }
                 })
-                
+
                 javaScript = "document.getElementById('confirmNewPassword').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
