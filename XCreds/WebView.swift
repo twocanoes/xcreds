@@ -21,7 +21,7 @@ class WebViewController: NSWindowController {
 
     var password:String?
     func loadPage() {
-        
+
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
@@ -98,7 +98,7 @@ extension WebViewController: WKNavigationDelegate {
             }
 
             // Azure snarfing
-            else if navigationAction.request.url?.host == "login.microsoftonline.com" {
+            else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
                 TCSLogWithMark("Azure")
 
                 var javaScript = "document.getElementById('i0118').value"
@@ -112,7 +112,7 @@ extension WebViewController: WKNavigationDelegate {
 
                     }
                 })
-                
+
                 javaScript = "document.getElementById('confirmNewPassword').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
