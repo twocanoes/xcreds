@@ -28,7 +28,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
                 os_log("Checking to see if we should rekey", log: enableFDELog, type: .default)
                 
                 if getManagedPreference(key: .EnableFDERekey) as? Bool ?? false {
-                    
+                    rekey()
                 }
                 
                 os_log("FileVault is already enabled, skipping mechanism.", log: enableFDELog, type: .debug)
