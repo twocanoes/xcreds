@@ -82,11 +82,15 @@ extension WebViewController: WKNavigationDelegate {
         if navigationAction.request.httpMethod == "POST" {
             TCSLogWithMark("POST")
             if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName {
+                TCSLogWithMark("host matches custom idpHostName")
+
                 TCSLogWithMark(idpHostName.sanitized())
+                TCSLogWithMark("inserting javascript to get password")
 
                 let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                     if let rawPass = response as? String {
+                        TCSLogWithMark("password set.")
                         self.password=rawPass
                     }
                     else {
@@ -186,12 +190,17 @@ extension WebViewController: WKNavigationDelegate {
             TCSLogWithMark("redirectURI: \(redirectURI)")
             TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+                TCSLogWithMark("got redirect URI match. separating URL")
                 var code = ""
                 let fullCommand = webView.url?.absoluteString ?? ""
                 let pathParts = fullCommand.components(separatedBy: "&")
                 for part in pathParts {
                     if part.contains("code=") {
+                        TCSLogWithMark("found code=. cleaning up.")
+
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
+                        TCSLogWithMark("getting tokens")
+
                         TokenManager.shared.oidc().getToken(code: code)
                         return
                     }

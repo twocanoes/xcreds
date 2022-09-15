@@ -297,19 +297,13 @@ protocol XCredsMechanismProtocol {
     func getContextString(type: String) -> String? {
         var value: UnsafePointer<AuthorizationValue>?
         var flags = AuthorizationContextFlags()
-        let err = mechCallbacks.GetContextValue((mech?.fEngine)!, type, &flags, &value)
+        let err = mech?.fPlugin.pointee.fCallbacks.pointee.GetContextValue((mech?.fEngine)!, type, &flags, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("Couldn't retrieve context value: %{public}@")
+            TCSLogWithMark("Couldn't retrieve context value \(type)")
             return nil
         }
-        if type == "longname" {
-            return String.init(bytesNoCopy: value!.pointee.data!, length: value!.pointee.length, encoding: .utf8, freeWhenDone: false)
-        } else {
-            let item = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
-            TCSLogWithMark("get context error: %{public}@")
-        }
 
-        return nil
+        return String(bytesNoCopy: value!.pointee.data!, length: value!.pointee.length, encoding: .utf8, freeWhenDone: false)
     }
     //MARK: - Directory Service Utilities
 

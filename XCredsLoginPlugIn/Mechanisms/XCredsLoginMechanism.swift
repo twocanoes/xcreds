@@ -5,6 +5,7 @@ import Cocoa
     @objc var loginWindow: XCredsLoginMechanism!
     @objc var webViewController: LoginWebViewController!
     @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
+    let checkADLog = "checkADLog"
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {
         super.init(mechanism: mechanism)
@@ -14,9 +15,89 @@ import Cocoa
         TCSLogWithMark("reload in controller")
         webViewController.loadPage()
     }
+    func useAutologin() -> Bool {
 
+        if UserDefaults(suiteName: "com.apple.loginwindow")?.bool(forKey: "DisableFDEAutoLogin") ?? false {
+            os_log("FDE AutoLogin Disabled per loginwindow preference key", log: checkADLog, type: .debug)
+            return false
+        }
+
+        os_log("Checking for autologin.", log: checkADLog, type: .default)
+        if FileManager.default.fileExists(atPath: "/tmp/nolorun") {
+            os_log("NoLo has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
+            return false
+        }
+
+        os_log("XCreds, trying autologin", log: checkADLog, type: .debug)
+        try? "Run Once".write(to: URL.init(fileURLWithPath: "/tmp/nolorun"), atomically: true, encoding: String.Encoding.utf8)
+
+        if let username = getContextString(type: "fvusername") {
+            TCSLogWithMark("got username = \(username)")
+        }
+        else {
+            TCSLogWithMark("no username found")
+
+        }
+       if let password = getContextString(type: "fvpassword") {
+           TCSLogWithMark("got password ")
+       }
+        else {
+            TCSLogWithMark("no password found")
+        }
+
+        if let username = getContextString(type: "fvusername"), let password = getContextString(type: "fvpassword") {
+            os_log("Found username in context, doing autologin", log: checkADLog, type: .debug)
+            setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+            setContextString(type: kAuthorizationEnvironmentPassword, value: password)
+            return true
+        } else {
+            if let uuid = getEFIUUID() {
+                if let name = XCredsBaseMechanism.getShortname(uuid: uuid) {
+                    os_log("Found username in EFI, doing autologin", log: checkADLog, type: .debug)
+
+                    setContextString(type: kAuthorizationEnvironmentUsername, value: name)
+                    return true
+                }
+            }
+        }
+        return true
+    }
+    fileprivate func getEFIUUID() -> String? {
+        TCSLogWithMark("getEFIUUID")
+        let chosen = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/chosen")
+        var properties : Unmanaged<CFMutableDictionary>?
+        let err = IORegistryEntryCreateCFProperties(chosen, &properties, kCFAllocatorDefault, IOOptionBits.init(bitPattern: 0))
+
+        if err != 0 {
+            TCSLogWithMark("getEFIUUID error")
+            return nil
+        }
+
+        guard let props = properties!.takeRetainedValue() as? [ String : AnyHashable ] else {
+            TCSLogWithMark("getEFIUUID error props")
+            return nil
+
+        }
+        guard let uuid = props["efilogin-unlock-ident"] as? Data else {
+
+            TCSLogWithMark("getEFIUUID error uuid")
+
+            return nil
+
+        }
+        TCSLogWithMark("uuid=\(uuid.hexEncodedString())")
+
+        return String.init(data: uuid, encoding: String.Encoding.utf8)
+    }
     @objc override func run() {
         TCSLogWithMark("\(#function) \(#file):\(#line)")
+        if useAutologin() {
+            os_log("Using autologin", log: checkADLog, type: .debug)
+            os_log("Check autologin complete", log: checkADLog, type: .debug)
+            allowLogin()
+            return
+        }
+
         NSApp.activate(ignoringOtherApps: true)
 
         webViewController = LoginWebViewController(windowNibName: NSNib.Name("LoginWebView"))
@@ -37,8 +118,13 @@ import Cocoa
 
     }
     override func allowLogin() {
+        TCSLogWithMark("Allowing Login")
+        if loginWindowControlsWindowController != nil {
+            TCSLogWithMark("Dismissing controller")
 
-        loginWindowControlsWindowController.dismiss()
+            loginWindowControlsWindowController.dismiss()
+        }
+        TCSLogWithMark("calling super allowLogin")
         super.allowLogin()
     }
     override func denyLogin() {
