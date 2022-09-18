@@ -107,6 +107,7 @@ class LoginWebViewController: WebViewController {
             return
         }
         var username:String
+        var oidcUsername:String = ""
         let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
 
         let idToken = tokens.idToken
@@ -141,11 +142,28 @@ class LoginWebViewController: WebViewController {
 
         }
 
-
+        if let accountField = UserDefaults.standard.string(forKey: PrefKeys.OIDCShortName.rawValue) {
+            do {
+                TCSLogWithMark("OIDC field name for account: \(accountField)")
+                let wholeIDTokenDict = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
+                if let _ = wholeIDTokenDict?[accountField] {
+                    oidcUsername = wholeIDTokenDict?[accountField] as! String
+                } else {
+                    TCSLogWithMark("Account field set in preferences has not matching field in ID token")
+                    delegate.denyLogin()
+                    return
+                }
+            TCSLogWithMark("oidcUsername: \(oidcUsername)")
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
-        }
-        else {
+        } else if oidcUsername != "" {
+            username = oidcUsername
+        } else {
 
 
             var emailString:String
