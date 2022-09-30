@@ -73,103 +73,93 @@ class WebViewController: NSWindowController {
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
-
+//        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
         let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
-        let passwordElementID = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String ?? "passwordInput"
-        // if it's a POST let's see what we're posting...
-        if navigationAction.request.httpMethod == "POST" {
-            TCSLogWithMark("POST")
-            if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName {
-                TCSLogWithMark("host matches custom idpHostName")
+        let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
+        if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName, let passwordElementID = passwordElementID {
+            TCSLogWithMark("host matches custom idpHostName")
+            TCSLogWithMark("passwordElementID is \(passwordElementID)")
 
-                TCSLogWithMark(idpHostName.sanitized())
-                TCSLogWithMark("inserting javascript to get password")
+            TCSLogWithMark(idpHostName.sanitized())
+            TCSLogWithMark("inserting javascript to get password")
 
-                let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        TCSLogWithMark("password set.")
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
-                        return
-                    }
-                })
+            let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String, rawPass != "" {
+                    TCSLogWithMark("password set.")
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("No password found")
+                    return
+                }
+            })
 
+        }
+        // Azure snarfing
+        else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
+            TCSLogWithMark("Azure")
+
+            var javaScript = "document.getElementById('i0118').value"
+            if  let passwordElementID = passwordElementID {
+                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
             }
+            ///passwordInput
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("No password found")
 
-            // Azure snarfing
-            else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
-                TCSLogWithMark("Azure")
+                }
+            })
 
-                var javaScript = "document.getElementById('i0118').value"
-                ///passwordInput
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
+//            javaScript = "document.getElementById('confirmNewPassword').value"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                if let rawPass = response as? String {
+//                    self.password=rawPass
+//                }
+//            })
+        } else if navigationAction.request.url?.host == "accounts.google.com" {
+            // Google snarfing
+            TCSLogWithMark("Google")
+            let javaScript = "document.querySelector('input[type=password]').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("No password found")
+                }
+            })
+        } else if navigationAction.request.url?.path.contains("verify") ?? false {
+            // maybe OneLogin?
+            TCSLogWithMark("Other Provider")
 
-                    }
-                })
-
-                javaScript = "document.getElementById('confirmNewPassword').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No confirmNewPassword found")
-                    }
-                })
-            } else if navigationAction.request.url?.host == "accounts.google.com" {
-                // Google snarfing
-                TCSLogWithMark("Google")
-                let javaScript = "document.querySelector('input[type=password]').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
-
-                    }
-
-
-                })
-            } else if navigationAction.request.url?.path.contains("verify") ?? false {
-                // maybe OneLogin?
-                TCSLogWithMark("Other Provider")
-
-                let javaScript = "document.getElementById('input8').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                })
-            }
-            else {
-                TCSLogWithMark("Unknown Provider")
-                TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
-            }
-        } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
-            TCSLogWithMark("GET with Token/redirect")
-            // for Okta
-            let javaScript = "document.getElementById('input74').value"
+            let javaScript = "document.getElementById('input8').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
             })
         }
+        else if navigationAction.request.url?.host?.contains("okta.com") ?? false {
+            TCSLogWithMark("okta")
+            // for Okta
+            var javaScript = "document.getElementById('okta-signin-password').value"
+            if  let passwordElementID = passwordElementID {
+                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+            }
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String, rawPass != "" {
+                    TCSLogWithMark("password set.")
+                    self.password=rawPass
+                }
+            })
+
+        }
         else {
-            TCSLogWithMark(navigationAction.request.httpMethod ?? "Unknown method")
-            TCSLogWithMark("path = \(navigationAction.request.url?.path ?? "no path")");
-
-//            let javaScript = "document.documentElement.outerHTML.toString()"
-//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                TCSLogWithMark(response as? String ?? "No HTML")
-//            })
-
-
+            TCSLogWithMark("Unknown Provider")
+            TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
         }
 
         decisionHandler(.allow)

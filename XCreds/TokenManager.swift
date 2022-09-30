@@ -123,7 +123,6 @@ class TokenManager {
 
 
         if let tokenEndpoint = oidc().OIDCTokenEndpoint {
-            UserDefaults.standard.set(tokenEndpoint, forKey: PrefKeys.tokenEndpoint.rawValue)
             return tokenEndpoint
         }
         return nil
