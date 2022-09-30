@@ -87,11 +87,11 @@ extension WebViewController: WKNavigationDelegate {
             let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                 if let rawPass = response as? String, rawPass != "" {
-                    TCSLogWithMark("password set.")
+                    TCSLogWithMark("========= password set===========")
                     self.password=rawPass
                 }
                 else {
-                    TCSLogWithMark("No password found")
+                    TCSLogWithMark("password not captured")
                     return
                 }
             })
@@ -108,10 +108,12 @@ extension WebViewController: WKNavigationDelegate {
             ///passwordInput
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                 if let rawPass = response as? String {
+                    TCSLogWithMark("========= password set===========")
+
                     self.password=rawPass
                 }
                 else {
-                    TCSLogWithMark("No password found")
+                    TCSLogWithMark("password not captured")
 
                 }
             })
@@ -128,10 +130,12 @@ extension WebViewController: WKNavigationDelegate {
             let javaScript = "document.querySelector('input[type=password]').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                 if let rawPass = response as? String {
+                    TCSLogWithMark("========= password set===========")
+
                     self.password=rawPass
                 }
                 else {
-                    TCSLogWithMark("No password found")
+                    TCSLogWithMark("password not captured")
                 }
             })
         } else if navigationAction.request.url?.path.contains("verify") ?? false {
@@ -151,7 +155,7 @@ extension WebViewController: WKNavigationDelegate {
             }
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
                 if let rawPass = response as? String, rawPass != "" {
-                    TCSLogWithMark("password set.")
+                    TCSLogWithMark("========= password set===========")
                     self.password=rawPass
                 }
             })
@@ -229,21 +233,18 @@ extension WebViewController: OIDCLiteDelegate {
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
-        TCSLogWithMark("tokenResponse")
+        TCSLogWithMark("======== tokenResponse =========")
         RunLoop.main.perform {
             if let password = self.password {
-                TCSLogWithMark("password received")
+                TCSLogWithMark("----- Password was set")
                 let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
                 self.tokensUpdated(tokens: returnTokens)
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
-
                 )
-
             }
             else {
-                TCSLogWithMark("no password!")
+                TCSLogWithMark("----- password was not set")
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-
             }
         }
     }
