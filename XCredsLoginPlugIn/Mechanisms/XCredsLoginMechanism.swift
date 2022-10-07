@@ -97,6 +97,12 @@ import Cocoa
             allowLogin()
             return
         }
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+            setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+
+            allowLogin()
+            return
+        }
 
         NSApp.activate(ignoringOtherApps: true)
 

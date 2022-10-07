@@ -32,5 +32,7 @@
 	<true/>
 	<key>loginWindowBackgroundImageURL</key>
 	<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
+	<key>shouldShowCloudLoginByDefault</key>
+	<true/>
 </dict>
 </plist>
