@@ -57,7 +57,7 @@ class ScheduleManager {
             else if isSuccessful == true {
 
                 if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
-                    NotifyManager.shared.sendMessage(message: "Azure password unchanged")
+                    NotifyManager.shared.sendMessage(message: "Password unchanged")
                 }
                 DispatchQueue.main.async {
                     mainMenu.signedIn=true
@@ -70,7 +70,7 @@ class ScheduleManager {
                 self.stopCredentialCheck()
                 if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 
-                    NotifyManager.shared.sendMessage(message: "Azure password changed or not set")
+                    NotifyManager.shared.sendMessage(message: "Password changed or not set")
                 }
                 DispatchQueue.main.async {
 
