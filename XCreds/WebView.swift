@@ -146,14 +146,23 @@ extension WebViewController: WKNavigationDelegate {
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
             })
         }
-        else if navigationAction.request.url?.host?.contains("okta.com") ?? false {
+        else if navigationAction.request.url?.host?.contains("okta.com") ?? false ||
+                    navigationAction.request.url?.host?.contains("duosecurity.com") ?? false
+        {
             TCSLogWithMark("okta")
             // for Okta
             var javaScript = "document.getElementById('okta-signin-password').value"
             if  let passwordElementID = passwordElementID {
+                TCSLogWithMark("setting passwordElementID to \(passwordElementID)")
+
                 javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+                TCSLogWithMark("javascript: \(javaScript)")
+
             }
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+
+                TCSLogWithMark(error?.localizedDescription ?? "no error.localizedDescription")
+
                 if let rawPass = response as? String, rawPass != "" {
                     TCSLogWithMark("========= password set===========")
                     self.password=rawPass
@@ -239,6 +248,11 @@ extension WebViewController: OIDCLiteDelegate {
                 TCSLogWithMark("----- Password was set")
                 let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
                 self.tokensUpdated(tokens: returnTokens)
+
+                /*
+                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
+
+                 */
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
                 )
             }

@@ -100,7 +100,7 @@ class LoginWebViewController: WebViewController {
 
     override func tokensUpdated(tokens: Tokens) {
 //if we have tokens, that means that authentication was successful.
-        //we have to check the password here so we can prompt.
+//we have to check the password here so we can prompt.
 
         guard let delegate = delegate else {
             TCSLogWithMark("invalid delegate")
@@ -116,8 +116,6 @@ class LoginWebViewController: WebViewController {
         if array.count != 3 {
             TCSLogWithMark("idToken is invalid")
             delegate.denyLogin()
-
-
         }
         let body = array[1]
         guard let data = base64UrlDecode(value:body ) else {
@@ -126,7 +124,6 @@ class LoginWebViewController: WebViewController {
             return
         }
 
-        
         let decoder = JSONDecoder()
         var idTokenObject:IDToken
         do {
@@ -140,14 +137,10 @@ class LoginWebViewController: WebViewController {
             return
 
         }
-
-
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
         else {
-
-
             var emailString:String
 
 
