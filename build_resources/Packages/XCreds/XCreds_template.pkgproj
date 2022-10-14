@@ -773,16 +773,16 @@
 				<key>POSTINSTALL_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/tperfitt/Documents/Projects/xcreds/build_resources/Packages/XCreds/scripts/postinstall.sh</string>
+					<string>scripts/postinstall.sh</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>1</integer>
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/tperfitt/Documents/Projects/xcreds/build_resources/Packages/XCreds/scripts/preinstall.sh</string>
+					<string>scripts/preinstall.sh</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>1</integer>
 				</dict>
 				<key>RESOURCES</key>
 				<array/>
@@ -977,9 +977,9 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/tperfitt/Documents/Projects/SecureRemoteAccess/build_resources/Packages/Secure Remote Access/Success.rtfd</string>
+							<string>Success.rtfd</string>
 							<key>PATH_TYPE</key>
-							<integer>0</integer>
+							<integer>1</integer>
 						</dict>
 					</dict>
 				</array>
