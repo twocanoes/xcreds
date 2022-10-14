@@ -76,12 +76,16 @@ extension WebViewController: WKNavigationDelegate {
 //        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
         let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
+        var idpHostNames = UserDefaults.standard.value(forKey: PrefKeys.idpHostNames.rawValue)
+
+        if idpHostNames == nil && idpHostName != nil {
+            idpHostNames=[idpHostName]
+        }
         let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
-        if let idpHostName = idpHostName as? String, navigationAction.request.url?.host == idpHostName, let passwordElementID = passwordElementID {
+        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host), let passwordElementID = passwordElementID {
             TCSLogWithMark("host matches custom idpHostName")
             TCSLogWithMark("passwordElementID is \(passwordElementID)")
 
-            TCSLogWithMark(idpHostName.sanitized())
             TCSLogWithMark("inserting javascript to get password")
 
             let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
