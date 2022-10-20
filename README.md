@@ -23,7 +23,7 @@ See the [admin guide](https://github.com/twocanoes/xcreds/wiki/AdminGuide) on th
 See the [video on youtube](https://www.youtube.com/watch?v=qtPy5ddp9kg&list=PLFtGGT240LAMYGcueZT76BySBQRFCzdce)
 
 ## Support
-Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is [available from Twocanoes Software](https://twocanoes.com/products/mac/xcreds/).
+Please join the #xcreds MacAdmins slack channel for any questions you have. 
 
 ## Thanks
 
