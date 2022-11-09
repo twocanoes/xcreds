@@ -144,17 +144,17 @@ class LoginWebViewController: WebViewController {
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
 
-        let mappings = UserDefaults.standard.object(forKey: "mappings")
+
 
         // username
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
-        else if let idTokenInfo = idTokenInfo, let mappings = mappings as? Dictionary <String,Any>, let mapKey = mappings["username"] as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
 
             username = mapValue
-            TCSLogWithMark("username found: \(username)")
+            TCSLogWithMark("mapped username found: \(username)")
 
         }
         else {
@@ -184,7 +184,7 @@ class LoginWebViewController: WebViewController {
         }
 
         //full name
-        if let idTokenInfo = idTokenInfo, let mappings = mappings as? Dictionary <String,Any>, let mapKey = mappings["fullName"] as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
 
@@ -198,7 +198,7 @@ class LoginWebViewController: WebViewController {
         }
 
         //first name
-        if let idTokenInfo = idTokenInfo, let mappings = mappings as? Dictionary <String,Any>, let mapKey = mappings["firstName"] as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
             TCSLogWithMark("first name mapped to: \(mapKey)")
 
@@ -211,8 +211,8 @@ class LoginWebViewController: WebViewController {
         }
         //last name
 
-        if let idTokenInfo = idTokenInfo, let mappings = mappings as? Dictionary <String,Any>, let mapKey = mappings["lastName"] as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for username, so use that.
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for lastName, so use that.
             TCSLogWithMark("last name mapped to: \(mapKey)")
 
             delegate.setHint(type: .lastName, hint:mapValue)
@@ -223,26 +223,26 @@ class LoginWebViewController: WebViewController {
 
         }
 
-        let isLocal = try? PasswordUtils.isUserLocal(username)
+//        let isLocal = try? PasswordUtils.isUserLocal(username)
 
-        guard let isLocal = isLocal else {
-            TCSLogWithMark("cannot find if user is local")
-            delegate.denyLogin()
-            return
-        }
-//
-//        if isLocal == false {
-//            TCSLogWithMark("User is not on system. for now, just abort")
+//        guard let isLocal = isLocal else {
+//            TCSLogWithMark("cannot find if user is local")
 //            delegate.denyLogin()
 //            return
 //        }
+////
+////        if isLocal == false {
+////            TCSLogWithMark("User is not on system. for now, just abort")
+////            delegate.denyLogin()
+////            return
+////        }
 
-        let hasHome = try? PasswordUtils.doesUserHomeExist(username)
-        guard let hasHome = hasHome else {
-            TCSLogWithMark("home dir nil")
-            delegate.denyLogin()
-            return
-        }
+//        let hasHome = try? PasswordUtils.doesUserHomeExist(username)
+//        guard let hasHome = hasHome else {
+//            TCSLogWithMark("home dir nil")
+//            delegate.denyLogin()
+//            return
+//        }
 
 //        if hasHome == false {
 //            TCSLogWithMark("User has no home. for now, just abort")
