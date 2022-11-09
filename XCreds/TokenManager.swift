@@ -69,21 +69,21 @@ class TokenManager {
 
     }
 
-    func saveTokensToKeychain(tokens:Tokens, setACL:Bool=false, password:String?=nil) -> Bool {
+    func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
         let keychainUtil = KeychainUtil()
 
-        if tokens.accessToken.count>0{
+        if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
-            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: tokens.accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating Access Token")
 
                 return false
             }
 
         }
-        if tokens.idToken.count>0{
+        if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: tokens.idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating idToken Token")
 
                 return false
@@ -91,22 +91,22 @@ class TokenManager {
         }
 
 
-        if tokens.refreshToken.count>0 {
+        if let refreshToken = creds.refreshToken, refreshToken.count>0 {
             TCSLogWithMark("Saving refresh Token")
 
-            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: tokens.refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating refreshToken Token")
 
                 return false
             }
         }
 
-        let cloudPassword = tokens.password
+
         
-        if cloudPassword.count>0 {
+        if creds.password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: tokens.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogWithMark("Error Updating password")
 
                 return false

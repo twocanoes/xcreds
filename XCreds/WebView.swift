@@ -65,7 +65,7 @@ class WebViewController: NSWindowController {
             }
         }
     }
-    func tokensUpdated(tokens: Tokens){
+    func tokensUpdated(tokens: Creds){
 //to be overridden by superclasses
     }
 }
@@ -250,14 +250,10 @@ extension WebViewController: OIDCLiteDelegate {
         RunLoop.main.perform {
             if let password = self.password {
                 TCSLogWithMark("----- Password was set")
-                let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
-                self.tokensUpdated(tokens: returnTokens)
+                let xcredCreds = Creds(password: password, tokens: tokens)
+                self.tokensUpdated(tokens: xcredCreds)
 
-                /*
-                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
-
-                 */
-                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
+                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":xcredCreds]
                 )
             }
             else {

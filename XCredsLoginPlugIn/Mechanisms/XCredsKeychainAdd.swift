@@ -28,21 +28,18 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         username = usernameContext ?? ""
         userpass = passwordContext ?? ""
 
-        var tokens = Tokens()
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
+        guard let tokenArray = tokenArray, tokenArray.count==3 else {
+            TCSLogWithMark("no tokens but allowing login")
+            allowLogin()
+            return
+        }
 
-        if let tokenArray = tokenArray, tokenArray.count==3 {
-            tokens.idToken = tokenArray[0]
-            tokens.refreshToken = tokenArray[1]
-            tokens.accessToken = tokenArray[2]
-            tokens.password = userpass
+        let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
             TCSLogWithMark("got tokens")
 
-        }
-        else {
-            TCSLogWithMark("no tokens")
-        }
+
 
         let (uid, home) = checkUIDandHome(name: username)
 
@@ -204,7 +201,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 //            }
 //        }
         TCSLogWithMark("saving tokens to keychain")
-        if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:userpass )==false {
+        if TokenManager.shared.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
             TCSLogWithMark("Error saving tokens to keychain")
         }
 
