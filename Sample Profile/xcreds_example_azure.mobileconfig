@@ -29,6 +29,14 @@
 			<string>profile openid email offline_access</string>
 			<key>shouldShowQuitMenu</key>
 			<false/>
+			<key>firstname</key>
+			<string>given_name</string>
+			<key>fullname</key>
+			<string>name</string>
+			<key>lastname</key>
+			<string>family_name</string>
+			<key>username</key>
+			<string>name</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>

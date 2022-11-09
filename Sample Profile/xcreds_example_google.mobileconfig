@@ -31,6 +31,14 @@
 			<string>profile openid email</string>
 			<key>shouldSetGoogleAccessTypeToOffline</key>
 			<true/>
+			<key>firstname</key>
+			<string>given_name</string>
+			<key>fullname</key>
+			<string>name</string>
+			<key>lastname</key>
+			<string>family_name</string>
+			<key>username</key>
+			<string>name</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
