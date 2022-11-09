@@ -150,7 +150,7 @@ class LoginWebViewController: WebViewController {
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
-        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
 
             username = mapValue
@@ -184,7 +184,7 @@ class LoginWebViewController: WebViewController {
         }
 
         //full name
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
 
@@ -198,7 +198,7 @@ class LoginWebViewController: WebViewController {
         }
 
         //first name
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
             TCSLogWithMark("first name mapped to: \(mapKey)")
 
@@ -211,7 +211,7 @@ class LoginWebViewController: WebViewController {
         }
         //last name
 
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for lastName, so use that.
             TCSLogWithMark("last name mapped to: \(mapKey)")
 

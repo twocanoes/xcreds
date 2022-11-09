@@ -31,13 +31,13 @@
 			<string>profile openid email</string>
 			<key>shouldSetGoogleAccessTypeToOffline</key>
 			<true/>
-			<key>firstname</key>
+			<key>map_firstname</key>
 			<string>given_name</string>
-			<key>fullname</key>
+			<key>map_fullname</key>
 			<string>name</string>
-			<key>lastname</key>
+			<key>map_lastname</key>
 			<string>family_name</string>
-			<key>username</key>
+			<key>map_username</key>
 			<string>name</string>
 		</dict>
 	</array>

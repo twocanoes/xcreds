@@ -532,7 +532,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappingfirstname</string>
 			<key>pfm_name</key>
-			<string>firstname</string>
+			<string>map_firstname</string>
 			<key>pfm_note</key>
 			<string>Map firstName to OIDC claim</string>
 			<key>pfm_title</key>
@@ -548,7 +548,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappinglastname</string>
 			<key>pfm_name</key>
-			<string>lastname</string>
+			<string>map_lastname</string>
 			<key>pfm_note</key>
 			<string>Map lastName to OIDC claim</string>
 			<key>pfm_title</key>
@@ -564,7 +564,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappingfullname</string>
 			<key>pfm_name</key>
-			<string>fullname</string>
+			<string>map_fullname</string>
 			<key>pfm_note</key>
 			<string>Map fullName to OIDC claim</string>
 			<key>pfm_title</key>
@@ -578,9 +578,9 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_description</key>
 			<string>Local DS to OIDC Mapping for Name</string>
 			<key>pfm_documentation_url</key>
-			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappingusername</string>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappinglusername</string>
 			<key>pfm_name</key>
-			<string>username</string>
+			<string>map_username</string>
 			<key>pfm_note</key>
 			<string>Map Username to OIDC claim</string>
 			<key>pfm_title</key>
