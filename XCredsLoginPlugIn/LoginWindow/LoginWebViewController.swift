@@ -318,7 +318,7 @@ class LoginWebViewController: WebViewController {
         TCSLogWithMark("updating username:\(username), password, and tokens")
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: username)
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
-//        delegate.setHint(type: .user, hint: username)
+        delegate.setHint(type: .user, hint: username)
         delegate.setHint(type: .pass, hint: tokens.password)
 //        setHint(type: .noMADFirst, hint: user.firstName)
 //        setHint(type: .noMADLast, hint: user.lastName)
