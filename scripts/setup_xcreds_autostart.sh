@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+#thanks to Simon Andersen for crafting the core of this.
+
 if [ ! -d "/Library/LaunchAgents" ]; then
 	mkdir /Library/LaunchAgents
 fi
