@@ -117,6 +117,10 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
                     
                 }
             }
+            else if (getManagedPreference(key: .KeychainReset) as? Bool ?? true ) {
+                os_log("Resetting keychain password.", log: "", type: .info)
+                clearKeychain(path: homeDir)
+            }
             else {
                 TCSLogWithMark("Keychain is locked, exiting.")
                 allowLogin()
@@ -245,5 +249,26 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             TCSLogWithMark("Unable to get home.")
             return (nil, nil)
         }
+    }
+    func clearKeychain(path: String) {
+
+        // find the hardware UUID to kill the local items keychain
+        let service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        guard let hardwareRaw = IORegistryEntryCreateCFProperty(service, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0) else { return }
+        let uuid = hardwareRaw.takeRetainedValue() as? String ?? ""
+
+        if uuid != "" {
+            // we have a uuid, now delete the folder
+            os_log("Removing local items keychain in order to purge it.", log: "")
+            do {
+                try fm.removeItem(atPath: path + "/Library/Keychains/" + uuid)
+            } catch {
+                os_log("Unable to remove Local Items folder.", log: "")
+            }
+        }
+
+        os_log("Resetting keychain.", log: "")
+
+        SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
     }
 }
