@@ -24,7 +24,7 @@ class ScheduleManager {
         else if rate > 168 {
             rate = 168
         }
-        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate*60*60), repeats: true, block: { timer in
+        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(10), repeats: true, block: { timer in
             self.checkToken()
         })
         self.checkToken()
@@ -67,7 +67,8 @@ class ScheduleManager {
 
             }
             else {
-                self.stopCredentialCheck()
+                //don't stop cred check otherwise it doesn't get restarted.
+//                self.stopCredentialCheck()
                 if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 
                     NotifyManager.shared.sendMessage(message: "Password changed or not set")
