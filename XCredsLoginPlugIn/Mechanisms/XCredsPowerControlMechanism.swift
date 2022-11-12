@@ -20,6 +20,18 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
 
     @objc override func run() {
         TCSLogWithMark("PowerControl mech starting")
+
+        if FileManager.default.fileExists(atPath: "/tmp/xcreds_return")==true{
+            TCSLogWithMark("xcreds_return exists, removing")
+
+            do{
+                try FileManager.default.removeItem(atPath: "/tmp/xcreds_return")
+            }
+            catch {
+                TCSLogWithMark("Error removing xcreds_return \(error.localizedDescription)")
+            }
+        }
+        
         if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
             TCSLogWithMark("setting standard login back to XCreds login")
             let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
@@ -30,7 +42,6 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
             return
 
         }
-
 
 
         switch userName {

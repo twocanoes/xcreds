@@ -98,15 +98,17 @@ import Cocoa
             return
         }
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
+        TCSLogWithMark("Verifying if we should show cloud login.")
+
         if isReturning == false, UserDefaults.standard.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+            TCSLogWithMark("marking to show standard login window")
 
             allowLogin()
             return
         }
-        if isReturning == true {
-            try? FileManager.default.removeItem(atPath: "/tmp/xcreds_return")
-        }
+        TCSLogWithMark("Showing XCreds Login Window")
+
         NSApp.activate(ignoringOtherApps: true)
 
         webViewController = LoginWebViewController(windowNibName: NSNib.Name("LoginWebView"))

@@ -16,7 +16,7 @@ class LoginProgressWindowController: NSWindowController {
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("hideProgress"), object:nil, queue: nil) { notification in
 
-            TCSLogWithMark("gotnotification")
+            TCSLogWithMark("Got notified to hide progress.")
             self.window?.close()
 
         }
