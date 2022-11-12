@@ -3,7 +3,11 @@
 set -x
 SECURITY_PLUGIN_PATH="/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle"
 
+if [ "${1}" ]; then
+REMOTE_MAC=$1
+else 
 REMOTE_MAC="test.local"
+fi
 echo running ssh
 ssh "root@${REMOTE_MAC}" rm -rf  "${SECURITY_PLUGIN_PATH}"
 

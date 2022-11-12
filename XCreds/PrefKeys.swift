@@ -171,8 +171,8 @@ enum Preferences: String {
 
     //Password update keys
 
-      case PasswordOverwriteSilent // will silently update user password to new one
-      case PasswordOverwriteOptional // allow the user to stomp on the password if interested
+    case PasswordOverwriteSilent // will silently update user password to new one
+    case PasswordOverwriteOptional // allow the user to stomp on the password if interested
 
 }
 

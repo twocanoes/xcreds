@@ -6,7 +6,11 @@ set -x
 a=123
 BUILD_DIR="/tmp/xcreds"
 DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
+if [ "${1}" ]; then
+REMOTE_MAC=$1
+else 
 REMOTE_MAC="test.local"
+fi
 
 agvtool bump
 xcodebuild  -scheme "XCreds"  -configuration "Release" -derivedDataPath  "${DERIVED_DATA_DIR}"
