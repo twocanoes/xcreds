@@ -10,7 +10,7 @@ import AppKit
 @main
 struct MyMain {
     static func main() -> Void {
-        sleep(5)
+        sleep(15)
          let _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     }
 }
@@ -38,6 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
                 TCSLogWithMark("setting standard login back to XCreds login")
+                try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
                 let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
                 let _ = cliTask("/usr/bin/killall loginwindow")
 
@@ -70,7 +71,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
  */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-
         var statusWindowRect=window.frame
         let screenRect = NSScreen.screens[0].visibleFrame
         statusWindowRect.size.width=screenRect.size.width
@@ -80,6 +80,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.hidesOnDeactivate=false
         window.isOpaque=false
         window.level = .modalPanel
+        Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { timer in
+            NSApp.activate(ignoringOtherApps: true)
+            self.window.orderFrontRegardless()
+        }
         NSApp.activate(ignoringOtherApps: true)
         window.orderFrontRegardless()
 

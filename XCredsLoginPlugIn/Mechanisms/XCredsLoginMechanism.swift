@@ -97,13 +97,16 @@ import Cocoa
             allowLogin()
             return
         }
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+        let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
+        if isReturning == false, UserDefaults.standard.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
 
             allowLogin()
             return
         }
-
+        if isReturning == true {
+            try? FileManager.default.removeItem(atPath: "/tmp/xcreds_return")
+        }
         NSApp.activate(ignoringOtherApps: true)
 
         webViewController = LoginWebViewController(windowNibName: NSNib.Name("LoginWebView"))
