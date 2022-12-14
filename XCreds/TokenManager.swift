@@ -186,7 +186,7 @@ class TokenManager {
 
                     }
                     else {
-                        TCSLogWithMark("got status code of \(response.statusCode)")
+                        TCSLogWithMark("got status code of \(response.statusCode):\(response)")
                         completion(false,false)
 
                     }

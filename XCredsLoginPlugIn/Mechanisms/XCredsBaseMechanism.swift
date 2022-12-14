@@ -67,7 +67,7 @@ protocol XCredsMechanismProtocol {
     var xcredsFirst: String? {
         get {
             guard let firstName = getHint(type: .firstName) as? String else {
-                return nil
+                return ""
             }
             os_log("Computed nomadFirst accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
             return firstName
@@ -77,7 +77,7 @@ protocol XCredsMechanismProtocol {
     var xcredsLast: String? {
         get {
             guard let lastName = getHint(type: .lastName) as? String else {
-                return nil
+                return ""
             }
             os_log("Computed nomadLast accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
             return lastName
@@ -145,6 +145,7 @@ protocol XCredsMechanismProtocol {
 
     // disallow login
     func denyLogin() {
+        TCSLog("***************** DENYING LOGIN ********************");
         TCSLogWithMark("\(#function) \(#file):\(#line)")
 
         let error = mechCallbacks.SetResult(mechEngine, .deny)

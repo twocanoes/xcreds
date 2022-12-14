@@ -103,7 +103,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
 //            customAttributes["dsAttrTypeNative:\(nomadMetaPrefix)_domain"] = nomadDomain!
             
             createUser(shortName: xcredsUser!,
-                       first: xcredsFirst!,
+                       first: xcredsFirst! ,
                        last: xcredsLast!,
                        pass: xcredsPass!,
                        uid: uid,

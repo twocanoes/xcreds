@@ -140,6 +140,7 @@ import Cocoa
     }
     override func denyLogin() {
         loginWindowControlsWindowController.close()
+        TCSLog("***************** DENYING LOGIN ********************");
         super.denyLogin()
     }
 }

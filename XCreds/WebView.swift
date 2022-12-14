@@ -67,6 +67,105 @@ class WebViewController: NSWindowController {
     }
     func tokensUpdated(tokens: Creds){
 //to be overridden by superclasses
+/*
+        var username:String
+        let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
+
+        guard let idToken = tokens.idToken else {
+            TCSLogWithMark("invalid idToken")
+
+            return
+        }
+
+        let array = idToken.components(separatedBy: ".")
+
+        if array.count != 3 {
+            TCSLogWithMark("idToken is invalid")
+        }
+        let body = array[1]
+        guard let data = base64UrlDecode(value:body ) else {
+            TCSLogWithMark("error decoding id token base64")
+            return
+        }
+        let decoder = JSONDecoder()
+        var idTokenObject:IDToken
+        do {
+            idTokenObject = try decoder.decode(IDToken.self, from: data)
+
+        }
+        catch {
+            TCSLogWithMark("error decoding idtoken::")
+            TCSLogWithMark("Token:\(body)")
+            return
+
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
+
+        // username static map
+        if let defaultsUsername = defaultsUsername {
+            username = defaultsUsername
+        }
+        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+
+            username = mapValue
+            TCSLogWithMark("mapped username found: \(username)")
+
+        }
+        else {
+            var emailString:String
+
+            if let email = idTokenObject.email  {
+                emailString=email.lowercased()
+            }
+            else if let uniqueName=idTokenObject.unique_name {
+                emailString=uniqueName
+            }
+
+            else {
+                TCSLogWithMark("no username found. Using sub.")
+                emailString=idTokenObject.sub
+            }
+            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
+                TCSLogWithMark("email address invalid")
+                return
+
+            }
+
+            TCSLogWithMark("username found: \(tUsername)")
+            username = tUsername
+        }
+
+        //full name
+        TCSLogWithMark("checking map_fullname")
+
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping so use that.
+            TCSLogWithMark("full name mapped to: \(mapKey)")
+
+
+        }
+
+        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            TCSLogWithMark("firstName: \(firstName)")
+            TCSLogWithMark("lastName: \(lastName)")
+
+        }
+
+        //first name
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+            TCSLogWithMark("first name mapped to: \(mapKey)")
+
+        }
+
+       else if let firstName = idTokenObject.given_name {
+           TCSLogWithMark("firstName from token: \(firstName)")
+
+
+        }
+ */
     }
 }
 

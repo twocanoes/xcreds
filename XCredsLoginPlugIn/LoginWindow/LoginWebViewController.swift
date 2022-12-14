@@ -144,9 +144,7 @@ class LoginWebViewController: WebViewController {
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
 
-
-
-        // username
+        // username static map
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
@@ -166,11 +164,10 @@ class LoginWebViewController: WebViewController {
             else if let uniqueName=idTokenObject.unique_name {
                 emailString=uniqueName
             }
-            else {
-                TCSLogWithMark("no username found or invalid")
-                delegate.denyLogin()
-                return
 
+            else {
+                TCSLogWithMark("no username found. Using sub.")
+                emailString=idTokenObject.sub
             }
             guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
                 TCSLogWithMark("email address invalid")
@@ -184,6 +181,8 @@ class LoginWebViewController: WebViewController {
         }
 
         //full name
+        TCSLogWithMark("checking map_fullname")
+
         if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
@@ -193,6 +192,8 @@ class LoginWebViewController: WebViewController {
         }
 
         else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            TCSLogWithMark("firstName: \(firstName)")
+            TCSLogWithMark("lastName: \(lastName)")
             delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
 
         }
@@ -206,10 +207,13 @@ class LoginWebViewController: WebViewController {
         }
 
        else if let firstName = idTokenObject.given_name {
+           TCSLogWithMark("firstName from token: \(firstName)")
+
             delegate.setHint(type: .firstName, hint:firstName)
 
         }
         //last name
+        TCSLogWithMark("checking map_lastname")
 
         if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for lastName, so use that.
@@ -219,9 +223,13 @@ class LoginWebViewController: WebViewController {
         }
 
         else if let lastName = idTokenObject.family_name {
+            TCSLogWithMark("lastName from token: \(lastName)")
+
             delegate.setHint(type: .lastName, hint:lastName)
 
         }
+        TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
+
         let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
 
         if isValidPassword==false{
@@ -299,9 +307,17 @@ class LoginWebViewController: WebViewController {
 
         }
         TCSLogWithMark("passing username:\(username), password, and tokens")
+        TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
+
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+        TCSLogWithMark("setting kAuthorizationEnvironmentPassword")
+
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
+        TCSLogWithMark("setting username")
+
         delegate.setHint(type: .user, hint: username)
+        TCSLogWithMark("setting tokens.password")
+
         delegate.setHint(type: .pass, hint: tokens.password)
 //        setHint(type: .noMADFirst, hint: user.firstName)
 //        setHint(type: .noMADLast, hint: user.lastName)
@@ -311,7 +327,8 @@ class LoginWebViewController: WebViewController {
 //        delegate.setHint(type: .firstName, hint: idTokenObject.given_name ?? "")
 //        delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
 
-        delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
+        TCSLogWithMark("setting tokens")
+        delegate.setHint(type: .tokens, hint: [tokens.idToken ?? "",tokens.refreshToken ?? "",tokens.accessToken ?? ""])
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
         }
