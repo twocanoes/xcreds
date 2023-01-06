@@ -80,12 +80,12 @@ class LoginWebViewController: WebViewController {
 //        progressIndicator.startAnimation(self)
 //        webView.addSubview(progressIndicator)
 
-        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
-        if let loginProgressWindowController = loginProgressWindowController {
-            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-
-
-        }
+//        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
+//        if let loginProgressWindowController = loginProgressWindowController {
+//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
+//
+//
+//        }
         self.window?.close()
 
 

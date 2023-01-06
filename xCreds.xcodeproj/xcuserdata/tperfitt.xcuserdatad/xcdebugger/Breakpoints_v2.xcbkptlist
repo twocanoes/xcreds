@@ -7,17 +7,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E912C5F8-A588-4F88-A9E0-9423651B1F31"
+            uuid = "A30672D1-52E4-4D63-813C-EA034A28EC0F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
+            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "getNewAccessToken(completion:)"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "getToken(code:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7D16B7F-4638-4EA8-BB4B-A45EB58CB582"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "getToken(code:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E7D16B7F-4638-4EA8-BB4B-A45EB58CB582 - 98dc66ec8db21189"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OIDCLite.OIDCLite.getToken(code: Swift.String) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "2608">
+               </Location>
+               <Location
+                  uuid = "E7D16B7F-4638-4EA8-BB4B-A45EB58CB582 - 51bf2db50e51417c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in OIDCLite.OIDCLite.getToken(code: Swift.String) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "381">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
