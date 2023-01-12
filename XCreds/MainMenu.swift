@@ -63,7 +63,7 @@ class MainMenu: NSObject, NSMenuDelegate {
         }
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
-        mainMenu.addItem(PrefsMenuItem())
+//        mainMenu.addItem(PrefsMenuItem())
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
             let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
 

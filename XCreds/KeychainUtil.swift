@@ -49,15 +49,17 @@ class KeychainUtil {
 
     func findPassword(_ name: String) throws -> String {
 
-        TCSLogWithMark("Finding Password")
+        TCSLogWithMark("Finding \(name) in keychain")
         myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(name.count), name, &passLength, &passPtr, &myKeychainItem)
 
         if myErr == OSStatus(errSecSuccess) {
             let password = NSString(bytes: passPtr!, length: Int(passLength), encoding: String.Encoding.utf8.rawValue)
-            TCSLogWithMark("Password found")
-            return password as! String
+            if password != "" {
+                TCSLogWithMark("\(name) found in keychain")
+            }
+            return password as? String ?? ""
         } else {
-            TCSLogWithMark("Password not found")
+            TCSLogWithMark("Password not found in keychain")
             throw KeychainError.noStoredPassword
         }
     }

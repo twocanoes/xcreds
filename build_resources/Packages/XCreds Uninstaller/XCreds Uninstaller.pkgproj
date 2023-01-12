@@ -777,9 +777,9 @@
 				<key>POSTINSTALL_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/tperfitt/Documents/Projects/xcreds/build_resources/Packages/XCreds Uninstaller/Scripts/postinstall.sh</string>
+					<string>Scripts/postinstall.sh</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>1</integer>
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>

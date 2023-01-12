@@ -10,7 +10,6 @@ import Cocoa
 class LoginWindowControlsWindowController: NSWindowController {
     var delegate: XCredsMechanismProtocol?
 
-    @IBOutlet weak var registrationStatusTextField: NSTextField?
     @IBOutlet weak var macLoginWindowGribColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
     let uiLog = "uiLog"
@@ -62,7 +61,6 @@ class LoginWindowControlsWindowController: NSWindowController {
 
             self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
-            self.registrationStatusTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowSupportStatus.rawValue)
 
 
             self.window?.level = .screenSaver

@@ -6,7 +6,11 @@ set -x
 a=123
 BUILD_DIR="/tmp/xcreds"
 DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
+if [ "${1}" ]; then
+REMOTE_MAC=$1
+else 
 REMOTE_MAC="test.local"
+fi
 
 agvtool bump
 xcodebuild  -scheme "XCreds"  -configuration "Release" -derivedDataPath  "${DERIVED_DATA_DIR}"
@@ -22,4 +26,4 @@ ssh root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_logi
 ssh  root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -i
 
 #ssh  root@"${REMOTE_MAC}" killall -9 SecurityAgent || echo "unable to kill"
-#ssh root@"${REMOTE_MAC}" reboot
+ssh root@"${REMOTE_MAC}" reboot

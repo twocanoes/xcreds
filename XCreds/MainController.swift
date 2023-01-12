@@ -26,7 +26,9 @@ class MainController: NSObject {
         // in the keychain
         let _ = localPassword()
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
-            //now we set the password.
+
+
+//            //now we set the password.
              Mark()
             DispatchQueue.main.async {
                 mainMenu.webView?.window?.close()
@@ -35,19 +37,16 @@ class MainController: NSObject {
                     return
                 }
 
-                guard let tokens = tokenInfo["tokens"] as? Tokens else {
+                guard let tokens = tokenInfo["tokens"] as? Creds else {
                     let alert = NSAlert()
                     alert.addButton(withTitle: "OK")
                     alert.messageText="Invalid tokens or password not determined. Please check the log."
                     alert.runModal()
                     return
                 }
-                if tokens.refreshToken.count>0 {
+                if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
                     Mark()
-                    DispatchQueue.main.async {
-                        mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
-                    }
-
+                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
                 }
                 let localPassword = self.localPassword()
                 if (localPassword != tokens.password){
@@ -97,7 +96,7 @@ class MainController: NSObject {
 
                     }
                 }
-                if TokenManager.shared.saveTokensToKeychain(tokens: tokens, setACL: true, password:tokens.password ) == false {
+                if TokenManager.shared.saveTokensToKeychain(creds: tokens, setACL: true, password:tokens.password ) == false {
                     TCSLogWithMark("error saving tokens to keychain")
                 }
                 ScheduleManager.shared.startCredentialCheck()

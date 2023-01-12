@@ -103,7 +103,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
 //            customAttributes["dsAttrTypeNative:\(nomadMetaPrefix)_domain"] = nomadDomain!
             
             createUser(shortName: xcredsUser!,
-                       first: xcredsFirst!,
+                       first: xcredsFirst! ,
                        last: xcredsLast!,
                        pass: xcredsPass!,
                        uid: uid,
@@ -216,6 +216,10 @@ class XCredsCreateUser: XCredsBaseMechanism {
         
         os_log("Checking for UserProfileImage key", log: createUserLog, type: .debug)
 
+        var userFullName = [first, last].joined(separator: " ").trimmingCharacters(in: .whitespaces)
+        if userFullName.isEmpty {
+            userFullName = shortName
+        }
 
         var userPicture = getManagedPreference(key: .UserProfileImage) as? String ?? ""
         
@@ -236,7 +240,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         // let picString = picData?.description ?? ""
 
         var attrs: [AnyHashable:Any] = [
-            kODAttributeTypeFullName: [first + " " + last],
+            kODAttributeTypeFullName: [userFullName],
             kODAttributeTypeNFSHomeDirectory: [ "/Users/" + shortName ],
             kODAttributeTypeUserShell: ["/bin/bash"],
             kODAttributeTypeUniqueID: [uid],

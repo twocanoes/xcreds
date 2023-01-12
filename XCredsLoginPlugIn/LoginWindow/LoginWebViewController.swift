@@ -80,12 +80,12 @@ class LoginWebViewController: WebViewController {
 //        progressIndicator.startAnimation(self)
 //        webView.addSubview(progressIndicator)
 
-        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
-        if let loginProgressWindowController = loginProgressWindowController {
-            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-
-
-        }
+//        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
+//        if let loginProgressWindowController = loginProgressWindowController {
+//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
+//
+//
+//        }
         self.window?.close()
 
 
@@ -98,9 +98,9 @@ class LoginWebViewController: WebViewController {
 //        })
     }
 
-    override func tokensUpdated(tokens: Tokens) {
+    override func tokensUpdated(tokens: Creds) {
 //if we have tokens, that means that authentication was successful.
-        //we have to check the password here so we can prompt.
+//we have to check the password here so we can prompt.
 
         guard let delegate = delegate else {
             TCSLogWithMark("invalid delegate")
@@ -109,15 +109,18 @@ class LoginWebViewController: WebViewController {
         var username:String
         let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
 
-        let idToken = tokens.idToken
+        guard let idToken = tokens.idToken else {
+            TCSLogWithMark("invalid idToken")
+
+            delegate.denyLogin()
+            return
+        }
 
         let array = idToken.components(separatedBy: ".")
 
         if array.count != 3 {
             TCSLogWithMark("idToken is invalid")
             delegate.denyLogin()
-
-
         }
         let body = array[1]
         guard let data = base64UrlDecode(value:body ) else {
@@ -125,8 +128,6 @@ class LoginWebViewController: WebViewController {
             delegate.denyLogin()
             return
         }
-
-        
         let decoder = JSONDecoder()
         var idTokenObject:IDToken
         do {
@@ -141,27 +142,32 @@ class LoginWebViewController: WebViewController {
 
         }
 
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
 
+        // username static map
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
+        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+
+            username = mapValue
+            TCSLogWithMark("mapped username found: \(username)")
+
+        }
         else {
-
-
             var emailString:String
 
+            if let email = idTokenObject.email  {
+                emailString=email.lowercased()
+            }
+            else if let uniqueName=idTokenObject.unique_name {
+                emailString=uniqueName
+            }
 
-            if idTokenObject.email != nil {
-                emailString=idTokenObject.email!.lowercased()
-            }
-            else if idTokenObject.unique_name != nil {
-                emailString=idTokenObject.unique_name!
-            }
             else {
-                TCSLogWithMark("no username found or invalid")
-                delegate.denyLogin()
-                return
-
+                TCSLogWithMark("no username found. Using sub.")
+                emailString=idTokenObject.sub
             }
             guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
                 TCSLogWithMark("email address invalid")
@@ -174,125 +180,155 @@ class LoginWebViewController: WebViewController {
             username = tUsername
         }
 
-        if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+        //full name
+        TCSLogWithMark("checking map_fullname")
+
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping so use that.
+            TCSLogWithMark("full name mapped to: \(mapKey)")
+
+            delegate.setHint(type: .fullName, hint: "\(mapValue)")
+
+        }
+
+        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            TCSLogWithMark("firstName: \(firstName)")
+            TCSLogWithMark("lastName: \(lastName)")
             delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
 
         }
-        if let firstName = idTokenObject.given_name {
+
+        //first name
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+            TCSLogWithMark("first name mapped to: \(mapKey)")
+
+            delegate.setHint(type: .firstName, hint:mapValue)
+        }
+
+       else if let firstName = idTokenObject.given_name {
+           TCSLogWithMark("firstName from token: \(firstName)")
+
             delegate.setHint(type: .firstName, hint:firstName)
 
         }
-        if let lastName = idTokenObject.family_name {
+        //last name
+        TCSLogWithMark("checking map_lastname")
+
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for lastName, so use that.
+            TCSLogWithMark("last name mapped to: \(mapKey)")
+
+            delegate.setHint(type: .lastName, hint:mapValue)
+        }
+
+        else if let lastName = idTokenObject.family_name {
+            TCSLogWithMark("lastName from token: \(lastName)")
+
             delegate.setHint(type: .lastName, hint:lastName)
 
         }
-
-        let isLocal = try? PasswordUtils.isUserLocal(username)
-
-        guard let isLocal = isLocal else {
-            TCSLogWithMark("cannot find if user is local")
-            delegate.denyLogin()
-            return
-        }
-//
-//        if isLocal == false {
-//            TCSLogWithMark("User is not on system. for now, just abort")
-//            delegate.denyLogin()
-//            return
-//        }
-
-        let hasHome = try? PasswordUtils.doesUserHomeExist(username)
-        guard let hasHome = hasHome else {
-            TCSLogWithMark("home dir nil")
-            delegate.denyLogin()
-            return
-        }
-
-//        if hasHome == false {
-//            TCSLogWithMark("User has no home. for now, just abort")
-//            delegate.denyLogin()
-//            return
-//        }
-
-
+        TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
 
         let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
 
         if isValidPassword==false{
-            TCSLogWithMark("local password is different from cloud password. Prompting for local password.")
 
-            let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+            if let keychainReset = getManagedPreference(key: .KeychainReset) as? Bool, keychainReset==true{
+                TCSLogWithMark("local password is different from cloud password but keychain reset pref is set. Skipping prompting so later we can create a new keychain.")
 
-            if passwordWindowController.window==nil {
-                TCSLogWithMark("no passwordWindowController window")
-                delegate.denyLogin()
-                return
+                if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
+                    // set the hint and return complete
+                    os_log("Setting password to be overwritten.", log: uiLog, type: .default)
+                    delegate.setHint(type: .passwordOverwrite, hint: true)
+                    os_log("Hint set", log: uiLog, type: .debug)
+                }
             }
-            passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-            passwordWindowController.window?.isMovable = false
-            passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
-            while (true){
-//                NSApp.activate(ignoringOtherApps: true)
-                DispatchQueue.main.async{
-                    TCSLogWithMark("resetting level")
-                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
-                }
-                TCSLogWithMark("showing modal")
+            else {
+                TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
 
-                let response = NSApp.runModal(for: passwordWindowController.window!)
+                let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
-                TCSLogWithMark("modal done")
-                if response == .cancel {
-                    break
+                if passwordWindowController.window==nil {
+                    TCSLogWithMark("no passwordWindowController window")
+                    delegate.denyLogin()
+                    return
                 }
-                let localPassword = passwordWindowController.password
-                guard let localPassword = localPassword else {
-                    continue
-                }
-                let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
-
-                if isValidPassword==true {
-                    let localUser = try? PasswordUtils.getLocalRecord(username)
-                    guard let localUser = localUser else {
-                        TCSLogWithMark("invalid local user")
-                        delegate.denyLogin()
-                        return
+                passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+                passwordWindowController.window?.isMovable = false
+                passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
+                while (true){
+                    //                NSApp.activate(ignoringOtherApps: true)
+                    DispatchQueue.main.async{
+                        TCSLogWithMark("resetting level")
+                        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
                     }
-                    do {
-                        try localUser.changePassword(localPassword, toPassword: tokens.password)
-                    }
-                    catch {
-                        TCSLogWithMark("Error setting local password to cloud password")
-                        delegate.denyLogin()
-                        return
-                    }
-                    TCSLogWithMark("setting original password to use to unlock keychain later")
-                    delegate.setHint(type: .migratePass, hint: localPassword)
-                    passwordWindowController.window?.close()
-                    break
+                    TCSLogWithMark("showing modal")
 
-                }
-                else{
-                    passwordWindowController.window?.shake(self)
+                    let response = NSApp.runModal(for: passwordWindowController.window!)
+
+                    TCSLogWithMark("modal done")
+                    if response == .cancel {
+                        break
+                    }
+                    let localPassword = passwordWindowController.password
+                    guard let localPassword = localPassword else {
+                        continue
+                    }
+                    let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+
+                    if isValidPassword==true {
+                        let localUser = try? PasswordUtils.getLocalRecord(username)
+                        guard let localUser = localUser else {
+                            TCSLogWithMark("invalid local user")
+                            delegate.denyLogin()
+                            return
+                        }
+                        do {
+                            try localUser.changePassword(localPassword, toPassword: tokens.password)
+                        }
+                        catch {
+                            TCSLogWithMark("Error setting local password to cloud password")
+                            delegate.denyLogin()
+                            return
+                        }
+                        TCSLogWithMark("setting original password to use to unlock keychain later")
+                        delegate.setHint(type: .migratePass, hint: localPassword)
+                        passwordWindowController.window?.close()
+                        break
+
+                    }
+                    else{
+                        passwordWindowController.window?.shake(self)
+                    }
                 }
             }
 
         }
-        TCSLogWithMark("updating username:\(username), password, and tokens")
+        TCSLogWithMark("passing username:\(username), password, and tokens")
+        TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
+
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+        TCSLogWithMark("setting kAuthorizationEnvironmentPassword")
+
         delegate.setContextString(type: kAuthorizationEnvironmentPassword, value: tokens.password)
+        TCSLogWithMark("setting username")
+
         delegate.setHint(type: .user, hint: username)
+        TCSLogWithMark("setting tokens.password")
+
         delegate.setHint(type: .pass, hint: tokens.password)
 //        setHint(type: .noMADFirst, hint: user.firstName)
 //        setHint(type: .noMADLast, hint: user.lastName)
 //        setHint(type: .noMADDomain, hint: domainName)
 //        setHint(type: .noMADGroups, hint: user.groups)
-        delegate.setHint(type: .fullName, hint: idTokenObject.unique_name ?? username)
-        delegate.setHint(type: .firstName, hint: idTokenObject.given_name ?? "")
-        delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
+//        delegate.setHint(type: .fullName, hint: idTokenObject.unique_name ?? username)
+//        delegate.setHint(type: .firstName, hint: idTokenObject.given_name ?? "")
+//        delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
 
-        delegate.setHint(type: .tokens, hint: [tokens.idToken,tokens.refreshToken,tokens.accessToken])
+        TCSLogWithMark("setting tokens")
+        delegate.setHint(type: .tokens, hint: [tokens.idToken ?? "",tokens.refreshToken ?? "",tokens.accessToken ?? ""])
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
         }

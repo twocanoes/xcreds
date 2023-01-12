@@ -21,7 +21,7 @@ class WebViewController: NSWindowController {
 
     var password:String?
     func loadPage() {
-        
+
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
@@ -65,107 +65,217 @@ class WebViewController: NSWindowController {
             }
         }
     }
-    func tokensUpdated(tokens: Tokens){
+    func tokensUpdated(tokens: Creds){
 //to be overridden by superclasses
+/*
+        var username:String
+        let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
+
+        guard let idToken = tokens.idToken else {
+            TCSLogWithMark("invalid idToken")
+
+            return
+        }
+
+        let array = idToken.components(separatedBy: ".")
+
+        if array.count != 3 {
+            TCSLogWithMark("idToken is invalid")
+        }
+        let body = array[1]
+        guard let data = base64UrlDecode(value:body ) else {
+            TCSLogWithMark("error decoding id token base64")
+            return
+        }
+        let decoder = JSONDecoder()
+        var idTokenObject:IDToken
+        do {
+            idTokenObject = try decoder.decode(IDToken.self, from: data)
+
+        }
+        catch {
+            TCSLogWithMark("error decoding idtoken::")
+            TCSLogWithMark("Token:\(body)")
+            return
+
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
+
+        // username static map
+        if let defaultsUsername = defaultsUsername {
+            username = defaultsUsername
+        }
+        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+
+            username = mapValue
+            TCSLogWithMark("mapped username found: \(username)")
+
+        }
+        else {
+            var emailString:String
+
+            if let email = idTokenObject.email  {
+                emailString=email.lowercased()
+            }
+            else if let uniqueName=idTokenObject.unique_name {
+                emailString=uniqueName
+            }
+
+            else {
+                TCSLogWithMark("no username found. Using sub.")
+                emailString=idTokenObject.sub
+            }
+            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
+                TCSLogWithMark("email address invalid")
+                return
+
+            }
+
+            TCSLogWithMark("username found: \(tUsername)")
+            username = tUsername
+        }
+
+        //full name
+        TCSLogWithMark("checking map_fullname")
+
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping so use that.
+            TCSLogWithMark("full name mapped to: \(mapKey)")
+
+
+        }
+
+        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            TCSLogWithMark("firstName: \(firstName)")
+            TCSLogWithMark("lastName: \(lastName)")
+
+        }
+
+        //first name
+        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+//we have a mapping for username, so use that.
+            TCSLogWithMark("first name mapped to: \(mapKey)")
+
+        }
+
+       else if let firstName = idTokenObject.given_name {
+           TCSLogWithMark("firstName from token: \(firstName)")
+
+
+        }
+ */
     }
 }
 
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
+//        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
+        let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
+        var idpHostNames = UserDefaults.standard.value(forKey: PrefKeys.idpHostNames.rawValue)
 
-        let customURL = UserDefaults.standard.value(forKey: PrefKeys.customURL.rawValue)
-        let customPasswordElementID = UserDefaults.standard.value(forKey: PrefKeys.customPasswordElementID.rawValue) as? String ?? "passwordInput"
-        // if it's a POST let's see what we're posting...
-        if navigationAction.request.httpMethod == "POST" {
-            TCSLogWithMark("POST")
-            if let customURL = customURL as? String, navigationAction.request.url?.host == customURL {
-                TCSLogWithMark(customURL.sanitized())
+        if idpHostNames == nil && idpHostName != nil {
+            idpHostNames=[idpHostName]
+        }
+        let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
+        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host), let passwordElementID = passwordElementID {
+            TCSLogWithMark("host matches custom idpHostName")
+            TCSLogWithMark("passwordElementID is \(passwordElementID)")
 
-                let javaScript = "document.getElementById('\(customPasswordElementID.sanitized())').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
-                        return
-                    }
-                })
+            TCSLogWithMark("inserting javascript to get password")
 
+            let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String, rawPass != "" {
+                    TCSLogWithMark("========= password set===========")
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("password not captured")
+                    return
+                }
+            })
+
+        }
+        // Azure snarfing
+        else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
+            TCSLogWithMark("Azure")
+
+            var javaScript = "document.getElementById('i0118').value"
+            if  let passwordElementID = passwordElementID {
+                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
             }
+            ///passwordInput
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    TCSLogWithMark("========= password set===========")
 
-            // Azure snarfing
-            else if navigationAction.request.url?.host == "login.microsoftonline.com" {
-                TCSLogWithMark("Azure")
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("password not captured")
 
-                var javaScript = "document.getElementById('i0118').value"
-                ///passwordInput
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
+                }
+            })
 
-                    }
-                })
-                
-                javaScript = "document.getElementById('confirmNewPassword').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No confirmNewPassword found")
-                    }
-                })
-            } else if navigationAction.request.url?.host == "accounts.google.com" {
-                // Google snarfing
-                TCSLogWithMark("Google")
-                let javaScript = "document.querySelector('input[type=password]').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                    if let rawPass = response as? String {
-                        self.password=rawPass
-                    }
-                    else {
-                        TCSLogWithMark("No password found")
+//            javaScript = "document.getElementById('confirmNewPassword').value"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                if let rawPass = response as? String {
+//                    self.password=rawPass
+//                }
+//            })
+        } else if navigationAction.request.url?.host == "accounts.google.com" {
+            // Google snarfing
+            TCSLogWithMark("Google")
+            let javaScript = "document.querySelector('input[type=password]').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    TCSLogWithMark("========= password set===========")
 
-                    }
+                    self.password=rawPass
+                }
+                else {
+                    TCSLogWithMark("password not captured")
+                }
+            })
+        } else if navigationAction.request.url?.path.contains("verify") ?? false {
+            // maybe OneLogin?
+            TCSLogWithMark("Other Provider")
 
-
-                })
-            } else if navigationAction.request.url?.path.contains("verify") ?? false {
-                // maybe OneLogin?
-                TCSLogWithMark("Other Provider")
-
-                let javaScript = "document.getElementById('input8').value"
-                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                })
-            }
-            else {
-                TCSLogWithMark("Unknown Provider")
-                TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
-            }
-        } else if navigationAction.request.httpMethod == "GET" && navigationAction.request.url?.path.contains("token/redirect") ?? false {
-            TCSLogWithMark("GET with Token/redirect")
-            // for Okta
-            let javaScript = "document.getElementById('input74').value"
+            let javaScript = "document.getElementById('input8').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
             })
         }
+        else if navigationAction.request.url?.host?.contains("okta.com") ?? false ||
+                    navigationAction.request.url?.host?.contains("duosecurity.com") ?? false
+        {
+            TCSLogWithMark("okta")
+            // for Okta
+            var javaScript = "document.getElementById('okta-signin-password').value"
+            if  let passwordElementID = passwordElementID {
+                TCSLogWithMark("setting passwordElementID to \(passwordElementID)")
+
+                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+                TCSLogWithMark("javascript: \(javaScript)")
+
+            }
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+
+                TCSLogWithMark(error?.localizedDescription ?? "no error.localizedDescription")
+
+                if let rawPass = response as? String, rawPass != "" {
+                    TCSLogWithMark("========= password set===========")
+                    self.password=rawPass
+                }
+            })
+
+        }
         else {
-            TCSLogWithMark(navigationAction.request.httpMethod ?? "Unknown method")
-            TCSLogWithMark("path = \(navigationAction.request.url?.path ?? "no path")");
-
-//            let javaScript = "document.documentElement.outerHTML.toString()"
-//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                TCSLogWithMark(response as? String ?? "No HTML")
-//            })
-
-
+            TCSLogWithMark("Unknown Provider")
+            TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
         }
 
         decisionHandler(.allow)
@@ -186,12 +296,17 @@ extension WebViewController: WKNavigationDelegate {
             TCSLogWithMark("redirectURI: \(redirectURI)")
             TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+                TCSLogWithMark("got redirect URI match. separating URL")
                 var code = ""
                 let fullCommand = webView.url?.absoluteString ?? ""
                 let pathParts = fullCommand.components(separatedBy: "&")
                 for part in pathParts {
                     if part.contains("code=") {
+                        TCSLogWithMark("found code=. cleaning up.")
+
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
+                        TCSLogWithMark("getting tokens")
+
                         TokenManager.shared.oidc().getToken(code: code)
                         return
                     }
@@ -230,21 +345,19 @@ extension WebViewController: OIDCLiteDelegate {
     }
 
     func tokenResponse(tokens: OIDCLiteTokenResponse) {
-        TCSLogWithMark("tokenResponse")
+        TCSLogWithMark("======== tokenResponse =========")
         RunLoop.main.perform {
             if let password = self.password {
-                TCSLogWithMark("password received")
-                let returnTokens = Tokens(password: password, accessToken: tokens.accessToken ?? "", idToken: tokens.idToken ?? "", refreshToken: tokens.refreshToken ?? "")
-                self.tokensUpdated(tokens: returnTokens)
-                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":returnTokens]
+                TCSLogWithMark("----- Password was set")
+                let xcredCreds = Creds(password: password, tokens: tokens)
+                self.tokensUpdated(tokens: xcredCreds)
 
+                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":xcredCreds]
                 )
-
             }
             else {
-                TCSLogWithMark("no password!")
+                TCSLogWithMark("----- password was not set")
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-
             }
         }
     }

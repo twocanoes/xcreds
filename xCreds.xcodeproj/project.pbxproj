@@ -65,6 +65,8 @@
 		769032362890EAB10043E9F3 /* WifiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7677908528908E40004E7085 /* WifiWindowController.xib */; };
 		769032372890EB350043E9F3 /* WifiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908328908E40004E7085 /* WifiWindowController.swift */; };
 		76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
+		76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
+		76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
 		76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */; };
 		76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */; };
 		76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */; };
@@ -205,6 +207,7 @@
 		7677908328908E40004E7085 /* WifiWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiWindowController.swift; sourceTree = "<group>"; };
 		7677908428908E40004E7085 /* WifiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiManager.swift; sourceTree = "<group>"; };
 		7677908528908E40004E7085 /* WifiWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiWindowController.xib; sourceTree = "<group>"; };
+		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
 		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
 		76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSReturnWindow.h; sourceTree = "<group>"; };
@@ -415,6 +418,7 @@
 			children = (
 				7675444428918CD100613840 /* Info.plist */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
+				76B040A328EFC788002A289B /* Helper+JWTDecode.swift */,
 				7632909B2876673500CF8857 /* DataExtension.swift */,
 				766355D22870F29A002E3867 /* TestWindowController.swift */,
 				766355D32870F29A002E3867 /* TestWindowController.xib */,
@@ -491,7 +495,7 @@
 /* Begin PBXLegacyTarget section */
 		766F4C4C2883B88F0021F548 /* Send To Test */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = app_to_test.sh;
+			buildArgumentsString = "app_to_test.sh mba.local";
 			buildConfigurationList = 766F4C4D2883B88F0021F548 /* Build configuration list for PBXLegacyTarget "Send To Test" */;
 			buildPhases = (
 			);
@@ -727,6 +731,7 @@
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
 				761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */,
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
+				76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */,
 				7632909D2876674100CF8857 /* DataExtension.swift in Sources */,
 				761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */,
 				7677908628908E40004E7085 /* WifiWindowController.swift in Sources */,
@@ -796,6 +801,7 @@
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
 				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
+				76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */,
 				76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */,
 				767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
@@ -859,8 +865,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
@@ -872,8 +881,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
@@ -885,7 +897,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -898,10 +910,12 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -916,7 +930,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -929,10 +943,12 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -975,7 +991,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -987,10 +1003,12 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1005,7 +1023,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1017,10 +1035,12 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1077,7 +1097,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1131,7 +1151,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -1148,7 +1168,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1160,9 +1180,11 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1177,7 +1199,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3261;
+				CURRENT_PROJECT_VERSION = 3347;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1189,9 +1211,11 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

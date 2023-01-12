@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginWindowControlsWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <connections>
                 <outlet property="macLoginWindowGribColumn" destination="wvm-rM-lRK" id="bUx-fo-f3O"/>
-                <outlet property="registrationStatusTextField" destination="j8S-sz-JYh" id="3HS-7p-DeF"/>
                 <outlet property="versionTextField" destination="CZW-Aq-1af" id="4tX-3s-sXH"/>
                 <outlet property="wifiGridColumn" destination="1Cd-fS-KBP" id="nYv-8P-Xte"/>
                 <outlet property="window" destination="wkO-FS-5uW" id="ui3-ZB-mfw"/>
@@ -124,25 +124,14 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j8S-sz-JYh">
-                        <rect key="frame" x="0.0" y="100" width="872" height="19"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="svS-FM-3Ap">
-                            <font key="font" metaFont="system" size="16"/>
-                            <color key="textColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="centerY" secondItem="Tpj-ss-EMv" secondAttribute="centerY" constant="0.5" id="2Wq-KM-ceX"/>
-                    <constraint firstAttribute="trailing" secondItem="j8S-sz-JYh" secondAttribute="trailing" id="G2y-HN-hus"/>
                     <constraint firstAttribute="bottom" secondItem="CZW-Aq-1af" secondAttribute="bottom" constant="2" id="GqF-H9-jma"/>
                     <constraint firstAttribute="trailing" secondItem="sxl-0U-ne5" secondAttribute="trailing" id="HvD-9w-Gp7"/>
                     <constraint firstItem="CZW-Aq-1af" firstAttribute="leading" secondItem="Tpj-ss-EMv" secondAttribute="leading" constant="12" id="LV2-Cx-B9c"/>
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="leading" secondItem="Tpj-ss-EMv" secondAttribute="leading" id="P6t-00-a6e"/>
-                    <constraint firstItem="j8S-sz-JYh" firstAttribute="leading" secondItem="Tpj-ss-EMv" secondAttribute="leading" id="XMe-Pn-TXa"/>
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="centerX" secondItem="Tpj-ss-EMv" secondAttribute="centerX" id="eIH-vl-2ht"/>
-                    <constraint firstItem="j8S-sz-JYh" firstAttribute="top" secondItem="Tpj-ss-EMv" secondAttribute="top" constant="-2" id="vFY-za-hwI"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="-622" y="724.5"/>

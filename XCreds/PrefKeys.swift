@@ -8,7 +8,7 @@
 import Foundation
 
 enum PrefKeys: String {
-    case clientID, clientSecret, password="local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, customURL, customPasswordElementID, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL
+    case clientID, clientSecret, password="local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault,idpHostNames
 }
 func getManagedPreference(key: Preferences) -> Any? {
 
@@ -171,8 +171,8 @@ enum Preferences: String {
 
     //Password update keys
 
-      case PasswordOverwriteSilent // will silently update user password to new one
-      case PasswordOverwriteOptional // allow the user to stomp on the password if interested
+    case PasswordOverwriteSilent // will silently update user password to new one
+    case PasswordOverwriteOptional // allow the user to stomp on the password if interested
 
 }
 
