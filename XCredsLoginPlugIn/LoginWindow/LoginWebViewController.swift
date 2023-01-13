@@ -123,6 +123,7 @@ class LoginWebViewController: WebViewController {
             delegate.denyLogin()
         }
         let body = array[1]
+        TCSLogWithMark("base64 encoded IDToken: \(body)");
         guard let data = base64UrlDecode(value:body ) else {
             TCSLogWithMark("error decoding id token base64")
             delegate.denyLogin()
