@@ -273,35 +273,47 @@ class LoginWebViewController: WebViewController {
                     if response == .cancel {
                         break
                     }
-                    let localPassword = passwordWindowController.password
-                    guard let localPassword = localPassword else {
-                        continue
-                    }
-                    let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                    let resetKeychain = passwordWindowController.resetKeychain
 
-                    if isValidPassword==true {
-                        let localUser = try? PasswordUtils.getLocalRecord(username)
-                        guard let localUser = localUser else {
-                            TCSLogWithMark("invalid local user")
-                            delegate.denyLogin()
-                            return
-                        }
-                        do {
-                            try localUser.changePassword(localPassword, toPassword: tokens.password)
-                        }
-                        catch {
-                            TCSLogWithMark("Error setting local password to cloud password")
-                            delegate.denyLogin()
-                            return
-                        }
-                        TCSLogWithMark("setting original password to use to unlock keychain later")
-                        delegate.setHint(type: .migratePass, hint: localPassword)
+                    if resetKeychain == true {
+                        os_log("Setting password to be overwritten.", log: uiLog, type: .default)
+                        delegate.setHint(type: .passwordOverwrite, hint: true)
+                        os_log("Hint set", log: uiLog, type: .debug)
                         passwordWindowController.window?.close()
                         break
 
                     }
-                    else{
-                        passwordWindowController.window?.shake(self)
+                    else {
+                        let localPassword = passwordWindowController.password
+                        guard let localPassword = localPassword else {
+                            continue
+                        }
+                        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+
+                        if isValidPassword==true {
+                            let localUser = try? PasswordUtils.getLocalRecord(username)
+                            guard let localUser = localUser else {
+                                TCSLogWithMark("invalid local user")
+                                delegate.denyLogin()
+                                return
+                            }
+                            do {
+                                try localUser.changePassword(localPassword, toPassword: tokens.password)
+                            }
+                            catch {
+                                TCSLogWithMark("Error setting local password to cloud password")
+                                delegate.denyLogin()
+                                return
+                            }
+                            TCSLogWithMark("setting original password to use to unlock keychain later")
+                            delegate.setHint(type: .migratePass, hint: localPassword)
+                            passwordWindowController.window?.close()
+                            break
+
+                        }
+                        else{
+                            passwordWindowController.window?.shake(self)
+                        }
                     }
                 }
             }
