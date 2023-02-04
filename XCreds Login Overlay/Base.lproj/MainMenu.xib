@@ -15,6 +15,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="XCreds_Login_Overlay" customModuleProvider="target">
             <connections>
+                <outlet property="cloudLoginTextField" destination="MrL-Zn-3BA" id="bWY-at-65J"/>
                 <outlet property="waitWindow" destination="Ayg-7T-0us" id="GCI-xI-9sJ"/>
                 <outlet property="window" destination="ewK-Yh-gWi" id="YmL-xe-4l3"/>
             </connections>
@@ -686,19 +687,19 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="25" y="25" width="872" height="109"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
             <view key="contentView" id="1nr-Jh-HO9">
                 <rect key="frame" x="0.0" y="0.0" width="872" height="109"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GfD-0a-eQ7">
-                        <rect key="frame" x="0.0" y="39" width="144" height="32"/>
+                        <rect key="frame" x="0.0" y="39" width="395" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MrL-Zn-3BA">
-                                <rect key="frame" x="33" y="6" width="91" height="20"/>
+                                <rect key="frame" x="43" y="6" width="88" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Cloud Login" drawsBackground="YES" id="UqT-fq-knF">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Cloud Login" drawsBackground="YES" id="UqT-fq-knF">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
@@ -728,7 +729,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="362" height="190"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
             <view key="contentView" id="MiV-8U-Ioy">
                 <rect key="frame" x="0.0" y="0.0" width="362" height="190"/>
                 <autoresizingMask key="autoresizingMask"/>

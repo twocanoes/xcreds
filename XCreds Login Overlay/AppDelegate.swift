@@ -17,6 +17,7 @@ struct MyMain {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    @IBOutlet weak var cloudLoginTextField: NSTextField!
     @IBOutlet var window: NSWindow!
     @IBOutlet var waitWindow: NSWindow!
 
@@ -80,13 +81,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.hidesOnDeactivate=false
         window.isOpaque=false
         window.level = .modalPanel
-        Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
             NSApp.activate(ignoringOtherApps: true)
             self.window.orderFrontRegardless()
         }
         NSApp.activate(ignoringOtherApps: true)
         window.orderFrontRegardless()
+        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  let customTextString = ud.value(forKey: "cloudLoginText") {
+            cloudLoginTextField.stringValue = customTextString as! String
+            cloudLoginTextField.sizeToFit()
 
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
