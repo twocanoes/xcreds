@@ -73,10 +73,16 @@ class LoginWebViewController: WebViewController {
 
             //if prefs define smaller, then resize window
             if UserDefaults.standard.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
-                loginWindowWidth = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+                if val > 100 {
+                    loginWindowWidth = val
+                }
             }
             if UserDefaults.standard.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
-                loginWindowHeight = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+                if val > 100 {
+                    loginWindowHeight = val
+                }
             }
 
             self.window?.setFrame(screenRect, display: true, animate: false)

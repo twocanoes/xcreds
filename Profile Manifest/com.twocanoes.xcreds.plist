@@ -238,7 +238,7 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Login Window webview width (Integer). If this is not defined, it will be full width.</string>
+			<string>Login Window webview width (Integer). If this is not defined, it will be full width. Minimum value of 100.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#loginwindowwidth</string>
 			<key>pfm_name</key>
@@ -250,7 +250,7 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Login Window webview height (Integer). If this is not defined, it will be full height.</string>
+			<string>Login Window webview height (Integer). If this is not defined, it will be full height. Minimum value of 100.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#loginwindowheight</string>
 			<key>pfm_name</key>
