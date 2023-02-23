@@ -51,22 +51,64 @@ class LoginWebViewController: WebViewController {
     }
     fileprivate func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
+
+
             TCSLogWithMark("setting up window")
 
             self.window?.level = .popUpMenu
             self.window?.orderFrontRegardless()
-            
-            self.window?.backgroundColor = NSColor.black
-            
+
+            self.window?.backgroundColor = NSColor.blue
+
             self.window?.titlebarAppearsTransparent = true
             
             self.window?.isMovable = false
             self.window?.canBecomeVisibleWithoutLogin = true
-            
+
             let screenRect = NSScreen.screens[0].frame
+            let screenWidth = screenRect.width
+            let screenHeight = screenRect.height
+            var loginWindowWidth = screenWidth //start with full size
+            var loginWindowHeight = screenHeight //start with full size
+
+            //if prefs define smaller, then resize window
+            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
+                loginWindowWidth = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+            }
+            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
+                loginWindowHeight = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+            }
+
             self.window?.setFrame(screenRect, display: true, animate: false)
+
+            self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
+
+            let allBundles = Bundle.allBundles
+            for currentBundle in allBundles {
+                TCSLogWithMark(currentBundle.bundlePath)
+                if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
+                    TCSLogWithMark()
+
+                    let image = NSImage.init(byReferencingFile: imagePath)
+
+                    if let image = image {
+                        TCSLogWithMark()
+                        image.size=screenRect.size
+                        self.backgroundImageView.image=image
+
+                        self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                    }
+
+
+                    break
+
+                }
+            }
+
         }
-        
+//            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
+//        }
+//
     }
 
     @objc override var windowNibName: NSNib.Name {

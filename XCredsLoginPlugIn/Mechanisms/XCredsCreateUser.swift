@@ -166,15 +166,25 @@ class XCredsCreateUser: XCredsBaseMechanism {
                                 addSecureToken(xcredsUser!, xcredsPass!, secureTokenCreds["username"] ?? "", secureTokenCreds["password"] ?? "")
                                 
                                 // Rotate token creds
-                                let secureTokenManagementPasswordLocation = getManagedPreference(key: .SecureTokenManagementPasswordLocation) as? String ?? "/var/db/.nomadLoginSecureTokenPassword"
+                                let secureTokenManagementPasswordLocation = getManagedPreference(key: .SecureTokenManagementPasswordLocation) as? String ?? "/var/db/.XCredsSecureTokenPassword"
                                 _ = CreateSecureTokenManagementUser(String(describing: secureTokenCreds["username"]!), secureTokenManagementPasswordLocation)
                             } catch {
                                 os_log("Password Overwrite Silent with SecureToken Failed", log: createUserLog, type: .debug)
                             }
                             
-                        } else {
-                            os_log("User has a SecureToken and we do not, unable to update the user", log: createUserLog, type: .debug)
-                            // we can't do secureToken operations
+                        }
+                        else {
+                            os_log("User has a SecureToken and we do not, so just change the password and leave it up to a bootstap token to give us what we need.", log: createUserLog, type: .debug)
+                            // changing the with OpenDirectory
+                            do {
+                                let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
+                                let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
+                                try user.changePassword(nil, toPassword: xcredsPass!)
+
+                            } catch {
+                                os_log("Password Overwrite Silent without SecureToken Failed")
+                            }
+
                         }
                     }
                 } else {

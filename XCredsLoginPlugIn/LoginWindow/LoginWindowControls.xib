@@ -20,7 +20,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="25" y="25" width="872" height="117"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1536" height="935"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
             <view key="contentView" id="Tpj-ss-EMv">
                 <rect key="frame" x="0.0" y="0.0" width="872" height="117"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -134,7 +134,7 @@
                     <constraint firstItem="sxl-0U-ne5" firstAttribute="centerX" secondItem="Tpj-ss-EMv" secondAttribute="centerX" id="eIH-vl-2ht"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-622" y="724.5"/>
+            <point key="canvasLocation" x="-669" y="695"/>
         </window>
     </objects>
     <resources>

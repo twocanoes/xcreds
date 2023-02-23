@@ -37,6 +37,7 @@
 		764D812F284C06AB00B3EE54 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
 		764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */; };
 		764D8133284D14A500B3EE54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.rtf */; };
+		7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */; };
 		766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */; };
 		766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
@@ -185,6 +186,7 @@
 		764D812E284C06AB00B3EE54 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = defaults.plist; sourceTree = "<group>"; };
 		764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMenuItem.swift; sourceTree = "<group>"; };
 		764D8132284D14A500B3EE54 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBackground.png; sourceTree = "<group>"; };
 		766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XCredsLoginPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugIn/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
 		766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCredsLoginPlugin.m; path = XCredsLoginPlugIn/XCredsLoginPlugin.m; sourceTree = SOURCE_ROOT; };
@@ -416,6 +418,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				7675444428918CD100613840 /* Info.plist */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
 				76B040A328EFC788002A289B /* Helper+JWTDecode.swift */,
@@ -655,6 +658,7 @@
 				76BEF8002872A3030013E2A1 /* loginwindow@2x.png in Resources */,
 				766355D928711C51002E3867 /* defaults.plist in Resources */,
 				7613FDF7289E114F00340CCD /* loadpage.html in Resources */,
+				7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */,
 				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
 				761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */,
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
@@ -897,7 +901,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -930,7 +934,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -991,7 +995,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1023,7 +1027,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1168,7 +1172,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1199,7 +1203,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3360;
+				CURRENT_PROJECT_VERSION = 3400;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;

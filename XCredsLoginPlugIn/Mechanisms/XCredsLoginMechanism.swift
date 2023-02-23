@@ -126,7 +126,8 @@ import Cocoa
             return
         }
         loginWindowControlsWindowController.delegate=self
-
+        loginWindowControlsWindowController.window?.backgroundColor = .darkGray
+        loginWindowControlsWindowController.window?.alphaValue=0.7
     }
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")

@@ -16,6 +16,7 @@ class WebViewController: NSWindowController {
         return NSNib.Name("WebView")
     }
 
+    @IBOutlet weak var backgroundImageView: NSImageView!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
 

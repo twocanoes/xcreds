@@ -258,16 +258,17 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
         switch securityType {
         case .none:
-            let alert = NSAlert()
-
-            alert.messageText = "Open WiFi Networks are not supported. Find and join a secure network to continue."
-            alert.window.canBecomeVisibleWithoutLogin = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                NSApp.modalWindow?.level = .screenSaver + 2
-            }
-
-            alert.runModal()
-            updateNetworks()
+//            let alert = NSAlert()
+//
+//            alert.messageText = "Open WiFi Networks are not supported. Find and join a secure network to continue."
+//            alert.window.canBecomeVisibleWithoutLogin = true
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                NSApp.modalWindow?.level = .screenSaver + 2
+//            }
+//
+//            alert.runModal()
+//            updateNetworks()
+            connect(self)
 
             return
 //            networkUsername?.isHidden = true
