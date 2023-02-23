@@ -247,6 +247,8 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>Login Window Width</string>
 			<key>pfm_type</key>
 			<string>integer</string>
+			<key>pfm_range_min</key>
+			<integer>100</integer>
 		</dict>
 		<dict>
 			<key>pfm_description</key>
@@ -259,6 +261,8 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>Login Window Height</string>
 			<key>pfm_type</key>
 			<string>integer</string>
+			<key>pfm_range_min</key>
+			<integer>100</integer>
 		</dict>
 		<dict>
 			<key>pfm_default</key>
