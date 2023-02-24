@@ -21,19 +21,16 @@
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
-                <rect key="frame" x="0.0" y="0.0" width="800" height="613"/>
+                <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y6q-jm-Djn">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="613"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="TCSBackground" id="tso-0n-Rd7"/>
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="tso-0n-Rd7"/>
                     </imageView>
-                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
-                        <rect key="frame" x="150" y="57" width="500" height="500"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="500" id="kgW-Gy-4Q1"/>
-                            <constraint firstAttribute="height" constant="500" id="ngP-Os-AbE"/>
-                        </constraints>
+                    <wkWebView wantsLayer="YES" fixedFrame="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                        <rect key="frame" x="0.0" y="113" width="500" height="500"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -44,18 +41,13 @@
                     </wkWebView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="centerX" secondItem="2LH-tE-efn" secondAttribute="centerX" id="Cjb-Mw-s0X"/>
                     <constraint firstItem="Y6q-jm-Djn" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="ID5-70-RVx"/>
                     <constraint firstAttribute="bottom" secondItem="Y6q-jm-Djn" secondAttribute="bottom" id="eyw-vD-HwK"/>
                     <constraint firstItem="Y6q-jm-Djn" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="pMg-hi-WEA"/>
                     <constraint firstAttribute="trailing" secondItem="Y6q-jm-Djn" secondAttribute="trailing" id="sQZ-a2-ox3"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="centerY" secondItem="2LH-tE-efn" secondAttribute="centerY" id="sVJ-dq-vo8"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="250" y="297.5"/>
         </window>
     </objects>
-    <resources>
-        <image name="TCSBackground" width="800" height="600"/>
-    </resources>
 </document>

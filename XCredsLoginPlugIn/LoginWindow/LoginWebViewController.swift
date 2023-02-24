@@ -51,9 +51,10 @@ class LoginWebViewController: WebViewController {
     }
     fileprivate func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
+//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
 
 
-            TCSLogWithMark("setting up window")
+            TCSLogWithMark("setting up window...")
 
             self.window?.level = .popUpMenu
             self.window?.orderFrontRegardless()
@@ -72,42 +73,61 @@ class LoginWebViewController: WebViewController {
             var loginWindowHeight = screenHeight //start with full size
 
             //if prefs define smaller, then resize window
+            TCSLogWithMark("checking for custom height and width")
             if UserDefaults.standard.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
                 let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
                 if val > 100 {
+                    TCSLogWithMark("setting loginWindowWidth to \(val)")
                     loginWindowWidth = val
                 }
             }
             if UserDefaults.standard.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
                 let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
                 if val > 100 {
+                    TCSLogWithMark("setting loginWindowHeight to \(val)")
                     loginWindowHeight = val
                 }
             }
 
             self.window?.setFrame(screenRect, display: true, animate: false)
 
+            TCSLogWithMark("webview is \(self.webView.debugDescription)")
+//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
+
             self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
 
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
-                if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
-                    TCSLogWithMark()
+//            BackgroundImage
+            if let imagePathURL = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+                TCSLogWithMark("background path is \(imagePathURL)")
+                image.size=screenRect.size  
+                self.backgroundImageView.image=image
+                self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
 
-                    let image = NSImage.init(byReferencingFile: imagePath)
+                self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
-                    if let image = image {
+
+            }
+            else {
+                let allBundles = Bundle.allBundles
+                for currentBundle in allBundles {
+                    TCSLogWithMark(currentBundle.bundlePath)
+                    if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
                         TCSLogWithMark()
-                        image.size=screenRect.size
-                        self.backgroundImageView.image=image
 
-                        self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                        let image = NSImage.init(byReferencingFile: imagePath)
+
+                        if let image = image {
+                            TCSLogWithMark()
+                            image.size=screenRect.size
+                            self.backgroundImageView.image=image
+                            self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
+                            self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                        }
+
+
+                        break
+
                     }
-
-
-                    break
-
                 }
             }
 

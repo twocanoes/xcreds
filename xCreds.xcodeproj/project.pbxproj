@@ -63,6 +63,8 @@
 		7677908628908E40004E7085 /* WifiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908328908E40004E7085 /* WifiWindowController.swift */; };
 		7677908728908E40004E7085 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		7677908828908E40004E7085 /* WifiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7677908528908E40004E7085 /* WifiWindowController.xib */; };
+		7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
+		7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		769032362890EAB10043E9F3 /* WifiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7677908528908E40004E7085 /* WifiWindowController.xib */; };
 		769032372890EB350043E9F3 /* WifiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908328908E40004E7085 /* WifiWindowController.swift */; };
 		76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
@@ -209,6 +211,7 @@
 		7677908328908E40004E7085 /* WifiWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiWindowController.swift; sourceTree = "<group>"; };
 		7677908428908E40004E7085 /* WifiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiManager.swift; sourceTree = "<group>"; };
 		7677908528908E40004E7085 /* WifiWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiWindowController.xib; sourceTree = "<group>"; };
+		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
 		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
@@ -418,6 +421,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				7683973029A854EC003D9B9F /* NSImage+String.swift */,
 				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				7675444428918CD100613840 /* Info.plist */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
@@ -737,6 +741,7 @@
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
 				76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */,
 				7632909D2876674100CF8857 /* DataExtension.swift in Sources */,
+				7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */,
 				761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */,
 				7677908628908E40004E7085 /* WifiWindowController.swift in Sources */,
 				76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */,
@@ -797,6 +802,7 @@
 				76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */,
 				76EECD002875135900483C66 /* Logger.swift in Sources */,
 				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
+				7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */,
 				76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */,
 				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
 				764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */,
@@ -901,7 +907,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -934,7 +940,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -995,7 +1001,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1027,7 +1033,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1172,7 +1178,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1203,7 +1209,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3402;
+				CURRENT_PROJECT_VERSION = 3432;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;

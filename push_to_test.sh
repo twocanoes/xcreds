@@ -1,4 +1,4 @@
-#!/bin/bash +x 
+	#!/bin/bash +x 
 
 set -x
 SECURITY_PLUGIN_PATH="/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle"
