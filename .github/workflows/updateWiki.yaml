@@ -1,0 +1,38 @@
+name: Update Wiki to match Docs
+on:
+  push:
+    paths:
+      - docs/**
+      - .github/workflows/updateWiki.yaml
+    branches:
+      - "main"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout primary repository
+        uses: actions/checkout@v3
+        with:
+          path: primary
+      - name: Checkout wiki repository
+        uses: actions/checkout@v3
+        with:
+          # Note for users who may fork this repository: You must first create a wiki if one does not exist or this will fail.
+          repository: ${{github.repository}}.wiki
+          path: wiki
+      - name: Remove deleted files from wiki
+        working-directory: wiki
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          diff ../primary/docs/ ../wiki | grep -v -e .git -e primary | awk -F': ' '{system("git rm " $2)}'
+          git diff-index --quiet HEAD || git commit -m "Sync deletes with main repository"
+      - name: Bring changes to Wiki
+        working-directory: wiki
+        run: |
+          cp -r ../primary/docs/* .
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Sync Wiki with Docs" && git push

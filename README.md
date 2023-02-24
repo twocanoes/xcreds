@@ -17,7 +17,7 @@ The XCreds app runs when the user logs in. On first launch, it checks to see if 
 
 ## Setup and Configuration
 
-See the [admin guide](https://github.com/twocanoes/xcreds/wiki/AdminGuide) on the wiki.
+See the [admin guide](../../wiki/AdminGuide) on the wiki.
 
 ## Video
 See the [video on youtube](https://www.youtube.com/watch?v=qtPy5ddp9kg&list=PLFtGGT240LAMYGcueZT76BySBQRFCzdce)
