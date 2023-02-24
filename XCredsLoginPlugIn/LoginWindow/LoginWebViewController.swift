@@ -16,6 +16,8 @@ class LoginWebViewController: WebViewController {
     var delegate: XCredsMechanismProtocol?
     var resolutionObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
+    @IBOutlet weak var backgroundImageView: NSImageView!
+
     override func windowDidLoad() {
         super.windowDidLoad()
         
