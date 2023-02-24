@@ -9,23 +9,24 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
+                <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="X1r-3u-usj"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+        <window title="XCreds Cloud Refresh" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
-                        <rect key="frame" x="0.0" y="0.0" width="628" height="593"/>
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="610"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -34,23 +35,27 @@
                             <outlet property="UIDelegate" destination="-2" id="Qhy-Dl-wsg"/>
                         </connections>
                     </wkWebView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jsJ-cm-r6Z">
-                        <rect key="frame" x="0.0" y="594" width="628" height="16"/>
-                        <textFieldCell key="cell" selectable="YES" alignment="center" title="Your local password needs to be synced with your cloud password. Please authenticate now." drawsBackground="YES" id="OSE-fi-4md">
-                            <font key="font" usesAppearanceFont="YES"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <color key="backgroundColor" name="linkColor" catalog="System" colorSpace="catalog"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
+                        <rect key="frame" x="0.0" y="562" width="628" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="628" id="zPs-Yp-tRg"/>
+                        </constraints>
+                        <textFieldCell key="cell" alignment="center" title="Your local password needs to be synced with your cloud password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
+                            <font key="font" metaFont="system" size="21"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0062473695290000001" alpha="0.57066289449999996" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
-                    <constraint firstItem="jsJ-cm-r6Z" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="KNw-iM-Neu"/>
-                    <constraint firstAttribute="trailing" secondItem="jsJ-cm-r6Z" secondAttribute="trailing" id="PYv-Pl-NOI"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="jsJ-cm-r6Z" secondAttribute="bottom" constant="1" id="amp-UJ-kJX"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="3" id="4mY-sf-GcF"/>
+                    <constraint firstItem="YnV-QC-aTR" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="HXK-IK-ZHa"/>
                     <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
+                    <constraint firstItem="YnV-QC-aTR" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="1" id="hLH-fg-Sn6"/>
+                    <constraint firstAttribute="trailing" secondItem="YnV-QC-aTR" secondAttribute="trailing" id="jgi-7V-Zhw"/>
                     <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" id="vCP-fw-q3U"/>
-                    <constraint firstItem="jsJ-cm-r6Z" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="3" id="vae-UG-niS"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="250" y="297.5"/>

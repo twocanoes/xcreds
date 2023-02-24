@@ -16,12 +16,15 @@ class WebViewController: NSWindowController {
         return NSNib.Name("WebView")
     }
 
+    @IBOutlet weak var refreshTitleTextField: NSTextField!
     @IBOutlet weak var backgroundImageView: NSImageView!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
 
     var password:String?
     func loadPage() {
+
+        refreshTitleTextField.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)  
 
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
