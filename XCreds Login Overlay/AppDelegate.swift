@@ -81,10 +81,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.hidesOnDeactivate=false
         window.isOpaque=false
         window.level = .modalPanel
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
-            NSApp.activate(ignoringOtherApps: true)
-            self.window.orderFrontRegardless()
-        }
+//        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
+//            NSApp.activate(ignoringOtherApps: true)
+//            self.window.orderFrontRegardless()
+//        }
         NSApp.activate(ignoringOtherApps: true)
         window.orderFrontRegardless()
         if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  let customTextString = ud.value(forKey: "cloudLoginText") {

@@ -99,7 +99,7 @@ class LoginWebViewController: WebViewController {
 //            BackgroundImage
             if let imagePathURL = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
                 TCSLogWithMark("background path is \(imagePathURL)")
-                image.size=screenRect.size  
+                image.size=screenRect.size
                 self.backgroundImageView.image=image
                 self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
 
