@@ -121,9 +121,16 @@ class MainController: NSObject {
 
 
         while (true){
+            
             NSApp.activate(ignoringOtherApps: true)
+            let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
+                NSApp.activate(ignoringOtherApps: true)
+
+            }
+
             let response = NSApp.runModal(for: passwordWindowController.window!)
 
+            timer.invalidate()
             if response == .cancel {
                 break
             }
