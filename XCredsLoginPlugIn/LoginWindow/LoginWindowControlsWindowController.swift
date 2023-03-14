@@ -53,7 +53,7 @@ class LoginWindowControlsWindowController: NSWindowController {
         let refreshTimerSecs = UserDefaults.standard.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
         if refreshTimerSecs > 0 {
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: { [self] timer in
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshTimerSecs), repeats: true, block: { [self] timer in
                 delegate?.reload()
             })
         }
