@@ -192,9 +192,11 @@ extension WebViewController: WKNavigationDelegate {
             TCSLogWithMark("passwordElementID is \(passwordElementID)")
 
             TCSLogWithMark("inserting javascript to get password")
-
             let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
             webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if error != nil {
+                    TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                }
                 if let rawPass = response as? String, rawPass != "" {
                     TCSLogWithMark("========= password set===========")
                     self.password=rawPass
