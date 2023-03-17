@@ -35,8 +35,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         waitWindow.setFrameOrigin(newPos)
         waitWindow.makeKeyAndOrderFront(self)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-
-
             if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
                 TCSLogWithMark("setting standard login back to XCreds login")
                 try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
