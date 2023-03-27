@@ -59,6 +59,23 @@ class WifiManager: CWEventDelegate {
         return currentInterface?.ssid()
     }
 
+    func identityCommonNames()->Array<String>{
+
+        var returnCommonNames=Array<String>()
+        let availableIdentityInfo =  TCSKeychain.availableIdentityInfo() as? Array <Dictionary<String,String>>
+        if let availableIdentityInfo = availableIdentityInfo {
+
+            for ident in availableIdentityInfo{
+
+                if let cn = ident["cn"] {
+                    returnCommonNames.append(cn)
+                    TCSLogWithMark(cn)
+                }
+            }
+        }
+        return returnCommonNames
+
+    }
     func findNetworks() -> Set<CWNetwork>? {
         var result: Set<CWNetwork> = []
         do {
@@ -117,13 +134,19 @@ class WifiManager: CWEventDelegate {
         return false
     }
 
-    func connectWifi(with network: CWNetwork, password: String?, username: String?) -> Bool {
+    func connectWifi(with network: CWNetwork, password: String?, username: String?, identity: SecIdentity? = nil) -> Bool {
         var result = false
         do {
+            TCSLogWithMark("connecting")
             if username != nil && username != "" {
-                try currentInterface?.associate(toEnterpriseNetwork: network, identity: nil, username: username, password: password)
+                TCSLogWithMark("connecting \(username ?? "<unknown username")")
+                try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
             } else {
+                TCSLogWithMark("connecting with password only \(network)")
+
                 try currentInterface?.associate(to: network, password: password)
+                TCSLogWithMark("done associating")
+
             }
             result = true
         } catch {
@@ -202,7 +225,7 @@ class WifiManager: CWEventDelegate {
     }
 
     public func internetConnected() {
-        TCSLogWithMark("turnin on network monitor")
+        TCSLogWithMark("turning on network monitor")
         configureNetworkMonitor()
         self.timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { timer in
             TCSLogWithMark("cancelMonitor")

@@ -53,7 +53,10 @@ class LoginWindowControlsWindowController: NSWindowController {
         let refreshTimerSecs = UserDefaults.standard.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
         if refreshTimerSecs > 0 {
+            TCSLogWithMark("Setting refresh timer")
+
         refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshTimerSecs), repeats: true, block: { [self] timer in
+                TCSLogWithMark("refreshing in timer")
                 delegate?.reload()
             })
         }

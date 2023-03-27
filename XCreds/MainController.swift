@@ -104,7 +104,7 @@ class MainController: NSObject {
             }
         }
         //delay startup to give network time to settle.
-        Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
             ScheduleManager.shared.startCredentialCheck()
         }
 

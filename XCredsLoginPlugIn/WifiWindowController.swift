@@ -6,6 +6,7 @@ import CoreWLAN
 class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDelegate {
 //    @IBOutlet weak var backgroundView: NonBleedingView!
 //    @IBOutlet weak var mainView: NonBleedingView!
+    @IBOutlet weak var certificateLabel: NSTextField!
     @IBOutlet weak var wifiCredentialTitleLabel: NSTextField?
     @IBOutlet weak var networkSearch: NSButton?
     @IBOutlet weak var networkPassword: NSSecureTextField?
@@ -14,6 +15,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBOutlet weak var networkstatusLabel: NSTextField?
     @IBOutlet weak var networkWifiPopup: NSPopUpButton?
 //    @IBOutlet weak var networkOpenStatusLabel: NSTextField!
+    @IBOutlet weak var certificatePopupButton: NSPopUpButton!
     @IBOutlet weak var networkPasswordLabel: NSTextField!
     //    @IBOutlet weak var dismissButton: NSButton!
     @IBOutlet var credentialsWindow: NSWindow!
@@ -55,7 +57,10 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
         updateAvailableNetworks()
         self.networkUsernameView?.isHidden=true
         self.networkPasswordView?.isHidden=true
-
+        certificatePopupButton.removeAllItems()
+        certificatePopupButton.addItem(withTitle: "None")
+        TCSLogWithMark("adding wifi networks")
+        certificatePopupButton.addItems(withTitles: WifiManager().identityCommonNames())
 
     }
 
@@ -158,8 +163,20 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
             let userPassword = self.networkPassword?.stringValue
             let username = self.networkUsername?.stringValue
+            var identity:SecIdentity?
+            if certificatePopupButton.indexOfSelectedItem>0{
+                let cn = certificatePopupButton.title
+                TCSLogWithMark("using cert \(cn)")
+                let identityFromCN = TCSKeychain.findIdentity(withSubject: cn)
+                TCSLogWithMark("using cert2 \(identityFromCN.debugDescription)")
 
-            let connected = wifiManager.connectWifi(with: selectedNetwork, password: userPassword, username: username)
+                identity = identityFromCN?.takeRetainedValue()
+                TCSLogWithMark("using identity: \(cn)")
+                TCSLogWithMark("identity: \(identity.debugDescription)")
+            }
+            let connected = wifiManager.connectWifi(with: selectedNetwork, password: userPassword, username: username, identity: identity)
+            TCSLogWithMark("done connectWifi")
+
             if connected {
                 NSApp.stopModal()
                 credentialsWindow.orderOut(self)
@@ -181,27 +198,14 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
         switch securityType {
         case .none:
-//            let alert = NSAlert()
-//
-//            alert.messageText = "Open WiFi Networks are not supported. Find and join a secure network to continue."
-//            alert.window.canBecomeVisibleWithoutLogin = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                NSApp.modalWindow?.level = .screenSaver + 2
-//            }
-//
-//            alert.runModal()
-//            updateNetworks()
             connect(self)
 
             return
-//            networkUsername?.isHidden = true
-//            networkUsernameLabel.isHidden = true
-//
-//            networkPassword?.isHidden = true
-//            networkPasswordLabel?.isHidden = true
         case .password:
             self.networkUsername?.isHidden = true
             networkUsernameLabel.isHidden = true
+            certificateLabel.isHidden = true
+            self.certificatePopupButton.isHidden = true
 
             self.networkPassword?.isHidden = false
             networkPasswordLabel?.isHidden = false
@@ -212,6 +216,8 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
             self.networkPassword?.isHidden = false
             networkPasswordLabel?.isHidden = false
+            certificateLabel.isHidden = false
+            self.certificatePopupButton.isHidden = false
 
         }
         wifiCredentialTitleLabel?.stringValue = "The wifi network \"\(network.ssid ?? "" )\" requires login:"

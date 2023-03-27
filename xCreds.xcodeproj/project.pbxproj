@@ -70,6 +70,12 @@
 		76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
 		76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
+		76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
+		76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
+		76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */; };
+		76B882AF29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */; };
+		76B882B229CCFDBA00BB8186 /* NSData+HexString.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882B029CCFDBA00BB8186 /* NSData+HexString.m */; };
+		76B882B329CCFDBA00BB8186 /* NSData+HexString.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882B029CCFDBA00BB8186 /* NSData+HexString.m */; };
 		76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */; };
 		76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */; };
 		76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */; };
@@ -213,6 +219,12 @@
 		7677908528908E40004E7085 /* WifiWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiWindowController.xib; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
+		76B882A829CCFD7900BB8186 /* TCSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSKeychain.m; sourceTree = "<group>"; };
+		76B882A929CCFD7A00BB8186 /* TCSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSKeychain.h; sourceTree = "<group>"; };
+		76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SHA1.m"; sourceTree = "<group>"; };
+		76B882AD29CCFDAE00BB8186 /* NSData+SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SHA1.h"; sourceTree = "<group>"; };
+		76B882B029CCFDBA00BB8186 /* NSData+HexString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+HexString.m"; sourceTree = "<group>"; };
+		76B882B129CCFDBA00BB8186 /* NSData+HexString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexString.h"; sourceTree = "<group>"; };
 		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
 		76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSReturnWindow.h; sourceTree = "<group>"; };
@@ -316,6 +328,12 @@
 		766355C72870D1B5002E3867 /* XCredsLogin */ = {
 			isa = PBXGroup;
 			children = (
+				76B882B129CCFDBA00BB8186 /* NSData+HexString.h */,
+				76B882B029CCFDBA00BB8186 /* NSData+HexString.m */,
+				76B882AD29CCFDAE00BB8186 /* NSData+SHA1.h */,
+				76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */,
+				76B882A929CCFD7A00BB8186 /* TCSKeychain.h */,
+				76B882A829CCFD7900BB8186 /* TCSKeychain.m */,
 				7613FDF6289E114F00340CCD /* loadpage.html */,
 				7677908428908E40004E7085 /* WifiManager.swift */,
 				7677908328908E40004E7085 /* WifiWindowController.swift */,
@@ -732,6 +750,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */,
+				76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
 				7632E3A12873497C00E37923 /* LogShim.swift in Sources */,
@@ -749,6 +768,7 @@
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
 				76CB9078287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */,
 				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
+				76B882AF29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */,
 				76BEF7F82872504C0013E2A1 /* ContextAndHintHandling.swift in Sources */,
 				766355E6287148C1002E3867 /* Tokens.swift in Sources */,
 				766355CC2870E9AD002E3867 /* WebView.swift in Sources */,
@@ -763,6 +783,7 @@
 				76EECD012875135900483C66 /* Logger.swift in Sources */,
 				7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */,
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
+				76B882B329CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
 				7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */,
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
 				76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
@@ -815,13 +836,16 @@
 				76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */,
 				767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
+				76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				766355E5287148C1002E3867 /* Tokens.swift in Sources */,
 				76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */,
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,
+				76B882B229CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
 				766355DC287133C7002E3867 /* WebView.swift in Sources */,
+				76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,7 +931,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -920,7 +944,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -940,7 +964,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -953,7 +977,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1001,7 +1025,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1013,7 +1037,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1033,7 +1057,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1045,7 +1069,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1178,7 +1202,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1190,7 +1214,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1209,7 +1233,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3476;
+				CURRENT_PROJECT_VERSION = 3501;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1221,7 +1245,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

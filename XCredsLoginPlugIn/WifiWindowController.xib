@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WifiWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
+                <outlet property="certificateLabel" destination="eqw-jG-xk4" id="PKZ-wy-nD9"/>
+                <outlet property="certificatePopupButton" destination="Sb1-PH-di9" id="Dxm-0p-sb5"/>
                 <outlet property="credentialsWindow" destination="lLG-Bl-vZe" id="OXn-89-N40"/>
                 <outlet property="networkConnectionSpinner" destination="Z7T-Xy-w9X" id="nGG-sI-Zj8"/>
                 <outlet property="networkPassword" destination="iXc-w6-KVu" id="igd-gX-Ai2"/>
@@ -186,23 +188,31 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
-                        <rect key="frame" x="28" y="109" width="124" height="17"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
+                        <rect key="frame" x="28" y="110" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Username:" id="2MT-3V-4C7">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
-                        <rect key="frame" x="28" y="84" width="124" height="16"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
+                        <rect key="frame" x="28" y="85" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Password:" id="gPn-og-da2">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <secureTextField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqw-jG-xk4">
+                        <rect key="frame" x="80" y="60" width="72" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Certificate:" id="zg7-zl-3F2">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
                         <rect key="frame" x="166" y="82" width="294" height="21"/>
                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="ytx-J6-yi1">
                             <font key="font" metaFont="message"/>
@@ -213,26 +223,48 @@ DQ
                             </allowedInputSourceLocales>
                         </secureTextFieldCell>
                     </secureTextField>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sb1-PH-di9">
+                        <rect key="frame" x="164" y="52" width="300" height="25"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3p3-NJ-fhq" id="Vf9-S1-c8f">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="Tjl-lD-s5R">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="3p3-NJ-fhq"/>
+                                    <menuItem title="Item 2" id="asc-8t-DJg"/>
+                                    <menuItem title="Item 3" id="2jW-WN-ffg"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Sb1-PH-di9" firstAttribute="leading" secondItem="eqw-jG-xk4" secondAttribute="trailing" constant="17" id="5gZ-Wb-iAe"/>
                     <constraint firstItem="ju4-Cc-cV9" firstAttribute="trailing" secondItem="iXc-w6-KVu" secondAttribute="trailing" id="851-Ej-Mek"/>
+                    <constraint firstAttribute="trailing" secondItem="Sb1-PH-di9" secondAttribute="trailing" constant="20" symbolic="YES" id="B1z-AB-w1H"/>
                     <constraint firstItem="cST-FL-tNs" firstAttribute="trailing" secondItem="bbs-5k-6Qs" secondAttribute="trailing" id="ETg-kG-VRZ"/>
+                    <constraint firstAttribute="trailing" secondItem="Cgl-qV-y0O" secondAttribute="trailing" constant="20" symbolic="YES" id="H5w-mY-Kke"/>
                     <constraint firstItem="Tjq-cj-K2q" firstAttribute="leading" secondItem="cST-FL-tNs" secondAttribute="leading" id="HTn-AO-uti"/>
                     <constraint firstItem="Y2g-NK-A2W" firstAttribute="leading" secondItem="Dza-jC-NB8" secondAttribute="leading" constant="22" id="HuV-sd-pwl"/>
+                    <constraint firstItem="iXc-w6-KVu" firstAttribute="leading" secondItem="bbs-5k-6Qs" secondAttribute="trailing" constant="16" id="KXK-GF-Uvu"/>
                     <constraint firstItem="ju4-Cc-cV9" firstAttribute="top" secondItem="Tjq-cj-K2q" secondAttribute="bottom" constant="8" id="MdM-a7-vXf"/>
+                    <constraint firstItem="eqw-jG-xk4" firstAttribute="top" secondItem="bbs-5k-6Qs" secondAttribute="bottom" constant="9" id="OdU-8h-A0G"/>
                     <constraint firstItem="bbs-5k-6Qs" firstAttribute="top" secondItem="cST-FL-tNs" secondAttribute="bottom" constant="9" id="PB3-XW-peS"/>
-                    <constraint firstItem="mVP-CL-XEv" firstAttribute="top" secondItem="iXc-w6-KVu" secondAttribute="bottom" constant="42" id="Rom-9J-kFj"/>
+                    <constraint firstAttribute="trailing" secondItem="iXc-w6-KVu" secondAttribute="trailing" constant="20" symbolic="YES" id="Ra1-57-vsP"/>
                     <constraint firstItem="Y2g-NK-A2W" firstAttribute="top" secondItem="Dza-jC-NB8" secondAttribute="top" constant="28" id="TIP-q5-HGp"/>
+                    <constraint firstItem="Tjq-cj-K2q" firstAttribute="top" secondItem="Dza-jC-NB8" secondAttribute="top" constant="14" id="VO4-OZ-S9A"/>
                     <constraint firstItem="ju4-Cc-cV9" firstAttribute="leading" secondItem="cST-FL-tNs" secondAttribute="trailing" constant="17" id="W0O-tI-1Yb"/>
                     <constraint firstItem="Tjq-cj-K2q" firstAttribute="trailing" secondItem="ju4-Cc-cV9" secondAttribute="trailing" id="Z1x-lW-vZt"/>
                     <constraint firstItem="Tjq-cj-K2q" firstAttribute="leading" secondItem="Y2g-NK-A2W" secondAttribute="trailing" constant="8" symbolic="YES" id="ZfP-cE-ULA"/>
-                    <constraint firstItem="iXc-w6-KVu" firstAttribute="trailing" secondItem="Cgl-qV-y0O" secondAttribute="trailing" id="aDx-J2-Dzc"/>
                     <constraint firstItem="mVP-CL-XEv" firstAttribute="baseline" secondItem="Cgl-qV-y0O" secondAttribute="baseline" id="eiY-ga-hJQ"/>
+                    <constraint firstItem="eqw-jG-xk4" firstAttribute="trailing" secondItem="cST-FL-tNs" secondAttribute="trailing" id="fO1-43-4p5"/>
+                    <constraint firstItem="Sb1-PH-di9" firstAttribute="top" secondItem="iXc-w6-KVu" secondAttribute="bottom" constant="6" id="fbl-NS-14q"/>
                     <constraint firstItem="iXc-w6-KVu" firstAttribute="top" secondItem="ju4-Cc-cV9" secondAttribute="bottom" constant="4" id="ghe-p6-nei"/>
                     <constraint firstItem="cST-FL-tNs" firstAttribute="top" secondItem="Tjq-cj-K2q" secondAttribute="bottom" constant="11" id="iz3-ph-UoI"/>
                     <constraint firstAttribute="trailing" secondItem="Tjq-cj-K2q" secondAttribute="trailing" constant="20" symbolic="YES" id="kM1-R6-wcM"/>
-                    <constraint firstItem="ju4-Cc-cV9" firstAttribute="centerX" secondItem="iXc-w6-KVu" secondAttribute="centerX" id="ruh-8D-Wf3"/>
+                    <constraint firstAttribute="trailing" secondItem="ju4-Cc-cV9" secondAttribute="trailing" constant="20" symbolic="YES" id="pjT-AB-wrY"/>
                     <constraint firstItem="ju4-Cc-cV9" firstAttribute="baseline" secondItem="cST-FL-tNs" secondAttribute="firstBaseline" id="tu7-he-y3N"/>
+                    <constraint firstItem="bbs-5k-6Qs" firstAttribute="trailing" secondItem="cST-FL-tNs" secondAttribute="trailing" id="uQa-ui-T9p"/>
                     <constraint firstItem="Cgl-qV-y0O" firstAttribute="leading" secondItem="mVP-CL-XEv" secondAttribute="trailing" constant="12" symbolic="YES" id="x00-6e-tqS"/>
                     <constraint firstAttribute="bottom" secondItem="mVP-CL-XEv" secondAttribute="bottom" constant="20" symbolic="YES" id="yGC-lr-KZQ"/>
                     <constraint firstItem="cST-FL-tNs" firstAttribute="leading" secondItem="bbs-5k-6Qs" secondAttribute="leading" id="yUP-zO-kDB"/>
@@ -242,8 +274,8 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
-        <image name="NSStopProgressFreestandingTemplate" width="20" height="20"/>
+        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
+        <image name="NSStopProgressFreestandingTemplate" width="19" height="19"/>
         <image name="globe" catalog="system" width="15" height="15"/>
         <image name="wifi" catalog="system" width="17" height="13"/>
     </resources>
