@@ -17,6 +17,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     var loadPageURL:URL?
     var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
+    @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
     func dismiss() {
         if let resolutionObserver = resolutionObserver {
@@ -69,8 +70,21 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.macLoginWindowGribColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
 
             self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+            self.trialVersionStatusTextField?.isHidden = false
+            
+//            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+            let check  =  TCSLicenseCheck()
 
-            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+            let status = check.checkLicenseStatus("com.twocanoes.xcreds", withExtension: "")
+
+            if status != .invalid {
+                TCSLogWithMark("valid license")
+
+            }
+            else {
+                TCSLogWithMark("invalid license")
+
+            }
 
 
 

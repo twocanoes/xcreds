@@ -126,8 +126,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/LoginWindowControlsWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "windowDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
