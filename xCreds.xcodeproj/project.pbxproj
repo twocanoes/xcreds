@@ -54,6 +54,18 @@
 		766355E328713C4A002E3867 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		766355E5287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
 		766355E6287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
+		766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC42929D3A3DC009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
+		766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC42D29D3A3EC009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC42E29D3A3EC009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
+		766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC43229D3A3F8009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC43329D3A3F8009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
+		766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766F4C4B2883AFD90021F548 /* pleaseWaitGraphic.png in Resources */ = {isa = PBXBuildFile; fileRef = 766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
@@ -172,6 +184,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		766CC42C29D3A3DC009BC526 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC42929D3A3DC009BC526 /* ProductLicense.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		766CC43129D3A3EC009BC526 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC42E29D3A3EC009BC526 /* ProductLicense.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		766CC43629D3A3F8009BC526 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC43329D3A3F8009BC526 /* ProductLicense.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +253,8 @@
 		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWindow/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
+		766CC42129D3A320009BC526 /* Paddle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Paddle.framework; path = Carthage/Build/Mac/Paddle.framework; sourceTree = "<group>"; };
+		766CC42229D3A321009BC526 /* ProductLicense.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ProductLicense.framework; path = Carthage/Build/Mac/ProductLicense.framework; sourceTree = "<group>"; };
 		766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pleaseWaitGraphic.png; sourceTree = "<group>"; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
 		767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
@@ -293,6 +343,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766CC42D29D3A3EC009BC526 /* ProductLicense.framework in Frameworks */,
+				766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */,
 				766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +353,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */,
+				766CC43229D3A3F8009BC526 /* ProductLicense.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +362,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
+				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
 				76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */,
 				76DD6D17285997F300A700ED /* OIDCLite in Frameworks */,
@@ -432,6 +488,8 @@
 		76DD6D15285997F300A700ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				766CC42129D3A320009BC526 /* Paddle.framework */,
+				766CC42229D3A321009BC526 /* ProductLicense.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -562,6 +620,7 @@
 				766355B92870CA6A002E3867 /* Sources */,
 				766355BA2870CA6A002E3867 /* Frameworks */,
 				766355BB2870CA6A002E3867 /* Resources */,
+				766CC43129D3A3EC009BC526 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -582,6 +641,7 @@
 				76DC0A6128836EB1007C42B2 /* Sources */,
 				76DC0A6228836EB1007C42B2 /* Frameworks */,
 				76DC0A6328836EB1007C42B2 /* Resources */,
+				766CC43629D3A3F8009BC526 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -599,11 +659,11 @@
 				76EE069627FD1D00009E0F3A /* Sources */,
 				76EE069727FD1D00009E0F3A /* Frameworks */,
 				76EE069827FD1D00009E0F3A /* Resources */,
+				766CC42C29D3A3DC009BC526 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				76DD6D14285997DA00A700ED /* PBXTargetDependency */,
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
 				76319376287E19A500D36BF7 /* PBXTargetDependency */,
 				76319379287E204500D36BF7 /* PBXTargetDependency */,
@@ -867,10 +927,6 @@
 			target = 76DC0A6428836EB1007C42B2 /* XCreds Login Overlay */;
 			targetProxy = 76DC0A7A28837152007C42B2 /* PBXContainerItemProxy */;
 		};
-		76DD6D14285997DA00A700ED /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 76DD6D13285997DA00A700ED /* OIDCLite */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -899,6 +955,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -915,6 +972,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -931,9 +989,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XCredsLoginPlugin/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -964,9 +1026,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XCredsLoginPlugin/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1025,9 +1091,13 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XCreds-Login-Overlay-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1057,9 +1127,13 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XCreds-Login-Overlay-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1202,9 +1276,13 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
@@ -1233,9 +1311,13 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3501;
+				CURRENT_PROJECT_VERSION = 3504;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Carthage/Build/Mac\"",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
@@ -1351,10 +1433,6 @@
 			productName = ArgumentParser;
 		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OIDCLite;
-		};
-		76DD6D13285997DA00A700ED /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OIDCLite;
 		};
