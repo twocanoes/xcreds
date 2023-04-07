@@ -21,9 +21,11 @@ class WebViewController: NSWindowController {
     @IBOutlet weak var cancelButton: NSButton!
 
     var password:String?
+
     func loadPage() {
 
 
+        let licenseState = LicenseChecker().currentLicenseState()
         if let refreshTitleTextField = refreshTitleTextField {
             refreshTitleTextField.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
         }
@@ -31,7 +33,27 @@ class WebViewController: NSWindowController {
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
-        if let url = TokenManager.shared.oidc().createLoginURL() {
+
+        switch licenseState {
+
+        case .valid, .trial(_):
+            break
+        case .invalid,.trialExpired, .expired:
+            let allBundles = Bundle.allBundles
+            for currentBundle in allBundles {
+                TCSLogWithMark(currentBundle.bundlePath)
+                if currentBundle.bundlePath.contains("XCreds") {
+                    TCSLogWithMark()
+                    let loadPageURL = currentBundle.url(forResource: "errorpage", withExtension: "html")
+                    TCSLogWithMark(loadPageURL?.debugDescription ?? "none")
+                    self.webView.load(URLRequest(url:loadPageURL!))
+                    break
+                }
+            }
+            return
+
+        }
+         if let url = TokenManager.shared.oidc().createLoginURL() {
             TCSLogWithMark()
             self.webView.load(URLRequest(url: url))
         }
@@ -251,12 +273,14 @@ extension WebViewController: WKNavigationDelegate {
                 }
             })
 
-//            javaScript = "document.getElementById('confirmNewPassword').value"
-//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-//                if let rawPass = response as? String {
-//                    self.password=rawPass
-//                }
-//            })
+            javaScript = "document.getElementById('confirmNewPassword').value"
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if let rawPass = response as? String {
+                    TCSLogWithMark("========= new password set===========")
+
+                    self.password=rawPass
+                }
+            })
         } else if navigationAction.request.url?.host == "accounts.google.com" {
             // Google snarfing
             TCSLogWithMark("Google")
