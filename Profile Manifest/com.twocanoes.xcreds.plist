@@ -125,6 +125,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
+		
 		<dict>
 			<key>pfm_description</key>
 			<string>The OIDC client id public identifier for the app.</string>
@@ -236,6 +237,34 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>boolean</string>
 		</dict>
 		<dict>
+			<key>pfm_description</key>
+			<string>Login Window webview width (Integer). If this is not defined, it will be full width. Minimum value of 100.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#loginwindowwidth</string>
+			<key>pfm_name</key>
+			<string>loginWindowWidth</string>
+			<key>pfm_title</key>
+			<string>Login Window Width</string>
+			<key>pfm_type</key>
+			<string>integer</string>
+			<key>pfm_range_min</key>
+			<integer>100</integer>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>Login Window webview height (Integer). If this is not defined, it will be full height. Minimum value of 100.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#loginwindowheight</string>
+			<key>pfm_name</key>
+			<string>loginWindowHeight</string>
+			<key>pfm_title</key>
+			<string>Login Window Height</string>
+			<key>pfm_type</key>
+			<string>integer</string>
+			<key>pfm_range_min</key>
+			<integer>100</integer>
+		</dict>
+		<dict>
 			<key>pfm_default</key>
 			<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
 			<key>pfm_description</key>
@@ -345,6 +374,35 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_default</key>
+			<string>0</string>
+			<key>pfm_description</key>
+			<string>Timer for automatically refreshing login screen in seconds. If set to 0, does not automatically refresh.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#cloudlogintext</string>
+			<key>pfm_name</key>
+			<string>autoRefreshLoginTimer</string>
+			<key>pfm_title</key>
+			<string>Automatically Refresh Login Window (seconds)</string>
+			<key>pfm_type</key>
+			<string>integer</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<string>Cloud Login</string>
+			<key>pfm_description</key>
+			<string>Text for return to cloud login on Mac login screen</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#cloudlogintext</string>
+			<key>pfm_name</key>
+			<string>cloudLoginText</string>
+			<key>pfm_title</key>
+			<string>Cloud Login Text</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+
+		<dict>
+			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
 			<string>Show the About Menu</string>
@@ -354,6 +412,20 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>shouldShowAboutMenu</string>
 			<key>pfm_title</key>
 			<string>Show About Menu</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<true/>
+			<key>pfm_description</key>
+			<string>Show text at the top of the prompt window when tokens expire.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldshowrefreshbanner</string>
+			<key>pfm_name</key>
+			<string>shouldShowRefreshBanner</string>
+			<key>pfm_title</key>
+			<string>Show Refresh Banner</string>
 			<key>pfm_type</key>
 			<string>boolean</string>
 		</dict>
@@ -469,6 +541,58 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_default</key>
+			<false/>
+			<key>pfm_description</key>
+			<string>Reset the keychain without prompting if the login password doesn't match the local password.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#keychainreset</string>
+			<key>pfm_name</key>
+			<string>KeychainReset</string>
+			<key>pfm_title</key>
+			<string>Keychain Reset</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<false/>
+			<key>pfm_description</key>
+			<string>Update the password silently to the new one. Used with the KeychainReset if the user has a secure token.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#passwordoverwritesilent</string>
+			<key>pfm_name</key>
+			<string>PasswordOverwriteSilent</string>
+			<key>pfm_title</key>
+			<string>Overwrite Password Silently</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>Username to use for the secure token management account</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#securetokenmanagementusername</string>
+			<key>pfm_name</key>
+			<string>SecureTokenManagementUsername</string>
+			<key>pfm_title</key>
+			<string>Secure Token Management Username</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>The location to read the Secure Token management password</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#securetokenmanagementpasswordlocation</string>
+			<key>pfm_name</key>
+			<string>SecureTokenManagementPasswordLocation</string>
+			<key>pfm_title</key>
+			<string>Secure Token Management Password Location</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
 			<string>Show prompt to verify cloud password before setting keychain and login.</string>
@@ -525,12 +649,24 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>string</string>
 		</dict>
 		<dict>
+			<key>pfm_description</key>
+			<string>Selects the password element field in the web page by finding a form element that has bullets (input is password)</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldfindpasswordelement</string>
+			<key>pfm_name</key>
+			<string>shouldFindPasswordElement</string>
+			<key>pfm_title</key>
+			<string>shouldFindPasswordElement</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
 			<key>pfm_default</key>
 			<string>given_name</string>
 			<key>pfm_description</key>
 			<string>Local DS to OIDC Mapping for First Name</string>
 			<key>pfm_documentation_url</key>
-			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappingfirstname</string>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#map_firstname</string>
 			<key>pfm_name</key>
 			<string>map_firstname</string>
 			<key>pfm_note</key>
@@ -546,7 +682,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_description</key>
 			<string>Local DS to OIDC Mapping for Last Name</string>
 			<key>pfm_documentation_url</key>
-			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappinglastname</string>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#map_lastname</string>
 			<key>pfm_name</key>
 			<string>map_lastname</string>
 			<key>pfm_note</key>

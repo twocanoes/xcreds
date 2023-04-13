@@ -16,11 +16,17 @@ class WebViewController: NSWindowController {
         return NSNib.Name("WebView")
     }
 
+    @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
 
     var password:String?
     func loadPage() {
+
+
+        if let refreshTitleTextField = refreshTitleTextField {
+            refreshTitleTextField.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+        }
 
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
@@ -181,23 +187,47 @@ extension WebViewController: WKNavigationDelegate {
             idpHostNames=[idpHostName]
         }
         let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
-        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host), let passwordElementID = passwordElementID {
+        let shouldFindPasswordElement:Bool? = UserDefaults.standard.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
+
+        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host) {
             TCSLogWithMark("host matches custom idpHostName")
-            TCSLogWithMark("passwordElementID is \(passwordElementID)")
 
-            TCSLogWithMark("inserting javascript to get password")
+            var javaScript = "" //document.getElementsByName('password')[0].value
 
-            let javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                if let rawPass = response as? String, rawPass != "" {
-                    TCSLogWithMark("========= password set===========")
-                    self.password=rawPass
-                }
-                else {
-                    TCSLogWithMark("password not captured")
-                    return
-                }
-            })
+            if let passwordElementID = passwordElementID {
+                TCSLogWithMark("passwordElementID is \(passwordElementID)")
+                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+            }
+            else if shouldFindPasswordElement == true {
+                TCSLogWithMark("finding with bulleted text")
+
+                 javaScript="document.querySelectorAll('input[type=password]')[0].value"
+            }
+            else {
+                TCSLogWithMark("no password element id set or find password element")
+            }
+            if javaScript.count>0{
+                TCSLogWithMark("using javascript to get password")
+                webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                    if error != nil {
+                        TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                    }
+                    if let rawPass = response as? String, rawPass != "" {
+                        TCSLogWithMark("========= password set===========")
+                        self.password=rawPass
+                    }
+                    else {
+
+                        if let password = self.password, password.count>0{
+                            TCSLogWithMark("password already captured")
+                        }
+                        else {
+                            TCSLogWithMark("password not captured")
+                        }
+                        return
+                    }
+                })
+            }
 
         }
         // Azure snarfing

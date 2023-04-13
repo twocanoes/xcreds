@@ -17,6 +17,7 @@ struct MyMain {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    @IBOutlet weak var cloudLoginTextField: NSTextField!
     @IBOutlet var window: NSWindow!
     @IBOutlet var waitWindow: NSWindow!
 
@@ -34,8 +35,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         waitWindow.setFrameOrigin(newPos)
         waitWindow.makeKeyAndOrderFront(self)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-
-
             if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
                 TCSLogWithMark("setting standard login back to XCreds login")
                 try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
@@ -80,13 +79,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.hidesOnDeactivate=false
         window.isOpaque=false
         window.level = .modalPanel
-        Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { timer in
-            NSApp.activate(ignoringOtherApps: true)
-            self.window.orderFrontRegardless()
-        }
+//        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
+//            NSApp.activate(ignoringOtherApps: true)
+//            self.window.orderFrontRegardless()
+//        }
         NSApp.activate(ignoringOtherApps: true)
         window.orderFrontRegardless()
+        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  let customTextString = ud.value(forKey: "cloudLoginText") {
+            cloudLoginTextField.stringValue = customTextString as! String
+            cloudLoginTextField.sizeToFit()
 
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

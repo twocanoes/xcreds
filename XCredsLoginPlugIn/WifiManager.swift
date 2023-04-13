@@ -10,6 +10,7 @@ import Foundation
 import CoreWLAN
 import Cocoa
 import SystemConfiguration
+import Network
 
 enum SecurityType {
     case none // show without additional fields
@@ -27,9 +28,10 @@ class WifiManager: CWEventDelegate {
     private var currentInterface: CWInterface?
 
     var timer: Timer?
-    var timerCount: Int = 0
+    var timerCount: Int = 0 
     let timerMaxRepeatCount = 14
     weak var delegate: WifiManagerDelegate?
+    var monitor:NWPathMonitor?
 
     init() {
         let defaultInterface = CWWiFiClient.shared().interface()
@@ -57,6 +59,23 @@ class WifiManager: CWEventDelegate {
         return currentInterface?.ssid()
     }
 
+    func identityCommonNames()->Array<String>{
+
+        var returnCommonNames=Array<String>()
+        let availableIdentityInfo =  TCSKeychain.availableIdentityInfo() as? Array <Dictionary<String,String>>
+        if let availableIdentityInfo = availableIdentityInfo {
+
+            for ident in availableIdentityInfo{
+
+                if let cn = ident["cn"] {
+                    returnCommonNames.append(cn)
+                    TCSLogWithMark(cn)
+                }
+            }
+        }
+        return returnCommonNames
+
+    }
     func findNetworks() -> Set<CWNetwork>? {
         var result: Set<CWNetwork> = []
         do {
@@ -115,13 +134,19 @@ class WifiManager: CWEventDelegate {
         return false
     }
 
-    func connectWifi(with network: CWNetwork, password: String?, username: String?) -> Bool {
+    func connectWifi(with network: CWNetwork, password: String?, username: String?, identity: SecIdentity? = nil) -> Bool {
         var result = false
         do {
+            TCSLogWithMark("connecting")
             if username != nil && username != "" {
-                try currentInterface?.associate(toEnterpriseNetwork: network, identity: nil, username: username, password: password)
+                TCSLogWithMark("connecting \(username ?? "<unknown username")")
+                try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
             } else {
+                TCSLogWithMark("connecting with password only \(network)")
+
                 try currentInterface?.associate(to: network, password: password)
+                TCSLogWithMark("done associating")
+
             }
             result = true
         } catch {
@@ -139,25 +164,25 @@ class WifiManager: CWEventDelegate {
         /** No authentication required */
         .none:               "None",               // 0
         /** WEP security */
-        .WEP:                "WEP",                // 1
+            .WEP:                "WEP",                // 1
         /** WPA personal authentication */
-        .wpaPersonal:        "WPAPersonal",        // 2
+            .wpaPersonal:        "WPAPersonal",        // 2
         /** WPA/WPA2 personal authentication */
-        .wpaPersonalMixed:   "WPAPersonalMixed",   // 3
+            .wpaPersonalMixed:   "WPAPersonalMixed",   // 3
         /** WPA2 personal authentication */
-        .wpa2Personal:       "WPA2Personal",       // 4
+            .wpa2Personal:       "WPA2Personal",       // 4
         .personal:           "Personal",           // 5
         /** Dynamic WEP security */
-        .dynamicWEP:         "DynamicWEP",         // 6
+            .dynamicWEP:         "DynamicWEP",         // 6
         /** WPA enterprise authentication */
-        .wpaEnterprise:      "WPAEnterprise",      // 7
+            .wpaEnterprise:      "WPAEnterprise",      // 7
         /** WPA/WPA2 enterprise authentication */
-        .wpaEnterpriseMixed: "WPAEnterpriseMixed", // 8
+            .wpaEnterpriseMixed: "WPAEnterpriseMixed", // 8
         /** WPA2 enterprise authentication */
-        .wpa2Enterprise:     "WPA2Enterprise",     // 9
+            .wpa2Enterprise:     "WPA2Enterprise",     // 9
         .enterprise:         "Enterprise",         // 10
         /** Unknown security type */
-        .unknown:            "Unknown",            // Int.max
+            .unknown:            "Unknown",            // Int.max
     ]
 
     func networkSecurityType(_ network: CWNetwork) -> SecurityType {
@@ -166,7 +191,7 @@ class WifiManager: CWEventDelegate {
                 if(securityLabel.key == .none) {
                     return .none
                 } else if securityLabel.key == .enterprise || securityLabel.key == .wpaEnterprise
-                    || securityLabel.key == .wpa2Enterprise || securityLabel.key == .wpaEnterpriseMixed {
+                            || securityLabel.key == .wpa2Enterprise || securityLabel.key == .wpaEnterpriseMixed {
                     return .enterpriseUserPassword
                 } else {
                     return .password
@@ -200,25 +225,77 @@ class WifiManager: CWEventDelegate {
     }
 
     public func internetConnected() {
-        self.timer = Timer(timeInterval: 0.5, target: self, selector: #selector(self.timerCheckInternetConnection), userInfo: nil, repeats: true)
-        if let timer = self.timer {
-            timer.fire()
-            RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
-        }
-    }
-    
-    @objc private func timerCheckInternetConnection() {
-        timerCount = timerCount + 1
-        if self.isConnectedToNetwork() || timerCount >= timerMaxRepeatCount {
-            self.timerCount = 0
-            self.timer?.invalidate()
-            self.timer = nil
+        TCSLogWithMark("turning on network monitor")
+        configureNetworkMonitor()
+        self.timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { timer in
+            TCSLogWithMark("cancelMonitor")
 
-            delegate?.wifiManagerFullyFinishedInternetConnectionTimer()
-        }
+            self.monitor?.cancel()
 
-        if  self.isConnectedToNetwork() {
-            delegate?.wifiManagerConnectedToNetwork?()
-        }
+        })
+//        self.timer = Timer(timeInterval: 30, target: self, selector: #selector(self.cancelMonitor), userInfo: nil, repeats: false)
+//        if let timer = self.timer {
+//            TCSLogWithMark("firing timer")
+//            timer.fire()
+//            RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
+//        }
     }
+
+//    @objc func cancelMonitor(){
+//        TCSLogWithMark("cancelMonitor")
+//    }
+    func configureNetworkMonitor(){
+        
+        self.monitor = NWPathMonitor()
+
+        monitor?.pathUpdateHandler = { path in
+            TCSLogWithMark("network changed. Checking to see if it was WiFi...")
+            TCSLogWithMark()
+            if path.status != .satisfied {
+                TCSLogWithMark("not connected")
+            }
+            else if path.usesInterfaceType(.cellular) {
+                TCSLogWithMark("Cellular")
+            }
+            else if path.usesInterfaceType(.wifi) {
+                TCSLogWithMark("Wifi changed")
+                self.timer?.invalidate()
+
+                self.monitor?.cancel()
+                self.delegate?.wifiManagerConnectedToNetwork?()
+            }
+            else if path.usesInterfaceType(.wiredEthernet) {
+                TCSLogWithMark("Ethernet")
+            }
+            else if path.usesInterfaceType(.other){
+                TCSLogWithMark("Other")
+            }
+            else if path.usesInterfaceType(.loopback){
+                TCSLogWithMark("Loop Back")
+            }
+            else {
+                TCSLogWithMark("Unknown interface type")
+            }
+
+
+        }
+        let queue = DispatchQueue(label: "Monitor2")
+        monitor?.start(queue: queue)
+
+    }
+
+//    @objc private func timerCheckInternetConnection() {
+//        timerCount = timerCount + 1
+//        if self.isConnectedToNetwork() || timerCount >= timerMaxRepeatCount {
+//            self.timerCount = 0
+//            self.timer?.invalidate()
+//            self.timer = nil
+//
+//            delegate?.wifiManagerFullyFinishedInternetConnectionTimer()
+//        }
+//
+//        if  self.isConnectedToNetwork() {
+//            delegate?.wifiManagerConnectedToNetwork?()
+//        }
+//    }
 }

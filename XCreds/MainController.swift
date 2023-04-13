@@ -103,7 +103,11 @@ class MainController: NSObject {
 
             }
         }
-        ScheduleManager.shared.startCredentialCheck()
+        //delay startup to give network time to settle.
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+            ScheduleManager.shared.startCredentialCheck()
+        }
+
     }
 
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
@@ -121,9 +125,16 @@ class MainController: NSObject {
 
 
         while (true){
+            
             NSApp.activate(ignoringOtherApps: true)
+            let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
+                NSApp.activate(ignoringOtherApps: true)
+
+            }
+
             let response = NSApp.runModal(for: passwordWindowController.window!)
 
+            timer.invalidate()
             if response == .cancel {
                 break
             }

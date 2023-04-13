@@ -16,6 +16,8 @@ class LoginWebViewController: WebViewController {
     var delegate: XCredsMechanismProtocol?
     var resolutionObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
+    @IBOutlet weak var backgroundImageView: NSImageView!
+
     override func windowDidLoad() {
         super.windowDidLoad()
         
@@ -51,22 +53,90 @@ class LoginWebViewController: WebViewController {
     }
     fileprivate func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
-            TCSLogWithMark("setting up window")
+//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
+
+
+            TCSLogWithMark("setting up window...")
 
             self.window?.level = .popUpMenu
             self.window?.orderFrontRegardless()
-            
-            self.window?.backgroundColor = NSColor.black
-            
+
+            self.window?.backgroundColor = NSColor.blue
+
             self.window?.titlebarAppearsTransparent = true
             
             self.window?.isMovable = false
             self.window?.canBecomeVisibleWithoutLogin = true
-            
+
             let screenRect = NSScreen.screens[0].frame
+            let screenWidth = screenRect.width
+            let screenHeight = screenRect.height
+            var loginWindowWidth = screenWidth //start with full size
+            var loginWindowHeight = screenHeight //start with full size
+
+            //if prefs define smaller, then resize window
+            TCSLogWithMark("checking for custom height and width")
+            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
+                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+                if val > 100 {
+                    TCSLogWithMark("setting loginWindowWidth to \(val)")
+                    loginWindowWidth = val
+                }
+            }
+            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
+                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+                if val > 100 {
+                    TCSLogWithMark("setting loginWindowHeight to \(val)")
+                    loginWindowHeight = val
+                }
+            }
+
             self.window?.setFrame(screenRect, display: true, animate: false)
+
+            TCSLogWithMark("webview is \(self.webView.debugDescription)")
+//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
+
+            self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
+
+//            BackgroundImage
+            if let imagePathURL = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+                TCSLogWithMark("background path is \(imagePathURL)")
+                image.size=screenRect.size
+                self.backgroundImageView.image=image
+                self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
+
+                self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+
+
+            }
+            else {
+                let allBundles = Bundle.allBundles
+                for currentBundle in allBundles {
+                    TCSLogWithMark(currentBundle.bundlePath)
+                    if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
+                        TCSLogWithMark()
+
+                        let image = NSImage.init(byReferencingFile: imagePath)
+
+                        if let image = image {
+                            TCSLogWithMark()
+                            image.size=screenRect.size
+                            self.backgroundImageView.image=image
+                            self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
+                            self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                        }
+
+
+                        break
+
+                    }
+                }
+            }
+
         }
-        
+//            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
+//        }
+//
     }
 
     @objc override var windowNibName: NSNib.Name {
@@ -123,6 +193,7 @@ class LoginWebViewController: WebViewController {
             delegate.denyLogin()
         }
         let body = array[1]
+        TCSLogWithMark("base64 encoded IDToken: \(body)");
         guard let data = base64UrlDecode(value:body ) else {
             TCSLogWithMark("error decoding id token base64")
             delegate.denyLogin()
@@ -272,35 +343,47 @@ class LoginWebViewController: WebViewController {
                     if response == .cancel {
                         break
                     }
-                    let localPassword = passwordWindowController.password
-                    guard let localPassword = localPassword else {
-                        continue
-                    }
-                    let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                    let resetKeychain = passwordWindowController.resetKeychain
 
-                    if isValidPassword==true {
-                        let localUser = try? PasswordUtils.getLocalRecord(username)
-                        guard let localUser = localUser else {
-                            TCSLogWithMark("invalid local user")
-                            delegate.denyLogin()
-                            return
-                        }
-                        do {
-                            try localUser.changePassword(localPassword, toPassword: tokens.password)
-                        }
-                        catch {
-                            TCSLogWithMark("Error setting local password to cloud password")
-                            delegate.denyLogin()
-                            return
-                        }
-                        TCSLogWithMark("setting original password to use to unlock keychain later")
-                        delegate.setHint(type: .migratePass, hint: localPassword)
+                    if resetKeychain == true {
+                        os_log("Setting password to be overwritten.", log: uiLog, type: .default)
+                        delegate.setHint(type: .passwordOverwrite, hint: true)
+                        os_log("Hint set", log: uiLog, type: .debug)
                         passwordWindowController.window?.close()
                         break
 
                     }
-                    else{
-                        passwordWindowController.window?.shake(self)
+                    else {
+                        let localPassword = passwordWindowController.password
+                        guard let localPassword = localPassword else {
+                            continue
+                        }
+                        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+
+                        if isValidPassword==true {
+                            let localUser = try? PasswordUtils.getLocalRecord(username)
+                            guard let localUser = localUser else {
+                                TCSLogWithMark("invalid local user")
+                                delegate.denyLogin()
+                                return
+                            }
+                            do {
+                                try localUser.changePassword(localPassword, toPassword: tokens.password)
+                            }
+                            catch {
+                                TCSLogWithMark("Error setting local password to cloud password")
+                                delegate.denyLogin()
+                                return
+                            }
+                            TCSLogWithMark("setting original password to use to unlock keychain later")
+                            delegate.setHint(type: .migratePass, hint: localPassword)
+                            passwordWindowController.window?.close()
+                            break
+
+                        }
+                        else{
+                            passwordWindowController.window?.shake(self)
+                        }
                     }
                 }
             }

@@ -38,30 +38,10 @@ class LoginProgressWindowController: NSWindowController {
         let screenRect = NSScreen.screens[0].frame
         self.window?.setFrame(screenRect, display: true, animate: false)
 
-        let pathURLString = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue)
-
-        var pathURL:URL?
-
-        if pathURLString?.hasPrefix("file://") == true, let
-            pathURLString = pathURLString {
-            let pathOnly = pathURLString.dropFirst(7)
-            pathURL = URL(fileURLWithPath: String(pathOnly))
+        if let pathURLString = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: pathURLString){
+            image.size=screenRect.size
+            backgroundImageView.image = image
         }
-        else {
-            if let pathURLString = pathURLString {
-                pathURL = URL(string: pathURLString)
-
-            }
-        }
-        if let pathURL = pathURL {
-            let image = NSImage.init(contentsOf: pathURL)
-
-            if let image = image {
-                image.size=screenRect.size
-                backgroundImageView.image = image
-            }
-        }
-
     }
     
 }

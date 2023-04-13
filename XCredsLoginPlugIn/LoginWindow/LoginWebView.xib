@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundImageView" destination="Y6q-jm-Djn" id="aBN-Ob-2sx"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
             </connections>
@@ -18,13 +19,18 @@
         <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="833"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1079"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y6q-jm-Djn">
                         <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="tso-0n-Rd7"/>
+                    </imageView>
+                    <wkWebView wantsLayer="YES" fixedFrame="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                        <rect key="frame" x="0.0" y="113" width="500" height="500"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -35,10 +41,10 @@
                     </wkWebView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="gmG-FO-hZc"/>
-                    <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" id="vCP-fw-q3U"/>
+                    <constraint firstItem="Y6q-jm-Djn" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="ID5-70-RVx"/>
+                    <constraint firstAttribute="bottom" secondItem="Y6q-jm-Djn" secondAttribute="bottom" id="eyw-vD-HwK"/>
+                    <constraint firstItem="Y6q-jm-Djn" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="pMg-hi-WEA"/>
+                    <constraint firstAttribute="trailing" secondItem="Y6q-jm-Djn" secondAttribute="trailing" id="sQZ-a2-ox3"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="250" y="297.5"/>

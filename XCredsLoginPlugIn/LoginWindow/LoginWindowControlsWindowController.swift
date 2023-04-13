@@ -17,6 +17,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     var loadPageURL:URL?
     var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
+    var refreshTimer:Timer?
     func dismiss() {
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
@@ -49,6 +50,16 @@ class LoginWindowControlsWindowController: NSWindowController {
 
         }
 
+        let refreshTimerSecs = UserDefaults.standard.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
+
+        if refreshTimerSecs > 0 {
+            TCSLogWithMark("Setting refresh timer")
+
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshTimerSecs), repeats: true, block: { [self] timer in
+                TCSLogWithMark("refreshing in timer")
+                delegate?.reload()
+            })
+        }
     }
     fileprivate func setupLoginWindowControlsAppearance() {
         DispatchQueue.main.async {
@@ -130,7 +141,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     @IBAction func refreshButtonPressed(_ sender: Any) {
         TCSLogWithMark("refreshButtonPressed")
         guard let delegate = delegate else {
-            TCSLogWithMark("No delegate set for shutdown")
+            TCSLogWithMark("No delegate set for refresh")
             return
         }
         TCSLogWithMark("refreshing")

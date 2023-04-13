@@ -37,6 +37,22 @@
 			<string>family_name</string>
 			<key>map_username</key>
 			<string>name</string>
+			<key>cloudLoginText</key>
+			<string>Back to XCreds</string>
+			<key>loginWindowBackgroundImageURL</key>
+			<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
+			<key>loginWindowHeight</key>
+			<integer>500</integer>
+			<key>loginWindowWidth</key>
+			<integer>500</integer>
+			<key>shouldShowConfigureWifiButton</key>
+			<true/>
+			<key>shouldShowMacLoginButton</key>
+			<true/>
+			<key>shouldShowSupportStatus</key>
+			<true/>
+			<key>shouldShowVersionInfo</key>
+			<true/>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
