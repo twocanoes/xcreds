@@ -199,6 +199,38 @@ class WebViewController: NSWindowController {
 
 extension WebViewController: WKNavigationDelegate {
 
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        var javaScript = "" //document.getElementsByName('password')[0].value
+        let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
+//        let shouldFindPasswordElement:Bool? = UserDefaults.standard.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
+
+        //            document.body.innerHTML
+
+        javaScript = """
+                window.addEventListener('keydown', function(){
+                    const element = document.querySelector('input[type="password"]');
+                    element.addEventListener('keyup', function(){
+                        elementValue = element.value;
+                        console.log(elementValue);
+
+                    });
+                });
+
+                """
+        //            javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+
+        if javaScript.count>0{
+            TCSLogWithMark("setting password listener")
+            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+                if error != nil {
+                    TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                }
+            })
+        }
+
+    }
+
+
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 //        TCSLogWithMark("DecidePolicyFor: \(navigationAction.request.url?.absoluteString ?? "None")")
 
@@ -211,23 +243,23 @@ extension WebViewController: WKNavigationDelegate {
         let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
         let shouldFindPasswordElement:Bool? = UserDefaults.standard.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
 
-        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host) {
+//        if let idpHostNames = idpHostNames as? Array<String?>, idpHostNames.contains(navigationAction.request.url?.host) {
             TCSLogWithMark("host matches custom idpHostName")
 
-            var javaScript = "" //document.getElementsByName('password')[0].value
+            var javaScript = "elementValue" //document.getElementsByName('password')[0].value
 
-            if let passwordElementID = passwordElementID {
-                TCSLogWithMark("passwordElementID is \(passwordElementID)")
-                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
-            }
-            else if shouldFindPasswordElement == true {
-                TCSLogWithMark("finding with bulleted text")
-
-                 javaScript="document.querySelectorAll('input[type=password]')[0].value"
-            }
-            else {
-                TCSLogWithMark("no password element id set or find password element")
-            }
+//            if let passwordElementID = passwordElementID {
+//                TCSLogWithMark("passwordElementID is \(passwordElementID)")
+//                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+//            }
+//            else if shouldFindPasswordElement == true {
+//                TCSLogWithMark("finding with bulleted text")
+//
+//                 javaScript="document.querySelectorAll('input[type=password]')[0].value"
+//            }
+//            else {
+//                TCSLogWithMark("no password element id set or find password element")
+//            }
             if javaScript.count>0{
                 TCSLogWithMark("using javascript to get password")
                 webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
@@ -251,86 +283,86 @@ extension WebViewController: WKNavigationDelegate {
                 })
             }
 
-        }
-        // Azure snarfing
-        else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
-            TCSLogWithMark("Azure")
-
-            var javaScript = "document.getElementById('i0118').value"
-            if  let passwordElementID = passwordElementID {
-                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
-            }
-            ///passwordInput
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                if let rawPass = response as? String {
-                    TCSLogWithMark("========= password set===========")
-
-                    self.password=rawPass
-                }
-                else {
-                    TCSLogWithMark("password not captured")
-
-                }
-            })
-
-            javaScript = "document.getElementById('confirmNewPassword').value"
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                if let rawPass = response as? String {
-                    TCSLogWithMark("========= new password set===========")
-
-                    self.password=rawPass
-                }
-            })
-        } else if navigationAction.request.url?.host == "accounts.google.com" {
-            // Google snarfing
-            TCSLogWithMark("Google")
-            let javaScript = "document.querySelector('input[type=password]').value"
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-                if let rawPass = response as? String {
-                    TCSLogWithMark("========= password set===========")
-
-                    self.password=rawPass
-                }
-                else {
-                    TCSLogWithMark("password not captured")
-                }
-            })
-        } else if navigationAction.request.url?.path.contains("verify") ?? false {
-            // maybe OneLogin?
-            TCSLogWithMark("Other Provider")
-
-            let javaScript = "document.getElementById('input8').value"
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-            })
-        }
-        else if navigationAction.request.url?.host?.contains("okta.com") ?? false ||
-                    navigationAction.request.url?.host?.contains("duosecurity.com") ?? false
-        {
-            TCSLogWithMark("okta")
-            // for Okta
-            var javaScript = "document.getElementById('okta-signin-password').value"
-            if  let passwordElementID = passwordElementID {
-                TCSLogWithMark("setting passwordElementID to \(passwordElementID)")
-
-                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
-                TCSLogWithMark("javascript: \(javaScript)")
-
-            }
-            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
-
-                TCSLogWithMark(error?.localizedDescription ?? "no error.localizedDescription")
-
-                if let rawPass = response as? String, rawPass != "" {
-                    TCSLogWithMark("========= password set===========")
-                    self.password=rawPass
-                }
-            })
-
-        }
-        else {
-            TCSLogWithMark("Unknown Provider")
-            TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
-        }
+//        }
+//        // Azure snarfing
+//        else if ["login.microsoftonline.com", "login.live.com"].contains(navigationAction.request.url?.host) {
+//            TCSLogWithMark("Azure")
+//
+//            var javaScript = "document.getElementById('i0118').value"
+//            if  let passwordElementID = passwordElementID {
+//                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+//            }
+//            ///passwordInput
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                if let rawPass = response as? String {
+//                    TCSLogWithMark("========= password set===========")
+//
+//                    self.password=rawPass
+//                }
+//                else {
+//                    TCSLogWithMark("password not captured")
+//
+//                }
+//            })
+//
+//            javaScript = "document.getElementById('confirmNewPassword').value"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                if let rawPass = response as? String {
+//                    TCSLogWithMark("========= new password set===========")
+//
+//                    self.password=rawPass
+//                }
+//            })
+//        } else if navigationAction.request.url?.host == "accounts.google.com" {
+//            // Google snarfing
+//            TCSLogWithMark("Google")
+//            let javaScript = "document.querySelector('input[type=password]').value"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//                if let rawPass = response as? String {
+//                    TCSLogWithMark("========= password set===========")
+//
+//                    self.password=rawPass
+//                }
+//                else {
+//                    TCSLogWithMark("password not captured")
+//                }
+//            })
+//        } else if navigationAction.request.url?.path.contains("verify") ?? false {
+//            // maybe OneLogin?
+//            TCSLogWithMark("Other Provider")
+//
+//            let javaScript = "document.getElementById('input8').value"
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//            })
+//        }
+//        else if navigationAction.request.url?.host?.contains("okta.com") ?? false ||
+//                    navigationAction.request.url?.host?.contains("duosecurity.com") ?? false
+//        {
+//            TCSLogWithMark("okta")
+//            // for Okta
+//            var javaScript = "document.getElementById('okta-signin-password').value"
+//            if  let passwordElementID = passwordElementID {
+//                TCSLogWithMark("setting passwordElementID to \(passwordElementID)")
+//
+//                javaScript = "document.getElementById('\(passwordElementID.sanitized())').value"
+//                TCSLogWithMark("javascript: \(javaScript)")
+//
+//            }
+//            webView.evaluateJavaScript(javaScript, completionHandler: { response, error in
+//
+//                TCSLogWithMark(error?.localizedDescription ?? "no error.localizedDescription")
+//
+//                if let rawPass = response as? String, rawPass != "" {
+//                    TCSLogWithMark("========= password set===========")
+//                    self.password=rawPass
+//                }
+//            })
+//
+//        }
+//        else {
+//            TCSLogWithMark("Unknown Provider")
+//            TCSLogWithMark(navigationAction.request.url?.path ?? "<<URL EMPTY>>")
+//        }
 
         decisionHandler(.allow)
     }
@@ -343,6 +375,7 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         TCSLogWithMark(error.localizedDescription)
     }
+
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
