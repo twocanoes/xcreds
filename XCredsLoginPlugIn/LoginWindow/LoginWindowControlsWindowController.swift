@@ -43,7 +43,13 @@ class LoginWindowControlsWindowController: NSWindowController {
         case .trial(let daysRemaining):
             TCSLogWithMark("Trial")
             self.trialVersionStatusTextField?.isHidden = false
-            self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) left on trial."
+            if daysRemaining==1 {
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
+
+            }
+            else {
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining on trial."
+            }
 
         case .trialExpired:
             TCSLogWithMark("Trial Expired")
