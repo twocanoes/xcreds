@@ -45,8 +45,10 @@ class WebViewController: NSWindowController {
                 if currentBundle.bundlePath.contains("XCreds") {
                     TCSLogWithMark()
                     let loadPageURL = currentBundle.url(forResource: "errorpage", withExtension: "html")
-                    TCSLogWithMark(loadPageURL?.debugDescription ?? "none")
-                    self.webView.load(URLRequest(url:loadPageURL!))
+                    if let loadPageURL = loadPageURL {
+                        TCSLogWithMark(loadPageURL.debugDescription ?? "none")
+                        self.webView.load(URLRequest(url:loadPageURL))
+                    }
                     break
                 }
             }
@@ -60,12 +62,14 @@ class WebViewController: NSWindowController {
         else {
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
                 if currentBundle.bundlePath.contains("XCreds") {
+                    TCSLogWithMark(currentBundle.bundlePath)
                     TCSLogWithMark()
                     let loadPageURL = currentBundle.url(forResource: "loadpage", withExtension: "html")
-                    TCSLogWithMark(loadPageURL?.debugDescription ?? "none")
-                    self.webView.load(URLRequest(url:loadPageURL!))
+                    TCSLogWithMark(loadPageURL.debugDescription ?? "none")
+                    if let loadPageURL = loadPageURL {
+                        self.webView.load(URLRequest(url:loadPageURL))
+                    }
                     break
 
                 }

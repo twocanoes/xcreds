@@ -86,6 +86,7 @@
 		76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
 		76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
+		76B356DB29E9CA180037DDDB /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76B356DA29E9CA180037DDDB /* OIDCLite */; };
 		76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */; };
@@ -371,6 +372,7 @@
 				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
+				76B356DB29E9CA180037DDDB /* OIDCLite in Frameworks */,
 				76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */,
 				76DD6D17285997F300A700ED /* OIDCLite in Frameworks */,
 			);
@@ -681,6 +683,7 @@
 				76DD6D16285997F300A700ED /* OIDCLite */,
 				76319365287D24E100D36BF7 /* ArgumentParser */,
 				76319368287D24F600D36BF7 /* ArgumentParser */,
+				76B356DA29E9CA180037DDDB /* OIDCLite */,
 			);
 			productName = xCreds;
 			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
@@ -726,6 +729,7 @@
 			packageReferences = (
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				76319367287D24F600D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
@@ -1001,7 +1005,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1038,7 +1042,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1103,7 +1107,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1139,7 +1143,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1288,7 +1292,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1323,7 +1327,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3600;
+				CURRENT_PROJECT_VERSION = 3602;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1426,6 +1430,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twocanoes/OIDCLite";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1446,6 +1458,11 @@
 		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = OIDCLite;
+		};
+		76B356DA29E9CA180037DDDB /* OIDCLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */;
 			productName = OIDCLite;
 		};
 		76DD6D16285997F300A700ED /* OIDCLite */ = {
