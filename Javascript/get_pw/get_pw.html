@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="get_pw.js"></script>
+  <style>
+    body, input, button {
+      font-size: 1.25em;
+    }
+    [type="password"] {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <button id="toggle">Show next example</button>
+  </div>
+  <div id="content"></div>
+
+  <p>Click the button to have JavaScript change page content password fields.</p>
+
+  <p>The variable "result" will be logged on each keypress.  This variable will contain a JSON object.</p>
+
+  <p>The key value for "passwords" will always contain an array with the values of all password fields present.</p>
+
+  <p>The key value for "ids" will always return an array with the values of all password field "id" attributes present.  If any password elements do not have an "id" attribute set, the array will represent their position with an empty string.</p>
+</body>
+  <script>
+    var examples = [
+      `
+      <input type="password" placeholder="enter password">
+      <br><br>
+      <input id="pw333" type="password" placeholder="enter password.  this is the field with a target ID">   
+      `, 
+      `
+      <input type="password" id="old-pw" placeholder="old password">
+      <input type="password" id="new-pw" placeholder="new password">
+      <input type="password" id="confirm-pw" placeholder="confirm new password">
+      `, 
+      `
+      <input type="password" placeholder="enter password">
+      `
+    ];
+
+    var exampleIndex = 0;
+
+    document.querySelector('#toggle').addEventListener('click', function(){
+      if (exampleIndex >= examples.length) exampleIndex = 0;
+      document.querySelector('#content').innerHTML = examples[exampleIndex];
+      exampleIndex++;
+    });
+
+    window.addEventListener('keyup', function(){
+        console.log(result);
+    });
+  </script>
+</html>

@@ -22,6 +22,8 @@
 	<true/>
 	<key>shouldShowVersionInfo</key>
 	<true/>
+	<key>shouldFindPasswordElement</key>
+	<true/>
 	<key>shouldShowSupportStatus</key>
 	<string>1</string>
 	<key>shouldShowConfigureWifiButton</key>
