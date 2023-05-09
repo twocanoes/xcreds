@@ -69,26 +69,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
  */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
-        var statusWindowRect=window.frame
-        let screenRect = NSScreen.screens[0].visibleFrame
-        statusWindowRect.size.width=screenRect.size.width
-        statusWindowRect.origin=screenRect.origin;
-        window.setFrame(statusWindowRect, display: true, animate: false)
-        window.canBecomeVisibleWithoutLogin=true
-        window.hidesOnDeactivate=false
-        window.isOpaque=false
-        window.level = .modalPanel
-//        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
-//            NSApp.activate(ignoringOtherApps: true)
-//            self.window.orderFrontRegardless()
-//        }
-        NSApp.activate(ignoringOtherApps: true)
-        window.orderFrontRegardless()
-        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  let customTextString = ud.value(forKey: "cloudLoginText") {
-            cloudLoginTextField.stringValue = customTextString as! String
-            cloudLoginTextField.sizeToFit()
+            var statusWindowRect=window.frame
+            let screenRect = NSScreen.screens[0].visibleFrame
+            statusWindowRect.size.width=screenRect.size.width
+            statusWindowRect.origin=screenRect.origin;
+            window.setFrame(statusWindowRect, display: true, animate: false)
+            window.canBecomeVisibleWithoutLogin=true
+            window.hidesOnDeactivate=false
+            window.isOpaque=false
+            window.level = .modalPanel
+            //        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
+            //            NSApp.activate(ignoringOtherApps: true)
+            //            self.window.orderFrontRegardless()
+            //        }
 
+            NSApp.activate(ignoringOtherApps: true)
+            window.orderFrontRegardless()
+            if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  let customTextString = ud.value(forKey: "cloudLoginText") {
+                cloudLoginTextField.stringValue = customTextString as! String
+                cloudLoginTextField.sizeToFit()
+
+            }
         }
     }
 

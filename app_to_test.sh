@@ -17,10 +17,21 @@ xcodebuild  -scheme "XCreds"  -configuration "Release" -derivedDataPath  "${DERI
 
 ssh  root@"${REMOTE_MAC}" 'bash -c "if [ -e "/Applications/XCreds.app" ] ; then echo removing; rm -rf "/Applications/XCreds.app"; fi"'
 
-scp -r "${DERIVED_DATA_DIR}"/Build/Products/Release/XCreds.app root@"${REMOTE_MAC}":/Applications/ 
+if [ -e /tmp/xcreds/xcreds.zip ]; then
+	rm /tmp/xcreds/xcreds.zip
+fi
 
-#ssh -J tcadmin@simac.local root@test001.local reboot || exit 0
+pushd /tmp/xcreds/DerivedData/Build/Products/Release/
+zip -r /tmp/xcreds/xcreds.zip XCreds.app
+popd 
 
+ssh  root@"${REMOTE_MAC}" 'bash -c "if [ -e "/tmp/xcreds.zip" ] ; then echo removing; rm -rf "/tmp/xcreds.zip"; fi"'
+
+scp -r /tmp/xcreds/xcreds.zip root@"${REMOTE_MAC}":/tmp/xcreds.zip
+
+
+ssh root@"${REMOTE_MAC}" unzip /tmp/xcreds.zip -d /Applications
+#scp -r /tmp/xcreds/DerivedData/Build/Products/Release/XCreds.app root@"${REMOTE_MAC}":/Applications
 ssh root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -r
 
 ssh  root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -i

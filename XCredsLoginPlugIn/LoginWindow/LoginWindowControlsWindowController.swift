@@ -17,6 +17,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     var loadPageURL:URL?
     var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
+    @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
     func dismiss() {
         if let resolutionObserver = resolutionObserver {
@@ -26,6 +27,43 @@ class LoginWindowControlsWindowController: NSWindowController {
     }
     override func windowDidLoad() {
         super.windowDidLoad()
+        let licenseState = LicenseChecker().currentLicenseState()
+
+
+        switch licenseState {
+
+        case .valid:
+            TCSLogWithMark("valid license")
+            self.trialVersionStatusTextField?.isHidden = true
+
+        case .expired:
+            self.trialVersionStatusTextField.stringValue = "License Expired. Please visit twocanoes.com for more information."
+
+
+        case .trial(let daysRemaining):
+            TCSLogWithMark("Trial")
+            self.trialVersionStatusTextField?.isHidden = false
+            if daysRemaining==1 {
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
+
+            }
+            else {
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining on trial."
+            }
+
+        case .trialExpired:
+            TCSLogWithMark("Trial Expired")
+            self.trialVersionStatusTextField?.isHidden = false
+            self.trialVersionStatusTextField.stringValue = "Trial Expired"
+
+
+
+        default:
+            TCSLogWithMark("invalid license")
+            self.trialVersionStatusTextField?.isHidden = false
+            self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
+
+        }
         setupLoginWindowControlsAppearance()
         let allBundles = Bundle.allBundles
         versionTextField?.stringValue = ""
@@ -69,9 +107,6 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.macLoginWindowGribColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
 
             self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
-
-            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
-
 
 
             self.window?.level = .screenSaver
