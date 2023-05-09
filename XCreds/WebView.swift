@@ -39,7 +39,6 @@ class WebViewController: NSWindowController {
         case .valid, .trial(_):
             break
         case .invalid,.trialExpired, .expired:
-            break
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
                 TCSLogWithMark(currentBundle.bundlePath)
@@ -99,106 +98,6 @@ class WebViewController: NSWindowController {
         }
     }
     func tokensUpdated(tokens: Creds){
-//to be overridden by superclasses
-/*
-        var username:String
-        let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
-
-        guard let idToken = tokens.idToken else {
-            TCSLogWithMark("invalid idToken")
-
-            return
-        }
-
-        let array = idToken.components(separatedBy: ".")
-
-        if array.count != 3 {
-            TCSLogWithMark("idToken is invalid")
-        }
-        let body = array[1]
-        guard let data = base64UrlDecode(value:body ) else {
-            TCSLogWithMark("error decoding id token base64")
-            return
-        }
-        let decoder = JSONDecoder()
-        var idTokenObject:IDToken
-        do {
-            idTokenObject = try decoder.decode(IDToken.self, from: data)
-
-        }
-        catch {
-            TCSLogWithMark("error decoding idtoken::")
-            TCSLogWithMark("Token:\(body)")
-            return
-
-        }
-
-        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
-
-        // username static map
-        if let defaultsUsername = defaultsUsername {
-            username = defaultsUsername
-        }
-        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for username, so use that.
-
-            username = mapValue
-            TCSLogWithMark("mapped username found: \(username)")
-
-        }
-        else {
-            var emailString:String
-
-            if let email = idTokenObject.email  {
-                emailString=email.lowercased()
-            }
-            else if let uniqueName=idTokenObject.unique_name {
-                emailString=uniqueName
-            }
-
-            else {
-                TCSLogWithMark("no username found. Using sub.")
-                emailString=idTokenObject.sub
-            }
-            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
-                TCSLogWithMark("email address invalid")
-                return
-
-            }
-
-            TCSLogWithMark("username found: \(tUsername)")
-            username = tUsername
-        }
-
-        //full name
-        TCSLogWithMark("checking map_fullname")
-
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping so use that.
-            TCSLogWithMark("full name mapped to: \(mapKey)")
-
-
-        }
-
-        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
-            TCSLogWithMark("firstName: \(firstName)")
-            TCSLogWithMark("lastName: \(lastName)")
-
-        }
-
-        //first name
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for username, so use that.
-            TCSLogWithMark("first name mapped to: \(mapKey)")
-
-        }
-
-       else if let firstName = idTokenObject.given_name {
-           TCSLogWithMark("firstName from token: \(firstName)")
-
-
-        }
- */
     }
 }
 
@@ -215,6 +114,7 @@ extension WebViewController: WKNavigationDelegate {
         let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
         let shouldFindPasswordElement:Bool? = UserDefaults.standard.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
 
+        TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
                 TCSLogWithMark(error?.localizedDescription ?? "unknown error")
@@ -281,17 +181,28 @@ extension WebViewController: WKNavigationDelegate {
 
     }
 
-
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
+        TCSLogWithMark("did finish")
         //this inserts javascript to copy passwords to a variable. Sometimes the
         //div gets removed before we can evaluate it so this helps. It works by
         // attaching to keydown. At each keydown, it attaches to password elements
         // for keyup. When a key is released, it copies all the passwords to an array
         // to be read later.
 
-        let pathURL = Bundle.main.url(forResource: "get_pw", withExtension: "js")
+        TCSLogWithMark("adding listener for password")
+        var pathURL:URL?
+        let allBundles = Bundle.allBundles
+        for currentBundle in allBundles {
+            TCSLogWithMark(currentBundle.bundlePath)
+            if currentBundle.bundlePath.contains("XCreds") {
+                TCSLogWithMark()
+                pathURL = currentBundle.url(forResource: "get_pw", withExtension: "js")
+                break
+            }
+        }
+
         guard let pathURL = pathURL else {
+            TCSLogWithMark("get_pw.js not found")
             return
         }
 
@@ -305,7 +216,14 @@ extension WebViewController: WKNavigationDelegate {
             if (error != nil){
                 TCSLogWithMark(error?.localizedDescription ?? "empty error")
             }
+            else {
+                TCSLogWithMark("inserted javascript for password setup")
+            }
         })
+
+    }
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+
 
     }
 
@@ -340,6 +258,7 @@ extension WebViewController: WKNavigationDelegate {
                     }
                 }
             }
+        
 
     }
 
@@ -406,8 +325,4 @@ extension String {
     mutating func sanitize() -> Void {
         self = self.sanitized()
     }
-
-
-
-
 }
