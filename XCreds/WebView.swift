@@ -41,12 +41,9 @@ class WebViewController: NSWindowController {
         case .invalid,.trialExpired, .expired:
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
                 if currentBundle.bundlePath.contains("XCreds") {
-                    TCSLogWithMark()
                     let loadPageURL = currentBundle.url(forResource: "errorpage", withExtension: "html")
                     if let loadPageURL = loadPageURL {
-                        TCSLogWithMark(loadPageURL.debugDescription ?? "none")
                         self.webView.load(URLRequest(url:loadPageURL))
                     }
                     break
@@ -63,10 +60,7 @@ class WebViewController: NSWindowController {
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
                 if currentBundle.bundlePath.contains("XCreds") {
-                    TCSLogWithMark(currentBundle.bundlePath)
-                    TCSLogWithMark()
                     let loadPageURL = currentBundle.url(forResource: "loadpage", withExtension: "html")
-                    TCSLogWithMark(loadPageURL.debugDescription ?? "none")
                     if let loadPageURL = loadPageURL {
                         self.webView.load(URLRequest(url:loadPageURL))
                     }
@@ -117,7 +111,7 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
-                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+//                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
             }
             else {
                 if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
@@ -182,7 +176,6 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        TCSLogWithMark("did finish")
         //this inserts javascript to copy passwords to a variable. Sometimes the
         //div gets removed before we can evaluate it so this helps. It works by
         // attaching to keydown. At each keydown, it attaches to password elements
@@ -193,7 +186,6 @@ extension WebViewController: WKNavigationDelegate {
         var pathURL:URL?
         let allBundles = Bundle.allBundles
         for currentBundle in allBundles {
-            TCSLogWithMark(currentBundle.bundlePath)
             if currentBundle.bundlePath.contains("XCreds") {
                 TCSLogWithMark()
                 pathURL = currentBundle.url(forResource: "get_pw", withExtension: "js")
@@ -214,7 +206,7 @@ extension WebViewController: WKNavigationDelegate {
 
         webView.evaluateJavaScript(javascript, completionHandler: { response, error in
             if (error != nil){
-                TCSLogWithMark(error?.localizedDescription ?? "empty error")
+//                TCSLogWithMark(error?.localizedDescription ?? "empty error")
             }
             else {
                 TCSLogWithMark("inserted javascript for password setup")

@@ -27,7 +27,7 @@ popd
 
 ssh  root@"${REMOTE_MAC}" 'bash -c "if [ -e "/tmp/xcreds.zip" ] ; then echo removing; rm -rf "/tmp/xcreds.zip"; fi"'
 
-scp -r /tmp/xcreds/xcreds.zip root@"${REMOTE_MAC}":/tmp/xcreds.zip
+scp -Cr /tmp/xcreds/xcreds.zip root@"${REMOTE_MAC}":/tmp/xcreds.zip
 
 
 ssh root@"${REMOTE_MAC}" unzip /tmp/xcreds.zip -d /Applications

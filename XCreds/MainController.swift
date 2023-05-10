@@ -29,7 +29,7 @@ class MainController: NSObject {
 
 
 //            //now we set the password.
-             Mark()
+//             Mark()
             DispatchQueue.main.async {
                 mainMenu.webView?.window?.close()
 
@@ -45,7 +45,7 @@ class MainController: NSObject {
                     return
                 }
                 if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
-                    Mark()
+//                    Mark()
                     mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
                 }
                 let localPassword = self.localPassword()

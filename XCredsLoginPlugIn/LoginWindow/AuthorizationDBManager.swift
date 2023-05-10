@@ -126,10 +126,10 @@ class AuthorizationDBManager: NSObject {
         let positionOfRight = consoleRights.firstIndex(of: right)
 
         if positionOfRight == nil {
-            TCSLogWithMark("did not find \(right)")
+//            TCSLogWithMark("did not find \(right)")
             return false
         }
-        TCSLogWithMark("found \(right)")
+//        TCSLogWithMark("found \(right)")
 
         return true
     }
@@ -148,9 +148,9 @@ class AuthorizationDBManager: NSObject {
 
             consoleRights.insert(newRight, at: positionOfRight+1)
         }
-        else {
-            print("right already exists")
-        }
+//        else {
+//            print("right already exists")
+//        }
 
 
         return setConsoleRights(rights: consoleRights)
@@ -168,9 +168,9 @@ class AuthorizationDBManager: NSObject {
             consoleRights.insert(newRight, at: positionOfRight)
 
         }
-        else {
-            print("right already exists")
-        }
+//        else {
+//            print("right already exists")
+//        }
         let success = setConsoleRights(rights: consoleRights)
         return success
     }

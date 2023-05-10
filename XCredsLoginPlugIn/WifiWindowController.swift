@@ -28,7 +28,6 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBOutlet weak var networkUsernameLabel: NSTextField!
     @IBOutlet weak var wifiPopupMenu: NSMenu!
     @IBAction func help(_ sender: Any) {
-         TCSLogWithMark()
     }
 
     @IBOutlet weak var networkUsernameView: NSView?

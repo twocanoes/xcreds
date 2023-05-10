@@ -102,7 +102,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)malloc(sizeof(MechanismRecord));
     if (mechanism == NULL) return errSecMemoryError;
-    TCSLog([NSString stringWithFormat:@"mech is %s\n",mechanismId]);
+    TCSLog([NSString stringWithFormat:@"Authorization Plugin ^%s Mechanism created.\n",mechanismId]);
     mechanism->fMagic = kMechanismMagic;
     mechanism->fEngine = inEngine;
     mechanism->fPlugin = (PluginRecord *)inPlugin;
@@ -131,31 +131,26 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     }
     else if (mechanism->fPowerControl){
-        NSLog(@"Calling PowerControl");
         XCredsPowerControlMechanism *powerControl = [[XCredsPowerControlMechanism alloc] initWithMechanism:mechanism];
         [powerControl run];
 
     }
     else if (mechanism->fEnableFDE){
-        NSLog(@"Calling EnableFDE");
         XCredsEnableFDE *fdeMech = [[XCredsEnableFDE alloc] initWithMechanism:mechanism];
         [fdeMech run];
 
     }
     else if (mechanism->fKeychainAdd){
-        NSLog(@"Calling fKeychainAdd");
         XCredsKeychainAdd *keychainAdd = [[XCredsKeychainAdd alloc] initWithMechanism:mechanism];
         [keychainAdd run];
 
     }
     else if (mechanism->fCreateUser){
-        NSLog(@"Calling CreateUser");
         XCredsCreateUser *createUser = [[XCredsCreateUser alloc] initWithMechanism:mechanism];
         [createUser run];
 
     }
     else if (mechanism->fLoginDone){
-        NSLog(@"Calling LoginDone");
         XCredsLoginDone *loginDone = [[XCredsLoginDone alloc] initWithMechanism:mechanism];
         [loginDone run];
 

@@ -25,6 +25,9 @@ fi
 
 if [ -e  "${plugin_path}" ]; then
 	
+	if [ -e "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle ]; then
+		rm -rf "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle
+	fi
 	cp -R "${plugin_path}" "${target_volume}"/Library/Security/SecurityAgentPlugins/
 	chown -R root:wheel "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle
 fi
