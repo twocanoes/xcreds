@@ -305,88 +305,88 @@ class LoginWebViewController: WebViewController {
 
         if isValidPassword==false{
 
-            if let keychainReset = getManagedPreference(key: .KeychainReset) as? Bool, keychainReset==true{
-                TCSLogWithMark("local password is different from cloud password but keychain reset pref is set. Skipping prompting so later we can create a new keychain.")
+//            if let keychainReset = getManagedPreference(key: .KeychainReset) as? Bool, keychainReset==true{
+//                TCSLogWithMark("local password is different from cloud password but keychain reset pref is set. Skipping prompting so later we can create a new keychain.")
+//
+//                if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
+//                    // set the hint and return complete
+//                    os_log("Setting password to be overwritten.", log: uiLog, type: .default)
+//                    delegate.setHint(type: .passwordOverwrite, hint: true)
+//                    os_log("Hint set", log: uiLog, type: .debug)
+//                }
+//            }
+//            else {
+            TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
 
-                if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
-                    // set the hint and return complete
+            let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+            if passwordWindowController.window==nil {
+                TCSLogWithMark("no passwordWindowController window")
+                delegate.denyLogin()
+                return
+            }
+            passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+            passwordWindowController.window?.isMovable = false
+            passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
+            while (true){
+                //                NSApp.activate(ignoringOtherApps: true)
+                DispatchQueue.main.async{
+                    TCSLogWithMark("resetting level")
+                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
+                }
+                TCSLogWithMark("showing modal")
+
+                let response = NSApp.runModal(for: passwordWindowController.window!)
+
+                TCSLogWithMark("modal done")
+                if response == .cancel {
+                    break
+                }
+                let resetKeychain = passwordWindowController.resetKeychain
+
+                if resetKeychain == true {
                     os_log("Setting password to be overwritten.", log: uiLog, type: .default)
                     delegate.setHint(type: .passwordOverwrite, hint: true)
                     os_log("Hint set", log: uiLog, type: .debug)
+                    passwordWindowController.window?.close()
+                    break
+
                 }
-            }
-            else {
-                TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
-
-                let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
-
-                if passwordWindowController.window==nil {
-                    TCSLogWithMark("no passwordWindowController window")
-                    delegate.denyLogin()
-                    return
-                }
-                passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-                passwordWindowController.window?.isMovable = false
-                passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
-                while (true){
-                    //                NSApp.activate(ignoringOtherApps: true)
-                    DispatchQueue.main.async{
-                        TCSLogWithMark("resetting level")
-                        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
+                else {
+                    let localPassword = passwordWindowController.password
+                    guard let localPassword = localPassword else {
+                        continue
                     }
-                    TCSLogWithMark("showing modal")
+                    let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
 
-                    let response = NSApp.runModal(for: passwordWindowController.window!)
-
-                    TCSLogWithMark("modal done")
-                    if response == .cancel {
-                        break
-                    }
-                    let resetKeychain = passwordWindowController.resetKeychain
-
-                    if resetKeychain == true {
-                        os_log("Setting password to be overwritten.", log: uiLog, type: .default)
-                        delegate.setHint(type: .passwordOverwrite, hint: true)
-                        os_log("Hint set", log: uiLog, type: .debug)
+                    if isValidPassword==true {
+                        let localUser = try? PasswordUtils.getLocalRecord(username)
+                        guard let localUser = localUser else {
+                            TCSLogWithMark("invalid local user")
+                            delegate.denyLogin()
+                            return
+                        }
+                        do {
+                            try localUser.changePassword(localPassword, toPassword: tokens.password)
+                        }
+                        catch {
+                            TCSLogWithMark("Error setting local password to cloud password")
+                            delegate.denyLogin()
+                            return
+                        }
+                        TCSLogWithMark("setting original password to use to unlock keychain later")
+                        delegate.setHint(type: .migratePass, hint: localPassword)
                         passwordWindowController.window?.close()
                         break
 
                     }
-                    else {
-                        let localPassword = passwordWindowController.password
-                        guard let localPassword = localPassword else {
-                            continue
-                        }
-                        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
-
-                        if isValidPassword==true {
-                            let localUser = try? PasswordUtils.getLocalRecord(username)
-                            guard let localUser = localUser else {
-                                TCSLogWithMark("invalid local user")
-                                delegate.denyLogin()
-                                return
-                            }
-                            do {
-                                try localUser.changePassword(localPassword, toPassword: tokens.password)
-                            }
-                            catch {
-                                TCSLogWithMark("Error setting local password to cloud password")
-                                delegate.denyLogin()
-                                return
-                            }
-                            TCSLogWithMark("setting original password to use to unlock keychain later")
-                            delegate.setHint(type: .migratePass, hint: localPassword)
-                            passwordWindowController.window?.close()
-                            break
-
-                        }
-                        else{
-                            passwordWindowController.window?.shake(self)
-                        }
+                    else{
+                        passwordWindowController.window?.shake(self)
                     }
                 }
             }
+//            }
 
         }
         else {
