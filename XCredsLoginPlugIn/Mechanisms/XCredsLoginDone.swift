@@ -11,7 +11,7 @@ class XCredsLoginDone: XCredsBaseMechanism {
     }
 
     @objc override func run() {
-        TCSLogWithMark("trying hide progress")
+        TCSLogWithMark("XCredsLoginDone mech starting")
 
         NotificationCenter.default.post(name: NSNotification.Name("hideProgress"), object: nil)
         allowLogin()

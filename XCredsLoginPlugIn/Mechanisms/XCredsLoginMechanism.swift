@@ -24,7 +24,7 @@ import Cocoa
 
         os_log("Checking for autologin.", log: checkADLog, type: .default)
         if FileManager.default.fileExists(atPath: "/tmp/nolorun") {
-            os_log("NoLo has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
+            os_log("XCreds has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
             return false
         }
 
@@ -90,7 +90,7 @@ import Cocoa
         return String.init(data: uuid, encoding: String.Encoding.utf8)
     }
     @objc override func run() {
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark("XCredsLoginMechanism mech starting")
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
             os_log("Check autologin complete", log: checkADLog, type: .debug)

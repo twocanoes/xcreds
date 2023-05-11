@@ -18,11 +18,12 @@ f_remove=0
 f_restore=0
 
 remove_rights () {
-    "${authrights_path}" -r  "XCredsLoginPlugin:LoginWindow" "loginwindow:login"
+    "${authrights_path}" -r  "XCredsLoginPlugin:LoginWindow" "loginwindow:login" > /dev/null
     "${authrights_path}" -d  "XCredsLoginPlugin:PowerControl,privileged"
-    "${authrights_path}" -d "XCredsLoginPlugin:KeychainAdd,privileged"
+    "${authrights_path}" -d  "XCredsLoginPlugin:KeychainAdd,privileged"
     "${authrights_path}" -d  "XCredsLoginPlugin:CreateUser,privileged"
     "${authrights_path}" -d  "XCredsLoginPlugin:EnableFDE,privileged"
+    "${authrights_path}" -d  "XCredsLoginPlugin:LoginDone"
 
 }
 while getopts ":ire" o; do

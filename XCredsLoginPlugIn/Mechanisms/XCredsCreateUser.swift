@@ -33,8 +33,8 @@ class XCredsCreateUser: XCredsBaseMechanism {
                               "dsAttrTypeNative:unlockOptions": "0"]
     
     @objc override   func run() {
-        os_log("CreateUser mech starting", log: createUserLog, type: .debug)
-        
+        TCSLogWithMark("CreateUser mech starting")
+
         // check if we are a guest account
         // if so, remove any existing user/home for the guest
         // then allow the mech to create a new user/home
@@ -182,6 +182,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
                                 try user.changePassword(nil, toPassword: xcredsPass!)
 
                             } catch {
+                                os_log(error.localizedDescription)
                                 os_log("Password Overwrite Silent without SecureToken Failed")
                             }
 

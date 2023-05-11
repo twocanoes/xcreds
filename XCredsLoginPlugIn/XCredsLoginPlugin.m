@@ -102,7 +102,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)malloc(sizeof(MechanismRecord));
     if (mechanism == NULL) return errSecMemoryError;
-    TCSLog([NSString stringWithFormat:@"Authorization Plugin ^%s Mechanism created.\n",mechanismId]);
+    TCSLog([NSString stringWithFormat:@"Authorization Plugin %s Mechanism created.\n",mechanismId]);
     mechanism->fMagic = kMechanismMagic;
     mechanism->fEngine = inEngine;
     mechanism->fPlugin = (PluginRecord *)inPlugin;

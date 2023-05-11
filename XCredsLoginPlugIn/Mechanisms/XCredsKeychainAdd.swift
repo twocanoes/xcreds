@@ -19,6 +19,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
     let kItemName = "xcreds"
     
     @objc override func run() {
+        TCSLogWithMark("XCredsKeychainAdd mech starting")
+
         // get username and password
         // get reference to user's keychain
         // add items
@@ -30,7 +32,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
-        guard let tokenArray = tokenArray, tokenArray.count==3 else {
+        guard let tokenArray = tokenArray, tokenArray.count>3 else {
             TCSLogWithMark("no tokens but allowing login")
             allowLogin()
             return

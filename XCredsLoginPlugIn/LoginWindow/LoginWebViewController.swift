@@ -389,6 +389,9 @@ class LoginWebViewController: WebViewController {
             }
 
         }
+        else {
+            TCSLogWithMark("Local password matches cloud password")
+        }
         TCSLogWithMark("passing username:\(username), password, and tokens")
         TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
 
