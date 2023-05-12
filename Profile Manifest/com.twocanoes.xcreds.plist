@@ -125,7 +125,6 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
-		
 		<dict>
 			<key>pfm_description</key>
 			<string>The OIDC client id public identifier for the app.</string>
@@ -163,6 +162,20 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>CreateAdminUser</string>
 			<key>pfm_title</key>
 			<string>Create User as Admin</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<false/>
+			<key>pfm_description</key>
+			<string>When set to true and the user locks the current session, XCreds will tell the system to switch to Login Window. The current session will stay active but the user will login with the XCreds Login Window to resume the session.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldswitchtologinwindowwhenlocked</string>
+			<key>pfm_name</key>
+			<string>shouldSwitchToLoginWindowWhenLocked</string>
+			<key>pfm_title</key>
+			<string>Should Switch To Login Window When Locked</string>
 			<key>pfm_type</key>
 			<string>boolean</string>
 		</dict>
@@ -400,7 +413,6 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
-
 		<dict>
 			<key>pfm_default</key>
 			<true/>
@@ -543,7 +555,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>Reset the keychain without prompting if the login password doesn't match the local password.</string>
+			<string>Reset the keychain without prompting if the login password doesn&apos;t match the local password.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#keychainreset</string>
 			<key>pfm_name</key>

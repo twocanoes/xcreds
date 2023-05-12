@@ -132,6 +132,7 @@
 		76DC0A87288386FA007C42B2 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
 		76DC0A88288387D8007C42B2 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		76DD6D17285997F300A700ED /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76DD6D16285997F300A700ED /* OIDCLite */; };
+		76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */; };
 		76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */; };
 		76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE069D27FD1D00009E0F3A /* AppDelegate.swift */; };
 		76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
@@ -318,6 +319,8 @@
 		76DC0A7D288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCSXCredsLoginOverlayWindow.swift; sourceTree = "<group>"; };
 		76DC0A7F2883785A007C42B2 /* XCreds-Login-Overlay-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "XCreds-Login-Overlay-Info.plist"; sourceTree = SOURCE_ROOT; };
 		76DD6D122859978F00A700ED /* OIDCLite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = OIDCLite; path = ../OIDCLite; sourceTree = "<group>"; };
+		76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TCSLoginWindowUtilities.h; path = XCreds/TCSLoginWindowUtilities.h; sourceTree = "<group>"; };
+		76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TCSLoginWindowUtilities.m; path = XCreds/TCSLoginWindowUtilities.m; sourceTree = "<group>"; };
 		76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordMenuItem.swift; sourceTree = "<group>"; };
 		76EE069A27FD1D00009E0F3A /* XCreds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCreds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76EE069D27FD1D00009E0F3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -509,6 +512,8 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */,
+				76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */,
 				76673CD429D3D5F500452848 /* LicenseChecker.swift */,
 				7683973029A854EC003D9B9F /* NSImage+String.swift */,
 				76DB5CF32A09AE9A0014F8E1 /* get_pw.js */,
@@ -924,6 +929,7 @@
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,
 				76B882B229CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
+				76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
 				766355DC287133C7002E3867 /* WebView.swift in Sources */,
@@ -1011,7 +1017,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1048,7 +1054,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1113,7 +1119,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1149,7 +1155,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1298,7 +1304,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1333,7 +1339,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3639;
+				CURRENT_PROJECT_VERSION = 3643;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

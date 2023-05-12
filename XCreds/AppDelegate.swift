@@ -23,6 +23,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         }
 
+
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(screenLocked(_:)), name:NSNotification.Name("com.apple.screenIsLocked") , object: nil)
 //        ManagedPreferences.shared.preference(forKey: .clientID)
         mainController = MainController.init()
         mainController?.run()
@@ -36,6 +38,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         return true
+    }
+    @objc func screenLocked(_ sender:Any) {
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSwitchToLoginWindowWhenLocked.rawValue)==true{
+            TCSLoginWindowUtilities().switchToLoginWindow(self)
+        }
     }
 
 

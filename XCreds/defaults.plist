@@ -34,6 +34,8 @@
 	<true/>
 	<key>KeychainCreate</key>
 	<true/>
+	<key>shouldSwitchToLoginWindowWhenLocked</key>
+	<false/>
 	<key>shouldShowCloudLoginByDefault</key>
 	<true/>
 	<key>autoRefreshLoginTimer</key>

@@ -12,4 +12,6 @@
 #import "TCSKeychain.h"
 #import "TCSUnifiedLogger.h"
 #import <ProductLicense/ProductLicense.h>
+#import "TCSLoginWindowUtilities.h"
+
 #endif /* XCreds_Bridging_Header_h */

@@ -8,7 +8,7 @@
 import Foundation
 
 enum PrefKeys: String {
-    case clientID, clientSecret, password="local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault,idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner
+    case clientID, clientSecret, password="local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault,idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked
 }
 func getManagedPreference(key: Preferences) -> Any? {
 
