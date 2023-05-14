@@ -222,7 +222,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
         wifiCredentialTitleLabel?.stringValue = "The wifi network \"\(network.ssid ?? "" )\" requires login:"
         credentialsWindow.canBecomeVisibleWithoutLogin = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.credentialsWindow.level = .screenSaver+2
+            self.credentialsWindow.level = .modalPanel
         }
         NSApp.runModal(for: credentialsWindow)
 

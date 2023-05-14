@@ -32,16 +32,13 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
-        guard let tokenArray = tokenArray, tokenArray.count>3 else {
+        guard let tokenArray = tokenArray, tokenArray.count>2 else {
             TCSLogWithMark("no tokens but allowing login")
             allowLogin()
             return
         }
 
         let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
-            TCSLogWithMark("got tokens")
-
-
 
         let (uid, home) = checkUIDandHome(name: username)
 

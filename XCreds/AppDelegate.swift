@@ -25,7 +25,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(screenLocked(_:)), name:NSNotification.Name("com.apple.screenIsLocked") , object: nil)
-//        ManagedPreferences.shared.preference(forKey: .clientID)
         mainController = MainController.init()
         mainController?.run()
         mainMenu.statusBarItem.menu = mainMenu.mainMenu

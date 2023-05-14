@@ -10,6 +10,7 @@ import Cocoa
 class MainController: NSObject {
     func run() -> Void {
 
+        TCSLogWithMark()
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
 
         if let defaultsPath = defaultsPath {

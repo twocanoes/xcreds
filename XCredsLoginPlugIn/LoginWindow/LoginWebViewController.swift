@@ -10,7 +10,11 @@ import Cocoa
 import WebKit
 import OIDCLite
 import Network
+import OpenDirectory
+
 class LoginWebViewController: WebViewController {
+
+
     let uiLog = "uiLog"
     let monitor = NWPathMonitor()
     var delegate: XCredsMechanismProtocol?
@@ -51,6 +55,7 @@ class LoginWebViewController: WebViewController {
 
         loadPage()
     }
+
     fileprivate func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
 //            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
@@ -58,7 +63,7 @@ class LoginWebViewController: WebViewController {
 
             TCSLogWithMark("setting up window...")
 
-            self.window?.level = .popUpMenu
+            self.window?.level = .normal
             self.window?.orderFrontRegardless()
 
             self.window?.backgroundColor = NSColor.blue
@@ -93,45 +98,23 @@ class LoginWebViewController: WebViewController {
 
             self.window?.setFrame(screenRect, display: true, animate: false)
 
-            TCSLogWithMark("webview is \(self.webView.debugDescription)")
-//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
 
-            self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
 
-//            BackgroundImage
-            if let imagePathURL = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
-                TCSLogWithMark("background path is \(imagePathURL)")
-                image.size=screenRect.size
-                self.backgroundImageView.image=image
+            let backgroundImage = DefaultsHelper.backgroundImage()
+
+            if let backgroundImage = backgroundImage {
+                backgroundImage.size=screenRect.size
+                self.backgroundImageView.image=backgroundImage
                 self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
 
                 self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
-
             }
-            else {
-                let allBundles = Bundle.allBundles
-                for currentBundle in allBundles {
-                    TCSLogWithMark(currentBundle.bundlePath)
-                    if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
-                        TCSLogWithMark()
 
-                        let image = NSImage.init(byReferencingFile: imagePath)
+            self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
 
-                        if let image = image {
-                            TCSLogWithMark()
-                            image.size=screenRect.size
-                            self.backgroundImageView.image=image
-                            self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
-                            self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-                        }
+//            BackgroundImage
 
-
-                        break
-
-                    }
-                }
-            }
 
         }
 //            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
@@ -143,29 +126,30 @@ class LoginWebViewController: WebViewController {
         return NSNib.Name("LoginWebView")
     }
     func loginTransition() {
-//
-//        let screenRect = NSScreen.screens[0].frame
-//        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-//        progressIndicator.style = .spinning
-//        progressIndicator.startAnimation(self)
-//        webView.addSubview(progressIndicator)
 
-//        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
-//        if let loginProgressWindowController = loginProgressWindowController {
-//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-//
-//
-//        }
-        self.window?.close()
+        let screenRect = NSScreen.screens[0].frame
+        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
+        progressIndicator.style = .spinning
+        progressIndicator.startAnimation(self)
+        webView.addSubview(progressIndicator)
+
+        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
+        if let loginProgressWindowController = loginProgressWindowController {
+            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
 
 
-//        NSAnimationContext.runAnimationGroup({ (context) in
-//            context.duration = 1.0
-//            context.allowsImplicitAnimation = true
-//            self.window?.alphaValue = 0.0
-//        }, completionHandler: {
-//            self.window?.close()
-//        })
+        }
+        monitor.pathUpdateHandler=nil
+//        self.window?.close()
+
+
+        NSAnimationContext.runAnimationGroup({ (context) in
+            context.duration = 10.0
+            context.allowsImplicitAnimation = true
+            self.window?.alphaValue = 0.0
+        }, completionHandler: {
+            self.window?.close()
+        })
     }
 
     override func tokensUpdated(tokens: Creds) {
@@ -301,21 +285,15 @@ class LoginWebViewController: WebViewController {
         }
         TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
 
-        let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
 
-        if isValidPassword==false{
 
-//            if let keychainReset = getManagedPreference(key: .KeychainReset) as? Bool, keychainReset==true{
-//                TCSLogWithMark("local password is different from cloud password but keychain reset pref is set. Skipping prompting so later we can create a new keychain.")
-//
-//                if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
-//                    // set the hint and return complete
-//                    os_log("Setting password to be overwritten.", log: uiLog, type: .default)
-//                    delegate.setHint(type: .passwordOverwrite, hint: true)
-//                    os_log("Hint set", log: uiLog, type: .debug)
-//                }
-//            }
-//            else {
+          let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
+
+        switch passwordCheckStatus {
+        case .success:
+            TCSLogWithMark("Local password matches cloud password ")
+        case .incorrectPassword:
+
             TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
 
             let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
@@ -328,18 +306,15 @@ class LoginWebViewController: WebViewController {
             passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
             passwordWindowController.window?.isMovable = false
             passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue + 1)
-            while (true){
-                //                NSApp.activate(ignoringOtherApps: true)
+            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+            var isDone = false
+            while (!isDone){
                 DispatchQueue.main.async{
                     TCSLogWithMark("resetting level")
-                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.screenSaver.rawValue)
+                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
                 }
-                TCSLogWithMark("showing modal")
 
                 let response = NSApp.runModal(for: passwordWindowController.window!)
-
-                TCSLogWithMark("modal done")
                 if response == .cancel {
                     break
                 }
@@ -348,19 +323,20 @@ class LoginWebViewController: WebViewController {
                 if resetKeychain == true {
                     os_log("Setting password to be overwritten.", log: uiLog, type: .default)
                     delegate.setHint(type: .passwordOverwrite, hint: true)
+
                     os_log("Hint set", log: uiLog, type: .debug)
                     passwordWindowController.window?.close()
-                    break
 
                 }
                 else {
+                    TCSLogWithMark("user gave old password. checking...")
                     let localPassword = passwordWindowController.password
                     guard let localPassword = localPassword else {
                         continue
                     }
-                    let isValidPassword =  try? PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
-
-                    if isValidPassword==true {
+                    let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                    switch isValidPassword {
+                    case .success:
                         let localUser = try? PasswordUtils.getLocalRecord(username)
                         guard let localUser = localUser else {
                             TCSLogWithMark("invalid local user")
@@ -377,21 +353,25 @@ class LoginWebViewController: WebViewController {
                         }
                         TCSLogWithMark("setting original password to use to unlock keychain later")
                         delegate.setHint(type: .migratePass, hint: localPassword)
+                        isDone=true
                         passwordWindowController.window?.close()
                         break
-
-                    }
-                    else{
+                    default:
                         passwordWindowController.window?.shake(self)
+
                     }
                 }
             }
-//            }
+        case .accountDoesNotExist:
+            TCSLogWithMark("user account doesn't exist yet")
 
+        case .other:
+            TCSLogWithMark("Account is locked or other error")
+            delegate.denyLogin()
+            return
         }
-        else {
-            TCSLogWithMark("Local password matches cloud password")
-        }
+
+
         TCSLogWithMark("passing username:\(username), password, and tokens")
         TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
 
@@ -405,13 +385,6 @@ class LoginWebViewController: WebViewController {
         TCSLogWithMark("setting tokens.password")
 
         delegate.setHint(type: .pass, hint: tokens.password)
-//        setHint(type: .noMADFirst, hint: user.firstName)
-//        setHint(type: .noMADLast, hint: user.lastName)
-//        setHint(type: .noMADDomain, hint: domainName)
-//        setHint(type: .noMADGroups, hint: user.groups)
-//        delegate.setHint(type: .fullName, hint: idTokenObject.unique_name ?? username)
-//        delegate.setHint(type: .firstName, hint: idTokenObject.given_name ?? "")
-//        delegate.setHint(type: .lastName, hint: idTokenObject.family_name ?? "")
 
         TCSLogWithMark("setting tokens")
         delegate.setHint(type: .tokens, hint: [tokens.idToken ?? "",tokens.refreshToken ?? "",tokens.accessToken ?? ""])

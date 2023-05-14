@@ -109,7 +109,7 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
 
-            self.window?.level = .screenSaver
+            self.window?.level = .normal+1
             TCSLogWithMark("ordering controls front")
             self.window?.orderFrontRegardless()
 
@@ -119,11 +119,11 @@ class LoginWindowControlsWindowController: NSWindowController {
 
             let screenRect = NSScreen.screens[0].frame
             let windowRec = NSMakeRect(0, 0, screenRect.width,109)
-            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
+//            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
 
             self.window?.setFrame(windowRec, display: true, animate: false)
             self.window?.viewsNeedDisplay=true
-            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
+//            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
         }
 
     }

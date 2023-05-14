@@ -24,7 +24,7 @@ class WebViewController: NSWindowController {
 
     func loadPage() {
 
-
+TCSLogWithMark()
         let licenseState = LicenseChecker().currentLicenseState()
         if let refreshTitleTextField = refreshTitleTextField {
             refreshTitleTextField.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
@@ -33,7 +33,7 @@ class WebViewController: NSWindowController {
         webView.navigationDelegate = self
         TokenManager.shared.oidc().delegate = self
         clearCookies()
-
+        TCSLogWithMark()
         switch licenseState {
 
         case .valid, .trial(_):
@@ -52,11 +52,13 @@ class WebViewController: NSWindowController {
             return
 
         }
+        TCSLogWithMark()
          if let url = TokenManager.shared.oidc().createLoginURL() {
             TCSLogWithMark()
             self.webView.load(URLRequest(url: url))
         }
         else {
+            TCSLogWithMark()
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
                 if currentBundle.bundlePath.contains("XCreds") {

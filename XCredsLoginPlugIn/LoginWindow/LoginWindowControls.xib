@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +21,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="25" y="25" width="872" height="117"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
             <view key="contentView" id="Tpj-ss-EMv">
                 <rect key="frame" x="0.0" y="0.0" width="872" height="117"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -57,7 +57,7 @@
                                     </gridCell>
                                     <gridCell row="XHx-7d-YkX" column="cUX-O2-zNV" xPlacement="center" id="2Gc-hy-IjQ">
                                         <button key="contentView" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6f9-0z-Xqg">
-                                            <rect key="frame" x="153" y="0.0" width="66" height="48"/>
+                                            <rect key="frame" x="154" y="0.0" width="65" height="48"/>
                                             <buttonCell key="cell" type="bevel" title="Shutdown" bezelStyle="rounded" image="ShutdownX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="WRj-LR-MaW">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -152,7 +152,7 @@
     <resources>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
-        <image name="loginwindow" width="41" height="32"/>
+        <image name="loginwindow" width="41" height="31.5"/>
         <image name="refresh symbol" width="989" height="989"/>
         <image name="wifi" width="32" height="32"/>
     </resources>
