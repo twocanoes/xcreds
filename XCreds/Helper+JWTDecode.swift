@@ -11,12 +11,12 @@ func jwtDecode(value: String) -> Dictionary<String, Any>? {
     let array = value.components(separatedBy: ".")
 
     if array.count != 3 {
-        TCSLogWithMark("idToken is invalid")
+        TCSLogErrorWithMark("idToken is invalid")
         return nil
     }
     let body = array[1]
     guard let data = base64UrlDecode(value:body ) else {
-        TCSLogWithMark("error decoding id token base64")
+        TCSLogErrorWithMark("error decoding id token base64")
         return nil
     }
 

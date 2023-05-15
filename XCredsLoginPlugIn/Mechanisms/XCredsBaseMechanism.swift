@@ -39,20 +39,8 @@ protocol XCredsMechanismProtocol {
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
 
-        let allBundles = Bundle.allBundles
 
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                let infoPlist = currentBundle.infoDictionary
-                if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-                    TCSLogWithMark("-------------------------------------")
-                    TCSLogWithMark("XCreds Login Build Number: \(build)")
-                    TCSLogWithMark("-------------------------------------")
-                    break
-                }
-
-            }
-        }
+        
 
     }
     var xcredsPass: String? {
@@ -86,7 +74,7 @@ protocol XCredsMechanismProtocol {
     var xcredsUser: String? {
         get {
             guard let userName = getHint(type: .user) as? String else {
-                TCSLogWithMark("no username!")
+                TCSLogWithMark("no usernames")
 
                 return nil
             }
@@ -139,14 +127,13 @@ protocol XCredsMechanismProtocol {
         TCSLogWithMark("\(#function) \(#file):\(#line)")
         let error = mechCallbacks.SetResult(mechEngine, .allow)
         if error != noErr {
-            TCSLogWithMark("Error: \(error)")
+            TCSLogErrorWithMark("Error: \(error)")
         }
     }
 
     // disallow login
     func denyLogin() {
-        TCSLog("***************** DENYING LOGIN ********************");
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogErrorWithMark("***************** DENYING LOGIN ********************");
 
         let error = mechCallbacks.SetResult(mechEngine, .deny)
         if error != noErr {
@@ -157,7 +144,7 @@ protocol XCredsMechanismProtocol {
 
     func setHint(type: HintType, hint: Any) {
         guard (hint is String || hint is [String] || hint is Bool) else {
-            TCSLogWithMark("Login Set hint failed: data type of hint is not supported")
+            TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }
         let data = NSKeyedArchiver.archivedData(withRootObject: hint)
@@ -165,7 +152,7 @@ protocol XCredsMechanismProtocol {
 
         let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
         guard err == errSecSuccess else {
-            TCSLogWithMark("NoMAD Login Set hint failed with: %{public}@")
+            TCSLogWithMark("XCred Login Set hint failed with: %{public}@")
             return
         }
     }
@@ -185,13 +172,13 @@ protocol XCredsMechanismProtocol {
         var err: OSStatus = noErr
         err = mechCallbacks.GetHintValue((mech?.fEngine)!, type.rawValue, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("Couldn't retrieve hint value: \(type.rawValue)")
+            TCSLogWithMark("No hint retrieved for: \(type.rawValue)")
             return nil
         }
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
-            TCSLogWithMark("Couldn't unpack hint value: %{public}@")
+            TCSLogErrorWithMark("Couldn't unpack hint value: %{public}@")
                 return nil
         }
         return result

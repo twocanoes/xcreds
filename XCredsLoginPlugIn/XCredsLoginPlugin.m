@@ -7,6 +7,7 @@
 
 #import "XCredsLoginPlugin.h"
 #import "XCredsLoginPlugin-Swift.h"
+#import <Foundation/Foundation.h>
 XCredsLoginPlugin *authorizationPlugin = nil;
 
 //os_log_t pluginLog = nil;
@@ -24,7 +25,7 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
                                 AuthorizationEngineRef inEngine,
                                 AuthorizationMechanismId mechanismId,
                                 AuthorizationMechanismRef *outMechanism) {
-    [[TCSUnifiedLogger sharedLogger] setLogFileURL:[NSURL fileURLWithPath:@"/tmp/xcreds.log"]];
+
     [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismCreate:inPlugin
@@ -102,7 +103,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)malloc(sizeof(MechanismRecord));
     if (mechanism == NULL) return errSecMemoryError;
-    TCSLog([NSString stringWithFormat:@"Authorization Plugin %s Mechanism created.\n",mechanismId]);
+    TCSLogInfo([NSString stringWithFormat:@"==========> Authorization Plugin %s Mechanism created.<===========\n",mechanismId]);
     mechanism->fMagic = kMechanismMagic;
     mechanism->fEngine = inEngine;
     mechanism->fPlugin = (PluginRecord *)inPlugin;
@@ -188,5 +189,4 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     free(inPlugin);
     return noErr;
 }
-
 @end

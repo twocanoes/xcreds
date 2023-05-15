@@ -164,7 +164,7 @@ class PasswordUtils: NSObject {
             isValid = ((try records.first?.verifyPassword(auth)) != nil)
         } catch {
             let errorText = error.localizedDescription
-            TCSLogWithMark("ODError while trying to check for local user: \(errorText)")
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(errorText)")
             return false
         }
         return isValid
@@ -388,17 +388,17 @@ class PasswordUtils: NSObject {
             let records = try query.resultsAllowingPartial(false) as! [ODRecord]
 
             if records.count > 1 {
-                TCSLogWithMark("More than one local user found for name.")
+                TCSLogErrorWithMark("More than one local user found for name.")
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")
             return record
         } catch {
-            TCSLogWithMark("ODError while trying to check for local user: \(error.localizedDescription)")
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(error.localizedDescription)")
             throw error
         }
     }

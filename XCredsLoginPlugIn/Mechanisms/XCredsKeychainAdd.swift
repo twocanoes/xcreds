@@ -40,32 +40,33 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
 
+        TCSLogWithMark("Getting Home Dir")
+
         let (uid, home) = checkUIDandHome(name: username)
 
         TCSLogWithMark("uid: \(uid ?? 9999 )")
 
-        guard let homeDir = home else {
-            TCSLogWithMark("Unable to get home directory path.")
+        guard let homeDir = home as? NSString else {
+            TCSLogErrorWithMark("Unable to get home directory path.")
             allowLogin()
             return
         }
+
         TCSLogWithMark("checking UID")
         guard let userUID = uid else {
-            TCSLogWithMark("Unable to get uid.")
+            TCSLogErrorWithMark("Unable to get uid.")
             allowLogin()
             return
         }
 
         // switch uid to user so we have access to home directory and other things
-        TCSLogWithMark("Set UID")
 
         seteuid(userUID)
 
         // check to ensure the keychain is there
-        TCSLogWithMark("Getting Home Dir")
-        let userKeychainPath = homeDir + "/Library/Keychains/login.keychain-db"
+        let userKeychainPath = homeDir.appendingPathComponent("Library/Keychains/login.keychain-db")
         TCSLogWithMark("finding path")
-        if !fm.fileExists(atPath: userKeychainPath) {
+        if fm.fileExists(atPath: userKeychainPath) == false {
             // if we're not set to create a keychain, move on
             if getManagedPreference(key: .KeychainCreate) as? Bool == true {
                 os_log("No login.keychain-db, creating one", log: "keychainAddLog")
@@ -84,7 +85,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         link(userKeychainPath, tempPath)
         
         TCSLogWithMark("Getting Temp Keychain reference.")
-        
+
         err = SecKeychainOpen(tempPath, &userKeychainTemp)
 
         TCSLogWithMark("Unlocking Temp Keychain.")
@@ -98,7 +99,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         userKeychainTemp = nil
         
         if err != noErr {
-            TCSLogWithMark("Unable to unlock keychain reference.")
+            TCSLogErrorWithMark("Unable to unlock keychain reference.")
             // check if we should reset
             
             if let resetPass = getHint(type: .migratePass) as? String {
@@ -118,10 +119,11 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             }
             else if (getManagedPreference(key: .KeychainReset) as? Bool ?? true ) {
                 os_log("Resetting keychain password.", log: "", type: .info)
-                clearKeychain(path: homeDir)
+                clearKeychain(path: homeDir as String)
+
             }
             else {
-                TCSLogWithMark("Keychain is locked, exiting.")
+                TCSLogErrorWithMark("Keychain is locked, exiting.")
                 allowLogin()
                 return
             }
@@ -139,7 +141,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         err = SecKeychainUnlock(userKeychain, UInt32(userpass.count), userpass, true)
 
         if err != noErr {
-            TCSLogWithMark("error unlocking keychain!")
+            TCSLogErrorWithMark("error unlocking keychain!")
 
         }
 //        var keychainItem: SecKeychainItem? = nil
@@ -205,7 +207,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 //        }
         TCSLogWithMark("saving tokens to keychain")
         if TokenManager.shared.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
-            TCSLogWithMark("Error saving tokens to keychain")
+            TCSLogErrorWithMark("Error saving tokens to keychain")
         }
 
         allowLogin()
@@ -236,7 +238,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         }
 
         if records.count > 1 {
-            TCSLogWithMark("More than one record. ")
+            TCSLogErrorWithMark("More than one record. ")
         }
         do {
             let home = try records.first?.values(forAttribute: kODAttributeTypeNFSHomeDirectory) as? [String] ?? nil
@@ -245,7 +247,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             let uidt = uid_t.init(Double.init((uid?.first) ?? "0")! )
             return ( uidt, home?.first ?? nil)
         } catch {
-            TCSLogWithMark("Unable to get home.")
+            TCSLogErrorWithMark("Unable to get home.")
             return (nil, nil)
         }
     }

@@ -251,7 +251,7 @@ class WifiManager: CWEventDelegate {
         monitor?.pathUpdateHandler = { path in
             TCSLogWithMark("network changed. Checking to see if it was WiFi...")
             if path.status != .satisfied {
-                TCSLogWithMark("not connected")
+                TCSLogErrorWithMark("not connected")
             }
             else if path.usesInterfaceType(.cellular) {
                 TCSLogWithMark("Cellular")

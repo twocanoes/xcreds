@@ -59,7 +59,7 @@ class KeychainUtil {
             }
             return password as? String ?? ""
         } else {
-            TCSLogWithMark("Password not found in keychain")
+            TCSLogErrorWithMark("Password not found in keychain")
             throw KeychainError.noStoredPassword
         }
     }
@@ -82,7 +82,7 @@ class KeychainUtil {
 
         myErr = setPassword(name, pass: pass)
         if myErr != OSStatus(errSecSuccess) {
-            TCSLogWithMark("setting new password FAILURE")
+            TCSLogErrorWithMark("setting new password FAILURE")
             return false
         }
         TCSLogWithMark("setting new password success")
@@ -94,7 +94,7 @@ class KeychainUtil {
                 updateACL(password:keychainPassword)
             }
             else {
-                TCSLogWithMark("ERROR Updating ACL")
+                TCSLogErrorWithMark("ERROR Updating ACL")
 
                 return false
             }

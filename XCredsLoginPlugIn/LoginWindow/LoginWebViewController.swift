@@ -45,7 +45,7 @@ class LoginWebViewController: WebViewController {
                 }
 
             } else {
-                TCSLogWithMark("No connection.")
+                TCSLogErrorWithMark("No connection.")
             }
 
             print(path.isExpensive)
@@ -157,14 +157,14 @@ class LoginWebViewController: WebViewController {
 //we have to check the password here so we can prompt.
 
         guard let delegate = delegate else {
-            TCSLogWithMark("invalid delegate")
+            TCSLogErrorWithMark("invalid delegate")
             return
         }
         var username:String
         let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
 
         guard let idToken = tokens.idToken else {
-            TCSLogWithMark("invalid idToken")
+            TCSLogErrorWithMark("invalid idToken")
 
             delegate.denyLogin()
             return
@@ -173,13 +173,13 @@ class LoginWebViewController: WebViewController {
         let array = idToken.components(separatedBy: ".")
 
         if array.count != 3 {
-            TCSLogWithMark("idToken is invalid")
+            TCSLogErrorWithMark("idToken is invalid")
             delegate.denyLogin()
         }
         let body = array[1]
         TCSLogWithMark("base64 encoded IDToken: \(body)");
         guard let data = base64UrlDecode(value:body ) else {
-            TCSLogWithMark("error decoding id token base64")
+            TCSLogErrorWithMark("error decoding id token base64")
             delegate.denyLogin()
             return
         }
@@ -190,8 +190,8 @@ class LoginWebViewController: WebViewController {
 
         }
         catch {
-            TCSLogWithMark("error decoding idtoken::")
-            TCSLogWithMark("Token:\(body)")
+            TCSLogErrorWithMark("error decoding idtoken::")
+            TCSLogErrorWithMark("Token:\(body)")
             delegate.denyLogin()
             return
 
@@ -225,7 +225,7 @@ class LoginWebViewController: WebViewController {
                 emailString=idTokenObject.sub
             }
             guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
-                TCSLogWithMark("email address invalid")
+                TCSLogErrorWithMark("email address invalid")
                 delegate.denyLogin()
                 return
 
@@ -339,7 +339,7 @@ class LoginWebViewController: WebViewController {
                     case .success:
                         let localUser = try? PasswordUtils.getLocalRecord(username)
                         guard let localUser = localUser else {
-                            TCSLogWithMark("invalid local user")
+                            TCSLogErrorWithMark("invalid local user")
                             delegate.denyLogin()
                             return
                         }
@@ -347,7 +347,7 @@ class LoginWebViewController: WebViewController {
                             try localUser.changePassword(localPassword, toPassword: tokens.password)
                         }
                         catch {
-                            TCSLogWithMark("Error setting local password to cloud password")
+                            TCSLogErrorWithMark("Error setting local password to cloud password")
                             delegate.denyLogin()
                             return
                         }

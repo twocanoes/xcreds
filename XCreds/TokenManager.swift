@@ -75,7 +75,7 @@ class TokenManager {
         if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
             if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating Access Token")
+                TCSLogErrorWithMark("Error Updating Access Token")
 
                 return false
             }
@@ -84,7 +84,7 @@ class TokenManager {
         if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
             if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating idToken Token")
+                TCSLogErrorWithMark("Error Updating idToken Token")
 
                 return false
             }
@@ -95,7 +95,7 @@ class TokenManager {
             TCSLogWithMark("Saving refresh Token")
 
             if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating refreshToken Token")
+                TCSLogErrorWithMark("Error Updating refreshToken Token")
 
                 return false
             }
@@ -107,7 +107,7 @@ class TokenManager {
             TCSLogWithMark("Saving cloud password")
 
             if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating password")
+                TCSLogErrorWithMark("Error Updating password")
 
                 return false
             }
@@ -186,7 +186,7 @@ class TokenManager {
 
                     }
                     else {
-                        TCSLogWithMark("got status code of \(response.statusCode):\(response)")
+                        TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
                         completion(false,false)
 
                     }

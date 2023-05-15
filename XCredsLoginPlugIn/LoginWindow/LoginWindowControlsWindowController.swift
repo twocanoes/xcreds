@@ -52,14 +52,14 @@ class LoginWindowControlsWindowController: NSWindowController {
             }
 
         case .trialExpired:
-            TCSLogWithMark("Trial Expired")
+            TCSLogErrorWithMark("Trial Expired")
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Trial Expired"
 
 
 
         default:
-            TCSLogWithMark("invalid license")
+            TCSLogErrorWithMark("invalid license")
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
 
@@ -200,7 +200,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     @IBAction func shutdownClick(_ sender: Any) {
         TCSLogWithMark("Setting shutdown user")
         guard let delegate = delegate else {
-            TCSLogWithMark("No delegate set for shutdown")
+            TCSLogErrorWithMark("No delegate set for shutdown")
             return
         }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.shutdown.rawValue)
@@ -210,7 +210,7 @@ class LoginWindowControlsWindowController: NSWindowController {
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
         TCSLogWithMark("resetting to standard login window")
         guard let delegate = delegate else {
-            TCSLogWithMark("No delegate set for resetToStandardLoginWindow")
+            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
             return
         }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)

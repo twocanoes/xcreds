@@ -50,10 +50,12 @@ typedef enum : NSUInteger {
 NS_ASSUME_NONNULL_BEGIN
 #undef TCSLog
 void TCSLog(NSString *str);
-
+void TCSLogInfo(NSString *str);
+void TCSLogError(NSString *string);
 
 @interface TCSUnifiedLogger : NSObject
 + (TCSUnifiedLogger *)sharedLogger;
+//-(void)setLogFilePath:(NSString *)logFilePath;
 @property (strong, readwrite) NSURL *logFileURL;
 @property (strong, readwrite) NSString *logFolderName;
 @property (strong, readwrite) NSString *logFileName;

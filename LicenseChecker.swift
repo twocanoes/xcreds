@@ -43,17 +43,17 @@ class LicenseChecker: NSObject {
             TCSLogWithMark("valid license")
             return .valid
         case .expired:
-            TCSLogWithMark("expired license")
+            TCSLogErrorWithMark("expired license")
             return trialState
 
         case .invalid:
-            TCSLogWithMark("license invalid")
+            TCSLogErrorWithMark("license invalid")
             return trialState
         case .unset:
-            TCSLogWithMark("No License")
+            TCSLogErrorWithMark("No License")
             return trialState
         default:
-            TCSLogWithMark("invalid license")
+            TCSLogErrorWithMark("invalid license")
             return trialState
         }
 

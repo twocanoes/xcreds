@@ -89,7 +89,7 @@ class MainController: NSObject {
                     }
                     if updatePassword {
                         guard let localPassword = self.localPassword() else {
-                            TCSLogWithMark("error getting local password")
+                            TCSLogErrorWithMark("error getting local password")
                             return
                         }
                         try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword1: tokens.password, newPassword2: tokens.password)
@@ -98,7 +98,7 @@ class MainController: NSObject {
                     }
                 }
                 if TokenManager.shared.saveTokensToKeychain(creds: tokens, setACL: true, password:tokens.password ) == false {
-                    TCSLogWithMark("error saving tokens to keychain")
+                    TCSLogErrorWithMark("error saving tokens to keychain")
                 }
                 ScheduleManager.shared.startCredentialCheck()
 

@@ -162,7 +162,7 @@ extension WebViewController: WKNavigationDelegate {
                             self.password=passwords[0]
                         }
                         else {
-                            TCSLogWithMark("password not set. Found: \(ids)")
+                            TCSLogErrorWithMark("password not set. Found: \(ids)")
                             return
 
                         }
@@ -196,7 +196,7 @@ extension WebViewController: WKNavigationDelegate {
         }
 
         guard let pathURL = pathURL else {
-            TCSLogWithMark("get_pw.js not found")
+            TCSLogErrorWithMark("get_pw.js not found")
             return
         }
 
@@ -222,7 +222,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        TCSLogWithMark(error.localizedDescription)
+        TCSLogErrorWithMark(error.localizedDescription)
 
 
     }
@@ -280,7 +280,7 @@ extension WebViewController: WKNavigationDelegate {
 extension WebViewController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
-        TCSLogWithMark("authFailure: \(message)")
+        TCSLogErrorWithMark("authFailure: \(message)")
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
 
     }

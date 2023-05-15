@@ -43,7 +43,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
             TCSLog("Setting up a guest account")
             
             guard let password = passwordContext else {
-                TCSLog("No username, denying login")
+                TCSLogErrorWithMark("No username, denying login")
                 denyLogin()
                 return
             }
@@ -77,7 +77,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
             //            }
             
             guard let uid = findFirstAvaliableUID() else {
-                TCSLog("Could not find an available UID")
+                TCSLogErrorWithMark("Could not find an available UID")
                 return
             }
             
@@ -141,7 +141,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
                     }
                     catch {
-                        TCSLogWithMark("error: \(error.localizedDescription)")
+                        TCSLogErrorWithMark("error: \(error.localizedDescription)")
                     }
                 }
             }

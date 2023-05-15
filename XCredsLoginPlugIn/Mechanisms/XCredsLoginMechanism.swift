@@ -9,6 +9,34 @@ import Cocoa
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {
         super.init(mechanism: mechanism)
+        let allBundles = Bundle.allBundles
+
+
+
+        for currentBundle in allBundles {
+            if currentBundle.bundlePath.contains("XCreds") {
+                let infoPlist = currentBundle.infoDictionary
+                if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+                    TCSLogInfoWithMark("------------------------------------------------------------------")
+                    TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
+                    if UserDefaults.standard.bool(forKey: "showDebug")==false {
+                        TCSLogInfoWithMark("Log showing only basic info and errors.")
+                        TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
+                        TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
+                    }
+                    else {
+                        TCSLogInfoWithMark("To disable verbose logging:")
+                        TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
+
+                    }
+
+                    TCSLogInfoWithMark("------------------------------------------------------------------")
+                    break
+                }
+
+            }
+        }
+
 
     }
     override func reload() {
@@ -23,13 +51,13 @@ import Cocoa
         }
 
         os_log("Checking for autologin.", log: checkADLog, type: .default)
-        if FileManager.default.fileExists(atPath: "/tmp/nolorun") {
+        if FileManager.default.fileExists(atPath: "/tmp/xcredsrun") {
             os_log("XCreds has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
             return false
         }
 
         os_log("XCreds, trying autologin", log: checkADLog, type: .debug)
-        try? "Run Once".write(to: URL.init(fileURLWithPath: "/tmp/nolorun"), atomically: true, encoding: String.Encoding.utf8)
+        try? "Run Once".write(to: URL.init(fileURLWithPath: "/tmp/xcredsrun"), atomically: true, encoding: String.Encoding.utf8)
 
         if let username = getContextString(type: "fvusername") {
             TCSLogWithMark("got username = \(username)")
