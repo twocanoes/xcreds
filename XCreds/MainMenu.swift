@@ -24,7 +24,7 @@ class MainMenu: NSObject, NSMenuDelegate {
 
     // windows
 
-    var webView: WebViewController?
+    var webView: WebViewWindowController?
     var prefsWindow: PreferencesWindowController?
 
     override init() {

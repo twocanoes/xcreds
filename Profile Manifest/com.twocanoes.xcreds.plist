@@ -20,6 +20,7 @@
 	<date>2022-09-01T15:08:44Z</date>
 	<key>pfm_subkeys</key>
 	<array>
+		<string></string>
 		<dict>
 			<key>pfm_default</key>
 			<string>Configures XCreds configuration preferences</string>
@@ -122,6 +123,18 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>PayloadOrganization</string>
 			<key>pfm_title</key>
 			<string>Payload Organization</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>The desired AD domain</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#addomain</string>
+			<key>pfm_name</key>
+			<string>ADDomain</string>
+			<key>pfm_title</key>
+			<string>ADDomain</string>
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
@@ -748,6 +761,21 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<string>name</string>
+			<key>pfm_description</key>
+			<string>Script to override defaults. Must return valid property list with specified defaults. Script must exist at path ,be owned by root and only writable by root.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#settingsoverridescriptpath</string>
+			<key>pfm_name</key>
+			<string>settingsOverrideScriptPath</string>
+			<key>pfm_title</key>
+			<string>Override Script Path</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		
 	</array>
 	<key>pfm_targets</key>
 	<array>

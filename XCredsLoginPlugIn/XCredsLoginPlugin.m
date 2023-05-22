@@ -16,6 +16,7 @@ XCredsLoginMechanism *loginWindowMechanism = nil;
 
 
 static OSStatus PluginDestroy(AuthorizationPluginRef inPlugin) {
+
     [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin PluginDestroy:inPlugin];
@@ -26,7 +27,7 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
                                 AuthorizationMechanismId mechanismId,
                                 AuthorizationMechanismRef *outMechanism) {
 
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanismId] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismCreate:inPlugin
                                       EngineRef:inEngine
@@ -35,19 +36,26 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
 }
 
 static OSStatus MechanismInvoke(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+//    mechanism->fMechID = mechanismId;
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismInvoke:inMechanism];
 }
 
 static OSStatus MechanismDeactivate(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismDeactivate:inMechanism];
 }
 
 static OSStatus MechanismDestroy(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismDestroy:inMechanism];
 }
@@ -127,7 +135,9 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
 
     if (mechanism->fLoginWindow) {
-        loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
+        if (loginWindowMechanism==nil){
+            loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
+        }
         [loginWindowMechanism run];
 
     }

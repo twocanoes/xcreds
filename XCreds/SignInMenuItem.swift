@@ -38,7 +38,7 @@ class SignInMenuItem: NSMenuItem {
 
         if UserDefaults.standard.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && UserDefaults.standard.value(forKey: PrefKeys.clientID.rawValue) != nil {
             if (mainMenu.webView==nil){
-                mainMenu.webView = WebViewController()
+                mainMenu.webView = WebViewWindowController()
             }
             mainMenu.webView?.window!.forceToFrontAndFocus(nil)
             mainMenu.webView?.loadPage()

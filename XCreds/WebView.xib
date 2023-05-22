@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="WebViewWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
                 <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="X1r-3u-usj"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>

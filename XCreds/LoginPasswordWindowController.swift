@@ -18,7 +18,9 @@ class LoginPasswordWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        if UserDefaults.standard.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue) != nil{
+        if DefaultsOverride.standard.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+            DefaultsOverride.standard.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
+        {
             resetButton.isHidden=false
         }
         else {

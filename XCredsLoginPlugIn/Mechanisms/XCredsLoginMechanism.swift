@@ -2,16 +2,36 @@ import Cocoa
 
 
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
-    @objc var loginWindow: XCredsLoginMechanism!
-    @objc var webViewController: LoginWebViewController!
+//    @objc var loginWindow: XCredsLoginMechanism!
+    var loginWebViewWindowController: LoginWebViewWindowController?
+    @objc var signInWindowController: SignInWindowController?
+    var loginWindowWindowController:NSWindowController?
     @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
+
+    enum LoginWindowType {
+        case cloud
+        case usernamePassword
+    }
     let checkADLog = "checkADLog"
-
+    var loginWindowType = LoginWindowType.cloud
     override init(mechanism: UnsafePointer<MechanismRecord>) {
-        super.init(mechanism: mechanism)
         let allBundles = Bundle.allBundles
+        //NSViewController(nibName: NSNib.Name("LoginWindow"), bundle: nil)
+        super.init(mechanism: mechanism)
+//        SwitchLoginWindow
+        TCSLogWithMark("Setting up notification for switch")
+        NotificationCenter.default.addObserver(forName: Notification.Name("SwitchLoginWindow"), object: nil, queue: nil) { notification in
 
+            TCSLogWithMark("switch pressed")
 
+            switch self.loginWindowType {
+
+            case .cloud:
+                self.showLoginWindowType(loginWindowType: .usernamePassword)
+            case .usernamePassword:
+                self.showLoginWindowType(loginWindowType: .cloud)
+            }
+        }
 
         for currentBundle in allBundles {
             if currentBundle.bundlePath.contains("XCreds") {
@@ -41,7 +61,7 @@ import Cocoa
     }
     override func reload() {
         TCSLogWithMark("reload in controller")
-        webViewController.loadPage()
+        loginWebViewWindowController?.loadPage()
     }
     func useAutologin() -> Bool {
 
@@ -125,6 +145,35 @@ import Cocoa
             allowLogin()
             return
         }
+        showLoginWindowType(loginWindowType: .cloud)
+//        if (false){
+//
+//            os_log("Activating app", log: checkADLog, type: .debug)
+//            NSApp.activate(ignoringOtherApps: true)
+//            os_log("Loading XIB", log: checkADLog, type: .debug)
+//            signIn = SignIn(windowNibName: NSNib.Name("SignIn"))
+//            os_log("Set mech for loginwindow", log: checkADLog, type: .debug)
+//            signIn.mech = mech
+////            if let domain = self.managedDomain {
+////                os_log("Set managed domain for loginwindow", log: checkADLog, type: .debug)
+////                signIn.domainName = domain.uppercased()
+////            }
+////            if let isSSLRequired = self.isSSLRequired {
+////                os_log("Set SSL required", log: checkADLog, type: .debug)
+////                signIn.isSSLRequired = isSSLRequired
+////            }
+//            guard signIn.window != nil else {
+//                os_log("Could not create login window UI", log: checkADLog, type: .default)
+//                return
+//            }
+//            os_log("Displaying window", log: checkADLog, type: .debug)
+//            if getManagedPreference(key: .NormalWindowLevel) as? Bool == false  {
+//                NSApp.runModal(for: signIn.window!)
+//            }
+//
+//            os_log("CheckAD mech complete", log: checkADLog, type: .debug)
+//            return
+//        }
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
@@ -139,13 +188,8 @@ import Cocoa
 
         NSApp.activate(ignoringOtherApps: true)
 
-        webViewController = LoginWebViewController(windowNibName: NSNib.Name("LoginWebView"))
 
-        guard webViewController.window != nil else {
-            TCSLogWithMark("could not create xcreds window")
-            return
-        }
-        webViewController.delegate=self
+
 
         loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
 
@@ -171,5 +215,51 @@ import Cocoa
         loginWindowControlsWindowController.close()
         TCSLog("***************** DENYING LOGIN ********************");
         super.denyLogin()
+    }
+
+    func showLoginWindowType(loginWindowType:LoginWindowType)  {
+        TCSLogWithMark()
+        switch loginWindowType {
+
+        case .cloud:
+            self.loginWindowType = LoginWindowType.cloud
+
+            if signInWindowController != nil {
+                signInWindowController?.window?.orderOut(self)
+            }
+            if loginWebViewWindowController==nil{
+                loginWebViewWindowController = LoginWebViewWindowController(windowNibName: "LoginWebViewController")
+            }
+            guard let loginWebViewWindowController = loginWebViewWindowController else {
+                TCSLogWithMark("could not create webViewController")
+                return
+            }
+            guard loginWebViewWindowController.window != nil else {
+                TCSLogWithMark("could not create webViewController.window")
+                return
+            }
+            loginWebViewWindowController.delegate=self
+
+            loginWebViewWindowController.window?.orderFrontRegardless()
+        case .usernamePassword:
+
+            if loginWebViewWindowController != nil {
+                loginWebViewWindowController?.window?.orderOut(self)
+            }
+
+            self.loginWindowType = .usernamePassword
+
+            if signInWindowController==nil{
+                TCSLogWithMark("Creating signInWindowController")
+                signInWindowController = SignInWindowController(windowNibName: NSNib.Name("LocalUsersViewController"))
+            }
+            if let signInWindowController = signInWindowController {
+                signInWindowController.delegate=self
+                signInWindowController.window?.orderFrontRegardless()
+            }
+
+        }
+
+
     }
 }

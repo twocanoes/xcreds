@@ -9,7 +9,7 @@ import Cocoa
 
 class DefaultsHelper: NSObject {
     static func backgroundImage(includeDefault:Bool=true) -> NSImage? {
-        if let imagePathURL = UserDefaults.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+        if let imagePathURL = DefaultsOverride.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
 
             return image
 
@@ -21,11 +21,21 @@ class DefaultsHelper: NSObject {
                 if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
                     TCSLogWithMark()
 
-                    let image = NSImage.init(byReferencingFile: imagePath)
+                    if FileManager.default.fileExists(atPath: imagePath){
+                        let image = NSImage.init(byReferencingFile: imagePath)
+                        TCSLogWithMark()
 
-                    if let image = image {
-                        return image
+                        if let image = image {
+                            return image
+                        }
                     }
+                    else {
+                        TCSLogWithMark("No image found at \(imagePath)")
+                    }
+
+                    TCSLogWithMark()
+
+
                     break
 
                 }

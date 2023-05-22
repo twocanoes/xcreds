@@ -12,8 +12,7 @@ import OIDCLite
 import Network
 import OpenDirectory
 
-class LoginWebViewController: WebViewController {
-
+class LoginWebViewWindowController: WebViewWindowController {
 
     let uiLog = "uiLog"
     let monitor = NWPathMonitor()
@@ -21,6 +20,10 @@ class LoginWebViewController: WebViewController {
     var resolutionObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
+
+    @objc override var windowNibName: NSNib.Name {
+        return NSNib.Name("LoginWebViewController")
+    }
 
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -101,7 +104,7 @@ class LoginWebViewController: WebViewController {
 
 
             let backgroundImage = DefaultsHelper.backgroundImage()
-
+            TCSLogWithMark()
             if let backgroundImage = backgroundImage {
                 backgroundImage.size=screenRect.size
                 self.backgroundImageView.image=backgroundImage
@@ -110,9 +113,9 @@ class LoginWebViewController: WebViewController {
                 self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
             }
-
+            TCSLogWithMark()
             self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
-
+            TCSLogWithMark()
 //            BackgroundImage
 
 
@@ -122,9 +125,9 @@ class LoginWebViewController: WebViewController {
 //
     }
 
-    @objc override var windowNibName: NSNib.Name {
-        return NSNib.Name("LoginWebView")
-    }
+//    @objc override var windowNibName: NSNib.Name {
+//        return NSNib.Name("LoginWebView")
+//    }
     func loginTransition() {
 
         let screenRect = NSScreen.screens[0].frame

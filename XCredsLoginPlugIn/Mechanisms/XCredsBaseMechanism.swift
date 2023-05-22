@@ -7,6 +7,7 @@ protocol XCredsMechanismProtocol {
     func setContextString(type: String, value: String)
     func setHint(type: HintType, hint: Any)
     func reload()
+    func run()
 }
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
     func reload() {
@@ -57,7 +58,7 @@ protocol XCredsMechanismProtocol {
             guard let firstName = getHint(type: .firstName) as? String else {
                 return ""
             }
-            os_log("Computed nomadFirst accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
+            os_log("Computed firstName accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
             return firstName
         }
     }
@@ -67,7 +68,7 @@ protocol XCredsMechanismProtocol {
             guard let lastName = getHint(type: .lastName) as? String else {
                 return ""
             }
-            os_log("Computed nomadLast accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
+            os_log("Computed lastName accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
             return lastName
         }
     }

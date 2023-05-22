@@ -10,7 +10,7 @@ import Cocoa
 import WebKit
 import OIDCLite
 
-class WebViewController: NSWindowController {
+class WebViewWindowController: NSWindowController {
 
     @objc override var windowNibName: NSNib.Name {
         return NSNib.Name("WebView")
@@ -97,7 +97,7 @@ TCSLogWithMark()
     }
 }
 
-extension WebViewController: WKNavigationDelegate {
+extension WebViewWindowController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
@@ -277,7 +277,7 @@ extension WebViewController: WKNavigationDelegate {
 
 }
 
-extension WebViewController: OIDCLiteDelegate {
+extension WebViewWindowController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
         TCSLogErrorWithMark("authFailure: \(message)")

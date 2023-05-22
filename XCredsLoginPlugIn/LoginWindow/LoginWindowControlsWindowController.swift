@@ -208,14 +208,16 @@ class LoginWindowControlsWindowController: NSWindowController {
         delegate.allowLogin()
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
-        TCSLogWithMark("resetting to standard login window")
-        guard let delegate = delegate else {
-            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
-            return
-        }
-        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+        TCSLogWithMark("switch login window")
 
-        delegate.allowLogin()
+        NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
+//        guard let delegate = delegate else {
+//            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
+//            return
+//        }
+//        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+
+//        delegate.allowLogin()
     }
 
 

@@ -10,10 +10,10 @@ import SystemConfiguration
 import SecurityFoundation
 import OpenDirectory
 
-enum DSQueryableErrors: Error {
-    case notLocalUser
-    case multipleUsersFound
-}
+//enum DSQueryableErrors: Error {
+//    case notLocalUser
+//    case multipleUsersFound
+//}
 
 enum PasswordError: Error, CustomStringConvertible {
     case itemNotFound(String)
@@ -102,36 +102,30 @@ class PasswordUtils: NSObject {
         // Getting the list of secure token enabled users
 //        let secureTokenUsers = GetSecureTokenUserList()
 
-        if let scriptPath = UserDefaults.standard.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
-            TCSLogWithMark("running script \(scriptPath)")
-            let json = cliTask(scriptPath)
-            if let data = json.data(using: .utf8) {
-                let jsonResultDict = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
 
-                if let jsonResultDict=jsonResultDict, let username = jsonResultDict["username"] as? String, let password = jsonResultDict["password"] as? String{
-                    let secureTokenCreds = SecureTokenCredential()
-                    secureTokenCreds.username=username
-                    secureTokenCreds.password=password
-                    return secureTokenCreds
-//                    secureTokenCreds = ["username":username,
-//                                            "password":password]
-
-//                    if(PasswordUtils.verifyUser(name: username, auth: password)==false){
-//                        TCSLogWithMark("invalid admin password")
-//                        resetButton.isHidden=true
-//                    }
-//                    else {
-//                        TCSLogWithMark("valid admin password")
-//                        resetButton.isHidden=false
-//                        adminPassword=password
-//                        adminUsername=username
-//
-//                    }
-                }
-
-            }
+        if let username = DefaultsOverride.standard.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standard.string(forKey: PrefKeys.localAdminPassword.rawValue){
+            let secureTokenCreds = SecureTokenCredential()
+            secureTokenCreds.username=username
+            secureTokenCreds.password=password
+            return secureTokenCreds
 
         }
+//        if let scriptPath = UserDefaults.standard.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
+//            TCSLogWithMark("running script \(scriptPath)")
+//            let json = cliTask(scriptPath)
+//            if let data = json.data(using: .utf8) {
+//                let jsonResultDict = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
+//
+//                if let jsonResultDict=jsonResultDict, let username = jsonResultDict["username"] as? String, let password = jsonResultDict["password"] as? String{
+//                    let secureTokenCreds = SecureTokenCredential()
+//                    secureTokenCreds.username=username
+//                    secureTokenCreds.password=password
+//                    return secureTokenCreds
+//                }
+//
+//            }
+//
+//        }
         return nil
 //        TCSLog("secureTokenManagementUsername is \(secureTokenManagementUsername)")
 ////
@@ -154,6 +148,7 @@ class PasswordUtils: NSObject {
 
     class func verifyUser(name: String, auth: String) -> Bool {
         os_log("Finding user record", log: noLoMechlog, type: .debug)
+        TCSLogWithMark("searching for user \(name) and password with count \(auth.count)")
         var records = [ODRecord]()
         let odsession = ODSession.default()
         var isValid = false

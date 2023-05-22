@@ -38,6 +38,7 @@ class KeychainUtil {
     let serviceName = "xcreds"
     var passLength: UInt32 = 0
     var passPtr: UnsafeMutableRawPointer? = nil
+    var password = "********"
 
     var myKeychainItem: SecKeychainItem?
 
@@ -46,6 +47,12 @@ class KeychainUtil {
     }
 
     // find if there is an existing account password and return it or throw
+    func scrub() {
+        // overwrite any variables we need to scrub
+        password = "*********"
+        passPtr?.deallocate()
+        passPtr = nil
+    }
 
     func findPassword(_ name: String) throws -> String {
 

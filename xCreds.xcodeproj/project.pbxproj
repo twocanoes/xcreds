@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		760418D12A1332210051411B /* SignIn.xib in Resources */ = {isa = PBXBuildFile; fileRef = 760418CE2A1332210051411B /* SignIn.xib */; };
+		760418D22A1332210051411B /* SignInWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418CF2A1332210051411B /* SignInWindowController.swift */; };
+		760418D32A1332210051411B /* NoLoWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D02A1332210051411B /* NoLoWindow.swift */; };
+		760418D52A1332520051411B /* DS+AD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D42A1332520051411B /* DS+AD.swift */; };
+		760418D72A1332660051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
+		760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D82A1332770051411B /* SystemInfoHelper.swift */; };
+		760418E02A133A370051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
+		760418E22A133C960051411B /* NoMAD_ADAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 760418E12A133C960051411B /* NoMAD_ADAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		760418E32A133CA30051411B /* NoMAD_ADAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760418E12A133C960051411B /* NoMAD_ADAuth.framework */; };
 		7611CEC0288B75140063A644 /* XCredsCreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CEBF288B75140063A644 /* XCredsCreateUser.swift */; };
 		7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */; };
 		7613FDF7289E114F00340CCD /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
@@ -16,7 +25,6 @@
 		76319360287D22C700D36BF7 /* authrights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7631935F287D22C700D36BF7 /* authrights.swift */; };
 		76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319365287D24E100D36BF7 /* ArgumentParser */; };
 		76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319368287D24F600D36BF7 /* ArgumentParser */; };
-		7631936B287D25E400D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 7631936A287D25E400D36BF7 /* ArgumentParser */; };
 		7631936C287D29B700D36BF7 /* AuthorizationDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */; };
 		7631936D287D2A6200D36BF7 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* Logger.swift */; };
 		7631936E287D2AB100D36BF7 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
@@ -37,20 +45,21 @@
 		764D812F284C06AB00B3EE54 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
 		764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */; };
 		764D8133284D14A500B3EE54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.rtf */; };
+		7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDEC2A1451590075980B /* LocalUsersViewController.xib */; };
+		7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDF62A1474330075980B /* LoginWebViewController.xib */; };
 		7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */; };
 		766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */; };
 		766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
-		766355CC2870E9AD002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
+		766355CC2870E9AD002E3867 /* WebViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */; };
 		766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 766355CD2870E9D3002E3867 /* OIDCLite */; };
 		766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */; };
 		766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */; };
 		766355D42870F29A002E3867 /* TestWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355D22870F29A002E3867 /* TestWindowController.swift */; };
 		766355D52870F29A002E3867 /* TestWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766355D32870F29A002E3867 /* TestWindowController.xib */; };
 		766355D928711C51002E3867 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
-		766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355DA287132E9002E3867 /* LoginWebViewController.swift */; };
-		766355DC287133C7002E3867 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebView.swift */; };
-		766355DE28713486002E3867 /* LoginWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766355DD28713485002E3867 /* LoginWebView.xib */; };
+		766355DB287132E9002E3867 /* LoginWebViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */; };
+		766355DC287133C7002E3867 /* WebViewWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */; };
 		766355E328713C4A002E3867 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		766355E5287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
 		766355E6287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
@@ -71,6 +80,8 @@
 		766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC43829D3AED2009BC526 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
 		766F4C4B2883AFD90021F548 /* pleaseWaitGraphic.png in Resources */ = {isa = PBXBuildFile; fileRef = 766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */; };
+		766FD60D2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
+		766FD60E2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
@@ -86,10 +97,12 @@
 		769032362890EAB10043E9F3 /* WifiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7677908528908E40004E7085 /* WifiWindowController.xib */; };
 		769032372890EB350043E9F3 /* WifiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908328908E40004E7085 /* WifiWindowController.swift */; };
 		76A8A4E32A0DF7C700AA6054 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
+		76AB89DF2A12FAD800529D90 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89DE2A12FAD800529D90 /* OIDCLite */; };
+		76AB89E12A12FAF900529D90 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89E02A12FAF900529D90 /* OIDCLite */; };
+		76AB89E32A12FB4900529D90 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89E22A12FB4900529D90 /* ArgumentParser */; };
 		76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
 		76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
-		76B356DB29E9CA180037DDDB /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76B356DA29E9CA180037DDDB /* OIDCLite */; };
 		76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */; };
@@ -214,6 +227,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */,
+				760418E22A133C960051411B /* NoMAD_ADAuth.framework in Embed Frameworks */,
 				766CC42E29D3A3EC009BC526 /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -234,6 +248,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		760418CE2A1332210051411B /* SignIn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignIn.xib; sourceTree = "<group>"; };
+		760418CF2A1332210051411B /* SignInWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWindowController.swift; sourceTree = "<group>"; };
+		760418D02A1332210051411B /* NoLoWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoLoWindow.swift; sourceTree = "<group>"; };
+		760418D42A1332520051411B /* DS+AD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DS+AD.swift"; sourceTree = "<group>"; };
+		760418D62A1332660051411B /* DSQueryable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSQueryable.swift; sourceTree = "<group>"; };
+		760418D82A1332770051411B /* SystemInfoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemInfoHelper.swift; sourceTree = "<group>"; };
+		760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCheckAndMigrate.swift; sourceTree = "<group>"; };
+		760418DC2A1334210051411B /* NoLoMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoLoMechanism.swift; sourceTree = "<group>"; };
+		760418DE2A1334D00051411B /* CheckAD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckAD.swift; sourceTree = "<group>"; };
+		760418E12A133C960051411B /* NoMAD_ADAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NoMAD_ADAuth.framework; path = Carthage/Build/Mac/NoMAD_ADAuth.framework; sourceTree = "<group>"; };
 		7611CEBF288B75140063A644 /* XCredsCreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsCreateUser.swift; sourceTree = "<group>"; };
 		7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsEnableFDE.swift; sourceTree = "<group>"; };
 		7613FDF6289E114F00340CCD /* loadpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = loadpage.html; sourceTree = "<group>"; };
@@ -253,6 +277,8 @@
 		764D812E284C06AB00B3EE54 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = defaults.plist; sourceTree = "<group>"; };
 		764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMenuItem.swift; sourceTree = "<group>"; };
 		764D8132284D14A500B3EE54 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		7651EDEC2A1451590075980B /* LocalUsersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalUsersViewController.xib; sourceTree = "<group>"; };
+		7651EDF62A1474330075980B /* LoginWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginWebViewController.xib; sourceTree = "<group>"; };
 		7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBackground.png; sourceTree = "<group>"; };
 		766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XCredsLoginPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugIn/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
@@ -260,8 +286,7 @@
 		766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCredsLoginPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
 		766355D22870F29A002E3867 /* TestWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestWindowController.swift; path = XCredsLoginPlugIn/TestWindowController.swift; sourceTree = "<group>"; };
 		766355D32870F29A002E3867 /* TestWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TestWindowController.xib; path = XCredsLoginPlugIn/TestWindowController.xib; sourceTree = "<group>"; };
-		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugIn/LoginWindow/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
-		766355DD28713485002E3867 /* LoginWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginWebView.xib; path = XCredsLoginPlugIn/LoginWindow/LoginWebView.xib; sourceTree = SOURCE_ROOT; };
+		766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewWindowController.swift; path = XCredsLoginPlugIn/LoginWindow/LoginWebViewWindowController.swift; sourceTree = SOURCE_ROOT; };
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
 		76673CD429D3D5F500452848 /* LicenseChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseChecker.swift; sourceTree = "<group>"; };
@@ -269,6 +294,7 @@
 		766CC42229D3A321009BC526 /* ProductLicense.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ProductLicense.framework; path = Carthage/Build/Mac/ProductLicense.framework; sourceTree = "<group>"; };
 		766CC43729D3AED2009BC526 /* errorpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = errorpage.html; sourceTree = "<group>"; };
 		766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pleaseWaitGraphic.png; sourceTree = "<group>"; };
+		766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsOverride.swift; sourceTree = "<group>"; };
 		767116A6284AABC500CCD6FF /* NotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyManager.swift; sourceTree = "<group>"; };
 		767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		767116AB284AB4C000CCD6FF /* PasswordUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
@@ -336,7 +362,7 @@
 		76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefKeys.swift; sourceTree = "<group>"; };
 		76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Window+ForceToFront.swift"; sourceTree = "<group>"; };
 		76EE06B127FD1E24009E0F3A /* WebView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
-		76EE06B327FD1E5F009E0F3A /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWindowController.swift; sourceTree = "<group>"; };
 		76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMenuItem.swift; sourceTree = "<group>"; };
@@ -352,7 +378,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7631936B287D25E400D36BF7 /* ArgumentParser in Frameworks */,
+				76AB89E32A12FB4900529D90 /* ArgumentParser in Frameworks */,
+				76AB89E12A12FAF900529D90 /* OIDCLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				766CC42D29D3A3EC009BC526 /* ProductLicense.framework in Frameworks */,
+				760418E32A133CA30051411B /* NoMAD_ADAuth.framework in Frameworks */,
 				766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */,
 				766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */,
 			);
@@ -382,7 +410,7 @@
 				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
-				76B356DB29E9CA180037DDDB /* OIDCLite in Frameworks */,
+				76AB89DF2A12FAD800529D90 /* OIDCLite in Frameworks */,
 				76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */,
 				76DD6D17285997F300A700ED /* OIDCLite in Frameworks */,
 			);
@@ -391,6 +419,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		760418CC2A1331710051411B /* NomadLogin */ = {
+			isa = PBXGroup;
+			children = (
+				760418DE2A1334D00051411B /* CheckAD.swift */,
+				760418DC2A1334210051411B /* NoLoMechanism.swift */,
+				760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */,
+				760418D82A1332770051411B /* SystemInfoHelper.swift */,
+				760418D62A1332660051411B /* DSQueryable.swift */,
+				760418D42A1332520051411B /* DS+AD.swift */,
+				760418CD2A1332210051411B /* UI */,
+			);
+			path = NomadLogin;
+			sourceTree = "<group>";
+		};
+		760418CD2A1332210051411B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				760418CE2A1332210051411B /* SignIn.xib */,
+				760418CF2A1332210051411B /* SignInWindowController.swift */,
+				760418D02A1332210051411B /* NoLoWindow.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		7631935E287D22C700D36BF7 /* authrights */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,9 +511,9 @@
 				76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */,
 				76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */,
 				76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */,
-				766355DA287132E9002E3867 /* LoginWebViewController.swift */,
+				766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */,
 				766355E128713C47002E3867 /* LoginWindow.swift */,
-				766355DD28713485002E3867 /* LoginWebView.xib */,
+				7651EDEC2A1451590075980B /* LocalUsersViewController.xib */,
 				76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */,
 			);
 			path = LoginWindow;
@@ -516,6 +568,8 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				760418E12A133C960051411B /* NoMAD_ADAuth.framework */,
+				760418CC2A1331710051411B /* NomadLogin */,
 				76873E2E2A107736001418A9 /* DefaultsHelper.swift */,
 				76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */,
 				76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */,
@@ -523,6 +577,7 @@
 				7683973029A854EC003D9B9F /* NSImage+String.swift */,
 				76DB5CF32A09AE9A0014F8E1 /* get_pw.js */,
 				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
+				766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */,
 				7675444428918CD100613840 /* Info.plist */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
 				76B040A328EFC788002A289B /* Helper+JWTDecode.swift */,
@@ -565,13 +620,14 @@
 				764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */,
 				764D8132284D14A500B3EE54 /* Credits.rtf */,
 				764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */,
+				7651EDF62A1474330075980B /* LoginWebViewController.xib */,
 				767116B2284B045800CCD6FF /* KeychainUtil.swift */,
 				767116AD284AB59400CCD6FF /* SecurityPrivateAPI.h */,
 				76EE06AB27FD1D92009E0F3A /* TokenManager.swift */,
 				76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */,
 				764D8128284BCAB100B3EE54 /* Window+Shake.swift */,
 				76EE06B127FD1E24009E0F3A /* WebView.xib */,
-				76EE06B327FD1E5F009E0F3A /* WebView.swift */,
+				76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */,
 				766355E4287148C1002E3867 /* Tokens.swift */,
 				767116AB284AB4C000CCD6FF /* PasswordUtils.swift */,
 				76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */,
@@ -631,7 +687,8 @@
 			);
 			name = authrights;
 			packageProductDependencies = (
-				7631936A287D25E400D36BF7 /* ArgumentParser */,
+				76AB89E02A12FAF900529D90 /* OIDCLite */,
+				76AB89E22A12FB4900529D90 /* ArgumentParser */,
 			);
 			productName = authrights;
 			productReference = 7631935D287D22C700D36BF7 /* authrights */;
@@ -697,7 +754,7 @@
 				76DD6D16285997F300A700ED /* OIDCLite */,
 				76319365287D24E100D36BF7 /* ArgumentParser */,
 				76319368287D24F600D36BF7 /* ArgumentParser */,
-				76B356DA29E9CA180037DDDB /* OIDCLite */,
+				76AB89DE2A12FAD800529D90 /* OIDCLite */,
 			);
 			productName = xCreds;
 			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
@@ -742,8 +799,7 @@
 			mainGroup = 76EE069127FD1D00009E0F3A;
 			packageReferences = (
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				76319367287D24F600D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */,
+				76AB89DD2A12FAD800529D90 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
@@ -768,16 +824,18 @@
 				7613FDF7289E114F00340CCD /* loadpage.html in Resources */,
 				7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */,
 				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
+				7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */,
 				761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */,
 				766CC43829D3AED2009BC526 /* errorpage.html in Resources */,
+				760418D12A1332210051411B /* SignIn.xib in Resources */,
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
 				76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */,
 				76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */,
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
 				76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */,
 				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
-				766355DE28713486002E3867 /* LoginWebView.xib in Resources */,
 				76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */,
+				7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */,
 				7677908828908E40004E7085 /* WifiWindowController.xib in Resources */,
 				76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */,
 				76DB5CF52A09AE9A0014F8E1 /* get_pw.js in Resources */,
@@ -843,9 +901,12 @@
 				76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
+				766FD60E2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */,
 				7632E3A12873497C00E37923 /* LogShim.swift in Sources */,
+				760418D52A1332520051411B /* DS+AD.swift in Sources */,
 				76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */,
 				766355CF2870E9E7002E3867 /* PrefKeys.swift in Sources */,
+				760418D72A1332660051411B /* DSQueryable.swift in Sources */,
 				761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */,
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
 				76873E302A107736001418A9 /* DefaultsHelper.swift in Sources */,
@@ -862,8 +923,11 @@
 				76B882AF29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */,
 				76BEF7F82872504C0013E2A1 /* ContextAndHintHandling.swift in Sources */,
 				766355E6287148C1002E3867 /* Tokens.swift in Sources */,
-				766355CC2870E9AD002E3867 /* WebView.swift in Sources */,
+				766355CC2870E9AD002E3867 /* WebViewWindowController.swift in Sources */,
+				760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */,
 				76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */,
+				760418D22A1332210051411B /* SignInWindowController.swift in Sources */,
+				760418D32A1332210051411B /* NoLoWindow.swift in Sources */,
 				7611CEC0288B75140063A644 /* XCredsCreateUser.swift in Sources */,
 				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
 				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
@@ -879,7 +943,7 @@
 				7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */,
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
 				76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
-				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
+				766355DB287132E9002E3867 /* LoginWebViewWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -913,6 +977,7 @@
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
 				76CB907B2880E41E00C70D0C /* LogShim.swift in Sources */,
 				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
+				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
 				76319373287E18BF00D36BF7 /* DataExtension.swift in Sources */,
 				76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */,
 				76EECD002875135900483C66 /* Logger.swift in Sources */,
@@ -930,6 +995,7 @@
 				76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */,
 				76ACEA7D2890EBF900216E6E /* WifiManager.swift in Sources */,
 				767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */,
+				766FD60D2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
 				76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				766355E5287148C1002E3867 /* Tokens.swift in Sources */,
@@ -940,7 +1006,7 @@
 				76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
-				766355DC287133C7002E3867 /* WebView.swift in Sources */,
+				766355DC287133C7002E3867 /* WebViewWindowController.swift in Sources */,
 				76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1025,7 +1091,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1062,7 +1128,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1127,7 +1193,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1163,7 +1229,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1312,7 +1378,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1347,7 +1413,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3726;
+				CURRENT_PROJECT_VERSION = 3909;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1442,20 +1508,12 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		76319367287D24F600D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */ = {
+		76AB89DD2A12FAD800529D90 /* XCRemoteSwiftPackageReference "OIDCLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/twocanoes/OIDCLite";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1471,19 +1529,23 @@
 			package = 76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
 		};
-		7631936A287D25E400D36BF7 /* ArgumentParser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 76319367287D24F600D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
-			productName = ArgumentParser;
-		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OIDCLite;
 		};
-		76B356DA29E9CA180037DDDB /* OIDCLite */ = {
+		76AB89DE2A12FAD800529D90 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76B356D929E9CA180037DDDB /* XCRemoteSwiftPackageReference "OIDCLite" */;
+			package = 76AB89DD2A12FAD800529D90 /* XCRemoteSwiftPackageReference "OIDCLite" */;
 			productName = OIDCLite;
+		};
+		76AB89E02A12FAF900529D90 /* OIDCLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OIDCLite;
+		};
+		76AB89E22A12FB4900529D90 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
 		};
 		76DD6D16285997F300A700ED /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;

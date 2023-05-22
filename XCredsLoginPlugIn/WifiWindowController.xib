@@ -28,7 +28,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="450" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
             <view key="contentView" id="82w-TR-3gA">
                 <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -125,7 +125,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="480" height="198"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
             <view key="contentView" id="Dza-jC-NB8">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -274,8 +274,8 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
-        <image name="NSStopProgressFreestandingTemplate" width="20" height="20"/>
+        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
+        <image name="NSStopProgressFreestandingTemplate" width="19" height="19"/>
         <image name="globe" catalog="system" width="15" height="15"/>
         <image name="wifi" catalog="system" width="17" height="13"/>
     </resources>
