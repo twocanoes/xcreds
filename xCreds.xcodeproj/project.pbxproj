@@ -81,7 +81,6 @@
 		766CC43829D3AED2009BC526 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
 		766F4C4B2883AFD90021F548 /* pleaseWaitGraphic.png in Resources */ = {isa = PBXBuildFile; fileRef = 766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */; };
 		766FD60D2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
-		766FD60E2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
 		767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A6284AABC500CCD6FF /* NotifyManager.swift */; };
 		767116A9284AAE2B00CCD6FF /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */; };
 		767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
@@ -148,6 +147,7 @@
 		76DC0A87288386FA007C42B2 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
 		76DC0A88288387D8007C42B2 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		76DD6D17285997F300A700ED /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76DD6D16285997F300A700ED /* OIDCLite */; };
+		76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
 		76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */; };
 		76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */; };
 		76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE069D27FD1D00009E0F3A /* AppDelegate.swift */; };
@@ -901,7 +901,7 @@
 				76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
-				766FD60E2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */,
+				76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */,
 				7632E3A12873497C00E37923 /* LogShim.swift in Sources */,
 				760418D52A1332520051411B /* DS+AD.swift in Sources */,
 				76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */,
@@ -1091,7 +1091,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1128,7 +1128,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1193,7 +1193,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1229,7 +1229,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1378,7 +1378,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1413,7 +1413,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3909;
+				CURRENT_PROJECT_VERSION = 3985;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

@@ -20,7 +20,6 @@
 	<date>2022-09-01T15:08:44Z</date>
 	<key>pfm_subkeys</key>
 	<array>
-		<string></string>
 		<dict>
 			<key>pfm_default</key>
 			<string>Configures XCreds configuration preferences</string>
@@ -775,7 +774,6 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
-		
 	</array>
 	<key>pfm_targets</key>
 	<array>

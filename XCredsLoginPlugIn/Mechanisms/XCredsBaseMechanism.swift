@@ -31,6 +31,7 @@ protocol XCredsMechanismProtocol {
         fatalError("superclass must implement")
     }
     func setupPrefs(){
+        TCSLogWithMark()
         UserDefaults.standard.addSuite(named: "com.twocanoes.xcreds")
         let defaultsPath = Bundle(for: type(of: self)).path(forResource: "defaults", ofType: "plist")
 

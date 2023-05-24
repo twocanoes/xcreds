@@ -7,87 +7,200 @@
 
 import Cocoa
 
-class DefaultsOverride: UserDefaults {
+public class DefaultsOverride: UserDefaults {
 
-    var cachedPrefs=Dictionary<String,Any>()
-    func refreshCachedPrefs()  {
+    static let standardOverride = DefaultsOverride()
+
+    private override init?(suiteName suitename: String?) {
+        TCSLogWithMark()
+        super.init(suiteName: suitename)
+        self.refreshCachedPrefs()
+    }
+    private convenience init() {
+        TCSLogWithMark()
+        self.init(suiteName: nil)!
+    }
+    var cachedPrefs=Dictionary<String, Any>()
+    @objc func refreshCachedPrefs()  {
+        TCSLogWithMark()
         cachedPrefs=Dictionary()
-        let prefScriptPath = super.string(forKey: PrefKeys.settingsOverrideScriptPath.rawValue)
-        if let prefScriptPath = prefScriptPath {
-            TCSLogErrorWithMark("Pref script defined at \(prefScriptPath)")
-            if FileManager.default.fileExists(atPath:prefScriptPath)==false{
-                TCSLogErrorWithMark("Pref script defined but does not exist")
+        let prefScriptPath = UserDefaults.standard.string(forKey: PrefKeys.settingsOverrideScriptPath.rawValue)
+        guard let prefScriptPath = prefScriptPath else {
+            TCSLogWithMark("no override defined")
+            return
+        }
+        TCSLogErrorWithMark("Pref script defined at \(prefScriptPath)")
+        if FileManager.default.fileExists(atPath:prefScriptPath)==false{
+            TCSLogErrorWithMark("Pref script defined but does not exist")
+            return
+        }
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: prefScriptPath)
+
+            guard let ownerID=attributes[.ownerAccountID] as? NSNumber else {
+                TCSLogErrorWithMark("Could not get owner id")
+                return
+            }
+            guard let permission = attributes[.posixPermissions] as? NSNumber else
+
+            {
+                TCSLogErrorWithMark("Could not get permission")
+                return
+
+            }
+            if ownerID.uintValue != 0 {
+                TCSLogErrorWithMark("override script is not owned by root. not running: \(ownerID.debugDescription)")
                 return
             }
 
-            if let attributes = try? FileManager.default.attributesOfFileSystem(forPath: prefScriptPath), let ownerID=attributes[.ownerAccountID] as? NSNumber,
-               let permission = attributes[.posixPermissions] as? NSNumber
-            {
+            let unixPermissions = permission.int16Value
 
-                if ownerID.uintValue != 0 {
-                    TCSLogErrorWithMark("override script is not owned by root. not running")
-                    return
-                }
+            if unixPermissions & 0x12 != 0 {
+                TCSLogErrorWithMark("override script cannot be writable by anyone besides root. not running: \(unixPermissions)")
+                return
 
-                let unixPermissions = permission.int16Value
+            }
+            
+            let scriptRes=cliTask(prefScriptPath)
 
-                if unixPermissions & 0x15 != 0 {
-                    TCSLogErrorWithMark("override script cannot be writable by anyone besides root. not running.")
-                    return
+            TCSLogWithMark(scriptRes)
+            if scriptRes.count==0{
+                TCSLogErrorWithMark("script did not return anything")
+                return
+            }
+            TCSLogWithMark()
+            guard let rawData = scriptRes.data(using: .utf8) else {
+                TCSLogErrorWithMark("could not convert raw data");
+                return
+            }
+            var format: PropertyListSerialization.PropertyListFormat = .xml
 
-                }
-                let scriptRes=cliTask(prefScriptPath)
+            TCSLogWithMark()
 
-                if scriptRes.count>0{
-                    let rawData = scriptRes.data(using: .utf8)
-                    var format: PropertyListSerialization.PropertyListFormat = .xml
+            do {
+                TCSLogWithMark()
+
+                /*
+                 guard  let propertyListObject = try PropertyListSerialization.propertyList(from: rawData, options: [], format: &format)  else {
+                     TCSLogErrorWithMark("could not turn to plist")
+                     return
+                 }
 
 
-                    var propertyListObject = [ String: [String]]()
+                 */
+                let propertyListObject = try PropertyListSerialization.propertyList(from: rawData, options: [], format: &format)
 
-                    do {
-                        propertyListObject = try PropertyListSerialization.propertyList(from: rawData!, options: [], format: &format) as! [ String: [String]]
-                    } catch {
-                        TCSLogErrorWithMark("Error converting script to property list: \(scriptRes)")
-                        return
-                    }
+                if let propertyListObject = propertyListObject as? [String: Any] {
                     cachedPrefs=propertyListObject
 
                 }
-
+                else {
+                    TCSLogWithMark("Could not convert to plist")
+                }
+            } catch {
+                TCSLogErrorWithMark("Error converting script to property list: \(scriptRes)")
+                return
             }
+            TCSLogWithMark()
 
+        }
+        
+        catch {
+            
+            TCSLogErrorWithMark(error.localizedDescription)
         }
 
 
+
+
     }
-    override func string(forKey defaultName: String) -> String? {
-        return super.string(forKey: defaultName)
+    override public func string(forKey defaultName: String) -> String? {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? String{
+            return defaultName
+        }
+        return UserDefaults.standard.string(forKey: defaultName)
     }
-    override func object(forKey defaultName: String) -> Any? {
-        return super.object(forKey: defaultName)
+    override public func object(forKey defaultName: String) -> Any? {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName]{
+            return defaultName
+        }
+
+        return UserDefaults.standard.object(forKey: defaultName)
     }
 
-    override func array(forKey defaultName: String) -> [Any]? {
-        return super.array(forKey: defaultName)
+    override public func array(forKey defaultName: String) -> [Any]? {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? [Any]{
+            return defaultName
+        }
+
+        return UserDefaults.standard.array(forKey: defaultName)
     }
-    override func data(forKey defaultName: String) -> Data? {
-        return super.data(forKey: defaultName)
+    override public func data(forKey defaultName: String) -> Data? {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? Data {
+            return defaultName
+        }
+
+        return UserDefaults.standard.data(forKey: defaultName)
     }
-    override func integer(forKey defaultName: String) -> Int {
-        return super.integer(forKey: defaultName)
+    override public func integer(forKey defaultName: String) -> Int {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? Int {
+            return defaultName
+        }
+
+        return UserDefaults.standard.integer(forKey: defaultName)
     }
-    override func float(forKey defaultName: String) -> Float {
-        return super.float(forKey: defaultName)
+    override public func float(forKey defaultName: String) -> Float {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? Float {
+            return defaultName
+        }
+
+        return UserDefaults.standard.float(forKey: defaultName)
     }
-    override func double(forKey defaultName: String) -> Double {
-        return super.double(forKey: defaultName)
+    override public func double(forKey defaultName: String) -> Double {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? Double {
+            return defaultName
+        }
+
+        return UserDefaults.standard.double(forKey: defaultName)
     }
-    override func bool(forKey defaultName: String) -> Bool {
-        return super.bool(forKey: defaultName)
+    override public func bool(forKey defaultName: String) -> Bool {
+        TCSLogWithMark()
+
+        if cachedPrefs.count != 0 {
+            TCSLogWithMark("got prefs")
+
+        }
+        else {
+            TCSLogWithMark("No prefs")
+        }
+        if let defaultName = cachedPrefs[defaultName] as? Bool {
+            return defaultName
+        }
+
+        return UserDefaults.standard.bool(forKey: defaultName)
     }
-    override func url(forKey defaultName: String) -> URL? {
-        return super.url(forKey: defaultName)
+    override public func url(forKey defaultName: String) -> URL? {
+        TCSLogWithMark()
+
+        if let defaultName = cachedPrefs[defaultName] as? URL {
+            return defaultName
+        }
+
+        return UserDefaults.standard.url(forKey: defaultName)
     }
 
 

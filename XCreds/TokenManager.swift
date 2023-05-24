@@ -35,7 +35,7 @@ class TokenManager {
 
     static let shared = TokenManager()
 
-    let defaults = UserDefaults.standard
+    let defaults = DefaultsOverride.standard
     var timer: Timer?
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
@@ -48,20 +48,20 @@ class TokenManager {
 
             return oidcPrivate
         }
-        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
+        if let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue),
            clientSecretRaw != "" {
             clientSecret = clientSecretRaw
         }
-        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
+        if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
         //
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
 
             additionalParameters = ["access_type":"offline"]
         }
 
-        let oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
         return oidcLite
@@ -117,7 +117,7 @@ class TokenManager {
     }
     func tokenEndpoint() -> String? {
 
-        let prefTokenEndpoint = UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue)
+        let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
         if  prefTokenEndpoint != nil {
             return prefTokenEndpoint
         }
@@ -130,8 +130,9 @@ class TokenManager {
     }
     func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
-
+TCSLogWithMark()
         guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
+            TCSLogWithMark()
             completion(false,true)
             return
         }
@@ -139,13 +140,13 @@ class TokenManager {
         var req = URLRequest(url: url)
 
         let keychainUtil = KeychainUtil()
-
+        TCSLogWithMark()
         let refreshToken = try? keychainUtil.findPassword(PrefKeys.refreshToken.rawValue)
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainPassword = try? keychainUtil.findPassword(PrefKeys.password.rawValue)
-
+        TCSLogWithMark()
         if let refreshToken = refreshToken, let clientID = clientID, let keychainPassword = keychainPassword {
-
+            TCSLogWithMark()
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
                 parameters.append("&client_secret=\(clientSecret)")
@@ -170,7 +171,7 @@ class TokenManager {
 
                             let json = try decoder.decode(RefreshTokenResponse.self, from: data)
                             let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
-                            UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
+                            DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
 
                             let keychainUtil = KeychainUtil()
                             let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)

@@ -17,9 +17,9 @@ class LoginPasswordWindowController: NSWindowController {
 
     override func windowDidLoad() {
         super.windowDidLoad()
-
-        if DefaultsOverride.standard.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-            DefaultsOverride.standard.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
+        TCSLogWithMark()
+        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
         {
             resetButton.isHidden=false
         }
@@ -50,7 +50,6 @@ class LoginPasswordWindowController: NSWindowController {
     @IBAction func cancelButtonPressed(_ sender: Any) {
         if self.window?.isModalPanel==true {
             NSApp.stopModal(withCode: .cancel)
-            self.window?.close()
         }
     }
 }

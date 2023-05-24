@@ -36,7 +36,7 @@ class SignInMenuItem: NSMenuItem {
 
     @objc func doAction() {
 
-        if UserDefaults.standard.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && UserDefaults.standard.value(forKey: PrefKeys.clientID.rawValue) != nil {
+        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
             if (mainMenu.webView==nil){
                 mainMenu.webView = WebViewWindowController()
             }
@@ -44,7 +44,7 @@ class SignInMenuItem: NSMenuItem {
             mainMenu.webView?.loadPage()
         }
         else {
-            if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{
+            if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{
                 PrefsMenuItem().doAction()
             }
         }

@@ -177,7 +177,7 @@ enum PrefKeys: String {
 func getManagedPreference(key: Preferences) -> Any? {
 
 
-    if let preference = UserDefaults.standard.value(forKey: key.rawValue)  {
+    if let preference = DefaultsOverride.standardOverride.value(forKey: key.rawValue)  {
         os_log("Found managed preference: %{public}@", type: .debug, key.rawValue)
         return preference
     }

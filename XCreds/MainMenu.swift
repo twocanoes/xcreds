@@ -46,12 +46,12 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.removeAllItems()
 
         // add menu items
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue)==true{
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue)==true{
             mainMenu.addItem(AboutMenuItem())
             mainMenu.addItem(NSMenuItem.separator())
             firstItemShown = true
         }
-        if let passwordChangeURLString = UserDefaults.standard.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
             if firstItemShown == false {
                 mainMenu.addItem(NSMenuItem.separator())
                 firstItemShown = true
@@ -64,7 +64,8 @@ class MainMenu: NSObject, NSMenuDelegate {
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
 //        mainMenu.addItem(PrefsMenuItem())
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
+        TCSLogWithMark()
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
             let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
 
             mainMenu.addItem(NSMenuItem.separator())

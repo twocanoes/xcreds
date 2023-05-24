@@ -88,7 +88,7 @@ class LoginWindowControlsWindowController: NSWindowController {
 
         }
 
-        let refreshTimerSecs = UserDefaults.standard.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
+        let refreshTimerSecs = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
         if refreshTimerSecs > 0 {
             TCSLogWithMark("Setting refresh timer")
@@ -102,11 +102,11 @@ class LoginWindowControlsWindowController: NSWindowController {
     fileprivate func setupLoginWindowControlsAppearance() {
         DispatchQueue.main.async {
 
-            self.wifiGridColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+            self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
 
-            self.macLoginWindowGribColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
+            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
 
-            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
 
             self.window?.level = .normal+1

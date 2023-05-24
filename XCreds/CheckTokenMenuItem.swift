@@ -12,7 +12,7 @@ class CheckTokenMenuItem: NSMenuItem {
 
     override var isHidden: Bool {
         get {
-            if let _ = UserDefaults.standard.object(forKey: PrefKeys.accessToken.rawValue) as? String {
+            if let _ = DefaultsOverride.standardOverride.object(forKey: PrefKeys.accessToken.rawValue) as? String {
                 return false
             } else {
                 return true

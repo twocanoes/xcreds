@@ -24,10 +24,10 @@ class WebViewWindowController: NSWindowController {
 
     func loadPage() {
 
-TCSLogWithMark()
+        TCSLogWithMark()
         let licenseState = LicenseChecker().currentLicenseState()
         if let refreshTitleTextField = refreshTitleTextField {
-            refreshTitleTextField.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+            refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
         }
 
         webView.navigationDelegate = self
@@ -101,14 +101,14 @@ extension WebViewWindowController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
-        let idpHostName = UserDefaults.standard.value(forKey: PrefKeys.idpHostName.rawValue)
-        var idpHostNames = UserDefaults.standard.value(forKey: PrefKeys.idpHostNames.rawValue)
+        let idpHostName = DefaultsOverride.standardOverride.value(forKey: PrefKeys.idpHostName.rawValue)
+        var idpHostNames = DefaultsOverride.standardOverride.value(forKey: PrefKeys.idpHostNames.rawValue)
 
         if idpHostNames == nil && idpHostName != nil {
             idpHostNames=[idpHostName]
         }
-        let passwordElementID:String? = UserDefaults.standard.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
-        let shouldFindPasswordElement:Bool? = UserDefaults.standard.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
+        let passwordElementID:String? = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
+        let shouldFindPasswordElement:Bool? = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
 
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in

@@ -39,7 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     @objc func screenLocked(_ sender:Any) {
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSwitchToLoginWindowWhenLocked.rawValue)==true{
+        TCSLogWithMark()
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSwitchToLoginWindowWhenLocked.rawValue)==true{
             TCSLoginWindowUtilities().switchToLoginWindow(self)
         }
     }

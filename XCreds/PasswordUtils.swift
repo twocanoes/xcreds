@@ -103,14 +103,14 @@ class PasswordUtils: NSObject {
 //        let secureTokenUsers = GetSecureTokenUserList()
 
 
-        if let username = DefaultsOverride.standard.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standard.string(forKey: PrefKeys.localAdminPassword.rawValue){
+        if let username = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
             let secureTokenCreds = SecureTokenCredential()
             secureTokenCreds.username=username
             secureTokenCreds.password=password
             return secureTokenCreds
 
         }
-//        if let scriptPath = UserDefaults.standard.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
+//        if let scriptPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
 //            TCSLogWithMark("running script \(scriptPath)")
 //            let json = cliTask(scriptPath)
 //            if let data = json.data(using: .utf8) {

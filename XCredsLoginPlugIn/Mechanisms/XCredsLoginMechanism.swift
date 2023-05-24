@@ -39,7 +39,7 @@ import Cocoa
                 if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
                     TCSLogInfoWithMark("------------------------------------------------------------------")
                     TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
-                    if UserDefaults.standard.bool(forKey: "showDebug")==false {
+                    if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
                         TCSLogInfoWithMark("Log showing only basic info and errors.")
                         TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
                         TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
@@ -61,6 +61,8 @@ import Cocoa
     }
     override func reload() {
         TCSLogWithMark("reload in controller")
+        loginWebViewWindowController?.setupLoginWindowAppearance()
+
         loginWebViewWindowController?.loadPage()
     }
     func useAutologin() -> Bool {
@@ -177,7 +179,7 @@ import Cocoa
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
-        if isReturning == false, UserDefaults.standard.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+        if isReturning == false, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
 
@@ -212,7 +214,8 @@ import Cocoa
         super.allowLogin()
     }
     override func denyLogin() {
-        loginWindowControlsWindowController.close()
+//        loginWindowControlsWindowController.close()
+        loginWebViewWindowController?.loadPage()
         TCSLog("***************** DENYING LOGIN ********************");
         super.denyLogin()
     }
@@ -227,9 +230,10 @@ import Cocoa
             if signInWindowController != nil {
                 signInWindowController?.window?.orderOut(self)
             }
-            if loginWebViewWindowController==nil{
+//            if loginWebViewWindowController==nil{
                 loginWebViewWindowController = LoginWebViewWindowController(windowNibName: "LoginWebViewController")
-            }
+//            }
+            
             guard let loginWebViewWindowController = loginWebViewWindowController else {
                 TCSLogWithMark("could not create webViewController")
                 return

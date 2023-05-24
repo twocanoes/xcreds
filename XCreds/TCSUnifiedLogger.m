@@ -8,6 +8,7 @@
 #import "TCSUnifiedLogger.h"
 #include <unistd.h>
 #import "NSFileManager+TCSRealHomeFolder.h"
+#import <os/log.h>
 
 
 @interface TCSUnifiedLogger ()
@@ -22,15 +23,22 @@
 
 void TCSLog(NSString *string)
 {
+
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
     [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELDEBUG];
 }
 
 void TCSLogInfo(NSString *string)
 {
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
+
     [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELINFO];
+    
 }
 void TCSLogError(NSString *string)
 {
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
+
     [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELERROR];
 }
 + (TCSUnifiedLogger *)sharedLogger
@@ -98,9 +106,9 @@ void TCSLogError(NSString *string)
     return sharedLogger;
 }
 //os_log("Unable to get home directory path.", log: "", type: .error)
-- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
-
-}
+//- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
+//
+//}
 
 
 - (void)logString:(NSString *)inStr level:(LogLevel)level

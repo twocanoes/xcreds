@@ -30,6 +30,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         
         resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
+
             self.setupLoginWindowAppearance()
 
         }
@@ -59,10 +60,11 @@ class LoginWebViewWindowController: WebViewWindowController {
         loadPage()
     }
 
-    fileprivate func setupLoginWindowAppearance() {
+    func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
 //            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
 
+            DefaultsOverride.standardOverride.refreshCachedPrefs()
 
             TCSLogWithMark("setting up window...")
 
@@ -84,15 +86,15 @@ class LoginWebViewWindowController: WebViewWindowController {
 
             //if prefs define smaller, then resize window
             TCSLogWithMark("checking for custom height and width")
-            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
-                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
+                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
                 if val > 100 {
                     TCSLogWithMark("setting loginWindowWidth to \(val)")
                     loginWindowWidth = val
                 }
             }
-            if UserDefaults.standard.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
-                let val = CGFloat(UserDefaults.standard.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
+                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
                 if val > 100 {
                     TCSLogWithMark("setting loginWindowHeight to \(val)")
                     loginWindowHeight = val
@@ -100,8 +102,6 @@ class LoginWebViewWindowController: WebViewWindowController {
             }
 
             self.window?.setFrame(screenRect, display: true, animate: false)
-
-
 
             let backgroundImage = DefaultsHelper.backgroundImage()
             TCSLogWithMark()
@@ -164,7 +164,7 @@ class LoginWebViewWindowController: WebViewWindowController {
             return
         }
         var username:String
-        let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.username.rawValue)
+        let defaultsUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.username.rawValue)
 
         guard let idToken = tokens.idToken else {
             TCSLogErrorWithMark("invalid idToken")
@@ -206,7 +206,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
-        else if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        else if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
 
             username = mapValue
@@ -241,7 +241,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         //full name
         TCSLogWithMark("checking map_fullname")
 
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
 
@@ -257,7 +257,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         }
 
         //first name
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
             TCSLogWithMark("first name mapped to: \(mapKey)")
 
@@ -273,7 +273,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         //last name
         TCSLogWithMark("checking map_lastname")
 
-        if let idTokenInfo = idTokenInfo, let mapKey = UserDefaults.standard.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for lastName, so use that.
             TCSLogWithMark("last name mapped to: \(mapKey)")
 
@@ -319,7 +319,11 @@ class LoginWebViewWindowController: WebViewWindowController {
 
                 let response = NSApp.runModal(for: passwordWindowController.window!)
                 if response == .cancel {
-                    break
+                    isDone=true
+                    TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
+                    delegate.denyLogin()
+                    return
+
                 }
                 let resetKeychain = passwordWindowController.resetKeychain
 
@@ -329,6 +333,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
                     os_log("Hint set", log: uiLog, type: .debug)
                     passwordWindowController.window?.close()
+                    isDone=true
 
                 }
                 else {
@@ -370,6 +375,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         case .other:
             TCSLogWithMark("Account is locked or other error")
+            #warning("should put up dialog?")
             delegate.denyLogin()
             return
         }

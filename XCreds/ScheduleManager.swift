@@ -16,7 +16,7 @@ class ScheduleManager {
         if let timer = timer, timer.isValid==true {
             return
         }
-        var rate = UserDefaults.standard.integer(forKey: PrefKeys.refreshRateHours.rawValue)
+        var rate = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.refreshRateHours.rawValue)
 
         if rate < 1 {
             rate = 1
@@ -37,7 +37,7 @@ class ScheduleManager {
     }
     func checkToken()  {
 //        // we have not resolved the tokenEndpoint yet, so pop up a window
-//        if UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue) == nil {
+//        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue) == nil {
 //            DispatchQueue.main.async {
 //                SignInMenuItem().doAction()
 //            }
@@ -47,7 +47,7 @@ class ScheduleManager {
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
-                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 
                     NotifyManager.shared.sendMessage(message: "Could not check token.")
                 }
@@ -56,7 +56,7 @@ class ScheduleManager {
             }
             else if isSuccessful == true {
 
-                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
                     NotifyManager.shared.sendMessage(message: "Password unchanged")
                 }
                 DispatchQueue.main.async {
@@ -69,7 +69,7 @@ class ScheduleManager {
             else {
                 //don't stop cred check otherwise it doesn't get restarted.
 //                self.stopCredentialCheck()
-                if UserDefaults.standard.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 
                     NotifyManager.shared.sendMessage(message: "Password changed or not set")
                 }

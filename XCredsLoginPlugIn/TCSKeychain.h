@@ -4,8 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-
+@class DefaultsOverride;
 @interface TCSKeychain : NSObject
 + (NSArray *)keychainIdentities;
 + (SecIdentityRef)findIdentityWithSubject:(NSString *)inSubject;

@@ -9,7 +9,8 @@ import Cocoa
 
 class DefaultsHelper: NSObject {
     static func backgroundImage(includeDefault:Bool=true) -> NSImage? {
-        if let imagePathURL = DefaultsOverride.standard.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+        TCSLogWithMark()
+        if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
 
             return image
 

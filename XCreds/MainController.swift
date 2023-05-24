@@ -16,7 +16,8 @@ class MainController: NSObject {
         if let defaultsPath = defaultsPath {
 
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
-            UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
+            TCSLogWithMark()
+            DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
         }
         
 
@@ -52,7 +53,7 @@ class MainController: NSObject {
                 let localPassword = self.localPassword()
                 if (localPassword != tokens.password){
                     var updatePassword = true
-                    if UserDefaults.standard.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                    if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
                         let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
                         NSApp.activate(ignoringOtherApps: true)
 
@@ -122,22 +123,26 @@ class MainController: NSObject {
                 return password
             }
         }
+        TCSLogWithMark()
         let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
-
+        TCSLogWithMark()
         while (true){
-            
+            TCSLogWithMark()
             NSApp.activate(ignoringOtherApps: true)
             let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
                 NSApp.activate(ignoringOtherApps: true)
 
             }
-
+            TCSLogWithMark()
             let response = NSApp.runModal(for: passwordWindowController.window!)
 
             timer.invalidate()
             if response == .cancel {
                 break
+            }
+            if passwordWindowController.resetKeychain==true {
+                return nil
             }
             let localPassword = passwordWindowController.password
             guard let localPassword = localPassword else {

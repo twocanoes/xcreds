@@ -30,7 +30,7 @@ class ChangePasswordMenuItem: NSMenuItem {
     }
 
     @objc func doAction() {
-        if let passwordChangeURLString = UserDefaults.standard.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let url = URL(string: passwordChangeURLString) {
+        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let url = URL(string: passwordChangeURLString) {
 
 
             NSWorkspace.shared.open(url)
