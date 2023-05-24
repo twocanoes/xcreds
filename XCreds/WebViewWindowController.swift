@@ -108,12 +108,11 @@ extension WebViewWindowController: WKNavigationDelegate {
             idpHostNames=[idpHostName]
         }
         let passwordElementID:String? = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
-        let shouldFindPasswordElement:Bool? = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
 
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
-//                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
             }
             else {
                 if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
@@ -154,22 +153,6 @@ extension WebViewWindowController: WKNavigationDelegate {
                         self.password=passwords[2]
 
                     }
-                    //
-                    if shouldFindPasswordElement == true {
-                        if passwords.count==1 {
-                            TCSLogWithMark("found 1 password field. setting")
-                            TCSLogWithMark("========= password set===========")
-                            self.password=passwords[0]
-                        }
-                        else {
-                            TCSLogErrorWithMark("password not set. Found: \(ids)")
-                            return
-
-                        }
-                    }
-                    else {
-                        TCSLogWithMark("password not captured")
-                    } 
                 }
             }
         })

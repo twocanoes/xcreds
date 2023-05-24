@@ -685,18 +685,6 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>string</string>
 		</dict>
 		<dict>
-			<key>pfm_description</key>
-			<string>Selects the password element field in the web page by finding a form element that has bullets (input is password)</string>
-			<key>pfm_documentation_url</key>
-			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldfindpasswordelement</string>
-			<key>pfm_name</key>
-			<string>shouldFindPasswordElement</string>
-			<key>pfm_title</key>
-			<string>shouldFindPasswordElement</string>
-			<key>pfm_type</key>
-			<string>boolean</string>
-		</dict>
-		<dict>
 			<key>pfm_default</key>
 			<string>given_name</string>
 			<key>pfm_description</key>
