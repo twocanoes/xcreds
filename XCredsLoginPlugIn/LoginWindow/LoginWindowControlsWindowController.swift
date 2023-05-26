@@ -118,7 +118,7 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.window?.canBecomeVisibleWithoutLogin = true
 
             let screenRect = NSScreen.screens[0].frame
-            let windowRec = NSMakeRect(0, 0, screenRect.width,109)
+            let windowRec = NSMakeRect(0, 0, screenRect.width,self.window?.frame.size.height ?? 109)
 //            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
 
             self.window?.setFrame(windowRec, display: true, animate: false)

@@ -130,28 +130,37 @@ class LoginWebViewWindowController: WebViewWindowController {
 //    }
     func loginTransition() {
 
-        let screenRect = NSScreen.screens[0].frame
-        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-        progressIndicator.style = .spinning
-        progressIndicator.startAnimation(self)
-        webView.addSubview(progressIndicator)
-
-        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
-        if let loginProgressWindowController = loginProgressWindowController {
-            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-
-
-        }
+//        let screenRect = NSScreen.screens[0].frame
+//        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
+//        progressIndicator.style = .spinning
+//        progressIndicator.startAnimation(self)
+//        webView.addSubview(progressIndicator)
+//
+//        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
+//        if let loginProgressWindowController = loginProgressWindowController {
+//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
+//
+//
+//        }
         monitor.pathUpdateHandler=nil
-//        self.window?.close()
+
+        if let resolutionObserver = resolutionObserver {
+            NotificationCenter.default.removeObserver(resolutionObserver)
+        }
+
 
 
         NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 10.0
+            context.duration = 1.0
             context.allowsImplicitAnimation = true
-            self.window?.alphaValue = 0.0
+            self.webView?.animator().alphaValue = 0.0
+//            self.window?.setFrame(NSMakeRect(0, 0, 100, 100), display: true, animate: true)
         }, completionHandler: {
-            self.window?.close()
+            DispatchQueue.main.async{
+
+                self.window?.close()
+                self.delegate?.allowLogin()
+            }
         })
     }
 
@@ -296,8 +305,16 @@ class LoginWebViewWindowController: WebViewWindowController {
         case .success:
             TCSLogWithMark("Local password matches cloud password ")
         case .incorrectPassword:
-
             TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
+
+            if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+                DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
+                getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+                TCSLogInfoWithMark("Set to write keychain silently and we have admin. Skipping.")
+                delegate.setHint(type: .passwordOverwrite, hint: true)
+                os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
+                break;
+           }
 
             let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
@@ -397,14 +414,17 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         TCSLogWithMark("setting tokens")
         delegate.setHint(type: .tokens, hint: [tokens.idToken ?? "",tokens.refreshToken ?? "",tokens.accessToken ?? ""])
-        if let resolutionObserver = resolutionObserver {
-            NotificationCenter.default.removeObserver(resolutionObserver)
-        }
+//        if let resolutionObserver = resolutionObserver {
+//            NotificationCenter.default.removeObserver(resolutionObserver)
+//        }
+//
+        DispatchQueue.main.async{
 
-        RunLoop.main.perform {
-            self.loginTransition()
+            self.delegate?.allowLogin()
+
+//            self.loginTransition()
+
         }
-        delegate.allowLogin()
 
 
     }

@@ -256,6 +256,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 //        }
 
         // make things look better
+
         os_log("Tweaking appearance", log: uiLog, type: .debug)
         if getManagedPreference(key: .LoginScreen) as? Bool == false {
             os_log("Present as login screen", log: uiLog, type: .debug)

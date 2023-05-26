@@ -440,26 +440,30 @@ class XCredsCreateUser: XCredsBaseMechanism {
     ///
     /// - Parameter user: The shortname of the user to create a home for as a `String`.
     func createHomeDirFor(_ user: String) {
-        os_log("Find system locale...", log: createUserLog, type: .debug)
-        let currentLanguage = Locale.current.languageCode ?? "Non_localized"
-        os_log("System language is: %{public}@", log: createUserLog, type: .debug, currentLanguage)
-        let templateName = templateForLang(currentLanguage)
-        let sourceURL = URL(fileURLWithPath: "/System/Library/User Template/" + templateName)
-        let homeDirLocations = ["Desktop", "Downloads", "Documents", "Movies", "Music", "Pictures", "Public"]
-        do {
-            os_log("Initializing the user home directory", log: createUserLog, type: .debug)
-            try FileManager.default.copyItem(at: sourceURL, to: URL(fileURLWithPath: "/Users/" + user))
-            
-            os_log("Copying non-localized folders to new home", log: createUserLog, type: .debug)
-            for location in homeDirLocations {
-                try FileManager.default.copyItem(at: URL(fileURLWithPath: "/System/Library/User Template/Non_localized/\(location)"), to: URL(fileURLWithPath: "/Users/" + user + "/\(location)"))
-            }
-            
-            os_log("Copying language template", log: createUserLog, type: .debug)
-            try FileManager.default.copyItem(at: sourceURL, to: URL(fileURLWithPath: "/Users/" + user))
-        } catch {
-            os_log("Home template copy failed with: %{public}@", log: createUserLog, type: .error, error.localizedDescription)
-        }
+
+        let res=cliTask("/usr/sbin/createhomedir -c -u \(user)")
+
+        TCSLogWithMark(res)
+//        os_log("Find system locale...", log: createUserLog, type: .debug)
+//        let currentLanguage = Locale.current.languageCode ?? "Non_localized"
+//        os_log("System language is: %{public}@", log: createUserLog, type: .debug, currentLanguage)
+//        let templateName = templateForLang(currentLanguage)
+//        let sourceURL = URL(fileURLWithPath: "/System/Library/User Template/" + templateName)
+//        let homeDirLocations = ["Desktop", "Downloads", "Documents", "Movies", "Music", "Pictures", "Public"]
+//        do {
+//            os_log("Initializing the user home directory", log: createUserLog, type: .debug)
+//            try FileManager.default.copyItem(at: sourceURL, to: URL(fileURLWithPath: "/Users/" + user))
+//
+//            os_log("Copying non-localized folders to new home", log: createUserLog, type: .debug)
+//            for location in homeDirLocations {
+//                try FileManager.default.copyItem(at: URL(fileURLWithPath: "/System/Library/User Template/Non_localized/\(location)"), to: URL(fileURLWithPath: "/Users/" + user + "/\(location)"))
+//            }
+//
+//            os_log("Copying language template", log: createUserLog, type: .debug)
+//            try FileManager.default.copyItem(at: sourceURL, to: URL(fileURLWithPath: "/Users/" + user))
+//        } catch {
+//            os_log("Home template copy failed with: %{public}@", log: createUserLog, type: .error, error.localizedDescription)
+//        }
     }
     
     /// Looks at the Apple provided User Pictures directory, recurses it, and delivers a random picture path.

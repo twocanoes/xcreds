@@ -210,6 +210,11 @@ import Cocoa
 
             loginWindowControlsWindowController.dismiss()
         }
+
+        if loginWebViewWindowController != nil {
+            TCSLogWithMark("Dismissing loginWindowWindowController")
+            loginWebViewWindowController?.loginTransition()
+        }
         TCSLogWithMark("calling super allowLogin")
         super.allowLogin()
     }
@@ -245,6 +250,8 @@ import Cocoa
             loginWebViewWindowController.delegate=self
 
             loginWebViewWindowController.window?.orderFrontRegardless()
+            loginWebViewWindowController.window?.makeKeyAndOrderFront(self)
+
         case .usernamePassword:
 
             if loginWebViewWindowController != nil {
@@ -259,7 +266,14 @@ import Cocoa
             }
             if let signInWindowController = signInWindowController {
                 signInWindowController.delegate=self
+                if signInWindowController.username != nil {
+                    signInWindowController.username.stringValue=""
+                }
+                if signInWindowController.password != nil {
+                    signInWindowController.password.stringValue=""
+                }
                 signInWindowController.window?.orderFrontRegardless()
+                signInWindowController.window?.makeKeyAndOrderFront(self)
             }
 
         }

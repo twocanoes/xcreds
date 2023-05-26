@@ -274,8 +274,8 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
-        <image name="NSStopProgressFreestandingTemplate" width="19" height="19"/>
+        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
+        <image name="NSStopProgressFreestandingTemplate" width="20" height="20"/>
         <image name="globe" catalog="system" width="15" height="15"/>
         <image name="wifi" catalog="system" width="17" height="13"/>
     </resources>
