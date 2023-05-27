@@ -35,6 +35,11 @@ class XCredsCreateUser: XCredsBaseMechanism {
     @objc override   func run() {
         TCSLogWithMark("CreateUser mech starting")
 
+        if let xcredsGroups = groups {
+
+            TCSLogWithMark("group: \(xcredsGroups)")
+        }
+
         // check if we are a guest account
         // if so, remove any existing user/home for the guest
         // then allow the mech to create a new user/home
@@ -87,7 +92,17 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 isAdmin = createAdmin
                 TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
             }
-            
+            os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
+            if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
+                TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
+                groups?.forEach { group in
+                    if adminGroups.contains(group) {
+                        isAdmin = true
+                        TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
+                    }
+                }
+            }
+
             var customAttributes = [String: String]()
             
             let metaPrefix = "_xcreds"

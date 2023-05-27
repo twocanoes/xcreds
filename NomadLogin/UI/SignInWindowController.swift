@@ -994,7 +994,7 @@ extension SignInWindowController: NoMADUserSessionDelegate {
         delegate?.setHint(type: .firstName, hint: user.firstName)
         delegate?.setHint(type: .lastName, hint: user.lastName)
         delegate?.setHint(type: .noMADDomain, hint: domainName)
-        delegate?.setHint(type: .noMADGroups, hint: user.groups)
+        delegate?.setHint(type: .adGroups, hint: user.groups)
         delegate?.setHint(type: .fullName, hint: user.cn)
         delegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
         delegate?.setHint(type: .ntName, hint: user.ntName)

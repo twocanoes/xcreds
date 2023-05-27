@@ -30,7 +30,7 @@ enum HintType: String {
 //    case noMADFirst
 //    case noMADLast
 //    case noMADFull
-    case noMADGroups
+    case adGroups
 
 
 }

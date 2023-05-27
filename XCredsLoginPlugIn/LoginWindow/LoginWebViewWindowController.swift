@@ -212,7 +212,6 @@ class LoginWebViewWindowController: WebViewWindowController {
             username = defaultsUsername
         }
         else if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for username, so use that.
 
             username = mapValue
             TCSLogWithMark("mapped username found: \(username)")
@@ -259,6 +258,15 @@ class LoginWebViewWindowController: WebViewWindowController {
             TCSLogWithMark("lastName: \(lastName)")
             delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
 
+        }
+//groups
+        if let idTokenInfo = idTokenInfo,let mapValue = idTokenInfo["groups"] as? Array<String> {
+            TCSLogWithMark("setting groups: \(mapValue)")
+            delegate.setHint(type: .groups, hint:mapValue)
+        }
+        else {
+
+            TCSLogWithMark("No groups found")
         }
 
         //first name

@@ -45,6 +45,8 @@ protocol XCredsMechanismProtocol {
         
 
     }
+
+
     var xcredsPass: String? {
         get {
             guard let userPass = getHint(type: .pass) as? String else {
@@ -160,13 +162,13 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
-    var nomadGroups: [String]? {
+    var groups: [String]? {
         get {
             guard let userGroups = getHint(type: .groups) as? [String] else {
-                os_log("noMADGroups value is empty", log: noLoMechlog, type: .debug)
+                os_log("groups value is empty", log: noLoMechlog, type: .debug)
                 return nil
             }
-            os_log("Computed nomadgroups accessed: %{public}@", log: noLoMechlog, type: .debug)
+
             return userGroups
         }
     }
