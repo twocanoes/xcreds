@@ -215,7 +215,7 @@ import Cocoa
             TCSLogWithMark("Dismissing loginWindowWindowController")
             loginWebViewWindowController?.loginTransition()
         }
-        TCSLogWithMark("calling super allowLogin")
+        TCSLogWithMark("calling allowLogin")
         super.allowLogin()
     }
     override func denyLogin() {

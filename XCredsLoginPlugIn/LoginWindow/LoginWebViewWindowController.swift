@@ -62,14 +62,13 @@ class LoginWebViewWindowController: WebViewWindowController {
 
     func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
-//            TCSLogWithMark("webview frame is \(self.webView.frame.debugDescription)")
 
-            DefaultsOverride.standardOverride.refreshCachedPrefs()
 
             TCSLogWithMark("setting up window...")
 
             self.window?.level = .normal
             self.window?.orderFrontRegardless()
+            self.window?.makeKeyAndOrderFront(self)
 
             self.window?.backgroundColor = NSColor.blue
 
@@ -116,9 +115,6 @@ class LoginWebViewWindowController: WebViewWindowController {
             TCSLogWithMark()
             self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
             TCSLogWithMark()
-//            BackgroundImage
-
-
         }
 //            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
 //        }
@@ -154,12 +150,12 @@ class LoginWebViewWindowController: WebViewWindowController {
             context.duration = 1.0
             context.allowsImplicitAnimation = true
             self.webView?.animator().alphaValue = 0.0
-//            self.window?.setFrame(NSMakeRect(0, 0, 100, 100), display: true, animate: true)
         }, completionHandler: {
             DispatchQueue.main.async{
+                self.webView?.alphaValue = 0.0
 
                 self.window?.close()
-                self.delegate?.allowLogin()
+
             }
         })
     }
@@ -419,6 +415,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 //        }
 //
         DispatchQueue.main.async{
+            TCSLogWithMark("calling allowLogin")
 
             self.delegate?.allowLogin()
 

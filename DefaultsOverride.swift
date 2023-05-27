@@ -63,7 +63,6 @@ public class DefaultsOverride: UserDefaults {
             
             let scriptRes=cliTask(prefScriptPath)
 
-            TCSLogWithMark(scriptRes)
             if scriptRes.count==0{
                 TCSLogErrorWithMark("script did not return anything")
                 return
@@ -169,7 +168,6 @@ public class DefaultsOverride: UserDefaults {
         return UserDefaults.standard.float(forKey: defaultName)
     }
     override public func double(forKey defaultName: String) -> Double {
-        TCSLogWithMark()
 
         if let defaultName = cachedPrefs[defaultName] as? Double {
             return defaultName
@@ -180,13 +178,6 @@ public class DefaultsOverride: UserDefaults {
     override public func bool(forKey defaultName: String) -> Bool {
         TCSLogWithMark()
 
-        if cachedPrefs.count != 0 {
-            TCSLogWithMark("got prefs")
-
-        }
-        else {
-            TCSLogWithMark("No prefs")
-        }
         if let defaultName = cachedPrefs[defaultName] as? Bool {
             return defaultName
         }

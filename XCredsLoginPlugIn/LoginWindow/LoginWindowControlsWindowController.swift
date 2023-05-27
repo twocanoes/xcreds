@@ -175,6 +175,8 @@ class LoginWindowControlsWindowController: NSWindowController {
 
     @IBAction func refreshButtonPressed(_ sender: Any) {
         TCSLogWithMark("refreshButtonPressed")
+        DefaultsOverride.standardOverride.refreshCachedPrefs()
+
         guard let delegate = delegate else {
             TCSLogWithMark("No delegate set for refresh")
             return
@@ -204,6 +206,7 @@ class LoginWindowControlsWindowController: NSWindowController {
             return
         }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.shutdown.rawValue)
+        TCSLogWithMark("calling allowLogin")
 
         delegate.allowLogin()
     }

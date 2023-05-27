@@ -128,6 +128,8 @@ protocol XCredsMechanismProtocol {
     func allowLogin() {
         TCSLogWithMark("\(#function) \(#file):\(#line)")
         let error = mechCallbacks.SetResult(mechEngine, .allow)
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
+
         if error != noErr {
             TCSLogErrorWithMark("Error: \(error)")
         }
