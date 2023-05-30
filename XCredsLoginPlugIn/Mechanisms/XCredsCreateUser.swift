@@ -43,7 +43,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         // check if we are a guest account
         // if so, remove any existing user/home for the guest
         // then allow the mech to create a new user/home
-        
+
         if (getHint(type: .guestUser) as? String == "true") {
             TCSLog("Setting up a guest account")
             
@@ -67,7 +67,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
         }
         
-        if xcredsPass != nil && !XCredsCreateUser.checkForLocalUser(name: xcredsUser!) {
+        if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
             
             var secureTokenCreds:SecureTokenCredential? = nil
             if let creds = PasswordUtils.GetSecureTokenCreds() {
@@ -103,6 +103,11 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 }
             }
 
+            var fullname:String?
+            if let fullnameHint = getHint(type: .fullName) as? String {
+                fullname=fullnameHint
+            }
+
             var customAttributes = [String: String]()
             
             let metaPrefix = "_xcreds"
@@ -112,10 +117,16 @@ class XCredsCreateUser: XCredsBaseMechanism {
             let currentDate = ISO8601DateFormatter().string(from: Date())
             customAttributes["dsAttrTypeNative:\(metaPrefix)_creationDate"] = currentDate
 
-            createUser(shortName: xcredsUser!,
-                       first: xcredsFirst! ,
-                       last: xcredsLast!,
-                       pass: xcredsPass!,
+            guard let xcredsFirst=xcredsFirst, let xcredsLast = xcredsLast else {
+                TCSLogErrorWithMark("first or last name not defined. bailing")
+                let _ = denyLogin()
+                return
+
+            }
+            createUser(shortName: xcredsUser,
+                       first: xcredsFirst ,
+                       last: xcredsLast, fullName: fullname,
+                       pass: xcredsPass,
                        uid: uid,
                        gid: "20",
                        canChangePass: true,
@@ -123,9 +134,9 @@ class XCredsCreateUser: XCredsBaseMechanism {
                        customAttributes: customAttributes,
                        secureTokenCreds: secureTokenCreds)
             
-            TCSLogWithMark("Creating local homefolder for \(xcredsUser ?? "")")
-            createHomeDirFor(xcredsUser!)
-            TCSLogWithMark("Fixup home permissions for: \(xcredsUser ?? "")")
+            TCSLogWithMark("Creating local homefolder for \(xcredsUser)")
+            createHomeDirFor(xcredsUser)
+            TCSLogWithMark("Fixup home permissions for: \(xcredsUser)")
             let _ = cliTask("/usr/sbin/diskutil resetUserPermissions / \(uid)", arguments: nil, waitForTermination: true)
             TCSLogWithMark("Account creation complete, allowing login")
         } else {
@@ -175,7 +186,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
     }
     
     // mark utility functions
-    func createUser(shortName: String, first: String, last: String, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) {
+    func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
         //        os_log("New user attributes. first: %{public}@, last: %{public}@, uid: %{public}@, gid: %{public}@, canChangePass: %{public}@, isAdmin: %{public}@, customAttributes: %{public}@", log: createUserLog, type: .debug, first, last, uid, gid, canChangePass.description, isAdmin.description, customAttributes)
@@ -185,8 +196,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
         // regardless of if there's more than one value or not
         
         os_log("Checking for UserProfileImage key", log: createUserLog, type: .debug)
-
         var userFullName = [first, last].joined(separator: " ").trimmingCharacters(in: .whitespaces)
+
+        if let fullName = fullName {
+            userFullName=fullName
+        }
+
         if userFullName.isEmpty {
             userFullName = shortName
         }

@@ -7,6 +7,7 @@ PROJECT_FOLDER="../../"
 SRC_PATH="../../"
 
 ###########################
+
 if [ -e "${SRC_PATH}/../build/bitbucket_creds.sh" ] ; then 
 	source "${SRC_PATH}/../build/bitbucket_creds.sh"
 fi

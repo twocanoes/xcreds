@@ -150,13 +150,12 @@ class LoginWebViewWindowController: WebViewWindowController {
             context.duration = 1.0
             context.allowsImplicitAnimation = true
             self.webView?.animator().alphaValue = 0.0
+//            self.webView?.animator().frame=NSMakeRect(self.webView.frame.origin.x+self.webView.frame.size.width/2, self.webView.frame.origin.y,0,self.webView.frame.size.height)
         }, completionHandler: {
-            DispatchQueue.main.async{
                 self.webView?.alphaValue = 0.0
-
                 self.window?.close()
 
-            }
+
         })
     }
 
@@ -246,7 +245,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         TCSLogWithMark("checking map_fullname")
 
         if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping so use that.
+            //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
 
             delegate.setHint(type: .fullName, hint: "\(mapValue)")

@@ -94,7 +94,7 @@ class NoLoMechanism: NSObject {
             guard let lastName = getHint(type: .noMADLast) as? String else {
                 return nil
             }
-            os_log("Computed nomadLast accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
+            os_log("Computed lastName accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
             return lastName
         }
     }

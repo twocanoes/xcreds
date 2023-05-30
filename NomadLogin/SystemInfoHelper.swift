@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import NoMAD_ADAuth
+
 import NetworkExtension
 
 class SystemInfoHelper {

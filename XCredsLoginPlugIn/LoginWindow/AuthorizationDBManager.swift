@@ -126,10 +126,8 @@ class AuthorizationDBManager: NSObject {
         let positionOfRight = consoleRights.firstIndex(of: right)
 
         if positionOfRight == nil {
-//            TCSLogWithMark("did not find \(right)")
             return false
         }
-//        TCSLogWithMark("found \(right)")
 
         return true
     }

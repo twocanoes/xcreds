@@ -8,6 +8,11 @@ New username and password window allows logging in with local user or Active Dir
 ### New Username and Password Window ###
 We no longer use the macOS login window and use the new XCreds username/password window. This allows for faster switching and Active Directory login.
 
+### Switch to Login Window at Screen Saver ###
+When the "shouldSwitchToLoginWindowWhenLocked" key is set and XCreds is running in the user session and the screen is locked, the lock screen will fast user switch to the log 
+
+When set to true and the user locks the current session, XCreds will tell the system to switch to Login Window. The current session will stay active but the user will login with the XCreds Login Window to resume the session.
+
 ### Admin Group ###
 
 If group membership is returned in the "groups" claim and matches the group defined in the "CreateAdminIfGroupMember" preference, the user will be created as admin.
