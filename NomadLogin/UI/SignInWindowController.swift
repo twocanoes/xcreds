@@ -400,6 +400,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
         TCSLogWithMark(message ?? "")
         session = nil
         password.stringValue = ""
+        password.shake(self)
 //        alertText.stringValue = message ?? "Authentication Failed"
         loginStartedUI()
     }
