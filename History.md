@@ -77,6 +77,9 @@ plist:
 `    </plist>`
 
 
+### Others
+* added shake to password field
+
 ## New Keys
 
 **ADDomain**

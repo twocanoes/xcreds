@@ -38,6 +38,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
     //MARK: - IB outlets
     @IBOutlet weak var username: NSTextField!
     @IBOutlet weak var password: NSSecureTextField!
+    @IBOutlet weak var localOnlyCheckBox: NSButton!
 //    @IBOutlet weak var domain: NSPopUpButton!
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
@@ -74,7 +75,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var migrateSpinner: NSProgressIndicator!
     @IBOutlet weak var usernameLabel: NSTextField!
     var migrateUserRecord : ODRecord?
-//    let localCheck = LocalCheckAndMigrate()
+    let localCheck = LocalCheckAndMigrate()
     var didUpdateFail = false
     var setupDone=false
     //MARK: - UI Methods
@@ -84,6 +85,8 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
         if setupDone == false {
             setupDone=true
+            self.localOnlyCheckBox.isHidden = !self.domainName.isEmpty
+
             TCSLogWithMark("Configure login window")
             loginAppearance()
 
@@ -206,54 +209,13 @@ class SignInWindowController: NSWindowController, DSQueryable {
         }
     }
     
-//    fileprivate func shakeOff() {
-//        let origin = NSMakePoint((loginStack.frame.origin.x), (loginStack.frame.origin.y))
-//        let left = NSMakePoint(origin.x - 10, origin.y)
-//        let right = NSMakePoint(origin.x + 10, origin.y)
-//
-//        NSAnimationContext.runAnimationGroup({ context in
-//            context.duration = 0.04
-//            context.allowsImplicitAnimation = true
-//            loginStack.setFrameOrigin(left)
-//        }, completionHandler: {
-//            NSAnimationContext.runAnimationGroup({ (context) in
-//                context.duration = 0.04
-//                context.allowsImplicitAnimation = true
-//                self.loginStack.setFrameOrigin(right)
-//            }, completionHandler: {
-//                NSAnimationContext.runAnimationGroup({ (context) in
-//                    context.duration = 0.04
-//                    context.allowsImplicitAnimation = true
-//                    self.loginStack.setFrameOrigin(left)
-//                }, completionHandler: {
-//                    NSAnimationContext.runAnimationGroup({ context in
-//                        context.duration = 0.04
-//                        context.allowsImplicitAnimation = true
-//                        self.loginStack.setFrameOrigin(right)
-//                    }, completionHandler: {
-//                        NSAnimationContext.runAnimationGroup({ context in
-//                            context.duration = 0.04
-//                            context.allowsImplicitAnimation = true
-//                            self.loginStack.setFrameOrigin(origin)
-////                            self.window?.close()
-//                        })
-//                    })
-//                })
-//            })
-//        })
-//    }
 
     fileprivate func loginAppearance() {
         os_log("Setting window level", log: uiLog, type: .debug)
 
-//        if getManagedPreference(key: .NormalWindowLevel) as? Bool == true  {
-//            self.view.level = .normal
-//        }
-//        else {
-            self.window?.level = .normal
-            self.window?.orderFrontRegardless()
+        self.window?.level = .normal
+        self.window?.orderFrontRegardless()
 
-//        }
 
         // make things look better
 
@@ -292,7 +254,6 @@ class SignInWindowController: NSWindowController, DSQueryable {
         self.window?.isMovable = false
         self.window?.canBecomeVisibleWithoutLogin = true
         self.window?.level = .normal
-//        self.window?.hasTitleBar
         self.window?.titlebarAppearsTransparent = true
 
 
@@ -426,31 +387,32 @@ class SignInWindowController: NSWindowController, DSQueryable {
     @IBAction func signInClick(_ sender: Any) {
         TCSLogWithMark("Sign In button clicked")
         if username.stringValue.isEmpty {
+            username.shake(self)
             TCSLogWithMark("No username entered")
             return
         }
         TCSLogWithMark()
         loginStartedUI()
         TCSLogWithMark()
-        if getManagedPreference(key: .GuestUser) as? Bool ?? false {
-            
-            os_log("Checking for guest account", log: uiLog, type: .default)
-            
-            let guestUsers = getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]
-            if guestUsers.contains(username.stringValue) {
-                os_log("Guest user engaging", log: uiLog, type: .default)
-                delegate?.setHint(type: .guestUser, hint: "true")
-                shortName = username.stringValue
-                passString = UUID.init().uuidString
-                delegate?.setHint(type: .noMADDomain, hint: "GUEST")
-                delegate?.setHint(type: .firstName, hint: getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest")
-                delegate?.setHint(type: .lastName, hint: getManagedPreference(key: .GuestUserLast) as? String ?? "User")
-                delegate?.setHint(type: .fullName, hint: (getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest") + (getManagedPreference(key: .GuestUserLast) as? String ?? "User"))
-                setRequiredHintsAndContext()
-                completeLogin(authResult: .allow)
-                return
-            }
-        }
+//        if getManagedPreference(key: .GuestUser) as? Bool ?? false {
+//
+//            os_log("Checking for guest account", log: uiLog, type: .default)
+//
+//            let guestUsers = getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]
+//            if guestUsers.contains(username.stringValue) {
+//                os_log("Guest user engaging", log: uiLog, type: .default)
+//                delegate?.setHint(type: .guestUser, hint: "true")
+//                shortName = username.stringValue
+//                passString = UUID.init().uuidString
+//                delegate?.setHint(type: .noMADDomain, hint: "GUEST")
+//                delegate?.setHint(type: .firstName, hint: getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest")
+//                delegate?.setHint(type: .lastName, hint: getManagedPreference(key: .GuestUserLast) as? String ?? "User")
+//                delegate?.setHint(type: .fullName, hint: (getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest") + (getManagedPreference(key: .GuestUserLast) as? String ?? "User"))
+//                setRequiredHintsAndContext()
+//                completeLogin(authResult: .allow)
+//                return
+//            }
+//        }
         
         // clear any alerts
         
@@ -458,45 +420,22 @@ class SignInWindowController: NSWindowController, DSQueryable {
         TCSLogWithMark()
         prepareAccountStrings()
         TCSLogWithMark()
-        if XCredsBaseMechanism.checkForLocalUser(name: shortName) {
-            TCSLogWithMark()
-            os_log("Verify local user login for %{public}@", log: uiLog, type: .default, shortName)
-            
-            if getManagedPreference(key: .DenyLocal) as? Bool ?? false {
-                os_log("DenyLocal is enabled, looking for %{public}@ in excluded users", log: uiLog, type: .default, shortName)
-                
-                var exclude = false
-                
-                if let excludedUsers = getManagedPreference(key: .DenyLocalExcluded) as? [String] {
-                    if excludedUsers.contains(shortName) {
-                        os_log("Allowing local sign in via exclusions %{public}@", log: uiLog, type: .default, shortName)
-                        exclude = true
-                    }
-                }
-                
-                if !exclude {
-                    os_log("No exclusions for %{public}@, denying local login. Forcing network auth", log: uiLog, type: .default, shortName)
-                    networkAuth()
-                    return
-                }
+        if self.domainName.isEmpty==true || self.localOnlyCheckBox.state == .on{
+            TCSLogWithMark("do local auth only")
+            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+                setRequiredHintsAndContext()
+                completeLogin(authResult: .allow)
             }
-            TCSLogWithMark()
-            if PasswordUtils.verifyUser(name: shortName, auth: passString) {
-                TCSLogWithMark()
-                    os_log("Allowing local user login for %{public}@", log: uiLog, type: .default, shortName)
-                    setRequiredHintsAndContext()
-                    TCSLogWithMark()
-                    completeLogin(authResult: .allow)
-                    return
-            } else {
-                os_log("Could not verify %{public}@", log: uiLog, type: .default, shortName)
+            else {
+                TCSLogWithMark("password check failed")
                 authFail()
-                return
             }
-        } else {
-            TCSLogWithMark("network auth")
-            networkAuth()
+            return
+
         }
+        TCSLogWithMark("network auth.")
+        networkAuth()
+
     }
     
     fileprivate func networkAuth() {
@@ -592,13 +531,19 @@ class SignInWindowController: NSWindowController, DSQueryable {
                 os_log("NT Domain mapping failed, wishing the user luck on authentication", log: uiLog, type: .default)
             }
         }
-        
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+
+            domainName = prefDomainName
+        }
         if domainName != "" && providedDomainName.lowercased() == domainName.lowercased() {
             TCSLogWithMark("ADDomain being used")
             domainName = providedDomainName.uppercased()
         }
 
-        if !providedDomainName.isEmpty {
+        if providedDomainName == domainName {
+
+        }
+        else if !providedDomainName.isEmpty {
             TCSLogWithMark("Optional domain provided in text field: \(providedDomainName)")
             if getManagedPreference(key: .AdditionalADDomains) as? Bool == true {
                 os_log("Optional domain name allowed by AdditionalADDomains allow-all policy", log: uiLog, type: .default)
@@ -724,22 +669,22 @@ class SignInWindowController: NSWindowController, DSQueryable {
         }
     }
     
-//    fileprivate func showMigration() {
-//
-//        //RunLoop.main.perform {
-//        // hide other possible boxes
-//        os_log("Showing migration box", log: uiLog, type: .default)
-//
-//        self.loginStack.isHidden = true
-//        self.signIn.isHidden = true
-//        self.signIn.isEnabled = true
-//
-//        // show migration box
-//        self.migrateBox.isHidden = false
-//        self.migrateSpinner.isHidden = false
-//        self.migrateUsers.addItems(withTitles: self.localCheck.migrationUsers ?? [""])
-//        //}
-//    }
+    fileprivate func showMigration() {
+
+        //RunLoop.main.perform {
+        // hide other possible boxes
+        os_log("Showing migration box", log: uiLog, type: .default)
+
+        self.loginStack.isHidden = true
+        self.signIn.isHidden = true
+        self.signIn.isEnabled = true
+
+        // show migration box
+        self.migrateBox.isHidden = false
+        self.migrateSpinner.isHidden = false
+        self.migrateUsers.addItems(withTitles: self.localCheck.migrationUsers ?? [""])
+        //}
+    }
     
     @IBAction func clickMigrationOK(_ sender: Any) {
         RunLoop.main.perform {
@@ -855,6 +800,47 @@ class SignInWindowController: NSWindowController, DSQueryable {
 //        systemInfo.title = sysInfo[sysInfoIndex]
 //        os_log("System information toggled", log: uiLog, type: .debug)
 //    }
+//    func verify() {
+//
+//            if XCredsBaseMechanism.checkForLocalUser(name: shortName) {
+//                TCSLogWithMark()
+//                os_log("Verify local user login for %{public}@", log: uiLog, type: .default, shortName)
+//
+//                if getManagedPreference(key: .DenyLocal) as? Bool ?? false {
+//                    os_log("DenyLocal is enabled, looking for %{public}@ in excluded users", log: uiLog, type: .default, shortName)
+//
+//                    var exclude = false
+//
+//                    if let excludedUsers = getManagedPreference(key: .DenyLocalExcluded) as? [String] {
+//                        if excludedUsers.contains(shortName) {
+//                            os_log("Allowing local sign in via exclusions %{public}@", log: uiLog, type: .default, shortName)
+//                            exclude = true
+//                        }
+//                    }
+//
+//                    if !exclude {
+//                        os_log("No exclusions for %{public}@, denying local login. Forcing network auth", log: uiLog, type: .default, shortName)
+//                        networkAuth()
+//                        return
+//                    }
+//                }
+//                TCSLogWithMark()
+//                if PasswordUtils.verifyUser(name: shortName, auth: passString) {
+//                    TCSLogWithMark()
+//                    os_log("Allowing local user login for %{public}@", log: uiLog, type: .default, shortName)
+//                    setRequiredHintsAndContext()
+//                    TCSLogWithMark()
+//                    completeLogin(authResult: .allow)
+//                    return
+//                } else {
+//                    os_log("Could not verify %{public}@", log: uiLog, type: .default, shortName)
+//                    authFail()
+//                    return
+//                }
+//            }
+//
+//    }
+
 }
 
 
@@ -862,6 +848,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 extension SignInWindowController: NoMADUserSessionDelegate {
     
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
+        TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
         
 //        if passChanged {
 //            os_log("Password change failed.", log: uiLog, type: .default)
@@ -883,23 +870,31 @@ extension SignInWindowController: NoMADUserSessionDelegate {
             showResetUI()
             return
         case .OffDomain:
-            TCSLogErrorWithMark("AD authentication failed, off domain.")
-            if getManagedPreference(key: .LocalFallback) as? Bool ?? false {
-                os_log("Local fallback enabled, passing off to local authentication", log: uiLog, type: .default)
-                if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-                    setRequiredHintsAndContext()
-                    completeLogin(authResult: .allow)
-                } else {
-                    authFail()
-                }
-                return
+            TCSLogErrorWithMark("OffDomain")
+
+            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+                setRequiredHintsAndContext()
+                completeLogin(authResult: .allow)
             } else {
-                authFail();
-                return
+                authFail()
             }
+
+            TCSLogErrorWithMark("AD authentication failed, off domain.")
+//            if getManagedPreference(key: .LocalFallback) as? Bool ?? false {
+//                os_log("Local fallback enabled, passing off to local authentication", log: uiLog, type: .default)
+//                return
+//            } else {
+//                authFail();
+//                return
+//            }
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description)")
-            authFail()
+            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+                setRequiredHintsAndContext()
+                completeLogin(authResult: .allow)
+            } else {
+                authFail()
+            }
             return
         }
     }
@@ -917,19 +912,19 @@ extension SignInWindowController: NoMADUserSessionDelegate {
 //            passChanged = false
 //        }
         
-        os_log("Authentication succeded, requesting user info", log: uiLog, type: .default)
+        TCSLogWithMark("Authentication succeeded, requesting user info")
         session?.userInfo()
     }
 
-
+//callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
         
         var allowedLogin = true
         
-        os_log("Checking for DenyLogin groups", log: uiLog, type: .debug)
+        TCSLogWithMark("Checking for DenyLogin groups")
         
         if let allowedGroups = getManagedPreference(key: .DenyLoginUnlessGroupMember) as? [String] {
-            os_log("Found a DenyLoginUnlessGroupMember key value: %{public}@ ", log: uiLog, type: .debug, allowedGroups.debugDescription)
+            TCSLogErrorWithMark("Found a DenyLoginUnlessGroupMember key value: \(allowedGroups.debugDescription)")
             
             // set the allowed login to false for now
             
@@ -938,49 +933,48 @@ extension SignInWindowController: NoMADUserSessionDelegate {
             user.groups.forEach { group in
                 if allowedGroups.contains(group) {
                     allowedLogin = true
-                    os_log("User is a member of %{public}@ group. Setting allowedLogin = true ", log: uiLog, type: .debug, group)
+                    TCSLogErrorWithMark("User is a member of %{public}@ group. Setting allowedLogin = true ")
                 }
             }
         }
     
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
-            os_log("Found NT User Name: %{public}@", log: uiLog, type: .debug, ntName)
+            TCSLogWithMark("Found NT User Name: \(ntName)")
             delegate?.setHint(type: .ntName, hint: ntName)
         }
         
         if allowedLogin {
             
             setHints(user: user)
-            completeLogin(authResult: .allow)
 
             // check for any migration and local auth requirements
-//            let localCheck = LocalCheckAndMigrate()
-
+            let localCheck = LocalCheckAndMigrate()
+            localCheck.delegate = delegate
 //            localCheck.mech = self.mech
-//            switch localCheck.run(userToCheck: user.shortName, passToCheck: passString) {
-//
-//            case .fullMigration:
-//                showMigration()
-//            case .syncPassword:
-//                // first check to see if we can resolve this ourselves
-//                os_log("Sync password called.", log: uiLog)
-//
-//                if originalPass != nil {
-//                    os_log("Attempting to sync local pass.", log: uiLog, type: .default)
-//                    if localCheck.syncPass(oldPass: originalPass!) {
-//                        // password changed clean
-//                        completeLogin(authResult: .allow)
-//                        return
-//                    } else {
-//                        // unable to change the pass, let user fix
-//                        showPasswordSync()
-//                    }
-//                } else {
-//                    showPasswordSync()
-//                }
-//            case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
-//                completeLogin(authResult: .allow)
-//            }
+            switch localCheck.run(userToCheck: user.shortName, passToCheck: passString) {
+
+            case .fullMigration:
+                showMigration()
+            case .syncPassword:
+                // first check to see if we can resolve this ourselves
+                TCSLogWithMark("Sync password called.")
+
+                if originalPass != nil {
+                    TCSLogWithMark("Attempting to sync local pass.")
+                    if localCheck.syncPass(oldPass: originalPass!) {
+                        // password changed clean
+                        completeLogin(authResult: .allow)
+                        return
+                    } else {
+                        // unable to change the pass, let user fix
+                        showPasswordSync()
+                    }
+                } else {
+                    showPasswordSync()
+                }
+            case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
+                completeLogin(authResult: .allow)
+            }
         } else {
             authFail()
 //            alertText.stringValue = "Not authorized to login."

@@ -23,7 +23,8 @@ enum MigrationType {
 class LocalCheckAndMigrate : NSObject, DSQueryable {
     
     var mech: MechanismRecord?
-    
+    var delegate: XCredsMechanismProtocol?
+
     private var user = ""
     private var pass = ""
     
@@ -41,38 +42,38 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         do {
             if try isLocalPasswordValid(userName: userToCheck, userPass: passToCheck) {
             
-                //os_log("Network creds match local creds, nothing to migrate or update.", log: uiLog, type: .default)
+                TCSLogWithMark("Network creds match local creds, nothing to migrate or update.")
                 
                 if migrate {
-                    //os_log("Migrate set, adding migration name hint.", log: uiLog, type: .default)
+                    TCSLogWithMark("Migrate set, adding migration name hint.")
                     // set the migration hint
-                    setHint(type: .migrateUser, hint: userToCheck)
+                    delegate?.setHint(type: .migrateUser, hint: userToCheck)
                     return .userMatchSkipMigration
                 } else {
                     return .complete
                 }
             } else {
                 
-                //os_log("Local name matches, but not password", log: uiLog, type: .default)
+                TCSLogWithMark("Local name matches, but not password")
                 
                 if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
                     // set the hint and return complete
-                    //os_log("Setting password to be overwritten.", log: uiLog, type: .default)
-                    setHint(type: .passwordOverwrite, hint: true)
-                    //os_log("Hint set", log: uiLog, type: .debug)
+                    TCSLogWithMark("Setting password to be overwritten.")
+                    delegate?.setHint(type: .passwordOverwrite, hint: true)
+                    TCSLogWithMark("Hint set")
                     return .complete
                 } else {
                     return .syncPassword
                 }
             }
         } catch DSQueryableErrors.notLocalUser {
-            //os_log("User is not a local user", log: uiLog, type: .default)
+            TCSLogWithMark("User is not a local user")
             
             if migrate {
                 getMigrationCandidates()
                 
                 if migrationUsers?.count ?? 0 < 1 {
-                    //os_log("No possible migration candidates, skipping migration", log: uiLog, type: .default)
+                    TCSLogWithMark("No possible migration candidates, skipping migration")
                     return .skipMigration
                 } else {
                     return .fullMigration
@@ -81,7 +82,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                 return .complete
             }
         } catch {
-            //os_log("Unknown migration check error", log: uiLog, type: .default)
+            TCSLogWithMark("Unknown migration check error")
             
             return .errorSkipMigration
         }
@@ -120,7 +121,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         }
         
         //os_log("Local password changed.", log: uiLog, type: .default)
-        setHint(type: .migratePass, hint: oldPass)
+        delegate?.setHint(type: .migratePass, hint: oldPass)
         return true
     }
 }

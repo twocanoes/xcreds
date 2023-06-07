@@ -312,7 +312,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>file:///System/Library/Desktop Pictures/Monterey Graphic.heic</string>
 			<key>pfm_description</key>
-			<string>URL to an image to show in the background while logging in.</string>
+			<string>URL to an image to show in the background while logging in. Default value: file:///System/Library/Desktop Pictures/Monterey Graphic.heic.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#loginwindowbackgroundimageurl</string>
 			<key>pfm_format</key>
@@ -342,7 +342,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>xcreds://auth/</string>
 			<key>pfm_description</key>
-			<string>URI to redirect to when authentication is complete.</string>
+			<string>The URI passed back to the webview after successful authentication. Default value: xcreds://auth/</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#redirecturi</string>
 			<key>pfm_name</key>
@@ -356,7 +356,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<integer>3</integer>
 			<key>pfm_description</key>
-			<string>Number of hours for checking for password changes. Default is 3 hours. Minimum is 1 hour.</string>
+			<string>The number of hours between checks. Default value: 3. Minimum value: 1. Max value: 168.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#refreshratehours</string>
 			<key>pfm_name</key>
@@ -376,7 +376,14 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>profile openid offline_access</string>
 			<key>pfm_description</key>
-			<string>OIDC Scopes</string>
+			<string>Scopes tell the identify provider what information to return. Note that the values are provided with a single space between them.
+
+Provide the following values the follow IdPs:
+
+Google: profile openid email
+Azure: profile openid offline_access
+
+Note that Google does not support the offline_access scope so instead use the preference shouldSetGoogleAccessTypeToOffline. Azure provides unique_name which is mapped to the local user account by using the prefix before “@” in unique_name and matching to the short name of a user account. Google provides “email” and is matched in the same way.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#scopes</string>
 			<key>pfm_name</key>
@@ -406,7 +413,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
-			<string>Determine if the mac login window or the cloud login window is shown by default</string>
+			<string>Determine if the Mac login window or the cloud login window is shown by default.  When not set or set to true, show cloud login. If false, shows Mac login.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldshowcloudloginbydefault</string>
 			<key>pfm_name</key>
@@ -448,7 +455,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
-			<string>Show the About Menu</string>
+			<string>Show the About Menu item menu. Default value: true</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldshowaboutmenu</string>
 			<key>pfm_name</key>
@@ -490,7 +497,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>If no settings are specified, preferences will not be shown on startup.</string>
+			<string>Show Settings on start if none are defined. Default value: false</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldshowpreferencesonstart</string>
 			<key>pfm_name</key>
@@ -532,7 +539,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
-			<string>Show Quit Menu Item in the menu.</string>
+			<string>Show Quit in the menu item menu. Default value: true</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#shouldshowquitmenu</string>
 			<key>pfm_name</key>
@@ -560,7 +567,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>Show debug local notifications.</string>
+			<string>Show push notifications for authentication progress. Default value: false</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#showdebug</string>
 			<key>pfm_name</key>
@@ -638,7 +645,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
-			<string>Show prompt to verify cloud password before setting keychain and login.</string>
+			<string>When cloud password is changed and the local keychain password and local user account needs to be changed, a verification dialog can be shown to verify the password. Default value: true</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#verifypassword</string>
 			<key>pfm_name</key>
@@ -650,7 +657,7 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>hostname of the page that has the password field.</string>
+			<string>Hostname of the page that has the password field. When the user submits the form, XCreds will use idpHostName to identify a page it needs to look for the password field. The password value is identified by an HTML id defined by passwordElementID. If this value is not defined. XCreds will look for login.microsoftonline.com and accounts.google.com. This value is commonly set for other IdP’s and for Azure environments that use ADFS.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#idphostname</string>
 			<key>pfm_name</key>
@@ -681,7 +688,11 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>password element id of the html element that has the password.</string>
+			<string>Password element id of the html element that has the password. It is read by using JavaScript to get the value (for example, for Azure, the JavaScript document.getElementById('i0118').value is sent. If this default is not set, standard values for Azure and Google Cloud will be used. To find out this value, use a browser to inspect the source of the page that has the password on it. Find the id of the textfield that has the password. Fill in the password and then open the JavaScript console. Run:
+
+document.getElementById('passwordID').value
+
+changing “passwordID” to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#passwordelementid</string>
 			<key>pfm_name</key>
@@ -695,7 +706,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>given_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for First Name</string>
+			<string>Local DS to OIDC Mapping for First Name. Default value: “given_name”. map_firstname should be set to an OIDC claim for first name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#map_firstname</string>
 			<key>pfm_name</key>
@@ -711,7 +722,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>family_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Last Name</string>
+			<string>Local DS to OIDC Mapping for Last Name. Default value: “family_name”. map_lastname should be set to an OIDC claim for last name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#map_lastname</string>
 			<key>pfm_name</key>
@@ -727,7 +738,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Name</string>
+			<string>Local DS to OIDC Mapping for Full Name. Default value: “name”. map_fullname should be set to an OIDC claim for full name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappingfullname</string>
 			<key>pfm_name</key>
@@ -743,7 +754,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Name</string>
+			<string>Local DS to OIDC Mapping for Name. Default value: “name”. map_username should be set to an OIDC claim for name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://github.com/twocanoes/xcreds/wiki/AdminGuide#oidcmappinglusername</string>
 			<key>pfm_name</key>

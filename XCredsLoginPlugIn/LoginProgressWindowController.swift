@@ -15,14 +15,9 @@ class LoginProgressWindowController: NSWindowController {
         super.windowDidLoad()
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("hideProgress"), object:nil, queue: nil) { notification in
-
             TCSLogWithMark("Got notified to hide progress.")
             self.window?.close()
-
         }
-
-
-
         progressIndicator.startAnimation(self)
 //        progressIndicator.controlTint = .graphiteControlTint
         self.window?.canBecomeVisibleWithoutLogin=true

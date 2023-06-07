@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="SignInWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="jIV-E3-5r5" id="a8Q-rY-08L"/>
+                <outlet property="localOnlyCheckBox" destination="JO2-an-6VU" id="f5s-oy-67O"/>
                 <outlet property="loginStack" destination="gwU-ij-829" id="3Sg-Gp-wg1"/>
                 <outlet property="password" destination="nX9-ug-iIi" id="itX-fN-GCo"/>
                 <outlet property="signIn" destination="gPL-7i-JQY" id="uFw-wv-SRP"/>
@@ -32,10 +33,10 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="8Nq-qD-r0P"/>
                     </imageView>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gwU-ij-829" userLabel="login stack">
-                        <rect key="frame" x="140" y="109" width="200" height="52"/>
+                        <rect key="frame" x="140" y="97" width="200" height="76"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAg-pc-UUB">
-                                <rect key="frame" x="0.0" y="30" width="200" height="22"/>
+                                <rect key="frame" x="0.0" y="54" width="200" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="DC3-pa-LqT"/>
                                 </constraints>
@@ -49,7 +50,7 @@
                                 </connections>
                             </textField>
                             <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nX9-ug-iIi">
-                                <rect key="frame" x="0.0" y="0.0" width="200" height="22"/>
+                                <rect key="frame" x="0.0" y="24" width="200" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="QA1-E9-AfT"/>
                                 </constraints>
@@ -65,22 +66,35 @@
                                     <outlet property="delegate" destination="-2" id="TH1-7s-Evv"/>
                                 </connections>
                             </secureTextField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JO2-an-6VU">
+                                <rect key="frame" x="-2" y="-1" width="158" height="18"/>
+                                <buttonCell key="cell" type="check" title="Offline Authentication" bezelStyle="regularSquare" imagePosition="left" inset="2" id="vmH-hk-adz">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="52" id="GKk-Ek-gVD"/>
-                            <constraint firstAttribute="width" constant="200" id="udh-kz-PiI"/>
-                        </constraints>
                         <visibilityPriorities>
+                            <integer value="1000"/>
                             <integer value="1000"/>
                             <integer value="1000"/>
                         </visibilityPriorities>
                         <customSpacing>
                             <real value="3.4028234663852886e+38"/>
                             <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
                         </customSpacing>
                     </stackView>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgW-ra-x2P">
+                        <rect key="frame" x="41" y="-210" width="193" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="7xN-7f-Rkc">
+                            <behavior key="behavior" lightByContents="YES"/>
+                            <font key="font" metaFont="cellTitle"/>
+                        </buttonCell>
+                    </button>
                     <button verticalHuggingPriority="750" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="gPL-7i-JQY">
-                        <rect key="frame" x="349" y="106" width="15" height="27"/>
+                        <rect key="frame" x="347" y="119" width="15" height="27"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="PON-vz-fED"/>
                             <constraint firstAttribute="width" constant="15" id="sjZ-4g-8aq"/>
@@ -96,23 +110,15 @@ DQ
                             <action selector="signInClick:" target="-2" id="ITc-KH-ybX"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgW-ra-x2P">
-                        <rect key="frame" x="41" y="-210" width="193" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="7xN-7f-Rkc">
-                            <behavior key="behavior" lightByContents="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                        </buttonCell>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="gPL-7i-JQY" firstAttribute="bottom" secondItem="gwU-ij-829" secondAttribute="bottom" id="1PQ-mb-bNN"/>
                     <constraint firstItem="jIV-E3-5r5" firstAttribute="top" secondItem="qzn-cI-c0g" secondAttribute="top" id="8Ea-Zu-RQZ"/>
-                    <constraint firstItem="gwU-ij-829" firstAttribute="centerX" secondItem="qzn-cI-c0g" secondAttribute="centerX" id="AbQ-Eh-kVr"/>
-                    <constraint firstItem="gPL-7i-JQY" firstAttribute="leading" secondItem="gwU-ij-829" secondAttribute="trailing" constant="9" id="Nde-1e-ljP"/>
-                    <constraint firstItem="gwU-ij-829" firstAttribute="centerY" secondItem="qzn-cI-c0g" secondAttribute="centerY" id="ay4-li-DO3"/>
+                    <constraint firstItem="gwU-ij-829" firstAttribute="centerX" secondItem="qzn-cI-c0g" secondAttribute="centerX" id="TK0-2b-kJw"/>
+                    <constraint firstItem="gPL-7i-JQY" firstAttribute="top" secondItem="gwU-ij-829" secondAttribute="bottom" constant="-46" id="ZKk-cJ-kCM"/>
+                    <constraint firstItem="gwU-ij-829" firstAttribute="centerY" secondItem="qzn-cI-c0g" secondAttribute="centerY" id="ZRE-2b-nKZ"/>
                     <constraint firstAttribute="trailing" secondItem="jIV-E3-5r5" secondAttribute="trailing" id="e7Q-A3-N5P"/>
                     <constraint firstItem="jIV-E3-5r5" firstAttribute="leading" secondItem="qzn-cI-c0g" secondAttribute="leading" id="go8-vE-YGq"/>
+                    <constraint firstItem="gPL-7i-JQY" firstAttribute="leading" secondItem="nX9-ug-iIi" secondAttribute="trailing" constant="7" id="jLi-KU-dfY"/>
                 </constraints>
             </view>
             <connections>
