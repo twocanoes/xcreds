@@ -147,7 +147,18 @@ import Cocoa
             allowLogin()
             return
         }
-        showLoginWindowType(loginWindowType: .cloud)
+        let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
+
+
+        if let _ = discoveryURL {
+            showLoginWindowType(loginWindowType: .cloud)
+
+        }
+        else {
+            showLoginWindowType(loginWindowType: .usernamePassword)
+
+        }
+
 //        if (false){
 //
 //            os_log("Activating app", log: checkADLog, type: .debug)

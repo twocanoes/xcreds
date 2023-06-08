@@ -14,11 +14,11 @@ class MainController: NSObject, NoMADUserSessionDelegate {
     }
 
     func NoMADAuthenticationFailed(error: NoMAD_ADAuth.NoMADSessionError, description: String) {
-        TCSLogErrorWithMark(description)
+        TCSLogErrorWithMark("NoMADAuthenticationFailed:\(description)")
     }
-
+    
     func NoMADUserInformation(user: NoMAD_ADAuth.ADUserRecord) {
-
+        TCSLogWithMark("AD user password expires: \(user.passwordExpire?.description ?? "unknown")")
     }
 
 

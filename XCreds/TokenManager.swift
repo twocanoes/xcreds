@@ -106,7 +106,7 @@ class TokenManager {
         if creds.password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating password")
 
                 return false
@@ -144,7 +144,7 @@ TCSLogWithMark()
         let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue)
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
-        let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds",accountName:PrefKeys.password.rawValue)
+        let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
         TCSLogWithMark()
         if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
             TCSLogWithMark()
