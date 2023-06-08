@@ -74,7 +74,7 @@ class TokenManager {
 
         if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
-            if  keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.accessToken.rawValue),accountName:PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating Access Token")
 
                 return false
@@ -83,7 +83,7 @@ class TokenManager {
         }
         if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if  keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating idToken Token")
 
                 return false
@@ -94,7 +94,7 @@ class TokenManager {
         if let refreshToken = creds.refreshToken, refreshToken.count>0 {
             TCSLogWithMark("Saving refresh Token")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating refreshToken Token")
 
                 return false
@@ -141,7 +141,7 @@ TCSLogWithMark()
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
-        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue)
+        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)

@@ -13,10 +13,7 @@ class ScheduleManager {
     var nextCheckTime = Date()
     var timer:Timer?
     func setNextCheckTime() {
-        if let timer = timer, timer.isValid==true {
-            return
-        }
-        var rate = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.refreshRateHours.rawValue)
+        var rate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateHours.rawValue)
 
         if rate < 1 {
             rate = 1
@@ -24,12 +21,15 @@ class ScheduleManager {
         else if rate > 168 {
             rate = 168
         }
-        nextCheckTime = Date(timeIntervalSinceNow: TimeInterval(rate*60*60))
+        nextCheckTime = Date(timeIntervalSinceNow: rate*60*60)
 
     }
     func startCredentialCheck()  {
+        if let timer = timer, timer.isValid==true {
+            return
+        }
 
-        setNextCheckTime()
+        nextCheckTime=Date()
         timer=Timer.scheduledTimer(withTimeInterval: 60*5, repeats: true, block: { timer in //check every 5 minutes
             self.checkToken()
         })
@@ -55,6 +55,8 @@ class ScheduleManager {
             return
         }
         setNextCheckTime()
+        TCSLogWithMark("Checking token now (\(Date())). Next token check will be at \(nextCheckTime)")
+
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
