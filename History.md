@@ -17,6 +17,9 @@ When set to true and the user locks the current session, XCreds will tell the sy
 
 If group membership is returned in the "groups" claim and matches the group defined in the "CreateAdminIfGroupMember" preference, the user will be created as admin.
 
+### kerberos ticket ###
+When app is first launched and their is a keychain item with a AD account and local password, a kerberos ticket will be attempted.
+
 ### Override Preference Script ###
 
 Most preferences can now be overwritten by specifying a script at the path defined by "settingsOverrideScriptPath". This script, if it exists, owned by root, and has permissions 755 (writable only by root, readable and executable by all) must return a valid plist that defines the key/value pairs to override in preferences. This allows for basing preferences based on the local state of the machine. It is important for the "localAdminUserName" and "localAdminPassword" keys.  See Reset Keychain for more information on this. The overide script can also be used for querying the local state and setting preferences. For example, to randomly set the background image, a sample script "settingsOverrideScriptPath" defines a script:
