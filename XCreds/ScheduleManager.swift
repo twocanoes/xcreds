@@ -10,9 +10,9 @@ import Cocoa
 class ScheduleManager {
 
     static let shared=ScheduleManager()
-
+    var nextCheckTime = Date()
     var timer:Timer?
-    func startCredentialCheck()  {
+    func setNextCheckTime() {
         if let timer = timer, timer.isValid==true {
             return
         }
@@ -24,7 +24,13 @@ class ScheduleManager {
         else if rate > 168 {
             rate = 168
         }
-        timer=Timer.scheduledTimer(withTimeInterval: TimeInterval(rate*60*60), repeats: true, block: { timer in
+        nextCheckTime = Date(timeIntervalSinceNow: TimeInterval(rate*60*60))
+
+    }
+    func startCredentialCheck()  {
+
+        setNextCheckTime()
+        timer=Timer.scheduledTimer(withTimeInterval: 60*5, repeats: true, block: { timer in //check every 5 minutes
             self.checkToken()
         })
         self.checkToken()
@@ -44,6 +50,11 @@ class ScheduleManager {
 //            return
 //        }
 
+        if nextCheckTime>Date() {
+            TCSLogWithMark("Token will be checked at \(nextCheckTime)")
+            return
+        }
+        setNextCheckTime()
         TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
 
             if hadConnectionError==true {
