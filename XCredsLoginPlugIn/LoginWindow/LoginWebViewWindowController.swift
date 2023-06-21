@@ -150,10 +150,10 @@ class LoginWebViewWindowController: WebViewWindowController {
             context.duration = 1.0
             context.allowsImplicitAnimation = true
             self.webView?.animator().alphaValue = 0.0
-//            self.webView?.animator().frame=NSMakeRect(self.webView.frame.origin.x+self.webView.frame.size.width/2, self.webView.frame.origin.y,0,self.webView.frame.size.height)
         }, completionHandler: {
                 self.webView?.alphaValue = 0.0
-                self.window?.close()
+            self.webView.removeFromSuperview()
+//                self.window?.close()
 
 
         })
@@ -190,6 +190,10 @@ class LoginWebViewWindowController: WebViewWindowController {
             delegate.denyLogin()
             return
         }
+        if let decodedTokenString = String(data: data, encoding: .utf8) {
+            TCSLogWithMark("IDToken:\(decodedTokenString)")
+
+        }
         let decoder = JSONDecoder()
         var idTokenObject:IDToken
         do {
@@ -204,16 +208,17 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         }
 
-        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mappnigs
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
 
         // username static map
         if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
-        else if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        else if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
 
-            username = mapValue
-            TCSLogWithMark("mapped username found: \(username)")
+            username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
+            TCSLogWithMark("mapped username found: \(mapValue) clean version:\(username)")
+
 
         }
         else {
@@ -435,3 +440,10 @@ class LoginWebViewWindowController: WebViewWindowController {
 }
 
 
+extension String {
+
+    var stripped: String {
+        let okayChars = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-._")
+        return self.filter {okayChars.contains($0) }
+    }
+}

@@ -33,14 +33,14 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="8Nq-qD-r0P"/>
                     </imageView>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gwU-ij-829" userLabel="login stack">
-                        <rect key="frame" x="140" y="97" width="200" height="76"/>
+                        <rect key="frame" x="140" y="95" width="200" height="80"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAg-pc-UUB">
-                                <rect key="frame" x="0.0" y="54" width="200" height="22"/>
+                                <rect key="frame" x="0.0" y="58" width="200" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="DC3-pa-LqT"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="Username@domain" usesSingleLineMode="YES" bezelStyle="round" id="IEP-jE-4l7">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="Name" usesSingleLineMode="YES" bezelStyle="round" id="IEP-jE-4l7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -50,7 +50,7 @@
                                 </connections>
                             </textField>
                             <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nX9-ug-iIi">
-                                <rect key="frame" x="0.0" y="24" width="200" height="22"/>
+                                <rect key="frame" x="0.0" y="28" width="200" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="QA1-E9-AfT"/>
                                 </constraints>
@@ -67,8 +67,8 @@
                                 </connections>
                             </secureTextField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JO2-an-6VU">
-                                <rect key="frame" x="-2" y="-1" width="158" height="18"/>
-                                <buttonCell key="cell" type="check" title="Offline Authentication" bezelStyle="regularSquare" imagePosition="left" inset="2" id="vmH-hk-adz">
+                                <rect key="frame" x="-3" y="-4" width="178" height="27"/>
+                                <buttonCell key="cell" type="check" title="Offline Authentication" bezelStyle="regularSquare" imagePosition="left" borderStyle="border" inset="2" id="vmH-hk-adz">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -94,7 +94,7 @@
                         </buttonCell>
                     </button>
                     <button verticalHuggingPriority="750" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="gPL-7i-JQY">
-                        <rect key="frame" x="347" y="119" width="15" height="27"/>
+                        <rect key="frame" x="347" y="117" width="15" height="27"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="PON-vz-fED"/>
                             <constraint firstAttribute="width" constant="15" id="sjZ-4g-8aq"/>

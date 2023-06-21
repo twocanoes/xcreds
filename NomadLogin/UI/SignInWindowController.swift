@@ -85,7 +85,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
         if setupDone == false {
             setupDone=true
-            self.localOnlyCheckBox.isHidden = !self.domainName.isEmpty
+            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
 
             TCSLogWithMark("Configure login window")
             loginAppearance()

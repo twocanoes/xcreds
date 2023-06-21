@@ -89,6 +89,10 @@
                                                 <string key="title">Switch
 Login Window</string>
                                                 <font key="font" metaFont="system"/>
+                                                <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             </buttonCell>
                                             <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>

@@ -92,7 +92,7 @@ static NSString* XPCHelperMachServiceName = @"com.apple.logind";
         id login_window = [SAConnection remoteObjectProxy];
 
 
-        [login_window SACSwitchToLoginWindow:^(int) {
+        [login_window SACSwitchToLoginWindow:^(int val) {
 
         }];
 
