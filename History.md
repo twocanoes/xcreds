@@ -18,7 +18,7 @@ When set to true and the user locks the current session, XCreds will tell the sy
 If group membership is returned in the "groups" claim and matches the group defined in the "CreateAdminIfGroupMember" preference, the user will be created as admin.
 
 ### kerberos ticket ###
-When app is first launched and their is a keychain item with a AD account and local password, a kerberos ticket will be attempted.
+When app is first launched and there is a keychain item with a AD account and local password, a kerberos ticket will be attempted.
 
 ### Override Preference Script ###
 
@@ -88,6 +88,19 @@ plist:
 **ADDomain**
 
 The desired AD domain
+
+**usernamePlaceholder*
+
+Placeholder text in local / AD login window for username
+
+**passwordPlaceholder**
+
+Placeholder text in local / AD login window for password
+
+**shouldShowLocalOnlyCheckbox**
+
+Show the local only checkbox on the local login page
+
 
 **CreateAdminIfGroupMember**
 

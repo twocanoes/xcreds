@@ -24,6 +24,7 @@ protocol XCredsMechanismProtocol {
         self.mechEngine = mechanism.pointee.fEngine
 
         super.init()
+        TCSLogWithMark("Setting up prefs")
         setupPrefs()
 
     }

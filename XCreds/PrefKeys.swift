@@ -9,7 +9,7 @@ import Foundation
 
 enum PrefKeys: String {
     case clientID, clientSecret, password="xcreds local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault,idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked,accounts = "Accounts",
-         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword
+         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox
     case actionItemOnly = "ActionItemOnly"
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"
@@ -318,8 +318,6 @@ enum Preferences: String {
     /// A string to show as the placeholder in the Username textfield
     case UseCNForFullNameFallback
     /// Uses the CN as the fullname on the account when the givenName and sn fields are blank
-    case UsernameFieldPlaceholder
-    /// A filesystem path to an image to set the user profile image to as a `String`
     case UserProfileImage
 
     case NormalWindowLevel

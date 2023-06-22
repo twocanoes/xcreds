@@ -40,5 +40,11 @@
 	<true/>
 	<key>autoRefreshLoginTimer</key>
 	<integer>0</integer>
+	<key>usernamePlaceholder</key>
+	<string>Enter Username</string>
+	<key>shouldShowLocalOnlyCheckbox</key>
+	<true/>
+	<key>passwordPlaceholder</key>
+	<string>Password</string>
 </dict>
 </plist>

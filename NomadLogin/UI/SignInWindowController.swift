@@ -82,10 +82,11 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
 
     override func awakeFromNib() {
-
+        TCSLogWithMark()
         if setupDone == false {
+            prepareAccountStrings()
             setupDone=true
-            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
+
 
             TCSLogWithMark("Configure login window")
             loginAppearance()
@@ -211,6 +212,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
     
 
     fileprivate func loginAppearance() {
+        TCSLogWithMark()
         os_log("Setting window level", log: uiLog, type: .debug)
 
         self.window?.level = .normal
@@ -220,6 +222,28 @@ class SignInWindowController: NSWindowController, DSQueryable {
         // make things look better
 
         os_log("Tweaking appearance", log: uiLog, type: .debug)
+
+
+
+        if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
+            TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
+            self.username.placeholderString=usernamePlaceholder
+        }
+
+        if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
+            TCSLogWithMark("Setting password placeholder")
+
+            self.password.placeholderString=passwordPlaceholder
+
+        }
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
+            self.localOnlyCheckBox.isHidden = true
+        }
+        else {
+            //show based on if there is an AD domain or not
+            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
+        }
+
         if getManagedPreference(key: .LoginScreen) as? Bool == false {
             os_log("Present as login screen", log: uiLog, type: .debug)
             self.window?.isOpaque = false
@@ -231,12 +255,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
         }
         self.window?.titlebarAppearsTransparent = true
         if !self.domainName.isEmpty {
-            username.placeholderString = "Username"
             self.isDomainManaged = true
-        }
-        if let usernamePlaceholder = getManagedPreference(key: .UsernameFieldPlaceholder) as? String {
-            os_log("Username Field Placeholder preferences found.", log: uiLog, type: .debug)
-            username.placeholderString = usernamePlaceholder
         }
 
 //        if let domainList = getManagedPreference(key: .AdditionalADDomainList) as? [String] {
@@ -374,6 +393,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
         username.isEnabled = !username.isEnabled
         password.isEnabled = !password.isEnabled
+        localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
     }
 
 

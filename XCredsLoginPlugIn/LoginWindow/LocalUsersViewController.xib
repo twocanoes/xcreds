@@ -40,7 +40,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="DC3-pa-LqT"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="Name" usesSingleLineMode="YES" bezelStyle="round" id="IEP-jE-4l7">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="IEP-jE-4l7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -54,7 +54,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="QA1-E9-AfT"/>
                                 </constraints>
-                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="Enter Password" usesSingleLineMode="YES" bezelStyle="round" id="l3D-fM-8kU">
+                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="l3D-fM-8kU">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
