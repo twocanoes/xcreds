@@ -189,8 +189,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
     func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
-        //        os_log("New user attributes. first: %{public}@, last: %{public}@, uid: %{public}@, gid: %{public}@, canChangePass: %{public}@, isAdmin: %{public}@, customAttributes: %{public}@", log: createUserLog, type: .debug, first, last, uid, gid, canChangePass.description, isAdmin.description, customAttributes)
-        
+
         // note for anyone following behind me
         // you need to specify the attribute values in an array
         // regardless of if there's more than one value or not
@@ -224,6 +223,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         // let picData = NSData(contentsOf: picURL)
         // let picString = picData?.description ?? ""
 
+
         var attrs: [AnyHashable:Any] = [
             kODAttributeTypeFullName: [userFullName],
             kODAttributeTypeNFSHomeDirectory: [ "/Users/" + shortName ],
@@ -251,7 +251,9 @@ class XCredsCreateUser: XCredsBaseMechanism {
         if let signInTime = getHint(type: .networkSignIn) {
             attrs[kODAttributeNetworkSignIn] = [signInTime]
         }
-        
+
+        os_log("New user attributes. first: %{public}@, last: %{public}@, uid: %{public}@, gid: %{public}@, canChangePass: %{public}@, isAdmin: %{public}@, customAttributes: %{public}@", log: createUserLog, type: .debug, first, last, uid, gid, canChangePass.description, isAdmin.description, attrs.debugDescription)
+
         do {
             os_log("Creating user account in local ODNode", log: createUserLog, type: .debug)
             let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
