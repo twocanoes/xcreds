@@ -55,8 +55,8 @@ public class DefaultsOverride: UserDefaults {
 
             let unixPermissions = permission.int16Value
 
-            if unixPermissions & 0x12 != 0 {
-                TCSLogErrorWithMark("override script cannot be writable by anyone besides root. not running: \(unixPermissions)")
+            if unixPermissions & 0x3f != 0 {
+                TCSLogErrorWithMark("override script cannot be accessible by anyone besides root. not running: \(unixPermissions)")
                 return
 
             }

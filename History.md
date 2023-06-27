@@ -122,10 +122,6 @@ Username of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended 
 
 Password of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended to set this with the settingsOverrideScriptPath script. This user is used to reset the keychain if the user forgets their local password and to setup a secure token for newly created users.
 
-**shouldFindPasswordElement**
-
-Selects the password element field in the web page by finding a form element that has bullets (input is password)
-
 **shouldShowCloudLoginByDefault**
 
 Determine if the mac login window or the cloud login window is shown by default
