@@ -88,6 +88,7 @@ class LoginWebViewWindowController: WebViewWindowController {
     func setupLoginWindowAppearance() {
         DispatchQueue.main.async {
 
+            NSApp.activate(ignoringOtherApps: true)
 
             TCSLogWithMark("setting up window...")
 

@@ -19,15 +19,34 @@ class LoginWindowControlsWindowController: NSWindowController {
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
+    var commandKeyDown = false
     func dismiss() {
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
         }
         self.window?.close()
     }
+    func commandKey(evt: NSEvent) -> NSEvent{
+        TCSLogWithMark(evt.debugDescription)
+
+        let flags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.command.rawValue
+        TCSLogWithMark("\(flags.description)")
+        if flags != 0 { //key code for command is 55
+            commandKeyDown = true
+            TCSLogWithMark("command down")
+        }
+        else {
+            commandKeyDown=false
+            TCSLogWithMark("not command down")
+
+        }
+        return evt
+    }
+
     override func windowDidLoad() {
         super.windowDidLoad()
         let licenseState = LicenseChecker().currentLicenseState()
+        NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
 
 
         switch licenseState {
@@ -217,15 +236,19 @@ class LoginWindowControlsWindowController: NSWindowController {
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
         TCSLogWithMark("switch login window")
+        if commandKeyDown == false {
 
-        NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
-//        guard let delegate = delegate else {
-//            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
-//            return
-//        }
-//        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+            NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
+            return
+        }
 
-//        delegate.allowLogin()
+        guard let delegate = delegate else {
+            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
+            return
+        }
+        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+
+        delegate.allowLogin()
     }
 
 

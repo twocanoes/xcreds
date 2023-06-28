@@ -7,7 +7,6 @@ class XCredsLoginDone: XCredsBaseMechanism {
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {
         super.init(mechanism: mechanism)
-
     }
 
     @objc override func run() {
