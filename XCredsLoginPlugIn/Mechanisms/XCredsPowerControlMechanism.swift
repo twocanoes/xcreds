@@ -63,7 +63,7 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
 
             if res == false {
                 TCSLogWithMark("could not restore loginwindow right")
-                denyLogin()
+                denyLogin(message: "Login rights could not be restored")
                 return
             }
             let _ = cliTask("/usr/bin/killall 'XCreds Login Overlay'")

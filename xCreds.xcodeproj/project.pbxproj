@@ -40,8 +40,8 @@
 		764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */; };
 		764D812D284BCC7400B3EE54 /* VerifyOIDCPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */; };
 		764D812F284C06AB00B3EE54 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
-		764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */; };
-		764D8133284D14A500B3EE54 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.rtf */; };
+		764D8131284D11EE00B3EE54 /* MenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* MenuItems.swift */; };
+		764D8133284D14A500B3EE54 /* Credits.txt in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.txt */; };
 		7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDEC2A1451590075980B /* LocalUsersViewController.xib */; };
 		7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDF62A1474330075980B /* LoginWebViewController.xib */; };
 		7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */; };
@@ -96,6 +96,8 @@
 		76786F6B2A27C79100AA8DB9 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		767B939C2A28279E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
+		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
+		7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */; };
 		7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
@@ -161,7 +163,6 @@
 		76DF1D5B2A2AD42C00770690 /* LocalCheckAndMigrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */; };
 		76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
 		76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */; };
-		76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */; };
 		76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE069D27FD1D00009E0F3A /* AppDelegate.swift */; };
 		76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
 		76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06A127FD1D01009E0F3A /* MainMenu.xib */; };
@@ -171,9 +172,6 @@
 		76EE06B227FD1E24009E0F3A /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B127FD1E24009E0F3A /* WebView.xib */; };
 		76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */; };
 		76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */; };
-		76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */; };
-		76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */; };
-		76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */; };
 		76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06C127FD1F50009E0F3A /* MainMenu.swift */; };
 		76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
 		76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
@@ -304,8 +302,8 @@
 		764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyOIDCPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyOIDCPassword.xib; sourceTree = "<group>"; };
 		764D812E284C06AB00B3EE54 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = defaults.plist; sourceTree = "<group>"; };
-		764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMenuItem.swift; sourceTree = "<group>"; };
-		764D8132284D14A500B3EE54 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		764D8130284D11EE00B3EE54 /* MenuItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItems.swift; sourceTree = "<group>"; };
+		764D8132284D14A500B3EE54 /* Credits.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Credits.txt; sourceTree = "<group>"; };
 		7651EDEC2A1451590075980B /* LocalUsersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalUsersViewController.xib; sourceTree = "<group>"; };
 		7651EDF62A1474330075980B /* LoginWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginWebViewController.xib; sourceTree = "<group>"; };
 		7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBackground.png; sourceTree = "<group>"; };
@@ -343,6 +341,8 @@
 		76786F652A27C62D00AA8DB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76786F6A2A27C72900AA8DB9 /* auth_mech_fixup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "auth_mech_fixup-Bridging-Header.h"; path = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		767B939B2A28279E0038935E /* View+Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
+		7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
+		7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindow.xib; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsHelper.swift; path = XCreds/DefaultsHelper.swift; sourceTree = "<group>"; };
 		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
@@ -389,7 +389,6 @@
 		76DD6D122859978F00A700ED /* OIDCLite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = OIDCLite; path = ../OIDCLite; sourceTree = "<group>"; };
 		76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TCSLoginWindowUtilities.h; path = XCreds/TCSLoginWindowUtilities.h; sourceTree = "<group>"; };
 		76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TCSLoginWindowUtilities.m; path = XCreds/TCSLoginWindowUtilities.m; sourceTree = "<group>"; };
-		76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordMenuItem.swift; sourceTree = "<group>"; };
 		76EE069A27FD1D00009E0F3A /* XCreds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCreds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76EE069D27FD1D00009E0F3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76EE069F27FD1D01009E0F3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -403,9 +402,6 @@
 		76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWindowController.swift; sourceTree = "<group>"; };
 		76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
-		76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMenuItem.swift; sourceTree = "<group>"; };
-		76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsMenuItem.swift; sourceTree = "<group>"; };
-		76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTokenMenuItem.swift; sourceTree = "<group>"; };
 		76EE06C127FD1F50009E0F3A /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		76EECCFF2875135900483C66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Base64URLEncoded.swift"; sourceTree = "<group>"; };
@@ -689,11 +685,11 @@
 				76D7ADFA284EB15100332EBC /* TCSUnifiedLogger.h */,
 				76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */,
 				76EECCFF2875135900483C66 /* Logger.swift */,
-				764D8130284D11EE00B3EE54 /* AboutMenuItem.swift */,
+				764D8130284D11EE00B3EE54 /* MenuItems.swift */,
 				764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */,
 				764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */,
 				764D8124284BC1C300B3EE54 /* LoginPasswordWindowController.swift */,
-				764D8132284D14A500B3EE54 /* Credits.rtf */,
+				764D8132284D14A500B3EE54 /* Credits.txt */,
 				764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */,
 				7651EDF62A1474330075980B /* LoginWebViewController.xib */,
 				767116B2284B045800CCD6FF /* KeychainUtil.swift */,
@@ -705,17 +701,15 @@
 				76EE06B127FD1E24009E0F3A /* WebView.xib */,
 				76EE06B327FD1E5F009E0F3A /* WebViewWindowController.swift */,
 				766355E4287148C1002E3867 /* Tokens.swift */,
+				7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */,
 				767116AB284AB4C000CCD6FF /* PasswordUtils.swift */,
 				76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */,
 				764D812E284C06AB00B3EE54 /* defaults.plist */,
 				767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */,
 				76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */,
-				76EB840F285C28F0001AE215 /* ChangePasswordMenuItem.swift */,
+				7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */,
 				76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */,
-				76EE06B927FD1EE8009E0F3A /* SignInMenuItem.swift */,
 				767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */,
-				76EE06BB27FD1EFE009E0F3A /* PrefsMenuItem.swift */,
-				76EE06BD27FD1F13009E0F3A /* CheckTokenMenuItem.swift */,
 				76EE06C127FD1F50009E0F3A /* MainMenu.swift */,
 				76EE06AA27FD1D66009E0F3A /* Info.plist */,
 				76EE069D27FD1D00009E0F3A /* AppDelegate.swift */,
@@ -986,7 +980,8 @@
 				76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */,
 				76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */,
 				764D812F284C06AB00B3EE54 /* defaults.plist in Resources */,
-				764D8133284D14A500B3EE54 /* Credits.rtf in Resources */,
+				764D8133284D14A500B3EE54 /* Credits.txt in Resources */,
+				7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */,
 				76673CD229D3CFF900452848 /* errorpage.html in Resources */,
 				764D812D284BCC7400B3EE54 /* VerifyOIDCPassword.xib in Resources */,
 				76C63A322A22872700810C53 /* History.md in Resources */,
@@ -1113,16 +1108,14 @@
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
 				76A8A4E32A0DF7C700AA6054 /* NSTaskWrapper.swift in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
-				764D8131284D11EE00B3EE54 /* AboutMenuItem.swift in Sources */,
+				764D8131284D11EE00B3EE54 /* MenuItems.swift in Sources */,
 				769032372890EB350043E9F3 /* WifiWindowController.swift in Sources */,
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
 				76CB907B2880E41E00C70D0C /* LogShim.swift in Sources */,
 				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
 				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
 				76319373287E18BF00D36BF7 /* DataExtension.swift in Sources */,
-				76EB8410285C28F0001AE215 /* ChangePasswordMenuItem.swift in Sources */,
 				76EECD002875135900483C66 /* Logger.swift in Sources */,
-				76EE06BC27FD1EFE009E0F3A /* PrefsMenuItem.swift in Sources */,
 				76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */,
 				7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */,
 				76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */,
@@ -1130,6 +1123,7 @@
 				764D8126284BC1C300B3EE54 /* LoginPasswordWindowController.swift in Sources */,
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
+				7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
 				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
@@ -1140,9 +1134,7 @@
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
 				76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				766355E5287148C1002E3867 /* Tokens.swift in Sources */,
-				76EE06BE27FD1F13009E0F3A /* CheckTokenMenuItem.swift in Sources */,
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
-				76EE06BA27FD1EE8009E0F3A /* SignInMenuItem.swift in Sources */,
 				76B882B229CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
 				76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
@@ -1233,7 +1225,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1250,7 +1242,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1270,7 +1263,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1287,7 +1280,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1389,7 +1383,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1405,7 +1399,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1425,7 +1420,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1441,7 +1436,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1574,7 +1570,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1591,7 +1587,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1610,7 +1607,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5002;
+				CURRENT_PROJECT_VERSION = 5053;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1627,7 +1624,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

@@ -25,7 +25,7 @@ When app is first launched and there is a keychain item with a AD account and lo
 Most preferences can now be overwritten by specifying a script at the path defined by "settingsOverrideScriptPath". This script, if it exists, owned by root, and has permissions 755 (writable only by root, readable and executable by all) must return a valid plist that defines the key/value pairs to override in preferences. This allows for basing preferences based on the local state of the machine. It is important for the "localAdminUserName" and "localAdminPassword" keys.  See Reset Keychain for more information on this. The overide script can also be used for querying the local state and setting preferences. For example, to randomly set the background image, a sample script "settingsOverrideScriptPath" defines a script:
 
 
-    !/bin/sh
+    #!/bin/sh
     dir="/System/Library/Desktop Pictures"
     desktoppicture=`/bin/ls -1 "$dir"/*.heic | sort --random-sort | head -1`
         
@@ -56,7 +56,7 @@ An example of an override script to return username and password are as follows:
 
 Override Script:
 
-   ` !/bin/sh`
+   ` #!/bin/sh`
 `    dir="/System/Library/Desktop Pictures"`
 `    desktoppicture=/bin/ls -1 "$dir"/*.heic | sort --random-sort | head -1`
 `    `
@@ -82,6 +82,9 @@ plist:
 
 ### Others
 * added shake to password field
+* added dialog over login window when in an error state
+* improved code when local password policy does not allow setting password from cloud.
+* Added about menu with history
 
 ## New Keys
 
@@ -130,6 +133,8 @@ Determine if the mac login window or the cloud login window is shown by default
 
 Show the Mac Login Window button in XCreds Login
 
+**shouldShowTokenUpdateStatus**
+Show the time when the password will be checked. True by default.
 
 ## Version 3.0 Build 3607 ##
 

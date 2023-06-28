@@ -17,7 +17,7 @@ class MainMenu: NSObject, NSMenuDelegate {
     var mainMenu: NSMenu
     var menuOpen = false // is the menu open?
     var menuBuilt: Date? // last time menu was built
-
+    var updateStatus = "Starting Up..."
     var signedIn = false
     
     let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -26,6 +26,7 @@ class MainMenu: NSObject, NSMenuDelegate {
 
     var webView: WebViewWindowController?
     var prefsWindow: PreferencesWindowController?
+    var aboutWindowController: AboutWindowController?
 
     override init() {
         mainMenu = NSMenu()
@@ -34,7 +35,14 @@ class MainMenu: NSObject, NSMenuDelegate {
         self.statusBarItem.menu = mainMenu
         self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
         mainMenu.delegate = self
-
+        NotificationCenter.default.addObserver(forName: Notification.Name("CheckTokenStatus"), object: nil, queue: nil) { notification in
+            if let userInfo=notification.userInfo, let nextUpdate = userInfo["NextCheckTime"] as? Date{
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = .short
+                let updateDateString = dateFormatter.string(from: nextUpdate)
+                self.updateStatus="Next password check: \(updateDateString)"
+            }
+        }
     }
 
     func buildMenu() {
@@ -44,13 +52,21 @@ class MainMenu: NSObject, NSMenuDelegate {
 
         menuBuilt = Date()
         mainMenu.removeAllItems()
-
-        // add menu items
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue)==true{
+
+
             mainMenu.addItem(AboutMenuItem())
             mainMenu.addItem(NSMenuItem.separator())
             firstItemShown = true
         }
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowTokenUpdateStatus.rawValue)==true{
+
+            mainMenu.addItem(StatusUpdateMenuItem(title: self.updateStatus))
+            mainMenu.addItem(NSMenuItem.separator())
+
+            firstItemShown = true
+        }
+
         if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
             if firstItemShown == false {
                 mainMenu.addItem(NSMenuItem.separator())
@@ -61,9 +77,10 @@ class MainMenu: NSObject, NSMenuDelegate {
             mainMenu.addItem(NSMenuItem.separator())
 
         }
+
         mainMenu.addItem(SignInMenuItem())
         mainMenu.addItem(CheckTokenMenuItem())
-//        mainMenu.addItem(PrefsMenuItem())
+        //        mainMenu.addItem(PrefsMenuItem())
         TCSLogWithMark()
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowQuitMenu.rawValue)==true{
             let quitMenuItem = NSMenuItem(title: "Quit", action:#selector(NSApp.terminate(_:)), keyEquivalent: "")
@@ -82,7 +99,10 @@ class MainMenu: NSObject, NSMenuDelegate {
     }
 
     //MARK: NSMenuDelegate
+    /*
 
+
+     */
     func menuWillOpen(_ menu: NSMenu) {
         menuOpen = true
     }

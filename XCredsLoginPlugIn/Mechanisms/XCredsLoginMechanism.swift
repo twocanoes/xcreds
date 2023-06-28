@@ -79,8 +79,8 @@ import Cocoa
         }
 
         os_log("XCreds, trying autologin", log: checkADLog, type: .debug)
-        try? "Run Once".write(to: URL.init(fileURLWithPath: "/tmp/xcredsrun"), atomically: true, encoding: String.Encoding.utf8)
 
+        updateRunDict(dict: Dictionary())
         if let username = getContextString(type: "fvusername") {
             TCSLogWithMark("got username = \(username)")
         }
@@ -187,6 +187,7 @@ import Cocoa
 //            os_log("CheckAD mech complete", log: checkADLog, type: .debug)
 //            return
 //        }
+
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
@@ -201,8 +202,25 @@ import Cocoa
 
         NSApp.activate(ignoringOtherApps: true)
 
+        if let runDict = runDict() {
 
+            TCSLogWithMark("Run dict = \(runDict.debugDescription)")
+        }
 
+        if let errorMessage = getContextString(type: "ErrorMessage"){
+            TCSLogWithMark("Sticky error message = \(errorMessage)")
+
+            let alert = NSAlert()
+            alert.addButton(withTitle: "OK")
+            alert.messageText=errorMessage
+            if let loginWindowWindowController = loginWindowWindowController, let window = loginWindowWindowController.window{
+                alert.window.level=window.level+1
+            }
+            alert.window.canBecomeVisibleWithoutLogin=true
+            alert.icon=NSImage(named: NSImage.Name("AppIcon"))
+            alert.runModal()
+
+        }
 
         loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
 
@@ -229,11 +247,11 @@ import Cocoa
         TCSLogWithMark("calling allowLogin")
         super.allowLogin()
     }
-    override func denyLogin() {
+    override func denyLogin(message:String?) {
 //        loginWindowControlsWindowController.close()
         loginWebViewWindowController?.loadPage()
-        TCSLog("***************** DENYING LOGIN ********************");
-        super.denyLogin()
+        TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");
+        super.denyLogin(message: message)
     }
 
     func showLoginWindowType(loginWindowType:LoginWindowType)  {

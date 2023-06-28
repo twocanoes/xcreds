@@ -48,15 +48,15 @@ public class DefaultsOverride: UserDefaults {
                 return
 
             }
-            if ownerID.uintValue != 0 {
-                TCSLogErrorWithMark("override script is not owned by root. not running: \(ownerID.debugDescription)")
+            if ownerID.uintValue != 92 {
+                TCSLogErrorWithMark("override script is not owned by _securityagent. not running: \(ownerID.debugDescription)")
                 return
             }
 
             let unixPermissions = permission.int16Value
 
             if unixPermissions & 0x3f != 0 {
-                TCSLogErrorWithMark("override script cannot be accessible by anyone besides root. not running: \(unixPermissions)")
+                TCSLogErrorWithMark("override script cannot be accessible by anyone besides _securityagent. not running: \(unixPermissions)")
                 return
 
             }

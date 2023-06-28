@@ -34,7 +34,7 @@ enum PasswordVerificationResult {
     case success
     case incorrectPassword
     case accountDoesNotExist
-    case other
+    case other(String)
 }
 
 class SecureTokenCredential {
@@ -334,6 +334,9 @@ class PasswordUtils: NSObject {
         do {
             TCSLogWithMark("getting local record")
             let userRecord = try PasswordUtils.getLocalRecord(userName)
+//            TCSLogWithMark("Checking if password is allowed")
+//            try userRecord.passwordChangeAllowed(userPass)
+//xyzzy
             TCSLogWithMark("checking password")
             try userRecord.verifyPassword(userPass)
             TCSLogWithMark("checking password done")
@@ -346,19 +349,24 @@ class PasswordUtils: NSObject {
                 TCSLogWithMark("Tested password for user account: \(userName) is not valid.")
                 return .incorrectPassword
             case Int(kODErrorCredentialsAccountNotFound.rawValue):
-                TCSLogWithMark("No Account for user: \(userName) is not valid.")
+                TCSLogWithMark("No local account for user: \(userName) is not valid.")
                 return .accountDoesNotExist
             case Int(kODErrorCredentialsAccountLocked.rawValue):
                 TCSLogWithMark("No Account for user: \(userName) is not valid.")
-                return .other
+                return .other("Local account is locked")
 
             case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):
-                TCSLogWithMark("No Account for user: \(userName) is not valid.")
-                return .other
+                TCSLogWithMark("No local account for user: \(userName) is not valid.")
+                return .other("Local account temporarily locked. Please wait a bit and try again.")
+
+
+            case Int(kODErrorCredentialsMethodNotSupported.rawValue):
+                TCSLogWithMark("credential type not supported: \(userName).")
+                return .incorrectPassword
 
 
             default:
-                TCSLogWithMark("throw error:\(error.localizedDescription)")
+                TCSLogWithMark("throw error:\(error.localizedDescription):\(castError.code)")
                 return .accountDoesNotExist
             }
         }

@@ -36,7 +36,6 @@ class TokenManager {
     static let shared = TokenManager()
 
     let defaults = DefaultsOverride.standard
-    var timer: Timer?
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
         var scopes: [String]?

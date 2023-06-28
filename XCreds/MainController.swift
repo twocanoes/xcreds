@@ -75,7 +75,6 @@ class MainController: NSObject, NoMADUserSessionDelegate {
             }
         }
 
-
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
 
 

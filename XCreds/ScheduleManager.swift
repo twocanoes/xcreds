@@ -22,6 +22,7 @@ class ScheduleManager {
             rate = 168
         }
         nextCheckTime = Date(timeIntervalSinceNow: rate*60*60)
+        NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
 
     }
     func startCredentialCheck()  {
@@ -42,16 +43,11 @@ class ScheduleManager {
         }
     }
     func checkToken()  {
-//        // we have not resolved the tokenEndpoint yet, so pop up a window
-//        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue) == nil {
-//            DispatchQueue.main.async {
-//                SignInMenuItem().doAction()
-//            }
-//            return
-//        }
 
         if nextCheckTime>Date() {
             TCSLogWithMark("Token will be checked at \(nextCheckTime)")
+
+            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
             return
         }
         setNextCheckTime()

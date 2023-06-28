@@ -3,8 +3,10 @@ import OpenDirectory
 
 protocol XCredsMechanismProtocol {
     func allowLogin()
-    func denyLogin()
+    func denyLogin(message:String?)
     func setContextString(type: String, value: String)
+    func setStickyContextString(type: String, value: String)
+
     func setHint(type: HintType, hint: Any)
     func reload()
     func run()
@@ -41,12 +43,7 @@ protocol XCredsMechanismProtocol {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
-
-
-        
-
     }
-
 
     var xcredsPass: String? {
         get {
@@ -106,7 +103,6 @@ protocol XCredsMechanismProtocol {
             return username.replacingOccurrences(of: "\0", with: "") as String
         }
     }
-
     var passwordContext: String? {
         get {
             var value : UnsafePointer<AuthorizationValue>? = nil
@@ -126,8 +122,6 @@ protocol XCredsMechanismProtocol {
             return pass.replacingOccurrences(of: "\0", with: "") as String
         }
     }
-
-
     func allowLogin() {
         TCSLogWithMark("\(#function) \(#file):\(#line)")
         let error = mechCallbacks.SetResult(mechEngine, .allow)
@@ -139,8 +133,12 @@ protocol XCredsMechanismProtocol {
     }
 
     // disallow login
-    func denyLogin() {
+    func denyLogin(message: String?) {
         TCSLogErrorWithMark("***************** DENYING LOGIN ********************");
+
+        if let message  = message {
+            setStickyContextString(type: "ErrorMessage", value: message)
+        }
 
         let error = mechCallbacks.SetResult(mechEngine, .deny)
         if error != noErr {
@@ -288,8 +286,22 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
+    func setStickyContextString(type: String, value: String) {
+        TCSLogWithMark("Setting stick context \(type) value: \(value)")
+        let tempdata = value + "\0"
+        let data = tempdata.data(using: .utf8)
+        var value = AuthorizationValue(length: (data?.count)!, data: UnsafeMutableRawPointer(mutating: (data! as NSData).bytes.bindMemory(to: Void.self, capacity: (data?.count)!)))
+        let err = mechCallbacks.SetContextValue((mech?.fEngine)!, type, .sticky, &value)
+        guard err == errSecSuccess else {
+            TCSLogWithMark("Set context value failed with: %{public}@")
+            return
+        }
+    }
+
 
     func getContextString(type: String) -> String? {
+        TCSLogWithMark("Getting stick context \(type)")
+
         var value: UnsafePointer<AuthorizationValue>?
         var flags = AuthorizationContextFlags()
         let err = mech?.fPlugin.pointee.fCallbacks.pointee.GetContextValue((mech?.fEngine)!, type, &flags, &value)
@@ -299,6 +311,44 @@ protocol XCredsMechanismProtocol {
         }
 
         return String(bytesNoCopy: value!.pointee.data!, length: value!.pointee.length, encoding: .utf8, freeWhenDone: false)
+    }
+
+    func runDict() -> Dictionary<String, Any>? {
+        do {
+
+
+            let data =  NSData(contentsOfFile: "/tmp/xcredsrun") as? Data
+            guard let data = data  else {
+                return nil
+            }
+
+            let dict = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: data) as? Dictionary<String, Any>
+            return dict
+
+        }
+        catch {
+
+            TCSLogWithMark("error creating xcrun dict: \(error)")
+            return nil
+
+        }
+
+
+    }
+    func updateRunDict(dict:Dictionary<String, Any>)  {
+//        let emptyDictionary=Dictionary<String, Any>()
+        do {
+
+
+            let data = try NSKeyedArchiver.archivedData(withRootObject: dict, requiringSecureCoding: true)
+
+            try data.write(to: URL.init(fileURLWithPath: "/tmp/xcredsrun"))
+
+        }
+        catch {
+
+            TCSLogWithMark("error creating xcrun dict: \(error)")
+        }
     }
     //MARK: - Directory Service Utilities
 

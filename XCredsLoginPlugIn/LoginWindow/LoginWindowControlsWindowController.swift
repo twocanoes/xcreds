@@ -139,8 +139,13 @@ class LoginWindowControlsWindowController: NSWindowController {
             return
         }
         TCSLogWithMark("setting window level")
+//        let colorValue=0.9
+//        let alpha=0.95
+//        window.backgroundColor=NSColor(deviceRed: colorValue, green: colorValue, blue: colorValue, alpha: alpha)
+        if let level = self.window?.level {
+            window.level = level+1
+        }
 
-        window.level = .screenSaver+2
         TCSLogWithMark("wifiWindowController ordering controls front")
         window.orderFrontRegardless()
         TCSLogWithMark()

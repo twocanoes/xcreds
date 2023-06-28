@@ -624,7 +624,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
         case .deny:
             TCSLogWithMark("Complete login process with deny")
-            delegate?.denyLogin()
+            delegate?.denyLogin(message:"Login Denied")
 
 //            window?.close()
 

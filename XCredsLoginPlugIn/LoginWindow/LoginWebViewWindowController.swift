@@ -40,6 +40,31 @@ class LoginWebViewWindowController: WebViewWindowController {
         TCSLogWithMark("loading page")
 
         monitor.pathUpdateHandler = { path in
+
+            TCSLogWithMark("network changed. \(path.debugDescription)")
+            if path.status != .satisfied {
+                TCSLogErrorWithMark("not connected")
+            }
+            else if path.usesInterfaceType(.cellular) {
+                TCSLogWithMark("Cellular")
+            }
+            else if path.usesInterfaceType(.wifi) {
+                TCSLogWithMark("Wifi changed")
+            }
+            else if path.usesInterfaceType(.wiredEthernet) {
+                TCSLogWithMark("Ethernet")
+            }
+            else if path.usesInterfaceType(.other){
+                TCSLogWithMark("Other")
+            }
+            else if path.usesInterfaceType(.loopback){
+                TCSLogWithMark("Loop Back")
+            }
+            else {
+                TCSLogWithMark("Unknown interface type")
+            }
+
+
             if path.status == .satisfied {
 
                 TCSLogWithMark("network changed")
@@ -173,7 +198,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         guard let idToken = tokens.idToken else {
             TCSLogErrorWithMark("invalid idToken")
 
-            delegate.denyLogin()
+            delegate.denyLogin(message:"The identity token is invalid")
             return
         }
 
@@ -181,13 +206,13 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         if array.count != 3 {
             TCSLogErrorWithMark("idToken is invalid")
-            delegate.denyLogin()
+            delegate.denyLogin(message:"The identity token is incorrect length.")
         }
         let body = array[1]
         TCSLogWithMark("base64 encoded IDToken: \(body)");
         guard let data = base64UrlDecode(value:body ) else {
             TCSLogErrorWithMark("error decoding id token base64")
-            delegate.denyLogin()
+            delegate.denyLogin(message:"The identity token could not be decoded from base64.")
             return
         }
         if let decodedTokenString = String(data: data, encoding: .utf8) {
@@ -203,7 +228,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         catch {
             TCSLogErrorWithMark("error decoding idtoken::")
             TCSLogErrorWithMark("Token:\(body)")
-            delegate.denyLogin()
+            delegate.denyLogin(message:"The identity token could not be decoded from json.")
             return
 
         }
@@ -237,7 +262,7 @@ class LoginWebViewWindowController: WebViewWindowController {
             }
             guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
                 TCSLogErrorWithMark("email address invalid")
-                delegate.denyLogin()
+                delegate.denyLogin(message:"The email address from the identity token is invalid")
                 return
 
             }
@@ -305,8 +330,6 @@ class LoginWebViewWindowController: WebViewWindowController {
         }
         TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
 
-
-
           let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
 
         switch passwordCheckStatus {
@@ -328,7 +351,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
             if passwordWindowController.window==nil {
                 TCSLogWithMark("no passwordWindowController window")
-                delegate.denyLogin()
+                delegate.denyLogin(message:"Unable to show password prompt")
                 return
             }
             passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
@@ -346,7 +369,7 @@ class LoginWebViewWindowController: WebViewWindowController {
                 if response == .cancel {
                     isDone=true
                     TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
-                    delegate.denyLogin()
+                    delegate.denyLogin(message:nil)
                     return
 
                 }
@@ -373,7 +396,7 @@ class LoginWebViewWindowController: WebViewWindowController {
                         let localUser = try? PasswordUtils.getLocalRecord(username)
                         guard let localUser = localUser else {
                             TCSLogErrorWithMark("invalid local user")
-                            delegate.denyLogin()
+                            delegate.denyLogin(message:"The local user \(username) could not be found")
                             return
                         }
                         do {
@@ -381,7 +404,8 @@ class LoginWebViewWindowController: WebViewWindowController {
                         }
                         catch {
                             TCSLogErrorWithMark("Error setting local password to cloud password")
-                            delegate.denyLogin()
+
+                            delegate.denyLogin(message:error.localizedDescription)
                             return
                         }
                         TCSLogWithMark("setting original password to use to unlock keychain later")
@@ -398,10 +422,9 @@ class LoginWebViewWindowController: WebViewWindowController {
         case .accountDoesNotExist:
             TCSLogWithMark("user account doesn't exist yet")
 
-        case .other:
-            TCSLogWithMark("Account is locked or other error")
-            #warning("should put up dialog?")
-            delegate.denyLogin()
+        case .other(let mesg):
+            TCSLogWithMark("password check error:\(mesg)")
+            delegate.denyLogin(message:mesg)
             return
         }
 

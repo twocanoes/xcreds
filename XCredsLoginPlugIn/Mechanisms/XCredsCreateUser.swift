@@ -17,7 +17,10 @@ class XCredsCreateUser: XCredsBaseMechanism {
     //MARK: - Properties
     let session = ODSession.default()
     
-    
+    enum CreateUserError:Error {
+        case userCreateError(String)
+        case userPasswordSetError(String)
+    }
     /// Native attributes that are all set to the user's shortname on account creation to give them
     /// the ability to update the items later.
     var nativeAttrsWriters = ["dsAttrTypeNative:_writers_AvatarRepresentation",
@@ -48,8 +51,8 @@ class XCredsCreateUser: XCredsBaseMechanism {
             TCSLog("Setting up a guest account")
             
             guard let password = passwordContext else {
-                TCSLogErrorWithMark("No username, denying login")
-                denyLogin()
+                TCSLogErrorWithMark("No password, denying login")
+                denyLogin(message:"No password passed.")
                 return
             }
             
@@ -119,26 +122,37 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
             guard let xcredsFirst=xcredsFirst, let xcredsLast = xcredsLast else {
                 TCSLogErrorWithMark("first or last name not defined. bailing")
-                let _ = denyLogin()
+                denyLogin(message:"first or last name not defined.")
+
                 return
 
             }
-            createUser(shortName: xcredsUser,
-                       first: xcredsFirst ,
-                       last: xcredsLast, fullName: fullname,
-                       pass: xcredsPass,
-                       uid: uid,
-                       gid: "20",
-                       canChangePass: true,
-                       isAdmin: isAdmin,
-                       customAttributes: customAttributes,
-                       secureTokenCreds: secureTokenCreds)
+            do {
+                try createUser(shortName: xcredsUser,
+                               first: xcredsFirst ,
+                               last: xcredsLast, fullName: fullname,
+                               pass: xcredsPass,
+                               uid: uid,
+                               gid: "20",
+                               canChangePass: true,
+                               isAdmin: isAdmin,
+                               customAttributes: customAttributes,
+                               secureTokenCreds: secureTokenCreds)
+            }
+
+            catch CreateUserError.userPasswordSetError(let mesg){
+                denyLogin(message:mesg)
+                //create home anyways because account has issues if not created even if a password is not set.
+                createHome(xcredsUser:xcredsUser, uid:uid)
+                return
+
+            }
+            catch{
+                denyLogin(message:error.localizedDescription)
+            }
+            createHome(xcredsUser:xcredsUser, uid:uid)
+
             
-            TCSLogWithMark("Creating local homefolder for \(xcredsUser)")
-            createHomeDirFor(xcredsUser)
-            TCSLogWithMark("Fixup home permissions for: \(xcredsUser)")
-            let _ = cliTask("/usr/sbin/diskutil resetUserPermissions / \(uid)", arguments: nil, waitForTermination: true)
-            TCSLogWithMark("Account creation complete, allowing login")
         } else {
             
             // Checking to see if we are doing a silent overwrite
@@ -184,9 +198,17 @@ class XCredsCreateUser: XCredsBaseMechanism {
         let _ = allowLogin()
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
     }
-    
+
+    func createHome(xcredsUser:String, uid:String) {
+        TCSLogWithMark("Creating local homefolder for \(xcredsUser)")
+        createHomeDirFor(xcredsUser)
+        TCSLogWithMark("Fixup home permissions for: \(xcredsUser)")
+        let _ = cliTask("/usr/sbin/diskutil resetUserPermissions / \(uid)", arguments: nil, waitForTermination: true)
+        TCSLogWithMark("Account creation complete, allowing login")
+
+    }
     // mark utility functions
-    func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) {
+    func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) throws {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
 
@@ -261,7 +283,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         } catch {
             let errorText = error.localizedDescription
             os_log("Unable to create account. Error: %{public}@", log: createUserLog, type: .error, errorText)
-            return
+            throw CreateUserError.userCreateError(error.localizedDescription)
         }
         os_log("Local ODNode user created successfully", log: createUserLog, type: .debug)
         
@@ -304,6 +326,10 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 try newRecord?.changePassword(nil, toPassword: password)
             } catch {
                 os_log("Error setting password for new local user", log: createUserLog, type: .error)
+                //            self.updateRunDict(dict: T##Dictionary<String, Any>)
+
+                throw CreateUserError.userPasswordSetError(error.localizedDescription)
+
             }
         }
         
@@ -409,6 +435,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         }
         
         os_log("User creation complete for: %{public}@", log: createUserLog, type: .debug, shortName)
+
     }
     
     // func to get a random string
