@@ -26,7 +26,6 @@ marketing_version=$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s
 /usr/libexec/PlistBuddy   -c "Set :pfm_version ${buildNumber}" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"
 
 /usr/libexec/PlistBuddy   -c "Set :pfm_description  \"XCreds ${marketing_version} (${buildNumber}) OAuth Settings\"" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"
-exit
 
 
 temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
