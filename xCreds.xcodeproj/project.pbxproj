@@ -98,6 +98,7 @@
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
 		7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */; };
+		7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */; };
 		7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
@@ -343,6 +344,7 @@
 		767B939B2A28279E0038935E /* View+Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
 		7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindow.xib; sourceTree = "<group>"; };
+		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsHelper.swift; path = XCreds/DefaultsHelper.swift; sourceTree = "<group>"; };
 		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
@@ -635,6 +637,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */,
 				76C63A312A22872700810C53 /* History.md */,
 				760418CC2A1331710051411B /* NomadLogin */,
 				76873E2E2A107736001418A9 /* DefaultsHelper.swift */,
@@ -989,6 +992,7 @@
 				76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */,
 				769032362890EAB10043E9F3 /* WifiWindowController.xib in Resources */,
 				76EE06B227FD1E24009E0F3A /* WebView.xib in Resources */,
+				7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1225,7 +1229,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1263,7 +1267,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1383,7 +1387,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1420,7 +1424,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1570,7 +1574,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1607,7 +1611,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5070;
+				CURRENT_PROJECT_VERSION = 5078;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

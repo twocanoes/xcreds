@@ -7,47 +7,95 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D7194B2D-0B27-4B70-8D7F-2D97911CFF3C"
+            uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/AboutWindowController.swift"
+            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "awakeFromNib()"
-            landmarkType = "7">
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "cliTask(_:arguments:waitForTermination:)"
+            landmarkType = "9">
             <Locations>
                <Location
-                  uuid = "D7194B2D-0B27-4B70-8D7F-2D97911CFF3C - 3a058db1d85a29ec"
+                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "XCreds.AboutWindowController.awakeFromNib() -&gt; ()"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/AboutWindowController.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
-                  offsetFromSymbolStart = "1244">
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "2796">
                </Location>
                <Location
-                  uuid = "D7194B2D-0B27-4B70-8D7F-2D97911CFF3C - 3a058db1d85a29ec"
+                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "XCreds.AboutWindowController.awakeFromNib() -&gt; ()"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/AboutWindowController.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
-                  offsetFromSymbolStart = "1488">
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "3016">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "cliTask(_:arguments:waitForTermination:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "2480">
+               </Location>
+               <Location
+                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "2488">
                </Location>
             </Locations>
          </BreakpointContent>

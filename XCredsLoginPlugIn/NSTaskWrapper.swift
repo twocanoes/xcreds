@@ -63,6 +63,9 @@ public func cliTask(_ command: String, arguments: [String]? = nil, waitForTermin
 
     // Setup and Launch!
 
+    if FileManager.default.isExecutableFile(atPath: commandLaunchPath) == false {
+        return ""
+    }
     myTask.launchPath = commandLaunchPath
     myTask.arguments = commandPieces
     myTask.standardOutput = myPipe

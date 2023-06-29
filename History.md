@@ -9,20 +9,20 @@ New username and password window allows logging in with local user or Active Dir
 We no longer use the macOS login window and use the new XCreds username/password window. This allows for faster switching and Active Directory login.
 
 ### Switch to Login Window at Screen Saver ###
-When the "shouldSwitchToLoginWindowWhenLocked" key is set and XCreds is running in the user session and the screen is locked, the lock screen will fast user switch to the log 
+When the "shouldSwitchToLoginWindowWhenLocked" key is set and XCreds is running in the user session and the screen is locked, the lock screen will fast user switch to the login window.
 
-When set to true and the user locks the current session, XCreds will tell the system to switch to Login Window. The current session will stay active but the user will login with the XCreds Login Window to resume the session.
+When set to true and the user locks the current session, XCreds will tell the system to switch to Login Window. The current session will stay active but the user will log in with the XCreds Login Window to resume the session.
 
 ### Admin Group ###
 
 If group membership is returned in the "groups" claim and matches the group defined in the "CreateAdminIfGroupMember" preference, the user will be created as admin.
 
 ### kerberos ticket ###
-When app is first launched and there is a keychain item with a AD account and local password, a kerberos ticket will be attempted.
+When app is first launched and there is a keychain item with an AD account and local password, a kerberos ticket will be attempted.
 
 ### Override Preference Script ###
 
-Most preferences can now be overwritten by specifying a script at the path defined by "settingsOverrideScriptPath". This script, if it exists, owned by root, and has permissions 755 (writable only by root, readable and executable by all) must return a valid plist that defines the key/value pairs to override in preferences. This allows for basing preferences based on the local state of the machine. It is important for the "localAdminUserName" and "localAdminPassword" keys.  See Reset Keychain for more information on this. The overide script can also be used for querying the local state and setting preferences. For example, to randomly set the background image, a sample script "settingsOverrideScriptPath" defines a script:
+Most preferences can now be overwritten by specifying a script at the path defined by "settingsOverrideScriptPath". This script, if it exists, owned by \_securityagent, and has permissions 700 (accessible only by \_securityagent) must return a valid plist that defines the key/value pairs to override in preferences. This allows for basing preferences based on the local state of the machine. It is important for the "localAdminUserName" and "localAdminPassword" keys.  See Reset Keychain for more information on this. The override script can also be used for querying the local state and setting preferences. For example, to randomly set the background image, a sample script "settingsOverrideScriptPath" defines a script:
 
 
     #!/bin/sh
@@ -31,7 +31,7 @@ Most preferences can now be overwritten by specifying a script at the path defin
         
     cat /usr/local/xcreds/override.plist|sed "s|DESKTOPPICTUREPATH|${desktoppicture}|g" 
     
-The plist would defined as:
+The plist would be defined as:
 
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -44,11 +44,11 @@ The plist would defined as:
 
 
 ### Reset Keychain ##
-In prior versions of XCreds, the ability to reset the keychain if the user forgets their local password would fail due to the lack of a admin user with a secure token. This would cause the "PasswordOverwriteSilent" to fail. 
+In prior versions of XCreds, the ability to reset the keychain if the user forgets their local password would fail due to the lack of an admin user with a secure token. This would cause the "PasswordOverwriteSilent" to fail. 
 
 The "settingsOverrideScriptPath" (see above) can return the admin username and password of an admin account that has a secure token. This admin user is then used to reset the user's keychain if they forgot their local password. This can either be done with user prompting or silently.
 
-The script can find those keys via curl, in system keychain, or in a LAPS file and return the values inside the plist that is returned. This gives flexablity in determining the security required for the local admin username and password.
+The script can find those keys via curl, in system keychain, or in a LAPS file and return the values inside the plist that is returned. This gives flexibility in determining the security required for the local admin username and password.
 
 Note that XCreds assumes an admin user with a secure token already exists on the machine and XCreds does not create or manage this user. If you manage local admin via a LAPS system, you can return the password from the local password file.
 
@@ -92,7 +92,7 @@ plist:
 
 The desired AD domain
 
-**usernamePlaceholder*
+**usernamePlaceholder**
 
 Placeholder text in local / AD login window for username
 
@@ -103,7 +103,6 @@ Placeholder text in local / AD login window for password
 **shouldShowLocalOnlyCheckbox**
 
 Show the local only checkbox on the local login page
-
 
 **CreateAdminIfGroupMember**
 
@@ -119,15 +118,15 @@ Script to override defaults. Must return valid property list with specified defa
 
 **localAdminUserName**
 
-Username of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended to set this with the settingsOverrideScriptPath script. This user is used to reset the keychain if the user forgets their local password and to setup a secure token for newly created users.
+Username of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended to set this with the settingsOverrideScriptPath script. This user is used to reset the keychain if the user forgets their local password and to set up a secure token for newly created users.
 
 **localAdminPassword**
 
-Password of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended to set this with the settingsOverrideScriptPath script. This user is used to reset the keychain if the user forgets their local password and to setup a secure token for newly created users.
+Password of local admin user. DO NOT SET THIS IN PREFERENCES. It is recommended to set this with the settingsOverrideScriptPath script. This user is used to reset the keychain if the user forgets their local password and to set up a secure token for newly created users.
 
 **shouldShowCloudLoginByDefault**
 
-Determine if the mac login window or the cloud login window is shown by default
+Determine if the Mac login window or the cloud login window is shown by default
 
 **shouldShowMacLoginButton**
 
