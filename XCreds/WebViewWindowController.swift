@@ -109,7 +109,6 @@ extension WebViewWindowController: WKNavigationDelegate {
             idpHostNames=[idpHostName]
         }
         let passwordElementID:String? = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
-        let shouldFindPasswordElement:Bool? = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldFindPasswordElement.rawValue)
 
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
@@ -142,35 +141,37 @@ extension WebViewWindowController: WKNavigationDelegate {
 
                     TCSLogWithMark("host matches custom idpHostName \(foundHostname)")
 
-                    // we have exactly 1 password and it matches what was specified in prefs.
-                    if let passwordElementID = passwordElementID, ids.count==1, ids[0]==passwordElementID, passwords.count==1 {
-                        TCSLogWithMark("passwordElementID is \(passwordElementID)")
-                        TCSLogWithMark("========= password set===========")
-                        self.password=passwords[0]
 
-                    }
-                    else if passwords.count==3, passwords[1]==passwords[2] {
+                    if passwords.count==3, passwords[1]==passwords[2] {
                         TCSLogWithMark("found 3 password fields. so it is a reset password situation")
                         TCSLogWithMark("========= password set===========")
                         self.password=passwords[2]
-
                     }
-                    //
-                    if shouldFindPasswordElement == true {
-                        if passwords.count==1 {
-                            TCSLogWithMark("found 1 password field. setting")
+
+                    else if let passwordElementID = passwordElementID{
+                        TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
+
+                    // we have a mapped field defined in prefs so only check this.
+                        if ids.count==1, ids[0]==passwordElementID, passwords.count==1 {
                             TCSLogWithMark("========= password set===========")
                             self.password=passwords[0]
                         }
                         else {
-                            TCSLogErrorWithMark("password not set. Found: \(ids)")
-                            return
 
+                            TCSLogWithMark("did not find a single password field on the page with the specified ID so not setting password")
                         }
+
+                    }
+                    //
+                    else if passwords.count==1 {
+                        TCSLogWithMark("found 1 password field on the specified page with the set idpHostName. setting password.")
+                        TCSLogWithMark("========= password set===========")
+                        self.password=passwords[0]
+
                     }
                     else {
-                        TCSLogWithMark("password not captured")
-                    } 
+                        TCSLogWithMark("password not set")
+                    }
                 }
             }
         })
