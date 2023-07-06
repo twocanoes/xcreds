@@ -14,18 +14,28 @@ class ScheduleManager {
     var timer:Timer?
     func setNextCheckTime() {
         var rate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateHours.rawValue)
+        var minutesRate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateMinutes.rawValue)
 
-        if rate < 1 {
-            rate = 1
+        if minutesRate < 0 {
+            minutesRate=0
+        }
+
+        else if minutesRate > 60 {
+            minutesRate=60
+        }
+        if rate < 0 {
+            rate = 0
         }
         else if rate > 168 {
             rate = 168
         }
-        nextCheckTime = Date(timeIntervalSinceNow: rate*60*60)
+        nextCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
         NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
 
     }
     func startCredentialCheck()  {
+        TCSLogWithMark()
+
         if let timer = timer, timer.isValid==true {
             return
         }
@@ -43,7 +53,7 @@ class ScheduleManager {
         }
     }
     func checkToken()  {
-
+        TCSLogWithMark("checking token")
         if nextCheckTime>Date() {
             TCSLogWithMark("Token will be checked at \(nextCheckTime)")
 
