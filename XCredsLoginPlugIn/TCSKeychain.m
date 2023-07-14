@@ -15,6 +15,7 @@ NSString *const TCSKeychainService = @"com.twocanoes.mds.apns";
 
 + (NSArray *)smartcardCertificateArrayFromKeychain
 {
+    
     __block BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseLogging"];
     TKTokenWatcher *watcher = [[TKTokenWatcher alloc] init];
     NSArray *tokenIDs = watcher.tokenIDs;

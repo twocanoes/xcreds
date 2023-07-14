@@ -16,8 +16,8 @@ class XCredsEnableFDE : XCredsBaseMechanism {
     
     @objc override  func run() {
         
-        os_log("Running EnableFDE mech.", log: enableFDELog, type: .debug)
-        
+        TCSLogWithMark("EnableFDE mech starting")
+
         // FileVault
         
         if getManagedPreference(key: .EnableFDE) as? Bool == true {

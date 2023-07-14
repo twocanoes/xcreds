@@ -19,15 +19,34 @@ class LoginWindowControlsWindowController: NSWindowController {
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
+    var commandKeyDown = false
     func dismiss() {
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
         }
         self.window?.close()
     }
+    func commandKey(evt: NSEvent) -> NSEvent{
+        TCSLogWithMark(evt.debugDescription)
+
+        let flags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.command.rawValue
+        TCSLogWithMark("\(flags.description)")
+        if flags != 0 { //key code for command is 55
+            commandKeyDown = true
+            TCSLogWithMark("command down")
+        }
+        else {
+            commandKeyDown=false
+            TCSLogWithMark("not command down")
+
+        }
+        return evt
+    }
+
     override func windowDidLoad() {
         super.windowDidLoad()
         let licenseState = LicenseChecker().currentLicenseState()
+        NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
 
 
         switch licenseState {
@@ -52,14 +71,14 @@ class LoginWindowControlsWindowController: NSWindowController {
             }
 
         case .trialExpired:
-            TCSLogWithMark("Trial Expired")
+            TCSLogErrorWithMark("Trial Expired")
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Trial Expired"
 
 
 
         default:
-            TCSLogWithMark("invalid license")
+            TCSLogErrorWithMark("invalid license")
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
 
@@ -88,7 +107,7 @@ class LoginWindowControlsWindowController: NSWindowController {
 
         }
 
-        let refreshTimerSecs = UserDefaults.standard.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
+        let refreshTimerSecs = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
         if refreshTimerSecs > 0 {
             TCSLogWithMark("Setting refresh timer")
@@ -102,14 +121,14 @@ class LoginWindowControlsWindowController: NSWindowController {
     fileprivate func setupLoginWindowControlsAppearance() {
         DispatchQueue.main.async {
 
-            self.wifiGridColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+            self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
 
-            self.macLoginWindowGribColumn?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
+            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
 
-            self.versionTextField?.isHidden = !UserDefaults.standard.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
 
-            self.window?.level = .screenSaver
+            self.window?.level = .normal+1
             TCSLogWithMark("ordering controls front")
             self.window?.orderFrontRegardless()
 
@@ -118,12 +137,12 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.window?.canBecomeVisibleWithoutLogin = true
 
             let screenRect = NSScreen.screens[0].frame
-            let windowRec = NSMakeRect(0, 0, screenRect.width,109)
-            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
+            let windowRec = NSMakeRect(0, 0, screenRect.width,self.window?.frame.size.height ?? 109)
+//            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
 
             self.window?.setFrame(windowRec, display: true, animate: false)
             self.window?.viewsNeedDisplay=true
-            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
+//            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
         }
 
     }
@@ -139,8 +158,13 @@ class LoginWindowControlsWindowController: NSWindowController {
             return
         }
         TCSLogWithMark("setting window level")
+//        let colorValue=0.9
+//        let alpha=0.95
+//        window.backgroundColor=NSColor(deviceRed: colorValue, green: colorValue, blue: colorValue, alpha: alpha)
+        if let level = self.window?.level {
+            window.level = level+1
+        }
 
-        window.level = .screenSaver+2
         TCSLogWithMark("wifiWindowController ordering controls front")
         window.orderFrontRegardless()
         TCSLogWithMark()
@@ -175,6 +199,8 @@ class LoginWindowControlsWindowController: NSWindowController {
 
     @IBAction func refreshButtonPressed(_ sender: Any) {
         TCSLogWithMark("refreshButtonPressed")
+        DefaultsOverride.standardOverride.refreshCachedPrefs()
+
         guard let delegate = delegate else {
             TCSLogWithMark("No delegate set for refresh")
             return
@@ -200,17 +226,24 @@ class LoginWindowControlsWindowController: NSWindowController {
     @IBAction func shutdownClick(_ sender: Any) {
         TCSLogWithMark("Setting shutdown user")
         guard let delegate = delegate else {
-            TCSLogWithMark("No delegate set for shutdown")
+            TCSLogErrorWithMark("No delegate set for shutdown")
             return
         }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.shutdown.rawValue)
+        TCSLogWithMark("calling allowLogin")
 
         delegate.allowLogin()
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
-        TCSLogWithMark("resetting to standard login window")
+        TCSLogWithMark("switch login window")
+        if commandKeyDown == false {
+
+            NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
+            return
+        }
+
         guard let delegate = delegate else {
-            TCSLogWithMark("No delegate set for resetToStandardLoginWindow")
+            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
             return
         }
         delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)

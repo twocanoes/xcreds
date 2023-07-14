@@ -28,20 +28,18 @@ class WifiManager: CWEventDelegate {
     private var currentInterface: CWInterface?
 
     var timer: Timer?
-    var timerCount: Int = 0 
-    let timerMaxRepeatCount = 14
     weak var delegate: WifiManagerDelegate?
     var monitor:NWPathMonitor?
 
     init() {
         let defaultInterface = CWWiFiClient.shared().interface()
-        CWWiFiClient.shared().delegate = self
+//        CWWiFiClient.shared().delegate = self
 
-        do {
-            try CWWiFiClient.shared().startMonitoringEvent(with: .ssidDidChange)
-        } catch {
-            self.error = error
-        }
+//        do {
+//            try CWWiFiClient.shared().startMonitoringEvent(with: .ssidDidChange)
+//        } catch {
+//            self.error = error
+//        }
 
         let name = defaultInterface?.interfaceName
         if defaultInterface != nil && name != nil {
@@ -138,18 +136,21 @@ class WifiManager: CWEventDelegate {
         var result = false
         do {
             TCSLogWithMark("connecting")
+            currentInterface?.disassociate()
+
             if username != nil && username != "" {
                 TCSLogWithMark("connecting \(username ?? "<unknown username")")
                 try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
             } else {
                 TCSLogWithMark("connecting with password only \(network)")
-
                 try currentInterface?.associate(to: network, password: password)
                 TCSLogWithMark("done associating")
 
             }
             result = true
         } catch {
+            TCSLogWithMark("caught error: \(error)")
+
             self.error = error
         }
         return result
@@ -233,26 +234,16 @@ class WifiManager: CWEventDelegate {
             self.monitor?.cancel()
 
         })
-//        self.timer = Timer(timeInterval: 30, target: self, selector: #selector(self.cancelMonitor), userInfo: nil, repeats: false)
-//        if let timer = self.timer {
-//            TCSLogWithMark("firing timer")
-//            timer.fire()
-//            RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
-//        }
     }
 
-//    @objc func cancelMonitor(){
-//        TCSLogWithMark("cancelMonitor")
-//    }
     func configureNetworkMonitor(){
         
         self.monitor = NWPathMonitor()
 
         monitor?.pathUpdateHandler = { path in
             TCSLogWithMark("network changed. Checking to see if it was WiFi...")
-            TCSLogWithMark()
             if path.status != .satisfied {
-                TCSLogWithMark("not connected")
+                TCSLogErrorWithMark("not connected")
             }
             else if path.usesInterfaceType(.cellular) {
                 TCSLogWithMark("Cellular")
@@ -284,18 +275,4 @@ class WifiManager: CWEventDelegate {
 
     }
 
-//    @objc private func timerCheckInternetConnection() {
-//        timerCount = timerCount + 1
-//        if self.isConnectedToNetwork() || timerCount >= timerMaxRepeatCount {
-//            self.timerCount = 0
-//            self.timer?.invalidate()
-//            self.timer = nil
-//
-//            delegate?.wifiManagerFullyFinishedInternetConnectionTimer()
-//        }
-//
-//        if  self.isConnectedToNetwork() {
-//            delegate?.wifiManagerConnectedToNetwork?()
-//        }
-//    }
 }

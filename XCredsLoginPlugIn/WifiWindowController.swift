@@ -28,7 +28,6 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBOutlet weak var networkUsernameLabel: NSTextField!
     @IBOutlet weak var wifiPopupMenu: NSMenu!
     @IBAction func help(_ sender: Any) {
-         TCSLogWithMark()
     }
 
     @IBOutlet weak var networkUsernameView: NSView?
@@ -174,10 +173,12 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
                 TCSLogWithMark("using identity: \(cn)")
                 TCSLogWithMark("identity: \(identity.debugDescription)")
             }
+            TCSLogWithMark("connectWiFi")
             let connected = wifiManager.connectWifi(with: selectedNetwork, password: userPassword, username: username, identity: identity)
             TCSLogWithMark("done connectWifi")
 
             if connected {
+                TCSLogWithMark("connected")
                 NSApp.stopModal()
                 credentialsWindow.orderOut(self)
 
@@ -185,6 +186,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
                 wifiManager.internetConnected()
                 return
             } else {
+                TCSLogWithMark("not connected")
                 credentialsWindow.shake(self)
             }
         }
@@ -223,7 +225,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
         wifiCredentialTitleLabel?.stringValue = "The wifi network \"\(network.ssid ?? "" )\" requires login:"
         credentialsWindow.canBecomeVisibleWithoutLogin = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.credentialsWindow.level = .screenSaver+2
+            self.credentialsWindow.level = .screenSaver+10
         }
         NSApp.runModal(for: credentialsWindow)
 

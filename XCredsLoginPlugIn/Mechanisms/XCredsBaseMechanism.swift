@@ -3,10 +3,13 @@ import OpenDirectory
 
 protocol XCredsMechanismProtocol {
     func allowLogin()
-    func denyLogin()
+    func denyLogin(message:String?)
     func setContextString(type: String, value: String)
+    func setStickyContextString(type: String, value: String)
+
     func setHint(type: HintType, hint: Any)
     func reload()
+    func run()
 }
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
     func reload() {
@@ -23,6 +26,7 @@ protocol XCredsMechanismProtocol {
         self.mechEngine = mechanism.pointee.fEngine
 
         super.init()
+        TCSLogWithMark("Setting up prefs")
         setupPrefs()
 
     }
@@ -30,6 +34,7 @@ protocol XCredsMechanismProtocol {
         fatalError("superclass must implement")
     }
     func setupPrefs(){
+        TCSLogWithMark()
         UserDefaults.standard.addSuite(named: "com.twocanoes.xcreds")
         let defaultsPath = Bundle(for: type(of: self)).path(forResource: "defaults", ofType: "plist")
 
@@ -38,23 +43,8 @@ protocol XCredsMechanismProtocol {
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             UserDefaults.standard.register(defaults: defaultsDict as! [String : Any])
         }
-
-        let allBundles = Bundle.allBundles
-
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                let infoPlist = currentBundle.infoDictionary
-                if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-                    TCSLogWithMark("-------------------------------------")
-                    TCSLogWithMark("XCreds Login Build Number: \(build)")
-                    TCSLogWithMark("-------------------------------------")
-                    break
-                }
-
-            }
-        }
-
     }
+
     var xcredsPass: String? {
         get {
             guard let userPass = getHint(type: .pass) as? String else {
@@ -69,7 +59,7 @@ protocol XCredsMechanismProtocol {
             guard let firstName = getHint(type: .firstName) as? String else {
                 return ""
             }
-            os_log("Computed nomadFirst accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
+            os_log("Computed firstName accessed: %{public}@", log: noLoMechlog, type: .debug, firstName)
             return firstName
         }
     }
@@ -79,14 +69,14 @@ protocol XCredsMechanismProtocol {
             guard let lastName = getHint(type: .lastName) as? String else {
                 return ""
             }
-            os_log("Computed nomadLast accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
+            os_log("Computed lastName accessed: %{public}@", log: noLoMechlog, type: .debug, lastName)
             return lastName
         }
     }
     var xcredsUser: String? {
         get {
             guard let userName = getHint(type: .user) as? String else {
-                TCSLogWithMark("no username!")
+                TCSLogWithMark("no usernames")
 
                 return nil
             }
@@ -113,7 +103,6 @@ protocol XCredsMechanismProtocol {
             return username.replacingOccurrences(of: "\0", with: "") as String
         }
     }
-
     var passwordContext: String? {
         get {
             var value : UnsafePointer<AuthorizationValue>? = nil
@@ -133,20 +122,23 @@ protocol XCredsMechanismProtocol {
             return pass.replacingOccurrences(of: "\0", with: "") as String
         }
     }
-
-
     func allowLogin() {
         TCSLogWithMark("\(#function) \(#file):\(#line)")
         let error = mechCallbacks.SetResult(mechEngine, .allow)
+        TCSLogWithMark("\(#function) \(#file):\(#line)")
+
         if error != noErr {
-            TCSLogWithMark("Error: \(error)")
+            TCSLogErrorWithMark("Error: \(error)")
         }
     }
 
     // disallow login
-    func denyLogin() {
-        TCSLog("***************** DENYING LOGIN ********************");
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+    func denyLogin(message: String?) {
+        TCSLogErrorWithMark("***************** DENYING LOGIN ********************");
+
+        if let message  = message {
+            setStickyContextString(type: "ErrorMessage", value: message)
+        }
 
         let error = mechCallbacks.SetResult(mechEngine, .deny)
         if error != noErr {
@@ -157,7 +149,7 @@ protocol XCredsMechanismProtocol {
 
     func setHint(type: HintType, hint: Any) {
         guard (hint is String || hint is [String] || hint is Bool) else {
-            TCSLogWithMark("Login Set hint failed: data type of hint is not supported")
+            TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }
         let data = NSKeyedArchiver.archivedData(withRootObject: hint)
@@ -165,17 +157,17 @@ protocol XCredsMechanismProtocol {
 
         let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
         guard err == errSecSuccess else {
-            TCSLogWithMark("NoMAD Login Set hint failed with: %{public}@")
+            TCSLogWithMark("XCred Login Set hint failed with: %{public}@")
             return
         }
     }
-    var nomadGroups: [String]? {
+    var groups: [String]? {
         get {
             guard let userGroups = getHint(type: .groups) as? [String] else {
-                os_log("noMADGroups value is empty", log: noLoMechlog, type: .debug)
+                os_log("groups value is empty", log: noLoMechlog, type: .debug)
                 return nil
             }
-            os_log("Computed nomadgroups accessed: %{public}@", log: noLoMechlog, type: .debug)
+
             return userGroups
         }
     }
@@ -185,13 +177,13 @@ protocol XCredsMechanismProtocol {
         var err: OSStatus = noErr
         err = mechCallbacks.GetHintValue((mech?.fEngine)!, type.rawValue, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("Couldn't retrieve hint value: \(type.rawValue)")
+            TCSLogWithMark("No hint retrieved for: \(type.rawValue)")
             return nil
         }
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
-            TCSLogWithMark("Couldn't unpack hint value: %{public}@")
+            TCSLogErrorWithMark("Couldn't unpack hint value: %{public}@")
                 return nil
         }
         return result
@@ -294,8 +286,22 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
+    func setStickyContextString(type: String, value: String) {
+        TCSLogWithMark("Setting stick context \(type) value: \(value)")
+        let tempdata = value + "\0"
+        let data = tempdata.data(using: .utf8)
+        var value = AuthorizationValue(length: (data?.count)!, data: UnsafeMutableRawPointer(mutating: (data! as NSData).bytes.bindMemory(to: Void.self, capacity: (data?.count)!)))
+        let err = mechCallbacks.SetContextValue((mech?.fEngine)!, type, .sticky, &value)
+        guard err == errSecSuccess else {
+            TCSLogWithMark("Set context value failed with: %{public}@")
+            return
+        }
+    }
+
 
     func getContextString(type: String) -> String? {
+        TCSLogWithMark("Getting stick context \(type)")
+
         var value: UnsafePointer<AuthorizationValue>?
         var flags = AuthorizationContextFlags()
         let err = mech?.fPlugin.pointee.fCallbacks.pointee.GetContextValue((mech?.fEngine)!, type, &flags, &value)
@@ -305,6 +311,44 @@ protocol XCredsMechanismProtocol {
         }
 
         return String(bytesNoCopy: value!.pointee.data!, length: value!.pointee.length, encoding: .utf8, freeWhenDone: false)
+    }
+
+    func runDict() -> Dictionary<String, Any>? {
+        do {
+
+
+            let data =  NSData(contentsOfFile: "/tmp/xcredsrun") as? Data
+            guard let data = data  else {
+                return nil
+            }
+
+            let dict = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: data) as? Dictionary<String, Any>
+            return dict
+
+        }
+        catch {
+
+            TCSLogWithMark("error creating xcrun dict: \(error)")
+            return nil
+
+        }
+
+
+    }
+    func updateRunDict(dict:Dictionary<String, Any>)  {
+//        let emptyDictionary=Dictionary<String, Any>()
+        do {
+
+
+            let data = try NSKeyedArchiver.archivedData(withRootObject: dict, requiringSecureCoding: true)
+
+            try data.write(to: URL.init(fileURLWithPath: "/tmp/xcredsrun"))
+
+        }
+        catch {
+
+            TCSLogWithMark("error creating xcrun dict: \(error)")
+        }
     }
     //MARK: - Directory Service Utilities
 
@@ -330,23 +374,6 @@ protocol XCredsMechanismProtocol {
         return isLocal
     }
 
-    class func verifyUser(name: String, auth: String) -> Bool {
-        os_log("Finding user record", log: noLoMechlog, type: .debug)
-        var records = [ODRecord]()
-        let odsession = ODSession.default()
-        var isValid = false
-        do {
-            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
-            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
-            records = try query.resultsAllowingPartial(false) as! [ODRecord]
-            isValid = ((try records.first?.verifyPassword(auth)) != nil)
-        } catch {
-            let errorText = error.localizedDescription
-            TCSLogWithMark("ODError while trying to check for local user: \(errorText)")
-            return false
-        }
-        return isValid
-    }
 
 
     /// Gets shortname from a UUID

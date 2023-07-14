@@ -5,24 +5,99 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "34FF0823-A33E-41DF-8FB1-8AB1BCC2807D"
+            uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            breakpointStackSelectionBehavior = "1"
-            scope = "1"
-            stopOnStyle = "0">
+            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "cliTask(_:arguments:waitForTermination:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "2796">
+               </Location>
+               <Location
+                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "3016">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.SwiftErrorBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B53A2442-D255-4A4E-BDA6-D23A9FDC0023"
+            uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
-            continueAfterRunningActions = "No">
+            continueAfterRunningActions = "No"
+            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "cliTask(_:arguments:waitForTermination:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "2480">
+               </Location>
+               <Location
+                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "2488">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

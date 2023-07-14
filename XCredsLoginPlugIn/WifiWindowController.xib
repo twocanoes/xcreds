@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22113.3" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22113.3"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,7 +28,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="450" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" id="82w-TR-3gA">
                 <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -87,10 +87,6 @@
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-OG-WIQ">
                                 <rect key="frame" x="118" y="3" width="48" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
-                                    <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
-                                </constraints>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="UsA-xf-nXF">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -98,6 +94,10 @@
 Gw
 </string>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
+                                    <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
+                                </constraints>
                                 <connections>
                                     <action selector="orderOut:" target="QEp-dc-tSh" id="5AN-s0-1oe"/>
                                 </connections>
@@ -125,12 +125,12 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="480" height="198"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" id="Dza-jC-NB8">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-NK-A2W">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-NK-A2W">
                         <rect key="frame" x="20" y="154" width="4" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" id="Pku-Kx-wjy">
                             <font key="font" metaFont="system"/>
@@ -138,7 +138,7 @@ Gw
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-cj-K2q">
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-cj-K2q">
                         <rect key="frame" x="28" y="137" width="434" height="47"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="47" id="uYQ-Hk-yD8"/>
@@ -151,9 +151,6 @@ Gw
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cgl-qV-y0O">
                         <rect key="frame" x="381" y="13" width="86" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="72" id="uVD-yY-HTS"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Join" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cPE-0Q-pm2">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -161,26 +158,29 @@ Gw
 DQ
 </string>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="uVD-yY-HTS"/>
+                        </constraints>
                         <connections>
                             <action selector="connect:" target="-2" id="hSO-Mr-Vz4"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mVP-CL-XEv">
                         <rect key="frame" x="297" y="13" width="86" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="72" id="E5I-gG-M9v"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0jZ-wI-6zS">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <string key="keyEquivalent">s</string>
                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="E5I-gG-M9v"/>
+                        </constraints>
                         <connections>
                             <action selector="wifiCredentialCancelButtonPressed:" target="-2" id="axX-HP-CGX"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ju4-Cc-cV9">
+                    <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ju4-Cc-cV9">
                         <rect key="frame" x="167" y="107" width="293" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Username" drawsBackground="YES" id="AWi-NV-QKq">
                             <font key="font" metaFont="message"/>
@@ -188,7 +188,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
                         <rect key="frame" x="28" y="110" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Username:" id="2MT-3V-4C7">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -196,7 +196,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
                         <rect key="frame" x="28" y="85" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Password:" id="gPn-og-da2">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -204,7 +204,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqw-jG-xk4">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqw-jG-xk4">
                         <rect key="frame" x="80" y="60" width="72" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Certificate:" id="zg7-zl-3F2">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -212,7 +212,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
+                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
                         <rect key="frame" x="166" y="82" width="294" height="21"/>
                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="ytx-J6-yi1">
                             <font key="font" metaFont="message"/>
@@ -274,8 +274,8 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
-        <image name="NSStopProgressFreestandingTemplate" width="19" height="19"/>
+        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
+        <image name="NSStopProgressFreestandingTemplate" width="20" height="20"/>
         <image name="globe" catalog="system" width="15" height="15"/>
         <image name="wifi" catalog="system" width="17" height="13"/>
     </resources>

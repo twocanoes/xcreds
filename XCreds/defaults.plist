@@ -6,6 +6,8 @@
 	<string>xcreds://auth/</string>
 	<key>refreshRateHours</key>
 	<integer>3</integer>
+	<key>refreshRateMinutes</key>
+	<integer>0</integer>
 	<key>showDebug</key>
 	<false/>
 	<key>verifyPassword</key>
@@ -22,6 +24,8 @@
 	<true/>
 	<key>shouldShowVersionInfo</key>
 	<true/>
+	<key>shouldFindPasswordElement</key>
+	<true/>
 	<key>shouldShowSupportStatus</key>
 	<string>1</string>
 	<key>shouldShowConfigureWifiButton</key>
@@ -32,9 +36,19 @@
 	<true/>
 	<key>KeychainCreate</key>
 	<true/>
+	<key>shouldSwitchToLoginWindowWhenLocked</key>
+	<false/>
 	<key>shouldShowCloudLoginByDefault</key>
+	<true/>
+	<key>shouldShowTokenUpdateStatus</key>
 	<true/>
 	<key>autoRefreshLoginTimer</key>
 	<integer>0</integer>
+	<key>usernamePlaceholder</key>
+	<string>Enter Username</string>
+	<key>shouldShowLocalOnlyCheckbox</key>
+	<true/>
+	<key>passwordPlaceholder</key>
+	<string>Password</string>
 </dict>
 </plist>

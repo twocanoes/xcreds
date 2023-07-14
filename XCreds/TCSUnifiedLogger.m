@@ -8,6 +8,7 @@
 #import "TCSUnifiedLogger.h"
 #include <unistd.h>
 #import "NSFileManager+TCSRealHomeFolder.h"
+#import <os/log.h>
 
 
 @interface TCSUnifiedLogger ()
@@ -22,48 +23,70 @@
 
 void TCSLog(NSString *string)
 {
-    [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELINFO];
+
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
+    [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELDEBUG];
 }
 
+void TCSLogInfo(NSString *string)
+{
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
 
+    [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELINFO];
+    
+}
+void TCSLogError(NSString *string)
+{
+    os_log(OS_LOG_DEFAULT, "XCREDS_LOG:%{public}s",[string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"].UTF8String);
+
+    [[TCSUnifiedLogger sharedLogger] logString:string level:LOGLEVELERROR];
+}
 + (TCSUnifiedLogger *)sharedLogger
 {
     static TCSUnifiedLogger *sharedLogger;
 
+
     if (sharedLogger !=nil){
         return sharedLogger;
     }
-    NSFileManager *fm = [NSFileManager defaultManager];
 
+ 
+    NSFileManager *fm = [NSFileManager defaultManager];
     NSString *logFolderPath = [[[NSUserDefaults standardUserDefaults] objectForKey:@"LogFolderPath"] stringByExpandingTildeInPath];
     NSURL *logFolderURL;
-
+//log file not defined.
     if (!logFolderPath || logFolderPath.length == 0 || [fm fileExistsAtPath:logFolderPath] == NO) {
-        if (getuid() == 0) {
-            logFolderURL = [NSURL fileURLWithPath:@"/Library/Logs"];
+        //root
+        if (getuid() == 0 || getuid() == 92) { //root or security agent
 
-            if ([fm isWritableFileAtPath:logFolderURL.path] == NO || [fm fileExistsAtPath:logFolderURL.path]) {
-                logFolderURL = [NSURL fileURLWithPath:@"/var/log"];
-                if (![fm fileExistsAtPath:logFolderURL.path] || [fm isWritableFileAtPath:logFolderURL.path] == NO) {
-                    logFolderURL = [NSURL fileURLWithPath:@"/tmp"];
-                }
-            }
+            logFolderURL = [NSURL fileURLWithPath:@"/tmp/xcreds"];
+
+
+        //not root
         } else {
             NSString *homePath = [[NSFileManager defaultManager] realHomeFolder];
             logFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Logs", homePath]];
             if (![fm fileExistsAtPath:logFolderURL.path]) {
-                logFolderURL = [NSURL fileURLWithPath:@"/tmp"];
+                char template[]="/tmp/xcreds-XXXXXX";
+
+                char *dirPath=mkdtemp(template);
+                if (dirPath) {
+                    logFolderURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:dirPath]];
+                }
+
             }
         }
     }
-
+//define based on prefs.
     else {
         logFolderURL = [NSURL fileURLWithPath:[logFolderPath stringByExpandingTildeInPath]];
     }
 
+    //get name from prefs. if not set, use generic.log
     NSString *logFileName = [[NSUserDefaults standardUserDefaults] objectForKey:@"LogFileName"];
     if (!logFileName || logFileName.length == 0) {
-        logFileName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"LogFileName"];
+
+        logFileName = [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"LogFileName"];
         if (!logFileName || logFileName.length == 0) {
             logFileName = @"generic.log";
         }
@@ -72,24 +95,29 @@ void TCSLog(NSString *string)
 
     if (sharedLogger == nil) {
         sharedLogger = [[TCSUnifiedLogger alloc] init];
-        sharedLogger.lastLoggedDate = [NSDate distantPast];
+    }
+    sharedLogger.lastLoggedDate = [NSDate distantPast];
 
-        sharedLogger.logFileURL = [logFolderURL URLByAppendingPathComponent:logFileName];
-        if (![fm fileExistsAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent]]) {
-            if ([fm createDirectoryAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil] == NO) {
-            }
+    sharedLogger.logFileURL = [logFolderURL URLByAppendingPathComponent:logFileName];
+    if (![fm fileExistsAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent]]) {
+        if ([fm createDirectoryAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil] == NO) {
         }
     }
     return sharedLogger;
 }
 //os_log("Unable to get home directory path.", log: "", type: .error)
-- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
-
-}
+//- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
+//
+//}
 
 
 - (void)logString:(NSString *)inStr level:(LogLevel)level
 {
+
+    if (level==LOGLEVELDEBUG && [[NSUserDefaults standardUserDefaults] boolForKey:@"showDebug"]==NO){
+
+        return;
+    }
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];
 
     NSString *processName = [processInfo processName];
@@ -128,5 +156,7 @@ void TCSLog(NSString *string)
     }
     self.lastLine = inStr;
 }
+
+
 
 @end

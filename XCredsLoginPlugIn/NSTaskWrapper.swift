@@ -63,6 +63,9 @@ public func cliTask(_ command: String, arguments: [String]? = nil, waitForTermin
 
     // Setup and Launch!
 
+    if FileManager.default.isExecutableFile(atPath: commandLaunchPath) == false {
+        return ""
+    }
     myTask.launchPath = commandLaunchPath
     myTask.arguments = commandPieces
     myTask.standardOutput = myPipe
@@ -183,6 +186,7 @@ public func getMAC() -> String {
     return myMac
 }
 
+
 // private function to get the path to the binary if the full path isn't given
 
 private func which(_ command: String) -> String {
@@ -204,3 +208,9 @@ private func which(_ command: String) -> String {
     return output.components(separatedBy: "\n").first!
     
 }
+public func getSerial() -> String {
+    let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+    let serialNumberAsCFString = IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0)
+    return serialNumberAsCFString?.takeUnretainedValue() as! String
+}
+

@@ -20,7 +20,7 @@ class AuthorizationDBManager: NSObject {
 
         if err != noErr {
 
-            TCSLogWithMark("error getting rights to write authdb")
+            TCSLogErrorWithMark("error getting rights to write authdb")
             return nil
         }
         return authRef!
@@ -31,7 +31,7 @@ class AuthorizationDBManager: NSObject {
         let err = AuthorizationRightGet("system.login.console", &rightsInfo)
 
         if err != noErr {
-            TCSLogWithMark("error getting right")
+            TCSLogErrorWithMark("error getting right")
             return nil
         }
         let rightInfo = rightsInfo as? Dictionary<String, Any>
@@ -41,18 +41,18 @@ class AuthorizationDBManager: NSObject {
     func consoleRights() -> Array <String> {
 
         guard let rightInfo = rightsInfo() else {
-            TCSLogWithMark("error getting rightsInfo")
+            TCSLogErrorWithMark("error getting rightsInfo")
 
             return []
         }
 
         guard let rightsArray = rightInfo["mechanisms"] else{
-            TCSLogWithMark("error getting mechanisms")
+            TCSLogErrorWithMark("error getting mechanisms")
 
             return []
         }
         guard let rightsArray = rightsArray as? Array<String> else {
-            TCSLogWithMark("error getting rightsArray")
+            TCSLogErrorWithMark("error getting rightsArray")
 
             return []
 
@@ -65,19 +65,19 @@ class AuthorizationDBManager: NSObject {
         let err = AuthorizationRightGet("system.login.console", &rightInfo)
 
         if err != noErr {
-            TCSLogWithMark("error AuthorizationRightGet")
+            TCSLogErrorWithMark("error AuthorizationRightGet")
 
             return false
         }
 
         guard var rightInfo = rightInfo as? Dictionary<String, Any> else {
-            TCSLogWithMark("error rightInfo")
+            TCSLogErrorWithMark("error rightInfo")
 
             return false
         }
         rightInfo["mechanisms"] = rights
         guard let auth = getAuth() else {
-            TCSLogWithMark("error getAuth")
+            TCSLogErrorWithMark("error getAuth")
 
             return false
         }
@@ -85,7 +85,7 @@ class AuthorizationDBManager: NSObject {
         let err2 = AuthorizationRightSet(auth, "system.login.console",r, nil, nil, nil)
 
         if err2 != noErr {
-            TCSLogWithMark("error AuthorizationRightSet")
+            TCSLogErrorWithMark("error AuthorizationRightSet")
 
             return false
         }
@@ -126,10 +126,8 @@ class AuthorizationDBManager: NSObject {
         let positionOfRight = consoleRights.firstIndex(of: right)
 
         if positionOfRight == nil {
-            TCSLogWithMark("did not find \(right)")
             return false
         }
-        TCSLogWithMark("found \(right)")
 
         return true
     }
@@ -140,7 +138,7 @@ class AuthorizationDBManager: NSObject {
         let positionOfRight = consoleRights.firstIndex(of: right)
 
         guard let positionOfRight = positionOfRight else {
-            TCSLogWithMark("error positionOfRight. Not defined")
+            TCSLogErrorWithMark("error positionOfRight. Not defined")
 
             return false
         }
@@ -148,9 +146,9 @@ class AuthorizationDBManager: NSObject {
 
             consoleRights.insert(newRight, at: positionOfRight+1)
         }
-        else {
-            print("right already exists")
-        }
+//        else {
+//            print("right already exists")
+//        }
 
 
         return setConsoleRights(rights: consoleRights)
@@ -168,9 +166,9 @@ class AuthorizationDBManager: NSObject {
             consoleRights.insert(newRight, at: positionOfRight)
 
         }
-        else {
-            print("right already exists")
-        }
+//        else {
+//            print("right already exists")
+//        }
         let success = setConsoleRights(rights: consoleRights)
         return success
     }

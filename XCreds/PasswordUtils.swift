@@ -10,10 +10,10 @@ import SystemConfiguration
 import SecurityFoundation
 import OpenDirectory
 
-enum DSQueryableErrors: Error {
-    case notLocalUser
-    case multipleUsersFound
-}
+//enum DSQueryableErrors: Error {
+//    case notLocalUser
+//    case multipleUsersFound
+//}
 
 enum PasswordError: Error, CustomStringConvertible {
     case itemNotFound(String)
@@ -30,7 +30,18 @@ enum PasswordError: Error, CustomStringConvertible {
         }
     }
 }
+enum PasswordVerificationResult {
+    case success
+    case incorrectPassword
+    case accountDoesNotExist
+    case other(String)
+}
 
+class SecureTokenCredential {
+
+    var username = ""
+    var password = ""
+}
 class PasswordUtils: NSObject {
 
     static let currentConsoleUserName: String = NSUserName()
@@ -62,6 +73,96 @@ class PasswordUtils: NSObject {
             }
         }
         return nil
+    }
+    class func GetSecureTokenUserList() -> [String] {
+        let launchPath = "/usr/bin/fdesetup"
+        let args = [
+            "list"
+        ]
+        let secureTokenListRaw = cliTask(launchPath, arguments: args, waitForTermination: true)
+        let partialList = secureTokenListRaw.components(separatedBy: "\n")
+        var secureTokenUsers = [String]()
+        for entry in partialList {
+            let username = entry.components(separatedBy: ",")[0].trimmingCharacters(in: .whitespacesAndNewlines)
+            if username != ""{
+                secureTokenUsers.append(entry.components(separatedBy: ",")[0])
+            }
+        }
+
+        return secureTokenUsers
+    }
+
+    class func GetSecureTokenCreds() -> SecureTokenCredential? {
+
+        TCSLogWithMark("Starting SecureToken Credential acquisition process")
+        // Initializing the return variables
+//        var secureTokenManagementUsername = ""
+//        var secureTokenManagementPassword = ""
+
+        // Getting the list of secure token enabled users
+//        let secureTokenUsers = GetSecureTokenUserList()
+
+
+        if let username = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
+            let secureTokenCreds = SecureTokenCredential()
+            secureTokenCreds.username=username
+            secureTokenCreds.password=password
+            return secureTokenCreds
+
+        }
+//        if let scriptPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
+//            TCSLogWithMark("running script \(scriptPath)")
+//            let json = cliTask(scriptPath)
+//            if let data = json.data(using: .utf8) {
+//                let jsonResultDict = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
+//
+//                if let jsonResultDict=jsonResultDict, let username = jsonResultDict["username"] as? String, let password = jsonResultDict["password"] as? String{
+//                    let secureTokenCreds = SecureTokenCredential()
+//                    secureTokenCreds.username=username
+//                    secureTokenCreds.password=password
+//                    return secureTokenCreds
+//                }
+//
+//            }
+//
+//        }
+        return nil
+//        TCSLog("secureTokenManagementUsername is \(secureTokenManagementUsername)")
+////
+//        TCSLog("secureTokenUsers is \(secureTokenUsers.description)")
+//        if secureTokenUsers.contains(secureTokenManagementUsername) {
+//            // The Secure Token management account has a token
+//
+//            // Assigning the username to the return variable
+//            secureTokenCreds.username = secureTokenManagementUsername
+//            secureTokenCreds.password = secureTokenManagementPassword
+//            return secureTokenCreds
+//
+//
+//        } else {
+//            // The Secure Token management account does not have a token, but there are tokens already given
+//            TCSLogWithMark("Secure Token management unable to get credentials")
+//            return nil
+//        }
+    }
+
+    class func verifyUser(name: String, auth: String) -> Bool {
+        os_log("Finding user record", log: noLoMechlog, type: .debug)
+        TCSLogWithMark("searching for user \(name) and password with count \(auth.count)")
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        var isValid = false
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+            isValid = ((try records.first?.verifyPassword(auth)) != nil)
+        } catch {
+            let errorText = error.localizedDescription
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(errorText)")
+            return false
+        }
+        return isValid
     }
 
     class func verifyPassword(password:String) -> Bool {
@@ -229,21 +330,47 @@ class PasswordUtils: NSObject {
     ///   - userPass: The password for the user being tested as a `String`.
     /// - Returns: `true` if the name and password combo are valid locally. `false` if the validation fails.
     /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error.
-    public class func isLocalPasswordValid(userName: String, userPass: String) throws -> Bool {
+    public class func isLocalPasswordValid(userName: String, userPass: String) -> PasswordVerificationResult {
         do {
+            TCSLogWithMark("getting local record")
             let userRecord = try PasswordUtils.getLocalRecord(userName)
+//            TCSLogWithMark("Checking if password is allowed")
+//            try userRecord.passwordChangeAllowed(userPass)
+//xyzzy
+            TCSLogWithMark("checking password")
             try userRecord.verifyPassword(userPass)
+            TCSLogWithMark("checking password done")
+            return .success
+
         } catch {
             let castError = error as NSError
             switch castError.code {
             case Int(kODErrorCredentialsInvalid.rawValue):
                 TCSLogWithMark("Tested password for user account: \(userName) is not valid.")
-                return false
+                return .incorrectPassword
+            case Int(kODErrorCredentialsAccountNotFound.rawValue):
+                TCSLogWithMark("No local account for user: \(userName) is not valid.")
+                return .accountDoesNotExist
+            case Int(kODErrorCredentialsAccountLocked.rawValue):
+                TCSLogWithMark("No Account for user: \(userName) is not valid.")
+                return .other("Local account is locked")
+
+            case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):
+                TCSLogWithMark("No local account for user: \(userName) is not valid.")
+                return .other("Local account temporarily locked. Please wait a bit and try again.")
+
+
+            case Int(kODErrorCredentialsMethodNotSupported.rawValue):
+                TCSLogWithMark("credential type not supported: \(userName).")
+                return .incorrectPassword
+
+
             default:
-                throw error
+                TCSLogWithMark("throw error:\(error.localizedDescription):\(castError.code)")
+                return .accountDoesNotExist
             }
         }
-        return true
+
     }
 
     /// Searches DSLocal for an account short name and returns the `ODRecord` for the user if found.
@@ -264,17 +391,17 @@ class PasswordUtils: NSObject {
             let records = try query.resultsAllowingPartial(false) as! [ODRecord]
 
             if records.count > 1 {
-                TCSLogWithMark("More than one local user found for name.")
+                TCSLogErrorWithMark("More than one local user found for name.")
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")
             return record
         } catch {
-            TCSLogWithMark("ODError while trying to check for local user: %{public}@")
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(error.localizedDescription)")
             throw error
         }
     }

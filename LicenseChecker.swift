@@ -20,6 +20,7 @@ class LicenseChecker: NSObject {
         let trialDays = 14
 
         if UserDefaults.standard.value(forKey: "tts") == nil {
+            TCSLogErrorWithMark("setting trial date")
             UserDefaults.standard.setValue(Date(), forKey: "tts")
         }
         let firstLaunchDate = UserDefaults.standard.value(forKey: "tts") as? Date
@@ -28,11 +29,15 @@ class LicenseChecker: NSObject {
         if let firstLaunchDate = firstLaunchDate {
             let secondsPassed = Date().timeIntervalSince(firstLaunchDate)
             let trialDaysLeft=trialDays-(Int(secondsPassed)/(24*60*60));
+            TCSLogWithMark("trial days: \(secondsPassed)")
 
             if secondsPassed<Double(24*60*60*trialDays) {
                 trialState = .trial(trialDaysLeft)
             }
 
+        }
+        else {
+            TCSLogErrorWithMark("did not get first launch date")
         }
         let check = TCSLicenseCheck()
         let status = check.checkLicenseStatus("com.twocanoes.xcreds", withExtension: "")
@@ -43,17 +48,17 @@ class LicenseChecker: NSObject {
             TCSLogWithMark("valid license")
             return .valid
         case .expired:
-            TCSLogWithMark("expired license")
+            TCSLogErrorWithMark("expired license")
             return trialState
 
         case .invalid:
-            TCSLogWithMark("license invalid")
+            TCSLogErrorWithMark("license invalid")
             return trialState
         case .unset:
-            TCSLogWithMark("No License")
+            TCSLogErrorWithMark("No License")
             return trialState
         default:
-            TCSLogWithMark("invalid license")
+            TCSLogErrorWithMark("invalid license")
             return trialState
         }
 

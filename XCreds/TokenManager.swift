@@ -35,8 +35,7 @@ class TokenManager {
 
     static let shared = TokenManager()
 
-    let defaults = UserDefaults.standard
-    var timer: Timer?
+    let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
         var scopes: [String]?
@@ -48,20 +47,20 @@ class TokenManager {
 
             return oidcPrivate
         }
-        if let clientSecretRaw = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue),
+        if let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue),
            clientSecretRaw != "" {
             clientSecret = clientSecretRaw
         }
-        if let scopesRaw = UserDefaults.standard.string(forKey: PrefKeys.scopes.rawValue) {
+        if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
         //
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
 
             additionalParameters = ["access_type":"offline"]
         }
 
-        let oidcLite = OIDCLite(discoveryURL: UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
         return oidcLite
@@ -74,8 +73,8 @@ class TokenManager {
 
         if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
-            if  keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating Access Token")
+            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.accessToken.rawValue),accountName:PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+                TCSLogErrorWithMark("Error Updating Access Token")
 
                 return false
             }
@@ -83,8 +82,8 @@ class TokenManager {
         }
         if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if  keychainUtil.updatePassword(PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating idToken Token")
+            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
+                TCSLogErrorWithMark("Error Updating idToken Token")
 
                 return false
             }
@@ -94,8 +93,8 @@ class TokenManager {
         if let refreshToken = creds.refreshToken, refreshToken.count>0 {
             TCSLogWithMark("Saving refresh Token")
 
-            if keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating refreshToken Token")
+            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+                TCSLogErrorWithMark("Error Updating refreshToken Token")
 
                 return false
             }
@@ -106,8 +105,8 @@ class TokenManager {
         if creds.password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogWithMark("Error Updating password")
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+                TCSLogErrorWithMark("Error Updating password")
 
                 return false
             }
@@ -117,7 +116,7 @@ class TokenManager {
     }
     func tokenEndpoint() -> String? {
 
-        let prefTokenEndpoint = UserDefaults.standard.string(forKey: PrefKeys.tokenEndpoint.rawValue)
+        let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
         if  prefTokenEndpoint != nil {
             return prefTokenEndpoint
         }
@@ -130,8 +129,9 @@ class TokenManager {
     }
     func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
-
+TCSLogWithMark()
         guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
+            TCSLogWithMark()
             completion(false,true)
             return
         }
@@ -139,13 +139,14 @@ class TokenManager {
         var req = URLRequest(url: url)
 
         let keychainUtil = KeychainUtil()
+        TCSLogWithMark()
+        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
 
-        let refreshToken = try? keychainUtil.findPassword(PrefKeys.refreshToken.rawValue)
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
-        let keychainPassword = try? keychainUtil.findPassword(PrefKeys.password.rawValue)
-
-        if let refreshToken = refreshToken, let clientID = clientID, let keychainPassword = keychainPassword {
-
+        let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+        TCSLogWithMark()
+        if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
+            TCSLogWithMark()
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
                 parameters.append("&client_secret=\(clientSecret)")
@@ -170,11 +171,11 @@ class TokenManager {
 
                             let json = try decoder.decode(RefreshTokenResponse.self, from: data)
                             let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
-                            UserDefaults.standard.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
+                            DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
 
                             let keychainUtil = KeychainUtil()
-                            let _ = keychainUtil.updatePassword(PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
-                            let _ = keychainUtil.updatePassword(PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
+                            let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
+                            let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
 
                             completion(true,false)
 
@@ -186,7 +187,7 @@ class TokenManager {
 
                     }
                     else {
-                        TCSLogWithMark("got status code of \(response.statusCode):\(response)")
+                        TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
                         completion(false,false)
 
                     }
@@ -196,7 +197,7 @@ class TokenManager {
             task.resume()
         }
         else {
-            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshToken ?? "empty")")
+            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
             completion(false,false)
 
         }

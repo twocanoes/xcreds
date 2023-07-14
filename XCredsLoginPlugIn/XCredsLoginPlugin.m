@@ -7,6 +7,7 @@
 
 #import "XCredsLoginPlugin.h"
 #import "XCredsLoginPlugin-Swift.h"
+#import <Foundation/Foundation.h>
 XCredsLoginPlugin *authorizationPlugin = nil;
 
 //os_log_t pluginLog = nil;
@@ -15,6 +16,7 @@ XCredsLoginMechanism *loginWindowMechanism = nil;
 
 
 static OSStatus PluginDestroy(AuthorizationPluginRef inPlugin) {
+
     [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin PluginDestroy:inPlugin];
@@ -24,8 +26,8 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
                                 AuthorizationEngineRef inEngine,
                                 AuthorizationMechanismId mechanismId,
                                 AuthorizationMechanismRef *outMechanism) {
-    [[TCSUnifiedLogger sharedLogger] setLogFileURL:[NSURL fileURLWithPath:@"/tmp/xcreds.log"]];
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanismId] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismCreate:inPlugin
                                       EngineRef:inEngine
@@ -34,19 +36,26 @@ static OSStatus MechanismCreate(AuthorizationPluginRef inPlugin,
 }
 
 static OSStatus MechanismInvoke(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+//    mechanism->fMechID = mechanismId;
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismInvoke:inMechanism];
 }
 
 static OSStatus MechanismDeactivate(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismDeactivate:inMechanism];
 }
 
 static OSStatus MechanismDestroy(AuthorizationMechanismRef inMechanism) {
-    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, __FILE__,__LINE__] level:LOGLEVELDEBUG];
+    MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
+
+    [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:@"%s %s:%d id:%s",__FUNCTION__, __FILE__,__LINE__,mechanism->fMechID] level:LOGLEVELDEBUG];
 
     return [authorizationPlugin MechanismDestroy:inMechanism];
 }
@@ -102,7 +111,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)malloc(sizeof(MechanismRecord));
     if (mechanism == NULL) return errSecMemoryError;
-    TCSLog([NSString stringWithFormat:@"mech is %s\n",mechanismId]);
+    TCSLogInfo([NSString stringWithFormat:@"==========> Authorization Plugin %s Mechanism created.<===========\n",mechanismId]);
     mechanism->fMagic = kMechanismMagic;
     mechanism->fEngine = inEngine;
     mechanism->fPlugin = (PluginRecord *)inPlugin;
@@ -126,36 +135,33 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
 
     if (mechanism->fLoginWindow) {
-        loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
+        if (loginWindowMechanism==nil){
+            loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
+        }
         [loginWindowMechanism run];
 
     }
     else if (mechanism->fPowerControl){
-        NSLog(@"Calling PowerControl");
         XCredsPowerControlMechanism *powerControl = [[XCredsPowerControlMechanism alloc] initWithMechanism:mechanism];
         [powerControl run];
 
     }
     else if (mechanism->fEnableFDE){
-        NSLog(@"Calling EnableFDE");
         XCredsEnableFDE *fdeMech = [[XCredsEnableFDE alloc] initWithMechanism:mechanism];
         [fdeMech run];
 
     }
     else if (mechanism->fKeychainAdd){
-        NSLog(@"Calling fKeychainAdd");
         XCredsKeychainAdd *keychainAdd = [[XCredsKeychainAdd alloc] initWithMechanism:mechanism];
         [keychainAdd run];
 
     }
     else if (mechanism->fCreateUser){
-        NSLog(@"Calling CreateUser");
         XCredsCreateUser *createUser = [[XCredsCreateUser alloc] initWithMechanism:mechanism];
         [createUser run];
 
     }
     else if (mechanism->fLoginDone){
-        NSLog(@"Calling LoginDone");
         XCredsLoginDone *loginDone = [[XCredsLoginDone alloc] initWithMechanism:mechanism];
         [loginDone run];
 
@@ -193,5 +199,4 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     free(inPlugin);
     return noErr;
 }
-
 @end

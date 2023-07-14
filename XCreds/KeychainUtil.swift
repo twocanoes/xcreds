@@ -35,9 +35,10 @@ struct certDates {
 class KeychainUtil {
 
     var myErr: OSStatus
-    let serviceName = "xcreds"
+//    let serviceName = "xcreds"
     var passLength: UInt32 = 0
     var passPtr: UnsafeMutableRawPointer? = nil
+    var password = "********"
 
     var myKeychainItem: SecKeychainItem?
 
@@ -46,55 +47,86 @@ class KeychainUtil {
     }
 
     // find if there is an existing account password and return it or throw
+    func scrub() {
+        // overwrite any variables we need to scrub
+        password = "*********"
+        passPtr?.deallocate()
+        passPtr = nil
+    }
 
-    func findPassword(_ name: String) throws -> String {
+    func findPassword(serviceName:String, accountName:String?) throws -> (String?,String?) {
 
-        TCSLogWithMark("Finding \(name) in keychain")
-        myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(name.count), name, &passLength, &passPtr, &myKeychainItem)
+        TCSLogWithMark("Finding \(serviceName) in keychain")
+        myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, 0, nil, &passLength, &passPtr, &myKeychainItem)
+
 
         if myErr == OSStatus(errSecSuccess) {
             let password = NSString(bytes: passPtr!, length: Int(passLength), encoding: String.Encoding.utf8.rawValue)
             if password != "" {
-                TCSLogWithMark("\(name) found in keychain")
+                TCSLogWithMark("\(serviceName) found in keychain")
             }
-            return password as? String ?? ""
+
+            var account=""
+            if let myKeychainItem=myKeychainItem {
+                var attributeTags = [SecItemAttr.accountItemAttr.rawValue]
+                var formatConstants = [UInt32(CSSM_DB_ATTRIBUTE_FORMAT_STRING)]
+
+                var attributeInfo = SecKeychainAttributeInfo(count: 1, tag: &attributeTags, format: &formatConstants)
+
+                var attrList: UnsafeMutablePointer<SecKeychainAttributeList>? = nil
+
+                let res = SecKeychainItemCopyAttributesAndData(myKeychainItem, &attributeInfo, nil, &attrList,nil,nil);
+
+                let accountAttribute = attrList?.pointee.attr?.pointee
+
+                if let data=accountAttribute?.data {
+                    account = String(bytesNoCopy: data, length: Int((accountAttribute?.length)!),
+                                     encoding: String.Encoding.utf8, freeWhenDone: false)!
+                }
+
+
+
+                TCSLogWithMark()
+            }
+
+            return (account,password as? String ?? "")
         } else {
-            TCSLogWithMark("Password not found in keychain")
+            TCSLogErrorWithMark("Password not found in keychain")
             throw KeychainError.noStoredPassword
         }
     }
 
     // set the password
 
-    func setPassword(_ name: String, pass: String) -> OSStatus {
+    func setPassword(serviceName:String, accountName: String, pass: String) -> OSStatus {
 
-        myErr = SecKeychainAddGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(name.count), name, UInt32(pass.count), pass, &myKeychainItem)
+        myErr = SecKeychainAddGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(accountName.count), accountName, UInt32(pass.count), pass, &myKeychainItem)
 
         return myErr
     }
 
-    func updatePassword(_ name: String, pass: String, shouldUpdateACL:Bool=false, keychainPassword:String?=nil ) -> Bool {
-        if (try? findPassword(name)) != nil {
+    func updatePassword(serviceName:String, accountName: String, pass: String, shouldUpdateACL:Bool=false, keychainPassword:String?=nil ) -> Bool {
+        if (try? findPassword(serviceName: serviceName, accountName: accountName)) != nil {
             TCSLogWithMark("Deleting password")
             let _ = deletePassword()
         }
         TCSLogWithMark("setting new password")
 
-        myErr = setPassword(name, pass: pass)
+        myErr = setPassword(serviceName: serviceName, accountName: accountName, pass: pass)
         if myErr != OSStatus(errSecSuccess) {
-            TCSLogWithMark("setting new password FAILURE")
+            TCSLogErrorWithMark("setting new password FAILURE")
             return false
         }
         TCSLogWithMark("setting new password success")
 
         if shouldUpdateACL==true {
             if let keychainPassword = keychainPassword {
-                TCSLogWithMark("Updating ACL for \(name)")
+                TCSLogWithMark("Updating ACL for \(accountName)")
 
                 updateACL(password:keychainPassword)
             }
             else {
-                TCSLogWithMark("ERROR Updating ACL")
+                TCSLogErrorWithMark("ERROR Updating ACL")
 
                 return false
             }
@@ -112,9 +144,9 @@ class KeychainUtil {
 
     // convience functions
 
-    func findAndDelete(_ name: String) -> Bool {
+    func findAndDelete(serviceName: String, accountName: String) -> Bool {
         do {
-            try findPassword(name)
+            try findPassword(serviceName: serviceName, accountName:accountName)
         } catch{
             return false
         }

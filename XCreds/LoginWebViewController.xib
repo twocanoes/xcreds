@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="21701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LoginWebViewWindowController" customModule="XCredsLoginPlugin">
+            <connections>
+                <outlet property="backgroundImageView" destination="LND-Te-8nB" id="Prm-fa-DgN"/>
+                <outlet property="webView" destination="IVa-Nc-Vs1" id="d8m-Bi-lYF"/>
+                <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCredsLoginPlugin">
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="453" y="250" width="628" height="613"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
+                <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LND-Te-8nB">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="TLB-Dt-CAz"/>
+                    </imageView>
+                    <wkWebView wantsLayer="YES" fixedFrame="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-Nc-Vs1">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
+                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                            <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                        </wkWebViewConfiguration>
+                        <connections>
+                            <outlet property="UIDelegate" destination="-2" id="OMR-Ui-nRn"/>
+                        </connections>
+                    </wkWebView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LND-Te-8nB" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="fow-VT-aOT"/>
+                    <constraint firstItem="LND-Te-8nB" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="gO1-aU-BKz"/>
+                    <constraint firstAttribute="trailing" secondItem="LND-Te-8nB" secondAttribute="trailing" id="gwd-4q-kbH"/>
+                    <constraint firstAttribute="bottom" secondItem="LND-Te-8nB" secondAttribute="bottom" id="nCQ-2r-Isx"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="WYj-G7-iZU"/>
+            </connections>
+            <point key="canvasLocation" x="250" y="297.5"/>
+        </window>
+    </objects>
+</document>

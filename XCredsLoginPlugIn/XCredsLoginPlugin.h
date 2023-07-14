@@ -44,12 +44,14 @@ struct MechanismRecord {
     AuthorizationEngineRef          fEngine;
     const PluginRecord *            fPlugin;
     AuthorizationString             fMechID;
+    Boolean                         fCheckAD;
+
     Boolean                         fLoginWindow;
     Boolean                         fPowerControl;
     Boolean                         fEnableFDE;
     Boolean                         fKeychainAdd;
     Boolean                         fCreateUser;
-    Boolean                             fLoginDone;
+    Boolean                         fLoginDone;
 
 };
 
