@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Configures XCreds configuration preferences</string>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.2011ABA8-75EC-47CF-B8C8-887767E0044A.com.twocanoes.xcreds.CF7C80E3-1A70-4560-A485-42EA3D20523B.B50342B9-55C1-412C-A05F-88052C1884E8.E37DED7B-E52D-486B-9A04-5FDB305D9729</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>E37DED7B-E52D-486B-9A04-5FDB305D9729</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>clientID</key>
+			<string>[redacted]</string>
+			<key>clientSecret</key>
+			<string>[redacted]</string>
+			<key>discoveryURL</key>
+			<string>https://twocanoes.okta.com/.well-known/openid-configuration</string>
+			<key>passwordElementID</key>
+			<string>okta-signin-password</string>
+			<key>redirectURI</key>
+			<string>http://127.0.0.1/xcreds</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>XCreds Okta Test</string>
+	<key>PayloadDisplayName</key>
+	<string>XCreds Okta Test</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreato588CFC46-5295-4F89-9C58-D53E003F11A1</string>
+	<key>PayloadOrganization</key>
+	<string>TCS</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>3ED5B8B3-7523-48D8-9765-CB28BB374E5A</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
