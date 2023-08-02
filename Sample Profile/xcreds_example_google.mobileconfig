@@ -20,25 +20,13 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>clientID</key>
-			<string>480294305394-riamsd9le49pe3gt54aaiof4df3dnu77.apps.googleusercontent.com</string>
+			<string>[redacted]</string>
 			<key>clientSecret</key>
-			<string>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</string>
+			<string>[redacted]</string>
 			<key>discoveryURL</key>
 			<string>https://accounts.google.com/.well-known/openid-configuration</string>
 			<key>redirectURI</key>
 			<string>https://127.0.0.1/xcreds</string>
-			<key>scopes</key>
-			<string>profile openid email</string>
-			<key>shouldSetGoogleAccessTypeToOffline</key>
-			<true/>
-			<key>map_firstname</key>
-			<string>given_name</string>
-			<key>map_fullname</key>
-			<string>name</string>
-			<key>map_lastname</key>
-			<string>family_name</string>
-			<key>map_username</key>
-			<string>name</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
