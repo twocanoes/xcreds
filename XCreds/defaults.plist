@@ -40,6 +40,8 @@
 	<false/>
 	<key>shouldShowCloudLoginByDefault</key>
 	<true/>
+	<key>shouldPreferLocalLoginInsteadOfCloudLogin</key>
+	<false/>
 	<key>shouldShowTokenUpdateStatus</key>
 	<true/>
 	<key>autoRefreshLoginTimer</key>
