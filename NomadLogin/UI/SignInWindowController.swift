@@ -406,37 +406,15 @@ class SignInWindowController: NSWindowController, DSQueryable {
     /// 3. Create a `NoMADSession` and see if we can authenticate as the user.
     @IBAction func signInClick(_ sender: Any) {
         TCSLogWithMark("Sign In button clicked")
-        if username.stringValue.isEmpty {
+        let strippedUsername = username.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
+
+        if strippedUsername.isEmpty {
             username.shake(self)
             TCSLogWithMark("No username entered")
             return
         }
         TCSLogWithMark()
         loginStartedUI()
-        TCSLogWithMark()
-//        if getManagedPreference(key: .GuestUser) as? Bool ?? false {
-//
-//            os_log("Checking for guest account", log: uiLog, type: .default)
-//
-//            let guestUsers = getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]
-//            if guestUsers.contains(username.stringValue) {
-//                os_log("Guest user engaging", log: uiLog, type: .default)
-//                delegate?.setHint(type: .guestUser, hint: "true")
-//                shortName = username.stringValue
-//                passString = UUID.init().uuidString
-//                delegate?.setHint(type: .noMADDomain, hint: "GUEST")
-//                delegate?.setHint(type: .firstName, hint: getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest")
-//                delegate?.setHint(type: .lastName, hint: getManagedPreference(key: .GuestUserLast) as? String ?? "User")
-//                delegate?.setHint(type: .fullName, hint: (getManagedPreference(key: .GuestUserFirst) as? String ?? "Guest") + (getManagedPreference(key: .GuestUserLast) as? String ?? "User"))
-//                setRequiredHintsAndContext()
-//                completeLogin(authResult: .allow)
-//                return
-//            }
-//        }
-        
-        // clear any alerts
-        
-//        alertText.stringValue = ""
         TCSLogWithMark()
         prepareAccountStrings()
         TCSLogWithMark()
@@ -523,13 +501,16 @@ class SignInWindowController: NSWindowController, DSQueryable {
         TCSLogWithMark("Format user and domain strings")
         TCSLogWithMark()
         var providedDomainName = ""
-        
-        shortName = username.stringValue
-        TCSLogWithMark()
-        if username.stringValue.range(of:"@") != nil {
-            shortName = (username.stringValue.components(separatedBy: "@").first)!
 
-            providedDomainName = username.stringValue.components(separatedBy: "@").last!.uppercased()
+        let strippedUsername = username.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
+        shortName = strippedUsername
+
+
+        TCSLogWithMark()
+        if strippedUsername.range(of:"@") != nil {
+            shortName = (strippedUsername.components(separatedBy: "@").first)!
+
+            providedDomainName = strippedUsername.components(separatedBy: "@").last!.uppercased()
             TCSLogWithMark(providedDomainName)
         }
         TCSLogWithMark()
@@ -539,11 +520,11 @@ class SignInWindowController: NSWindowController, DSQueryable {
 //            return
 //        }
         TCSLogWithMark()
-        if username.stringValue.contains("\\") {
+        if strippedUsername.contains("\\") {
             os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
             if let ntDomains = getManagedPreference(key: .NTtoADDomainMappings) as? [String:String],
-                let ntDomain = username.stringValue.components(separatedBy: "\\").first?.uppercased(),
-                let user = username.stringValue.components(separatedBy: "\\").last,
+                let ntDomain = strippedUsername.components(separatedBy: "\\").first?.uppercased(),
+                let user = strippedUsername.components(separatedBy: "\\").last,
                 let convertedDomain =  ntDomains[ntDomain] {
                     shortName = user
                     providedDomainName = convertedDomain
