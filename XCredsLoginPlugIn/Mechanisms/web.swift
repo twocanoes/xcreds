@@ -148,11 +148,11 @@ import Cocoa
             return
         }
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
+        let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
 
-
-        if let _ = discoveryURL {
+        if preferLocalLogin == false,
+            let _ = discoveryURL {
             showLoginWindowType(loginWindowType: .cloud)
-
         }
         else {
             showLoginWindowType(loginWindowType: .usernamePassword)
