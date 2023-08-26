@@ -121,8 +121,7 @@
 		76B882B329CCFDBA00BB8186 /* NSData+HexString.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882B029CCFDBA00BB8186 /* NSData+HexString.m */; };
 		76B9DE022A256BE700C44B77 /* NoMAD_ADAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */; };
-		76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */; };
-		76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */; };
+		76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */; };
 		76BEF7E4287202090013E2A1 /* RestartX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E2287202080013E2A1 /* RestartX.png */; };
 		76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E3287202080013E2A1 /* RestartX@2x.png */; };
 		76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E6287202AF0013E2A1 /* ShutdownX.png */; };
@@ -135,6 +134,7 @@
 		76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */; };
 		76BEF8002872A3030013E2A1 /* loginwindow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */; };
 		76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FF2872A3030013E2A1 /* loginwindow.png */; };
+		76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C084092A9A2635008039FA /* ControlsViewController.xib */; };
 		76C63A322A22872700810C53 /* History.md in Resources */ = {isa = PBXBuildFile; fileRef = 76C63A312A22872700810C53 /* History.md */; };
 		76C873422A31460B00FDAB8E /* NoMAD_ADAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */; };
 		76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
@@ -357,8 +357,7 @@
 		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
 		76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSReturnWindow.h; sourceTree = "<group>"; };
-		76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginWindowControls.xib; sourceTree = "<group>"; };
-		76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindowControlsWindowController.swift; sourceTree = "<group>"; };
+		76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsViewController.swift; sourceTree = "<group>"; };
 		76BEF7E2287202080013E2A1 /* RestartX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RestartX.png; sourceTree = "<group>"; };
 		76BEF7E3287202080013E2A1 /* RestartX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RestartX@2x.png"; sourceTree = "<group>"; };
 		76BEF7E6287202AF0013E2A1 /* ShutdownX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ShutdownX.png; sourceTree = "<group>"; };
@@ -371,6 +370,7 @@
 		76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthorizationDBManager.swift; path = XCredsLoginPlugIn/LoginWindow/AuthorizationDBManager.swift; sourceTree = SOURCE_ROOT; };
 		76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginwindow@2x.png"; sourceTree = "<group>"; };
 		76BEF7FF2872A3030013E2A1 /* loginwindow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginwindow.png; sourceTree = "<group>"; };
+		76C084092A9A2635008039FA /* ControlsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ControlsViewController.xib; sourceTree = "<group>"; };
 		76C63A312A22872700810C53 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
 		76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helper+URLDecode.swift"; sourceTree = "<group>"; };
 		76CB907C288112AF00C70D0C /* xcreds_login.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = xcreds_login.sh; sourceTree = "<group>"; };
@@ -578,11 +578,11 @@
 				76BEF7F128724EB60013E2A1 /* images */,
 				76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */,
 				76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */,
-				76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */,
+				76C084092A9A2635008039FA /* ControlsViewController.xib */,
+				76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */,
 				766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */,
 				766355E128713C47002E3867 /* LoginWindow.swift */,
 				7651EDEC2A1451590075980B /* LocalUsersViewController.xib */,
-				76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */,
 			);
 			path = LoginWindow;
 			sourceTree = "<group>";
@@ -949,10 +949,10 @@
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
 				76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */,
 				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
+				76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */,
 				76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */,
 				7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */,
 				7677908828908E40004E7085 /* WifiWindowController.xib in Resources */,
-				76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */,
 				76DB5CF52A09AE9A0014F8E1 /* get_pw.js in Resources */,
 				76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */,
 			);
@@ -1054,7 +1054,7 @@
 				7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */,
 				7677908728908E40004E7085 /* WifiManager.swift in Sources */,
 				76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */,
-				76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */,
+				76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */,
 				76EECD012875135900483C66 /* Logger.swift in Sources */,
 				7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */,
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
@@ -1229,7 +1229,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1267,7 +1267,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1387,7 +1387,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1424,7 +1424,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1574,7 +1574,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1611,7 +1611,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5087;
+				CURRENT_PROJECT_VERSION = 5177;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

@@ -31,7 +31,17 @@ class SignInWindowController: NSWindowController, DSQueryable {
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
     var originalPass: String?
-    var delegate: XCredsMechanismProtocol?
+    var internalDelegate:XCredsMechanismProtocol?
+    var delegate:XCredsMechanismProtocol? {
+        set {
+            TCSLogWithMark()
+            internalDelegate=newValue
+            controlsViewController?.delegate = newValue
+        }
+        get {
+            return internalDelegate
+        }
+    }
 
     @objc var visible = true
     
@@ -43,6 +53,8 @@ class SignInWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var loginStack: NSStackView!
+    var controlsViewController: ControlsViewController?
+
 //    @IBOutlet weak var passwordChangeStack: NSStackView!
 //    @IBOutlet weak var passwordChangeButton: NSButton!
 //    @IBOutlet weak var oldPassword: NSSecureTextField!
@@ -83,10 +95,30 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
     override func awakeFromNib() {
         TCSLogWithMark()
+        
         if setupDone == false {
             prepareAccountStrings()
             setupDone=true
 
+            let allBundles = Bundle.allBundles
+            for currentBundle in allBundles {
+                TCSLogWithMark(currentBundle.bundlePath)
+                if currentBundle.bundlePath.contains("XCreds") {
+
+                    controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: currentBundle)
+                    if let controlsViewController = controlsViewController {
+                        self.window?.contentView?.addSubview(controlsViewController.view)
+                        let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
+
+                        controlsViewController.view.frame=rect
+                        controlsViewController.delegate=self.delegate
+                    }
+                    else {
+                        TCSLogWithMark("controlsViewController nil")
+                    }
+
+                }
+            }
 
             TCSLogWithMark("Configure login window")
             loginAppearance()
@@ -355,12 +387,10 @@ class SignInWindowController: NSWindowController, DSQueryable {
 //        loginWindowTextWindow.orderFrontRegardless()
 //        loginWindowTextWindow.canBecomeVisibleWithoutLogin = true
         TCSLogWithMark()
-//        if let loginwindowText = UserDefaults(suiteName: "com.apple.loginwindow")?.string(forKey: "LoginwindowText"){
-//            os_log("LoginwindowText defined: %{public}@", log: uiLog, type: .debug, loginwindowText)
-//            loginWindowTextField.stringValue = loginwindowText
-//        } else{
-//            os_log("No LoginwindowText defined", log: uiLog, type: .debug)
-//        }
+        let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
+
+        controlsViewController?.view.frame=rect
+
     }
 
     fileprivate func showResetUI() {

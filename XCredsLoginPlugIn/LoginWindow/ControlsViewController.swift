@@ -7,25 +7,30 @@
 
 import Cocoa
 
-class LoginWindowControlsWindowController: NSWindowController {
+class ControlsViewController: NSViewController {
     var delegate: XCredsMechanismProtocol?
 
     @IBOutlet weak var macLoginWindowGribColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
+    @IBOutlet weak var toolsView: NSView?
+
     let uiLog = "uiLog"
     @IBOutlet weak var versionTextField: NSTextField?
     var loadPageURL:URL?
-    var resolutionObserver:Any?
+//    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
     var commandKeyDown = false
-    func dismiss() {
-        if let resolutionObserver = resolutionObserver {
-            NotificationCenter.default.removeObserver(resolutionObserver)
-        }
-        self.window?.close()
-    }
+//    func dismiss() {
+////        if let resolutionObserver = resolutionObserver {
+////            NotificationCenter.default.removeObserver(resolutionObserver)
+////        }
+////        self.window?.close()
+//    }
+//    @objc override var windowNibName: NSNib.Name {
+//        return NSNib.Name("ControlsViewController")
+//    }
     func commandKey(evt: NSEvent) -> NSEvent{
         TCSLogWithMark(evt.debugDescription)
 
@@ -43,8 +48,9 @@ class LoginWindowControlsWindowController: NSWindowController {
         return evt
     }
 
-    override func windowDidLoad() {
-        super.windowDidLoad()
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
         let licenseState = LicenseChecker().currentLicenseState()
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
 
@@ -61,7 +67,7 @@ class LoginWindowControlsWindowController: NSWindowController {
 
         case .trial(let daysRemaining):
             TCSLogWithMark("Trial")
-            self.trialVersionStatusTextField?.isHidden = false
+            self.trialVersionStatusTextField?.isHidden = true
             if daysRemaining==1 {
                 self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
 
@@ -83,6 +89,7 @@ class LoginWindowControlsWindowController: NSWindowController {
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
 
         }
+    TCSLogWithMark()
         setupLoginWindowControlsAppearance()
         let allBundles = Bundle.allBundles
         versionTextField?.stringValue = ""
@@ -100,12 +107,12 @@ class LoginWindowControlsWindowController: NSWindowController {
             }
         }
 
-        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
-            TCSLogWithMark("Resolution changed. Resetting size")
-            self.setupLoginWindowControlsAppearance()
-
-
-        }
+//        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+//            TCSLogWithMark("Resolution changed. Resetting size")
+//            self.setupLoginWindowControlsAppearance()
+//
+//
+//        }
 
         let refreshTimerSecs = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
@@ -119,29 +126,43 @@ class LoginWindowControlsWindowController: NSWindowController {
         }
     }
     fileprivate func setupLoginWindowControlsAppearance() {
+        TCSLogWithMark()
         DispatchQueue.main.async {
+            self.view.wantsLayer=true
+            self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
+
+
+            TCSLogWithMark()
 
             self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+            TCSLogWithMark()
 
-            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton .rawValue)
+            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
+            TCSLogWithMark()
 
             self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
+            TCSLogWithMark()
 
-            self.window?.level = .normal+1
+//            self.window?.level = .normal+1
             TCSLogWithMark("ordering controls front")
-            self.window?.orderFrontRegardless()
+//            self.window?.orderFrontRegardless()
 
-            self.window?.titlebarAppearsTransparent = true
-            self.window?.isMovable = false
-            self.window?.canBecomeVisibleWithoutLogin = true
+//            self.window?.titlebarAppearsTransparent = true
+//            self.window?.isMovable = false
+//            self.window?.canBecomeVisibleWithoutLogin = true
+            TCSLogWithMark()
+//
+//            let screenRect = NSScreen.screens[0].frame
+//            let windowRec = NSMakeRect(0, 0, screenRect.width,109)
+//            self.frame=windowRec
 
-            let screenRect = NSScreen.screens[0].frame
-            let windowRec = NSMakeRect(0, 0, screenRect.width,self.window?.frame.size.height ?? 109)
+
 //            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
+            TCSLogWithMark()
 
-            self.window?.setFrame(windowRec, display: true, animate: false)
-            self.window?.viewsNeedDisplay=true
+//            self.window?.setFrame(windowRec, display: true, animate: false)
+//            self.window?.viewsNeedDisplay=true
 //            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
         }
 
@@ -161,19 +182,19 @@ class LoginWindowControlsWindowController: NSWindowController {
 //        let colorValue=0.9
 //        let alpha=0.95
 //        window.backgroundColor=NSColor(deviceRed: colorValue, green: colorValue, blue: colorValue, alpha: alpha)
-        if let level = self.window?.level {
+        if let level = self.view.window?.level {
             window.level = level+1
         }
 
         TCSLogWithMark("wifiWindowController ordering controls front")
         window.orderFrontRegardless()
         TCSLogWithMark()
-        window.titlebarAppearsTransparent = true
+//        window.titlebarAppearsTransparent = true
         window.isMovable = true
         window.canBecomeVisibleWithoutLogin = true
         window.makeKeyAndOrderFront(self)
 
-        window.titlebarAppearsTransparent = true
+//        window.titlebarAppearsTransparent = true
 
 
         let screenRect = NSScreen.screens[0].frame

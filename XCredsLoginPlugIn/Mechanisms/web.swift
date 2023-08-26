@@ -6,7 +6,7 @@ import Cocoa
     var loginWebViewWindowController: LoginWebViewWindowController?
     @objc var signInWindowController: SignInWindowController?
     var loginWindowWindowController:NSWindowController?
-    @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
+//    @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
 
     enum LoginWindowType {
         case cloud
@@ -222,23 +222,23 @@ import Cocoa
 
         }
 
-        loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
-
-        guard loginWindowControlsWindowController.window != nil else {
-            TCSLogWithMark("could not create loginWindowControlsWindowController window")
-            return
-        }
-        loginWindowControlsWindowController.delegate=self
-        loginWindowControlsWindowController.window?.backgroundColor = .darkGray
-        loginWindowControlsWindowController.window?.alphaValue=0.7
+//        loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
+//
+//        guard loginWindowControlsWindowController.window != nil else {
+//            TCSLogWithMark("could not create loginWindowControlsWindowController window")
+//            return
+//        }
+//        loginWindowControlsWindowController.delegate=self
+//        loginWindowControlsWindowController.window?.backgroundColor = .darkGray
+//        loginWindowControlsWindowController.window?.alphaValue=0.7
     }
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
-        if loginWindowControlsWindowController != nil {
-            TCSLogWithMark("Dismissing controller")
-
-            loginWindowControlsWindowController.dismiss()
-        }
+//        if loginWindowControlsWindowController != nil {
+//            TCSLogWithMark("Dismissing controller")
+//
+//            loginWindowControlsWindowController.dismiss()
+//        }
 
         if loginWebViewWindowController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")

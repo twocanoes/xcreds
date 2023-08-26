@@ -177,6 +177,7 @@ public class DefaultsOverride: UserDefaults {
         if let defaultName = cachedPrefs[defaultName] as? Bool {
             return defaultName
         }
+        TCSLogWithMark()
 
         return UserDefaults.standard.bool(forKey: defaultName)
     }
