@@ -35,15 +35,4 @@ class AboutWindowController: NSWindowController {
 
     }
 
-//    @IBAction func clearTokensClicked(_ sender: Any) {
-//        let keychainUtil = KeychainUtil()
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.accessToken.rawValue)
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.idToken.rawValue)
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.refreshToken.rawValue)
-//
-//
-//        mainMenu.signedIn=false
-//        mainMenu.buildMenu()
-//    }
-
 }
