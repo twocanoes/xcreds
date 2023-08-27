@@ -50,6 +50,8 @@
 	<string>Enter Username</string>
 	<key>shouldShowLocalOnlyCheckbox</key>
 	<true/>
+	<key>shouldDetectNetworkToDetermineLoginWindow</key>
+	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
 </dict>

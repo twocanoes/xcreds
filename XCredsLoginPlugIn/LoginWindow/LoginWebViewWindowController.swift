@@ -9,13 +9,11 @@ import Foundation
 import Cocoa
 import WebKit
 import OIDCLite
-import Network
 import OpenDirectory
 
 class LoginWebViewWindowController: WebViewWindowController {
 
     let uiLog = "uiLog"
-    let monitor = NWPathMonitor()
     var internalDelegate:XCredsMechanismProtocol?
     var delegate:XCredsMechanismProtocol? {
         set {
@@ -28,6 +26,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         }
     }
     var resolutionObserver:Any?
+    var networkChangeObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
     @IBOutlet var controlsViewController: ControlsViewController?
@@ -59,6 +58,15 @@ class LoginWebViewWindowController: WebViewWindowController {
             }
         }
         TCSLogWithMark()
+        networkChangeObserver = NotificationCenter.default.addObserver(forName:NSNotification.Name("NetworkChanged"), object: nil, queue: nil) { notification in
+            //            TCSLogWithMark("network changed.")
+            let userInfo = notification.userInfo as? [String:Bool]
+            if let userInfo = userInfo, let networkStatus = userInfo["online"], networkStatus==true {
+                self.loadPage()
+            }
+        }
+
+
 
         resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
@@ -71,48 +79,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         TCSLogWithMark("loading page")
 
-        monitor.pathUpdateHandler = { path in
-
-            TCSLogWithMark("network changed. \(path.debugDescription)")
-            if path.status != .satisfied {
-                TCSLogErrorWithMark("not connected")
-            }
-            else if path.usesInterfaceType(.cellular) {
-                TCSLogWithMark("Cellular")
-            }
-            else if path.usesInterfaceType(.wifi) {
-                TCSLogWithMark("Wifi changed")
-            }
-            else if path.usesInterfaceType(.wiredEthernet) {
-                TCSLogWithMark("Ethernet")
-            }
-            else if path.usesInterfaceType(.other){
-                TCSLogWithMark("Other")
-            }
-            else if path.usesInterfaceType(.loopback){
-                TCSLogWithMark("Loop Back")
-            }
-            else {
-                TCSLogWithMark("Unknown interface type")
-            }
-
-
-            if path.status == .satisfied {
-
-                TCSLogWithMark("network changed")
-                DispatchQueue.main.async {
-
-                    self.loadPage()
-                }
-
-            } else {
-                TCSLogErrorWithMark("No connection.")
-            }
-
-            print(path.isExpensive)
-        }
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
+        
 
         loadPage()
     }
@@ -198,10 +165,12 @@ class LoginWebViewWindowController: WebViewWindowController {
 //
 
 //        }
-        monitor.pathUpdateHandler=nil
-
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
+        }
+        if let networkChangeObserver = networkChangeObserver {
+            NotificationCenter.default.removeObserver(networkChangeObserver)
+
         }
 
 
