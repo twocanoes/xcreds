@@ -12,7 +12,7 @@ enum PrefKeys: String {
          windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow
     case ropgClientID
     case ropgClientSecret
-    case verifyPasswordWithRopg
+    case shouldVerifyPasswordWithRopg
     case actionItemOnly = "ActionItemOnly"
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"
