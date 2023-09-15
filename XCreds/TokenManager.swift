@@ -7,8 +7,25 @@
 import Foundation
 import OIDCLite
 
-struct RefreshTokenResponse: Codable {
-    let accessToken, expiresIn, expiresOn, refreshToken, extExpiresIn,tokenType: String
+@propertyWrapper
+struct IntConvertible: Decodable {
+    var wrappedValue: Int
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        wrappedValue = 0
+        if let intValue = try? container.decode(Int.self) {
+            wrappedValue = intValue
+        } else if  let stringValue = try? container.decode(String.self), let intValue = Int(stringValue) {
+            wrappedValue = intValue
+        }
+    }
+}
+
+struct RefreshTokenResponse: Decodable {
+    let accessToken, refreshToken, tokenType: String
+    @IntConvertible var expiresIn: Int
+    let expiresOn, extExpiresIn: String?
 
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
@@ -127,9 +144,9 @@ class TokenManager {
         }
         return nil
     }
-    func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
 
-TCSLogWithMark()
+    func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
+        TCSLogWithMark()
         guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
             TCSLogWithMark()
             completion(false,true)
@@ -144,9 +161,78 @@ TCSLogWithMark()
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+        func handleIdpRepsonse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String) {
+            guard let data = data else {
+                print(String(describing: error))
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                completion(false,true)
+                return
+            }
+              if let response = response as? HTTPURLResponse {
+                  if response.statusCode == 200 {
+                      let decoder = JSONDecoder()
+                      do {
+
+                          let json = try decoder.decode(RefreshTokenResponse.self, from: data)
+                          let expirationDate = Date().addingTimeInterval(TimeInterval(json.expiresIn))
+                          DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
+
+                          let keychainUtil = KeychainUtil()
+                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
+                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
+                          TCSLogWithMark("Credentials are current.")
+                          completion(true,false)
+
+                      }
+                      catch {
+                          TCSLogWithMark("Credentials are current, but failed to decode response")
+                          completion(true,false)
+                          return
+                      }
+
+                  }
+                  else {
+                      TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
+                      completion(false,false)
+
+                  }
+              }
+        }
+
         TCSLogWithMark()
-        if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
-            TCSLogWithMark()
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
+            TCSLogWithMark("Checking credentials in keychain using ROPG")
+            let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+            guard let userName = currentUser?.recordName else {
+                completion(false,true)
+                return
+            }
+            let loginString = "\(ropgClientID):\(ropgClientSecret)"
+            guard let loginData = loginString.data(using: .utf8) else {
+                completion(false,true)
+                return
+            }
+            let base64LoginString = loginData.base64EncodedString()
+            let parameters = "grant_type=password&username=\(userName)&password=\(keychainPassword)&scope=offline_access"
+
+            let postData =  parameters.data(using: .utf8)
+            req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            req.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+
+            req.httpMethod = "POST"
+            req.httpBody = postData
+
+            let task = URLSession.shared.dataTask(with: req) { data, response, error in
+                handleIdpRepsonse(data: data, response: response, error: error, keychainPassword: keychainPassword)
+            }
+
+            task.resume()
+        } else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
+            TCSLogWithMark("Checking credentials in keychain using refresh token")
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
                 parameters.append("&client_secret=\(clientSecret)")
@@ -159,39 +245,7 @@ TCSLogWithMark()
             req.httpBody = postData
 
             let task = URLSession.shared.dataTask(with: req) { data, response, error in
-              guard let data = data else {
-                print(String(describing: error))
-                  completion(false,true)
-                  return
-              }
-                if let response = response as? HTTPURLResponse {
-                    if response.statusCode == 200 {
-                        let decoder = JSONDecoder()
-                        do {
-
-                            let json = try decoder.decode(RefreshTokenResponse.self, from: data)
-                            let expirationDate = Date().addingTimeInterval(TimeInterval(Int(json.expiresIn) ?? 0))
-                            DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
-
-                            let keychainUtil = KeychainUtil()
-                            let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
-                            let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
-
-                            completion(true,false)
-
-                        }
-                        catch {
-                            completion(true,false)
-                            return
-                        }
-
-                    }
-                    else {
-                        TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
-                        completion(false,false)
-
-                    }
-                }
+                handleIdpRepsonse(data: data, response: response, error: error, keychainPassword: keychainPassword)
             }
 
             task.resume()
