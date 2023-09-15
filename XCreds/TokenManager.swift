@@ -161,7 +161,8 @@ class TokenManager {
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
-        func handleIdpRepsonse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String) {
+        
+        func handleIdpResponse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String) {
             guard let data = data else {
                 print(String(describing: error))
                 if let error = error {
@@ -202,7 +203,7 @@ class TokenManager {
         }
 
         TCSLogWithMark()
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userName = currentUser?.recordName else {
@@ -227,11 +228,12 @@ class TokenManager {
             req.httpBody = postData
 
             let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpRepsonse(data: data, response: response, error: error, keychainPassword: keychainPassword)
+                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
             }
 
             task.resume()
-        } else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
+        }
+        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
             TCSLogWithMark("Checking credentials in keychain using refresh token")
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
@@ -245,7 +247,7 @@ class TokenManager {
             req.httpBody = postData
 
             let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpRepsonse(data: data, response: response, error: error, keychainPassword: keychainPassword)
+                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
             }
 
             task.resume()
