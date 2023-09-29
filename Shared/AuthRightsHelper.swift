@@ -9,6 +9,8 @@ import Foundation
 
 
 class AuthRightsHelper: NSObject {
+    static let rightsArray = [["XCredsLoginPlugin:LoginWindow":"XCredsLoginPlugin:PowerControl,privileged"], ["loginwindow:done":"XCredsLoginPlugin:KeychainAdd,privileged"],["builtin:login-begin":"XCredsLoginPlugin:CreateUser,privileged"],["loginwindow:done":"XCredsLoginPlugin:EnableFDE,privileged"],["loginwindow:done":"XCredsLoginPlugin:LoginDone"]]
+
     static func resetRights() ->Bool {
 
         if AuthorizationDBManager.shared.rightExists(right:"XCredsLoginPlugin:LoginWindow")==true {
@@ -16,16 +18,12 @@ class AuthRightsHelper: NSObject {
             if AuthorizationDBManager.shared.replace(right: "XCredsLoginPlugin:LoginWindow", withNewRight: "loginwindow:login") == false {
                 TCSLogErrorWithMark("Error removing XCredsLoginPlugin:LoginWindow. bailing")
                 return false
-
             }
         }
         else if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login")==false {
             TCSLogErrorWithMark("There was no XCredsLoginPlugin:LoginWindow and no loginwindow:login. Please remove /var/db/auth.db and reboot")
             return false
         }
-
-
-
 
         for authRight in AuthorizationDBManager.shared.consoleRights() {
             if authRight.hasPrefix("XCredsLoginPlugin") {
@@ -40,6 +38,15 @@ class AuthRightsHelper: NSObject {
         return true
 
     }
+    static func verifyRights() -> Bool {
+        for right in rightsArray {
+
+            if AuthorizationDBManager.shared.rightExists(right: right.values.first!)==false {
+                return false
+            }
+        }
+        return true
+    }
     static func addRights() ->Bool {
 
         TCSLogWithMark("Adding rights back in")
@@ -47,17 +54,21 @@ class AuthRightsHelper: NSObject {
             TCSLogWithMark("error adding loginwindow:login after XCredsLoginPlugin:LoginWindow. bailing since this shouldn't happen")
 
             return false
-
         }
 
-        for right in [["XCredsLoginPlugin:LoginWindow":"XCredsLoginPlugin:PowerControl,privileged"], ["loginwindow:done":"XCredsLoginPlugin:KeychainAdd,privileged"],["builtin:login-begin":"XCredsLoginPlugin:CreateUser,privileged"],["loginwindow:done":"XCredsLoginPlugin:EnableFDE,privileged"],["loginwindow:done":"XCredsLoginPlugin:LoginDone"]] {
+        for right in rightsArray {
 
             if AuthorizationDBManager.shared.rightExists(right: right.keys.first!){
+                if AuthorizationDBManager.shared.rightExists(right:right.values.first!) == false {
 
-                if AuthorizationDBManager.shared.insertRight(newRight: right.values.first!, afterRight: right.keys.first!) {
+                    if AuthorizationDBManager.shared.insertRight(newRight: right.values.first!, afterRight: right.keys.first!) {
 
+                        TCSLogWithMark("adding \(right.values.first!) after \(right.keys.first!)")
+                    }
+                    else {
+                        TCSLogWithMark("right \(right.values.first!) already exists. Skipping")
 
-                    TCSLogWithMark("adding \(right.values.first!) after \(right.keys.first!)")
+                    }
                 }
 
                 else {

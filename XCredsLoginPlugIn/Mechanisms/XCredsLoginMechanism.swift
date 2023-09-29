@@ -146,7 +146,14 @@ import Network
         TCSLogWithMark()
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
         let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
-
+//        let preventUIPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.filePathToPreventShowingUI.rawValue)
+//
+//        if let preventUIPath = preventUIPath,
+//           FileManager.default.fileExists(atPath: preventUIPath) {
+//            TCSLogWithMark("file exists at \(preventUIPath). Skipping showing XCreds login window")
+//
+//            return
+//        }
         let shouldDetectNetwork = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldDetectNetworkToDetermineLoginWindow.rawValue)
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
@@ -162,9 +169,7 @@ import Network
         }
         else {
             TCSLogWithMark("preferring showing local")
-
             showLoginWindowType(loginWindowType: .usernamePassword)
-
         }
     }
     func startNetworkMonitoring(){
@@ -213,14 +218,13 @@ import Network
             allowLogin()
             return
         }
-
-
         selectAndShowLoginWindow()
 
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
-        if isReturning == false, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+        if isReturning == false, 
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
 
@@ -238,7 +242,7 @@ import Network
 
         if let errorMessage = getContextString(type: "ErrorMessage"){
             TCSLogWithMark("Sticky error message = \(errorMessage)")
-
+            
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
@@ -251,24 +255,10 @@ import Network
 
         }
 
-//        loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
-//
-//        guard loginWindowControlsWindowController.window != nil else {
-//            TCSLogWithMark("could not create loginWindowControlsWindowController window")
-//            return
-//        }
-//        loginWindowControlsWindowController.delegate=self
-//        loginWindowControlsWindowController.window?.backgroundColor = .darkGray
-//        loginWindowControlsWindowController.window?.alphaValue=0.7
     }
     override func allowLogin() {
         stopNetworkMonitoring()
         TCSLogWithMark("Allowing Login")
-//        if loginWindowControlsWindowController != nil {
-//            TCSLogWithMark("Dismissing controller")
-//
-//            loginWindowControlsWindowController.dismiss()
-//        }
 
         if loginWebViewWindowController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")

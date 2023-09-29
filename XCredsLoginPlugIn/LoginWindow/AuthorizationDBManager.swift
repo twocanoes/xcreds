@@ -133,7 +133,6 @@ class AuthorizationDBManager: NSObject {
     }
     func insertRight(newRight:String, afterRight right:String) -> Bool {
         var consoleRights = consoleRights()
-//        TCSLogWithMark("finding right \(right)")
 
         let positionOfRight = consoleRights.firstIndex(of: right)
 
