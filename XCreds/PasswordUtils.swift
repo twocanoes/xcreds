@@ -356,7 +356,7 @@ class PasswordUtils: NSObject {
                 return .other("Local account is locked")
 
             case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):
-                TCSLogWithMark("No local account for user: \(userName) is not valid.")
+                TCSLogWithMark("No local account for user: \(userName) is not valid. Local account temporarily locked. Please wait a bit and try again.")
                 return .other("Local account temporarily locked. Please wait a bit and try again.")
 
 

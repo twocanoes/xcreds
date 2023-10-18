@@ -99,8 +99,7 @@ protocol XCredsMechanismProtocol {
                                                length: value!.pointee.length,
                                                encoding: String.Encoding.utf8.rawValue)
                 else { return nil }
-
-            return username.replacingOccurrences(of: "\0", with: "") as String
+            return username.trimmingCharacters(in:  CharacterSet.whitespaces.union(CharacterSet(["\0"])))
         }
     }
     var passwordContext: String? {
@@ -119,7 +118,9 @@ protocol XCredsMechanismProtocol {
                                            encoding: String.Encoding.utf8.rawValue)
                 else { return nil }
 
-            return pass.replacingOccurrences(of: "\0", with: "") as String
+            return pass.trimmingCharacters(in:  CharacterSet.whitespaces.union(CharacterSet(["\0"])))
+
+
         }
     }
     func allowLogin() {

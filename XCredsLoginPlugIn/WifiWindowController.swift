@@ -3,6 +3,9 @@
 import Cocoa
 import CoreWLAN
 
+class OKTabPopUpButton: NSPopUpButton {
+  override var canBecomeKeyView: Bool {return true} //
+}
 class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDelegate {
 //    @IBOutlet weak var backgroundView: NonBleedingView!
 //    @IBOutlet weak var mainView: NonBleedingView!

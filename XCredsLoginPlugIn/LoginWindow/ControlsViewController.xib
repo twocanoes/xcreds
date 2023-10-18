@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ControlsViewController" customModule="XCredsLoginPlugin">
+            <connections>
+                <outlet property="macLoginWindowGribColumn" destination="Qgw-6x-QRs" id="YHA-Qx-deF"/>
+                <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
+                <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
+                <outlet property="versionTextField" destination="p61-id-z2n" id="qZT-E7-l0T"/>
+                <outlet property="view" destination="GEH-rQ-5ly" id="Lvx-Jg-8CQ"/>
+                <outlet property="wifiGridColumn" destination="vWr-UA-21l" id="qVZ-LM-BCg"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <view id="GEH-rQ-5ly">
+            <rect key="frame" x="0.0" y="0.0" width="1002" height="117"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
+                    <rect key="frame" x="0.0" y="98" width="1002" height="19"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="bHC-M4-jfl">
+                        <font key="font" metaFont="system" size="16"/>
+                        <color key="textColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p61-id-z2n">
+                    <rect key="frame" x="10" y="-1" width="122" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="XCreds 1.1.1 (2000)" id="RPn-fH-Reb">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="4X8-WT-UyO">
+                    <rect key="frame" x="0.0" y="14" width="1002" height="88"/>
+                    <subviews>
+                        <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="Of1-FL-rgU">
+                            <rect key="frame" x="187" y="10" width="628" height="48"/>
+                            <rows>
+                                <gridRow id="Ax5-pH-aQS"/>
+                            </rows>
+                            <columns>
+                                <gridColumn width="116" trailingPadding="6" id="vWr-UA-21l"/>
+                                <gridColumn width="116" trailingPadding="6" id="vSV-Ol-eHY"/>
+                                <gridColumn width="116" trailingPadding="6" id="AiZ-fa-C1D"/>
+                                <gridColumn width="116" trailingPadding="6" id="Qgw-6x-QRs"/>
+                                <gridColumn width="116" id="8Cw-21-fob"/>
+                            </columns>
+                            <gridCells>
+                                <gridCell row="Ax5-pH-aQS" column="vWr-UA-21l" xPlacement="center" id="kmk-C1-8Ed">
+                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="weh-SQ-zW5">
+                                        <rect key="frame" x="11" y="0.0" width="94" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Configure WiFi" bezelStyle="regularSquare" image="wifi" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="Ohe-3A-hIn">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="showNetworkConnection:" target="-2" id="kxH-Yb-ZnL"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                                <gridCell row="Ax5-pH-aQS" column="vSV-Ol-eHY" xPlacement="center" id="KaX-Pf-Drv">
+                                    <button key="contentView" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="geo-E2-Yej">
+                                        <rect key="frame" x="154" y="0.0" width="65" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Shutdown" bezelStyle="rounded" image="ShutdownX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="8x0-LE-puN">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="shutdownClick:" target="-2" id="OeW-1j-UaS"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                                <gridCell row="Ax5-pH-aQS" column="AiZ-fa-C1D" xPlacement="center" id="5SJ-z0-iEj">
+                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="XTY-NY-mXY">
+                                        <rect key="frame" x="290" y="0.0" width="48" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Restart" bezelStyle="rounded" image="RestartX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="Tpv-6N-4hH">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="restartClick:" target="-2" id="h30-75-6RD"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                                <gridCell row="Ax5-pH-aQS" column="Qgw-6x-QRs" xPlacement="center" id="nYW-QR-FyA">
+                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="gBX-qs-ZzX">
+                                        <rect key="frame" x="397" y="0.0" width="90" height="48"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="loginwindow" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="7Kj-Zs-PRx">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <string key="title">Switch
+Login Window</string>
+                                            <font key="font" metaFont="system"/>
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="resetToStandardLoginWindow:" target="-2" id="aW0-oj-hve"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                                <gridCell row="Ax5-pH-aQS" column="8Cw-21-fob" xPlacement="center" id="iyn-s8-GFy">
+                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="0pJ-At-M5q">
+                                        <rect key="frame" x="512" y="0.0" width="116" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Refresh" bezelStyle="rounded" image="refresh symbol" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="QAx-lk-PcT">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="refreshButtonPressed:" target="-2" id="9up-7e-1lF"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                            </gridCells>
+                        </gridView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="88" id="IQF-bl-Sm9"/>
+                        <constraint firstItem="Of1-FL-rgU" firstAttribute="top" secondItem="4X8-WT-UyO" secondAttribute="top" constant="30" id="M9T-d7-5w9"/>
+                        <constraint firstAttribute="bottom" secondItem="Of1-FL-rgU" secondAttribute="bottom" constant="10" id="VXI-lc-Rrx"/>
+                        <constraint firstItem="Of1-FL-rgU" firstAttribute="centerX" secondItem="4X8-WT-UyO" secondAttribute="centerX" id="WnJ-zT-uLN"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="D8S-gh-gv5" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" id="1KA-Xz-a3o"/>
+                <constraint firstItem="4X8-WT-UyO" firstAttribute="top" secondItem="D8S-gh-gv5" secondAttribute="bottom" constant="-4" id="1wf-Rx-6Xq"/>
+                <constraint firstItem="4X8-WT-UyO" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" id="B4J-hr-OCp"/>
+                <constraint firstAttribute="trailing" secondItem="D8S-gh-gv5" secondAttribute="trailing" id="Eih-ds-XN3"/>
+                <constraint firstAttribute="bottom" secondItem="p61-id-z2n" secondAttribute="bottom" constant="-1" id="HTP-yV-Yjg"/>
+                <constraint firstAttribute="trailing" secondItem="4X8-WT-UyO" secondAttribute="trailing" id="I78-R5-t6d"/>
+                <constraint firstItem="p61-id-z2n" firstAttribute="top" secondItem="4X8-WT-UyO" secondAttribute="bottom" constant="-1" id="Kcd-gD-FlV"/>
+                <constraint firstAttribute="height" constant="117" id="p34-fX-f9F"/>
+                <constraint firstItem="p61-id-z2n" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" constant="12" id="sc0-Ik-DVB"/>
+            </constraints>
+            <point key="canvasLocation" x="55" y="732"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="RestartX" width="32" height="32"/>
+        <image name="ShutdownX" width="32" height="32"/>
+        <image name="loginwindow" width="41" height="32"/>
+        <image name="refresh symbol" width="989" height="989"/>
+        <image name="wifi" width="32" height="32"/>
+    </resources>
+</document>

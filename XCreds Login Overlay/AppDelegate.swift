@@ -39,13 +39,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         waitWindow.setFrameOrigin(newPos)
         waitWindow.makeKeyAndOrderFront(self)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
-                TCSLogWithMark("setting standard login back to XCreds login")
-                try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
-                let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
-                let _ = cliTask("/usr/bin/killall loginwindow")
+            TCSLogWithMark("setting standard login back to XCreds login")
+            try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
+//                let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
+            let _ = AuthRightsHelper.addRights()
+            let _ = cliTask("/usr/bin/killall loginwindow")
 
-            }
+
         }
     }
 
@@ -89,6 +89,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        if AuthRightsHelper.verifyRights()==false {
+            let _ = AuthRightsHelper.resetRights()
+            cloudLoginButtonPressed(self)
+            return
+        }
         if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
 

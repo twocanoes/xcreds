@@ -9,17 +9,27 @@ import Foundation
 import Cocoa
 import WebKit
 import OIDCLite
-import Network
 import OpenDirectory
 
 class LoginWebViewWindowController: WebViewWindowController {
 
     let uiLog = "uiLog"
-    let monitor = NWPathMonitor()
-    var delegate: XCredsMechanismProtocol?
+    var internalDelegate:XCredsMechanismProtocol?
+    var delegate:XCredsMechanismProtocol? {
+        set {
+            TCSLogWithMark()
+            internalDelegate=newValue
+            controlsViewController?.delegate = newValue
+        }
+        get {
+            return internalDelegate
+        }
+    }
     var resolutionObserver:Any?
+    var networkChangeObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
+    @IBOutlet var controlsViewController: ControlsViewController?
 
     @objc override var windowNibName: NSNib.Name {
         return NSNib.Name("LoginWebViewController")
@@ -27,7 +37,37 @@ class LoginWebViewWindowController: WebViewWindowController {
 
     override func windowDidLoad() {
         super.windowDidLoad()
-        
+        TCSLogWithMark()
+        let allBundles = Bundle.allBundles
+        for currentBundle in allBundles {
+            TCSLogWithMark(currentBundle.bundlePath)
+            if currentBundle.bundlePath.contains("XCreds") {
+
+                controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: currentBundle)
+                if let controlsViewController = controlsViewController {
+                    self.window?.contentView?.addSubview(controlsViewController.view)
+                    let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
+
+                    controlsViewController.view.frame=rect
+
+                }
+                else {
+                    TCSLogWithMark("controlsViewController nil")
+                }
+
+            }
+        }
+        TCSLogWithMark()
+        networkChangeObserver = NotificationCenter.default.addObserver(forName:NSNotification.Name("NetworkChanged"), object: nil, queue: nil) { notification in
+            //            TCSLogWithMark("network changed.")
+            let userInfo = notification.userInfo as? [String:Bool]
+            if let userInfo = userInfo, let networkStatus = userInfo["online"], networkStatus==true {
+                self.loadPage()
+            }
+        }
+
+
+
         resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
 
@@ -39,48 +79,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         TCSLogWithMark("loading page")
 
-        monitor.pathUpdateHandler = { path in
-
-            TCSLogWithMark("network changed. \(path.debugDescription)")
-            if path.status != .satisfied {
-                TCSLogErrorWithMark("not connected")
-            }
-            else if path.usesInterfaceType(.cellular) {
-                TCSLogWithMark("Cellular")
-            }
-            else if path.usesInterfaceType(.wifi) {
-                TCSLogWithMark("Wifi changed")
-            }
-            else if path.usesInterfaceType(.wiredEthernet) {
-                TCSLogWithMark("Ethernet")
-            }
-            else if path.usesInterfaceType(.other){
-                TCSLogWithMark("Other")
-            }
-            else if path.usesInterfaceType(.loopback){
-                TCSLogWithMark("Loop Back")
-            }
-            else {
-                TCSLogWithMark("Unknown interface type")
-            }
-
-
-            if path.status == .satisfied {
-
-                TCSLogWithMark("network changed")
-                DispatchQueue.main.async {
-
-                    self.loadPage()
-                }
-
-            } else {
-                TCSLogErrorWithMark("No connection.")
-            }
-
-            print(path.isExpensive)
-        }
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
+        
 
         loadPage()
     }
@@ -127,6 +126,9 @@ class LoginWebViewWindowController: WebViewWindowController {
             }
 
             self.window?.setFrame(screenRect, display: true, animate: false)
+            let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
+
+            self.controlsViewController?.view.frame=rect
 
             let backgroundImage = DefaultsHelper.backgroundImage()
             TCSLogWithMark()
@@ -151,23 +153,24 @@ class LoginWebViewWindowController: WebViewWindowController {
 //        return NSNib.Name("LoginWebView")
 //    }
     func loginTransition() {
-
+        TCSLogWithMark()
 //        let screenRect = NSScreen.screens[0].frame
 //        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
 //        progressIndicator.style = .spinning
 //        progressIndicator.startAnimation(self)
 //        webView.addSubview(progressIndicator)
 //
-//        loginProgressWindowController = LoginProgressWindowController.init(windowNibName: NSNib.Name("LoginProgressWindowController"))
-//        if let loginProgressWindowController = loginProgressWindowController {
+//        if let controlsViewController = controlsViewController {
 //            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
 //
-//
-//        }
-        monitor.pathUpdateHandler=nil
 
+//        }
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
+        }
+        if let networkChangeObserver = networkChangeObserver {
+            NotificationCenter.default.removeObserver(networkChangeObserver)
+
         }
 
 

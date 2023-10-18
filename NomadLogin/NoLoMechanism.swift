@@ -128,6 +128,7 @@ class NoLoMechanism: NSObject {
                                                encoding: String.Encoding.utf8.rawValue)
                 else { return nil }
 
+            return username.trimmingCharacters(in:  CharacterSet.whitespacesAndNewlines.union.CharacterSet(["\0"]))
             return username.replacingOccurrences(of: "\0", with: "") as String
         }
     }

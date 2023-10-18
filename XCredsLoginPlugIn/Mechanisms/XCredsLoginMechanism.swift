@@ -1,4 +1,5 @@
 import Cocoa
+import Network
 
 
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
@@ -6,7 +7,7 @@ import Cocoa
     var loginWebViewWindowController: LoginWebViewWindowController?
     @objc var signInWindowController: SignInWindowController?
     var loginWindowWindowController:NSWindowController?
-    @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
+//    @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
 
     enum LoginWindowType {
         case cloud
@@ -14,6 +15,8 @@ import Cocoa
     }
     let checkADLog = "checkADLog"
     var loginWindowType = LoginWindowType.cloud
+    let monitor = NWPathMonitor()
+
     override init(mechanism: UnsafePointer<MechanismRecord>) {
         let allBundles = Bundle.allBundles
         //NSViewController(nibName: NSNib.Name("LoginWindow"), bundle: nil)
@@ -139,6 +142,74 @@ import Cocoa
 
         return String.init(data: uuid, encoding: String.Encoding.utf8)
     }
+    func selectAndShowLoginWindow(){
+        TCSLogWithMark()
+        let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
+        let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
+//        let preventUIPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.filePathToPreventShowingUI.rawValue)
+//
+//        if let preventUIPath = preventUIPath,
+//           FileManager.default.fileExists(atPath: preventUIPath) {
+//            TCSLogWithMark("file exists at \(preventUIPath). Skipping showing XCreds login window")
+//
+//            return
+//        }
+        let shouldDetectNetwork = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldDetectNetworkToDetermineLoginWindow.rawValue)
+        TCSLogWithMark("checking if local login")
+        if preferLocalLogin == false,
+           let _ = discoveryURL {
+            if shouldDetectNetwork == true,
+               WifiManager().isConnectedToNetwork()==false {
+                showLoginWindowType(loginWindowType: .usernamePassword)
+            }
+            else {
+                TCSLogWithMark("network available, showing cloud")
+                showLoginWindowType(loginWindowType: .cloud)
+            }
+        }
+        else {
+            TCSLogWithMark("preferring showing local")
+            showLoginWindowType(loginWindowType: .usernamePassword)
+        }
+    }
+    func startNetworkMonitoring(){
+        monitor.pathUpdateHandler = { path in
+
+            TCSLogWithMark("network changed. \(path.debugDescription)")
+            if path.status != .satisfied {
+                TCSLogErrorWithMark("not connected")
+            }
+            else if path.usesInterfaceType(.cellular) {
+                TCSLogWithMark("Cellular")
+            }
+            else if path.usesInterfaceType(.wifi) {
+                TCSLogWithMark("Wifi changed")
+            }
+            else if path.usesInterfaceType(.wiredEthernet) {
+                TCSLogWithMark("Ethernet")
+            }
+            else if path.usesInterfaceType(.other){
+                TCSLogWithMark("Other")
+            }
+            else if path.usesInterfaceType(.loopback){
+                TCSLogWithMark("Loop Back")
+            }
+            else {
+                TCSLogWithMark("Unknown interface type")
+            }
+            self.selectAndShowLoginWindow()
+            TCSLogWithMark("network changed")
+            NotificationCenter.default.post(name: NSNotification.Name("NetworkChanged"), object: self, userInfo: ["online":path.status == .satisfied])
+
+        }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+    }
+    func stopNetworkMonitoring() {
+        monitor.cancel()
+        monitor.pathUpdateHandler=nil
+
+    }
     @objc override func run() {
         TCSLogWithMark("XCredsLoginMechanism mech starting")
         if useAutologin() {
@@ -147,51 +218,13 @@ import Cocoa
             allowLogin()
             return
         }
-        let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
-
-
-        if let _ = discoveryURL {
-            showLoginWindowType(loginWindowType: .cloud)
-
-        }
-        else {
-            showLoginWindowType(loginWindowType: .usernamePassword)
-
-        }
-
-//        if (false){
-//
-//            os_log("Activating app", log: checkADLog, type: .debug)
-//            NSApp.activate(ignoringOtherApps: true)
-//            os_log("Loading XIB", log: checkADLog, type: .debug)
-//            signIn = SignIn(windowNibName: NSNib.Name("SignIn"))
-//            os_log("Set mech for loginwindow", log: checkADLog, type: .debug)
-//            signIn.mech = mech
-////            if let domain = self.managedDomain {
-////                os_log("Set managed domain for loginwindow", log: checkADLog, type: .debug)
-////                signIn.domainName = domain.uppercased()
-////            }
-////            if let isSSLRequired = self.isSSLRequired {
-////                os_log("Set SSL required", log: checkADLog, type: .debug)
-////                signIn.isSSLRequired = isSSLRequired
-////            }
-//            guard signIn.window != nil else {
-//                os_log("Could not create login window UI", log: checkADLog, type: .default)
-//                return
-//            }
-//            os_log("Displaying window", log: checkADLog, type: .debug)
-//            if getManagedPreference(key: .NormalWindowLevel) as? Bool == false  {
-//                NSApp.runModal(for: signIn.window!)
-//            }
-//
-//            os_log("CheckAD mech complete", log: checkADLog, type: .debug)
-//            return
-//        }
+        selectAndShowLoginWindow()
 
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
-        if isReturning == false, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+        if isReturning == false, 
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
 
@@ -209,7 +242,7 @@ import Cocoa
 
         if let errorMessage = getContextString(type: "ErrorMessage"){
             TCSLogWithMark("Sticky error message = \(errorMessage)")
-
+            
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
@@ -222,23 +255,10 @@ import Cocoa
 
         }
 
-        loginWindowControlsWindowController = LoginWindowControlsWindowController(windowNibName: NSNib.Name("LoginWindowControls"))
-
-        guard loginWindowControlsWindowController.window != nil else {
-            TCSLogWithMark("could not create loginWindowControlsWindowController window")
-            return
-        }
-        loginWindowControlsWindowController.delegate=self
-        loginWindowControlsWindowController.window?.backgroundColor = .darkGray
-        loginWindowControlsWindowController.window?.alphaValue=0.7
     }
     override func allowLogin() {
+        stopNetworkMonitoring()
         TCSLogWithMark("Allowing Login")
-        if loginWindowControlsWindowController != nil {
-            TCSLogWithMark("Dismissing controller")
-
-            loginWindowControlsWindowController.dismiss()
-        }
 
         if loginWebViewWindowController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
@@ -248,6 +268,7 @@ import Cocoa
         super.allowLogin()
     }
     override func denyLogin(message:String?) {
+        stopNetworkMonitoring()
 //        loginWindowControlsWindowController.close()
         loginWebViewWindowController?.loadPage()
         TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");

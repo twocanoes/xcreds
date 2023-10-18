@@ -96,6 +96,7 @@
 		76786F6B2A27C79100AA8DB9 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		767B939C2A28279E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
+		767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */; };
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
 		7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */; };
 		7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */; };
@@ -121,13 +122,12 @@
 		76B882B329CCFDBA00BB8186 /* NSData+HexString.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882B029CCFDBA00BB8186 /* NSData+HexString.m */; };
 		76B9DE022A256BE700C44B77 /* NoMAD_ADAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */; };
-		76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */; };
-		76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */; };
+		76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */; };
 		76BEF7E4287202090013E2A1 /* RestartX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E2287202080013E2A1 /* RestartX.png */; };
 		76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E3287202080013E2A1 /* RestartX@2x.png */; };
 		76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E6287202AF0013E2A1 /* ShutdownX.png */; };
 		76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7E7287202AF0013E2A1 /* ShutdownX@2x.png */; };
-		76BEF7EC28724A0B0013E2A1 /* web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7EA28724A0B0013E2A1 /* web.swift */; };
+		76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */; };
 		76BEF7ED28724A0C0013E2A1 /* XCredsBaseMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */; };
 		76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */; };
 		76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
@@ -135,6 +135,7 @@
 		76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */; };
 		76BEF8002872A3030013E2A1 /* loginwindow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */; };
 		76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FF2872A3030013E2A1 /* loginwindow.png */; };
+		76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C084092A9A2635008039FA /* ControlsViewController.xib */; };
 		76C63A322A22872700810C53 /* History.md in Resources */ = {isa = PBXBuildFile; fileRef = 76C63A312A22872700810C53 /* History.md */; };
 		76C873422A31460B00FDAB8E /* NoMAD_ADAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */; };
 		76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
@@ -357,13 +358,12 @@
 		76BEF7D42871F36C0013E2A1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSReturnWindow.m; sourceTree = "<group>"; };
 		76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSReturnWindow.h; sourceTree = "<group>"; };
-		76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginWindowControls.xib; sourceTree = "<group>"; };
-		76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindowControlsWindowController.swift; sourceTree = "<group>"; };
+		76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsViewController.swift; sourceTree = "<group>"; };
 		76BEF7E2287202080013E2A1 /* RestartX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RestartX.png; sourceTree = "<group>"; };
 		76BEF7E3287202080013E2A1 /* RestartX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RestartX@2x.png"; sourceTree = "<group>"; };
 		76BEF7E6287202AF0013E2A1 /* ShutdownX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ShutdownX.png; sourceTree = "<group>"; };
 		76BEF7E7287202AF0013E2A1 /* ShutdownX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShutdownX@2x.png"; sourceTree = "<group>"; };
-		76BEF7EA28724A0B0013E2A1 /* web.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = web.swift; sourceTree = "<group>"; };
+		76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsLoginMechanism.swift; sourceTree = "<group>"; };
 		76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsBaseMechanism.swift; sourceTree = "<group>"; };
 		76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsPowerControlMechanism.swift; sourceTree = "<group>"; };
 		76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTaskWrapper.swift; sourceTree = "<group>"; };
@@ -371,6 +371,7 @@
 		76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthorizationDBManager.swift; path = XCredsLoginPlugIn/LoginWindow/AuthorizationDBManager.swift; sourceTree = SOURCE_ROOT; };
 		76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginwindow@2x.png"; sourceTree = "<group>"; };
 		76BEF7FF2872A3030013E2A1 /* loginwindow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginwindow.png; sourceTree = "<group>"; };
+		76C084092A9A2635008039FA /* ControlsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ControlsViewController.xib; sourceTree = "<group>"; };
 		76C63A312A22872700810C53 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
 		76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helper+URLDecode.swift"; sourceTree = "<group>"; };
 		76CB907C288112AF00C70D0C /* xcreds_login.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = xcreds_login.sh; sourceTree = "<group>"; };
@@ -562,7 +563,7 @@
 				7611CEBF288B75140063A644 /* XCredsCreateUser.swift */,
 				7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */,
 				76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */,
-				76BEF7EA28724A0B0013E2A1 /* web.swift */,
+				76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */,
 				76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */,
 			);
 			path = Mechanisms;
@@ -578,11 +579,11 @@
 				76BEF7F128724EB60013E2A1 /* images */,
 				76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */,
 				76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */,
-				76BEF7E02871F74D0013E2A1 /* LoginWindowControlsWindowController.swift */,
+				76C084092A9A2635008039FA /* ControlsViewController.xib */,
+				76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */,
 				766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */,
 				766355E128713C47002E3867 /* LoginWindow.swift */,
 				7651EDEC2A1451590075980B /* LocalUsersViewController.xib */,
-				76BEF7DE2871F6EB0013E2A1 /* LoginWindowControls.xib */,
 			);
 			path = LoginWindow;
 			sourceTree = "<group>";
@@ -949,10 +950,10 @@
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
 				76EECCFC2873E6E200483C66 /* LoginPasswordWindowController.xib in Resources */,
 				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
+				76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */,
 				76BEF7E5287202090013E2A1 /* RestartX@2x.png in Resources */,
 				7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */,
 				7677908828908E40004E7085 /* WifiWindowController.xib in Resources */,
-				76BEF7DF2871F6EB0013E2A1 /* LoginWindowControls.xib in Resources */,
 				76DB5CF52A09AE9A0014F8E1 /* get_pw.js in Resources */,
 				76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */,
 			);
@@ -1035,7 +1036,7 @@
 				761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */,
 				7677908628908E40004E7085 /* WifiWindowController.swift in Sources */,
 				76EECCFD2873E9ED00483C66 /* LoginPasswordWindowController.swift in Sources */,
-				76BEF7EC28724A0B0013E2A1 /* web.swift in Sources */,
+				76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */,
 				766355CA2870DCF5002E3867 /* TCSUnifiedLogger.m in Sources */,
 				76CB9078287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */,
 				766355E328713C4A002E3867 /* LoginWindow.swift in Sources */,
@@ -1054,7 +1055,7 @@
 				7632E39F287347C100E37923 /* XCredsKeychainAdd.swift in Sources */,
 				7677908728908E40004E7085 /* WifiManager.swift in Sources */,
 				76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */,
-				76BEF7E12871F74D0013E2A1 /* LoginWindowControlsWindowController.swift in Sources */,
+				76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */,
 				76EECD012875135900483C66 /* Logger.swift in Sources */,
 				7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */,
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
@@ -1097,6 +1098,7 @@
 				76DC0A8428838375007C42B2 /* AuthorizationDBManager.swift in Sources */,
 				76DC0A8628838656007C42B2 /* TCSUnifiedLogger.m in Sources */,
 				76DC0A7E288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift in Sources */,
+				767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */,
 				76DC0A87288386FA007C42B2 /* NSTaskWrapper.swift in Sources */,
 				76DC0A6828836EB1007C42B2 /* AppDelegate.swift in Sources */,
 			);
@@ -1229,7 +1231,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1247,7 +1249,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1267,7 +1269,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1285,7 +1287,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1387,7 +1389,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1404,7 +1406,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1424,7 +1426,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1441,7 +1443,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1574,7 +1576,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1592,7 +1594,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1611,7 +1613,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5083;
+				CURRENT_PROJECT_VERSION = 5197;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1629,7 +1631,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 3.1;
+				MARKETING_VERSION = 3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

@@ -24,26 +24,15 @@ class AboutWindowController: NSWindowController {
 
              let build = infoPlist["CFBundleVersion"] as? String
 
-             let historyPath = Bundle.main.path(forResource: "History", ofType: "md")
+//             let historyPath = Bundle.main.path(forResource: "History", ofType: "md")
              let creditsPath = Bundle.main.path(forResource: "Credits", ofType: "txt")
-             if let historyPath = historyPath, let historyString = try? String(contentsOfFile: historyPath, encoding: .utf8), let creditsPath = creditsPath ,let creditsString = try? String(contentsOfFile: creditsPath, encoding: .utf8), let build = build, let appVersion = appVersion  {
+             if  let creditsPath = creditsPath ,let creditsString = try? String(contentsOfFile: creditsPath, encoding: .utf8), let build = build, let appVersion = appVersion  {
 
-                 aboutTextView.string="XCreds\nCopyright Twocanoes Software, Inc.\nVersion \(appVersion) (\(build))\n\n"+creditsString + historyString
+                 aboutTextView.string="XCreds\nCopyright Twocanoes Software, Inc.\nVersion \(appVersion) (\(build))\n\n"+creditsString
 
              }
          }
 
     }
-
-//    @IBAction func clearTokensClicked(_ sender: Any) {
-//        let keychainUtil = KeychainUtil()
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.accessToken.rawValue)
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.idToken.rawValue)
-//        let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.refreshToken.rawValue)
-//
-//
-//        mainMenu.signedIn=false
-//        mainMenu.buildMenu()
-//    }
 
 }

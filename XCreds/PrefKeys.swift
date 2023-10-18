@@ -8,8 +8,12 @@
 import Foundation
 
 enum PrefKeys: String {
-    case clientID, clientSecret, password="xcreds local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours,refreshRateMinutes, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault,idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked,accounts = "Accounts",
-         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus
+    case clientID, clientSecret, password="xcreds local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours,refreshRateMinutes, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault, shouldPreferLocalLoginInsteadOfCloudLogin, idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked,accounts = "Accounts",
+         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow
+    //, filePathToPreventShowingUI
+    case ropgClientID
+    case ropgClientSecret
+    case shouldVerifyPasswordWithRopg
     case actionItemOnly = "ActionItemOnly"
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"

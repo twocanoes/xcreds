@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="21701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,18 +18,18 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCredsLoginPlugin">
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="453" y="250" width="628" height="613"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <rect key="contentRect" x="453" y="250" width="1002" height="883"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
-                <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                <rect key="frame" x="0.0" y="0.0" width="1002" height="883"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LND-Te-8nB">
-                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1002" height="883"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="TLB-Dt-CAz"/>
                     </imageView>
                     <wkWebView wantsLayer="YES" fixedFrame="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-Nc-Vs1">
-                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <rect key="frame" x="187" y="210" width="628" height="613"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -50,7 +50,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="WYj-G7-iZU"/>
             </connections>
-            <point key="canvasLocation" x="250" y="297.5"/>
+            <point key="canvasLocation" x="63" y="432.5"/>
         </window>
     </objects>
 </document>
