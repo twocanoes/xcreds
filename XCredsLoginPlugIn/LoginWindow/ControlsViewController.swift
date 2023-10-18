@@ -53,6 +53,7 @@ class ControlsViewController: NSViewController {
         super.awakeFromNib()
         let licenseState = LicenseChecker().currentLicenseState()
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
+        self.trialVersionStatusTextField?.isHidden = false
 
 
         switch licenseState {
@@ -62,12 +63,13 @@ class ControlsViewController: NSViewController {
             self.trialVersionStatusTextField?.isHidden = true
 
         case .expired:
+            self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "License Expired. Please visit twocanoes.com for more information."
 
 
         case .trial(let daysRemaining):
             TCSLogWithMark("Trial")
-            self.trialVersionStatusTextField?.isHidden = true
+            self.trialVersionStatusTextField?.isHidden = false
             if daysRemaining==1 {
                 self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
 
@@ -89,7 +91,7 @@ class ControlsViewController: NSViewController {
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
 
         }
-    TCSLogWithMark()
+        TCSLogWithMark()
         setupLoginWindowControlsAppearance()
         let allBundles = Bundle.allBundles
         versionTextField?.stringValue = ""

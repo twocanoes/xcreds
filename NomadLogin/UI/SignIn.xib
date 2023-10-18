@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -91,10 +91,6 @@
                             </stackView>
                             <button verticalHuggingPriority="750" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="7fI-fi-xA6">
                                 <rect key="frame" x="369" y="172" width="13" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="13" id="GGL-MQ-ORw"/>
-                                    <constraint firstAttribute="height" constant="21" id="O3Z-uL-q21"/>
-                                </constraints>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="PeO-I4-aad">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -102,6 +98,10 @@
 DQ
 </string>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="13" id="GGL-MQ-ORw"/>
+                                    <constraint firstAttribute="height" constant="21" id="O3Z-uL-q21"/>
+                                </constraints>
                                 <connections>
                                     <action selector="signInClick:" target="-2" id="Rwb-Lk-ohk"/>
                                 </connections>
@@ -139,7 +139,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CrR-b1-TcS">
+                    <button springLoaded="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CrR-b1-TcS">
                         <rect key="frame" x="20" y="13" width="193" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="THB-bh-iV7">
@@ -178,14 +178,14 @@ DQ
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="fU9-Oo-l9U">
                     <rect key="frame" x="15" y="16" width="32" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="czM-VU-aXL"/>
-                        <constraint firstAttribute="width" constant="32" id="taE-Bn-yQV"/>
-                    </constraints>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="buttonCell:cme-ei-vaG:image" imagePosition="overlaps" alignment="center" enabled="NO" imageScaling="proportionallyUpOrDown" inset="2" id="cme-ei-vaG">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="czM-VU-aXL"/>
+                        <constraint firstAttribute="width" constant="32" id="taE-Bn-yQV"/>
+                    </constraints>
                     <connections>
                         <action selector="sleepClick:" target="-2" id="RSM-Vy-IPl"/>
                     </connections>
@@ -401,9 +401,6 @@ Gw
         </stackView>
         <popUpButton hidden="YES" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ktB-bz-Qqt">
             <rect key="frame" x="0.0" y="0.0" width="151" height="25"/>
-            <constraints>
-                <constraint firstAttribute="width" constant="144" id="L99-tU-WSP"/>
-            </constraints>
             <popUpButtonCell key="cell" type="push" title="nomad.test" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="GzB-5G-NIc" id="yCQ-Io-bDD">
                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                 <font key="font" metaFont="menu"/>
@@ -415,6 +412,9 @@ Gw
                     </items>
                 </menu>
             </popUpButtonCell>
+            <constraints>
+                <constraint firstAttribute="width" constant="144" id="L99-tU-WSP"/>
+            </constraints>
             <point key="canvasLocation" x="-357" y="-59"/>
         </popUpButton>
     </objects>

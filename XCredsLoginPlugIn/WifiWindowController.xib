@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,7 +28,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="450" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" id="82w-TR-3gA">
                 <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -91,10 +91,6 @@
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-OG-WIQ">
                                 <rect key="frame" x="118" y="3" width="48" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
-                                    <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
-                                </constraints>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="UsA-xf-nXF">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -102,6 +98,10 @@
 Gw
 </string>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48.5" id="WYs-JW-yBM"/>
+                                    <constraint firstAttribute="height" constant="45" id="aw1-es-Ffm"/>
+                                </constraints>
                                 <connections>
                                     <action selector="orderOut:" target="QEp-dc-tSh" id="5AN-s0-1oe"/>
                                     <outlet property="nextKeyView" destination="vwT-dQ-vyr" id="HwE-Ru-27Y"/>
@@ -130,7 +130,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="480" height="198"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="933"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" id="Dza-jC-NB8">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -156,9 +156,6 @@ Gw
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cgl-qV-y0O">
                         <rect key="frame" x="381" y="13" width="86" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="72" id="uVD-yY-HTS"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Join" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cPE-0Q-pm2">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -166,21 +163,24 @@ Gw
 DQ
 </string>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="uVD-yY-HTS"/>
+                        </constraints>
                         <connections>
                             <action selector="connect:" target="-2" id="hSO-Mr-Vz4"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mVP-CL-XEv">
                         <rect key="frame" x="297" y="13" width="86" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="72" id="E5I-gG-M9v"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0jZ-wI-6zS">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <string key="keyEquivalent">s</string>
                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="72" id="E5I-gG-M9v"/>
+                        </constraints>
                         <connections>
                             <action selector="wifiCredentialCancelButtonPressed:" target="-2" id="axX-HP-CGX"/>
                         </connections>
