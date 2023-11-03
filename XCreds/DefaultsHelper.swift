@@ -8,14 +8,19 @@
 import Cocoa
 
 class DefaultsHelper: NSObject {
+
     static func backgroundImage(includeDefault:Bool=true) -> NSImage? {
+        let coreServicesDefaultImagePathUrl: String = "file:///System/Library/CoreServices/DefaultDesktop.heic"
         TCSLogWithMark()
         if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
-
             return image
-
         }
-        else if includeDefault == true {
+        // Try to use default desktop
+        if let coreServicesDefaultImage = NSImage.imageFromPathOrURL(pathURLString: coreServicesDefaultImagePathUrl) {
+            TCSLogWithMark("Using CoreServices Default Desktop image")
+            return coreServicesDefaultImage
+        }
+        if includeDefault == true {
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
                 TCSLogWithMark(currentBundle.bundlePath)
