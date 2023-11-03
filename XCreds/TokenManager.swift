@@ -195,7 +195,7 @@ class TokenManager {
 
                   }
                   else {
-                      TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
+                      TCSLogErrorWithMark("Failed to verify credentials status code returned: \(response.statusCode):\(response)")
                       completion(false,false)
 
                   }
@@ -216,7 +216,13 @@ class TokenManager {
                 return
             }
             let base64LoginString = loginData.base64EncodedString()
-            let parameters = "grant_type=password&username=\(userName)&password=\(keychainPassword)&scope=offline_access"
+            let urlEncodedUsername = userName.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed)
+            let urlEncodedPassword = keychainPassword.addingPercentEncoding(withAllowedCharacters: .urlPasswordAllowed)
+            guard let urlEncodedPassword = urlEncodedPassword, let urlEncodedUsername = urlEncodedUsername else {
+                completion(false,true)
+                return
+            }
+            let parameters = "grant_type=password&username=\(urlEncodedUsername)&password=\(urlEncodedPassword)&scope=offline_access"
 
             let postData =  parameters.data(using: .utf8)
             req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
