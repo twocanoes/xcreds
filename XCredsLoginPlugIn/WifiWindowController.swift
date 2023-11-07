@@ -41,6 +41,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     let wifiLog = "wifiLog"
     private var defaultFadeDuration: TimeInterval = 0.1
     private var completionHandler: (() -> Void)?
+    var delegate: XCredsMechanismProtocol?
     let wifiManager = WifiManager()
 
     @IBAction func wifiCredentialCancelButtonPressed(_ sender: NSButton) {
@@ -156,6 +157,8 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBAction func dismissButton(_ sender: Any) {
         TCSLogWithMark("closing window")
         DispatchQueue.main.async {
+            TCSLogWithMark("Triggering login window reload")
+            self.delegate?.reload()
             self.window?.close()
         }
     }
@@ -286,7 +289,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     }
 
     func wifiManagerConnectedToNetwork() {
-        TCSLogWithMark("dismissing")
+        TCSLogWithMark("WiFi successfully connected leaving manager")
         self.dismissButton(self)
     }
 }
