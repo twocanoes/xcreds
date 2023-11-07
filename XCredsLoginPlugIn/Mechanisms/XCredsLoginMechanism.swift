@@ -2,6 +2,7 @@ import Cocoa
 import Network
 
 
+
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
 //    @objc var loginWindow: XCredsLoginMechanism!
     var loginWebViewWindowController: LoginWebViewWindowController?
@@ -15,7 +16,6 @@ import Network
     }
     let checkADLog = "checkADLog"
     var loginWindowType = LoginWindowType.cloud
-    let monitor = NWPathMonitor()
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {
         let allBundles = Bundle.allBundles
@@ -172,44 +172,6 @@ import Network
             showLoginWindowType(loginWindowType: .usernamePassword)
         }
     }
-    func startNetworkMonitoring(){
-        monitor.pathUpdateHandler = { path in
-
-            TCSLogWithMark("network changed. \(path.debugDescription)")
-            if path.status != .satisfied {
-                TCSLogErrorWithMark("not connected")
-            }
-            else if path.usesInterfaceType(.cellular) {
-                TCSLogWithMark("Cellular")
-            }
-            else if path.usesInterfaceType(.wifi) {
-                TCSLogWithMark("Wifi changed")
-            }
-            else if path.usesInterfaceType(.wiredEthernet) {
-                TCSLogWithMark("Ethernet")
-            }
-            else if path.usesInterfaceType(.other){
-                TCSLogWithMark("Other")
-            }
-            else if path.usesInterfaceType(.loopback){
-                TCSLogWithMark("Loop Back")
-            }
-            else {
-                TCSLogWithMark("Unknown interface type")
-            }
-            self.selectAndShowLoginWindow()
-            TCSLogWithMark("network changed")
-            NotificationCenter.default.post(name: NSNotification.Name("NetworkChanged"), object: self, userInfo: ["online":path.status == .satisfied])
-
-        }
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
-    }
-    func stopNetworkMonitoring() {
-        monitor.cancel()
-        monitor.pathUpdateHandler=nil
-
-    }
     @objc override func run() {
         TCSLogWithMark("XCredsLoginMechanism mech starting")
         if useAutologin() {
@@ -257,7 +219,6 @@ import Network
 
     }
     override func allowLogin() {
-        stopNetworkMonitoring()
         TCSLogWithMark("Allowing Login")
 
         if loginWebViewWindowController != nil {
@@ -268,7 +229,6 @@ import Network
         super.allowLogin()
     }
     override func denyLogin(message:String?) {
-        stopNetworkMonitoring()
 //        loginWindowControlsWindowController.close()
         loginWebViewWindowController?.loadPage()
         TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");
@@ -303,6 +263,7 @@ import Network
             loginWebViewWindowController.window?.makeKeyAndOrderFront(self)
 
         case .usernamePassword:
+            NetworkMonitor.shared.stopMonitoring()
 
             if loginWebViewWindowController != nil {
                 loginWebViewWindowController?.window?.orderOut(self)
