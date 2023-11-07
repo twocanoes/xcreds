@@ -13,7 +13,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
-    var wifiWindowController:WifiWindowController?
     var screenIsLocked=true
     var isDisplayAsleep=true
     var waitForScreenToWake=false
