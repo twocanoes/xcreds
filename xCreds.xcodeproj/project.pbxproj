@@ -104,6 +104,7 @@
 		7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */; };
 		7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
+		768633D92AFC4908004065E5 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
 		76873E302A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
 		768A7A572A31463B00C9DD63 /* NoMAD_ADAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -903,7 +904,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */;
+			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1131,6 +1132,7 @@
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
 				7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */,
+				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
 				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
@@ -1231,7 +1233,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1269,7 +1271,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1389,7 +1391,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1426,7 +1428,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1576,7 +1578,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1613,7 +1615,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5197;
+				CURRENT_PROJECT_VERSION = 5208;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1699,7 +1701,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */ = {
+		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76EE06A527FD1D01009E0F3A /* Debug */,
