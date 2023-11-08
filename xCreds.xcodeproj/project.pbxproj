@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		089B22F12AFAED280006B6BC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B22F02AFAED280006B6BC /* NetworkMonitor.swift */; };
+		089B22F22AFAED810006B6BC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089B22F02AFAED280006B6BC /* NetworkMonitor.swift */; };
 		760418D12A1332210051411B /* SignIn.xib in Resources */ = {isa = PBXBuildFile; fileRef = 760418CE2A1332210051411B /* SignIn.xib */; };
 		760418D22A1332210051411B /* SignInWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418CF2A1332210051411B /* SignInWindowController.swift */; };
 		760418D52A1332520051411B /* DS+AD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D42A1332520051411B /* DS+AD.swift */; };
@@ -279,6 +281,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		089B22F02AFAED280006B6BC /* NetworkMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkMonitor.swift; path = XCredsLoginPlugIn/LoginWindow/NetworkMonitor.swift; sourceTree = SOURCE_ROOT; };
 		760418CE2A1332210051411B /* SignIn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignIn.xib; sourceTree = "<group>"; };
 		760418CF2A1332210051411B /* SignInWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWindowController.swift; sourceTree = "<group>"; };
 		760418D42A1332520051411B /* DS+AD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DS+AD.swift"; sourceTree = "<group>"; };
@@ -573,6 +576,7 @@
 			isa = PBXGroup;
 			children = (
 				761B486828A34CC900C6A02B /* LoginProgressWindowController.swift */,
+				089B22F02AFAED280006B6BC /* NetworkMonitor.swift */,
 				761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */,
 				76CB907C288112AF00C70D0C /* xcreds_login.sh */,
 				76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */,
@@ -902,7 +906,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
+			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1064,6 +1068,7 @@
 				76BEF7F628724FA80013E2A1 /* NSTaskWrapper.swift in Sources */,
 				76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
 				766355DB287132E9002E3867 /* LoginWebViewWindowController.swift in Sources */,
+				089B22F12AFAED280006B6BC /* NetworkMonitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1108,6 +1113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089B22F22AFAED810006B6BC /* NetworkMonitor.swift in Sources */,
 				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
 				76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */,
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
@@ -1699,7 +1705,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */ = {
+		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76EE06A527FD1D01009E0F3A /* Debug */,

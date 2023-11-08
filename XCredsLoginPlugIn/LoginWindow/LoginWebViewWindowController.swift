@@ -42,7 +42,6 @@ class LoginWebViewWindowController: WebViewWindowController {
         for currentBundle in allBundles {
             TCSLogWithMark(currentBundle.bundlePath)
             if currentBundle.bundlePath.contains("XCreds") {
-
                 controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: currentBundle)
                 if let controlsViewController = controlsViewController {
                     self.window?.contentView?.addSubview(controlsViewController.view)
@@ -54,33 +53,17 @@ class LoginWebViewWindowController: WebViewWindowController {
                 else {
                     TCSLogWithMark("controlsViewController nil")
                 }
-
             }
         }
-        TCSLogWithMark()
-        networkChangeObserver = NotificationCenter.default.addObserver(forName:NSNotification.Name("NetworkChanged"), object: nil, queue: nil) { notification in
-            //            TCSLogWithMark("network changed.")
-            let userInfo = notification.userInfo as? [String:Bool]
-            if let userInfo = userInfo, let networkStatus = userInfo["online"], networkStatus==true {
-                self.loadPage()
-            }
-        }
-
-
 
         resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
             TCSLogWithMark("Resolution changed. Resetting size")
-
             self.setupLoginWindowAppearance()
-
         }
+
         TCSLogWithMark("loading webview for login")
         setupLoginWindowAppearance()
-
         TCSLogWithMark("loading page")
-
-        
-
         loadPage()
     }
 

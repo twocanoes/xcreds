@@ -53,13 +53,17 @@ class WebViewWindowController: NSWindowController {
             return
 
         }
-        TCSLogWithMark()
-         if let url = TokenManager.shared.oidc().createLoginURL() {
+
+        NotificationCenter.default.addObserver(self, selector: #selector(connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
+        NetworkMonitor.shared.startMonitoring()
+        if let url = getOidcLoginURL() {
             TCSLogWithMark()
             self.webView.load(URLRequest(url: url))
+            NetworkMonitor.shared.stopMonitoring()
         }
         else {
-            TCSLogWithMark()
+            TCSLogWithMark("Failed to get URL")
+            TCSLogWithMark("Network monitor: adding connectivity status change observer")
             let allBundles = Bundle.allBundles
             for currentBundle in allBundles {
                 if currentBundle.bundlePath.contains("XCreds") {
@@ -68,10 +72,28 @@ class WebViewWindowController: NSWindowController {
                         self.webView.load(URLRequest(url:loadPageURL))
                     }
                     break
-
                 }
             }
         }
+    }
+
+    @objc func connectivityStatusHandler(notification: Notification) {
+        TCSLogWithMark("Network monitor: handling connectivity status update")
+        if NetworkMonitor.shared.isConnected {
+            TCSLogWithMark("Refresh webview login")
+            self.loadPage()
+        }
+    }
+
+    private func getOidcLoginURL() -> URL? {
+        for _ in 1...5 {
+            if let url = TokenManager.shared.oidc().createLoginURL() {
+                return url
+            }
+            TCSLogWithMark("Trying to get login url again")
+            Thread.sleep(forTimeInterval: 1)
+        }
+        return nil
     }
 
     @IBAction func clickCancel(_ sender: Any) {
