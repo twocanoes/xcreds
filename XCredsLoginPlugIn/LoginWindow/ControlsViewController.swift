@@ -180,6 +180,7 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark("no window for wifi")
             return
         }
+        windowController.delegate=self.delegate
         TCSLogWithMark("setting window level")
 //        let colorValue=0.9
 //        let alpha=0.95
