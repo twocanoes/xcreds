@@ -63,10 +63,12 @@ import Network
 
     }
     override func reload() {
-        TCSLogWithMark("reload in controller")
-        loginWebViewWindowController?.setupLoginWindowAppearance()
-
-        loginWebViewWindowController?.loadPage()
+        if self.loginWindowType == .cloud {
+            TCSLogWithMark("reload in controller")
+            loginWebViewWindowController?.setupLoginWindowAppearance()
+            
+            loginWebViewWindowController?.loadPage()
+        }
     }
     func useAutologin() -> Bool {
 
@@ -180,6 +182,14 @@ import Network
             allowLogin()
             return
         }
+        let showLoginWindowDelaySeconds = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.showLoginWindowDelaySeconds.rawValue)
+
+        if showLoginWindowDelaySeconds > 0 {
+            TCSLogWithMark("Delaying showing window by \(showLoginWindowDelaySeconds) seconds")
+
+            sleep(UInt32(showLoginWindowDelaySeconds))
+        }
+
         selectAndShowLoginWindow()
 
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")

@@ -134,25 +134,28 @@ class WifiManager: CWEventDelegate {
 
     func connectWifi(with network: CWNetwork, password: String?, username: String?, identity: SecIdentity? = nil) -> Bool {
         var result = false
-        do {
-            TCSLogWithMark("connecting")
-            currentInterface?.disassociate()
 
-            if username != nil && username != "" {
-                TCSLogWithMark("connecting \(username ?? "<unknown username")")
-                try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
-            } else {
-                TCSLogWithMark("connecting with password only \(network)")
-                try currentInterface?.associate(to: network, password: password)
-                TCSLogWithMark("done associating")
+        for _ in 1...3 {
+            do {
+                TCSLogWithMark("connecting")
+                currentInterface?.disassociate()
 
-            }
-            result = true
-        } catch {
-            TCSLogWithMark("caught error: \(error)")
+                if username != nil && username != "" {
+                    TCSLogWithMark("connecting \(username ?? "<unknown username")")
+                    try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
+                } else {
+                    TCSLogWithMark("connecting with password only \(network)")
+                    try currentInterface?.associate(to: network, password: password)
+                    TCSLogWithMark("done associating")
 
-            self.error = error
-        }
+                }
+                result = true
+                break
+            } catch {
+                TCSLogWithMark("caught error: \(error)")
+                self.error = error
+            } //do
+        } //for
         return result
     }
 

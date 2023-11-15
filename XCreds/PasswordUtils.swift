@@ -362,7 +362,7 @@ class PasswordUtils: NSObject {
 
             case Int(kODErrorCredentialsMethodNotSupported.rawValue):
                 TCSLogWithMark("credential type not supported: \(userName).")
-                return .incorrectPassword
+                return .other("credential type not supported")
 
 
             default:

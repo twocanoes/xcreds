@@ -172,12 +172,14 @@ public class DefaultsOverride: UserDefaults {
         return UserDefaults.standard.double(forKey: defaultName)
     }
     override public func bool(forKey defaultName: String) -> Bool {
-        TCSLogWithMark()
+        TCSLogInfoWithMark("requested override for \(defaultName)")
 
         if let defaultName = cachedPrefs[defaultName] as? Bool {
+            TCSLogInfoWithMark("override value \(defaultName)")
+
             return defaultName
         }
-        TCSLogWithMark()
+        TCSLogInfoWithMark("default not overridden")
 
         return UserDefaults.standard.bool(forKey: defaultName)
     }

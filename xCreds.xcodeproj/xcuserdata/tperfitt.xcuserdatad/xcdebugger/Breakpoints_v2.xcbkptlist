@@ -140,8 +140,8 @@
             filePath = "XCredsLoginPlugIn/Mechanisms/XCredsLoginMechanism.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "selectAndShowLoginWindow()"
             landmarkType = "7">
          </BreakpointContent>
