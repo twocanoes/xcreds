@@ -328,7 +328,7 @@ class LoginWebViewWindowController: WebViewWindowController {
             if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
                 DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
                 getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
-                TCSLogInfoWithMark("Set to write keychain silently and we have admin. Skipping.")
+                TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
                 delegate.setHint(type: .passwordOverwrite, hint: true)
                 os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
                 break;
