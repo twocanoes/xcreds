@@ -11,7 +11,7 @@ import WebKit
 import OIDCLite
 import OpenDirectory
 
-class LoginWebViewWindowController: WebViewWindowController {
+class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
 
     let uiLog = "uiLog"
     var internalDelegate:XCredsMechanismProtocol?
@@ -221,12 +221,35 @@ class LoginWebViewWindowController: WebViewWindowController {
         }
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+        guard let idTokenInfo = idTokenInfo else {
+            delegate.denyLogin(message:"No idTokenInfo found.")
+            return
+        }
 
+        //        try? getUserRecord(sub: "", iss: "123")
+
+        guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
+            delegate.denyLogin(message:"OIDC token does not contain both a sub and iss value.")
+            return
+
+        }
+        let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
+
+        TCSLogWithMark("setting issuer and sub hint from OIDC token")
+        delegate.setHint(type: .oidcSub, hint: "\(subValue)")
+        delegate.setHint(type: .oidcIssuer, hint: "\(issuerValue)")
+
+        if existingUser != nil, let odUsername = existingUser?.recordName {
+            TCSLogWithMark("prior local user found.")
+
+            username = odUsername
+
+        }
         // username static map
-        if let defaultsUsername = defaultsUsername {
+        else if let defaultsUsername = defaultsUsername {
             username = defaultsUsername
         }
-        else if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
+        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
 
             username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
             TCSLogWithMark("mapped username found: \(mapValue) clean version:\(username)")
@@ -261,7 +284,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         //full name
         TCSLogWithMark("checking map_fullname")
 
-        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
             //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
 
@@ -276,7 +299,7 @@ class LoginWebViewWindowController: WebViewWindowController {
 
         }
 //groups
-        if let idTokenInfo = idTokenInfo,let mapValue = idTokenInfo["groups"] as? Array<String> {
+        if let mapValue = idTokenInfo["groups"] as? Array<String> {
             TCSLogWithMark("setting groups: \(mapValue)")
             delegate.setHint(type: .groups, hint:mapValue)
         }
@@ -286,7 +309,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         }
 
         //first name
-        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for username, so use that.
             TCSLogWithMark("first name mapped to: \(mapKey)")
 
@@ -302,7 +325,7 @@ class LoginWebViewWindowController: WebViewWindowController {
         //last name
         TCSLogWithMark("checking map_lastname")
 
-        if let idTokenInfo = idTokenInfo, let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
 //we have a mapping for lastName, so use that.
             TCSLogWithMark("last name mapped to: \(mapKey)")
 

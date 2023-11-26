@@ -54,5 +54,7 @@
 	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
+	<key>shouldPromptForMigration</key>
+	<false/>
 </dict>
 </plist>

@@ -24,7 +24,7 @@ public protocol DSQueryable {}
 public extension DSQueryable {
 
     /// `ODNode` to DSLocal for queries and account manipulation.
-    public var localNode: ODNode? {
+    var localNode: ODNode? {
         do {
             os_log("Finding the DSLocal node", type: .debug)
             return try ODNode.init(session: ODSession.default(), type: ODNodeType(kODNodeTypeLocalNodes))
@@ -39,7 +39,7 @@ public extension DSQueryable {
     /// - Parameter shortName: The name of the user to search for as a `String`.
     /// - Returns: `true` if the user exists in DSLocal, `false` if not.
     /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error or the user is not local.
-    public func isUserLocal(_ shortName: String) throws -> Bool {
+    func isUserLocal(_ shortName: String) throws -> Bool {
         do {
             _ = try getLocalRecord(shortName)
         } catch DSQueryableErrors.notLocalUser {
@@ -57,7 +57,7 @@ public extension DSQueryable {
     ///   - userPass: The password for the user being tested as a `String`.
     /// - Returns: `true` if the name and password combo are valid locally. `false` if the validation fails.
     /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error.
-    public func isLocalPasswordValid(userName: String, userPass: String) throws -> Bool {
+    func isLocalPasswordValid(userName: String, userPass: String) throws -> Bool {
         do {
             let userRecord = try getLocalRecord(userName)
             try userRecord.verifyPassword(userPass)
@@ -79,7 +79,7 @@ public extension DSQueryable {
     /// - Parameter shortName: The name of the user to search for as a `String`.
     /// - Returns: The `ODRecord` of the user if one is found in DSLocal.
     /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error or the user is not local.
-    public func getLocalRecord(_ shortName: String) throws -> ODRecord {
+    func getLocalRecord(_ shortName: String) throws -> ODRecord {
         do {
             os_log("Building OD query for name %{public}@", type: .default, shortName)
             let query = try ODQuery.init(node: localNode,
@@ -111,7 +111,7 @@ public extension DSQueryable {
     ///
     /// - Returns: A `Array` that contains the `ODRecord` for every account in DSLocal.
     /// - Throws: An error from `ODFrameworkErrors` if something fails.
-    public func getAllLocalUserRecords() throws -> [ODRecord] {
+    func getAllLocalUserRecords() throws -> [ODRecord] {
         do {
             let query = try ODQuery.init(node: localNode,
                                          forRecordTypes: kODRecordTypeUsers,
@@ -126,12 +126,48 @@ public extension DSQueryable {
             throw error
         }
     }
+    /// Finds OIDC User with specified iss and sub.
+    ///
+    /// - Returns: A `Array` that contains the `ODRecord` for  account in DSLocal
+    /// - Throws: An error from `ODFrameworkErrors` if something fails.
+    func getUserRecord(sub:String, iss:String) throws -> ODRecord {
+        do {
+            os_log("getting non system users.", type: .info)
+
+            let allRecords = try getAllNonSystemUsers()
+            os_log("filtering", type: .info)
+
+            let matchingRecords = allRecords.filter { (record) -> Bool in
+                guard let issValue = try? record.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss") as? [String] else {
+                    return false
+                }
+                guard let subValue = try? record.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub") as? [String] else {
+                    return false
+                }
+
+                os_log("checking \(issValue) \(subValue)", type: .info)
+
+                return issValue.first == iss && subValue.first == sub
+            }
+            guard let userRecord = matchingRecords.first else {
+                os_log("no users match iss \(iss) and sub \(sub)", type: .info)
+
+                throw DSQueryableErrors.notLocalUser
+            }
+            return userRecord
+        } catch {
+            os_log("ODError while finding local users.", type: .error)
+            throw error
+        }
+    }
+
 
     /// Returns all the non-system users on a system above UID 500.
     ///
     /// - Returns: A `Array` that contains the `ODRecord` of all the non-system user accounts in DSLocal.
     /// - Throws: An error from `ODFrameworkErrors` if something fails.
-    public func getAllNonSystemUsers() throws -> [ODRecord] {
+    ///
+    func getAllNonSystemUsers() throws -> [ODRecord] {
         do {
             let allRecords = try getAllLocalUserRecords()
             let nonSystem = try allRecords.filter { (record) -> Bool in

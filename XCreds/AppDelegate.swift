@@ -8,7 +8,7 @@
 import Cocoa
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!

@@ -32,17 +32,13 @@ class ControlsViewController: NSViewController {
 //        return NSNib.Name("ControlsViewController")
 //    }
     func commandKey(evt: NSEvent) -> NSEvent{
-        TCSLogWithMark(evt.debugDescription)
 
         let flags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.command.rawValue
-        TCSLogWithMark("\(flags.description)")
         if flags != 0 { //key code for command is 55
             commandKeyDown = true
-            TCSLogWithMark("command down")
         }
         else {
             commandKeyDown=false
-            TCSLogWithMark("not command down")
 
         }
         return evt

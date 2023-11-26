@@ -107,6 +107,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
 
             var fullname:String?
+
             if let fullnameHint = getHint(type: .fullName) as? String {
                 fullname=fullnameHint
             }
@@ -119,6 +120,13 @@ class XCredsCreateUser: XCredsBaseMechanism {
             
             let currentDate = ISO8601DateFormatter().string(from: Date())
             customAttributes["dsAttrTypeNative:\(metaPrefix)_creationDate"] = currentDate
+
+            if let oidcSubHint = getHint(type: .oidcSub) as? String {
+                customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_sub"] = oidcSubHint
+            }
+            if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+                customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_iss"] = oidcIssHint
+            }
 
             guard let xcredsFirst=xcredsFirst, let xcredsLast = xcredsLast else {
                 TCSLogErrorWithMark("first or last name not defined. bailing")

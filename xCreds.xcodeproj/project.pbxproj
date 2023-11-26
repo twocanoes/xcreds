@@ -142,6 +142,8 @@
 		76CB9078287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
 		76CB907B2880E41E00C70D0C /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
 		76CB907E288112C200C70D0C /* xcreds_login.sh in Resources */ = {isa = PBXBuildFile; fileRef = 76CB907C288112AF00C70D0C /* xcreds_login.sh */; };
+		76CCF5442B12E478003F85E9 /* VerifyLocalCredentialsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CCF5422B12E478003F85E9 /* VerifyLocalCredentialsWindowController.swift */; };
+		76CCF5452B12E478003F85E9 /* VerifyLocalCredentialsWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76CCF5432B12E478003F85E9 /* VerifyLocalCredentialsWindowController.xib */; };
 		76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
 		76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
@@ -376,6 +378,8 @@
 		76C63A312A22872700810C53 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
 		76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helper+URLDecode.swift"; sourceTree = "<group>"; };
 		76CB907C288112AF00C70D0C /* xcreds_login.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = xcreds_login.sh; sourceTree = "<group>"; };
+		76CCF5422B12E478003F85E9 /* VerifyLocalCredentialsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyLocalCredentialsWindowController.swift; sourceTree = "<group>"; };
+		76CCF5432B12E478003F85E9 /* VerifyLocalCredentialsWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerifyLocalCredentialsWindowController.xib; sourceTree = "<group>"; };
 		76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUnifiedLogger.m; sourceTree = "<group>"; };
 		76D7ADFA284EB15100332EBC /* TCSUnifiedLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSUnifiedLogger.h; sourceTree = "<group>"; };
 		76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+TCSRealHomeFolder.m"; sourceTree = "<group>"; };
@@ -586,6 +590,8 @@
 				766355DA287132E9002E3867 /* LoginWebViewWindowController.swift */,
 				766355E128713C47002E3867 /* LoginWindow.swift */,
 				7651EDEC2A1451590075980B /* LocalUsersViewController.xib */,
+				76CCF5422B12E478003F85E9 /* VerifyLocalCredentialsWindowController.swift */,
+				76CCF5432B12E478003F85E9 /* VerifyLocalCredentialsWindowController.xib */,
 			);
 			path = LoginWindow;
 			sourceTree = "<group>";
@@ -942,6 +948,7 @@
 				7613FDF7289E114F00340CCD /* loadpage.html in Resources */,
 				7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */,
 				766355D52870F29A002E3867 /* TestWindowController.xib in Resources */,
+				76CCF5452B12E478003F85E9 /* VerifyLocalCredentialsWindowController.xib in Resources */,
 				7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */,
 				761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */,
 				766CC43829D3AED2009BC526 /* errorpage.html in Resources */,
@@ -1018,6 +1025,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */,
+				76CCF5442B12E478003F85E9 /* VerifyLocalCredentialsWindowController.swift in Sources */,
 				76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
 				76BEF7DD2871F5F00013E2A1 /* TCSReturnWindow.m in Sources */,
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
@@ -1233,7 +1241,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1271,7 +1279,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1391,7 +1399,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1428,7 +1436,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1578,7 +1586,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1615,7 +1623,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5225;
+				CURRENT_PROJECT_VERSION = 5233;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

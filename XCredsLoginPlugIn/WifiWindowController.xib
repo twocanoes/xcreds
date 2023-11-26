@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WifiWindowController" customModule="XCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="WifiWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <connections>
                 <outlet property="certificateLabel" destination="eqw-jG-xk4" id="PKZ-wy-nD9"/>
                 <outlet property="certificatePopupButton" destination="Sb1-PH-di9" id="Dxm-0p-sb5"/>
@@ -24,7 +24,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="QEp-dc-tSh" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="QEp-dc-tSh" customClass="LoginWindow" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="450" height="356"/>
@@ -60,7 +60,7 @@
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="globe" catalog="system" id="Yzt-2U-PjT"/>
                             </imageView>
-                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwT-dQ-vyr" customClass="OKTabPopUpButton" customModule="XCreds" customModuleProvider="target">
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwT-dQ-vyr" customClass="OKTabPopUpButton" customModule="XCredsLoginPlugin" customModuleProvider="target">
                                 <rect key="frame" x="28" y="94" width="236" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Choose Network" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="ejl-yP-KaF" id="gAm-ea-iCE">
