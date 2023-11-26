@@ -74,6 +74,41 @@ public extension DSQueryable {
         return true
     }
 
+
+    /// Searches DSLocal for an account short name and returns the `ODRecord` for the group if found.
+    ///
+    /// - Parameter name: The name of the group to search for as a `String`.
+    /// - Returns: The `ODRecord` of the group if one is found in DSLocal.
+    /// - Throws: Either an `ODFrameworkErrors` or a `DSQueryableErrors` if there is an error or the user is not local.
+    func getLocalGroupRecord(_ name: String) throws -> ODRecord {
+        do {
+            os_log("Building OD query for name %{public}@", type: .default, name)
+            let query = try ODQuery.init(node: localNode,
+                                         forRecordTypes: kODRecordTypeGroups,
+                                         attribute: kODAttributeTypeRecordName,
+                                         matchType: ODMatchType(kODMatchEqualTo),
+                                         queryValues: name,
+                                         returnAttributes: kODAttributeTypeNativeOnly,
+                                         maximumResults: 1)
+            let records = try query.resultsAllowingPartial(false) as! [ODRecord]
+
+            if records.count > 1 {
+                os_log("More than one local group found for name.", type: .default)
+                throw DSQueryableErrors.multipleUsersFound
+            }
+            guard let record = records.first else {
+                os_log("No local group found.", type: .default)
+                throw DSQueryableErrors.notLocalUser
+            }
+//            os_log("Found local user: %{public}@", record)
+            return record
+        } catch {
+            os_log("ODError while trying to check for local user: %{public}@", type: .error, error.localizedDescription)
+            throw error
+        }
+    }
+
+
     /// Searches DSLocal for an account short name and returns the `ODRecord` for the user if found.
     ///
     /// - Parameter shortName: The name of the user to search for as a `String`.
@@ -182,4 +217,42 @@ public extension DSQueryable {
             throw error
         }
     }
+
+    func isAdmin(_ user:ODRecord) -> Bool {
+        let adminGroup = try? getLocalGroupRecord("admin")
+        do{
+            if let adminGroup = adminGroup {
+                try adminGroup.isMemberRecord(user)
+                return true
+            }
+        }
+        catch {
+        }
+        return false
+
+    }
+
+    func getAllStandardUsers() throws -> [ODRecord] {
+            let allRecords = try getAllNonSystemUsers()
+            let nonSystem = allRecords.filter { (record) -> Bool in
+
+
+                let adminGroup = try? getLocalGroupRecord("admin")
+
+                do{
+
+                    if let adminGroup = adminGroup {
+                        try adminGroup.isMemberRecord(record)
+                        return false
+                    }
+                }
+                catch {
+
+                }
+
+                return true
+            }
+        return nonSystem
+    }
+
 }

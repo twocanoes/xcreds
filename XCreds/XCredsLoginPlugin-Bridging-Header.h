@@ -7,3 +7,4 @@
 #import "TCSReturnWindow.h"
 #import "TCSKeychain.h"
 #import <ProductLicense/ProductLicense.h>
+#include <membership.h>

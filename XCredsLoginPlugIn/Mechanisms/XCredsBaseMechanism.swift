@@ -265,12 +265,56 @@ protocol XCredsMechanismProtocol {
 
         do {
             try records.first?.setValue(time, forAttribute: kODAttributeNetworkSignIn)
+            
+
         } catch {
             os_log("Unable to add sign in time to record", log: noLoMechlog, type: .error)
             return false
         }
 
         return true
+    }
+    class func updateOIDCInfo(user: String, iss:String?, sub:String? ) -> Bool {
+        os_log("Checking for local username", log: noLoMechlog, type: .default)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: user, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+
+        let isLocal = records.isEmpty ? false : true
+        os_log("Results of local user check %{public}@", log: noLoMechlog, type: .default, isLocal.description)
+
+        if !isLocal {
+            return isLocal
+        }
+
+        // now to update the attribute
+
+        do {
+            os_log("updating sub",log: noLoMechlog, type: .error)
+
+            try records.first?.setValue(sub, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
+
+
+            os_log("updating iss",log: noLoMechlog, type: .error)
+
+            try records.first?.setValue(iss, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
+
+
+        } catch {
+            os_log("Unable to add OIDC Info", log: noLoMechlog, type: .error)
+            return false
+        }
+
+        return true
+
     }
     /// Set one of the known `AuthorizationTags` values to be used during mechanism evaluation.
     ///

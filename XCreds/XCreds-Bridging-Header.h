@@ -13,5 +13,6 @@
 #import "TCSUnifiedLogger.h"
 #import <ProductLicense/ProductLicense.h>
 #import "TCSLoginWindowUtilities.h"
+#include <membership.h>
 
 #endif /* XCreds_Bridging_Header_h */

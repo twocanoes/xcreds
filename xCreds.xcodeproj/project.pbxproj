@@ -99,6 +99,7 @@
 		767B939C2A28279E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */; };
+		767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */; };
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
 		7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */; };
 		7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */; };
@@ -346,6 +347,9 @@
 		76786F652A27C62D00AA8DB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76786F6A2A27C72900AA8DB9 /* auth_mech_fixup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "auth_mech_fixup-Bridging-Header.h"; path = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		767B939B2A28279E0038935E /* View+Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
+		767CB2CC2B13B8EB006CA2AC /* libinfo.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libinfo.tbd; path = usr/lib/libinfo.tbd; sourceTree = SDKROOT; };
+		767CB2CE2B13B913006CA2AC /* libsystem_info.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsystem_info.tbd; path = usr/lib/system/libsystem_info.tbd; sourceTree = SDKROOT; };
+		767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenDirectory.framework; path = System/Library/Frameworks/OpenDirectory.framework; sourceTree = SDKROOT; };
 		7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindow.xib; sourceTree = "<group>"; };
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
@@ -465,6 +469,7 @@
 			files = (
 				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
+				767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
 				76AB89DF2A12FAD800529D90 /* OIDCLite in Frameworks */,
 				76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */,
@@ -636,6 +641,9 @@
 		76DD6D15285997F300A700ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */,
+				767CB2CE2B13B913006CA2AC /* libsystem_info.tbd */,
+				767CB2CC2B13B8EB006CA2AC /* libinfo.tbd */,
 				766D7FE82A244E3D00D368B6 /* NoMAD_ADAuth.framework */,
 				766CC42129D3A320009BC526 /* Paddle.framework */,
 				766CC42229D3A321009BC526 /* ProductLicense.framework */,
@@ -1241,7 +1249,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1279,7 +1287,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1399,7 +1407,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1436,7 +1444,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1586,7 +1594,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1602,6 +1610,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 3.3;
@@ -1623,7 +1635,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5233;
+				CURRENT_PROJECT_VERSION = 5244;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1639,6 +1651,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 3.3;

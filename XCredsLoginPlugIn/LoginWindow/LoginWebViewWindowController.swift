@@ -172,14 +172,15 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
     }
 
     override func tokensUpdated(tokens: Creds) {
-//if we have tokens, that means that authentication was successful.
-//we have to check the password here so we can prompt.
+        //if we have tokens, that means that authentication was successful.
+        //we have to check the password here so we can prompt.
 
+        var username:String?
+        var passwordHintSet = false
         guard let delegate = delegate else {
             TCSLogErrorWithMark("invalid delegate")
             return
         }
-        var username:String
         let defaultsUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.username.rawValue)
 
         guard let idToken = tokens.idToken else {
@@ -226,189 +227,94 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
             return
         }
 
-        //        try? getUserRecord(sub: "", iss: "123")
-
         guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
             delegate.denyLogin(message:"OIDC token does not contain both a sub and iss value.")
             return
 
         }
+        let standardUsers = try? getAllStandardUsers()
         let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
 
         TCSLogWithMark("setting issuer and sub hint from OIDC token")
         delegate.setHint(type: .oidcSub, hint: "\(subValue)")
         delegate.setHint(type: .oidcIssuer, hint: "\(issuerValue)")
+        let shouldPromptForMigration = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
-        if existingUser != nil, let odUsername = existingUser?.recordName {
-            TCSLogWithMark("prior local user found.")
-
-            username = odUsername
-
+        if  let existingUser = existingUser, let odUsername = existingUser.recordName  {
+                TCSLogWithMark("prior local user found. using.")
+                username = odUsername
         }
-        // username static map
-        else if let defaultsUsername = defaultsUsername {
-            username = defaultsUsername
-        }
-        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
+        else if let standardUsers = standardUsers, standardUsers.count>0, shouldPromptForMigration == true{
 
-            username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
-            TCSLogWithMark("mapped username found: \(mapValue) clean version:\(username)")
+            TCSLogWithMark("Preference set to prompt for migration and there are no standard users, so prompting")
 
+            let verifyLocalCredentialsWindowController = VerifyLocalCredentialsWindowController.init(windowNibName: NSNib.Name("VerifyLocalCredentialsWindowController"))
 
-        }
-        else {
-            var emailString:String
-
-            if let email = idTokenObject.email  {
-                emailString=email.lowercased()
-            }
-            else if let uniqueName=idTokenObject.unique_name {
-                emailString=uniqueName
-            }
-
-            else {
-                TCSLogWithMark("no username found. Using sub.")
-                emailString=idTokenObject.sub
-            }
-            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
-                TCSLogErrorWithMark("email address invalid")
-                delegate.denyLogin(message:"The email address from the identity token is invalid")
-                return
-
-            }
-
-            TCSLogWithMark("username found: \(tUsername)")
-            username = tUsername
-        }
-
-        //full name
-        TCSLogWithMark("checking map_fullname")
-
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-            //we have a mapping so use that.
-            TCSLogWithMark("full name mapped to: \(mapKey)")
-
-            delegate.setHint(type: .fullName, hint: "\(mapValue)")
-
-        }
-
-        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
-            TCSLogWithMark("firstName: \(firstName)")
-            TCSLogWithMark("lastName: \(lastName)")
-            delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
-
-        }
-//groups
-        if let mapValue = idTokenInfo["groups"] as? Array<String> {
-            TCSLogWithMark("setting groups: \(mapValue)")
-            delegate.setHint(type: .groups, hint:mapValue)
-        }
-        else {
-
-            TCSLogWithMark("No groups found")
-        }
-
-        //first name
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for username, so use that.
-            TCSLogWithMark("first name mapped to: \(mapKey)")
-
-            delegate.setHint(type: .firstName, hint:mapValue)
-        }
-
-       else if let firstName = idTokenObject.given_name {
-           TCSLogWithMark("firstName from token: \(firstName)")
-
-            delegate.setHint(type: .firstName, hint:firstName)
-
-        }
-        //last name
-        TCSLogWithMark("checking map_lastname")
-
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-//we have a mapping for lastName, so use that.
-            TCSLogWithMark("last name mapped to: \(mapKey)")
-
-            delegate.setHint(type: .lastName, hint:mapValue)
-        }
-
-        else if let lastName = idTokenObject.family_name {
-            TCSLogWithMark("lastName from token: \(lastName)")
-
-            delegate.setHint(type: .lastName, hint:lastName)
-
-        }
-        TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
-
-          let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
-
-        switch passwordCheckStatus {
-        case .success:
-            TCSLogWithMark("Local password matches cloud password ")
-        case .incorrectPassword:
-            TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
-
-            if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-                DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
-                getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
-                TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
-                delegate.setHint(type: .passwordOverwrite, hint: true)
-                os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
-                break;
-           }
-
-            let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
-
-            if passwordWindowController.window==nil {
-                TCSLogWithMark("no passwordWindowController window")
-                delegate.denyLogin(message:"Unable to show password prompt")
+            if verifyLocalCredentialsWindowController.window==nil {
+                TCSLogWithMark("no verifyLocalCredentialsWindowController window")
+                delegate.denyLogin(message:"Unable to show verifyLocalCredentialsWindowController prompt")
                 return
             }
-            passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-            passwordWindowController.window?.isMovable = false
-            passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-            passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+            verifyLocalCredentialsWindowController.window?.canBecomeVisibleWithoutLogin=true
+            verifyLocalCredentialsWindowController.window?.isMovable = false
+            verifyLocalCredentialsWindowController.window?.canBecomeVisibleWithoutLogin = true
+            verifyLocalCredentialsWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
             var isDone = false
             while (!isDone){
                 DispatchQueue.main.async{
                     TCSLogWithMark("resetting level")
-                    passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+                    verifyLocalCredentialsWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
                 }
 
-                let response = NSApp.runModal(for: passwordWindowController.window!)
+                let response = NSApp.runModal(for: verifyLocalCredentialsWindowController.window!)
+                verifyLocalCredentialsWindowController.window?.close()
                 if response == .cancel {
                     isDone=true
-                    TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
+                    TCSLogWithMark("User cancelled. Denying login")
                     delegate.denyLogin(message:nil)
                     return
 
                 }
-                let resetKeychain = passwordWindowController.resetKeychain
+                let localUsername = verifyLocalCredentialsWindowController.username
+                let localPassword = verifyLocalCredentialsWindowController.password
+                let shouldCreateNewAccount = verifyLocalCredentialsWindowController.shouldCreateNewAccount
 
-                if resetKeychain == true {
-                    os_log("Setting password to be overwritten.", log: uiLog, type: .default)
-                    delegate.setHint(type: .passwordOverwrite, hint: true)
 
-                    os_log("Hint set", log: uiLog, type: .debug)
-                    passwordWindowController.window?.close()
-                    isDone=true
-
+                guard let localUsername = localUsername, let localPassword = localPassword, let shouldCreateNewAccount = shouldCreateNewAccount else {
+                    TCSLogWithMark("local username, password or shouldCreateNewAccount not set")
+                    delegate.denyLogin(message:nil)
+                    return
                 }
-                else {
-                    TCSLogWithMark("user gave old password. checking...")
-                    let localPassword = passwordWindowController.password
-                    guard let localPassword = localPassword else {
-                        continue
-                    }
-                    let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                if shouldCreateNewAccount == false {
+                    let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: localUsername, userPass: localPassword)
                     switch isValidPassword {
                     case .success:
-                        let localUser = try? PasswordUtils.getLocalRecord(username)
-                        guard let localUser = localUser else {
-                            TCSLogErrorWithMark("invalid local user")
-                            delegate.denyLogin(message:"The local user \(username) could not be found")
+                        isDone = true
+                        username = localUsername
+                        passwordHintSet=true
+                        TCSLogWithMark("setting original password to use to unlock keychain later")
+                        delegate.setHint(type: .migratePass, hint: localPassword)
+
+                        guard let username = username else {
+
+                            isDone = true
+                            TCSLogErrorWithMark("username is not set")
+                            delegate.denyLogin(message:"username is not set")
                             return
+
                         }
+                        let localUser = try? PasswordUtils.getLocalRecord(username)
+
+
+                        guard let localUser = localUser else {
+
+                            isDone = true
+                            TCSLogErrorWithMark("localUser is not set")
+                            delegate.denyLogin(message:"localUser is not set")
+                            return
+
+                        }
+
                         do {
                             try localUser.changePassword(localPassword, toPassword: tokens.password)
                         }
@@ -418,24 +324,227 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
                             delegate.denyLogin(message:error.localizedDescription)
                             return
                         }
-                        TCSLogWithMark("setting original password to use to unlock keychain later")
-                        delegate.setHint(type: .migratePass, hint: localPassword)
-                        isDone=true
-                        passwordWindowController.window?.close()
-                        break
-                    default:
-                        passwordWindowController.window?.shake(self)
+
+                        TCSLogWithMark("Valid Username and Password")
+                    case .incorrectPassword:
+                        TCSLogErrorWithMark("Incorrect Password")
+
+                    case .accountDoesNotExist:
+                        TCSLogErrorWithMark("Account \(localUsername) does not exist")
+
+                    case .other(let err):
+                        isDone = true
+                        TCSLogErrorWithMark("Other err: \(err)")
+                        delegate.denyLogin(message:nil)
+                        return
 
                     }
                 }
+                else {
+                    isDone = true
+                }
             }
-        case .accountDoesNotExist:
-            TCSLogWithMark("user account doesn't exist yet")
+        }
 
-        case .other(let mesg):
-            TCSLogWithMark("password check error:\(mesg)")
-            delegate.denyLogin(message:mesg)
+
+        if username == nil {
+            // username static map
+            if let defaultsUsername = defaultsUsername {
+                username = defaultsUsername
+            }
+            else if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
+
+                username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
+                TCSLogWithMark("mapped username found: \(mapValue) clean version:\(username ?? "")")
+            }
+            else {
+                var emailString:String
+
+                if let email = idTokenObject.email  {
+                    emailString=email.lowercased()
+                }
+                else if let uniqueName=idTokenObject.unique_name {
+                    emailString=uniqueName
+                }
+
+                else {
+                    TCSLogWithMark("no username found. Using sub.")
+                    emailString=idTokenObject.sub
+                }
+                guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
+                    TCSLogErrorWithMark("email address invalid")
+                    delegate.denyLogin(message:"The email address from the identity token is invalid")
+                    return
+
+                }
+
+                TCSLogWithMark("username found: \(tUsername)")
+                username = tUsername
+            }
+
+            //full name
+            TCSLogWithMark("checking map_fullname")
+
+            if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+                //we have a mapping so use that.
+                TCSLogWithMark("full name mapped to: \(mapKey)")
+
+                delegate.setHint(type: .fullName, hint: "\(mapValue)")
+
+            }
+
+            else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+                TCSLogWithMark("firstName: \(firstName)")
+                TCSLogWithMark("lastName: \(lastName)")
+                delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
+
+            }
+            //groups
+            if let mapValue = idTokenInfo["groups"] as? Array<String> {
+                TCSLogWithMark("setting groups: \(mapValue)")
+                delegate.setHint(type: .groups, hint:mapValue)
+            }
+            else {
+
+                TCSLogWithMark("No groups found")
+            }
+
+            //first name
+            if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+                //we have a mapping for username, so use that.
+                TCSLogWithMark("first name mapped to: \(mapKey)")
+
+                delegate.setHint(type: .firstName, hint:mapValue)
+            }
+
+            else if let firstName = idTokenObject.given_name {
+                TCSLogWithMark("firstName from token: \(firstName)")
+
+                delegate.setHint(type: .firstName, hint:firstName)
+
+            }
+            //last name
+            TCSLogWithMark("checking map_lastname")
+
+            if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+                //we have a mapping for lastName, so use that.
+                TCSLogWithMark("last name mapped to: \(mapKey)")
+
+                delegate.setHint(type: .lastName, hint:mapValue)
+            }
+
+            else if let lastName = idTokenObject.family_name {
+                TCSLogWithMark("lastName from token: \(lastName)")
+
+                delegate.setHint(type: .lastName, hint:lastName)
+
+            }
+        }
+        guard let username = username, tokens.password.count>0 else {
+            TCSLogErrorWithMark("username or password are not set")
+            delegate.denyLogin(message:"username or password are not set")
             return
+        }
+        if passwordHintSet == false {
+            TCSLogWithMark("checking local password for username:\(username) and password length: \(tokens.password.count)");
+
+            let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: tokens.password)
+
+            switch passwordCheckStatus {
+            case .success:
+                TCSLogWithMark("Local password matches cloud password ")
+            case .incorrectPassword:
+                TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
+
+                if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
+                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+                    TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
+                    delegate.setHint(type: .passwordOverwrite, hint: true)
+                    os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
+                    break;
+                }
+
+                let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+                if passwordWindowController.window==nil {
+                    TCSLogWithMark("no passwordWindowController window")
+                    delegate.denyLogin(message:"Unable to show password prompt")
+                    return
+                }
+                passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+                passwordWindowController.window?.isMovable = false
+                passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+                var isDone = false
+                while (!isDone){
+                    DispatchQueue.main.async{
+                        TCSLogWithMark("resetting level")
+                        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+                    }
+
+                    let response = NSApp.runModal(for: passwordWindowController.window!)
+                    if response == .cancel {
+                        isDone=true
+                        TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
+                        delegate.denyLogin(message:nil)
+                        return
+
+                    }
+                    let resetKeychain = passwordWindowController.resetKeychain
+
+                    if resetKeychain == true {
+                        os_log("Setting password to be overwritten.", log: uiLog, type: .default)
+                        delegate.setHint(type: .passwordOverwrite, hint: true)
+
+                        os_log("Hint set", log: uiLog, type: .debug)
+                        passwordWindowController.window?.close()
+                        isDone=true
+
+                    }
+                    else {
+                        TCSLogWithMark("user gave old password. checking...")
+                        let localPassword = passwordWindowController.password
+                        guard let localPassword = localPassword else {
+                            continue
+                        }
+                        let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                        switch isValidPassword {
+                        case .success:
+                            let localUser = try? PasswordUtils.getLocalRecord(username)
+                            guard let localUser = localUser else {
+                                TCSLogErrorWithMark("invalid local user")
+                                delegate.denyLogin(message:"The local user \(username) could not be found")
+                                return
+                            }
+                            do {
+                                try localUser.changePassword(localPassword, toPassword: tokens.password)
+                            }
+                            catch {
+                                TCSLogErrorWithMark("Error setting local password to cloud password")
+
+                                delegate.denyLogin(message:error.localizedDescription)
+                                return
+                            }
+                            TCSLogWithMark("setting original password to use to unlock keychain later")
+                            delegate.setHint(type: .migratePass, hint: localPassword)
+                            isDone=true
+                            passwordWindowController.window?.close()
+                            break
+                        default:
+                            passwordWindowController.window?.shake(self)
+
+                        }
+                    }
+                }
+            case .accountDoesNotExist:
+                TCSLogWithMark("user account doesn't exist yet")
+
+            case .other(let mesg):
+                TCSLogWithMark("password check error:\(mesg)")
+                delegate.denyLogin(message:mesg)
+                return
+            }
         }
 
 

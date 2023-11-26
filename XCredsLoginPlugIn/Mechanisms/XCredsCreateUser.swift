@@ -193,14 +193,26 @@ class XCredsCreateUser: XCredsBaseMechanism {
                     }
                 }
             }
-
             else {
                 // no user to create
                 os_log("Skipping local account creation", log: createUserLog, type: .default)
             }
-            
-            // Set the login timestamp if requested
+
+            var sub:String?
+            var iss:String?
+            if let oidcSubHint = getHint(type: .oidcSub) as? String {
+                sub=oidcSubHint
+            }
+            if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+                iss=oidcIssHint
+            }
+
+            // Set the xcreds attributes to stamp this account as the mapped one
             setTimestampFor(xcredsUser ?? "")
+            if let iss = iss, let sub = sub {
+                updateOIDCInfo(xcredsUser ?? "", iss: iss, sub:sub)
+            }
+
         }
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
@@ -637,11 +649,20 @@ class XCredsCreateUser: XCredsBaseMechanism {
             if XCredsCreateUser.updateSignIn(name: nomadUser, time: signInTime as AnyObject) {
                 os_log("Sign in time updated", log: createUserLog, type: .default)
             } else {
-                os_log("Dould not add timestamp", log: createUserLog, type: .error)
+                os_log("Could not add timestamp", log: createUserLog, type: .error)
             }
         }
+
     }
-    
+    fileprivate func updateOIDCInfo(_ user: String, iss:String, sub:String) {
+        if XCredsCreateUser.updateOIDCInfo(user:user, iss: iss, sub:sub) {
+            os_log("updateOIDCInfo updated", log: createUserLog, type: .default)
+        } else {
+            os_log("Could not add updateOIDCInfo", log: createUserLog, type: .error)
+        }
+    }
+
+
     fileprivate func addSecureToken(_ username: String, _ userPass: String?,_ adminUsername: String,_ adminPassword: String?) {
         //MARK: 10.14 fix
         // check for 10.14
