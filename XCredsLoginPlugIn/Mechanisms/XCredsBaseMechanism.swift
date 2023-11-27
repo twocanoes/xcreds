@@ -20,7 +20,7 @@ protocol XCredsMechanismProtocol {
     let mechEngine: AuthorizationEngineRef
     let mech: MechanismRecord?
     @objc init(mechanism: UnsafePointer<MechanismRecord>) {
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
         self.mech = mechanism.pointee
         self.mechCallbacks = mechanism.pointee.fPlugin.pointee.fCallbacks.pointee
         self.mechEngine = mechanism.pointee.fEngine
@@ -124,9 +124,9 @@ protocol XCredsMechanismProtocol {
         }
     }
     func allowLogin() {
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
         let error = mechCallbacks.SetResult(mechEngine, .allow)
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
 
         if error != noErr {
             TCSLogErrorWithMark("Error: \(error)")
