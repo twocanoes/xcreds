@@ -496,7 +496,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
     /// - Returns: `String` representing the UID
     func findFirstAvaliableUID() -> String? {
         var newUID = ""
-        os_log("Checking for avaliable UID", log: createUserLog, type: .debug)
+        os_log("Checking for available UID", log: createUserLog, type: .debug)
         
         if let uidToolpath = getManagedPreference(key: .UIDTool) as? String {
             os_log("Checking UIDTool", log: createUserLog, type: .debug)
