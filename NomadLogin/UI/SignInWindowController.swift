@@ -537,7 +537,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
 
         TCSLogWithMark()
-        if strippedUsername.range(of:"@") != nil {
+        if strippedUsername.range(of:"@") != nil && getManagedPreference(key: .ADDomain) != nil {
             shortName = (strippedUsername.components(separatedBy: "@").first)!
 
             providedDomainName = strippedUsername.components(separatedBy: "@").last!.uppercased()

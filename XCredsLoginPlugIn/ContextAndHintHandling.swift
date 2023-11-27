@@ -33,6 +33,7 @@ enum HintType: String {
     case adGroups
     case oidcSub
     case oidcIssuer
+    case aliasName
 
 
 }

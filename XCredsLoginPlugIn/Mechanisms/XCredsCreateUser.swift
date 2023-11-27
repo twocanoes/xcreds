@@ -200,19 +200,26 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
             var sub:String?
             var iss:String?
+            var alias:String?
             if let oidcSubHint = getHint(type: .oidcSub) as? String {
                 sub=oidcSubHint
             }
             if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
                 iss=oidcIssHint
             }
-
+            if let aliasHint = getHint(type: .aliasName) as? String {
+                alias=aliasHint
+            }
             // Set the xcreds attributes to stamp this account as the mapped one
             setTimestampFor(xcredsUser ?? "")
             if let iss = iss, let sub = sub {
                 updateOIDCInfo(xcredsUser ?? "", iss: iss, sub:sub)
             }
-
+            if let alias = alias, let xcredsUser = xcredsUser {
+                if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
+                    os_log("error adding alias", log: createUserLog, type: .debug)
+                }
+            }
         }
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
@@ -445,7 +452,15 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 os_log("Adding UPN result: %{public}@", log: createUserLog, type: .debug, result.description)
             }
         }
-        
+
+        if let aliasHint = getHint(type: .aliasName) as? String {
+            if XCredsCreateUser.addAlias(name: shortName, alias: aliasHint)==false {
+                os_log("error adding alias", log: createUserLog, type: .debug)
+            }
+        }
+
+
+
         if getManagedPreference(key: .AliasNTName) as? Bool ?? false {
             if let ntName = getHint(type: .ntName) as? String {
                 os_log("Adding NTName as an alias: %{public}@", log: createUserLog, type: .debug, ntName)

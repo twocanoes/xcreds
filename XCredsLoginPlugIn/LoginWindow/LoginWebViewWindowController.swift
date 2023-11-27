@@ -238,6 +238,15 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
         TCSLogWithMark("setting issuer and sub hint from OIDC token")
         delegate.setHint(type: .oidcSub, hint: "\(subValue)")
         delegate.setHint(type: .oidcIssuer, hint: "\(issuerValue)")
+        let aliasClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aliasName.rawValue)
+        if let aliasClaim = aliasClaim, let aliasClaimValue = idTokenInfo[aliasClaim] {
+            TCSLogWithMark("found alias claim: \(aliasClaim):\(aliasClaimValue)")
+            delegate.setHint(type: .aliasName, hint: aliasClaimValue)
+        }
+        else {
+            TCSLogWithMark("no alias claim: \(aliasClaim ?? "none")")
+        }
+
         let shouldPromptForMigration = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
         if  let existingUser = existingUser, let odUsername = existingUser.recordName  {
