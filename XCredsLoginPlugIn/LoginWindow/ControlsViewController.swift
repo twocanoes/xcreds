@@ -22,6 +22,9 @@ class ControlsViewController: NSViewController {
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
     var commandKeyDown = false
+    var optionKeyDown = false
+    var controlKeyDown = false
+    var keyCodesPressed:[UInt16:Bool]=[:]
 //    func dismiss() {
 ////        if let resolutionObserver = resolutionObserver {
 ////            NotificationCenter.default.removeObserver(resolutionObserver)
@@ -41,15 +44,67 @@ class ControlsViewController: NSViewController {
             commandKeyDown=false
 
         }
+
+        let optionKeyFlags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.option.rawValue
+
+        if optionKeyFlags != 0 {
+            optionKeyDown=true
+        }
+        else {
+            optionKeyDown=false
+        }
+
+        let controlKeyFlags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.control.rawValue
+
+        if controlKeyFlags != 0 {
+            controlKeyDown=true
+        }
+        else {
+            controlKeyDown=false
+        }
         return evt
     }
 
+    func keyUp(key: NSEvent) -> NSEvent?{
+        keyCodesPressed.removeValue(forKey: key.keyCode)
+        return key
+    }
+    func keyDown(key: NSEvent) -> NSEvent?{
+        keyCodesPressed[key.keyCode]=true
 
+        if (keyCodesPressed[76]==true || keyCodesPressed[36]==true) && (controlKeyDown==true && optionKeyDown==true) {
+            guard let delegate = delegate else {
+                TCSLogWithMark("No delegate set for restart")
+
+                return key
+            }
+
+            let allowCombo = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowKeyComboForMacLoginWindow.rawValue)
+            if allowCombo == true {
+                keyCodesPressed.removeAll()
+                if commandKeyDown == false {
+                    NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
+
+
+                }
+                else {
+                    delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+                    delegate.allowLogin()
+
+                }
+                return nil
+            }
+
+        }
+        return key
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         let licenseState = LicenseChecker().currentLicenseState()
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
         self.trialVersionStatusTextField?.isHidden = false
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
+        NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
 
 
         switch licenseState {

@@ -56,5 +56,7 @@
 	<string>Password</string>
 	<key>shouldPromptForMigration</key>
 	<false/>
+	<key>shouldAllowKeyComboForMacLoginWindow</key>
+	<true/>
 </dict>
 </plist>
