@@ -274,7 +274,7 @@ protocol XCredsMechanismProtocol {
 
         return true
     }
-    class func updateOIDCInfo(user: String, iss:String?, sub:String? ) -> Bool {
+    class func updateOIDCInfo(user: String, iss:String?, sub:String?, groups:[String]?) -> Bool {
         os_log("Checking for local username", log: noLoMechlog, type: .default)
         var records = [ODRecord]()
         let odsession = ODSession.default()
@@ -308,6 +308,10 @@ protocol XCredsMechanismProtocol {
             try records.first?.setValue(iss, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
 
 
+            if let groups = groups?.joined(separator: ";") {
+                try records.first?.setValue(groups, forAttribute: "dsAttrTypeNative:_xcreds_oidc_groups")
+
+            }
         } catch {
             os_log("Unable to add OIDC Info", log: noLoMechlog, type: .error)
             return false

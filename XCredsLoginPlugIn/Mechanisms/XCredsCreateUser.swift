@@ -10,7 +10,7 @@ import OpenDirectory
 
 
 /// Mechanism to create a local user and homefolder.
-class XCredsCreateUser: XCredsBaseMechanism {
+class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
     let createUserLog = "createUserLog"
     let uiLog = "uiLog"
@@ -69,7 +69,23 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 }
             }
         }
-        
+        var isAdmin = false
+        if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
+            isAdmin = createAdmin
+            TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
+        }
+        os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
+        if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
+            TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
+            groups?.forEach { group in
+                if adminGroups.contains(group) {
+                    isAdmin = true
+                    TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
+                }
+            }
+        }
+
+
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
             
             var secureTokenCreds:SecureTokenCredential? = nil
@@ -90,27 +106,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
             
             TCSLog("Checking for createLocalAdmin key")
-            var isAdmin = false
-            if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
-                isAdmin = createAdmin
-                TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
-            }
-            os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
-            if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
-                TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
-                groups?.forEach { group in
-                    if adminGroups.contains(group) {
-                        isAdmin = true
-                        TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
-                    }
-                }
-            }
-
             var fullname:String?
 
             if let fullnameHint = getHint(type: .fullName) as? String {
                 fullname=fullnameHint
             }
+
 
             var customAttributes = [String: String]()
             
@@ -198,29 +199,47 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 os_log("Skipping local account creation", log: createUserLog, type: .default)
             }
 
-            var sub:String?
-            var iss:String?
-            var alias:String?
-            if let oidcSubHint = getHint(type: .oidcSub) as? String {
-                sub=oidcSubHint
-            }
-            if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
-                iss=oidcIssHint
-            }
-            if let aliasHint = getHint(type: .aliasName) as? String {
-                alias=aliasHint
-            }
-            // Set the xcreds attributes to stamp this account as the mapped one
-            setTimestampFor(xcredsUser ?? "")
-            if let iss = iss, let sub = sub {
-                updateOIDCInfo(xcredsUser ?? "", iss: iss, sub:sub)
-            }
-            if let alias = alias, let xcredsUser = xcredsUser {
-                if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
-                    os_log("error adding alias", log: createUserLog, type: .debug)
-                }
+        }
+
+        var sub:String?
+        var iss:String?
+        var alias:String?
+        if let oidcSubHint = getHint(type: .oidcSub) as? String {
+            sub=oidcSubHint
+        }
+        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+            iss=oidcIssHint
+        }
+        if let aliasHint = getHint(type: .aliasName) as? String {
+            alias=aliasHint
+        }
+        // Set the xcreds attributes to stamp this account as the mapped one
+        setTimestampFor(xcredsUser ?? "")
+        if let iss = iss, let sub = sub {
+            updateOIDCInfo(xcredsUser ?? "", iss: iss, sub:sub, groups:groups)
+        }
+        if let alias = alias, let xcredsUser = xcredsUser {
+            if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
+                os_log("error adding alias", log: createUserLog, type: .debug)
             }
         }
+        TCSLogWithMark("Checking if user should be made admin")
+        if isAdmin==true, let xcredsUser = xcredsUser {
+            do {
+                TCSLogWithMark("Making admin user")
+                let record = try getLocalRecord(xcredsUser)
+                if makeAdmin(record)==false {
+                    os_log("failed to make user an admin", log: createUserLog, type: .error)
+                }
+            }
+            catch {
+                os_log("error finding user to make admin", log: createUserLog, type: .error)
+            }
+
+        }
+
+
+
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
@@ -372,26 +391,10 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
         }
         
-        if isAdmin {
-            do {
-                os_log("Find the administrators group", log: createUserLog, type: .debug)
-                let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
-                let query = try ODQuery.init(node: node,
-                                             forRecordTypes: kODRecordTypeGroups,
-                                             attribute: kODAttributeTypeRecordName,
-                                             matchType: ODMatchType(kODMatchEqualTo),
-                                             queryValues: "admin",
-                                             returnAttributes: kODAttributeTypeNativeOnly,
-                                             maximumResults: 1)
-                let results = try query.resultsAllowingPartial(false) as! [ODRecord]
-                let adminGroup = results.first
-                
-                os_log("Adding user to administrators group", log: createUserLog, type: .debug)
-                try adminGroup?.addMemberRecord(newRecord)
+        if isAdmin, let newRecord = newRecord {
+            if makeAdmin(newRecord)==false {
+                os_log("failed to make user an admin", log: createUserLog, type: .error)
 
-            } catch {
-                let errorText = error.localizedDescription
-                os_log("Unable to add user to administrators group: %{public}@", log: createUserLog, type: .error, errorText)
             }
         }
         
@@ -669,8 +672,8 @@ class XCredsCreateUser: XCredsBaseMechanism {
         }
 
     }
-    fileprivate func updateOIDCInfo(_ user: String, iss:String, sub:String) {
-        if XCredsCreateUser.updateOIDCInfo(user:user, iss: iss, sub:sub) {
+    fileprivate func updateOIDCInfo(_ user: String, iss:String, sub:String,groups:[String]?) {
+        if XCredsCreateUser.updateOIDCInfo(user:user, iss: iss, sub:sub, groups:groups) {
             os_log("updateOIDCInfo updated", log: createUserLog, type: .default)
         } else {
             os_log("Could not add updateOIDCInfo", log: createUserLog, type: .error)

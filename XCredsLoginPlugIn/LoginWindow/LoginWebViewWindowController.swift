@@ -227,6 +227,17 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
             return
         }
 
+        //groups
+        if let mapValue = idTokenInfo["groups"] as? Array<String> {
+            TCSLogWithMark("setting groups: \(mapValue)")
+            delegate.setHint(type: .groups, hint:mapValue)
+        }
+        else {
+
+            TCSLogWithMark("No groups found")
+        }
+
+        
         guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
             delegate.denyLogin(message:"OIDC token does not contain both a sub and iss value.")
             return
@@ -407,15 +418,6 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
                 TCSLogWithMark("lastName: \(lastName)")
                 delegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
 
-            }
-            //groups
-            if let mapValue = idTokenInfo["groups"] as? Array<String> {
-                TCSLogWithMark("setting groups: \(mapValue)")
-                delegate.setHint(type: .groups, hint:mapValue)
-            }
-            else {
-
-                TCSLogWithMark("No groups found")
             }
 
             //first name
