@@ -19,12 +19,16 @@ class VerifyLocalCredentialsWindowController: NSWindowController, NSWindowDelega
     var shouldShowCreateNewAccountButton:Bool?=true
     override func windowDidLoad() {
         super.windowDidLoad()
+        if let shouldShowCreateNewAccountButton = shouldShowCreateNewAccountButton{
+            createNewAccountButton.isHidden = !shouldShowCreateNewAccountButton
+        }
 
     }
     func windowDidBecomeKey(_ notification: Notification) {
         if let shouldShowCreateNewAccountButton = shouldShowCreateNewAccountButton{
             createNewAccountButton.isHidden = !shouldShowCreateNewAccountButton
         }
+
     }
 
     @IBAction func okButtonPressed(_ sender: Any) {

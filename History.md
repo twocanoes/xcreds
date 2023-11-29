@@ -1,5 +1,52 @@
 # What's New In XCreds #
 
+## XCreds 3.3 ##
+
+### Select Existing User Account During Account Creation ###
+Using the new preference key “shouldPromptForMigration”, when a new login is detected and there are existing standard user accounts on the system, the user will be prompted for a username and password (#98).
+
+If the username and password are successfully entered for an existing account, this local account will then be used when logging in with this cloud account. The local account has 2 new DS attributes added:
+
+dsAttrTypeNative:_xcreds_oidc_sub: Subscriber. Unique identifier for account within the current issuer. 
+
+dsAttrTypeNative:_xcreds_oidc_iss: Issuer
+In subsequent logins, the user account is selected by matching the sub and iss from the identity token to the values in the local account.
+
+Note that the user will only be prompted if there are existing standard accounts on the system and the login does not have a locally mapped account.
+
+The dialog for migration has a “Create New Account” button that will allow them to skip migration and create a local account. If a local account using the prior logic exists, it will be mapped.
+
+### Key Combination for showing Standard and Mac login window ###
+Setting the new preference key “shouldAllowKeyComboForMacLoginWindow” allows switch login between cloud and standard/Mac login using a key combination regardless of the hidden state of the Switch Login Window button (#121). The keys are as follows:
+
+Option-Control-Return: Switch between cloud and standard login window.
+Command-Option-Control-Return: Switch between cloud and Mac login window.
+
+### Account Alias ###
+When a new preference is set (“aliasName”) to a claim in the identity token, the value in that claim is used to set an alias to the user account, allowing them to login with it.
+
+An example: Set the preferences to have aliasName = “upn”. Log in as barney@twocanoes.com. The identity token has a claim called “upn” whose value was “barney@twocanoes.com“. XCreds then adds barney@twocanoes.com that is an alias and the user can login with either barney or barney@twocanoes.com at the local and mac login window. This gives the user a consistent way to log in at the cloud login or the standard / Mac login window.
+
+### New Features ###
+* Removed logging messages that had a local path from the build system.
+* Updates postinstall to better handle the setup assistant and userland install scenarios. Thanks to Clkw0rk for the pull request.
+* Reload login window on network changes. Thanks to Clkw0rk for the pull request and credit to @hurricanehrndz and the CPE Team at Yelp
+* Reload login window after wifi connected. Thanks to Clkw0rk for the pull request.
+* add encoding for special characters to tokenmanager. Thanks to Clkw0rk for the pull request.
+* use default desktop from CoreServices. Thanks to Clkw0rk and the CPE Team at Yelp for the pull request.
+
+
+## XCreds 3.2 ##
+
+* Support for Okta ROPG
+* New preference key to force local login: shouldPreferLocalLoginInsteadOfCloudLogin
+* New preference key show login window based on detecting network status: shouldDetectNetworkToDetermineLoginWindow
+* Added self healing for auth rights
+* Added support for keyboard nav for controls
+* Detect offline and automatically switch to local login
+* Remove trailing and leading spaces entered in username
+
+
 ## XCreds 3.1 ##
 
 ### Active Directory Login ###
