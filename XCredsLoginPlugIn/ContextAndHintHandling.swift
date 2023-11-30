@@ -31,9 +31,10 @@ enum HintType: String {
 //    case noMADLast
 //    case noMADFull
     case adGroups
-    case oidcSub
-    case oidcIssuer
+//    case oidcSub
+//    case oidcIssuer
     case aliasName
+    case claimsToAddToLocalUserAccount
 
 
 }

@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 3.3 (5273) OAuth Settings</string>
+	<string>XCreds 3.3 (5310) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -191,6 +191,25 @@ A profile can consist of payloads with different version numbers. For example, c
 			</array>
 			<key>pfm_title</key>
 			<string>Create Admin If Group Member</string>
+			<key>pfm_type</key>
+			<string>array</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>List of claims that should be added to the user local account. Will be prefixed with _xcreds_oidc_. Set as an Array of Strings of the claim.</string>
+			<key>pfm_name</key>
+			<string>claimsToAddToLocalUserAccount</string>
+			<key>pfm_subkeys</key>
+			<array>
+				<dict>
+					<key>pfm_name</key>
+					<string>claim</string>
+					<key>pfm_type</key>
+					<string>string</string>
+				</dict>
+			</array>
+			<key>pfm_title</key>
+			<string>Claims To Add To Local User Account</string>
 			<key>pfm_type</key>
 			<string>array</string>
 		</dict>

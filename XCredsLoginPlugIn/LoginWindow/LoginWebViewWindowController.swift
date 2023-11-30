@@ -261,9 +261,9 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
         let standardUsers = try? getAllStandardUsers()
         let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
 
-        TCSLogWithMark("setting issuer and sub hint from OIDC token")
-        delegate.setHint(type: .oidcSub, hint: "\(subValue)")
-        delegate.setHint(type: .oidcIssuer, hint: "\(issuerValue)")
+//        TCSLogWithMark("setting issuer and sub hint from OIDC token")
+//        delegate.setHint(type: .oidcSub, hint: "\(subValue)")
+//        delegate.setHint(type: .oidcIssuer, hint: "\(issuerValue)")
         let aliasClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aliasName.rawValue)
         if let aliasClaim = aliasClaim, let aliasClaimValue = idTokenInfo[aliasClaim] {
             TCSLogWithMark("found alias claim: \(aliasClaim):\(aliasClaimValue)")

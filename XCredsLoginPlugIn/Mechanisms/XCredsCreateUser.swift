@@ -122,12 +122,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             let currentDate = ISO8601DateFormatter().string(from: Date())
             customAttributes["dsAttrTypeNative:\(metaPrefix)_creationDate"] = currentDate
 
-            if let oidcSubHint = getHint(type: .oidcSub) as? String {
-                customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_sub"] = oidcSubHint
-            }
-            if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
-                customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_iss"] = oidcIssHint
-            }
 
             guard let xcredsFirst=xcredsFirst, let xcredsLast = xcredsLast else {
                 TCSLogErrorWithMark("first or last name not defined. bailing")
@@ -200,24 +194,15 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
 
         }
-
-        var sub:String?
-        var iss:String?
         var alias:String?
-        if let oidcSubHint = getHint(type: .oidcSub) as? String {
-            sub=oidcSubHint
-        }
-        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
-            iss=oidcIssHint
-        }
+
         if let aliasHint = getHint(type: .aliasName) as? String {
             alias=aliasHint
         }
         // Set the xcreds attributes to stamp this account as the mapped one
         setTimestampFor(xcredsUser ?? "")
-        if let iss = iss, let sub = sub {
-            updateOIDCInfo(xcredsUser ?? "", iss: iss, sub:sub, groups:groups)
-        }
+        let _ = updateOIDCInfo(user: xcredsUser ?? "")
+
         if let alias = alias, let xcredsUser = xcredsUser {
             if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
                 os_log("error adding alias", log: createUserLog, type: .debug)
@@ -245,6 +230,114 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
     }
 
+    func updateOIDCInfo(user: String) -> Bool {
+        os_log("Checking for local username", log: noLoMechlog, type: .default)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: user, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+
+        let isLocal = records.isEmpty ? false : true
+        os_log("Results of local user check %{public}@", log: noLoMechlog, type: .default, isLocal.description)
+
+        if !isLocal {
+            return false
+        }
+
+        // now to update the attribute
+        TCSLogWithMark("updating claims in DS")
+        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
+
+        let tokenArray = getHint(type: .tokens) as? Array<String>
+
+        if let tokenArray = tokenArray , tokenArray.count>0{
+            TCSLogWithMark("Found claims")
+            let idToken = tokenArray[0]
+            let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+            if let idTokenInfo = idTokenInfo {
+                TCSLogWithMark("Decoded Claims")
+                if var claimsToDSArray = claimsToDSArray {
+
+                    claimsToDSArray.append("iss")
+                    claimsToDSArray.append("sub")
+
+                    for currClaim in claimsToDSArray {
+                        TCSLogWithMark("Found Matching Claim: \(currClaim)")
+                        if let value = idTokenInfo[currClaim] as? String {
+                            let sanitizedKey = currClaim.oidc_allowed_chars
+                            if sanitizedKey.count<20 || value.count<256 {
+                                TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
+                                try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
+
+                            }
+                            else {
+                                TCSLogWithMark("key or value too long to put into DS")
+                            }
+
+                        }
+                        else if let value = idTokenInfo[currClaim] as? Array<String> {
+                            let sanitizedKey = currClaim.oidc_allowed_chars
+                            let oneLine = value.joined(separator: ";")
+                            if sanitizedKey.count<256 || oneLine.count<20 {
+                                TCSLogWithMark("Adding \(sanitizedKey) = \(oneLine)")
+
+                                try? records.first?.setValue(oneLine, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
+                            }
+                            else {
+                                TCSLogWithMark("key or value too long to put into DS")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+//        var sub:String?
+//        var iss:String?
+//        if let oidcSubHint = getHint(type: .oidcSub) as? String {
+//            sub=oidcSubHint
+//        }
+//        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+//            iss=oidcIssHint
+//        }
+//
+//        if let oidcSubHint = getHint(type: .oidcSub) as? String {
+//            customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_sub"] = oidcSubHint
+//        }
+//        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+//            customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_iss"] = oidcIssHint
+//        }
+
+//        do {
+//            os_log("updating sub",log: noLoMechlog, type: .error)
+//
+//            try records.first?.setValue(sub, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
+//
+//
+//            os_log("updating iss",log: noLoMechlog, type: .error)
+//
+//            try records.first?.setValue(iss, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
+//
+//
+////            if let groups = groups?.joined(separator: ";") {
+////                try records.first?.setValue(groups, forAttribute: "dsAttrTypeNative:_xcreds_oidc_groups")
+////
+////            }
+//        } catch {
+//            os_log("Unable to add OIDC Info", log: noLoMechlog, type: .error)
+//            return false
+//        }
+
+        return true
+
+    }
     func createHome(xcredsUser:String, uid:String) {
         TCSLogWithMark("Creating local homefolder for \(xcredsUser)")
         createHomeDirFor(xcredsUser)
@@ -672,13 +765,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
 
     }
-    fileprivate func updateOIDCInfo(_ user: String, iss:String, sub:String,groups:[String]?) {
-        if XCredsCreateUser.updateOIDCInfo(user:user, iss: iss, sub:sub, groups:groups) {
-            os_log("updateOIDCInfo updated", log: createUserLog, type: .default)
-        } else {
-            os_log("Could not add updateOIDCInfo", log: createUserLog, type: .error)
-        }
-    }
+
 
 
     fileprivate func addSecureToken(_ username: String, _ userPass: String?,_ adminUsername: String,_ adminPassword: String?) {
@@ -812,4 +899,12 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 //        return true
 //    }
     
+}
+extension String {
+    var oidc_allowed_chars: String {
+        var allowed = CharacterSet()
+        allowed.formUnion(CharacterSet.alphanumerics)
+        allowed.insert(charactersIn: "_#")
+        return self.components(separatedBy: allowed.inverted).joined()
+    }
 }
