@@ -118,6 +118,8 @@ class WebViewWindowController: NSWindowController {
     }
     func tokensUpdated(tokens: Creds){
     }
+    func showErrorMessageAndDeny(_ message:String){
+    }
 }
 
 extension WebViewWindowController: WKNavigationDelegate {
@@ -323,6 +325,7 @@ extension WebViewWindowController: OIDCLiteDelegate {
             else {
                 TCSLogWithMark("----- password was not set")
                 NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+                self.showErrorMessageAndDeny("The password was not set. Please check settings and verify passwordless sign-in was not used.")
             }
         }
     }

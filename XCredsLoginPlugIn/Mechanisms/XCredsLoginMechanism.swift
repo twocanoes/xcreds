@@ -222,7 +222,16 @@ import Network
                 alert.window.level=window.level+1
             }
             alert.window.canBecomeVisibleWithoutLogin=true
-            alert.icon=NSImage(named: NSImage.Name("AppIcon"))
+            let allBundles = Bundle.allBundles
+            for currentBundle in allBundles {
+                TCSLogWithMark(currentBundle.bundlePath)
+                if currentBundle.bundlePath.contains("XCredsLoginPlugin") {
+                    TCSLogWithMark("Found bundle")
+
+                    alert.icon=currentBundle.image(forResource: NSImage.Name("icon_128x128"))
+                    break
+                }
+            }
             alert.runModal()
 
         }

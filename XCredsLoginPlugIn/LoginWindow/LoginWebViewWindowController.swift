@@ -171,6 +171,12 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
         })
     }
 
+    override func showErrorMessageAndDeny(_ message:String){
+
+            delegate?.denyLogin(message:message)
+            return
+        }
+
     override func tokensUpdated(tokens: Creds) {
         //if we have tokens, that means that authentication was successful.
         //we have to check the password here so we can prompt.
