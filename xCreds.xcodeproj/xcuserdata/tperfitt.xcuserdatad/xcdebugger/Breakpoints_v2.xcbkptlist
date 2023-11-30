@@ -156,8 +156,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/LoginWebViewWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "tokensUpdated(tokens:)"
             landmarkType = "7">
          </BreakpointContent>

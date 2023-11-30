@@ -162,13 +162,22 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
             context.duration = 1.0
             context.allowsImplicitAnimation = true
             self.webView?.animator().alphaValue = 0.0
-        }, completionHandler: {
-                self.webView?.alphaValue = 0.0
-            self.webView.removeFromSuperview()
-//                self.window?.close()
+            let origin = self.controlsViewController?.view.frame.origin
+            let size = self.controlsViewController?.view.frame.size
 
+            if let origin = origin, let size = size {
+                self.controlsViewController?.view.animator().setFrameOrigin(NSMakePoint(origin.x, origin.y-(2*size.height)))
+            }
+        }, completionHandler: {
+            self.webView?.alphaValue = 0.0
+            self.controlsViewController?.view.animator().alphaValue=0.0
+
+            self.webView.removeFromSuperview()
+            self.window?.orderOut(self)
+            self.controlsViewController?.view.removeFromSuperview()
 
         })
+
     }
 
     override func showErrorMessageAndDeny(_ message:String){
