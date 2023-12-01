@@ -938,7 +938,10 @@ extension SignInWindowController: NoMADUserSessionDelegate {
         switch error {
         case .PasswordExpired:
             TCSLogErrorWithMark("Password is expired or requires change.")
-            showResetUI()
+            authFail()
+            delegate?.denyLogin(message:"Password is expired or requires change")
+
+//            showResetUI()
             return
         case .OffDomain:
             TCSLogErrorWithMark("OffDomain")
