@@ -297,11 +297,14 @@ import Network
             if let signInWindowController = signInWindowController {
                 signInWindowController.delegate=self
                 if signInWindowController.username != nil {
+                    signInWindowController.username.isEnabled=true
                     signInWindowController.username.stringValue=""
                 }
                 if signInWindowController.password != nil {
+                    signInWindowController.password.isEnabled=true
                     signInWindowController.password.stringValue=""
                 }
+                signInWindowController.loginAppearance()
                 signInWindowController.window?.orderFrontRegardless()
                 signInWindowController.window?.makeKeyAndOrderFront(self)
             }

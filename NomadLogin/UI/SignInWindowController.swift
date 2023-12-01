@@ -93,6 +93,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
     //MARK: - UI Methods
 
 
+
     override func awakeFromNib() {
         TCSLogWithMark()
         
@@ -243,13 +244,16 @@ class SignInWindowController: NSWindowController, DSQueryable {
     }
     
 
-    fileprivate func loginAppearance() {
+    func loginAppearance() {
         TCSLogWithMark()
         os_log("Setting window level", log: uiLog, type: .debug)
 
         self.window?.level = .normal
         self.window?.orderFrontRegardless()
 
+        localOnlyCheckBox.isEnabled=true
+        signIn.isEnabled=true
+        signIn.isHidden = false
 
         // make things look better
 
@@ -381,6 +385,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 //                break
 //            }
 //        }
+
         TCSLogWithMark()
 //        loginWindowTextWindow.level = .screenSaver
 //        loginWindowTextWindow.backgroundColor = .clear
@@ -627,6 +632,13 @@ class SignInWindowController: NSWindowController, DSQueryable {
     ///
     /// - Parameter authResult:`Authorizationresult` enum value that indicates if login should proceed.
     fileprivate func completeLogin(authResult: AuthorizationResult) {
+        if let delegate = delegate {
+
+        }
+        else {
+            TCSLogWithMark("delegate not defined")
+
+        }
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
@@ -635,7 +647,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
         case .deny:
             TCSLogWithMark("Complete login process with deny")
-            delegate?.denyLogin(message:"Login Denied")
+            delegate?.denyLogin(message:nil)
 
 //            window?.close()
 
@@ -678,28 +690,56 @@ class SignInWindowController: NSWindowController, DSQueryable {
     fileprivate func showPasswordSync() {
         // hide other possible boxes
         TCSLogWithMark()
-        self.migrateBox.isHidden = true
-        self.loginStack.isHidden = true
-        self.signIn.isHidden = true
-        self.signIn.isEnabled = true
-        self.MigrateNo.isHidden = true
-        self.migrateUsers.isHidden = true
-        self.usernameLabel.isHidden = true
-        
-        // show migration box
-        self.migrateOverwrite.isHidden = false
-        let overwriteRed: [NSAttributedString.Key : Any] = [.foregroundColor: NSColor.red]
-        self.migrateOverwrite.attributedTitle = NSMutableAttributedString(string: self.migrateOverwrite.title, attributes: overwriteRed)
-        self.migrateBox.isHidden = false
-        self.migrateSpinner.isHidden = false
-        
-        if self.didUpdateFail == true {
-            self.migrateText.stringValue = "Invalid password. Try again."
-        } else {
-            self.migrateText.stringValue = getManagedPreference(key: .MessagePasswordSync) as? String ?? "Active Directory password does not match local password. Please enter your previous local password to update it."
+
+        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+        passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+        passwordWindowController.window?.isMovable = false
+        passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+        var isDone = false
+        while (!isDone){
+            DispatchQueue.main.async{
+                TCSLogWithMark("resetting level")
+                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+            }
+
+            let response = NSApp.runModal(for: passwordWindowController.window!)
+            passwordWindowController.window?.close()
+
+            if response == .cancel {
+                isDone=true
+                TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
+                completeLogin(authResult: .deny)
+
+                return
+            }
+
+            let localPassword = passwordWindowController.password
+            guard let localPassword = localPassword else {
+                continue
+            }
+            do {
+                os_log("Password doesn't match existing local. Try to change local pass to match.", log: uiLog, type: .default)
+                let localUser = try getLocalRecord(shortName)
+                try localUser.changePassword(localPassword, toPassword: passString)
+                os_log("Password sync worked, allowing login", log: uiLog, type: .default)
+
+                isDone=true
+                delegate?.setHint(type: .migratePass, hint: localPassword)
+                completeLogin(authResult: .allow)
+                return
+            } catch {
+                os_log("Unable to sync local password to Network password. Reload and try again", log: uiLog, type: .error)
+                return
+            }
+
+
         }
+
     }
     
+
     fileprivate func showMigration() {
 
         //RunLoop.main.perform {
@@ -920,12 +960,12 @@ extension SignInWindowController: NoMADUserSessionDelegate {
 //            }
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description)")
-            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-                setRequiredHintsAndContext()
-                completeLogin(authResult: .allow)
-            } else {
+//            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+//                setRequiredHintsAndContext()
+//                completeLogin(authResult: .allow)
+//            } else {
                 authFail()
-            }
+//            }
             return
         }
     }
