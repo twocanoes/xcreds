@@ -47,7 +47,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                 if migrate {
                     TCSLogWithMark("Migrate set, adding migration name hint.")
                     // set the migration hint
-                    delegate?.setHint(type: .migrateUser, hint: userToCheck)
+                    delegate?.setHint(type: .existingLocalUserName, hint: userToCheck)
                     return .userMatchSkipMigration
                 } else {
                     return .complete
@@ -121,7 +121,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         }
         
         //os_log("Local password changed.", log: uiLog, type: .default)
-        delegate?.setHint(type: .migratePass, hint: oldPass)
+        delegate?.setHint(type: .existingLocalUserPassword, hint: oldPass)
         return true
     }
 }

@@ -8,8 +8,8 @@
 
 enum HintType: String {
     case guestUser
-    case migratePass
-    case migrateUser
+    case existingLocalUserPassword
+    case existingLocalUserName
     case networkSignIn
     case user
     case domain

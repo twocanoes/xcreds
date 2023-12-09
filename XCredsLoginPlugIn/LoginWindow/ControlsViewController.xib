@@ -22,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1002" height="117"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
                     <rect key="frame" x="0.0" y="98" width="1002" height="19"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="bHC-M4-jfl">
                         <font key="font" metaFont="system" size="16"/>
@@ -30,7 +30,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p61-id-z2n">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p61-id-z2n">
                     <rect key="frame" x="10" y="-1" width="122" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="XCreds 1.1.1 (2000)" id="RPn-fH-Reb">
                         <font key="font" metaFont="system"/>
@@ -153,7 +153,7 @@ DQ
     <resources>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
-        <image name="loginwindow" width="41" height="32"/>
+        <image name="loginwindow" width="41" height="31.5"/>
         <image name="refresh symbol" width="989" height="989"/>
         <image name="wifi" width="32" height="32"/>
     </resources>

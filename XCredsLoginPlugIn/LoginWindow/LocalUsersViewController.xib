@@ -6,126 +6,122 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="SignInWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="SignInViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
-                <outlet property="imageView" destination="jIV-E3-5r5" id="a8Q-rY-08L"/>
-                <outlet property="localOnlyCheckBox" destination="JO2-an-6VU" id="f5s-oy-67O"/>
-                <outlet property="loginStack" destination="gwU-ij-829" id="3Sg-Gp-wg1"/>
-                <outlet property="password" destination="nX9-ug-iIi" id="itX-fN-GCo"/>
-                <outlet property="signIn" destination="gPL-7i-JQY" id="uFw-wv-SRP"/>
-                <outlet property="username" destination="hAg-pc-UUB" id="c75-z8-3WP"/>
-                <outlet property="window" destination="M1u-qI-fIg" id="tMs-21-oYp"/>
+                <outlet property="imageView" destination="2ro-Pt-hN3" id="F7q-Cv-tWI"/>
+                <outlet property="localOnlyCheckBox" destination="kwO-Pt-tOG" id="w4U-23-hqX"/>
+                <outlet property="passwordTextField" destination="UJh-bj-CPX" id="YZl-II-FDB"/>
+                <outlet property="signIn" destination="XnO-81-SH2" id="VQg-nQ-slV"/>
+                <outlet property="usernameTextField" destination="pMs-hI-jaw" id="7EL-6L-Ju6"/>
+                <outlet property="view" destination="Vpj-iV-5Db" id="JcN-lE-Ijf"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="M1u-qI-fIg" customClass="LoginWindow" customModule="XCredsLoginPlugin" customModuleProvider="target">
-            <windowStyleMask key="styleMask" resizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="138" y="173" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
-            <view key="contentView" id="qzn-cI-c0g">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jIV-E3-5r5">
-                        <rect key="frame" x="0.0" y="270" width="480" height="0.0"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="8Nq-qD-r0P"/>
-                    </imageView>
-                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gwU-ij-829" userLabel="login stack">
-                        <rect key="frame" x="140" y="95" width="200" height="80"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAg-pc-UUB">
-                                <rect key="frame" x="0.0" y="58" width="200" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="DC3-pa-LqT"/>
-                                </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="IEP-jE-4l7">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <outlet property="delegate" destination="-2" id="2XU-st-sMA"/>
-                                </connections>
-                            </textField>
-                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nX9-ug-iIi">
-                                <rect key="frame" x="0.0" y="28" width="200" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="QA1-E9-AfT"/>
-                                </constraints>
-                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="l3D-fM-8kU">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <allowedInputSourceLocales>
-                                        <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                                    </allowedInputSourceLocales>
-                                </secureTextFieldCell>
-                                <connections>
-                                    <outlet property="delegate" destination="-2" id="TH1-7s-Evv"/>
-                                </connections>
-                            </secureTextField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JO2-an-6VU">
-                                <rect key="frame" x="-3" y="-4" width="172" height="27"/>
-                                <buttonCell key="cell" type="check" title="Offline Authentication" bezelStyle="regularSquare" imagePosition="left" borderStyle="border" inset="2" id="vmH-hk-adz">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                        </subviews>
-                        <visibilityPriorities>
-                            <integer value="1000"/>
-                            <integer value="1000"/>
-                            <integer value="1000"/>
-                        </visibilityPriorities>
-                        <customSpacing>
-                            <real value="3.4028234663852886e+38"/>
-                            <real value="3.4028234663852886e+38"/>
-                            <real value="3.4028234663852886e+38"/>
-                        </customSpacing>
-                    </stackView>
-                    <button springLoaded="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgW-ra-x2P">
-                        <rect key="frame" x="41" y="-210" width="193" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="7xN-7f-Rkc">
-                            <behavior key="behavior" lightByContents="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                        </buttonCell>
-                    </button>
-                    <button verticalHuggingPriority="750" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="gPL-7i-JQY">
-                        <rect key="frame" x="347" y="117" width="15" height="27"/>
-                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="MF2-Pi-1ts">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
+        <view id="Vpj-iV-5Db">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2ro-Pt-hN3">
+                    <rect key="frame" x="0.0" y="270" width="480" height="0.0"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="4fq-Ec-rCJ"/>
+                </imageView>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRJ-Lo-UdT" userLabel="login stack">
+                    <rect key="frame" x="140" y="95" width="200" height="80"/>
+                    <subviews>
+                        <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
+                            <rect key="frame" x="0.0" y="58" width="200" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="200" id="PcC-1B-yi1"/>
+                            </constraints>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="arZ-bA-4ND">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="ShZ-O0-13Y"/>
+                                <outlet property="nextKeyView" destination="UJh-bj-CPX" id="06V-sj-QkX"/>
+                            </connections>
+                        </textField>
+                        <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
+                            <rect key="frame" x="0.0" y="28" width="200" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="200" id="37q-P0-BRW"/>
+                            </constraints>
+                            <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" usesSingleLineMode="YES" bezelStyle="round" id="eUo-wa-I7w">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <allowedInputSourceLocales>
+                                    <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                </allowedInputSourceLocales>
+                            </secureTextFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="QFZ-pC-j3F"/>
+                                <outlet property="nextKeyView" destination="kwO-Pt-tOG" id="g5j-pG-8ES"/>
+                            </connections>
+                        </secureTextField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kwO-Pt-tOG">
+                            <rect key="frame" x="-3" y="-4" width="178" height="27"/>
+                            <buttonCell key="cell" type="check" title="Offline Authentication" bezelStyle="regularSquare" imagePosition="left" borderStyle="border" inset="2" id="LOr-pb-ijJ">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <outlet property="nextKeyView" destination="XnO-81-SH2" id="QRA-ps-KSC"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <button springLoaded="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rK0-wH-whs">
+                    <rect key="frame" x="41" y="-210" width="193" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" alignment="left" state="on" imageScaling="proportionallyDown" inset="2" id="egb-Dl-VdT">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="cellTitle"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="XnO-81-SH2">
+                    <rect key="frame" x="347" y="117" width="15" height="27"/>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="f9b-Hs-YTG">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
-                        </buttonCell>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="PON-vz-fED"/>
-                            <constraint firstAttribute="width" constant="15" id="sjZ-4g-8aq"/>
-                        </constraints>
-                        <connections>
-                            <action selector="signInClick:" target="-2" id="ITc-KH-ybX"/>
-                        </connections>
-                    </button>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="jIV-E3-5r5" firstAttribute="top" secondItem="qzn-cI-c0g" secondAttribute="top" id="8Ea-Zu-RQZ"/>
-                    <constraint firstItem="gwU-ij-829" firstAttribute="centerX" secondItem="qzn-cI-c0g" secondAttribute="centerX" id="TK0-2b-kJw"/>
-                    <constraint firstItem="gPL-7i-JQY" firstAttribute="top" secondItem="gwU-ij-829" secondAttribute="bottom" constant="-46" id="ZKk-cJ-kCM"/>
-                    <constraint firstItem="gwU-ij-829" firstAttribute="centerY" secondItem="qzn-cI-c0g" secondAttribute="centerY" id="ZRE-2b-nKZ"/>
-                    <constraint firstAttribute="trailing" secondItem="jIV-E3-5r5" secondAttribute="trailing" id="e7Q-A3-N5P"/>
-                    <constraint firstItem="jIV-E3-5r5" firstAttribute="leading" secondItem="qzn-cI-c0g" secondAttribute="leading" id="go8-vE-YGq"/>
-                    <constraint firstItem="gPL-7i-JQY" firstAttribute="leading" secondItem="nX9-ug-iIi" secondAttribute="trailing" constant="7" id="jLi-KU-dfY"/>
-                </constraints>
-            </view>
-            <connections>
-                <outlet property="delegate" destination="-2" id="Z60-bt-Wjb"/>
-            </connections>
-            <point key="canvasLocation" x="-375" y="-561"/>
-        </window>
+                    </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="FOz-jz-8md"/>
+                        <constraint firstAttribute="width" constant="15" id="XtL-mO-J1P"/>
+                    </constraints>
+                    <connections>
+                        <action selector="signInClick:" target="-2" id="YPW-I6-8Mb"/>
+                        <outlet property="nextKeyView" destination="pMs-hI-jaw" id="eLH-Zi-L7o"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="2ro-Pt-hN3" secondAttribute="trailing" id="4NR-KM-pK9"/>
+                <constraint firstItem="XnO-81-SH2" firstAttribute="top" secondItem="eRJ-Lo-UdT" secondAttribute="bottom" constant="-46" id="5bK-im-JaL"/>
+                <constraint firstItem="2ro-Pt-hN3" firstAttribute="top" secondItem="Vpj-iV-5Db" secondAttribute="top" id="Cv1-Al-Vcp"/>
+                <constraint firstItem="2ro-Pt-hN3" firstAttribute="leading" secondItem="Vpj-iV-5Db" secondAttribute="leading" id="MVa-hf-hby"/>
+                <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerX" secondItem="Vpj-iV-5Db" secondAttribute="centerX" id="XVc-Va-bBu"/>
+                <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerY" secondItem="Vpj-iV-5Db" secondAttribute="centerY" id="rCz-mK-BOy"/>
+                <constraint firstItem="XnO-81-SH2" firstAttribute="leading" secondItem="UJh-bj-CPX" secondAttribute="trailing" constant="7" id="sHc-EW-UaU"/>
+            </constraints>
+            <point key="canvasLocation" x="-519" y="-221"/>
+        </view>
     </objects>
     <resources>
         <image name="NSFollowLinkFreestandingTemplate" width="20" height="20"/>

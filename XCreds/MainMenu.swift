@@ -7,7 +7,6 @@
 
 import Foundation
 import Cocoa
-//import SwiftUI
 
 // needs to be a singleton so it doesn't get reaped
 let mainMenu = MainMenu()
@@ -24,7 +23,7 @@ class MainMenu: NSObject, NSMenuDelegate {
 
     // windows
 
-    var webView: WebViewWindowController?
+    var webView: WebViewController?
     var prefsWindow: PreferencesWindowController?
     var aboutWindowController: AboutWindowController?
 

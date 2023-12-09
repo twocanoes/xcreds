@@ -79,7 +79,7 @@ class MainController: NSObject, NoMADUserSessionDelegate {
 
 
             DispatchQueue.main.async {
-                mainMenu.webView?.window?.close()
+//                mainMenu.webView?.window?.close()
 
                 guard let tokenInfo = notification.userInfo else {
                     return

@@ -11,7 +11,7 @@ import WebKit
 import OIDCLite
 import OpenDirectory
 
-class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
+class LoginWebViewController: WebViewController, DSQueryable {
 
     let uiLog = "uiLog"
     var internalDelegate:XCredsMechanismProtocol?
@@ -19,166 +19,19 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
         set {
             TCSLogWithMark()
             internalDelegate=newValue
-            controlsViewController?.delegate = newValue
         }
         get {
             return internalDelegate
         }
     }
-    var resolutionObserver:Any?
-    var networkChangeObserver:Any?
     var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
-    @IBOutlet var controlsViewController: ControlsViewController?
 
-    @objc override var windowNibName: NSNib.Name {
-        return NSNib.Name("LoginWebViewController")
+    override func viewDidAppear() {
+                TCSLogWithMark("loading page")
+                loadPage()
     }
 
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        TCSLogWithMark()
-        let allBundles = Bundle.allBundles
-        for currentBundle in allBundles {
-            TCSLogWithMark(currentBundle.bundlePath)
-            if currentBundle.bundlePath.contains("XCreds") {
-                controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: currentBundle)
-                if let controlsViewController = controlsViewController {
-                    self.window?.contentView?.addSubview(controlsViewController.view)
-                    let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
-
-                    controlsViewController.view.frame=rect
-
-                }
-                else {
-                    TCSLogWithMark("controlsViewController nil")
-                }
-            }
-        }
-
-        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
-            TCSLogWithMark("Resolution changed. Resetting size")
-            self.setupLoginWindowAppearance()
-        }
-
-        TCSLogWithMark("loading webview for login")
-        setupLoginWindowAppearance()
-        TCSLogWithMark("loading page")
-        loadPage()
-    }
-
-    func setupLoginWindowAppearance() {
-        DispatchQueue.main.async {
-
-            NSApp.activate(ignoringOtherApps: true)
-
-            TCSLogWithMark("setting up window...")
-
-            self.window?.level = .normal
-            self.window?.orderFrontRegardless()
-            self.window?.makeKeyAndOrderFront(self)
-
-            self.window?.backgroundColor = NSColor.blue
-
-            self.window?.titlebarAppearsTransparent = true
-            
-            self.window?.isMovable = false
-            self.window?.canBecomeVisibleWithoutLogin = true
-
-            let screenRect = NSScreen.screens[0].frame
-            let screenWidth = screenRect.width
-            let screenHeight = screenRect.height
-            var loginWindowWidth = screenWidth //start with full size
-            var loginWindowHeight = screenHeight //start with full size
-
-            //if prefs define smaller, then resize window
-            TCSLogWithMark("checking for custom height and width")
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
-                if val > 100 {
-                    TCSLogWithMark("setting loginWindowWidth to \(val)")
-                    loginWindowWidth = val
-                }
-            }
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
-                if val > 100 {
-                    TCSLogWithMark("setting loginWindowHeight to \(val)")
-                    loginWindowHeight = val
-                }
-            }
-
-            self.window?.setFrame(screenRect, display: true, animate: false)
-            let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
-
-            self.controlsViewController?.view.frame=rect
-
-            let backgroundImage = DefaultsHelper.backgroundImage()
-            TCSLogWithMark()
-            if let backgroundImage = backgroundImage {
-                backgroundImage.size=screenRect.size
-                self.backgroundImageView.image=backgroundImage
-                self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
-
-                self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-
-            }
-            TCSLogWithMark()
-            self.webView.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
-            TCSLogWithMark()
-        }
-//            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
-//        }
-//
-    }
-
-//    @objc override var windowNibName: NSNib.Name {
-//        return NSNib.Name("LoginWebView")
-//    }
-    func loginTransition() {
-        TCSLogWithMark()
-//        let screenRect = NSScreen.screens[0].frame
-//        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-//        progressIndicator.style = .spinning
-//        progressIndicator.startAnimation(self)
-//        webView.addSubview(progressIndicator)
-//
-//        if let controlsViewController = controlsViewController {
-//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-//
-
-//        }
-        if let resolutionObserver = resolutionObserver {
-            NotificationCenter.default.removeObserver(resolutionObserver)
-        }
-        if let networkChangeObserver = networkChangeObserver {
-            NotificationCenter.default.removeObserver(networkChangeObserver)
-
-        }
-
-
-
-        NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 1.0
-            context.allowsImplicitAnimation = true
-            self.webView?.animator().alphaValue = 0.0
-            let origin = self.controlsViewController?.view.frame.origin
-            let size = self.controlsViewController?.view.frame.size
-
-            if let origin = origin, let size = size {
-                self.controlsViewController?.view.animator().setFrameOrigin(NSMakePoint(origin.x, origin.y-(2*size.height)))
-            }
-        }, completionHandler: {
-            self.webView?.alphaValue = 0.0
-            self.controlsViewController?.view.animator().alphaValue=0.0
-
-            self.webView.removeFromSuperview()
-            self.window?.orderOut(self)
-            self.controlsViewController?.view.removeFromSuperview()
-
-        })
-
-    }
 
     override func showErrorMessageAndDeny(_ message:String){
 
@@ -186,6 +39,7 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
             return
         }
 
+    
     override func tokensUpdated(tokens: Creds) {
         //if we have tokens, that means that authentication was successful.
         //we have to check the password here so we can prompt.
@@ -328,7 +182,7 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
                         username = localUsername
                         passwordHintSet=true
                         TCSLogWithMark("setting original password to use to unlock keychain later")
-                        delegate.setHint(type: .migratePass, hint: localPassword)
+                        delegate.setHint(type: .existingLocalUserPassword, hint: localPassword)
 
                         guard let username = username else {
 
@@ -553,7 +407,7 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
                                 return
                             }
                             TCSLogWithMark("setting original password to use to unlock keychain later")
-                            delegate.setHint(type: .migratePass, hint: localPassword)
+                            delegate.setHint(type: .existingLocalUserPassword, hint: localPassword)
                             isDone=true
                             passwordWindowController.window?.close()
                             break
@@ -599,12 +453,15 @@ class LoginWebViewWindowController: WebViewWindowController, DSQueryable {
 
             self.delegate?.allowLogin()
 
-//            self.loginTransition()
+            if let controller = self.view.window?.windowController as? MainLoginWindowController {
+                controller.loginTransition()
+            }
 
         }
 
 
     }
+
 }
 
 

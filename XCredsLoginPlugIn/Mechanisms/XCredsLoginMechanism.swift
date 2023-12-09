@@ -4,11 +4,9 @@ import Network
 
 
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
-//    @objc var loginWindow: XCredsLoginMechanism!
-    var loginWebViewWindowController: LoginWebViewWindowController?
-    @objc var signInWindowController: SignInWindowController?
-    var loginWindowWindowController:NSWindowController?
-//    @objc var loginWindowControlsWindowController:LoginWindowControlsWindowController!
+    var loginWebViewController: LoginWebViewController?
+    @objc var signInViewController: SignInViewController?
+
 
     enum LoginWindowType {
         case cloud
@@ -16,11 +14,12 @@ import Network
     }
     let checkADLog = "checkADLog"
     var loginWindowType = LoginWindowType.cloud
-
+    var mainLoginWindowController:MainLoginWindowController
     override init(mechanism: UnsafePointer<MechanismRecord>) {
-        let allBundles = Bundle.allBundles
-        //NSViewController(nibName: NSNib.Name("LoginWindow"), bundle: nil)
+
+        mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         super.init(mechanism: mechanism)
+
 //        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
         NotificationCenter.default.addObserver(forName: Notification.Name("SwitchLoginWindow"), object: nil, queue: nil) { notification in
@@ -36,28 +35,28 @@ import Network
             }
         }
 
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                let infoPlist = currentBundle.infoDictionary
-                if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-                    TCSLogInfoWithMark("------------------------------------------------------------------")
-                    TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
-                    if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
-                        TCSLogInfoWithMark("Log showing only basic info and errors.")
-                        TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
-                        TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
-                    }
-                    else {
-                        TCSLogInfoWithMark("To disable verbose logging:")
-                        TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
 
-                    }
+        if let bundle = bundle {
+            let infoPlist = bundle.infoDictionary
+            if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+                TCSLogInfoWithMark("------------------------------------------------------------------")
+                TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
+                if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
+                    TCSLogInfoWithMark("Log showing only basic info and errors.")
+                    TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
+                    TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
+                }
+                else {
+                    TCSLogInfoWithMark("To disable verbose logging:")
+                    TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
 
-                    TCSLogInfoWithMark("------------------------------------------------------------------")
-                    break
                 }
 
+                TCSLogInfoWithMark("------------------------------------------------------------------")
             }
+
+
         }
 
 
@@ -65,9 +64,9 @@ import Network
     override func reload() {
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")
-            loginWebViewWindowController?.setupLoginWindowAppearance()
-            
-            loginWebViewWindowController?.loadPage()
+            mainLoginWindowController.setupLoginWindowAppearance()
+
+            loginWebViewController?.loadPage()
         }
     }
     func useAutologin() -> Bool {
@@ -146,6 +145,15 @@ import Network
     }
     func selectAndShowLoginWindow(){
         TCSLogWithMark()
+        if let window = mainLoginWindowController.window {
+            window.makeKeyAndOrderFront(self)
+            window.orderFrontRegardless()
+        }
+        else {
+            TCSLogWithMark("NO WINDOW")
+        }
+        mainLoginWindowController.controlsViewController?.delegate=self
+
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
         let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
 //        let preventUIPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.filePathToPreventShowingUI.rawValue)
@@ -176,6 +184,7 @@ import Network
     }
     @objc override func run() {
         TCSLogWithMark("XCredsLoginMechanism mech starting")
+
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
             os_log("Check autologin complete", log: checkADLog, type: .debug)
@@ -218,19 +227,18 @@ import Network
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
-            if let loginWindowWindowController = loginWindowWindowController, let window = loginWindowWindowController.window{
-                alert.window.level=window.level+1
-            }
+//            if let loginWindowWindowController = loginWindowWindowController, let window = loginWindowWindowController.window{
+//                alert.window.level=window.level+1
+//            }
             alert.window.canBecomeVisibleWithoutLogin=true
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
-                if currentBundle.bundlePath.contains("XCredsLoginPlugin") {
-                    TCSLogWithMark("Found bundle")
 
-                    alert.icon=currentBundle.image(forResource: NSImage.Name("icon_128x128"))
-                    break
-                }
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                TCSLogWithMark("Found bundle")
+
+                alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
             }
             alert.runModal()
 
@@ -240,74 +248,79 @@ import Network
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
 
-        if loginWebViewWindowController != nil {
+        if loginWebViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
-            loginWebViewWindowController?.loginTransition()
+            mainLoginWindowController.loginTransition()
         }
         TCSLogWithMark("calling allowLogin")
         super.allowLogin()
     }
     override func denyLogin(message:String?) {
-//        loginWindowControlsWindowController.close()
-        loginWebViewWindowController?.loadPage()
+        loginWebViewController?.loadPage()
         TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");
         super.denyLogin(message: message)
     }
 
     func showLoginWindowType(loginWindowType:LoginWindowType)  {
         TCSLogWithMark()
+
+
         switch loginWindowType {
+
 
         case .cloud:
             self.loginWindowType = LoginWindowType.cloud
 
-            if signInWindowController != nil {
-                signInWindowController?.window?.orderOut(self)
-            }
-//            if loginWebViewWindowController==nil{
-                loginWebViewWindowController = LoginWebViewWindowController(windowNibName: "LoginWebViewController")
-//            }
-            
-            guard let loginWebViewWindowController = loginWebViewWindowController else {
-                TCSLogWithMark("could not create webViewController")
-                return
-            }
-            guard loginWebViewWindowController.window != nil else {
-                TCSLogWithMark("could not create webViewController.window")
-                return
-            }
-            loginWebViewWindowController.delegate=self
+            if loginWebViewController==nil{
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                if let bundle = bundle{
 
-            loginWebViewWindowController.window?.orderFrontRegardless()
-            loginWebViewWindowController.window?.makeKeyAndOrderFront(self)
+                    loginWebViewController = LoginWebViewController(nibName:  "LoginWebViewController", bundle: bundle)
+                }
+            }
+
+            guard let loginWebViewController = loginWebViewController else {
+                TCSLogWithMark("could not create loginWebViewController")
+                return
+            }
+
+            loginWebViewController.delegate=self
+            mainLoginWindowController.addCenterView(loginWebViewController.view)
+
 
         case .usernamePassword:
             NetworkMonitor.shared.stopMonitoring()
-
-            if loginWebViewWindowController != nil {
-                loginWebViewWindowController?.window?.orderOut(self)
-            }
-
             self.loginWindowType = .usernamePassword
 
-            if signInWindowController==nil{
-                TCSLogWithMark("Creating signInWindowController")
-                signInWindowController = SignInWindowController(windowNibName: NSNib.Name("LocalUsersViewController"))
-            }
-            if let signInWindowController = signInWindowController {
-                signInWindowController.delegate=self
-                if signInWindowController.username != nil {
-                    signInWindowController.username.isEnabled=true
-                    signInWindowController.username.stringValue=""
+
+            if signInViewController == nil {
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                if let bundle = bundle{
+                    TCSLogWithMark("Creating signInViewController")
+                    signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
                 }
-                if signInWindowController.password != nil {
-                    signInWindowController.password.isEnabled=true
-                    signInWindowController.password.stringValue=""
-                }
-                signInWindowController.loginAppearance()
-                signInWindowController.window?.orderFrontRegardless()
-                signInWindowController.window?.makeKeyAndOrderFront(self)
             }
+
+            guard let signInViewController = signInViewController else {
+                TCSLogWithMark("could not create signInViewController")
+                return
+            }
+            TCSLogWithMark()
+
+            mainLoginWindowController.addCenterView(signInViewController.view)
+            
+            TCSLogWithMark()
+            mainLoginWindowController.window?.makeFirstResponder(signInViewController.view)
+
+            signInViewController.delegate=self
+            if signInViewController.usernameTextField != nil {
+                signInViewController.usernameTextField.isEnabled=true
+            }
+            if signInViewController.passwordTextField != nil {
+                signInViewController.passwordTextField.isEnabled=true
+                signInViewController.passwordTextField.stringValue=""
+            }
+
 
         }
 

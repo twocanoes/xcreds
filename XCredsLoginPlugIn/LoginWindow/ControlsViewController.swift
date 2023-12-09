@@ -34,6 +34,20 @@ class ControlsViewController: NSViewController {
 //    @objc override var windowNibName: NSNib.Name {
 //        return NSNib.Name("ControlsViewController")
 //    }
+
+    static func initFromPlugin() -> ControlsViewController?{
+
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        guard let bundle = bundle else {
+            return nil
+        }
+        let controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: bundle)
+        return controlsViewController
+
+    }
+
+
     func commandKey(evt: NSEvent) -> NSEvent{
 
         let flags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.command.rawValue
@@ -144,18 +158,18 @@ class ControlsViewController: NSViewController {
         }
         TCSLogWithMark()
         setupLoginWindowControlsAppearance()
-        let allBundles = Bundle.allBundles
         versionTextField?.stringValue = ""
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                let infoPlist = currentBundle.infoDictionary
-                if let infoPlist = infoPlist,
-                   let verString = infoPlist["CFBundleShortVersionString"],
-                   let buildString = infoPlist["CFBundleVersion"]
-                {
-                    versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
 
-                }
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        if let bundle = bundle {
+
+            let infoPlist = bundle.infoDictionary
+            if let infoPlist = infoPlist,
+               let verString = infoPlist["CFBundleShortVersionString"],
+               let buildString = infoPlist["CFBundleVersion"]
+            {
+                versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
 
             }
         }

@@ -100,10 +100,10 @@ class SignInMenuItem: NSMenuItem {
 
         if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
             if (mainMenu.webView==nil){
-                mainMenu.webView = WebViewWindowController()
+                mainMenu.webView = WebViewController()
             }
-            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-            mainMenu.webView?.loadPage()
+//            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
+//            mainMenu.webView?.loadPage()
         }
         else {
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{

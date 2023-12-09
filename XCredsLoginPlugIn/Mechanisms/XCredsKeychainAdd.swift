@@ -96,7 +96,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             TCSLogErrorWithMark("Unable to unlock keychain reference.")
             // check if we should reset
             
-            if let resetPass = getHint(type: .migratePass) as? String {
+            if let resetPass = getHint(type: .existingLocalUserPassword) as? String {
                 
                 TCSLogWithMark("Resetting keychain with migrated user/pass.")
                 

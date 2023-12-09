@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainLoginWindowController" customModule="XCredsLoginPlugin">
+            <connections>
+                <outlet property="backgroundImageView" destination="NWg-Yb-kPu" id="Tx3-KE-iAa"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="MainLoginWindow" customModule="XCredsLoginPlugin">
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NWg-Yb-kPu" userLabel="Background Image">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="MV3-cI-8IS"/>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="NWg-Yb-kPu" secondAttribute="bottom" id="RhV-ai-gwL"/>
+                    <constraint firstAttribute="trailing" secondItem="NWg-Yb-kPu" secondAttribute="trailing" id="cUc-Zl-2su"/>
+                    <constraint firstItem="NWg-Yb-kPu" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="iSE-EY-RBd"/>
+                    <constraint firstItem="NWg-Yb-kPu" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" id="lDJ-2j-SPs"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="9" y="142"/>
+        </window>
+    </objects>
+</document>

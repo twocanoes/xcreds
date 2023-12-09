@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,13 +25,13 @@
                 <outlet property="newPassword" destination="oSe-dI-fep" id="SEH-66-qCR"/>
                 <outlet property="newPasswordConfirmation" destination="czU-dA-foI" id="tmr-OM-1N8"/>
                 <outlet property="oldPassword" destination="dYF-nq-lV9" id="eF6-IC-GU7"/>
-                <outlet property="password" destination="k7j-rX-Mra" id="FD9-ZH-5GK"/>
                 <outlet property="passwordChangeButton" destination="BKh-qb-RHS" id="ulU-Al-ADx"/>
                 <outlet property="passwordChangeStack" destination="RLo-4d-Xte" id="fRB-o1-ghd"/>
+                <outlet property="passwordTextField" destination="k7j-rX-Mra" id="FD9-ZH-5GK"/>
                 <outlet property="signIn" destination="7fI-fi-xA6" id="Vek-BT-qmg"/>
                 <outlet property="systemInfo" destination="CrR-b1-TcS" id="BWq-0r-9wD"/>
-                <outlet property="username" destination="bz7-9V-hj9" id="SmY-n9-wt5"/>
                 <outlet property="usernameLabel" destination="JHf-oe-K0v" id="6Wu-06-N0v"/>
+                <outlet property="usernameTextField" destination="bz7-9V-hj9" id="SmY-n9-wt5"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="NDA-Gg-a3e"/>
             </connections>
         </customObject>
@@ -51,7 +50,7 @@
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGp-dd-t9H" userLabel="login stack">
                                 <rect key="frame" x="161" y="175" width="200" height="52"/>
                                 <subviews>
-                                    <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bz7-9V-hj9">
+                                    <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bz7-9V-hj9">
                                         <rect key="frame" x="0.0" y="30" width="200" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="erX-h9-hpb"/>
@@ -62,7 +61,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k7j-rX-Mra">
+                                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k7j-rX-Mra">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="gNW-RF-6AF"/>
@@ -130,7 +129,7 @@ DQ
                             <constraint firstItem="7fI-fi-xA6" firstAttribute="leading" secondItem="gGp-dd-t9H" secondAttribute="trailing" constant="8" symbolic="YES" id="ohR-kP-o2k"/>
                         </constraints>
                     </customView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLL-tT-giS">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLL-tT-giS">
                         <rect key="frame" x="18" y="13" width="485" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" id="vhG-cO-TMF">
@@ -190,7 +189,7 @@ DQ
                         <action selector="sleepClick:" target="-2" id="RSM-Vy-IPl"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nOe-Yg-MBi">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nOe-Yg-MBi">
                     <rect key="frame" x="12" y="0.0" width="38" height="16"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" title="Sleep" id="Syu-m0-PfS">
                         <font key="font" metaFont="system"/>
@@ -221,7 +220,7 @@ DQ
                 <rect key="frame" x="0.0" y="0.0" width="1000" height="16"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1tP-O6-6Vb" userLabel="Loginwindow Text">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1tP-O6-6Vb" userLabel="Loginwindow Text">
                         <rect key="frame" x="-2" y="0.0" width="1000" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" alignment="center" id="KnA-1O-1Hk">
@@ -241,7 +240,7 @@ DQ
                 <rect key="frame" x="1" y="1" width="323" height="179"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pPy-FW-G31">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pPy-FW-G31">
                         <rect key="frame" x="18" y="92" width="287" height="67"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Authenticate as the local user you want to associate with your AD account." id="WRy-fx-pLy">
@@ -299,7 +298,7 @@ Gw
                         <rect key="frame" x="153" y="9" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </progressIndicator>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JHf-oe-K0v" userLabel="UsernameLabel:">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JHf-oe-K0v" userLabel="UsernameLabel:">
                         <rect key="frame" x="33" y="98" width="70" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Username:" id="YIW-58-oa6">
@@ -308,7 +307,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mra-bd-koW">
+                    <secureTextField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mra-bd-koW">
                         <rect key="frame" x="110" y="64" width="177" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="5Jm-79-gHc">
@@ -320,7 +319,7 @@ Gw
                             </allowedInputSourceLocales>
                         </secureTextFieldCell>
                     </secureTextField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oyL-Gg-3Lm">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oyL-Gg-3Lm">
                         <rect key="frame" x="33" y="67" width="66" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Password:" id="UfG-At-ff9">
@@ -349,7 +348,7 @@ Gw
             <rect key="frame" x="0.0" y="0.0" width="279" height="82"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYF-nq-lV9">
+                <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYF-nq-lV9">
                     <rect key="frame" x="0.0" y="60" width="279" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="Current Password" usesSingleLineMode="YES" bezelStyle="round" id="vE6-6e-Cdj">
                         <font key="font" metaFont="system"/>
@@ -360,7 +359,7 @@ Gw
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
                 </secureTextField>
-                <secureTextField verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="oSe-dI-fep">
+                <secureTextField focusRingType="none" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="oSe-dI-fep">
                     <rect key="frame" x="0.0" y="30" width="279" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="New Password" usesSingleLineMode="YES" bezelStyle="round" id="pBL-Ls-adB">
                         <font key="font" metaFont="system"/>
@@ -371,7 +370,7 @@ Gw
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
                 </secureTextField>
-                <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="czU-dA-foI">
+                <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="czU-dA-foI">
                     <rect key="frame" x="0.0" y="0.0" width="279" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Repeat New Password" usesSingleLineMode="YES" bezelStyle="round" id="cFI-9b-rPj">
                         <font key="font" metaFont="system"/>

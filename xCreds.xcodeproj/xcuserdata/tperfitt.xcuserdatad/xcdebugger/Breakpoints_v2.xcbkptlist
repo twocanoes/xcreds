@@ -7,223 +7,140 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282"
+            uuid = "A486B9F4-22E3-4BB8-81C2-06D163F5A109"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
+            filePath = "NomadLogin/UI/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "cliTask(_:arguments:waitForTermination:)"
-            landmarkType = "9">
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "SignInViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NomadLogin/UI/SignInWindowController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "acceptsFirstResponder"
+            landmarkType = "24">
             <Locations>
                <Location
-                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - d6747fe50757e3f6"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  symbolName = "XCreds.SignInViewController.username.getter : Swift.Optional&lt;__C.NSTextField&gt;"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "2796">
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
                </Location>
                <Location
-                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - 432d754d07cbc2fc"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  symbolName = "XCreds.SignInViewController.acceptsFirstResponder.getter : Swift.Bool"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "3016">
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "16">
                </Location>
                <Location
-                  uuid = "6CB75E61-53AF-4FF3-9B84-135ADF290282 - 813eac0a5c27346d"
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - 9b7ff479c6171ffa"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
+                  symbolName = "XCreds.SignInViewController.username.setter : Swift.Optional&lt;__C.NSTextField&gt;"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "2980">
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - a9a343ba332b284e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.SignInViewController.username.modify : Swift.Optional&lt;__C.NSTextField&gt;"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - 9bfcfe6d48045d54"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.SignInViewController.username.modify : Swift.Optional&lt;__C.NSTextField&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - 47b0a2ac93787801"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.SignInViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; XCreds.SignInViewController"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "828">
+               </Location>
+               <Location
+                  uuid = "9AD4A0B6-BCA6-4287-A969-0E0E51A0A5CB - 1edefd6af6b9fdaf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.SignInViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;XCreds.SignInViewController&gt;"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/NomadLogin/UI/SignInWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "804">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/NSTaskWrapper.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "cliTask(_:arguments:waitForTermination:)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "66"
-                  endingLineNumber = "66"
-                  offsetFromSymbolStart = "2480">
-               </Location>
-               <Location
-                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "66"
-                  endingLineNumber = "66"
-                  offsetFromSymbolStart = "2488">
-               </Location>
-               <Location
-                  uuid = "166D82A6-A704-44DC-97E2-7339415A5DDE - 813eac0a5c273702"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.cliTask(_: Swift.String, arguments: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;, waitForTermination: Swift.Bool) -&gt; Swift.String"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/NSTaskWrapper.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "66"
-                  endingLineNumber = "66"
-                  offsetFromSymbolStart = "2460">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FCF6243A-E3F8-4CDF-8098-480FF0A95D30"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/Mechanisms/XCredsLoginMechanism.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "selectAndShowLoginWindow()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "81FD6BCE-737B-4FEF-BAC7-66E477A40530"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/LoginWebViewWindowController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
-            landmarkName = "tokensUpdated(tokens:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "519131A8-C56D-456C-B860-C4A4F60A8176"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NomadLogin/DSQueryable.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
-            landmarkName = "getAllStandardUsers()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "72941BBB-49C7-4368-8616-7636CDD7240B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NomadLogin/DSQueryable.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
-            landmarkName = "getAllStandardUsers()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "61B0F9B0-8D18-4D94-AB30-B60F9F6F46BE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NomadLogin/DSQueryable.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
-            landmarkName = "getAllStandardUsers()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AF00E008-97DF-4463-B9EB-19E43CFD72D0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "8"
-            endingLineNumber = "8"
-            landmarkName = "unknown"
-            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

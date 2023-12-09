@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
         <plugIn identifier="com.apple.WebKit2IBPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WebViewWindowController" customModule="XCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
                 <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="X1r-3u-usj"/>
                 <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
@@ -20,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -35,7 +34,7 @@
                             <outlet property="UIDelegate" destination="-2" id="Qhy-Dl-wsg"/>
                         </connections>
                     </wkWebView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
                         <rect key="frame" x="0.0" y="562" width="628" height="50"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>

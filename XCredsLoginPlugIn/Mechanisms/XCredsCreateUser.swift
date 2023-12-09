@@ -35,7 +35,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     let nativeAttrsDetails = ["dsAttrTypeNative:AvatarRepresentation": "",
                               "dsAttrTypeNative:unlockOptions": "0"]
     
-    @objc override   func run() {
+    @objc override func run() {
         TCSLogWithMark("CreateUser mech starting")
 
         if let xcredsGroups = groups {

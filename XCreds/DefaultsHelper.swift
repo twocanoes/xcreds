@@ -21,31 +21,35 @@ class DefaultsHelper: NSObject {
             return coreServicesDefaultImage
         }
         if includeDefault == true {
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
-                if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
-                    TCSLogWithMark()
+//            let allBundles = Bundle.allBundles
+//            for currentBundle in allBundles {
+//                TCSLogWithMark(currentBundle.bundlePath)
+//                if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
 
-                    if FileManager.default.fileExists(atPath: imagePath){
-                        let image = NSImage.init(byReferencingFile: imagePath)
-                        TCSLogWithMark()
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
 
-                        if let image = image {
-                            return image
-                        }
-                    }
-                    else {
-                        TCSLogWithMark("No image found at \(imagePath)")
-                    }
-
-                    TCSLogWithMark()
-
-
-                    break
-
-                }
+            guard let bundle = bundle else {
+                return nil
             }
+
+            TCSLogWithMark()
+            if let imagePath = bundle.path(forResource: "DefaultBackground", ofType: "png") {
+
+                if FileManager.default.fileExists(atPath: imagePath){
+                    let image = NSImage.init(byReferencingFile: imagePath)
+                    TCSLogWithMark()
+
+                    if let image = image {
+                        return image
+                    }
+                }
+                else {
+                    TCSLogWithMark("No image found at \(imagePath)")
+                }
+
+                TCSLogWithMark()
+            }
+
         }
         return nil
     }

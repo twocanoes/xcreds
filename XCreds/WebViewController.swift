@@ -10,12 +10,13 @@ import Cocoa
 import WebKit
 import OIDCLite
 
-class WebViewWindowController: NSWindowController {
+class WebViewController: NSViewController {
 
-    @objc override var windowNibName: NSNib.Name {
-        return NSNib.Name("WebView")
-    }
+//    @objc override var windowNibName: NSNib.Name {
+//        return NSNib.Name("WebView")
+//    }
 
+    
     @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
@@ -40,14 +41,13 @@ class WebViewWindowController: NSWindowController {
         case .valid, .trial(_):
             break
         case .invalid,.trialExpired, .expired:
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                if currentBundle.bundlePath.contains("XCreds") {
-                    let loadPageURL = currentBundle.url(forResource: "errorpage", withExtension: "html")
-                    if let loadPageURL = loadPageURL {
-                        self.webView.load(URLRequest(url:loadPageURL))
-                    }
-                    break
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                let loadPageURL = bundle.url(forResource: "errorpage", withExtension: "html")
+                if let loadPageURL = loadPageURL {
+                    self.webView.load(URLRequest(url:loadPageURL))
+
                 }
             }
             return
@@ -55,24 +55,38 @@ class WebViewWindowController: NSWindowController {
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
-        NetworkMonitor.shared.startMonitoring()
-        if let url = getOidcLoginURL() {
-            TCSLogWithMark()
+
+        let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+
+        if discoveryURL != nil {
+            NetworkMonitor.shared.startMonitoring()
+            TCSLogWithMark("Network monitor: adding connectivity status change observer")
+        }
+
+        if discoveryURL != nil, let url = getOidcLoginURL(){
             self.webView.load(URLRequest(url: url))
             NetworkMonitor.shared.stopMonitoring()
+
         }
         else {
-            TCSLogWithMark("Failed to get URL")
-            TCSLogWithMark("Network monitor: adding connectivity status change observer")
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                if currentBundle.bundlePath.contains("XCreds") {
-                    let loadPageURL = currentBundle.url(forResource: "loadpage", withExtension: "html")
-                    if let loadPageURL = loadPageURL {
-                        self.webView.load(URLRequest(url:loadPageURL))
-                    }
-                    break
+            if discoveryURL == nil {
+                TCSLogWithMark("no discovery URL")
+            }
+            else {
+                TCSLogWithMark("no discovery URL")
+
+            }
+
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                TCSLogWithMark("getting loadPageURL")
+                let loadPageURL = bundle.url(forResource: "loadpage", withExtension: "html")
+                if let loadPageURL = loadPageURL {
+                    TCSLogWithMark("loading webview")
+                    self.webView.load(URLRequest(url:loadPageURL))
                 }
+
             }
         }
     }
@@ -81,6 +95,7 @@ class WebViewWindowController: NSWindowController {
         TCSLogWithMark("Network monitor: handling connectivity status update")
         if NetworkMonitor.shared.isConnected {
             TCSLogWithMark("Refresh webview login")
+
             self.loadPage()
         }
     }
@@ -93,12 +108,13 @@ class WebViewWindowController: NSWindowController {
             TCSLogWithMark("Trying to get login url again")
             Thread.sleep(forTimeInterval: 1)
         }
+        TCSLogWithMark()
         return nil
     }
 
-    @IBAction func clickCancel(_ sender: Any) {
-        self.window?.close()
-    }
+//    @IBAction func clickCancel(_ sender: Any) {
+//        self.window?.close()
+//    }
 
     private func clearCookies() {
         let dataStore = WKWebsiteDataStore.default()
@@ -122,7 +138,7 @@ class WebViewWindowController: NSWindowController {
     }
 }
 
-extension WebViewWindowController: WKNavigationDelegate {
+extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
@@ -203,6 +219,17 @@ extension WebViewWindowController: WKNavigationDelegate {
 
     }
 
+//    func setupAppearance() {
+//        let screenRect = NSScreen.screens[0].frame
+//
+//        let screenWidth = screenRect.width
+//        let screenHeight = screenRect.height
+//
+//
+//        self.view.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
+//        TCSLogWithMark()
+//
+//    }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         //this inserts javascript to copy passwords to a variable. Sometimes the
         //div gets removed before we can evaluate it so this helps. It works by
@@ -212,13 +239,12 @@ extension WebViewWindowController: WKNavigationDelegate {
 
         TCSLogWithMark("adding listener for password")
         var pathURL:URL?
-        let allBundles = Bundle.allBundles
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                TCSLogWithMark()
-                pathURL = currentBundle.url(forResource: "get_pw", withExtension: "js")
-                break
-            }
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        if let bundle = bundle {
+            TCSLogWithMark()
+            pathURL = bundle.url(forResource: "get_pw", withExtension: "js")
+            
         }
 
         guard let pathURL = pathURL else {
@@ -303,7 +329,7 @@ extension WebViewWindowController: WKNavigationDelegate {
 
 }
 
-extension WebViewWindowController: OIDCLiteDelegate {
+extension WebViewController: OIDCLiteDelegate {
 
     func authFailure(message: String) {
         TCSLogErrorWithMark("authFailure: \(message)")

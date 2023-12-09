@@ -14,200 +14,117 @@ import OpenDirectory
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
-class SignInWindowController: NSWindowController, DSQueryable {
-    
+@objc class SignInViewController: NSViewController, DSQueryable {
+
     //MARK: - setup properties
     var mech: MechanismRecord?
-    var session: NoMADSession?
+    var nomadSession: NoMADSession?
     var shortName = ""
     var domainName = ""
     var passString = ""
+    var newPassword = ""
     var isDomainManaged = false
     var isSSLRequired = false
-    var backgroundWindow: NSWindow!
-    var effectWindow: NSWindow!
     var passChanged = false
-    let wifiManager = WifiManager()
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
-    var originalPass: String?
+
+    @objc var visible = true
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+    //MARK: - IB outlets
+    @IBOutlet weak var usernameTextField: NSTextField!
+    @IBOutlet weak var passwordTextField: NSSecureTextField!
+    @IBOutlet weak var localOnlyCheckBox: NSButton!
+//    @IBOutlet weak var domain: NSPopUpButton!
+    @IBOutlet weak var signIn: NSButton!
+    @IBOutlet weak var imageView: NSImageView!
+
     var internalDelegate:XCredsMechanismProtocol?
+
     var delegate:XCredsMechanismProtocol? {
         set {
             TCSLogWithMark()
             internalDelegate=newValue
-            controlsViewController?.delegate = newValue
+//            controlsViewController?.delegate = newValue
         }
         get {
             return internalDelegate
         }
     }
 
-    @objc var visible = true
-    
-    //MARK: - IB outlets
-    @IBOutlet weak var username: NSTextField!
-    @IBOutlet weak var password: NSSecureTextField!
-    @IBOutlet weak var localOnlyCheckBox: NSButton!
-//    @IBOutlet weak var domain: NSPopUpButton!
-    @IBOutlet weak var signIn: NSButton!
-    @IBOutlet weak var imageView: NSImageView!
-    @IBOutlet weak var loginStack: NSStackView!
-    var controlsViewController: ControlsViewController?
-
-//    @IBOutlet weak var passwordChangeStack: NSStackView!
-//    @IBOutlet weak var passwordChangeButton: NSButton!
-//    @IBOutlet weak var oldPassword: NSSecureTextField!
-//    @IBOutlet weak var newPassword: NSSecureTextField!
-//    @IBOutlet weak var newPasswordConfirmation: NSSecureTextField!
-//    @IBOutlet weak var alertText: NSTextField!
-//    @IBOutlet weak var networkSelection: NSButton!
-//    @IBOutlet weak var systemInfo: NSButton!
-//    @IBOutlet weak var powerControlStack: NSStackView!
-    @IBOutlet weak var loginWindowTextField: NSTextField!
-    @IBOutlet weak var loginWindowTextWindow: NSWindow!
-    
-    //MARK: - Shutdown and Restart
-    
-    @IBOutlet weak var restartButton: NSButton!
-    @IBOutlet weak var restartText: NSTextField!
-    @IBOutlet weak var shutdownButton: NSButton!
-    @IBOutlet weak var shutdownText: NSTextField!
-    
     //MARK: - Migrate Box IB outlets
     var migrate = false
-    @IBOutlet weak var migrateBox: NSBox!
-    @IBOutlet weak var migrateText: NSTextField!
-    @IBOutlet weak var migrateUsers: NSPopUpButton!
-    @IBOutlet weak var migratePassword: NSSecureTextField!
-    @IBOutlet weak var migrateOK: NSButton!
-    @IBOutlet weak var migrateOverwrite: NSButton!
-    @IBOutlet weak var migrateCancel: NSButton!
-    @IBOutlet weak var MigrateNo: NSButton!
-    @IBOutlet weak var migrateSpinner: NSProgressIndicator!
-    @IBOutlet weak var usernameLabel: NSTextField!
     var migrateUserRecord : ODRecord?
     let localCheck = LocalCheckAndMigrate()
     var didUpdateFail = false
     var setupDone=false
     //MARK: - UI Methods
 
-
-
     override func awakeFromNib() {
+        super.awakeFromNib()
         TCSLogWithMark()
-        
+        //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
-            prepareAccountStrings()
+//            updateLoginWindowInfo()
             setupDone=true
 
-            let allBundles = Bundle.allBundles
-            for currentBundle in allBundles {
-                TCSLogWithMark(currentBundle.bundlePath)
-                if currentBundle.bundlePath.contains("XCreds") {
+//            self.view.addSubview(controlsViewController.view)
+//            let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
+//            controlsViewController.view.frame=rect
+//            controlsViewController.delegate=self.delegate
 
-                    controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: currentBundle)
-                    if let controlsViewController = controlsViewController {
-                        self.window?.contentView?.addSubview(controlsViewController.view)
-                        let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
-
-                        controlsViewController.view.frame=rect
-                        controlsViewController.delegate=self.delegate
-                    }
-                    else {
-                        TCSLogWithMark("controlsViewController nil")
-                    }
-
-                }
-            }
-
-            TCSLogWithMark("Configure login window")
-            loginAppearance()
-
-            TCSLogWithMark("create background windows")
-            createBackground()
-
-            TCSLogWithMark("Become first responder")
-            username.becomeFirstResponder()
-
-            os_log("Finsished loading loginwindow", log: uiLog, type: .debug)
-
-            // Disabling due to it causing screen resizing during EULA
-            let notificationCenter = NotificationCenter.default
-            notificationCenter.addObserver(self,
-                                           selector: #selector(updateWindowAfterResize),
-                                           name: NSApplication.didChangeScreenParametersNotification,
-                                           object: nil)
+//            TCSLogWithMark("Configure login window")
+//            loginAppearance()
+//
+//            TCSLogWithMark("create background windows")
+//            createBackground()
+//
+//            TCSLogWithMark("Become first responder")
+//            username.becomeFirstResponder()
+//
+//            os_log("Finishing loading loginwindow", log: uiLog, type: .debug)
+//
+//            // Disabling due to it causing screen resizing during EULA
+//            let notificationCenter = NotificationCenter.default
+//            notificationCenter.addObserver(self,
+//                                           selector: #selector(updateWindowAfterResize),
+//                                           name: NSApplication.didChangeScreenParametersNotification,
+//                                           object: nil)
         }
          
     }
 
 
-    fileprivate func createBackground() {
-//        var image: NSImage?
-        // Is a background image path set? If not just use gray.
-//        if let backgroundImage = getManagedPreference(key: .BackgroundImage) as? String  {
-//            os_log("BackgroundImage preferences found.", log: uiLog, type: .debug)
-//            image = NSImage(contentsOf: URL(fileURLWithPath: backgroundImage))
+//    fileprivate func createBackground() {
+////        var image: NSImage?
+//        // Is a background image path set? If not just use gray.
+////        if let backgroundImage = getManagedPreference(key: .BackgroundImage) as? String  {
+////            os_log("BackgroundImage preferences found.", log: uiLog, type: .debug)
+////            image = NSImage(contentsOf: URL(fileURLWithPath: backgroundImage))
+////        }
+////
+////        if let backgroundImageData = getManagedPreference(key: .BackgroundImageData) as? Data {
+////            os_log("BackgroundImageData found", log: uiLog, type: .debug)
+////            image = NSImage(data: backgroundImageData)
+////        }
+//        let backgroundImage = DefaultsHelper.backgroundImage()
+//        let screenRect = NSScreen.screens[0].frame
+//
+//        if let backgroundImage = backgroundImage {
+//            imageView.image?.size=screenRect.size
+//            imageView.image=backgroundImage
+//
+//            backgroundImage.size=screenRect.size
+//            imageView.imageScaling = .scaleProportionallyUpOrDown
+//
+//            imageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+//
 //        }
 //
-//        if let backgroundImageData = getManagedPreference(key: .BackgroundImageData) as? Data {
-//            os_log("BackgroundImageData found", log: uiLog, type: .debug)
-//            image = NSImage(data: backgroundImageData)
-//        }
-        let backgroundImage = DefaultsHelper.backgroundImage()
-        let screenRect = NSScreen.screens[0].frame
-
-        if let backgroundImage = backgroundImage {
-            imageView.image?.size=screenRect.size
-            imageView.image=backgroundImage
-
-            backgroundImage.size=screenRect.size
-            imageView.imageScaling = .scaleProportionallyUpOrDown
-
-            imageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-
-        }
-
-
-//        for screen in NSScreen.screens {
-//            let view = NSView()
-//            view.wantsLayer = true
-//            view.layer!.contents = image
+//    }
 //
-//            backgroundWindow = NSWindow(contentRect: screen.frame,
-//                                        styleMask: .fullSizeContentView,
-//                                        backing: .buffered,
-//                                        defer: true)
-//
-//            backgroundWindow.backgroundColor = .gray
-//            backgroundWindow.contentView = view
-//            backgroundWindow.makeKeyAndOrderFront(self)
-//            backgroundWindow.canBecomeVisibleWithoutLogin = true
-//
-//            let effectView = NSVisualEffectView()
-//            effectView.wantsLayer = true
-//            effectView.blendingMode = .behindWindow
-//            effectView.frame = screen.frame
-//
-//            effectWindow = NSWindow(contentRect: screen.frame,
-//                                    styleMask: .fullSizeContentView,
-//                                    backing: .buffered,
-//                                    defer: true)
-//
-//            effectWindow.contentView = effectView
-//
-//            if let backgroundImageAlpha = getManagedPreference(key: .BackgroundImageAlpha) as? Int {
-//                effectWindow.alphaValue = CGFloat(Double(backgroundImageAlpha) * 0.1)
-//            } else {
-//                effectWindow.alphaValue = 0.8
-//            }
-//
-//            effectWindow.orderFrontRegardless()
-//            effectWindow.canBecomeVisibleWithoutLogin = true
-//        }
-    }
-
 
     func loginTransition() {
         os_log("Transitioning... fade our UI away", log: uiLog, type: .debug)
@@ -215,207 +132,197 @@ class SignInWindowController: NSWindowController, DSQueryable {
         NSAnimationContext.runAnimationGroup({ (context) in
             context.duration = 1.0
             context.allowsImplicitAnimation = true
-//            self.window?.alphaValue = 0.0
-            self.backgroundWindow.alphaValue = 0.0
-            self.effectWindow.alphaValue = 0.0
         }, completionHandler: {
             os_log("Close all the windows", log: uiLog, type: .debug)
-//            self.window?.close()
-            self.backgroundWindow.close()
-            self.effectWindow.close()
             self.visible = false
         })
     }
     
-    @objc fileprivate func updateWindowAfterResize() {
-
-        DispatchQueue.main.async{
-            if self.window?.isVisible ?? true {
-                os_log("Reconfiguring login window after screen change", log: uiLog, type: .debug)
-                self.loginAppearance()
-
-                os_log("Become first responder", log: uiLog, type: .debug)
-                self.username.becomeFirstResponder()
-            }
-
-            //        os_log("create background windows", log: uiLog, type: .debug)
-            self.createBackground()
-        }
-    }
     
+//    @objc fileprivate func updateWindowAfterResize() {
+//
+////        DispatchQueue.main.async{
+////            if self.window?.isVisible ?? true {
+////                os_log("Reconfiguring login window after screen change", log: uiLog, type: .debug)
+////                self.loginAppearance()
+////
+////                os_log("Become first responder", log: uiLog, type: .debug)
+////                self.username.becomeFirstResponder()
+////            }
+////        }
+//    }
+//    
 
     func loginAppearance() {
-        TCSLogWithMark()
-        os_log("Setting window level", log: uiLog, type: .debug)
-
-        self.window?.level = .normal
-        self.window?.orderFrontRegardless()
-
-        localOnlyCheckBox.isEnabled=true
-        signIn.isEnabled=true
-        signIn.isHidden = false
-
-        // make things look better
-
-        os_log("Tweaking appearance", log: uiLog, type: .debug)
-
-
-
-        if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
-            TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
-            self.username.placeholderString=usernamePlaceholder
-        }
-
-        if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
-            TCSLogWithMark("Setting password placeholder")
-
-            self.password.placeholderString=passwordPlaceholder
-
-        }
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
-            self.localOnlyCheckBox.isHidden = true
-        }
-        else {
-            //show based on if there is an AD domain or not
-            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
-        }
-
-        if getManagedPreference(key: .LoginScreen) as? Bool == false {
-            os_log("Present as login screen", log: uiLog, type: .debug)
-            self.window?.isOpaque = false
-            self.window?.hasShadow = false
-            self.window?.backgroundColor = .clear
-        } else {
-            os_log("Present as login window", log: uiLog, type: .debug)
-            self.window?.backgroundColor = NSColor.lightGray
-        }
-        self.window?.titlebarAppearsTransparent = true
-        if !self.domainName.isEmpty {
-            self.isDomainManaged = true
-        }
-
-//        if let domainList = getManagedPreference(key: .AdditionalADDomainList) as? [String] {
-//            domain.isHidden = false
-//            domain.removeAllItems()
-//            domain.addItems(withTitles: domainList)
+//        TCSLogWithMark()
+//        os_log("Setting window level", log: uiLog, type: .debug)
+//
+//        self.window?.level = .normal
+//        self.window?.orderFrontRegardless()
+//
+//        localOnlyCheckBox.isEnabled=true
+//        signIn.isEnabled=true
+//        signIn.isHidden = false
+//
+//        // make things look better
+//        os_log("Tweaking appearance", log: uiLog, type: .debug)
+//
+//        if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
+//            TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
+//            self.username.placeholderString=usernamePlaceholder
 //        }
-        let screenRect = NSScreen.screens[0].frame
-        let screenWidth = screenRect.width
-        let screenHeight = screenRect.height
-
-        self.window?.setFrame(NSMakeRect(0,0 , screenWidth, screenHeight), display: true)
-//        self.window?.contentView?.frame.size.width=screenWidth
-//        self.window?.contentView?.frame.size.height=screenHeight
-        self.window?.isMovable = false
-        self.window?.canBecomeVisibleWithoutLogin = true
-        self.window?.level = .normal
-        self.window?.titlebarAppearsTransparent = true
-
-
-        if let logoPath = getManagedPreference(key: .LoginLogo) as? String {
-            os_log("Found logoPath: %{public}@", log: uiLog, type: .debug, logoPath)
-            if logoPath == "NONE" {
-                imageView.image = nil
-            } else {
-                imageView.image = NSImage(contentsOf: URL(fileURLWithPath: logoPath))
-            }
-        }
-
-        if let logoData = getManagedPreference(key: .LoginLogoData) as? Data {
-            os_log("Found LoginLogoData key has a value", log: uiLog, type: .debug)
-            if let image = NSImage(data: logoData) as NSImage? {
-                imageView.image = image
-            }
-        }
-
-        // check for Logo Alpha
-
-        if let alpha = getManagedPreference(key: .LoginLogoAlpha) as? Int {
-            os_log("Updating logo alpha value", log: uiLog, type: .debug)
-            switch alpha {
-            case 0 :
-                imageView.alphaValue = 0.0
-            case 1 :
-                imageView.alphaValue = 0.1
-            case 2 :
-                imageView.alphaValue = 0.2
-            case 3 :
-                imageView.alphaValue = 0.3
-            case 4 :
-                imageView.alphaValue = 0.4
-            case 5 :
-                imageView.alphaValue = 0.5
-            case 6 :
-                imageView.alphaValue = 0.6
-            case 7 :
-                imageView.alphaValue = 0.7
-            case 8 :
-                imageView.alphaValue = 0.8
-            case 9 :
-                imageView.alphaValue = 0.9
-            case 10 :
-                imageView.alphaValue = 1.0
-            default :
-                imageView.alphaValue = 0.0
-            }
-        }
-        TCSLogWithMark()
-//        networkSelection.isHidden = !(getManagedPreference(key: .AllowNetworkSelection) as? Bool ?? false)
-        // Checking if the shutdown and restart options should be hidden in the UI
-//        if getManagedPreference(key: .PowerControlDisabled) as? Bool == true {
-//            os_log("Disabling and hiding the power control mechanisms", log: uiLog, type: .debug)
-//            powerControlStack.isHidden = true
+//
+//        if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
+//            TCSLogWithMark("Setting password placeholder")
+//
+//            self.password.placeholderString=passwordPlaceholder
+//
 //        }
-        TCSLogWithMark()
-//        if let defaultSysInfo = getManagedPreference(key: .DefaultSystemInformation) as? String {
-//            switch defaultSysInfo {
-//            case "SystemVersion":
-//                systemInfo.title = sysInfo[0]
-//            case "Serial":
-//                systemInfo.title = sysInfo[1]
-//            case "MAC":
-//                systemInfo.title = sysInfo[2]
-//            case "ComputerName":
-//                systemInfo.title = sysInfo[3]
-//            case "Hostname":
-//                systemInfo.title = sysInfo[4]
-//            case "IP":
-//                systemInfo.title = sysInfo[5]
-//            default:
-//                break
+//        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
+//            self.localOnlyCheckBox.isHidden = true
+//        }
+//        else {
+//            //show based on if there is an AD domain or not
+//            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
+//        }
+//
+//        if getManagedPreference(key: .LoginScreen) as? Bool == false {
+//            os_log("Present as login screen", log: uiLog, type: .debug)
+//            self.window?.isOpaque = false
+//            self.window?.hasShadow = false
+//            self.window?.backgroundColor = .clear
+//        } else {
+//            os_log("Present as login window", log: uiLog, type: .debug)
+//            self.window?.backgroundColor = NSColor.lightGray
+//        }
+//        self.window?.titlebarAppearsTransparent = true
+//        if !self.domainName.isEmpty {
+//            self.isDomainManaged = true
+//        }
+//
+//        let screenRect = NSScreen.screens[0].frame
+//        let screenWidth = screenRect.width
+//        let screenHeight = screenRect.height
+//
+//        self.window?.setFrame(NSMakeRect(0,0 , screenWidth, screenHeight), display: true)
+//        self.window?.isMovable = false
+//        self.window?.canBecomeVisibleWithoutLogin = true
+//        self.window?.level = .normal
+//        self.window?.titlebarAppearsTransparent = true
+//
+//        if let logoPath = getManagedPreference(key: .LoginLogo) as? String {
+//            os_log("Found logoPath: %{public}@", log: uiLog, type: .debug, logoPath)
+//            if logoPath == "NONE" {
+//                imageView.image = nil
+//            } else {
+//                imageView.image = NSImage(contentsOf: URL(fileURLWithPath: logoPath))
 //            }
 //        }
-
-        TCSLogWithMark()
-//        loginWindowTextWindow.level = .screenSaver
-//        loginWindowTextWindow.backgroundColor = .clear
-//        loginWindowTextWindow.orderFrontRegardless()
-//        loginWindowTextWindow.canBecomeVisibleWithoutLogin = true
-        TCSLogWithMark()
-        let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
-
-        controlsViewController?.view.frame=rect
+//
+//        if let logoData = getManagedPreference(key: .LoginLogoData) as? Data {
+//            os_log("Found LoginLogoData key has a value", log: uiLog, type: .debug)
+//            if let image = NSImage(data: logoData) as NSImage? {
+//                imageView.image = image
+//            }
+//        }
+//
+//        // check for Logo Alpha
+//
+//        if let alpha = getManagedPreference(key: .LoginLogoAlpha) as? Int {
+//            os_log("Updating logo alpha value", log: uiLog, type: .debug)
+//            switch alpha {
+//            case 0 :
+//                imageView.alphaValue = 0.0
+//            case 1 :
+//                imageView.alphaValue = 0.1
+//            case 2 :
+//                imageView.alphaValue = 0.2
+//            case 3 :
+//                imageView.alphaValue = 0.3
+//            case 4 :
+//                imageView.alphaValue = 0.4
+//            case 5 :
+//                imageView.alphaValue = 0.5
+//            case 6 :
+//                imageView.alphaValue = 0.6
+//            case 7 :
+//                imageView.alphaValue = 0.7
+//            case 8 :
+//                imageView.alphaValue = 0.8
+//            case 9 :
+//                imageView.alphaValue = 0.9
+//            case 10 :
+//                imageView.alphaValue = 1.0
+//            default :
+//                imageView.alphaValue = 0.0
+//            }
+//        }
+//        TCSLogWithMark()
+//
+//        let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
+//
+//        controlsViewController?.view.frame=rect
 
     }
 
     fileprivate func showResetUI() {
         TCSLogWithMark()
-        os_log("Adjusting UI for change controls", log: uiLog, type: .debug)
-        loginStack.isHidden = true
-        signIn.isHidden = true
-        TCSLogWithMark()
-        signIn.isEnabled = false
-//        passwordChangeStack.isHidden = false
-//        passwordChangeButton.isHidden = false
-//        passwordChangeButton.isEnabled = true
-//        oldPassword.becomeFirstResponder()
+
+        let changePasswordWindowController = UpdatePasswordWindowController.init(windowNibName: NSNib.Name("UpdatePasswordWindowController"))
+
+
+        changePasswordWindowController.window?.canBecomeVisibleWithoutLogin=true
+        changePasswordWindowController.window?.isMovable = true
+        changePasswordWindowController.window?.canBecomeVisibleWithoutLogin = true
+        changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+        var isDone = false
+        while (!isDone){
+            DispatchQueue.main.async{
+                TCSLogWithMark("resetting level")
+                changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+            }
+
+            let response = NSApp.runModal(for: changePasswordWindowController.window!)
+            changePasswordWindowController.window?.close()
+            TCSLogWithMark("response: \(response.rawValue)")
+
+            if response == .cancel {
+                isDone = true
+                return
+            }
+
+            if let pass = changePasswordWindowController.password {
+                newPassword = pass
+            }
+            guard let session = nomadSession else {
+
+                TCSLogWithMark("invalid session")
+                return
+            }
+            session.oldPass = passString
+            session.newPass = newPassword
+            os_log("Attempting password change for %{public}@", log: uiLog, type: .debug, shortName)
+            TCSLogWithMark("Attempting password change")
+            passChanged = true
+
+            session.changePassword()
+
+            didUpdateFail = false
+            isDone = true
+//            delegate?.setHint(type: .migratePass, hint: migrateUIPass)
+//            completeLogin(authResult: .allow)
+            return
+
+        }
+
+
     }
 
     fileprivate func authFail(_ message: String?=nil) {
         TCSLogWithMark(message ?? "")
-        session = nil
-        password.stringValue = ""
-        password.shake(self)
+        nomadSession = nil
+        passwordTextField.stringValue = ""
+        passwordTextField.shake(self)
 //        alertText.stringValue = message ?? "Authentication Failed"
         loginStartedUI()
     }
@@ -425,10 +332,11 @@ class SignInWindowController: NSWindowController, DSQueryable {
         TCSLogWithMark()
         signIn.isEnabled = !signIn.isEnabled
         signIn.isHidden = !signIn.isHidden
-
-        username.isEnabled = !username.isEnabled
-        password.isEnabled = !password.isEnabled
+        TCSLogWithMark()
+        usernameTextField.isEnabled = !usernameTextField.isEnabled
+        passwordTextField.isEnabled = !passwordTextField.isEnabled
         localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
+        TCSLogWithMark()
     }
 
 
@@ -441,17 +349,17 @@ class SignInWindowController: NSWindowController, DSQueryable {
     /// 3. Create a `NoMADSession` and see if we can authenticate as the user.
     @IBAction func signInClick(_ sender: Any) {
         TCSLogWithMark("Sign In button clicked")
-        let strippedUsername = username.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
+        let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
 
         if strippedUsername.isEmpty {
-            username.shake(self)
+            usernameTextField.shake(self)
             TCSLogWithMark("No username entered")
             return
         }
         TCSLogWithMark()
         loginStartedUI()
         TCSLogWithMark()
-        prepareAccountStrings()
+        updateLoginWindowInfo()
         TCSLogWithMark()
         if self.domainName.isEmpty==true || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
@@ -470,11 +378,11 @@ class SignInWindowController: NSWindowController, DSQueryable {
         networkAuth()
 
     }
-    
+
     fileprivate func networkAuth() {
-        session = NoMADSession.init(domain: domainName, user: shortName)
+        nomadSession = NoMADSession.init(domain: domainName, user: shortName)
         TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
-        guard let session = session else {
+        guard let session = nomadSession else {
             TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
             return
         }
@@ -532,12 +440,13 @@ class SignInWindowController: NSWindowController, DSQueryable {
     /// Format the user and domain from the login window depending on the mode the window is in.
     ///
     /// I.e. are we picking a domain from a list, using a managed domain, or putting it on the user name with '@'.
-    fileprivate func prepareAccountStrings() {
+    fileprivate func updateLoginWindowInfo() {
+
         TCSLogWithMark("Format user and domain strings")
         TCSLogWithMark()
         var providedDomainName = ""
 
-        let strippedUsername = username.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
+        let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
         shortName = strippedUsername
 
 
@@ -548,12 +457,6 @@ class SignInWindowController: NSWindowController, DSQueryable {
             providedDomainName = strippedUsername.components(separatedBy: "@").last!.uppercased()
             TCSLogWithMark(providedDomainName)
         }
-        TCSLogWithMark()
-//        if !domain.isHidden && !username.stringValue.contains("@") && !username.stringValue.contains("\\") {
-//            os_log("Using domain from picker", log: uiLog, type: .default)
-//            domainName = (domain.selectedItem?.title.uppercased())!
-//            return
-//        }
         TCSLogWithMark()
         if strippedUsername.contains("\\") {
             os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
@@ -664,29 +567,9 @@ class SignInWindowController: NSWindowController, DSQueryable {
     }
 
 
-    //MARK: - Sleep, Restart, and Shut Down Actions
 
-    @IBAction func sleepClick(_ sender: Any) {
-        os_log("Sleeping system isn't supported yet", log: uiLog, type: .error)
-        //        os_log("Setting sleep user", log: uiLog, type: .debug)
-        //        delegate?.setHint(type: .noMADUser, hint: SpecialUsers.noloSleep.rawValue)
-        //        completeLogin(authResult: .allow)
-    }
+    //MARK: - Update Local User Account Methods
 
-    @IBAction func restartClick(_ sender: Any) {
-        os_log("Setting restart user", log: uiLog, type: .debug)
-//        delegate?.setHint(type: .noMADUser, hint: SpecialUsers.noloRestart.rawValue)
-        completeLogin(authResult: .allow)
-    }
-
-    @IBAction func shutdownClick(_ sender: Any) {
-        os_log("Setting shutdown user", log: uiLog, type: .debug)
-//        setHint(type: .noMADUser, hint: SpecialUsers.noloShutdown.rawValue)
-        completeLogin(authResult: .allow)
-    }
-    
-    //MARK: - Migration Methods
-    
     fileprivate func showPasswordSync() {
         // hide other possible boxes
         TCSLogWithMark()
@@ -726,7 +609,7 @@ class SignInWindowController: NSWindowController, DSQueryable {
                 os_log("Password sync worked, allowing login", log: uiLog, type: .default)
 
                 isDone=true
-                delegate?.setHint(type: .migratePass, hint: localPassword)
+                delegate?.setHint(type: .existingLocalUserPassword, hint: localPassword)
                 completeLogin(authResult: .allow)
                 return
             } catch {
@@ -742,99 +625,100 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
     fileprivate func showMigration() {
 
-        //RunLoop.main.perform {
-        // hide other possible boxes
-        os_log("Showing migration box", log: uiLog, type: .default)
-
-        self.loginStack.isHidden = true
-        self.signIn.isHidden = true
-        self.signIn.isEnabled = true
-
-        // show migration box
-        self.migrateBox.isHidden = false
-        self.migrateSpinner.isHidden = false
-        self.migrateUsers.addItems(withTitles: self.localCheck.migrationUsers ?? [""])
-        //}
+        //need to prompt for username and passsword to select an account. Perhaps use code from the cloud login.
+//        //RunLoop.main.perform {
+//        // hide other possible boxes
+//        os_log("Showing migration box", log: uiLog, type: .default)
+//
+//        self.loginStack.isHidden = true
+//        self.signIn.isHidden = true
+//        self.signIn.isEnabled = true
+//
+//        // show migration box
+//        self.migrateBox.isHidden = false
+//        self.migrateSpinner.isHidden = false
+//        self.migrateUsers.addItems(withTitles: self.localCheck.migrationUsers ?? [""])
+//        //}
     }
     
-    @IBAction func clickMigrationOK(_ sender: Any) {
-        RunLoop.main.perform {
-            self.migrateSpinner.isHidden = false
-            self.migrateSpinner.startAnimation(nil)
-        }
-        
-        let migrateUIPass = self.migratePassword.stringValue
-        if migrateUIPass.isEmpty {
-            os_log("No password was entered", log: uiLog, type: .error)
-            RunLoop.main.perform {
-                self.migrateSpinner.isHidden = true
-                self.migrateSpinner.stopAnimation(nil)
-            }
-            return
-        }
-        
-        // Take a look to see if we are syncing passwords. Until the next refactor the easiest way to tell is if the picklist is hidden.
-        if self.migrateUsers.isHidden {
-            do {
-                os_log("Password doesn't match existing local. Try to change local pass to match.", log: uiLog, type: .default)
-                let localUser = try getLocalRecord(shortName)
-                try localUser.changePassword(migrateUIPass, toPassword: passString)
-                didUpdateFail = false
-                passChanged = false
-                os_log("Password sync worked, allowing login", log: uiLog, type: .default)
-                delegate?.setHint(type: .migratePass, hint: migrateUIPass)
-                completeLogin(authResult: .allow)
-                return
-            } catch {
-                os_log("Unable to sync local password to Network password. Reload and try again", log: uiLog, type: .error)
-                didUpdateFail = true
-                showPasswordSync()
-                return
-            }
-        }
-        guard let migrateToUser = self.migrateUsers.selectedItem?.title else {
-            os_log("Could not select user to migrate from pick list.", log: uiLog, type: .error)
-            return
-        }
-        do {
-            os_log("Getting user record for %{public}@", log: uiLog, type: .default, migrateToUser)
-            migrateUserRecord = try getLocalRecord(migrateToUser)
-            os_log("Checking existing password for %{public}@", log: uiLog, type: .default, migrateToUser)
-            if migrateUIPass != passString {
-                os_log("No match. Upating local password for %{public}@", log: uiLog, type: .default, migrateToUser)
-                try migrateUserRecord?.changePassword(migrateUIPass, toPassword: passString)
-            } else {
-                os_log("Okta and local passwords matched for %{public}@", log: uiLog, type: .default, migrateToUser)
-            }
-            // Mark the record to add an alias if required
-            os_log("Setting hints for %{public}@", log: uiLog, type: .default, migrateToUser)
-            delegate?.setHint(type: .migrateUser, hint: migrateToUser)
-            delegate?.setHint(type: .migratePass, hint: migrateUIPass)
-            os_log("Allowing login", log: uiLog, type: .default, migrateToUser)
-            completeLogin(authResult: .allow)
-        } catch {
-            os_log("Migration failed with: %{public}@", log: uiLog, type: .error, error.localizedDescription)
-            return
-        }
-        
-        // if we are here, the password didn't work
-        os_log("Unable to migrate user.", log: uiLog, type: .error)
-        self.migrateSpinner.isHidden = true
-        self.migrateSpinner.stopAnimation(nil)
-        self.migratePassword.stringValue = ""
-        self.completeLogin(authResult: .deny)
-    }
-    
-    @IBAction func clickMigrationCancel(_ sender: Any) {
-        passChanged = false
-        didUpdateFail = false
-        completeLogin(authResult: .deny)
-    }
-    
-    @IBAction func clickMigrationNo(_ sender: Any) {
-        // user doesn't want to migrate, so create a new account
-        completeLogin(authResult: .allow)
-    }
+//    @IBAction func clickMigrationOK(_ sender: Any) {
+//        RunLoop.main.perform {
+//            self.migrateSpinner.isHidden = false
+//            self.migrateSpinner.startAnimation(nil)
+//        }
+//        
+//        let migrateUIPass = self.migratePassword.stringValue
+//        if migrateUIPass.isEmpty {
+//            os_log("No password was entered", log: uiLog, type: .error)
+//            RunLoop.main.perform {
+//                self.migrateSpinner.isHidden = true
+//                self.migrateSpinner.stopAnimation(nil)
+//            }
+//            return
+//        }
+//        
+//        // Take a look to see if we are syncing passwords. Until the next refactor the easiest way to tell is if the picklist is hidden.
+//        if self.migrateUsers.isHidden {
+//            do {
+//                os_log("Password doesn't match existing local. Try to change local pass to match.", log: uiLog, type: .default)
+//                let localUser = try getLocalRecord(shortName)
+//                try localUser.changePassword(migrateUIPass, toPassword: passString)
+//                didUpdateFail = false
+//                passChanged = false
+//                os_log("Password sync worked, allowing login", log: uiLog, type: .default)
+//                delegate?.setHint(type: .existingLocalUserPassword, hint: migrateUIPass)
+//                completeLogin(authResult: .allow)
+//                return
+//            } catch {
+//                os_log("Unable to sync local password to Network password. Reload and try again", log: uiLog, type: .error)
+//                didUpdateFail = true
+//                showPasswordSync()
+//                return
+//            }
+//        }
+//        guard let migrateToUser = self.migrateUsers.selectedItem?.title else {
+//            os_log("Could not select user to migrate from pick list.", log: uiLog, type: .error)
+//            return
+//        }
+//        do {
+//            os_log("Getting user record for %{public}@", log: uiLog, type: .default, migrateToUser)
+//            migrateUserRecord = try getLocalRecord(migrateToUser)
+//            os_log("Checking existing password for %{public}@", log: uiLog, type: .default, migrateToUser)
+//            if migrateUIPass != passString {
+//                os_log("No match. Upating local password for %{public}@", log: uiLog, type: .default, migrateToUser)
+//                try migrateUserRecord?.changePassword(migrateUIPass, toPassword: passString)
+//            } else {
+//                os_log("Okta and local passwords matched for %{public}@", log: uiLog, type: .default, migrateToUser)
+//            }
+//            // Mark the record to add an alias if required
+//            os_log("Setting hints for %{public}@", log: uiLog, type: .default, migrateToUser)
+//            delegate?.setHint(type: .existingLocalUserName, hint: migrateToUser)
+//            delegate?.setHint(type: .existingLocalUserPassword, hint: migrateUIPass)
+//            os_log("Allowing login", log: uiLog, type: .default, migrateToUser)
+//            completeLogin(authResult: .allow)
+//        } catch {
+//            os_log("Migration failed with: %{public}@", log: uiLog, type: .error, error.localizedDescription)
+//            return
+//        }
+//        
+//        // if we are here, the password didn't work
+//        os_log("Unable to migrate user.", log: uiLog, type: .error)
+//        self.migrateSpinner.isHidden = true
+//        self.migrateSpinner.stopAnimation(nil)
+//        self.migratePassword.stringValue = ""
+//        self.completeLogin(authResult: .deny)
+//    }
+//    
+//    @IBAction func clickMigrationCancel(_ sender: Any) {
+//        passChanged = false
+//        didUpdateFail = false
+//        completeLogin(authResult: .deny)
+//    }
+//    
+//    @IBAction func clickMigrationNo(_ sender: Any) {
+//        // user doesn't want to migrate, so create a new account
+//        completeLogin(authResult: .allow)
+//    }
     
 //    @IBAction func clickMigrationOverwrite(_ sender: Any) {
 //        // user wants to overwrite their current password
@@ -916,8 +800,8 @@ class SignInWindowController: NSWindowController, DSQueryable {
 
 
 //MARK: - NoMADUserSessionDelegate
-extension SignInWindowController: NoMADUserSessionDelegate {
-    
+extension SignInViewController: NoMADUserSessionDelegate {
+
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
         
@@ -938,10 +822,10 @@ extension SignInWindowController: NoMADUserSessionDelegate {
         switch error {
         case .PasswordExpired:
             TCSLogErrorWithMark("Password is expired or requires change.")
-            authFail()
-            delegate?.denyLogin(message:"Password is expired or requires change")
+//            authFail()
+//            delegate?.denyLogin(message:"Password is expired or requires change")
 
-//            showResetUI()
+            showResetUI()
             return
         case .OffDomain:
             TCSLogErrorWithMark("OffDomain")
@@ -975,19 +859,19 @@ extension SignInWindowController: NoMADUserSessionDelegate {
 
 
     func NoMADAuthenticationSucceded() {
-        
+
         if getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false {
-            session?.recursiveGroupLookup = true
+            nomadSession?.recursiveGroupLookup = true
         }
         
-//        if passChanged {
-//            // need to ensure the right password is stashed
-//            passString = newPassword.stringValue
-//            passChanged = false
-//        }
+        if passChanged {
+            // need to ensure the right password is stashed
+            passString = newPassword
+            passChanged = false
+        }
         
         TCSLogWithMark("Authentication succeeded, requesting user info")
-        session?.userInfo()
+        nomadSession?.userInfo()
     }
 
 //callback from ADAuth framework when userInfo returns
@@ -1032,20 +916,9 @@ extension SignInWindowController: NoMADUserSessionDelegate {
             case .syncPassword:
                 // first check to see if we can resolve this ourselves
                 TCSLogWithMark("Sync password called.")
+                showPasswordSync()
 
-                if originalPass != nil {
-                    TCSLogWithMark("Attempting to sync local pass.")
-                    if localCheck.syncPass(oldPass: originalPass!) {
-                        // password changed clean
-                        completeLogin(authResult: .allow)
-                        return
-                    } else {
-                        // unable to change the pass, let user fix
-                        showPasswordSync()
-                    }
-                } else {
-                    showPasswordSync()
-                }
+
             case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
             }
@@ -1076,8 +949,9 @@ extension SignInWindowController: NoMADUserSessionDelegate {
 
 
 //MARK: - NSTextField Delegate
-extension SignInWindowController: NSTextFieldDelegate {
+extension SignInViewController: NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
+        TCSLogWithMark()
         let passField = obj.object as! NSTextField
         passString = passField.stringValue
     }
