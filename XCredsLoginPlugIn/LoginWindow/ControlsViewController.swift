@@ -10,7 +10,7 @@ import Cocoa
 class ControlsViewController: NSViewController {
     var delegate: XCredsMechanismProtocol?
 
-    @IBOutlet weak var macLoginWindowGribColumn: NSGridColumn?
+    @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
     @IBOutlet weak var toolsView: NSView?
 
@@ -204,7 +204,7 @@ class ControlsViewController: NSViewController {
             self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
             TCSLogWithMark()
 
-            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
+            self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
             TCSLogWithMark()
 
             self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)

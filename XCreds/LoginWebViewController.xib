@@ -9,7 +9,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginWebViewController" customModule="XCredsLoginPlugin">
             <connections>
-                <outlet property="backgroundImageView" destination="LND-Te-8nB" id="Prm-fa-DgN"/>
                 <outlet property="view" destination="2LH-tE-efn" id="ZJD-dq-nuj"/>
                 <outlet property="webView" destination="IVa-Nc-Vs1" id="d8m-Bi-lYF"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
@@ -25,13 +24,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="1002" height="883"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LND-Te-8nB">
+                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-Nc-Vs1">
                         <rect key="frame" x="0.0" y="0.0" width="1002" height="883"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="TLB-Dt-CAz"/>
-                    </imageView>
-                    <wkWebView wantsLayer="YES" fixedFrame="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-Nc-Vs1">
-                        <rect key="frame" x="187" y="210" width="628" height="613"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -42,16 +36,16 @@
                     </wkWebView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="LND-Te-8nB" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="fow-VT-aOT"/>
-                    <constraint firstItem="LND-Te-8nB" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="gO1-aU-BKz"/>
-                    <constraint firstAttribute="trailing" secondItem="LND-Te-8nB" secondAttribute="trailing" id="gwd-4q-kbH"/>
-                    <constraint firstAttribute="bottom" secondItem="LND-Te-8nB" secondAttribute="bottom" id="nCQ-2r-Isx"/>
+                    <constraint firstAttribute="trailing" secondItem="IVa-Nc-Vs1" secondAttribute="trailing" id="OcE-FD-9VC"/>
+                    <constraint firstItem="IVa-Nc-Vs1" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="YBv-2B-OZ5"/>
+                    <constraint firstAttribute="bottom" secondItem="IVa-Nc-Vs1" secondAttribute="bottom" id="byG-kT-3XZ"/>
+                    <constraint firstItem="IVa-Nc-Vs1" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="pSj-sh-ecG"/>
                 </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="WYj-G7-iZU"/>
             </connections>
-            <point key="canvasLocation" x="63" y="432.5"/>
+            <point key="canvasLocation" x="-5" y="427.5"/>
         </window>
     </objects>
 </document>

@@ -8,7 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ControlsViewController" customModule="XCredsLoginPlugin">
             <connections>
-                <outlet property="macLoginWindowGribColumn" destination="Qgw-6x-QRs" id="YHA-Qx-deF"/>
+                <outlet property="macLoginWindowGridColumn" destination="Qgw-6x-QRs" id="YHA-Qx-deF"/>
                 <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
                 <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
                 <outlet property="versionTextField" destination="p61-id-z2n" id="qZT-E7-l0T"/>

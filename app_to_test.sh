@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e 
 
 
 set -e
@@ -38,3 +38,4 @@ ssh  root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_log
 
 #ssh  root@"${REMOTE_MAC}" killall -9 SecurityAgent || echo "unable to kill"
 ssh root@"${REMOTE_MAC}" reboot
+exit 0

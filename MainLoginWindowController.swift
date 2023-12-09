@@ -44,12 +44,11 @@ class MainLoginWindowController: NSWindowController {
                 return
             }
             self.window?.contentView?.addSubview(controlsViewController.view)
-            let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
+            let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,controlsViewController.view.frame.size.height)
             controlsViewController.view.frame=rect
 //            controlsViewController.delegate=self.delegate
 
             TCSLogWithMark("Configure login window")
-//            loginAppearance()
             setupLoginWindowAppearance()
 
             TCSLogWithMark("create background windows")
@@ -63,13 +62,13 @@ class MainLoginWindowController: NSWindowController {
             // Disabling due to it causing screen resizing during EULA
             let notificationCenter = NotificationCenter.default
             notificationCenter.addObserver(self,
-                                           selector: #selector(updateWindowAfterResize),
+                                           selector: #selector(updateWindow),
                                            name: NSApplication.didChangeScreenParametersNotification,
                                            object: nil)
         }
 
     }
-    @objc fileprivate func updateWindowAfterResize() {
+    @objc fileprivate func updateWindow() {
 
         DispatchQueue.main.async{
             if self.window?.isVisible ?? true {
@@ -79,9 +78,11 @@ class MainLoginWindowController: NSWindowController {
 
                 self.window?.setFrame(NSMakeRect(0,0 , screenWidth, screenHeight), display: true)
 
-                let rect = NSMakeRect(0, 0, screenWidth,120)
+                if let height = self.controlsViewController?.view.frame.size.height {
+                    let rect = NSMakeRect(0, 0, screenWidth,height)
 
-                self.controlsViewController?.view.frame=rect
+                    self.controlsViewController?.view.frame=rect
+                }
                 self.recenterCenterView()
             }
         }
@@ -104,31 +105,9 @@ class MainLoginWindowController: NSWindowController {
             self.window?.canBecomeVisibleWithoutLogin = true
 
             let screenRect = NSScreen.screens[0].frame
-            let screenWidth = screenRect.width
-            let screenHeight = screenRect.height
-
-            var loginWindowWidth = screenWidth //start with full size
-            var loginWindowHeight = screenHeight //start with full size
-
-            //if prefs define smaller, then resize window
-            TCSLogWithMark("checking for custom height and width")
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
-                if val > 100 {
-                    TCSLogWithMark("setting loginWindowWidth to \(val)")
-                    loginWindowWidth = val
-                }
-            }
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
-                if val > 100 {
-                    TCSLogWithMark("setting loginWindowHeight to \(val)")
-                    loginWindowHeight = val
-                }
-            }
 
             self.window?.setFrame(screenRect, display: true, animate: false)
-            let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
+            let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,117)
 
             self.controlsViewController?.view.frame=rect
 
@@ -242,7 +221,11 @@ class MainLoginWindowController: NSWindowController {
 
             centerView.setFrameOrigin(lowerLeftCorner)
         }
+        if let controlsView = controlsViewController?.view {
+            controlsView.removeFromSuperview()
+            self.window?.contentView?.addSubview(controlsView)
 
+        }
     }
     func addCenterView(_ centerView:NSView){
         TCSLogWithMark("re-centering")
