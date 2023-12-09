@@ -454,7 +454,9 @@ class LoginWebViewController: WebViewController, DSQueryable {
             self.delegate?.allowLogin()
 
             if let controller = self.view.window?.windowController as? MainLoginWindowController {
-                controller.loginTransition()
+                controller.loginTransition {
+
+                }
             }
 
         }

@@ -24,10 +24,6 @@ class MainLoginWindowController: NSWindowController {
         super.windowDidLoad()
 
         window?.canBecomeVisibleWithoutLogin=true
-//        window?.level = .normal
-//        window?.backgroundColor = NSColor.white
-//        window?.titlebarAppearsTransparent = true
-//        window?.isMovable = false
         let screenRect = NSScreen.screens[0].frame
         window?.setFrame(screenRect, display: true, animate: false)
         window?.alphaValue=0.9
@@ -94,9 +90,6 @@ class MainLoginWindowController: NSWindowController {
 
             TCSLogWithMark("setting up window...")
 
-            self.window?.level = .normal
-            self.window?.orderFrontRegardless()
-            self.window?.makeKeyAndOrderFront(self)
 
             self.window?.backgroundColor = NSColor.blue
             self.window?.titlebarAppearsTransparent = true
@@ -121,6 +114,10 @@ class MainLoginWindowController: NSWindowController {
                 self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
             }
+            self.window?.level = .normal
+//            self.window?.orderFrontRegardless()
+            self.window?.makeKeyAndOrderFront(self)
+
             TCSLogWithMark()
         }
 //            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
@@ -131,7 +128,7 @@ class MainLoginWindowController: NSWindowController {
 //    @objc override var windowNibName: NSNib.Name {
 //        return NSNib.Name("LoginWebView")
 //    }
-    func loginTransition() {
+    func loginTransition( completion:@escaping ()->Void) {
         TCSLogWithMark()
         let screenRect = NSScreen.screens[0].frame
         let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
@@ -170,7 +167,7 @@ class MainLoginWindowController: NSWindowController {
             self.centerView?.removeFromSuperview()
 //            self.window?.orderOut(self)
             self.controlsViewController?.view.removeFromSuperview()
-
+            completion()
         })
 
     }

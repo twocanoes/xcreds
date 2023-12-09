@@ -136,11 +136,11 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark("Trial")
             self.trialVersionStatusTextField?.isHidden = false
             if daysRemaining==1 {
-                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining."
 
             }
             else {
-                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining on trial."
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining."
             }
 
         case .trialExpired:

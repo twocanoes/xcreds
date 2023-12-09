@@ -37,6 +37,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     @IBOutlet weak var usernameTextField: NSTextField!
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var localOnlyCheckBox: NSButton!
+    @IBOutlet weak var stackView: NSStackView!
+
 //    @IBOutlet weak var domain: NSPopUpButton!
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
@@ -65,8 +67,10 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     override func awakeFromNib() {
         super.awakeFromNib()
         TCSLogWithMark()
+        setupLoginAppearance()
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
+
 //            updateLoginWindowInfo()
             setupDone=true
 
@@ -153,31 +157,34 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 //    }
 //    
 
-    func loginAppearance() {
-//        TCSLogWithMark()
-//        os_log("Setting window level", log: uiLog, type: .debug)
+    func setupLoginAppearance() {
+        TCSLogWithMark()
+
+        self.view.wantsLayer=true
+        self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
+        localOnlyCheckBox.isEnabled=true
+
+//        let color = NSColor.white
+//        let colorTitle = NSMutableAttributedString(attributedString: localOnlyCheckBox.attributedTitle)
+//        let titleRange = NSMakeRange(0,colorTitle.length)
 //
-//        self.window?.level = .normal
-//        self.window?.orderFrontRegardless()
-//
-//        localOnlyCheckBox.isEnabled=true
-//        signIn.isEnabled=true
-//        signIn.isHidden = false
+//        colorTitle.addAttributes([NSAttributedString.Key.foregroundColor : color], range: titleRange)
+//        localOnlyCheckBox.attributedTitle=colorTitle
 //
 //        // make things look better
-//        os_log("Tweaking appearance", log: uiLog, type: .debug)
-//
-//        if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
-//            TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
-//            self.username.placeholderString=usernamePlaceholder
-//        }
-//
-//        if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
-//            TCSLogWithMark("Setting password placeholder")
-//
-//            self.password.placeholderString=passwordPlaceholder
-//
-//        }
+        TCSLog("Tweaking appearance")
+
+        if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
+            TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
+            self.usernameTextField.placeholderString=usernamePlaceholder
+        }
+
+        if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
+            TCSLogWithMark("Setting password placeholder")
+
+            self.passwordTextField.placeholderString=passwordPlaceholder
+
+        }
 //        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
 //            self.localOnlyCheckBox.isHidden = true
 //        }
@@ -185,40 +192,6 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 //            //show based on if there is an AD domain or not
 //            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
 //        }
-//
-//        if getManagedPreference(key: .LoginScreen) as? Bool == false {
-//            os_log("Present as login screen", log: uiLog, type: .debug)
-//            self.window?.isOpaque = false
-//            self.window?.hasShadow = false
-//            self.window?.backgroundColor = .clear
-//        } else {
-//            os_log("Present as login window", log: uiLog, type: .debug)
-//            self.window?.backgroundColor = NSColor.lightGray
-//        }
-//        self.window?.titlebarAppearsTransparent = true
-//        if !self.domainName.isEmpty {
-//            self.isDomainManaged = true
-//        }
-//
-//        let screenRect = NSScreen.screens[0].frame
-//        let screenWidth = screenRect.width
-//        let screenHeight = screenRect.height
-//
-//        self.window?.setFrame(NSMakeRect(0,0 , screenWidth, screenHeight), display: true)
-//        self.window?.isMovable = false
-//        self.window?.canBecomeVisibleWithoutLogin = true
-//        self.window?.level = .normal
-//        self.window?.titlebarAppearsTransparent = true
-//
-//        if let logoPath = getManagedPreference(key: .LoginLogo) as? String {
-//            os_log("Found logoPath: %{public}@", log: uiLog, type: .debug, logoPath)
-//            if logoPath == "NONE" {
-//                imageView.image = nil
-//            } else {
-//                imageView.image = NSImage(contentsOf: URL(fileURLWithPath: logoPath))
-//            }
-//        }
-//
 //        if let logoData = getManagedPreference(key: .LoginLogoData) as? Data {
 //            os_log("Found LoginLogoData key has a value", log: uiLog, type: .debug)
 //            if let image = NSImage(data: logoData) as NSImage? {

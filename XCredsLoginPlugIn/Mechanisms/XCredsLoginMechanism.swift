@@ -204,7 +204,7 @@ import Network
         let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
         TCSLogWithMark("Verifying if we should show cloud login.")
 
-        if isReturning == false, 
+        if isReturning == false,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
@@ -223,7 +223,7 @@ import Network
 
         if let errorMessage = getContextString(type: "ErrorMessage"){
             TCSLogWithMark("Sticky error message = \(errorMessage)")
-            
+
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
@@ -250,10 +250,16 @@ import Network
 
         if loginWebViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
-            mainLoginWindowController.loginTransition()
+            mainLoginWindowController.loginTransition {
+                super.allowLogin()
+
+            }
         }
-        TCSLogWithMark("calling allowLogin")
-        super.allowLogin()
+        else {
+            TCSLogWithMark("calling allowLogin")
+            super.allowLogin()
+        }
+
     }
     override func denyLogin(message:String?) {
         loginWebViewController?.loadPage()
