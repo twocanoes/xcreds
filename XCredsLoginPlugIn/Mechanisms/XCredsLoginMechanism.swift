@@ -18,7 +18,10 @@ import Network
     override init(mechanism: UnsafePointer<MechanismRecord>) {
 
         mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
+
         super.init(mechanism: mechanism)
+
+        mainLoginWindowController.mechanism=self
 
 //        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
@@ -152,19 +155,12 @@ import Network
         else {
             TCSLogWithMark("NO WINDOW")
         }
-        mainLoginWindowController.controlsViewController?.delegate=self
 
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
         let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
-//        let preventUIPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.filePathToPreventShowingUI.rawValue)
-//
-//        if let preventUIPath = preventUIPath,
-//           FileManager.default.fileExists(atPath: preventUIPath) {
-//            TCSLogWithMark("file exists at \(preventUIPath). Skipping showing XCreds login window")
-//
-//            return
-//        }
         let shouldDetectNetwork = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldDetectNetworkToDetermineLoginWindow.rawValue)
+
+        
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
            let _ = discoveryURL {
@@ -227,9 +223,7 @@ import Network
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
-//            if let loginWindowWindowController = loginWindowWindowController, let window = loginWindowWindowController.window{
-//                alert.window.level=window.level+1
-//            }
+
             alert.window.canBecomeVisibleWithoutLogin=true
 
             let bundle = Bundle.findBundleWithName(name: "XCreds")

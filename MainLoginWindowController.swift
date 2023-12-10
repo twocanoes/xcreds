@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class MainLoginWindowController: NSWindowController {
+class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var controlsViewController: ControlsViewController?
     var setupDone=false
     @IBOutlet weak var backgroundImageView: NSImageView!
@@ -15,11 +15,12 @@ class MainLoginWindowController: NSWindowController {
     var resolutionObserver:Any?
     var networkChangeObserver:Any?
     var centerView:NSView?
+    var mechanism:XCredsMechanismProtocol?
+//    func setControlsDelegate(_ delegate:XCredsMechanismProtocol){
+//
+//        self.controlsViewController?.delegate=delegate
+//    }
 
-    func setControlsDelegate(_ delegate:XCredsMechanismProtocol){
-
-        self.controlsViewController?.delegate=delegate
-    }
     override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -28,30 +29,14 @@ class MainLoginWindowController: NSWindowController {
         window?.setFrame(screenRect, display: true, animate: false)
         window?.alphaValue=0.9
     }
+
     override func awakeFromNib() {
         TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
 //            updateLoginWindowInfo()
             setupDone=true
-
-            controlsViewController = ControlsViewController.initFromPlugin()
-            guard let controlsViewController = controlsViewController else {
-                return
-            }
-            self.window?.contentView?.addSubview(controlsViewController.view)
-            let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,controlsViewController.view.frame.size.height)
-            controlsViewController.view.frame=rect
-//            controlsViewController.delegate=self.delegate
-
-            TCSLogWithMark("Configure login window")
             setupLoginWindowAppearance()
-
-            TCSLogWithMark("create background windows")
-            createBackground()
-
-            TCSLogWithMark("Become first responder")
-            TCSLogWithMark("Finishing loading loginwindow")
 
 //            os_log("Finishing loading loginwindow", log: uiLog, type: .debug)
 
@@ -84,50 +69,57 @@ class MainLoginWindowController: NSWindowController {
         }
     }
     func setupLoginWindowAppearance() {
-        DispatchQueue.main.async {
 
-            NSApp.activate(ignoringOtherApps: true)
+        TCSLogWithMark("setting up window...")
 
-            TCSLogWithMark("setting up window...")
+        self.window?.backgroundColor = NSColor.blue
+        self.window?.titlebarAppearsTransparent = true
 
+        self.window?.isMovable = false
+        self.window?.canBecomeVisibleWithoutLogin = true
 
-            self.window?.backgroundColor = NSColor.blue
-            self.window?.titlebarAppearsTransparent = true
+        let screenRect = NSScreen.screens[0].frame
 
-            self.window?.isMovable = false
-            self.window?.canBecomeVisibleWithoutLogin = true
+        self.window?.setFrame(screenRect, display: true, animate: false)
+        let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,117)
 
-            let screenRect = NSScreen.screens[0].frame
+        self.controlsViewController?.view.frame=rect
 
-            self.window?.setFrame(screenRect, display: true, animate: false)
-            let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,117)
+        let backgroundImage = DefaultsHelper.backgroundImage()
+        TCSLogWithMark()
+        if let backgroundImage = backgroundImage {
+            backgroundImage.size=screenRect.size
+            self.backgroundImageView.image=backgroundImage
+            self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
 
-            self.controlsViewController?.view.frame=rect
+            self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
-            let backgroundImage = DefaultsHelper.backgroundImage()
-            TCSLogWithMark()
-            if let backgroundImage = backgroundImage {
-                backgroundImage.size=screenRect.size
-                self.backgroundImageView.image=backgroundImage
-                self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
-
-                self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-
-            }
-            self.window?.level = .normal
-//            self.window?.orderFrontRegardless()
-            self.window?.makeKeyAndOrderFront(self)
-
-            TCSLogWithMark()
         }
-//            self.window?.setFrame(NSMakeRect((screenWidth-CGFloat(width))/2,(screenHeight-CGFloat(height))/2, CGFloat(width), CGFloat(height)), display: true, animate: false)
-//        }
-//
+        self.window?.level = .normal
+
+        if self.controlsViewController==nil {
+            self.controlsViewController = ControlsViewController.initFromPlugin()
+        }
+        else {
+            self.controlsViewController!.view.removeFromSuperview()
+        }
+
+        guard let controlsViewController = self.controlsViewController else {
+            return
+        }
+        self.controlsViewController?.delegate=mechanism
+
+        self.window?.contentView?.addSubview(controlsViewController.view)
+        let rect2 = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,controlsViewController.view.frame.size.height)
+        controlsViewController.view.frame=rect2
+
+        TCSLogWithMark("create background windows")
+        self.createBackground()
+
+        TCSLogWithMark()
+
     }
 
-//    @objc override var windowNibName: NSNib.Name {
-//        return NSNib.Name("LoginWebView")
-//    }
     func loginTransition( completion:@escaping ()->Void) {
         TCSLogWithMark()
         let screenRect = NSScreen.screens[0].frame
@@ -135,20 +127,13 @@ class MainLoginWindowController: NSWindowController {
         progressIndicator.style = .spinning
         progressIndicator.startAnimation(self)
         self.window?.contentView?.addSubview(progressIndicator)
-//
-//        if let controlsViewController = controlsViewController {
-//            loginProgressWindowController.window?.makeKeyAndOrderFront(self)
-//
 
-//        }
         if let resolutionObserver = resolutionObserver {
             NotificationCenter.default.removeObserver(resolutionObserver)
         }
         if let networkChangeObserver = networkChangeObserver {
             NotificationCenter.default.removeObserver(networkChangeObserver)
         }
-
-
 
         NSAnimationContext.runAnimationGroup({ (context) in
             context.duration = 1.0
@@ -173,17 +158,6 @@ class MainLoginWindowController: NSWindowController {
     }
 
     fileprivate func createBackground() {
-//        var image: NSImage?
-        // Is a background image path set? If not just use gray.
-//        if let backgroundImage = getManagedPreference(key: .BackgroundImage) as? String  {
-//            os_log("BackgroundImage preferences found.", log: uiLog, type: .debug)
-//            image = NSImage(contentsOf: URL(fileURLWithPath: backgroundImage))
-//        }
-//
-//        if let backgroundImageData = getManagedPreference(key: .BackgroundImageData) as? Data {
-//            os_log("BackgroundImageData found", log: uiLog, type: .debug)
-//            image = NSImage(data: backgroundImageData)
-//        }
         let backgroundImage = DefaultsHelper.backgroundImage()
         let screenRect = NSScreen.screens[0].frame
         TCSLogWithMark()
