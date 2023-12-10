@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="SignInViewController" customModule="XCreds" customModuleProvider="target">
             <connections>
                 <outlet property="localOnlyCheckBox" destination="kwO-Pt-tOG" id="w4U-23-hqX"/>
+                <outlet property="localOnlyView" destination="awi-FJ-4Sf" id="wBk-nn-xbG"/>
                 <outlet property="passwordTextField" destination="UJh-bj-CPX" id="YZl-II-FDB"/>
                 <outlet property="signIn" destination="XnO-81-SH2" id="VQg-nQ-slV"/>
                 <outlet property="stackView" destination="eRJ-Lo-UdT" id="b9W-ja-J8M"/>

@@ -37,6 +37,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     @IBOutlet weak var usernameTextField: NSTextField!
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var localOnlyCheckBox: NSButton!
+    @IBOutlet weak var localOnlyView: NSView!
+
     @IBOutlet weak var stackView: NSStackView!
 
 //    @IBOutlet weak var domain: NSPopUpButton!
@@ -69,6 +71,9 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
             setupDone=true
+            if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+                domainName = prefDomainName
+            }
             setupLoginAppearance()
         }
          
@@ -80,6 +85,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true
+        localOnlyView.isHidden=false
         // make things look better
         TCSLog("Tweaking appearance")
 
@@ -94,12 +100,19 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             self.passwordTextField.placeholderString=passwordPlaceholder
 
         }
+        TCSLogWithMark("Domain is \(domainName)")
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
+            TCSLogWithMark("hiding local only")
+
             self.localOnlyCheckBox.isHidden = true
+            self.localOnlyView.isHidden = true
         }
         else {
             //show based on if there is an AD domain or not
             self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
+
+            self.localOnlyView.isHidden = self.domainName.isEmpty
+
         }
     }
 
@@ -174,6 +187,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         usernameTextField.isEnabled = !usernameTextField.isEnabled
         passwordTextField.isEnabled = !passwordTextField.isEnabled
         localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
+
+        localOnlyView.isHidden = !localOnlyView.isHidden
         TCSLogWithMark()
     }
 
@@ -296,50 +311,50 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             TCSLogWithMark(providedDomainName)
         }
         TCSLogWithMark()
-        if strippedUsername.contains("\\") {
-            os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
-            if let ntDomains = getManagedPreference(key: .NTtoADDomainMappings) as? [String:String],
-                let ntDomain = strippedUsername.components(separatedBy: "\\").first?.uppercased(),
-                let user = strippedUsername.components(separatedBy: "\\").last,
-                let convertedDomain =  ntDomains[ntDomain] {
-                    shortName = user
-                    providedDomainName = convertedDomain
-            } else {
-                os_log("NT Domain mapping failed, wishing the user luck on authentication", log: uiLog, type: .default)
-            }
-        }
-        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+//        if strippedUsername.contains("\\") {
+//            os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
+//            if let ntDomains = getManagedPreference(key: .NTtoADDomainMappings) as? [String:String],
+//                let ntDomain = strippedUsername.components(separatedBy: "\\").first?.uppercased(),
+//                let user = strippedUsername.components(separatedBy: "\\").last,
+//                let convertedDomain =  ntDomains[ntDomain] {
+//                    shortName = user
+//                    providedDomainName = convertedDomain
+//            } else {
+//                os_log("NT Domain mapping failed, wishing the user luck on authentication", log: uiLog, type: .default)
+//            }
+//        }
+//        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+//
+//            domainName = prefDomainName
+//        }
+//        if domainName != "" && providedDomainName.lowercased() == domainName.lowercased() {
+//            TCSLogWithMark("ADDomain being used")
+//            domainName = providedDomainName.uppercased()
+//        }
 
-            domainName = prefDomainName
-        }
-        if domainName != "" && providedDomainName.lowercased() == domainName.lowercased() {
-            TCSLogWithMark("ADDomain being used")
-            domainName = providedDomainName.uppercased()
-        }
-
-        if providedDomainName == domainName {
-
-        }
-        else if !providedDomainName.isEmpty {
-            TCSLogWithMark("Optional domain provided in text field: \(providedDomainName)")
-            if getManagedPreference(key: .AdditionalADDomains) as? Bool == true {
-                os_log("Optional domain name allowed by AdditionalADDomains allow-all policy", log: uiLog, type: .default)
-                domainName = providedDomainName
-                return
-            }
-
-            if let optionalDomains = getManagedPreference(key: .AdditionalADDomains) as? [String] {
-                guard optionalDomains.contains(providedDomainName.lowercased()) else {
-                    TCSLogWithMark("Optional domain name not allowed by AdditionalADDomains whitelist policy")
-                    return
-                }
-                TCSLogWithMark("Optional domain name allowed by AdditionalADDomains whitelist policy")
-                domainName = providedDomainName
-                return
-            }
-
-            TCSLogWithMark("Optional domain not name allowed by AdditionalADDomains policy (false or not defined)")
-        }
+//        if providedDomainName == domainName {
+//
+//        }
+//        else if !providedDomainName.isEmpty {
+//            TCSLogWithMark("Optional domain provided in text field: \(providedDomainName)")
+//            if getManagedPreference(key: .AdditionalADDomains) as? Bool == true {
+//                os_log("Optional domain name allowed by AdditionalADDomains allow-all policy", log: uiLog, type: .default)
+//                domainName = providedDomainName
+//                return
+//            }
+//
+//            if let optionalDomains = getManagedPreference(key: .AdditionalADDomains) as? [String] {
+//                guard optionalDomains.contains(providedDomainName.lowercased()) else {
+//                    TCSLogWithMark("Optional domain name not allowed by AdditionalADDomains whitelist policy")
+//                    return
+//                }
+//                TCSLogWithMark("Optional domain name allowed by AdditionalADDomains whitelist policy")
+//                domainName = providedDomainName
+//                return
+//            }
+//
+//            TCSLogWithMark("Optional domain not name allowed by AdditionalADDomains policy (false or not defined)")
+//        }
         
         if providedDomainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
@@ -714,7 +729,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
-        
+        TCSLogWithMark("User Info:\(user)")
+        TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
         
         TCSLogWithMark("Checking for DenyLogin groups")
