@@ -175,45 +175,27 @@ class MainController: NSObject, NoMADUserSessionDelegate {
             }
         }
         TCSLogWithMark()
-        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+//        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
         
-        TCSLogWithMark()
-        while (true){
-            TCSLogWithMark()
-            NSApp.activate(ignoringOtherApps: true)
-            let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
-                NSApp.activate(ignoringOtherApps: true)
+        switch  PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username: PasswordUtils.currentConsoleUserName, password: nil, shouldUpdatePassword: false) {
 
-            }
-            TCSLogWithMark()
-            let response = NSApp.runModal(for: passwordWindowController.window!)
-
-            timer.invalidate()
-            if response == .cancel {
-                break
-            }
-            if passwordWindowController.resetKeychain==true {
+        case .success(let localPassword):
+            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass: localPassword, shouldUpdateACL: true)
+            if err == false {
                 return (nil,nil)
             }
-            let localPassword = passwordWindowController.password
-            guard let localPassword = localPassword else {
-                continue
-            }
-            let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
-            if isPasswordValid==true {
-                passwordWindowController.window?.close()
-                let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass: localPassword, shouldUpdateACL: true)
-                if err == false {
-                    return (nil,nil)
-                }
-                return (accountName,localPassword)
-            }
-            else{
-                passwordWindowController.window?.shake(self)
-            }
+            return (accountName,localPassword)
+
+        case .resetKeychain:
+            return (nil,nil)
+
+        case .cancelled:
+            return (nil,nil)
+        case .error(_):
+            return (nil,nil)
+
         }
 
-        return (nil,nil)
     }
 }
 

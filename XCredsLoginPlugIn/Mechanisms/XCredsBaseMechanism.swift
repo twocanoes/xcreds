@@ -162,6 +162,7 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
+    
     var groups: [String]? {
         get {
             guard let userGroups = getHint(type: .groups) as? [String] else {

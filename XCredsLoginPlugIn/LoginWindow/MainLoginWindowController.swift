@@ -16,10 +16,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var networkChangeObserver:Any?
     var centerView:NSView?
     var mechanism:XCredsMechanismProtocol?
-//    func setControlsDelegate(_ delegate:XCredsMechanismProtocol){
-//
-//        self.controlsViewController?.delegate=delegate
-//    }
 
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -72,7 +68,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark("setting up window...")
 
-        self.window?.backgroundColor = NSColor.blue
+        self.window?.backgroundColor = NSColor.gray
         self.window?.titlebarAppearsTransparent = true
 
         self.window?.isMovable = false
@@ -150,7 +146,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             self.controlsViewController?.view.animator().alphaValue=0.0
 
             self.centerView?.removeFromSuperview()
-//            self.window?.orderOut(self)
             self.controlsViewController?.view.removeFromSuperview()
             completion()
         })

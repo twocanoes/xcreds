@@ -77,6 +77,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
         if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
             TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
+            
             groups?.forEach { group in
                 if adminGroups.contains(group) {
                     isAdmin = true

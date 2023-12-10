@@ -45,11 +45,10 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
     var internalDelegate:XCredsMechanismProtocol?
 
-    var delegate:XCredsMechanismProtocol? {
+    var mechanism:XCredsMechanismProtocol? {
         set {
             TCSLogWithMark()
             internalDelegate=newValue
-//            controlsViewController?.delegate = newValue
         }
         get {
             return internalDelegate
@@ -67,95 +66,13 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     override func awakeFromNib() {
         super.awakeFromNib()
         TCSLogWithMark()
-        setupLoginAppearance()
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
-
-//            updateLoginWindowInfo()
             setupDone=true
-
-//            self.view.addSubview(controlsViewController.view)
-//            let rect = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,120)
-//            controlsViewController.view.frame=rect
-//            controlsViewController.delegate=self.delegate
-
-//            TCSLogWithMark("Configure login window")
-//            loginAppearance()
-//
-//            TCSLogWithMark("create background windows")
-//            createBackground()
-//
-//            TCSLogWithMark("Become first responder")
-//            username.becomeFirstResponder()
-//
-//            os_log("Finishing loading loginwindow", log: uiLog, type: .debug)
-//
-//            // Disabling due to it causing screen resizing during EULA
-//            let notificationCenter = NotificationCenter.default
-//            notificationCenter.addObserver(self,
-//                                           selector: #selector(updateWindowAfterResize),
-//                                           name: NSApplication.didChangeScreenParametersNotification,
-//                                           object: nil)
+            setupLoginAppearance()
         }
          
     }
-
-
-//    fileprivate func createBackground() {
-////        var image: NSImage?
-//        // Is a background image path set? If not just use gray.
-////        if let backgroundImage = getManagedPreference(key: .BackgroundImage) as? String  {
-////            os_log("BackgroundImage preferences found.", log: uiLog, type: .debug)
-////            image = NSImage(contentsOf: URL(fileURLWithPath: backgroundImage))
-////        }
-////
-////        if let backgroundImageData = getManagedPreference(key: .BackgroundImageData) as? Data {
-////            os_log("BackgroundImageData found", log: uiLog, type: .debug)
-////            image = NSImage(data: backgroundImageData)
-////        }
-//        let backgroundImage = DefaultsHelper.backgroundImage()
-//        let screenRect = NSScreen.screens[0].frame
-//
-//        if let backgroundImage = backgroundImage {
-//            imageView.image?.size=screenRect.size
-//            imageView.image=backgroundImage
-//
-//            backgroundImage.size=screenRect.size
-//            imageView.imageScaling = .scaleProportionallyUpOrDown
-//
-//            imageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-//
-//        }
-//
-//    }
-//
-
-    func loginTransition() {
-        os_log("Transitioning... fade our UI away", log: uiLog, type: .debug)
-
-        NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 1.0
-            context.allowsImplicitAnimation = true
-        }, completionHandler: {
-            os_log("Close all the windows", log: uiLog, type: .debug)
-            self.visible = false
-        })
-    }
-    
-    
-//    @objc fileprivate func updateWindowAfterResize() {
-//
-////        DispatchQueue.main.async{
-////            if self.window?.isVisible ?? true {
-////                os_log("Reconfiguring login window after screen change", log: uiLog, type: .debug)
-////                self.loginAppearance()
-////
-////                os_log("Become first responder", log: uiLog, type: .debug)
-////                self.username.becomeFirstResponder()
-////            }
-////        }
-//    }
-//    
 
     func setupLoginAppearance() {
         TCSLogWithMark()
@@ -163,15 +80,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true
-
-//        let color = NSColor.white
-//        let colorTitle = NSMutableAttributedString(attributedString: localOnlyCheckBox.attributedTitle)
-//        let titleRange = NSMakeRange(0,colorTitle.length)
-//
-//        colorTitle.addAttributes([NSAttributedString.Key.foregroundColor : color], range: titleRange)
-//        localOnlyCheckBox.attributedTitle=colorTitle
-//
-//        // make things look better
+        // make things look better
         TCSLog("Tweaking appearance")
 
         if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
@@ -185,57 +94,13 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             self.passwordTextField.placeholderString=passwordPlaceholder
 
         }
-//        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
-//            self.localOnlyCheckBox.isHidden = true
-//        }
-//        else {
-//            //show based on if there is an AD domain or not
-//            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
-//        }
-//        if let logoData = getManagedPreference(key: .LoginLogoData) as? Data {
-//            os_log("Found LoginLogoData key has a value", log: uiLog, type: .debug)
-//            if let image = NSImage(data: logoData) as NSImage? {
-//                imageView.image = image
-//            }
-//        }
-//
-//        // check for Logo Alpha
-//
-//        if let alpha = getManagedPreference(key: .LoginLogoAlpha) as? Int {
-//            os_log("Updating logo alpha value", log: uiLog, type: .debug)
-//            switch alpha {
-//            case 0 :
-//                imageView.alphaValue = 0.0
-//            case 1 :
-//                imageView.alphaValue = 0.1
-//            case 2 :
-//                imageView.alphaValue = 0.2
-//            case 3 :
-//                imageView.alphaValue = 0.3
-//            case 4 :
-//                imageView.alphaValue = 0.4
-//            case 5 :
-//                imageView.alphaValue = 0.5
-//            case 6 :
-//                imageView.alphaValue = 0.6
-//            case 7 :
-//                imageView.alphaValue = 0.7
-//            case 8 :
-//                imageView.alphaValue = 0.8
-//            case 9 :
-//                imageView.alphaValue = 0.9
-//            case 10 :
-//                imageView.alphaValue = 1.0
-//            default :
-//                imageView.alphaValue = 0.0
-//            }
-//        }
-//        TCSLogWithMark()
-//
-//        let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,120)
-//
-//        controlsViewController?.view.frame=rect
-
+        if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
+            self.localOnlyCheckBox.isHidden = true
+        }
+        else {
+            //show based on if there is an AD domain or not
+            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
+        }
     }
 
     fileprivate func showResetUI() {
@@ -493,12 +358,12 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     fileprivate func setRequiredHintsAndContext() {
         TCSLogWithMark()
         TCSLogWithMark("Setting hints for user: \(shortName)")
-        delegate?.setHint(type: .user, hint: shortName)
-        delegate?.setHint(type: .pass, hint: passString)
+        mechanism?.setHint(type: .user, hint: shortName)
+        mechanism?.setHint(type: .pass, hint: passString)
         TCSLogWithMark()
         os_log("Setting context values for user: %{public}@", log: uiLog, type: .debug, shortName)
-        delegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
-        delegate?.setContextString(type: kAuthorizationEnvironmentPassword, value: passString)
+        mechanism?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
+        mechanism?.setContextString(type: kAuthorizationEnvironmentPassword, value: passString)
         TCSLogWithMark()
 
     }
@@ -508,7 +373,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     ///
     /// - Parameter authResult:`Authorizationresult` enum value that indicates if login should proceed.
     fileprivate func completeLogin(authResult: AuthorizationResult) {
-        if let delegate = delegate {
+        if let delegate = mechanism {
 
         }
         else {
@@ -518,12 +383,12 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
-            delegate?.allowLogin()
+            mechanism?.allowLogin()
 //            window?.close()
 
         case .deny:
             TCSLogWithMark("Complete login process with deny")
-            delegate?.denyLogin(message:nil)
+            mechanism?.denyLogin(message:nil)
 
 //            window?.close()
 
@@ -547,7 +412,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         // hide other possible boxes
         TCSLogWithMark()
 
-        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
         passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
         passwordWindowController.window?.isMovable = false
@@ -582,7 +447,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
                 os_log("Password sync worked, allowing login", log: uiLog, type: .default)
 
                 isDone=true
-                delegate?.setHint(type: .existingLocalUserPassword, hint: localPassword)
+                mechanism?.setHint(type: .existingLocalUserPassword, hint: localPassword)
                 completeLogin(authResult: .allow)
                 return
             } catch {
@@ -871,7 +736,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
     
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
-            delegate?.setHint(type: .ntName, hint: ntName)
+            mechanism?.setHint(type: .ntName, hint: ntName)
         }
         
         if allowedLogin {
@@ -880,7 +745,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             // check for any migration and local auth requirements
             let localCheck = LocalCheckAndMigrate()
-            localCheck.delegate = delegate
+            localCheck.delegate = mechanism
 //            localCheck.mech = self.mech
             switch localCheck.run(userToCheck: user.shortName, passToCheck: passString) {
 
@@ -906,16 +771,16 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark()
         os_log("NoMAD Login Looking up info for: %{public}@", log: uiLog, type: .default, user.shortName)
         setRequiredHintsAndContext()
-        delegate?.setHint(type: .firstName, hint: user.firstName)
-        delegate?.setHint(type: .lastName, hint: user.lastName)
-        delegate?.setHint(type: .noMADDomain, hint: domainName)
-        delegate?.setHint(type: .adGroups, hint: user.groups)
-        delegate?.setHint(type: .fullName, hint: user.cn)
-        delegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
-        delegate?.setHint(type: .ntName, hint: user.ntName)
+        mechanism?.setHint(type: .firstName, hint: user.firstName)
+        mechanism?.setHint(type: .lastName, hint: user.lastName)
+        mechanism?.setHint(type: .noMADDomain, hint: domainName)
+        mechanism?.setHint(type: .groups, hint: user.groups)
+        mechanism?.setHint(type: .fullName, hint: user.cn)
+        mechanism?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
+        mechanism?.setHint(type: .ntName, hint: user.ntName)
         
         // set the network auth time to be added to the user record
-        delegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+        mechanism?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
     }
 
 }

@@ -284,7 +284,7 @@ import Network
                 return
             }
 
-            loginWebViewController.delegate=self
+            loginWebViewController.mechanism=self
             let screenRect = NSScreen.screens[0].frame
 
             let screenWidth = screenRect.width
@@ -342,7 +342,7 @@ import Network
             TCSLogWithMark()
             mainLoginWindowController.window?.makeFirstResponder(signInViewController.view)
 
-            signInViewController.delegate=self
+            signInViewController.mechanism=self
             if signInViewController.usernameTextField != nil {
                 signInViewController.usernameTextField.isEnabled=true
             }
