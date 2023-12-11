@@ -182,13 +182,13 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     fileprivate func loginStartedUI() {
         TCSLogWithMark()
         signIn.isEnabled = !signIn.isEnabled
-        signIn.isHidden = !signIn.isHidden
+//        signIn.isHidden = !signIn.isHidden
         TCSLogWithMark()
         usernameTextField.isEnabled = !usernameTextField.isEnabled
         passwordTextField.isEnabled = !passwordTextField.isEnabled
         localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
 
-        localOnlyView.isHidden = !localOnlyView.isHidden
+//        localOnlyView.isHidden = !localOnlyView.isHidden
         TCSLogWithMark()
     }
 
