@@ -242,7 +242,7 @@ import Network
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
 
-        if loginWebViewController != nil {
+        if loginWebViewController != nil || signInViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
             mainLoginWindowController.loginTransition {
                 super.allowLogin()

@@ -149,10 +149,7 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 mechanism.denyLogin(message:errorMessage)
                 return
             }
-
         }
-
-
         if username == nil {
             // username static map
             if let defaultsUsername = defaultsUsername {
@@ -287,8 +284,6 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 return
             }
         }
-
-
         TCSLogWithMark("passing username:\(username), password, and tokens")
         TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
 
@@ -309,25 +304,15 @@ class LoginWebViewController: WebViewController, DSQueryable {
 //            NotificationCenter.default.removeObserver(resolutionObserver)
 //        }
 //
-        DispatchQueue.main.async{
-            TCSLogWithMark("calling allowLogin")
+        TCSLogWithMark("calling allowLogin")
 
-            self.mechanism?.allowLogin()
-
-            if let controller = self.view.window?.windowController as? MainLoginWindowController {
-                controller.loginTransition {
-
-                }
+        if let controller = self.view.window?.windowController as? MainLoginWindowController {
+            controller.loginTransition {
+                self.mechanism?.allowLogin()
             }
-
         }
-
-
     }
-
 }
-
-
 extension String {
 
     var stripped: String {

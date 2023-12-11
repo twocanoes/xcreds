@@ -256,6 +256,16 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         TCSLogWithMark("updating claims in DS")
         let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
 
+        TCSLogWithMark("Checking if member of group")
+        let userGroups = getHint(type: .groups) as? [String]
+
+        if let userGroups = userGroups, userGroups.count>0 {
+            TCSLogWithMark("is a member of \(userGroups.count) groups. Adding to OD record.")
+            let groupsString = userGroups.joined(separator: ",")
+            try? records.first?.setValue(groupsString, forAttribute: "dsAttrTypeNative:_xcreds_groups")
+
+        }
+
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
         if let tokenArray = tokenArray , tokenArray.count>0{

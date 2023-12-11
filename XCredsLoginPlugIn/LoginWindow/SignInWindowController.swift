@@ -733,7 +733,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
         
-        TCSLogWithMark("Checking for DenyLogin groups")
+        TCSLogWithMark("Checking for DenyLogin groupsChecking for DenyLogin groups")
         
         if let allowedGroups = getManagedPreference(key: .DenyLoginUnlessGroupMember) as? [String] {
             TCSLogErrorWithMark("Found a DenyLoginUnlessGroupMember key value: \(allowedGroups.debugDescription)")

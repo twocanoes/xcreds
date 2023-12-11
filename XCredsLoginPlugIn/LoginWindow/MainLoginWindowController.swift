@@ -117,38 +117,42 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     }
 
     func loginTransition( completion:@escaping ()->Void) {
-        TCSLogWithMark()
-        let screenRect = NSScreen.screens[0].frame
-        let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-        progressIndicator.style = .spinning
-        progressIndicator.startAnimation(self)
-        self.window?.contentView?.addSubview(progressIndicator)
+        DispatchQueue.main.async {
 
-        if let resolutionObserver = resolutionObserver {
-            NotificationCenter.default.removeObserver(resolutionObserver)
-        }
-        if let networkChangeObserver = networkChangeObserver {
-            NotificationCenter.default.removeObserver(networkChangeObserver)
-        }
 
-        NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 1.0
-            context.allowsImplicitAnimation = true
-            self.centerView?.animator().alphaValue = 0.0
-            let origin = self.controlsViewController?.view.frame.origin
-            let size = self.controlsViewController?.view.frame.size
+            TCSLogWithMark()
+            let screenRect = NSScreen.screens[0].frame
+            let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
+            progressIndicator.style = .spinning
+            progressIndicator.startAnimation(self)
+            self.window?.contentView?.addSubview(progressIndicator)
 
-            if let origin = origin, let size = size {
-                self.controlsViewController?.view.animator().setFrameOrigin(NSMakePoint(origin.x, origin.y-(2*size.height)))
+            if let resolutionObserver = self.resolutionObserver {
+                NotificationCenter.default.removeObserver(resolutionObserver)
             }
-        }, completionHandler: {
-            self.centerView?.alphaValue = 0.0
-            self.controlsViewController?.view.animator().alphaValue=0.0
+            if let networkChangeObserver = self.networkChangeObserver {
+                NotificationCenter.default.removeObserver(networkChangeObserver)
+            }
 
-            self.centerView?.removeFromSuperview()
-            self.controlsViewController?.view.removeFromSuperview()
-            completion()
-        })
+            NSAnimationContext.runAnimationGroup({ (context) in
+                context.duration = 1.0
+                context.allowsImplicitAnimation = true
+                self.centerView?.animator().alphaValue = 0.0
+                let origin = self.controlsViewController?.view.frame.origin
+                let size = self.controlsViewController?.view.frame.size
+
+                if let origin = origin, let size = size {
+                    self.controlsViewController?.view.animator().setFrameOrigin(NSMakePoint(origin.x, origin.y-(2*size.height)))
+                }
+            }, completionHandler: {
+                self.centerView?.alphaValue = 0.0
+                self.controlsViewController?.view.animator().alphaValue=0.0
+
+                self.centerView?.removeFromSuperview()
+                self.controlsViewController?.view.removeFromSuperview()
+                completion()
+            })
+        }
 
     }
 
