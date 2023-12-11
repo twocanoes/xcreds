@@ -1,0 +1,11 @@
+--------------------------------------------------------------------------------------------------------
+
+Special thanks to North Carolina State University and Everette Allen for supporting this project.
+
+OIDCLite is Copyright (c) 2022 Joel Rennich (https://gitlab.com/Mactroll/OIDCLite) under MIT License.
+
+XCreds is licensed under BSD Open Source License.
+
+https://twocanoes.com
+
+--------------------------------------------------------------------------------------------------------
