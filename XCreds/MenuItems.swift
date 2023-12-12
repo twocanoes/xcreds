@@ -31,10 +31,10 @@ class AboutMenuItem: NSMenuItem {
 
     @objc func doAction() {
 
-        if mainMenu.aboutWindowController == nil {
-            mainMenu.aboutWindowController = AboutWindowController()
+        if sharedMainMenu.aboutWindowController == nil {
+            sharedMainMenu.aboutWindowController = AboutWindowController()
         }
-        mainMenu.aboutWindowController?.window!.forceToFrontAndFocus(nil)
+        sharedMainMenu.aboutWindowController?.window!.forceToFrontAndFocus(nil)
         NSApp.activate(ignoringOtherApps: true)
 
         
@@ -74,7 +74,7 @@ class SignInMenuItem: NSMenuItem {
 
     override var title: String {
         get {
-            if mainMenu.signedIn==true {
+            if sharedMainMenu.signedIn==true {
                 return "Refresh..."
             }
             else {
@@ -99,11 +99,22 @@ class SignInMenuItem: NSMenuItem {
     @objc func doAction() {
 
         if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
-            if (mainMenu.webView==nil){
-                mainMenu.webView = WebViewController()
-            }
+//            if (sharedMainMenu.webViewController==nil){
+//                windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
+//
+////                sharedMainMenu.windowController=NSWindowController(windowNibName: "WebView")
+////                sharedMainMenu.webViewController = sharedMainMenu.windowController
+//
+//
+//            }
+//            
+            let view = sharedMainMenu.windowController.webViewController.view
+            sharedMainMenu.windowController.window!.contentView?.addSubview(view)
+//            sharedMainMenu.windowController.showWindow(self)
+
+            sharedMainMenu.windowController.window!.makeKeyAndOrderFront(self)
 //            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-//            mainMenu.webView?.loadPage()
+            sharedMainMenu.webViewController?.loadPage()
         }
         else {
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{
@@ -133,10 +144,10 @@ class PrefsMenuItem: NSMenuItem {
     }
 
     @objc func doAction() {
-        if mainMenu.prefsWindow == nil {
-            mainMenu.prefsWindow = PreferencesWindowController()
+        if sharedMainMenu.prefsWindow == nil {
+            sharedMainMenu.prefsWindow = PreferencesWindowController()
         }
-        mainMenu.prefsWindow?.window!.forceToFrontAndFocus(nil)
+        sharedMainMenu.prefsWindow?.window!.forceToFrontAndFocus(nil)
     }
 }
 class CheckTokenMenuItem: NSMenuItem {

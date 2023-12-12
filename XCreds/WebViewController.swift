@@ -12,17 +12,16 @@ import OIDCLite
 
 class WebViewController: NSViewController {
 
-//    @objc override var windowNibName: NSNib.Name {
-//        return NSNib.Name("WebView")
-//    }
 
-    
     @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
 
     var password:String?
 
+    override class func awakeFromNib() {
+        
+    }
     func loadPage() {
         TCSLogWithMark("Clearing cookies")
         webView.cleanAllCookies()

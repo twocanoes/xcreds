@@ -94,7 +94,7 @@ class MainController: NSObject, NoMADUserSessionDelegate {
                 }
                 if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
                     //                    Mark()
-                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                    sharedMainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
                 }
                 let localAccountAndPassword = self.localAccountAndPassword()
                 if var localPassword=localAccountAndPassword.1{

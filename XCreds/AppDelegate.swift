@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
         mainController = MainController.init()
         mainController?.run()
-        mainMenu.statusBarItem.menu = mainMenu.mainMenu
+        sharedMainMenu.statusBarItem.menu = sharedMainMenu.mainMenu
 
     }
 

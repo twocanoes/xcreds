@@ -79,8 +79,8 @@ class ScheduleManager {
                     NotifyManager.shared.sendMessage(message: "Password unchanged")
                 }
                 DispatchQueue.main.async {
-                    mainMenu.signedIn=true
-                    mainMenu.buildMenu()
+                    sharedMainMenu.signedIn=true
+                    sharedMainMenu.buildMenu()
                 }
 
 

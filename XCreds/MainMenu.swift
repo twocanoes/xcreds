@@ -9,7 +9,15 @@ import Foundation
 import Cocoa
 
 // needs to be a singleton so it doesn't get reaped
-let mainMenu = MainMenu()
+let sharedMainMenu = MainMenu()
+
+class ViewController: NSViewController {
+    var myName: String = "ViewController"
+
+    override func loadView() {
+        view = NSView()
+    }
+}
 
 class MainMenu: NSObject, NSMenuDelegate {
 
@@ -18,19 +26,22 @@ class MainMenu: NSObject, NSMenuDelegate {
     var menuBuilt: Date? // last time menu was built
     var updateStatus = "Starting Up..."
     var signedIn = false
-    
+    var mainWindow:NSWindow!
+    var windowController: DesktopLoginWindowController!
+
     let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     // windows
 
-    var webView: WebViewController?
+    var webViewController: WebViewController?
     var prefsWindow: PreferencesWindowController?
     var aboutWindowController: AboutWindowController?
-
     override init() {
         mainMenu = NSMenu()
         super.init()
         buildMenu()
+        windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
+        print(windowController)
         self.statusBarItem.menu = mainMenu
         self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
         mainMenu.delegate = self

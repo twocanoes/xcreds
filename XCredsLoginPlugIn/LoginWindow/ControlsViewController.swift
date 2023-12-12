@@ -113,6 +113,7 @@ class ControlsViewController: NSViewController {
         return key
     }
     override func awakeFromNib() {
+        TCSLogWithMark()
         super.awakeFromNib()
         let licenseState = LicenseChecker().currentLicenseState()
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))

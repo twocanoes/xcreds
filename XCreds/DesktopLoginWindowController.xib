@@ -7,11 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="DesktopLoginWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
-                <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="X1r-3u-usj"/>
-                <outlet property="webView" destination="p1x-1L-05D" id="hJN-Xq-dh8"/>
-                <outlet property="window" destination="KxT-zM-Vnn" id="v4i-bY-4eE"/>
+                <outlet property="webViewController" destination="L0G-9E-ng8" id="0zI-ce-IjA"/>
+                <outlet property="window" destination="KxT-zM-Vnn" id="iFX-Nl-XcT"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -31,9 +30,6 @@
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                         </wkWebViewConfiguration>
-                        <connections>
-                            <outlet property="UIDelegate" destination="-2" id="Qhy-Dl-wsg"/>
-                        </connections>
                     </wkWebView>
                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
                         <rect key="frame" x="0.0" y="562" width="628" height="50"/>
@@ -60,5 +56,12 @@
             </view>
             <point key="canvasLocation" x="250" y="297.5"/>
         </window>
+        <viewController id="L0G-9E-ng8" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="llX-y9-ZSG"/>
+                <outlet property="view" destination="2LH-tE-efn" id="wro-LJ-uq7"/>
+                <outlet property="webView" destination="p1x-1L-05D" id="d7f-o6-H5S"/>
+            </connections>
+        </viewController>
     </objects>
 </document>
