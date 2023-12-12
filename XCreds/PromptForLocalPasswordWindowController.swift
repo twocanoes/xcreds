@@ -7,16 +7,25 @@
 
 import Cocoa
 
-class PromptForLocalPasswordWindowController: NSWindowController {
+class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     @IBOutlet weak var passwordTextField: NSSecureTextField!
+    @IBOutlet weak var adminUsernameTextField: NSTextField!
+    @IBOutlet weak var adminPasswordTextField: NSSecureTextField!
+    @IBOutlet weak var adminCredentialsWindow: NSWindow!
+
+
     @IBOutlet weak var resetButton: NSButton!
 
+    var shouldPromptForAdmin=false
     var password:String?
     var resetKeychain = false
+    var adminUsername:String?
+    var adminPassword:String?
+
     enum RequestLocalPasswordResult {
         case success(String)
-        case resetKeychain
+        case resetKeychain(String?,String?)
         case cancelled
         case error(String)
 
@@ -25,7 +34,7 @@ class PromptForLocalPasswordWindowController: NSWindowController {
         let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
 
         passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-        passwordWindowController.window?.isMovable = false
+        passwordWindowController.window?.isMovable = true
         passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
         passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
 
@@ -37,19 +46,21 @@ class PromptForLocalPasswordWindowController: NSWindowController {
             }
 
             let response = NSApp.runModal(for: passwordWindowController.window!)
+            passwordWindowController.window?.close()
+
             if response == .cancel {
                 isDone=true
                 TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
-//                mechanism.denyLogin(message:nil)
                 return .cancelled
 
             }
+            //set if user clicked reset
             let resetKeychain = passwordWindowController.resetKeychain
 
-            if resetKeychain == true {
-                passwordWindowController.window?.close()
+            if resetKeychain == true { //user clicked reset
                 isDone=true
-                return .resetKeychain
+
+                return .resetKeychain(passwordWindowController.adminUsername, passwordWindowController.adminPassword)
 
             }
             else {
@@ -100,26 +111,56 @@ class PromptForLocalPasswordWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         TCSLogWithMark()
-        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
-        {
-            resetButton.isHidden=false
-        }
-        else {
-            resetButton.isHidden=true
-
-        }
+//        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+//            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
+//        {
+//            resetButton.isHidden=false
+//        }
+//        else {
+//            resetButton.isHidden=true
+//
+//        }
 
     }
   
 
     @IBAction func removeKeychainButtonPressed(_ sender: Any) {
-        if self.window?.isModalPanel==true {
-            resetKeychain=true
-            NSApp.stopModal(withCode: .OK)
+
+
+        //override or prefs has admin username / password so don't prompt
+        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil {
+            if self.window?.isModalPanel==true {
+                resetKeychain=true
+                NSApp.stopModal(withCode: .OK)
+
+            }
 
         }
+        else { //prompt
+            self.adminCredentialsWindow?.canBecomeVisibleWithoutLogin = true
 
+            self.window?.beginSheet(adminCredentialsWindow) { res in
+                if res == .OK {
+                    self.resetKeychain=true
+                    TCSLogWithMark("got admin username and password")
+                    self.window?.endSheet(self.adminCredentialsWindow)
+
+                    if self.window?.isModalPanel==true {
+                        TCSLogWithMark("Prompt for local password window is modal so stopping")
+
+                        NSApp.stopModal(withCode: .OK)
+                    }
+
+
+
+                }
+                else { //user hit cancel
+                    TCSLogWithMark("cancelled admin")
+                    self.window?.endSheet(self.adminCredentialsWindow)
+                }
+            }
+        }
 
     }
     @IBAction func updateButtonPressed(_ sender: Any) {
@@ -134,4 +175,49 @@ class PromptForLocalPasswordWindowController: NSWindowController {
             NSApp.stopModal(withCode: .cancel)
         }
     }
+
+    @IBAction func adminCancelButtonPressed(_ sender: Any) {
+
+        window?.endSheet(adminCredentialsWindow, returnCode: .cancel)
+
+    }
+    @IBAction func adminResetButtonPressed(_ sender: Any) {
+        self.adminUsername=nil
+        self.adminPassword=nil
+        let adminUserName = adminUsernameTextField.stringValue
+        let adminPassword = adminPasswordTextField.stringValue
+
+        if adminUserName == "" {
+
+            adminUsernameTextField.shake(self)
+            return
+        }
+
+        else if adminPassword == "" {
+            adminPasswordTextField.shake(self)
+            return
+
+        }
+        let user = try? getLocalRecord(adminUserName)
+
+        if user == nil {
+
+            adminUsernameTextField.shake(self)
+            return
+        }
+        if PasswordUtils.verifyUser(name: adminUserName, auth: adminPassword)==false {
+            adminPasswordTextField.shake(self)
+            return
+        }
+        else { //password is valid
+
+            self.adminUsername=adminUserName
+            self.adminPassword=adminPassword
+
+
+            window?.endSheet(adminCredentialsWindow, returnCode: .OK)
+        }
+    }
+
+
 }

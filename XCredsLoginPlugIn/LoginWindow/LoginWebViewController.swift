@@ -263,9 +263,15 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 case .success(let localPassword):
                     mechanism.setHint(type: .existingLocalUserPassword, hint: localPassword)
 
-                case .resetKeychain:
+                case .resetKeychain(let adminUsername, let adminPassword):
                     os_log("Setting password to be overwritten.", log: uiLog, type: .default)
                     mechanism.setHint(type: .passwordOverwrite, hint: true)
+                    if let adminUsername = adminUsername, let adminPassword = adminPassword {
+                        mechanism.setHint(type: .adminUsername, hint: adminUsername)
+                        mechanism.setHint(type: .adminPassword, hint: adminPassword)
+
+                    }
+
                     os_log("Hint set", log: uiLog, type: .debug)
                 case .cancelled:
                     mechanism.denyLogin(message:nil)

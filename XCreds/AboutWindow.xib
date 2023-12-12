@@ -19,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="560" y="551" width="915" height="564"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
             <view key="contentView" wantsLayer="YES" id="ZbF-tC-vpZ">
                 <rect key="frame" x="0.0" y="0.0" width="915" height="564"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -77,7 +77,7 @@
             </connections>
             <point key="canvasLocation" x="401.5" y="387"/>
         </window>
-        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dXE-Xt-nIV">
+        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dXE-Xt-nIV">
             <rect key="frame" x="0.0" y="0.0" width="90" height="16"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <textFieldCell key="cell" lineBreakMode="clipping" title="DiscoveryURL" id="1hp-g2-T6a">

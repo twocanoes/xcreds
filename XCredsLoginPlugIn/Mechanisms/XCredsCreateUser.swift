@@ -163,30 +163,26 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
-                // Checking to see if we can get secureToken Creds
-//                var secureTokenCreds = PasswordUtils.GetSecureTokenCreds()
+                TCSLogWithMark("trying to getting admin user and password")
 
-//                os_log("User has a SecureToken and we do not, so just change the password and leave it up to a bootstap token to give us what we need.", log: createUserLog, type: .debug)
-//                // changing the with OpenDirectory
-//                do {
+                if let adminUsername = getHint(type: .adminUsername) as? String,
+                   let adminPassword = getHint(type: .adminPassword) as? String{
+                    TCSLogWithMark("resetting password with admin username and password that was prompted before")
 
-                TCSLogWithMark("Getting secure token admin user and password")
-                if let creds =  PasswordUtils.GetSecureTokenCreds(){
-                    do {
-                        TCSLogWithMark("secure token admin user and password obtained")
+                    resetUserPassword(adminUserName: adminUsername, adminPassword: adminPassword)
 
-                        let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
-                        let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
+                }
+                else if let creds =  PasswordUtils.GetSecureTokenCreds(){
+                    TCSLogWithMark("resetting password with admin username and password from override script")
 
-                        try user.setNodeCredentials(creds.username, password: creds.password)
+                    resetUserPassword(adminUserName: creds.username, adminPassword: creds.password)
+                }
+                else {
 
-                        TCSLogWithMark("changing password with secure token admin")
-                        try user.changePassword(nil, toPassword: xcredsPass!)
+                    TCSLogWithMark("password overwrite set but could not get admin username and password. this should not happen")
+                    denyLogin(message:"password overwrite set but could not get admin username and password. this should not happen")
+                    return
 
-                    }
-                    catch {
-                        TCSLogErrorWithMark("error: \(error.localizedDescription)")
-                    }
                 }
             }
             else {
@@ -229,6 +225,23 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
+    }
+    func resetUserPassword(adminUserName:String, adminPassword:String) {
+        do {
+            TCSLogWithMark("secure token admin user and password obtained")
+
+            let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
+            let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
+
+            try user.setNodeCredentials(adminUserName, password: adminPassword)
+
+            TCSLogWithMark("changing password with secure token admin")
+            try user.changePassword(nil, toPassword: xcredsPass!)
+
+        }
+        catch {
+            TCSLogErrorWithMark("error: \(error.localizedDescription)")
+        }
     }
 
     func updateOIDCInfo(user: String) -> Bool {
