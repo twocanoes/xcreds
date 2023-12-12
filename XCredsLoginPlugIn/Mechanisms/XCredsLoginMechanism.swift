@@ -298,14 +298,14 @@ import Network
             TCSLogWithMark("checking for custom height and width")
             if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
                 let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
-                if val > 100 {
+                if val > 149 {
                     TCSLogWithMark("setting loginWindowWidth to \(val)")
                     loginWindowWidth = val
                 }
             }
             if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
                 let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
-                if val > 100 {
+                if val > 149 {
                     TCSLogWithMark("setting loginWindowHeight to \(val)")
                     loginWindowHeight = val
                 }
