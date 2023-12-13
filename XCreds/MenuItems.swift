@@ -108,13 +108,14 @@ class SignInMenuItem: NSMenuItem {
 //
 //            }
 //            
+            print(sharedMainMenu.windowController.window)
             let view = sharedMainMenu.windowController.webViewController.view
-            sharedMainMenu.windowController.window!.contentView?.addSubview(view)
+//            sharedMainMenu.windowController.window!.contentView?.addSubview(view)
 //            sharedMainMenu.windowController.showWindow(self)
 
             sharedMainMenu.windowController.window!.makeKeyAndOrderFront(self)
 //            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
-            sharedMainMenu.webViewController?.loadPage()
+            sharedMainMenu.windowController.webViewController?.loadPage()
         }
         else {
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowPreferencesOnStart.rawValue)==true{

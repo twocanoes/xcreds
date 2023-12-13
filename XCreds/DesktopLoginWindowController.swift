@@ -10,6 +10,9 @@ import Cocoa
 class DesktopLoginWindowController: NSWindowController {
     @IBOutlet var webViewController: WebViewController!
     
+    override class func awakeFromNib() {
+        
+    }
     override func windowDidLoad() {
         super.windowDidLoad()
     

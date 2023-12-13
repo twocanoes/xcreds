@@ -23,6 +23,7 @@
 		761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */; };
 		761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486828A34CC900C6A02B /* LoginProgressWindowController.swift */; };
 		761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486B28A3575000C6A02B /* XCredsLoginDone.swift */; };
+		762761602B294A7C0067D1D4 /* icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7614D03B2B181A5D006EAF36 /* icon_128x128.png */; };
 		76319360287D22C700D36BF7 /* authrights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7631935F287D22C700D36BF7 /* authrights.swift */; };
 		76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319365287D24E100D36BF7 /* ArgumentParser */; };
 		76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319368287D24F600D36BF7 /* ArgumentParser */; };
@@ -1031,6 +1032,7 @@
 			files = (
 				76DC0A7C28837158007C42B2 /* XCreds Login Overlay.app in Resources */,
 				76DB5CF42A09AE9A0014F8E1 /* get_pw.js in Resources */,
+				762761602B294A7C0067D1D4 /* icon_128x128.png in Resources */,
 				76CB907E288112C200C70D0C /* xcreds_login.sh in Resources */,
 				76319377287E1FAF00D36BF7 /* authrights in Resources */,
 				76319374287E198C00D36BF7 /* XCredsLoginPlugin.bundle in Resources */,
@@ -1297,7 +1299,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1335,7 +1337,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1455,7 +1457,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1492,7 +1494,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1642,7 +1644,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1683,7 +1685,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6020;
+				CURRENT_PROJECT_VERSION = 6021;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

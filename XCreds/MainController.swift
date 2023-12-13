@@ -79,7 +79,7 @@ class MainController: NSObject, NoMADUserSessionDelegate {
 
 
             DispatchQueue.main.async {
-//                mainMenu.webView?.window?.close()
+                sharedMainMenu.windowController.window?.close()
 
                 guard let tokenInfo = notification.userInfo else {
                     return
@@ -176,8 +176,13 @@ class MainController: NSObject, NoMADUserSessionDelegate {
         }
         TCSLogWithMark()
 //        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+        let promptPasswordWindowController = PromptForLocalPasswordWindowController()
+
         
-        switch  PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username: PasswordUtils.currentConsoleUserName, password: nil, shouldUpdatePassword: false) {
+        promptPasswordWindowController.showResetText=false
+        promptPasswordWindowController.showResetButton=false
+
+        switch  promptPasswordWindowController.verifyLocalPasswordAndChange(username: PasswordUtils.currentConsoleUserName, password: nil, shouldUpdatePassword: false) {
 
         case .success(let localPassword):
             let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass: localPassword, shouldUpdateACL: true)

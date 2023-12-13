@@ -41,7 +41,7 @@ class MainMenu: NSObject, NSMenuDelegate {
         super.init()
         buildMenu()
         windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-        print(windowController)
+//        print(windowController)
         self.statusBarItem.menu = mainMenu
         self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
         mainMenu.delegate = self

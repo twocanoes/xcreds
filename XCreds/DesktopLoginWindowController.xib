@@ -9,7 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DesktopLoginWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
-                <outlet property="webViewController" destination="L0G-9E-ng8" id="0zI-ce-IjA"/>
+                <outlet property="webViewController" destination="L0G-9E-ng8" id="o4U-Ou-7uU"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="iFX-Nl-XcT"/>
             </connections>
         </customObject>

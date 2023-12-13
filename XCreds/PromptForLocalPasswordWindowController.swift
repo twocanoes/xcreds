@@ -13,10 +13,12 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var adminUsernameTextField: NSTextField!
     @IBOutlet weak var adminPasswordTextField: NSSecureTextField!
     @IBOutlet weak var adminCredentialsWindow: NSWindow!
-
-
     @IBOutlet weak var resetButton: NSButton!
+    @IBOutlet weak var resetText: NSTextField!
 
+    
+    var showResetButton = true
+    var showResetText = true
     var shouldPromptForAdmin=false
     var password:String?
     var resetKeychain = false
@@ -30,23 +32,32 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
         case error(String)
 
     }
-    static func verifyLocalPasswordAndChange(username:String, password:String?, shouldUpdatePassword:Bool) -> RequestLocalPasswordResult {
-        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+    override var windowNibName: NSNib.Name {
 
-        passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-        passwordWindowController.window?.isMovable = true
-        passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+        return "LoginPasswordWindowController"
+    }
+    override func awakeFromNib() {
+        resetButton.isHidden = !showResetButton
+        resetText.isHidden = !showResetText
+
+    }
+    func verifyLocalPasswordAndChange(username:String, password:String?, shouldUpdatePassword:Bool) -> RequestLocalPasswordResult {
+//        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+
+        window?.canBecomeVisibleWithoutLogin=true
+        window?.isMovable = true
+        window?.canBecomeVisibleWithoutLogin = true
+        window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
 
         var isDone = false
         while (!isDone){
             DispatchQueue.main.async{
                 TCSLogWithMark("resetting level")
-                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+                self.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
             }
 
-            let response = NSApp.runModal(for: passwordWindowController.window!)
-            passwordWindowController.window?.close()
+            let response = NSApp.runModal(for: window!)
+            window?.close()
 
             if response == .cancel {
                 isDone=true
@@ -54,18 +65,15 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
                 return .cancelled
 
             }
-            //set if user clicked reset
-            let resetKeychain = passwordWindowController.resetKeychain
-
             if resetKeychain == true { //user clicked reset
                 isDone=true
 
-                return .resetKeychain(passwordWindowController.adminUsername, passwordWindowController.adminPassword)
+                return .resetKeychain(adminUsername, adminPassword)
 
             }
             else {
                 TCSLogWithMark("user gave old password. checking...")
-                let localPassword = passwordWindowController.password
+                let localPassword = self.password
                 guard let localPassword = localPassword else {
                     continue
                 }
@@ -97,10 +105,10 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
                     }
                     TCSLogWithMark("setting original password to use to unlock keychain later")
                     isDone=true
-                    passwordWindowController.window?.close()
+                    window?.close()
                     return .success(localPassword)
                 default:
-                    passwordWindowController.window?.shake(self)
+                    window?.shake(self)
 
                 }
             }
@@ -164,8 +172,9 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     }
     @IBAction func updateButtonPressed(_ sender: Any) {
+        password=passwordTextField.stringValue
+
         if self.window?.isModalPanel==true {
-            password=passwordTextField.stringValue
             NSApp.stopModal(withCode: .OK)
 
         }

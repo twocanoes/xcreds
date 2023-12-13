@@ -258,7 +258,9 @@ class LoginWebViewController: WebViewController, DSQueryable {
                     os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
                     break;
                 }
-                switch  PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username:username, password: tokens.password, shouldUpdatePassword: true) {
+                let promptPasswordWindowController = PromptForLocalPasswordWindowController()
+
+                switch  promptPasswordWindowController.verifyLocalPasswordAndChange(username:username, password: tokens.password, shouldUpdatePassword: true) {
 
                 case .success(let localPassword):
                     mechanism.setHint(type: .existingLocalUserPassword, hint: localPassword)

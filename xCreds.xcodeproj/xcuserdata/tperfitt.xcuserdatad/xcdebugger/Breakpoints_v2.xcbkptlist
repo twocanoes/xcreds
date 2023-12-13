@@ -7,64 +7,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7A8AE847-14B5-438F-99D9-897A3EE79F99"
+            uuid = "C8FA7695-8BDC-4C58-9DD6-9FCA2EE97FA3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/Window+ForceToFront.swift"
+            filePath = "XCreds/PromptForLocalPasswordWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
-            landmarkName = "forceToFrontAndFocus(_:)"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "verifyLocalPasswordAndChange(username:password:shouldUpdatePassword:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C8FA7695-8BDC-4C58-9DD6-9FCA2EE97FA3 - 4f377055bb2960a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username: Swift.String, password: Swift.Optional&lt;Swift.String&gt;, shouldUpdatePassword: Swift.Bool) -&gt; XCreds.PromptForLocalPasswordWindowController.RequestLocalPasswordResult"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/PromptForLocalPasswordWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "2272">
+               </Location>
+               <Location
+                  uuid = "C8FA7695-8BDC-4C58-9DD6-9FCA2EE97FA3 - 4f377055bb2960a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username: Swift.String, password: Swift.Optional&lt;Swift.String&gt;, shouldUpdatePassword: Swift.Bool) -&gt; XCreds.PromptForLocalPasswordWindowController.RequestLocalPasswordResult"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/PromptForLocalPasswordWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "2268">
+               </Location>
+               <Location
+                  uuid = "C8FA7695-8BDC-4C58-9DD6-9FCA2EE97FA3 - 4f377055bb2960a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.PromptForLocalPasswordWindowController.verifyLocalPasswordAndChange(username: Swift.String, password: Swift.Optional&lt;Swift.String&gt;, shouldUpdatePassword: Swift.Bool) -&gt; XCreds.PromptForLocalPasswordWindowController.RequestLocalPasswordResult"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/PromptForLocalPasswordWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "2276">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3927DE86-D0FE-4553-A215-8756132597C9"
+            uuid = "3F99C285-2C49-45C5-9F86-073A870BA291"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/AppDelegate.swift"
+            filePath = "XCreds/MainController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "screenLocked(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4EDA2515-2418-4507-8683-EB3A303BA768"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/WebViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "loadPage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "11BEB74C-40AB-4C0B-91AE-282487C2B5A2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/MenuItems.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
-            landmarkName = "doAction()"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "localAccountAndPassword()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

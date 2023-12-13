@@ -19,73 +19,74 @@ class WebViewController: NSViewController {
 
     var password:String?
 
-    override class func awakeFromNib() {
-        
-    }
+
+
     func loadPage() {
-        TCSLogWithMark("Clearing cookies")
-        webView.cleanAllCookies()
-        TCSLogWithMark()
-        let licenseState = LicenseChecker().currentLicenseState()
-        if let refreshTitleTextField = refreshTitleTextField {
-            refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
-        }
-
-        webView.navigationDelegate = self
-        TokenManager.shared.oidc().delegate = self
-        clearCookies()
-        TCSLogWithMark()
-        switch licenseState {
-
-        case .valid, .trial(_):
-            break
-        case .invalid,.trialExpired, .expired:
-            let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-            if let bundle = bundle {
-                let loadPageURL = bundle.url(forResource: "errorpage", withExtension: "html")
-                if let loadPageURL = loadPageURL {
-                    self.webView.load(URLRequest(url:loadPageURL))
-
-                }
+        DispatchQueue.main.async {
+            TCSLogWithMark("Clearing cookies")
+            self.webView.cleanAllCookies()
+            TCSLogWithMark()
+            let licenseState = LicenseChecker().currentLicenseState()
+            if let refreshTitleTextField = self.refreshTitleTextField {
+                refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
             }
-            return
 
-        }
+            self.webView.navigationDelegate = self
+            TokenManager.shared.oidc().delegate = self
+            self.clearCookies()
+            TCSLogWithMark()
+            switch licenseState {
 
-        NotificationCenter.default.addObserver(self, selector: #selector(connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
+            case .valid, .trial(_):
+                break
+            case .invalid,.trialExpired, .expired:
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
 
-        let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+                if let bundle = bundle {
+                    let loadPageURL = bundle.url(forResource: "errorpage", withExtension: "html")
+                    if let loadPageURL = loadPageURL {
+                        self.webView.load(URLRequest(url:loadPageURL))
 
-        if discoveryURL != nil {
-            NetworkMonitor.shared.startMonitoring()
-            TCSLogWithMark("Network monitor: adding connectivity status change observer")
-        }
+                    }
+                }
+                return
 
-        if discoveryURL != nil, let url = getOidcLoginURL(){
-            self.webView.load(URLRequest(url: url))
-            NetworkMonitor.shared.stopMonitoring()
+            }
 
-        }
-        else {
-            if discoveryURL == nil {
-                TCSLogWithMark("no discovery URL")
+            NotificationCenter.default.addObserver(self, selector: #selector(self.connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
+
+            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+
+            if discoveryURL != nil {
+                NetworkMonitor.shared.startMonitoring()
+                TCSLogWithMark("Network monitor: adding connectivity status change observer")
+            }
+
+            if discoveryURL != nil, let url = self.getOidcLoginURL(){
+                self.webView.load(URLRequest(url: url))
+                NetworkMonitor.shared.stopMonitoring()
+
             }
             else {
-                TCSLogWithMark("no discovery URL")
+                if discoveryURL == nil {
+                    TCSLogWithMark("no discovery URL")
+                }
+                else {
+                    TCSLogWithMark("no discovery URL")
 
-            }
-
-            let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-            if let bundle = bundle {
-                TCSLogWithMark("getting loadPageURL")
-                let loadPageURL = bundle.url(forResource: "loadpage", withExtension: "html")
-                if let loadPageURL = loadPageURL {
-                    TCSLogWithMark("loading webview")
-                    self.webView.load(URLRequest(url:loadPageURL))
                 }
 
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("getting loadPageURL")
+                    let loadPageURL = bundle.url(forResource: "loadpage", withExtension: "html")
+                    if let loadPageURL = loadPageURL {
+                        TCSLogWithMark("loading webview")
+                        self.webView.load(URLRequest(url:loadPageURL))
+                    }
+
+                }
             }
         }
     }
