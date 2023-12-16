@@ -18,6 +18,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var mechanism:XCredsMechanismProtocol?
 
     override func windowDidLoad() {
+        TCSLogWithMark()
         super.windowDidLoad()
 
         window?.canBecomeVisibleWithoutLogin=true
@@ -46,7 +47,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     }
     @objc fileprivate func updateWindow() {
-
+        TCSLogWithMark()
         DispatchQueue.main.async{
             if self.window?.isVisible ?? true {
                 let screenRect = NSScreen.screens[0].frame
@@ -105,10 +106,13 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         }
         self.controlsViewController?.delegate=mechanism
 
+        TCSLogWithMark()
         self.window?.contentView?.addSubview(controlsViewController.view)
-        let rect2 = NSMakeRect(0, 0, controlsViewController.view.frame.size.width,controlsViewController.view.frame.size.height)
-        controlsViewController.view.frame=rect2
+        if let width = self.window?.frame.size.width {
+            let rect2 = NSMakeRect(0, 0, width,controlsViewController.view.frame.size.height)
+            controlsViewController.view.frame=rect2
 
+        }
         TCSLogWithMark("create background windows")
         self.createBackground()
 
