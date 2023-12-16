@@ -38,6 +38,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var localOnlyCheckBox: NSButton!
     @IBOutlet weak var localOnlyView: NSView!
+    @IBOutlet var alertTextField:NSTextField!
 
     @IBOutlet weak var stackView: NSStackView!
 
@@ -67,6 +68,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        alertTextField.isHidden=true
         TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
@@ -174,7 +176,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         nomadSession = nil
         passwordTextField.stringValue = ""
         passwordTextField.shake(self)
-//        alertText.stringValue = message ?? "Authentication Failed"
+        alertTextField.isHidden=false
+        alertTextField.stringValue = message ?? "Authentication Failed"
         loginStartedUI()
     }
 
@@ -657,7 +660,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
-        
+//        alertTextField.isHidden=false
+//        alertTextField.stringValue = description
 //        if passChanged {
 //            os_log("Password change failed.", log: uiLog, type: .default)
 //            os_log("Password change failure description: %{public}@", log: uiLog, type: .error, description)
@@ -704,7 +708,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 //                setRequiredHintsAndContext()
 //                completeLogin(authResult: .allow)
 //            } else {
-                authFail()
+                authFail(description)
 //            }
             return
         }
