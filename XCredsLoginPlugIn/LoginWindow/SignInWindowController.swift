@@ -118,7 +118,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         }
     }
 
-    fileprivate func showResetUI() {
+    fileprivate func showResetUI() -> Bool {
         TCSLogWithMark()
 
         let changePasswordWindowController = UpdatePasswordWindowController.init(windowNibName: NSNib.Name("UpdatePasswordWindowController"))
@@ -141,7 +141,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
             if response == .cancel {
                 isDone = true
-                return
+                return false
             }
 
             if let pass = changePasswordWindowController.password {
@@ -150,7 +150,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             guard let session = nomadSession else {
 
                 TCSLogWithMark("invalid session")
-                return
+                return false
             }
             session.oldPass = passString
             session.newPass = newPassword
@@ -164,7 +164,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             isDone = true
 //            delegate?.setHint(type: .migratePass, hint: migrateUIPass)
 //            completeLogin(authResult: .allow)
-            return
+            return true
 
         }
 
@@ -682,7 +682,11 @@ extension SignInViewController: NoMADUserSessionDelegate {
 //            authFail()
 //            delegate?.denyLogin(message:"Password is expired or requires change")
 
-            showResetUI()
+            let res = showResetUI()
+
+            if res == false { //user cancelled so enable UI
+                loginStartedUI()
+            }
             return
         case .OffDomain:
             TCSLogErrorWithMark("OffDomain")
@@ -788,7 +792,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         } else {
             authFail()
 //            alertText.stringValue = "Not authorized to login."
-            showResetUI()
+//            showResetUI()
         }
     }
     
