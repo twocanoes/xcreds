@@ -56,13 +56,16 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                 
                 TCSLogWithMark("Local name matches, but not password")
                 
-                if (getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false) {
-                    // set the hint and return complete
+                if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
+                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+                    TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
                     TCSLogWithMark("Setting password to be overwritten.")
                     delegate?.setHint(type: .passwordOverwrite, hint: true)
                     TCSLogWithMark("Hint set")
                     return .complete
                 } else {
+                    TCSLogWithMark("setting to sync password")
                     return .syncPassword
                 }
             }

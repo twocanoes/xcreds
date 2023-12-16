@@ -426,57 +426,57 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
     //MARK: - Update Local User Account Methods
 
-    fileprivate func showPasswordSync() {
-        // hide other possible boxes
-        TCSLogWithMark()
-
-        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
-
-        passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
-        passwordWindowController.window?.isMovable = false
-        passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
-        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
-        var isDone = false
-        while (!isDone){
-            DispatchQueue.main.async{
-                TCSLogWithMark("resetting level")
-                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
-            }
-
-            let response = NSApp.runModal(for: passwordWindowController.window!)
-            passwordWindowController.window?.close()
-
-            if response == .cancel {
-                isDone=true
-                TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
-                completeLogin(authResult: .deny)
-
-                return
-            }
-
-            let localPassword = passwordWindowController.password
-            guard let localPassword = localPassword else {
-                continue
-            }
-            do {
-                os_log("Password doesn't match existing local. Try to change local pass to match.", log: uiLog, type: .default)
-                let localUser = try getLocalRecord(shortName)
-                try localUser.changePassword(localPassword, toPassword: passString)
-                os_log("Password sync worked, allowing login", log: uiLog, type: .default)
-
-                isDone=true
-                mechanism?.setHint(type: .existingLocalUserPassword, hint: localPassword)
-                completeLogin(authResult: .allow)
-                return
-            } catch {
-                os_log("Unable to sync local password to Network password. Reload and try again", log: uiLog, type: .error)
-                return
-            }
-
-
-        }
-
-    }
+//    fileprivate func showPasswordSync() {
+//        // hide other possible boxes
+//        TCSLogWithMark()
+//
+//        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+//
+//        passwordWindowController.window?.canBecomeVisibleWithoutLogin=true
+//        passwordWindowController.window?.isMovable = false
+//        passwordWindowController.window?.canBecomeVisibleWithoutLogin = true
+//        passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+//        var isDone = false
+//        while (!isDone){
+//            DispatchQueue.main.async{
+//                TCSLogWithMark("resetting level")
+//                passwordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+//            }
+//
+//            let response = NSApp.runModal(for: passwordWindowController.window!)
+//            passwordWindowController.window?.close()
+//
+//            if response == .cancel {
+//                isDone=true
+//                TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
+//                completeLogin(authResult: .deny)
+//
+//                return
+//            }
+//
+//            let localPassword = passwordWindowController.password
+//            guard let localPassword = localPassword else {
+//                continue
+//            }
+//            do {
+//                os_log("Password doesn't match existing local. Try to change local pass to match.", log: uiLog, type: .default)
+//                let localUser = try getLocalRecord(shortName)
+//                try localUser.changePassword(localPassword, toPassword: passString)
+//                os_log("Password sync worked, allowing login", log: uiLog, type: .default)
+//
+//                isDone=true
+//                mechanism?.setHint(type: .existingLocalUserPassword, hint: localPassword)
+//                completeLogin(authResult: .allow)
+//                return
+//            } catch {
+//                os_log("Unable to sync local password to Network password. Reload and try again", log: uiLog, type: .error)
+//                return
+//            }
+//
+//
+//        }
+//
+//    }
     
 
     fileprivate func showMigration() {
@@ -774,9 +774,14 @@ extension SignInViewController: NoMADUserSessionDelegate {
             case .syncPassword:
                 // first check to see if we can resolve this ourselves
                 TCSLogWithMark("Sync password called.")
-                showPasswordSync()
+//                showPasswordSync()
+
+                if let mechanism = mechanism as? XCredsLoginMechanism {
+                    let res = mechanism.promptForLocalPassword(username: user.shortName)
+                    completeLogin(authResult: res)
 
 
+                }
             case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
             }

@@ -260,6 +260,41 @@ import Network
         TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");
         super.denyLogin(message: message)
     }
+    func promptForLocalPassword(username:String) -> AuthorizationResult  {
+        TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
+
+        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
+            getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+            TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
+            self.setHint(type: .passwordOverwrite, hint: true)
+        }
+        let promptPasswordWindowController = PromptForLocalPasswordWindowController()
+
+        switch  promptPasswordWindowController.verifyLocalPasswordAndChange(username:username, password: username, shouldUpdatePassword: true) {
+
+        case .success(let localPassword):
+            self.setHint(type: .existingLocalUserPassword, hint: localPassword)
+            return .allow
+
+        case .resetKeychain(let adminUsername, let adminPassword):
+            self.setHint(type: .passwordOverwrite, hint: true)
+            if let adminUsername = adminUsername, let adminPassword = adminPassword {
+                self.setHint(type: .adminUsername, hint: adminUsername)
+                self.setHint(type: .adminPassword, hint: adminPassword)
+
+            }
+            return .allow
+
+        case .cancelled:
+            denyLogin(message:nil)
+            return .deny
+        case .error(let errMesg):
+            denyLogin(message:errMesg)
+            return .deny
+        }
+
+    }
 
     func showLoginWindowType(loginWindowType:LoginWindowType)  {
         TCSLogWithMark()
@@ -350,7 +385,12 @@ import Network
                 signInViewController.passwordTextField.isEnabled=true
                 signInViewController.passwordTextField.stringValue=""
             }
-
+            if signInViewController.signIn != nil {
+                signInViewController.signIn.isEnabled = true
+            }
+            if signInViewController.localOnlyCheckBox != nil {
+                signInViewController.localOnlyCheckBox.isEnabled = true
+            }
 
         }
 

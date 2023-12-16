@@ -248,41 +248,9 @@ class LoginWebViewController: WebViewController, DSQueryable {
             case .success:
                 TCSLogWithMark("Local password matches cloud password ")
             case .incorrectPassword:
-                TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
-
-                if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
-                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
-                    TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
-                    mechanism.setHint(type: .passwordOverwrite, hint: true)
-                    os_log("Hint set for passwordOverwrite", log: uiLog, type: .debug)
-                    break;
+                if let mechanism = mechanism as? XCredsLoginMechanism{
+                    mechanism.promptForLocalPassword(username: username)
                 }
-                let promptPasswordWindowController = PromptForLocalPasswordWindowController()
-
-                switch  promptPasswordWindowController.verifyLocalPasswordAndChange(username:username, password: tokens.password, shouldUpdatePassword: true) {
-
-                case .success(let localPassword):
-                    mechanism.setHint(type: .existingLocalUserPassword, hint: localPassword)
-
-                case .resetKeychain(let adminUsername, let adminPassword):
-                    os_log("Setting password to be overwritten.", log: uiLog, type: .default)
-                    mechanism.setHint(type: .passwordOverwrite, hint: true)
-                    if let adminUsername = adminUsername, let adminPassword = adminPassword {
-                        mechanism.setHint(type: .adminUsername, hint: adminUsername)
-                        mechanism.setHint(type: .adminPassword, hint: adminPassword)
-
-                    }
-
-                    os_log("Hint set", log: uiLog, type: .debug)
-                case .cancelled:
-                    mechanism.denyLogin(message:nil)
-                    return
-                case .error(let errMesg):
-                    mechanism.denyLogin(message:errMesg)
-                }
-
-
             case .accountDoesNotExist:
                 TCSLogWithMark("user account doesn't exist yet")
 
