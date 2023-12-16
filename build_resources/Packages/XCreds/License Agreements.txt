@@ -70,3 +70,4 @@ SECTION 6.1 IS THE EXCLUSIVE WARRANTY, AND TWOCANOES DISCLAIMS ALL OTHER WARRANT
 9.6. Notice to Customer. Twocanoes may provide Customer with notice related to this Agreement or the Software via the email address or other contact information Customer provides to Twocanoes.
 9.7. Notice to Twocanoes. Customer can provide Twocanoes notice under this Agreement by email at support@twocanoes.com.
 
+Updated May 5, 2023
