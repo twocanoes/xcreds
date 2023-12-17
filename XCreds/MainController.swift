@@ -43,10 +43,11 @@ class MainController: NSObject, NoMADUserSessionDelegate {
         // in the keychain
         let accountAndPassword = localAccountAndPassword()
 
+        let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
 
         if let userName=accountAndPassword.0, let passString = accountAndPassword.1, passString.isEmpty==false{
 
-            if let domainName = userName.components(separatedBy: "@").last, let shortName = userName.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
+            if let domainName = domainName, let shortName = userName.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
                 session = NoMADSession.init(domain: domainName, user: shortName)
                 TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
                 guard let session = session else {
@@ -59,7 +60,6 @@ class MainController: NSObject, NoMADUserSessionDelegate {
                 session.recursiveGroupLookup = getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false
 
                 if let ignoreSites = getManagedPreference(key: .IgnoreSites) as? Bool {
-                    //                os_log("Ignoring AD sites", log: uiLog, type: .debug)
 
                     session.siteIgnore = ignoreSites
                 }

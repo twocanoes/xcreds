@@ -245,7 +245,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     }
 
     func updateOIDCInfo(user: String) -> Bool {
-        os_log("Checking for local username", log: noLoMechlog, type: .default)
+        TCSLogWithMark("Checking for local username")
         var records = [ODRecord]()
         let odsession = ODSession.default()
         do {
@@ -266,7 +266,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
 
         // now to update the attribute
-        TCSLogWithMark("updating claims in DS")
+        TCSLogWithMark("updating info in DS")
         let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
 
         TCSLogWithMark("Checking if member of group")
@@ -276,6 +276,15 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             TCSLogWithMark("is a member of \(userGroups.count) groups. Adding to OD record.")
             let groupsString = userGroups.joined(separator: ",")
             try? records.first?.setValue(groupsString, forAttribute: "dsAttrTypeNative:_xcreds_groups")
+
+        }
+
+        TCSLogWithMark("checking for kerberos principal")
+        let kerberosPrincipal = getHint(type: .kerberos_principal) as? String
+
+        if let kerberosPrincipal = kerberosPrincipal {
+            TCSLogWithMark("saving kerberos pricipal to user DS record")
+            try? records.first?.setValue(kerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
 
         }
 

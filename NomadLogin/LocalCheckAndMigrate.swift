@@ -14,6 +14,7 @@ enum MigrationType {
     case fullMigration // perform full migration
     case skipMigration // no need to migrate
     case syncPassword // local password needs to be synced with local
+    case mappedUserFound(ODRecord)
     case userMatchSkipMigration
     case complete // all good
 }
@@ -30,12 +31,18 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
     
     public var migrationUsers: [String]?
     
-    func run(userToCheck: String, passToCheck: String) -> MigrationType {
+    func migrationTypeRequired(userToCheck: String, passToCheck: String, kerberosPrincipalName:String?) -> MigrationType {
 
+        TCSLogWithMark()
         user = userToCheck
         pass = passToCheck
         
-        let migrate = (getManagedPreference(key: .Migrate) as? Bool ?? false)
+
+        if let kerberosPrincipalName = kerberosPrincipalName, let foundRecord = try? getUserRecord(kerberosPrincipalNameToFind: kerberosPrincipalName) {
+
+            return .mappedUserFound(foundRecord)
+        }
+        let shouldPromptToMigrate = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
         // check local user pass to see if user exists
         
@@ -43,15 +50,8 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
             if try isLocalPasswordValid(userName: userToCheck, userPass: passToCheck) {
             
                 TCSLogWithMark("Network creds match local creds, nothing to migrate or update.")
-                
-                if migrate {
-                    TCSLogWithMark("Migrate set, adding migration name hint.")
-                    // set the migration hint
-                    delegate?.setHint(type: .existingLocalUserName, hint: userToCheck)
-                    return .userMatchSkipMigration
-                } else {
-                    return .complete
-                }
+                return .userMatchSkipMigration
+
             } else {
                 
                 TCSLogWithMark("Local name matches, but not password")
@@ -72,21 +72,20 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         } catch DSQueryableErrors.notLocalUser {
             TCSLogWithMark("User is not a local user")
             
-            if migrate {
-                getMigrationCandidates()
-                
-                if migrationUsers?.count ?? 0 < 1 {
-                    TCSLogWithMark("No possible migration candidates, skipping migration")
-                    return .skipMigration
-                } else {
-                    return .fullMigration
-                }
-            } else {
+            if shouldPromptToMigrate == false {
                 return .complete
             }
+
+            TCSLogWithMark("prompting to migrate set. checking for local accounts as candidates")
+            //                getMigrationCandidates()
+            let standardUsers = try? getAllLocalUserRecords()
+            guard let standardUsers = standardUsers, standardUsers.count>0 else {
+                return .skipMigration
+            }
+            return .fullMigration
+
         } catch {
-            TCSLogWithMark("Unknown migration check error")
-            
+            TCSLogWithMark("Unknown migration check error. skipping migration.")
             return .errorSkipMigration
         }
     }

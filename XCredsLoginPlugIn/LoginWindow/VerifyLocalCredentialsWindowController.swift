@@ -60,19 +60,6 @@ class VerifyLocalCredentialsWindowController: NSWindowController, NSWindowDelega
                 switch isValidPassword {
                 case .success:
                     isDone = true
-////                    username = localUsername
-////                    passwordHintSet=true
-////                    TCSLogWithMark("setting original password to use to unlock keychain later")
-////                    mechanism.setHint(type: .existingLocalUserPassword, hint: localPassword)
-////
-////                    guard let username = username else {
-////
-////                        isDone = true
-////                        TCSLogErrorWithMark("username is not set")
-////                        mechanism.denyLogin(message:"username is not set")
-////                        return
-////
-////                    }
                    let localUser = try? PasswordUtils.getLocalRecord(localUsername)
                     guard let localUser = localUser else {
 
@@ -82,14 +69,24 @@ class VerifyLocalCredentialsWindowController: NSWindowController, NSWindowDelega
 
                     }
                     do {
+                        TCSLogWithMark("Changing password")
+                        if localPassword == newPassword {
+                            TCSLogWithMark("cloud password is already the local password.")
+
+                            return .successful(localUsername)
+                        }
                         try localUser.changePassword(localPassword, toPassword: newPassword)
+
+                        TCSLogWithMark("local password set successfully to network / cloud password")
+                        return .successful(localUsername)
+
                     }
                     catch {
                         TCSLogErrorWithMark("Error setting local password to cloud password")
                         return .error("Error setting local password to cloud password")
                     }
 
-                case .incorrectPassword:
+                case .incorrectPassword: //don't return b/c we just loop and ask again
                     TCSLogErrorWithMark("Incorrect Password")
 
                 case .accountDoesNotExist:

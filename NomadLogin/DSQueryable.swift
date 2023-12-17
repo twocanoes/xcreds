@@ -195,7 +195,33 @@ public extension DSQueryable {
             throw error
         }
     }
+    func getUserRecord(kerberosPrincipalNameToFind:String) throws -> ODRecord {
+        do {
+            os_log("getting non system users.", type: .info)
 
+            let allRecords = try getAllNonSystemUsers()
+            os_log("filtering", type: .info)
+
+            let matchingRecords = allRecords.filter { (record) -> Bool in
+                guard let foundKerberosPrincipal = try? record.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String] else {
+                    return false
+                }
+
+                os_log("checking \(foundKerberosPrincipal)", type: .info)
+
+                return foundKerberosPrincipal.first == kerberosPrincipalNameToFind
+            }
+            guard let userRecord = matchingRecords.first else {
+                TCSLogWithMark("no users match \(kerberosPrincipalNameToFind)")
+
+                throw DSQueryableErrors.notLocalUser
+            }
+            return userRecord
+        } catch {
+            os_log("ODError while finding local users.", type: .error)
+            throw error
+        }
+    }
 
     /// Returns all the non-system users on a system above UID 500.
     ///

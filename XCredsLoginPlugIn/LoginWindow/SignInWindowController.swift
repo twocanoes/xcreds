@@ -391,38 +391,25 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     ///
     /// - Parameter authResult:`Authorizationresult` enum value that indicates if login should proceed.
     fileprivate func completeLogin(authResult: AuthorizationResult) {
-        if let delegate = mechanism {
 
-        }
-        else {
-            TCSLogWithMark("delegate not defined")
 
-        }
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
             mechanism?.allowLogin()
-//            window?.close()
 
         case .deny:
             TCSLogWithMark("Complete login process with deny")
             mechanism?.denyLogin(message:nil)
 
-//            window?.close()
-
         default:
-            TCSLogWithMark("Complete login process with unknown")
-//            window?.close()
+            TCSLogWithMark("deny login process with unknown error")
+            mechanism?.denyLogin(message:nil)
+
         }
-        TCSLogWithMark("Complete login process")
-//        let error = mech?.fPlugin.pointee.fCallbacks.pointee.SetResult((mech?.fEngine)!, authResult)
-//        if error != noErr {
-//            TCSLogWithMark("Got error setting authentication result", log: uiLog, type: .
-//        }
+        TCSLogWithMark()
         NSApp.stopModal()
     }
-
-
 
     //MARK: - Update Local User Account Methods
 
@@ -479,8 +466,31 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 //    }
     
 
-    fileprivate func showMigration() {
+    fileprivate func showMigration(password:String) {
 
+        TCSLogWithMark()
+        switch VerifyLocalCredentialsWindowController.selectLocalAccountAndUpdate(newPassword: password) {
+
+        case .successful(let username):
+            TCSLogWithMark("Successful local account verification. Allowing")
+            shortName = username
+            setRequiredHintsAndContext()
+            completeLogin(authResult: .allow)
+            return
+
+        case .canceled:
+            TCSLogWithMark("selectLocalAccountAndUpdate cancelled")
+            completeLogin(authResult: .deny)
+            return
+        case .createNewAccount:
+            TCSLogWithMark("selectLocalAccountAndUpdate createNewAccount")
+            completeLogin(authResult: .allow)
+
+        case .error(let error):
+            TCSLogWithMark("selectLocalAccountAndUpdate error:\(error)")
+            completeLogin(authResult: .deny)
+
+        }
         //need to prompt for username and passsword to select an account. Perhaps use code from the cloud login.
 //        //RunLoop.main.perform {
 //        // hide other possible boxes
@@ -770,27 +780,34 @@ extension SignInViewController: NoMADUserSessionDelegate {
             // check for any migration and local auth requirements
             let localCheck = LocalCheckAndMigrate()
             localCheck.delegate = mechanism
-//            localCheck.mech = self.mech
-            switch localCheck.run(userToCheck: user.shortName, passToCheck: passString) {
+            switch localCheck.migrationTypeRequired(userToCheck: user.shortName, passToCheck: passString, kerberosPrincipalName:user.userPrincipal) {
 
             case .fullMigration:
-                showMigration()
+                TCSLogWithMark()
+                showMigration(password:passString)
             case .syncPassword:
                 // first check to see if we can resolve this ourselves
                 TCSLogWithMark("Sync password called.")
-//                showPasswordSync()
 
                 if let mechanism = mechanism as? XCredsLoginMechanism {
                     let res = mechanism.promptForLocalPassword(username: user.shortName)
+
+                    
                     completeLogin(authResult: res)
 
 
                 }
             case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
+            case .mappedUserFound(let foundODUserRecord):
+                shortName = foundODUserRecord.recordName
+                TCSLogWithMark("Mapped user found: \(shortName)")
+                setRequiredHintsAndContext()
+                completeLogin(authResult: .allow)
             }
         } else {
             authFail()
+            TCSLogWithMark("auth fail")
 //            alertText.stringValue = "Not authorized to login."
 //            showResetUI()
         }
@@ -798,13 +815,15 @@ extension SignInViewController: NoMADUserSessionDelegate {
     
     fileprivate func setHints(user: ADUserRecord) {
         TCSLogWithMark()
-        os_log("NoMAD Login Looking up info for: %{public}@", log: uiLog, type: .default, user.shortName)
+        TCSLogWithMark("NoMAD Login Looking up info");
         setRequiredHintsAndContext()
         mechanism?.setHint(type: .firstName, hint: user.firstName)
         mechanism?.setHint(type: .lastName, hint: user.lastName)
         mechanism?.setHint(type: .noMADDomain, hint: domainName)
         mechanism?.setHint(type: .groups, hint: user.groups)
         mechanism?.setHint(type: .fullName, hint: user.cn)
+        TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
+
         mechanism?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
         mechanism?.setHint(type: .ntName, hint: user.ntName)
         

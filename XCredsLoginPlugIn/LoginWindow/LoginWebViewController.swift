@@ -141,7 +141,7 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 username = userAccountSelected
             case .canceled:
                 TCSLogWithMark("User cancelled. Denying login")
-                mechanism.denyLogin(message:nil)
+                mechanism.denyLogin(message:"nil")
                 return
             case .createNewAccount:
                 break;
@@ -276,10 +276,6 @@ class LoginWebViewController: WebViewController, DSQueryable {
 
         TCSLogWithMark("setting tokens")
         mechanism.setHint(type: .tokens, hint: [tokens.idToken ?? "",tokens.refreshToken ?? "",tokens.accessToken ?? ""])
-//        if let resolutionObserver = resolutionObserver {
-//            NotificationCenter.default.removeObserver(resolutionObserver)
-//        }
-//
         TCSLogWithMark("calling allowLogin")
 
         if let controller = self.view.window?.windowController as? MainLoginWindowController {

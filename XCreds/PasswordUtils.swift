@@ -336,10 +336,9 @@ class PasswordUtils: NSObject {
             let userRecord = try PasswordUtils.getLocalRecord(userName)
 //            TCSLogWithMark("Checking if password is allowed")
 //            try userRecord.passwordChangeAllowed(userPass)
-//xyzzy
             TCSLogWithMark("checking password")
             try userRecord.verifyPassword(userPass)
-            TCSLogWithMark("checking password done")
+            TCSLogWithMark("checking password done, returning success")
             return .success
 
         } catch {
