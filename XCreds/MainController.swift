@@ -90,7 +90,7 @@ class MainController: NSObject, NoMADUserSessionDelegate {
         // don't need to save it. just need to prompt and it gets saved
         // in the keychain
 
-        let domainName = Defa   ultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+        let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
 
         if let _ = domainName, passwordCheckTimer == nil {
             checkPasswordExpire()

@@ -98,6 +98,7 @@ class SignInMenuItem: NSMenuItem {
 
     @objc func doAction() {
 
+        ScheduleManager.shared.setNextCheckTime()
         if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
 //            if (sharedMainMenu.webViewController==nil){
 //                windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
