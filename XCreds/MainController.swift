@@ -19,28 +19,23 @@ class MainController: NSObject, NoMADUserSessionDelegate {
     
     func NoMADUserInformation(user: NoMAD_ADAuth.ADUserRecord) {
         TCSLogWithMark("AD user password expires: \(user.passwordExpire?.description ?? "unknown")")
+
+
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        if let passExpired = user.passwordExpire {
+            let dateString = dateFormatter.string(from: passExpired)
+            sharedMainMenu.passwordExpires="Password Expires: \(dateString)"
+        }
     }
 
 
+    var passwordCheckTimer:Timer?
     var session:NoMADSession?
-    func run() -> Void {
-
-        TCSLogWithMark()
-        let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
-
-        if let defaultsPath = defaultsPath {
-
-            let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
-            TCSLogWithMark()
-            DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
-        }
-        
-
-        // make sure we have the local password, else prompt. we don't need to save it
-        // just make sure we prompt if not in the keychain. if the user cancels, then it will
-        // prompt when using OAuth.
-        // don't need to save it. just need to prompt and it gets saved
-        // in the keychain
+    func checkPasswordExpire() {
         let accountAndPassword = localAccountAndPassword()
 
         let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
@@ -75,6 +70,35 @@ class MainController: NSObject, NoMADUserSessionDelegate {
             }
         }
 
+    }
+    func run() -> Void {
+
+        TCSLogWithMark()
+        let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
+
+        if let defaultsPath = defaultsPath {
+
+            let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
+            TCSLogWithMark()
+            DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
+        }
+        
+
+        // make sure we have the local password, else prompt. we don't need to save it
+        // just make sure we prompt if not in the keychain. if the user cancels, then it will
+        // prompt when using OAuth.
+        // don't need to save it. just need to prompt and it gets saved
+        // in the keychain
+
+        let domainName = Defa   ultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+
+        if let _ = domainName, passwordCheckTimer == nil {
+            checkPasswordExpire()
+            passwordCheckTimer = Timer.scheduledTimer(withTimeInterval: 3*60*60, repeats: true, block: { _ in
+                self.checkPasswordExpire()
+            })
+
+        }
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
 
 

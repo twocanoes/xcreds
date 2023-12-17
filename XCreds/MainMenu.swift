@@ -25,6 +25,7 @@ class MainMenu: NSObject, NSMenuDelegate {
     var menuOpen = false // is the menu open?
     var menuBuilt: Date? // last time menu was built
     var updateStatus = "Starting Up..."
+    var passwordExpires = ""
     var signedIn = false
     var mainWindow:NSWindow!
     var windowController: DesktopLoginWindowController!
@@ -75,6 +76,13 @@ class MainMenu: NSObject, NSMenuDelegate {
             mainMenu.addItem(NSMenuItem.separator())
 
             firstItemShown = true
+        }
+
+        if (self.passwordExpires != ""){
+            mainMenu.addItem(StatusUpdateMenuItem(title: self.passwordExpires))
+            mainMenu.addItem(NSMenuItem.separator())
+            firstItemShown = true
+
         }
 
         if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
