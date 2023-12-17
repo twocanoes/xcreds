@@ -40,6 +40,7 @@
 		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
 		7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
+		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		764D8126284BC1C300B3EE54 /* PromptForLocalPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* PromptForLocalPasswordWindowController.swift */; };
 		764D8127284BC1C300B3EE54 /* LoginPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* LoginPasswordWindowController.xib */; };
 		764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
@@ -1109,6 +1110,7 @@
 				767B939D2A28289E0038935E /* View+Shake.swift in Sources */,
 				760418D22A1332210051411B /* SignInWindowController.swift in Sources */,
 				7611CEC0288B75140063A644 /* XCredsCreateUser.swift in Sources */,
+				764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */,
 				766355D42870F29A002E3867 /* TestWindowController.swift in Sources */,
 				766355C32870CB6F002E3867 /* XCredsLoginPlugin.m in Sources */,
 				766355CB2870E5E9002E3867 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
@@ -1299,7 +1301,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1337,7 +1339,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1457,7 +1459,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1494,7 +1496,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1644,7 +1646,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1685,7 +1687,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6059;
+				CURRENT_PROJECT_VERSION = 6092;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

@@ -116,6 +116,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             self.localOnlyView.isHidden = self.domainName.isEmpty
 
         }
+
     }
 
     fileprivate func showResetUI() -> Bool {

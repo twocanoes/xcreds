@@ -12,6 +12,7 @@ import Network
         case cloud
         case usernamePassword
     }
+    var timer:Timer?
     let checkADLog = "checkADLog"
     var loginWindowType = LoginWindowType.cloud
     var mainLoginWindowController:MainLoginWindowController
@@ -210,7 +211,11 @@ import Network
         }
         TCSLogWithMark("Showing XCreds Login Window")
 
-        NSApp.activate(ignoringOtherApps: true)
+        //for some reason, software update activates and gets in the way. so we delay for 3 seconds before coming back to front
+        timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+            NSApp.activate(ignoringOtherApps: true)
+        }
+        
 
         if let runDict = runDict() {
 
@@ -391,8 +396,24 @@ import Network
             if signInViewController.localOnlyCheckBox != nil {
                 signInViewController.localOnlyCheckBox.isEnabled = true
             }
+            TCSLogWithMark("forcing front")
+            mainLoginWindowController.window?.forceToFrontAndFocus(self)
+            mainLoginWindowController.window?.makeFirstResponder(signInViewController.usernameTextField)
 
         }
+//        var app = NSWorkspace.shared.frontmostApplication
+//
+//        TCSLogWithMark("frontmost: \(app.debugDescription)")
+//
+//        sleep(1)
+//        app = NSWorkspace.shared.frontmostApplication
+//        TCSLogWithMark("frontmost: \(app.debugDescription)")
+//        sleep(1)
+//        app = NSWorkspace.shared.frontmostApplication
+//        TCSLogWithMark("frontmost: \(app.debugDescription)")
+//        app = NSWorkspace.shared.frontmostApplication
+//        TCSLogWithMark("frontmost: \(app.debugDescription)")
+
 
 
     }
