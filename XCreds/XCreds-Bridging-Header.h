@@ -13,6 +13,13 @@
 #import "TCSUnifiedLogger.h"
 #import <ProductLicense/ProductLicense.h>
 #import "TCSLoginWindowUtilities.h"
+#import "DNSResolver.h"
+
+// Kerb bits
+#import "KerbUtil.h"
+#import "GSSItem.h"
+#import "krb5.h"
+
 #include <membership.h>
 
 #endif /* XCreds_Bridging_Header_h */

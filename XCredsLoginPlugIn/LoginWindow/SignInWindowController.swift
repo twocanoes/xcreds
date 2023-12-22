@@ -9,7 +9,6 @@
 import Cocoa
 import Security.AuthorizationPlugin
 import os.log
-import NoMAD_ADAuth
 import OpenDirectory
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")

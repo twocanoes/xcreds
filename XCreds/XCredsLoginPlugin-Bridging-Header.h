@@ -8,3 +8,9 @@
 #import "TCSKeychain.h"
 #import <ProductLicense/ProductLicense.h>
 #include <membership.h>
+#import "DNSResolver.h"
+
+// Kerb bits
+#import "KerbUtil.h"
+#import "GSSItem.h"
+#import "krb5.h"

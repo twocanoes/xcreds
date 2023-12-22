@@ -6,18 +6,17 @@
 //
 
 import Cocoa
-import NoMAD_ADAuth
 class MainController: NSObject, NoMADUserSessionDelegate {
     func NoMADAuthenticationSucceded() {
         session?.userInfo()
 
     }
 
-    func NoMADAuthenticationFailed(error: NoMAD_ADAuth.NoMADSessionError, description: String) {
+    func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogErrorWithMark("NoMADAuthenticationFailed:\(description)")
     }
     
-    func NoMADUserInformation(user: NoMAD_ADAuth.ADUserRecord) {
+    func NoMADUserInformation(user: ADUserRecord) {
         TCSLogWithMark("AD user password expires: \(user.passwordExpire?.description ?? "unknown")")
 
 
