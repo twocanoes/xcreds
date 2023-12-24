@@ -151,12 +151,10 @@ public func cliTask(_ command: String,
         let error = myErrorPipe.fileHandleForReading.readDataToEndOfFile()
         let outputError = NSString(data: error, encoding: String.Encoding.utf8.rawValue)! as String
         let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
-        myLogger.logit(.info, message:"CliTask completed, calling completion. Time: \(Date())")
         completion(output + outputError)
     }
 
     myTask.launch()
-    myLogger.logit(.info, message:"Launching CliTask. Time: \(Date())")
 }
 
 /// A simple wrapper around NSTask that also doesn't wait for the `Task` termination signal.

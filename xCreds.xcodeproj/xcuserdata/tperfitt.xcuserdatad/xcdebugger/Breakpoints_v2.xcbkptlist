@@ -18,6 +18,53 @@
             endingLineNumber = "210"
             landmarkName = "localAccountAndPassword()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "1308">
+               </Location>
+               <Location
+                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "1368">
+               </Location>
+               <Location
+                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "1788">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -50,6 +97,54 @@
             endingLineNumber = "1"
             landmarkName = "unknown"
             landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/TokenManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "requestTokenWithROPG(ropgClientID:ropgClientSecret:userName:keychainPassword:url:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45 - 72c6b0b95c9fc22d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in XCreds.TokenManager.requestTokenWithROPG(ropgClientID: Swift.String, ropgClientSecret: Swift.String, userName: Swift.String, keychainPassword: Swift.String, url: Foundation.URL, completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45 - 84ad70cbea9d6f4f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in XCreds.TokenManager.requestTokenWithROPG(ropgClientID: Swift.String, ropgClientSecret: Swift.Optional&lt;Swift.String&gt;, userName: Swift.String, keychainPassword: Swift.String, url: Foundation.URL, completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "160"
+                  endingLineNumber = "160"
+                  offsetFromSymbolStart = "120">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

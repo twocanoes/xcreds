@@ -131,6 +131,78 @@ class TokenManager {
         }
         return true
     }
+    func requestTokenWithROPG(ropgClientID:String,ropgClientSecret:String?, userName:String, keychainPassword: String, url:URL, completion:@escaping(_ res:TokenResult)->Void) {
+        var req = URLRequest(url: url)
+        var loginString = "\(ropgClientID)"
+
+        if let ropgClientSecret = ropgClientSecret {
+            loginString += ":\(ropgClientSecret)"
+        }
+
+
+        guard let loginData = loginString.data(using: .utf8) else {
+            completion(TokenResult(hadError: true, hadConnectionError: false))
+            return
+        }
+        let base64LoginString = loginData.base64EncodedString()
+        let parameters = "grant_type=password&username=\(userName)&password=\(keychainPassword)&scope=offline_access"
+
+        let postData =  parameters.data(using: .utf8)
+        req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        req.addValue("application/json", forHTTPHeaderField: "Accept")
+
+
+        req.httpMethod = "POST"
+        req.httpBody = postData
+
+        let task = URLSession.shared.dataTask(with: req) { data, response, error in
+            self.handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword, completion: completion)
+        }
+
+        task.resume()
+
+    }
+    func handleIdpResponse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String, completion:@escaping(_ res:TokenResult)->Void) {
+        guard let data = data else {
+            print(String(describing: error))
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            completion(TokenResult(hadError: false, hadConnectionError: true))
+            return
+        }
+          if let response = response as? HTTPURLResponse {
+              if response.statusCode == 200 {
+                  let decoder = JSONDecoder()
+                  do {
+
+                      let json = try decoder.decode(RefreshTokenResponse.self, from: data)
+                      let expirationDate = Date().addingTimeInterval(TimeInterval(json.expiresIn))
+                      DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
+
+                      let keychainUtil = KeychainUtil()
+                      let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
+                      let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
+                      TCSLogWithMark("Credentials are current.")
+                      completion(TokenResult(hadError: true, hadConnectionError: false))
+
+                  }
+                  catch {
+                      TCSLogWithMark("Credentials are current, but failed to decode response")
+                      completion(TokenResult(hadError: true, hadConnectionError: false))
+                      return
+                  }
+
+              }
+              else {
+                  TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
+                  completion(TokenResult(hadError: true, hadConnectionError: false))
+
+              }
+          }
+    }
+
     func tokenEndpoint() -> String? {
 
         let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
@@ -145,15 +217,17 @@ class TokenManager {
         return nil
     }
 
-    func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
+    struct TokenResult {
+        var hadError:Bool
+        var hadConnectionError:Bool
+    }
+    func getNewAccessToken(completion:@escaping (_ res:TokenResult)->Void) -> Void {
         TCSLogWithMark()
         guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
             TCSLogWithMark()
-            completion(false,true)
+            completion(TokenResult(hadError: true, hadConnectionError: true))
             return
         }
-
-        var req = URLRequest(url: url)
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
@@ -162,78 +236,22 @@ class TokenManager {
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
         
-        func handleIdpResponse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String) {
-            guard let data = data else {
-                print(String(describing: error))
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                completion(false,true)
-                return
-            }
-              if let response = response as? HTTPURLResponse {
-                  if response.statusCode == 200 {
-                      let decoder = JSONDecoder()
-                      do {
-
-                          let json = try decoder.decode(RefreshTokenResponse.self, from: data)
-                          let expirationDate = Date().addingTimeInterval(TimeInterval(json.expiresIn))
-                          DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
-
-                          let keychainUtil = KeychainUtil()
-                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
-                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
-                          TCSLogWithMark("Credentials are current.")
-                          completion(true,false)
-
-                      }
-                      catch {
-                          TCSLogWithMark("Credentials are current, but failed to decode response")
-                          completion(true,false)
-                          return
-                      }
-
-                  }
-                  else {
-                      TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
-                      completion(false,false)
-
-                  }
-              }
-        }
 
         TCSLogWithMark()
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userName = currentUser?.recordName else {
-                completion(false,true)
+                completion(TokenResult(hadError: false, hadConnectionError: true))
                 return
             }
-            let loginString = "\(ropgClientID):\(ropgClientSecret)"
-            guard let loginData = loginString.data(using: .utf8) else {
-                completion(false,true)
-                return
-            }
-            let base64LoginString = loginData.base64EncodedString()
-            let parameters = "grant_type=password&username=\(userName)&password=\(keychainPassword)&scope=offline_access"
+            requestTokenWithROPG(ropgClientID: ropgClientID, ropgClientSecret: ropgClientSecret, userName: userName,keychainPassword: keychainPassword, url: url, completion: completion)
 
-            let postData =  parameters.data(using: .utf8)
-            req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            req.addValue("application/json", forHTTPHeaderField: "Accept")
-            
 
-            req.httpMethod = "POST"
-            req.httpBody = postData
-
-            let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
-            }
-
-            task.resume()
         }
         else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
+            var req = URLRequest(url: url)
+
             TCSLogWithMark("Checking credentials in keychain using refresh token")
             var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
             if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
@@ -247,14 +265,14 @@ class TokenManager {
             req.httpBody = postData
 
             let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
+                self.handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword, completion: completion)
             }
 
             task.resume()
         }
         else {
             TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
-            completion(false,false)
+            completion(TokenResult(hadError: false, hadConnectionError: false))
 
         }
     }

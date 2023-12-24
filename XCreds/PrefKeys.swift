@@ -14,6 +14,7 @@ enum PrefKeys: String {
     case ropgClientID
     case ropgClientSecret
     case shouldVerifyPasswordWithRopg
+    case shouldUseROPGForOIDCLogin
     case actionItemOnly = "ActionItemOnly"
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"

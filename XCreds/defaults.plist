@@ -52,6 +52,8 @@
 	<true/>
 	<key>shouldDetectNetworkToDetermineLoginWindow</key>
 	<false/>
+	<key>shouldUseROPGForOIDCLogin</key>
+	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
 	<key>shouldPromptForMigration</key>

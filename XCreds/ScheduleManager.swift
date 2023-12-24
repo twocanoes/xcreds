@@ -63,9 +63,9 @@ class ScheduleManager {
         setNextCheckTime()
         TCSLogWithMark("Checking token now (\(Date())). Next token check will be at \(nextCheckTime)")
 
-        TokenManager.shared.getNewAccessToken(completion: { isSuccessful, hadConnectionError in
+        TokenManager.shared.getNewAccessToken { res in
 
-            if hadConnectionError==true {
+            if res.hadConnectionError==true {
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 
                     NotifyManager.shared.sendMessage(message: "Could not check token.")
@@ -73,7 +73,7 @@ class ScheduleManager {
 
                 return
             }
-            else if isSuccessful == true {
+            else if res.hadError == true {
 
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
                     NotifyManager.shared.sendMessage(message: "Password unchanged")
@@ -98,7 +98,7 @@ class ScheduleManager {
                 }
 
             }
-        })
+        }
 
     }
 
