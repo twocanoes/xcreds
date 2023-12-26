@@ -14,7 +14,7 @@ enum MigrationType {
     case fullMigration // perform full migration
     case skipMigration // no need to migrate
     case syncPassword // local password needs to be synced with local
-    case mappedUserFound(ODRecord)
+//    case mappedUserFound(ODRecord)
     case userMatchSkipMigration
     case complete // all good
 }
@@ -36,19 +36,19 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         TCSLogWithMark()
         user = userToCheck
         pass = passToCheck
-        
+        var user = userToCheck
 
         if let kerberosPrincipalName = kerberosPrincipalName, let foundRecord = try? getUserRecord(kerberosPrincipalNameToFind: kerberosPrincipalName) {
-
-            return .mappedUserFound(foundRecord)
+            user = foundRecord.recordName
+//            return .mappedUserFound(foundRecord)
         }
         let shouldPromptToMigrate = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
         // check local user pass to see if user exists
         
         do {
-            if try isLocalPasswordValid(userName: userToCheck, userPass: passToCheck) {
-            
+            if try isLocalPasswordValid(userName: user, userPass: passToCheck) {
+
                 TCSLogWithMark("Network creds match local creds, nothing to migrate or update.")
                 return .userMatchSkipMigration
 
