@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="VerifyLocalCredentialsWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="SelectLocalAccountWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
             <connections>
                 <outlet property="createNewAccountButton" destination="7Ug-nA-fDT" id="bI2-wP-dse"/>
                 <outlet property="passwordTextField" destination="Cn6-Sr-4P4" id="lzh-df-Qkw"/>

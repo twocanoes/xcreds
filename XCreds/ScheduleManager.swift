@@ -6,12 +6,24 @@
 //
 
 import Cocoa
+import OIDCLite
 
-class ScheduleManager {
+class ScheduleManager:TokenManagerFeedbackDelegate {
+    func credentialsUpdated(_ credentials: Creds) {
+
+    }
+
+
+    func tokenError(_ err: String) {
+        feedbackDelegate?.tokenError(err)
+    }
+
 
     static let shared=ScheduleManager()
+    var tokenManager=TokenManager()
     var nextCheckTime = Date()
     var timer:Timer?
+    var feedbackDelegate:TokenManagerFeedbackDelegate?
     func setNextCheckTime() {
         var rate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateHours.rawValue)
         var minutesRate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateMinutes.rawValue)
@@ -63,41 +75,41 @@ class ScheduleManager {
         setNextCheckTime()
         TCSLogWithMark("Checking token now (\(Date())). Next token check will be at \(nextCheckTime)")
 
-        TokenManager.shared.getNewAccessToken { res in
+        tokenManager.getNewAccessToken { res in
 
-            if res.hadConnectionError==true {
+            switch res {
+                
+            case .success:
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
-
-                    NotifyManager.shared.sendMessage(message: "Could not check token.")
-                }
-
-                return
-            }
-            else if res.hadError == true {
-
-                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
-                    NotifyManager.shared.sendMessage(message: "Password unchanged")
+                    NotifyManager.shared.sendMessage(message: "Password check successful")
                 }
                 DispatchQueue.main.async {
                     sharedMainMenu.signedIn=true
                     sharedMainMenu.buildMenu()
                 }
-
-
-            }
-            else {
+                
+            case .passwordChanged:
                 //don't stop cred check otherwise it doesn't get restarted.
-//                self.stopCredentialCheck()
+                //                self.stopCredentialCheck()
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
-
+                    
                     NotifyManager.shared.sendMessage(message: "Password changed or not set")
                 }
                 DispatchQueue.main.async {
-
+                    
                     SignInMenuItem().doAction()
                 }
-
+                
+            case .error (let message):
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
+                    
+                    NotifyManager.shared.sendMessage(message: message)
+                }
+                
+                return
+                
             }
+
         }
 
     }

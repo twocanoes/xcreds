@@ -1,16 +1,16 @@
 import Cocoa
 import OpenDirectory
 
-protocol XCredsMechanismProtocol {
-    func allowLogin()
-    func denyLogin(message:String?)
-    func setContextString(type: String, value: String)
-    func setStickyContextString(type: String, value: String)
-
-    func setHint(type: HintType, hint: Any)
-    func reload()
-    func run()
-}
+//protocol XCredsMechanismProtocol {
+//    func allowLogin()
+//    func denyLogin(message:String?)
+//    func setContextString(type: String, value: String)
+//    func setStickyContextString(type: String, value: String)
+//
+//    func setHint(type: HintType, hint: Any)
+//    func reload()
+//    func run()
+//}
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
     func reload() {
         fatalError()
@@ -148,6 +148,18 @@ protocol XCredsMechanismProtocol {
         }
     }
 
+    func setHints(_ hints:[HintType:Any]){
+
+        for hint in hints {
+            setHint(type: hint.key, hint: hint.value)
+        }
+    }
+    func setContextStrings(_ contentStrings: [String : String]){
+
+        for contextString in contentStrings {
+            setContextString(type: contextString.key, value:contextString.value)
+        }
+    }
     func setHint(type: HintType, hint: Any) {
         guard (hint is String || hint is [String] || hint is Bool) else {
             TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")

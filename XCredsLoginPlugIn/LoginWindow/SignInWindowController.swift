@@ -10,10 +10,24 @@ import Cocoa
 import Security.AuthorizationPlugin
 import os.log
 import OpenDirectory
+import OIDCLite
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
-@objc class SignInViewController: NSViewController, DSQueryable {
+@objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
+
+    func tokenError(_ err:String){
+
+    }
+
+    func credentialsUpdated(_ credentials:Creds){
+        
+    }
+
+    struct UsernamePasswordCredentials {
+        var username:String?
+        var password:String?
+    }
 
     //MARK: - setup properties
     var mech: MechanismRecord?
@@ -27,6 +41,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     var passChanged = false
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
+    let tokenManager = TokenManager()
 
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
@@ -45,17 +60,17 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
 
-    var internalDelegate:XCredsMechanismProtocol?
+    var mechanismDelegate:XCredsMechanismProtocol?
 
-    var mechanism:XCredsMechanismProtocol? {
-        set {
-            TCSLogWithMark()
-            internalDelegate=newValue
-        }
-        get {
-            return internalDelegate
-        }
-    }
+//    var mechanism:XCredsMechanismProtocol? {
+//        set {
+//            TCSLogWithMark()
+//            mechanismDelegate=newValue
+//        }
+//        get {
+//            return mechanismDelegate
+//        }
+//    }
 
     //MARK: - Migrate Box IB outlets
     var migrate = false
@@ -110,9 +125,10 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         }
         else {
             //show based on if there is an AD domain or not
-            self.localOnlyCheckBox.isHidden = self.domainName.isEmpty
 
-            self.localOnlyView.isHidden = self.domainName.isEmpty
+            let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == false
+            self.localOnlyCheckBox.isHidden = isLocalOnly
+            self.localOnlyView.isHidden = isLocalOnly
 
         }
 
@@ -203,8 +219,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     /// 2. Check the user shortname and see if the account already exists in DSLocal. If so, simply set the hints and pass on.
     ///
     /// 3. Create a `NoMADSession` and see if we can authenticate as the user.
-    @IBAction func signInClick(_ sender: Any) {
-        TCSLogWithMark("Sign In button clicked")
+    @IBAction func signInButtonPressed(_ sender: Any) {
+        TCSLogWithMark("Sign In button pressed")
         let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
 
         if strippedUsername.isEmpty {
@@ -217,11 +233,35 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         TCSLogWithMark()
         updateLoginWindowInfo()
         TCSLogWithMark()
+
+        if  UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == true {
+            if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) {
+                TCSLogWithMark("Checking credentials in keychain using ROPG")
+                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+                guard let userName = currentUser?.recordName else {
+                    TCSLogWithMark("no username")
+
+                    return
+                }
+                guard let endpoint = tokenManager.tokenEndpoint(), let url = URL(string: endpoint) else {
+                    TCSLogWithMark("no url for OIDC endpoint using ROPG")
+
+                    return
+
+                }
+                tokenManager.feedbackDelegate=self
+
+                tokenManager.oidc().requestTokenWithROPG(ropgClientID: ropgClientID, ropgClientSecret: ropgClientSecret, userName: userName,keychainPassword: passString, url: url)                
+                return
+            }
+
+        }
         if self.domainName.isEmpty==true || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
-                completeLogin(authResult: .allow)
+                completeLogin(authResult:.allow)
+
             }
             else {
                 TCSLogWithMark("password check failed")
@@ -376,12 +416,12 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     fileprivate func setRequiredHintsAndContext() {
         TCSLogWithMark()
         TCSLogWithMark("Setting hints for user: \(shortName)")
-        mechanism?.setHint(type: .user, hint: shortName)
-        mechanism?.setHint(type: .pass, hint: passString)
+        mechanismDelegate?.setHint(type: .user, hint: shortName)
+        mechanismDelegate?.setHint(type: .pass, hint: passString)
         TCSLogWithMark()
         os_log("Setting context values for user: %{public}@", log: uiLog, type: .debug, shortName)
-        mechanism?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
-        mechanism?.setContextString(type: kAuthorizationEnvironmentPassword, value: passString)
+        mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
+        mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentPassword, value: passString)
         TCSLogWithMark()
 
     }
@@ -396,19 +436,19 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
-            mechanism?.allowLogin()
+            mechanismDelegate?.allowLogin()
 
         case .deny:
             TCSLogWithMark("Complete login process with deny")
-            mechanism?.denyLogin(message:nil)
+            mechanismDelegate?.denyLogin(message:nil)
 
         default:
             TCSLogWithMark("deny login process with unknown error")
-            mechanism?.denyLogin(message:nil)
+            mechanismDelegate?.denyLogin(message:nil)
 
         }
         TCSLogWithMark()
-        NSApp.stopModal()
+//        NSApp.stopModal()
     }
 
     //MARK: - Update Local User Account Methods
@@ -469,7 +509,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     fileprivate func showMigration(password:String) {
 
         TCSLogWithMark()
-        switch VerifyLocalCredentialsWindowController.selectLocalAccountAndUpdate(newPassword: password) {
+        switch SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: password) {
 
         case .successful(let username):
             TCSLogWithMark("Successful local account verification. Allowing")
@@ -770,7 +810,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
     
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
-            mechanism?.setHint(type: .ntName, hint: ntName)
+            mechanismDelegate?.setHint(type: .ntName, hint: ntName)
         }
         
         if allowedLogin {
@@ -779,7 +819,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             // check for any migration and local auth requirements
             let localCheck = LocalCheckAndMigrate()
-            localCheck.delegate = mechanism
+            localCheck.delegate = mechanismDelegate
             switch localCheck.migrationTypeRequired(userToCheck: user.shortName, passToCheck: passString, kerberosPrincipalName:user.userPrincipal) {
 
             case .fullMigration:
@@ -789,14 +829,32 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 // first check to see if we can resolve this ourselves
                 TCSLogWithMark("Sync password called.")
 
-                if let mechanism = mechanism as? XCredsLoginMechanism {
-                    let res = mechanism.promptForLocalPassword(username: user.shortName)
+                let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
-                    
-                    completeLogin(authResult: res)
+                promptPasswordWindowController.showResetText=false
+                promptPasswordWindowController.showResetButton=false
+
+                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: nil, shouldUpdatePassword: true) {
+
+                case .success(_):
+                    completeLogin(authResult: .allow)
+
+                case .resetKeychainRequested(let usernamePasswordCredentials):
+                    if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
+                        mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername )
+                        mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword)
+                    }
+                    completeLogin(authResult: .allow)
 
 
+                case .userCancelled:
+                    completeLogin(authResult: .deny)
+
+                case .error(_):
+                    completeLogin(authResult: .deny)
                 }
+
+
             case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
             case .mappedUserFound(let foundODUserRecord):
@@ -817,18 +875,18 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark()
         TCSLogWithMark("NoMAD Login Looking up info");
         setRequiredHintsAndContext()
-        mechanism?.setHint(type: .firstName, hint: user.firstName)
-        mechanism?.setHint(type: .lastName, hint: user.lastName)
-        mechanism?.setHint(type: .noMADDomain, hint: domainName)
-        mechanism?.setHint(type: .groups, hint: user.groups)
-        mechanism?.setHint(type: .fullName, hint: user.cn)
+        mechanismDelegate?.setHint(type: .firstName, hint: user.firstName)
+        mechanismDelegate?.setHint(type: .lastName, hint: user.lastName)
+        mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
+        mechanismDelegate?.setHint(type: .groups, hint: user.groups)
+        mechanismDelegate?.setHint(type: .fullName, hint: user.cn)
         TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
 
-        mechanism?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
-        mechanism?.setHint(type: .ntName, hint: user.ntName)
-        
+        mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
+        mechanismDelegate?.setHint(type: .ntName, hint: user.ntName)
+
         // set the network auth time to be added to the user record
-        mechanism?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+        mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
     }
 
 }

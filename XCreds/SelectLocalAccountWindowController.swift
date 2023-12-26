@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class VerifyLocalCredentialsWindowController: NSWindowController, NSWindowDelegate {
+class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
 
     @IBOutlet weak private var usernameTextField: NSTextField!
     @IBOutlet weak private var passwordTextField: NSSecureTextField!
@@ -25,7 +25,7 @@ class VerifyLocalCredentialsWindowController: NSWindowController, NSWindowDelega
         case error(String)
     }
     static func selectLocalAccountAndUpdate(newPassword:String) -> VerifyLocalCredentialsResult{
-        let verifyLocalCredentialsWindowController = VerifyLocalCredentialsWindowController.init(windowNibName: NSNib.Name("VerifyLocalCredentialsWindowController"))
+        let verifyLocalCredentialsWindowController = SelectLocalAccountWindowController.init(windowNibName: NSNib.Name("SelectLocalAccountWindowController"))
         verifyLocalCredentialsWindowController.window?.canBecomeVisibleWithoutLogin=true
         verifyLocalCredentialsWindowController.window?.isMovable = false
         verifyLocalCredentialsWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)

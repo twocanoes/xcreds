@@ -7,142 +7,62 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "localAccountAndPassword()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
-                  offsetFromSymbolStart = "1308">
-               </Location>
-               <Location
-                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
-                  offsetFromSymbolStart = "1368">
-               </Location>
-               <Location
-                  uuid = "D0F121DF-3E75-4ECA-B411-E4F56EDAEDE7 - f41a46c23b4f6bd5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.MainController.localAccountAndPassword() -&gt; (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;)"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
-                  offsetFromSymbolStart = "1788">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9D41B040-3480-46A6-A6FF-776BB7C6CEB5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/LoginWebViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "tokensUpdated(tokens:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "ABC4C49A-4B28-42BB-B996-C01167CCB87C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "headers/DNSResolver.h"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1"
-            endingLineNumber = "1"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45"
+            uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/TokenManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
-            landmarkName = "requestTokenWithROPG(ropgClientID:ropgClientSecret:userName:keychainPassword:url:completion:)"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "getNewAccessToken(completion:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45 - 72c6b0b95c9fc22d"
+                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e4040"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in XCreds.TokenManager.requestTokenWithROPG(ropgClientID: Swift.String, ropgClientSecret: Swift.String, userName: Swift.String, keychainPassword: Swift.String, url: Foundation.URL, completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
+                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "155"
-                  endingLineNumber = "155"
-                  offsetFromSymbolStart = "120">
+                  startingLineNumber = "257"
+                  endingLineNumber = "257"
+                  offsetFromSymbolStart = "3772">
                </Location>
                <Location
-                  uuid = "B86A1927-8543-4DF2-A7FE-833B7C894E45 - 84ad70cbea9d6f4f"
+                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e4040"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in XCreds.TokenManager.requestTokenWithROPG(ropgClientID: Swift.String, ropgClientSecret: Swift.Optional&lt;Swift.String&gt;, userName: Swift.String, keychainPassword: Swift.String, url: Foundation.URL, completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
+                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
                   moduleName = "XCreds"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "160"
-                  endingLineNumber = "160"
-                  offsetFromSymbolStart = "120">
+                  startingLineNumber = "257"
+                  endingLineNumber = "257"
+                  offsetFromSymbolStart = "3768">
+               </Location>
+               <Location
+                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e40ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "262"
+                  endingLineNumber = "262"
+                  offsetFromSymbolStart = "3772">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -154,7 +154,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
             let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
             TCSLogWithMark("saving tokens to keychain")
-            if TokenManager.shared.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
+            if TokenManager.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
                 TCSLogErrorWithMark("Error saving tokens to keychain")
             }
 

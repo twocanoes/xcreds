@@ -10,16 +10,16 @@ import Cocoa
 import WebKit
 import OIDCLite
 
-class WebViewController: NSViewController {
+class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+    func credentialsUpdated(_ credentials: Creds) {
 
-
+    }
+  
     @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
-
+    var tokenManager=TokenManager()
     var password:String?
-
-
 
     func loadPage() {
         DispatchQueue.main.async {
@@ -32,7 +32,8 @@ class WebViewController: NSViewController {
             }
 
             self.webView.navigationDelegate = self
-            TokenManager.shared.oidc().delegate = self
+            self.tokenManager.feedbackDelegate=self
+//            TokenManager.shared.oidc().delegate = self
             self.clearCookies()
             TCSLogWithMark()
             switch licenseState {
@@ -102,7 +103,7 @@ class WebViewController: NSViewController {
 
     private func getOidcLoginURL() -> URL? {
         for _ in 1...5 {
-            if let url = TokenManager.shared.oidc().createLoginURL() {
+            if let url = tokenManager.oidc().createLoginURL() {
                 return url
             }
             TCSLogWithMark("Trying to get login url again")
@@ -132,10 +133,24 @@ class WebViewController: NSViewController {
             }
         }
     }
-    func tokensUpdated(tokens: Creds){
-    }
+   
     func showErrorMessageAndDeny(_ message:String){
     }
+    func tokenError(_ err: String) {
+        TCSLogErrorWithMark("authFailure: \(err)")
+        //TODO: need to post this?
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+
+    }
+
+//    func setHints(_ hints: [HintType : Any]) {
+//        //TODO
+//
+//    }
+//
+//    func setContextStrings(_ contentStrings: [String : String]) {
+//        //TODO
+//    }
 }
 
 extension WebViewController: WKNavigationDelegate {
@@ -284,7 +299,7 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
 
-         let redirectURI = TokenManager.shared.oidc().redirectURI
+         let redirectURI = tokenManager.oidc().redirectURI
             TCSLogWithMark("redirectURI: \(redirectURI)")
             TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
             if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
@@ -299,7 +314,7 @@ extension WebViewController: WKNavigationDelegate {
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
                         TCSLogWithMark("getting tokens")
 
-                        TokenManager.shared.oidc().getToken(code: code)
+                        tokenManager.oidc().getToken(code: code)
                         return
                     }
                 }
@@ -329,33 +344,35 @@ extension WebViewController: WKNavigationDelegate {
 
 }
 
-extension WebViewController: OIDCLiteDelegate {
-
-    func authFailure(message: String) {
-        TCSLogErrorWithMark("authFailure: \(message)")
-        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-
-    }
-
-    func tokenResponse(tokens: OIDCLiteTokenResponse) {
-        TCSLogWithMark("======== tokenResponse =========")
-        RunLoop.main.perform {
-            if let password = self.password {
-                TCSLogWithMark("----- Password was set")
-                let xcredCreds = Creds(password: password, tokens: tokens)
-                self.tokensUpdated(tokens: xcredCreds)
-
-                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":xcredCreds]
-                )
-            }
-            else {
-                TCSLogWithMark("----- password was not set")
-                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-                self.showErrorMessageAndDeny("The password was not set. Please check settings and verify passwordless sign-in was not used.")
-            }
-        }
-    }
-}
+//extension WebViewController: TokenManagerFeedbackDelegate {
+//
+//    func tokenError(_ err: String) {
+//        TCSLogErrorWithMark("authFailure: \(err)")
+//        //TODO: need to post this?
+//        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+//
+//    }
+//
+//    func setHints(_ hints: [HintType : Any]) {
+//        //TODO
+//
+//    }
+//
+//    func setContextStrings(_ contentStrings: [String : String]) {
+//        //TODO
+//    }
+//}
+//TODO: Integrate?
+//extension WebViewController: OIDCLiteDelegate {
+//
+////    func authFailure(message: String) {
+////        TCSLogErrorWithMark("authFailure: \(message)")
+////        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+////
+////    }
+//
+//    
+//}
 extension String {
     func sanitized() -> String {
         // see for ressoning on charachrer sets https://superuser.com/a/358861

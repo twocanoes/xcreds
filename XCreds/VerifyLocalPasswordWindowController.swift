@@ -7,7 +7,21 @@
 
 import Cocoa
 
-class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
+class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
+
+    struct UsernamePasswordCredentials {
+        var username:String?
+        var password:String?
+    }
+    
+
+    enum LocalUsernamePasswordResult {
+        case success(UsernamePasswordCredentials?)
+        case resetKeychainRequested(UsernamePasswordCredentials?)
+        case userCancelled
+        case error(String)
+    }
+
 
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var adminUsernameTextField: NSTextField!
@@ -16,33 +30,24 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var resetButton: NSButton!
     @IBOutlet weak var resetText: NSTextField!
 
-    
     var showResetButton = true
     var showResetText = true
     var shouldPromptForAdmin=false
-    var password:String?
+    var passwordEntered:String?
     var resetKeychain = false
     var adminUsername:String?
     var adminPassword:String?
 
-    enum RequestLocalPasswordResult {
-        case success(String)
-        case resetKeychain(String?,String?)
-        case cancelled
-        case error(String)
-
-    }
     override var windowNibName: NSNib.Name {
 
-        return "LoginPasswordWindowController"
+        return "VerifyLocalPasswordWindowController"
     }
     override func awakeFromNib() {
         resetButton.isHidden = !showResetButton
         resetText.isHidden = !showResetText
 
     }
-    func verifyLocalPasswordAndChange(username:String, password:String?, shouldUpdatePassword:Bool) -> RequestLocalPasswordResult {
-//        let passwordWindowController = PromptForLocalPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+    func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
 
         window?.canBecomeVisibleWithoutLogin=true
         window?.isMovable = true
@@ -61,24 +66,24 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
 
             if response == .cancel {
                 isDone=true
-                TCSLogWithMark("User cancelled resetting keychain or entering password. Denying login")
-                return .cancelled
+                TCSLogWithMark("User cancelled resetting keychain or entering password.")
+                return .userCancelled
 
             }
             if resetKeychain == true { //user clicked reset
                 isDone=true
 
-                return .resetKeychain(adminUsername, adminPassword)
+                return .resetKeychainRequested(UsernamePasswordCredentials(username: adminUsername, password: adminPassword))
 
             }
             else {
                 TCSLogWithMark("user gave old password. checking...")
-                let localPassword = self.password
-                guard let localPassword = localPassword else {
+                let passwordEntered = self.passwordEntered
+                guard let passwordEntered = passwordEntered else {
                     continue
                 }
 
-                let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: localPassword)
+                let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: passwordEntered)
                 switch isValidPassword {
                 case .success:
                     let localUser = try? PasswordUtils.getLocalRecord(username)
@@ -88,15 +93,15 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
                     }
                     if shouldUpdatePassword==false {
 
-                        return .success(localPassword)
+                        return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
                     }
-                    guard let password = password else {
+                    guard let newPassword = newPassword else {
                         return .error("Password not provided for changing")
 
                     }
 
                     do {
-                        try localUser.changePassword(localPassword, toPassword: password)
+                        try localUser.changePassword(passwordEntered, toPassword: newPassword)
                     }
                     catch {
                         TCSLogErrorWithMark("Error setting local password to cloud password")
@@ -106,7 +111,7 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
                     TCSLogWithMark("setting original password to use to unlock keychain later")
                     isDone=true
                     window?.close()
-                    return .success(localPassword)
+                    return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
                 default:
                     window?.shake(self)
 
@@ -172,7 +177,7 @@ class PromptForLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     }
     @IBAction func updateButtonPressed(_ sender: Any) {
-        password=passwordTextField.stringValue
+        passwordEntered=passwordTextField.stringValue
 
         if self.window?.isModalPanel==true {
             NSApp.stopModal(withCode: .OK)

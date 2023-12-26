@@ -161,13 +161,19 @@ import Network
         let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
         let shouldDetectNetwork = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldDetectNetworkToDetermineLoginWindow.rawValue)
 
-        
+        let useROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue)
+
+
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
-           let _ = discoveryURL {
+           let _ = discoveryURL { // oidc is configured
             if shouldDetectNetwork == true,
                WifiManager().isConnectedToNetwork()==false {
                 showLoginWindowType(loginWindowType: .usernamePassword)
+            }
+            else if useROPG == true {
+                showLoginWindowType(loginWindowType: .usernamePassword)
+
             }
             else {
                 TCSLogWithMark("network available, showing cloud")
@@ -265,42 +271,7 @@ import Network
         TCSLog("***************** DENYING LOGIN FROM LOGIN MECH ********************");
         super.denyLogin(message: message)
     }
-    func promptForLocalPassword(username:String) -> AuthorizationResult  {
-        TCSLogWithMark("local password is different from cloud password. Prompting for local password...")
-
-        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
-            getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
-            TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
-            self.setHint(type: .passwordOverwrite, hint: true)
-        }
-        let promptPasswordWindowController = PromptForLocalPasswordWindowController()
-
-        switch  promptPasswordWindowController.verifyLocalPasswordAndChange(username:username, password: username, shouldUpdatePassword: true) {
-
-        case .success(let localPassword):
-            self.setHint(type: .existingLocalUserPassword, hint: localPassword)
-            return .allow
-
-        case .resetKeychain(let adminUsername, let adminPassword):
-            self.setHint(type: .passwordOverwrite, hint: true)
-            if let adminUsername = adminUsername, let adminPassword = adminPassword {
-                self.setHint(type: .adminUsername, hint: adminUsername)
-                self.setHint(type: .adminPassword, hint: adminPassword)
-
-            }
-            return .allow
-
-        case .cancelled:
-            denyLogin(message:nil)
-            return .deny
-        case .error(let errMesg):
-            denyLogin(message:errMesg)
-            return .deny
-        }
-
-    }
-
+    
     func showLoginWindowType(loginWindowType:LoginWindowType)  {
         TCSLogWithMark()
 
@@ -324,7 +295,7 @@ import Network
                 return
             }
 
-            loginWebViewController.mechanism=self
+            loginWebViewController.mechanismDelegate=self
             let screenRect = NSScreen.screens[0].frame
 
             let screenWidth = screenRect.width
@@ -382,7 +353,7 @@ import Network
             TCSLogWithMark()
             mainLoginWindowController.window?.makeFirstResponder(signInViewController.view)
 
-            signInViewController.mechanism=self
+            signInViewController.mechanismDelegate=self
             if signInViewController.usernameTextField != nil {
                 signInViewController.usernameTextField.isEnabled=true
             }

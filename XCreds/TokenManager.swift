@@ -7,36 +7,6 @@
 import Foundation
 import OIDCLite
 
-@propertyWrapper
-struct IntConvertible: Decodable {
-    var wrappedValue: Int
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        wrappedValue = 0
-        if let intValue = try? container.decode(Int.self) {
-            wrappedValue = intValue
-        } else if  let stringValue = try? container.decode(String.self), let intValue = Int(stringValue) {
-            wrappedValue = intValue
-        }
-    }
-}
-
-struct RefreshTokenResponse: Decodable {
-    let accessToken, refreshToken, tokenType: String
-    @IntConvertible var expiresIn: Int
-    let expiresOn, extExpiresIn: String?
-
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-        case expiresIn = "expires_in"
-        case expiresOn = "expires_on"
-        case refreshToken = "refresh_token"
-        case extExpiresIn = "ext_expires_in"
-        case tokenType = "token_type"
-    }
-}
-
 struct IDToken:Codable {
     let iss,sub,aud:String
     let iat, exp:Int
@@ -48,10 +18,38 @@ struct IDToken:Codable {
 
     }
 }
-class TokenManager {
 
-    static let shared = TokenManager()
+protocol TokenManagerFeedbackDelegate {
+    func tokenError(_ err:String)
+    func credentialsUpdated(_ credentials:Creds)
 
+}
+class TokenManager:DSQueryable, OIDCLiteDelegate {
+    func authFailure(message: String) {
+
+    }
+
+    func tokenResponse(tokens: OIDCLite.TokenResponse) {
+        
+        TCSLogWithMark("======== tokenResponse =========")
+        
+        RunLoop.main.perform {
+            //            if let password = self.password {
+            TCSLogWithMark("----- Password was set")
+            let xcredCreds = Creds(password: nil, tokens: tokens)
+            self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+            //TODO: post this?
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":xcredCreds]
+            )
+//            }
+//            else {
+//                TCSLogWithMark("----- password was not set")
+//                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+//                self.showErrorMessageAndDeny("The password was not set. Please check settings and verify passwordless sign-in was not used.")
+//            }
+        }
+    }
+    var feedbackDelegate:TokenManagerFeedbackDelegate?
     let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
@@ -80,12 +78,13 @@ class TokenManager {
         let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
+        oidcLite.delegate=self
         return oidcLite
 
 
     }
 
-    func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
+    static func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
         let keychainUtil = KeychainUtil()
 
         if let accessToken = creds.accessToken, accessToken.count>0{
@@ -119,10 +118,10 @@ class TokenManager {
 
 
         
-        if creds.password.count>0 {
+        if let password = password, password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating password")
 
                 return false
@@ -131,77 +130,8 @@ class TokenManager {
         }
         return true
     }
-    func requestTokenWithROPG(ropgClientID:String,ropgClientSecret:String?, userName:String, keychainPassword: String, url:URL, completion:@escaping(_ res:TokenResult)->Void) {
-        var req = URLRequest(url: url)
-        var loginString = "\(ropgClientID)"
-
-        if let ropgClientSecret = ropgClientSecret {
-            loginString += ":\(ropgClientSecret)"
-        }
-
-
-        guard let loginData = loginString.data(using: .utf8) else {
-            completion(TokenResult(hadError: true, hadConnectionError: false))
-            return
-        }
-        let base64LoginString = loginData.base64EncodedString()
-        let parameters = "grant_type=password&username=\(userName)&password=\(keychainPassword)&scope=offline_access"
-
-        let postData =  parameters.data(using: .utf8)
-        req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        req.addValue("application/json", forHTTPHeaderField: "Accept")
-
-
-        req.httpMethod = "POST"
-        req.httpBody = postData
-
-        let task = URLSession.shared.dataTask(with: req) { data, response, error in
-            self.handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword, completion: completion)
-        }
-
-        task.resume()
-
-    }
-    func handleIdpResponse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String, completion:@escaping(_ res:TokenResult)->Void) {
-        guard let data = data else {
-            print(String(describing: error))
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            completion(TokenResult(hadError: false, hadConnectionError: true))
-            return
-        }
-          if let response = response as? HTTPURLResponse {
-              if response.statusCode == 200 {
-                  let decoder = JSONDecoder()
-                  do {
-
-                      let json = try decoder.decode(RefreshTokenResponse.self, from: data)
-                      let expirationDate = Date().addingTimeInterval(TimeInterval(json.expiresIn))
-                      DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
-
-                      let keychainUtil = KeychainUtil()
-                      let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
-                      let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
-                      TCSLogWithMark("Credentials are current.")
-                      completion(TokenResult(hadError: true, hadConnectionError: false))
-
-                  }
-                  catch {
-                      TCSLogWithMark("Credentials are current, but failed to decode response")
-                      completion(TokenResult(hadError: true, hadConnectionError: false))
-                      return
-                  }
-
-              }
-              else {
-                  TCSLogErrorWithMark("got status code of \(response.statusCode):\(response)")
-                  completion(TokenResult(hadError: true, hadConnectionError: false))
-
-              }
-          }
-    }
+   
+   
 
     func tokenEndpoint() -> String? {
 
@@ -217,15 +147,11 @@ class TokenManager {
         return nil
     }
 
-    struct TokenResult {
-        var hadError:Bool
-        var hadConnectionError:Bool
-    }
-    func getNewAccessToken(completion:@escaping (_ res:TokenResult)->Void) -> Void {
+    func getNewAccessToken(completion:@escaping (_ res:OIDCLiteTokenResult)->Void) -> Void {
         TCSLogWithMark()
-        guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
+        guard let endpoint = tokenEndpoint(), let url = URL(string: endpoint) else {
             TCSLogWithMark()
-            completion(TokenResult(hadError: true, hadConnectionError: true))
+            completion(.error("bad setup for endpoint"))
             return
         }
 
@@ -238,43 +164,51 @@ class TokenManager {
         
 
         TCSLogWithMark()
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
+        if 
+            let keychainAccountAndPassword = keychainAccountAndPassword,
+           DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true,
+
+            let keychainPassword = keychainAccountAndPassword.1,
+            let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) {
+            let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            guard let userName = currentUser?.recordName else {
-                completion(TokenResult(hadError: false, hadConnectionError: true))
+            guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0 else {
+                completion(.error("no username for oidc config"))
                 return
             }
-            requestTokenWithROPG(ropgClientID: ropgClientID, ropgClientSecret: ropgClientSecret, userName: userName,keychainPassword: keychainPassword, url: url, completion: completion)
+            oidc().requestTokenWithROPG(ropgClientID: ropgClientID, ropgClientSecret: ropgClientSecret, userName: userNames[0],keychainPassword: keychainPassword, url: url)
 
+            
 
         }
-        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
-            var req = URLRequest(url: url)
+        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
 
-            TCSLogWithMark("Checking credentials in keychain using refresh token")
-            var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
-            if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
-                parameters.append("&client_secret=\(clientSecret)")
-            }
-
-            let postData =  parameters.data(using: .utf8)
-            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-            req.httpMethod = "POST"
-            req.httpBody = postData
-
-            let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                self.handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword, completion: completion)
-            }
-
-            task.resume()
+            oidcLocal?.refreshTokens(refreshToken)
+//            TCSLogWithMark("Checking credentials in keychain using refresh token")
+//            var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
+//            if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
+//                parameters.append("&client_secret=\(clientSecret)")
+//            }
+//
+//            let postData =  parameters.data(using: .utf8)
+//            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+//
+//            req.httpMethod = "POST"
+//            req.httpBody = postData
+//
+//            let task = URLSession.shared.dataTask(with: req) { data, response, error in
+//                self.handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword, completion: completion)
+//            }
+//
+//            task.resume()
         }
         else {
             TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
-            completion(TokenResult(hadError: false, hadConnectionError: false))
+            completion(.success)
 
         }
     }
+
 }
 

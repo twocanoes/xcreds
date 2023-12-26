@@ -37,10 +37,11 @@ enum PasswordVerificationResult {
     case other(String)
 }
 
-class SecureTokenCredential {
 
-    var username = ""
-    var password = ""
+struct SecureTokenCredential {
+
+    var username:String
+    var password:String
 }
 class PasswordUtils: NSObject {
 
@@ -104,10 +105,7 @@ class PasswordUtils: NSObject {
 
 
         if let username = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-            let secureTokenCreds = SecureTokenCredential()
-            secureTokenCreds.username=username
-            secureTokenCreds.password=password
-            return secureTokenCreds
+            return SecureTokenCredential(username: username, password: password)
 
         }
 //        if let scriptPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
@@ -207,10 +205,8 @@ class PasswordUtils: NSObject {
         }
         return true
     }
-    static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword1: String, newPassword2: String) throws {
-        if (newPassword1 != newPassword2) {
-            throw PasswordError.invalidParamater("New passwords do not match.")
-        }
+    static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
+
 
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
@@ -233,14 +229,14 @@ class PasswordUtils: NSObject {
         }
 
         do {
-            try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword1)
+            try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword)
         } catch  {
             throw PasswordError.unknownError("error changing password")
 
         }
 
 
-        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword1.count), newPassword1)
+        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword.count), newPassword)
 
         if (err == noErr) {
             return

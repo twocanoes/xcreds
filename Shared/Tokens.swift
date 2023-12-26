@@ -8,13 +8,13 @@
 import Foundation
 import OIDCLite
 struct Creds {
-    var password = ""
+    var password:String? = ""
     public var accessToken: String?
     public var idToken: String?
     public var refreshToken: String?
     public var jsonDict: [String:Any]?
 
-    init(password:String, tokens:OIDCLiteTokenResponse) {
+    init(password:String?, tokens:OIDCLite.TokenResponse) {
 
         self.accessToken=tokens.accessToken
         self.idToken=tokens.idToken
