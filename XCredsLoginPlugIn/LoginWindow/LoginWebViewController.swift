@@ -249,6 +249,7 @@ class LoginWebViewController: WebViewController, DSQueryable {
 
             }
         }
+
         guard let username = username, let password = password, password.count>0 else {
             TCSLogErrorWithMark("username or password are not set")
 
@@ -256,6 +257,7 @@ class LoginWebViewController: WebViewController, DSQueryable {
             return
         }
         if passwordHintSet == false {
+
 
             TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
 
@@ -273,7 +275,9 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 promptPasswordWindowController.showResetText=true
                 promptPasswordWindowController.showResetButton=true
 
+
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+                    
 
                 case .success(_):
                     mechanismDelegate.allowLogin()

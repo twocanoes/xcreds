@@ -49,6 +49,9 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     }
     func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
 
+        if newPassword == nil {
+         TCSLogWithMark("new password is nil")
+        }
         window?.canBecomeVisibleWithoutLogin=true
         window?.isMovable = true
         window?.canBecomeVisibleWithoutLogin = true
@@ -80,27 +83,35 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
                 TCSLogWithMark("user gave old password. checking...")
                 let passwordEntered = self.passwordEntered
                 guard let passwordEntered = passwordEntered else {
+                    TCSLogWithMark("No password entered, looping...")
+
                     continue
                 }
 
                 let isValidPassword = PasswordUtils.isLocalPasswordValid(userName: username, userPass: passwordEntered)
                 switch isValidPassword {
                 case .success:
+                    TCSLogWithMark("Password check successful")
                     let localUser = try? PasswordUtils.getLocalRecord(username)
                     guard let localUser = localUser else {
                         TCSLogErrorWithMark("invalid local user")
                         return .error("The local user \(username) could not be found")
                     }
-                    if shouldUpdatePassword==false {
+                    TCSLogWithMark()
 
+                    if shouldUpdatePassword==false {
+                        TCSLogWithMark("shouldUpdatePassword set to false")
                         return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
                     }
+                    TCSLogWithMark()
                     guard let newPassword = newPassword else {
+                        TCSLogWithMark("Password not provided for changing")
                         return .error("Password not provided for changing")
 
                     }
-
+                    TCSLogWithMark()
                     do {
+                        TCSLogWithMark("attempting to change password")
                         try localUser.changePassword(passwordEntered, toPassword: newPassword)
                     }
                     catch {

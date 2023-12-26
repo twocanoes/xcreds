@@ -831,10 +831,10 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
                 let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
-                promptPasswordWindowController.showResetText=false
-                promptPasswordWindowController.showResetButton=false
+                promptPasswordWindowController.showResetText=true
+                promptPasswordWindowController.showResetButton=true
 
-                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: nil, shouldUpdatePassword: true) {
+                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
 
                 case .success(_):
                     completeLogin(authResult: .allow)
@@ -843,6 +843,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
                         mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername )
                         mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword)
+                        mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true)
+
                     }
                     completeLogin(authResult: .allow)
 
@@ -857,11 +859,11 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
-            case .mappedUserFound(let foundODUserRecord):
-                shortName = foundODUserRecord.recordName
-                TCSLogWithMark("Mapped user found: \(shortName)")
-                setRequiredHintsAndContext()
-                completeLogin(authResult: .allow)
+//            case .mappedUserFound(let foundODUserRecord):
+//                shortName = foundODUserRecord.recordName
+//                TCSLogWithMark("Mapped user found: \(shortName)")
+//                setRequiredHintsAndContext()
+//                completeLogin(authResult: .allow)
             }
         } else {
             authFail()
