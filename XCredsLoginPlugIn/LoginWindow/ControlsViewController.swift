@@ -10,6 +10,10 @@ import Cocoa
 class ControlsViewController: NSViewController {
     var delegate: XCredsMechanismProtocol?
 
+    @IBOutlet weak var refreshGridColumn: NSGridColumn?
+    @IBOutlet weak var shutdownGridColumn: NSGridColumn?
+    @IBOutlet weak var restartGridColumn: NSGridColumn?
+
     @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
     @IBOutlet weak var toolsView: NSView?

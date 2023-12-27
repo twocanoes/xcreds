@@ -9,6 +9,9 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ControlsViewController" customModule="XCredsLoginPlugin">
             <connections>
                 <outlet property="macLoginWindowGridColumn" destination="Qgw-6x-QRs" id="YHA-Qx-deF"/>
+                <outlet property="refreshGridColumn" destination="8Cw-21-fob" id="TAZ-uh-ulp"/>
+                <outlet property="restartGridColumn" destination="AiZ-fa-C1D" id="r8h-HG-Jsh"/>
+                <outlet property="shutdownGridColumn" destination="vSV-Ol-eHY" id="Mqo-KA-YRS"/>
                 <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
                 <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
                 <outlet property="versionTextField" destination="p61-id-z2n" id="qZT-E7-l0T"/>

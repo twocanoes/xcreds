@@ -34,6 +34,7 @@ import Network
 
             case .cloud:
                 self.showLoginWindowType(loginWindowType: .usernamePassword)
+
             case .usernamePassword:
                 self.showLoginWindowType(loginWindowType: .cloud)
             }
@@ -69,8 +70,12 @@ import Network
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")
             mainLoginWindowController.setupLoginWindowAppearance()
-
+            mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=false
             loginWebViewController?.loadPage()
+        }
+        else {
+            mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=true
+
         }
     }
     func useAutologin() -> Bool {
@@ -281,6 +286,7 @@ import Network
 
         case .cloud:
             self.loginWindowType = LoginWindowType.cloud
+            self.mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=false
 
             if loginWebViewController==nil{
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
@@ -330,6 +336,8 @@ import Network
 
 
         case .usernamePassword:
+            self.mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=true
+
             NetworkMonitor.shared.stopMonitoring()
             self.loginWindowType = .usernamePassword
 

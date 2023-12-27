@@ -234,7 +234,14 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             TCSLogWithMark("No username entered")
             return
         }
-        TCSLogWithMark()
+        else if passString.isEmpty {
+            passwordTextField.shake(self)
+            view.window?.makeFirstResponder(passwordTextField)
+
+            TCSLogWithMark("No password entered")
+            return
+        }
+        TCSLogWithMark("passtring:\(passString)")
         loginStartedUI()
         TCSLogWithMark()
         updateLoginWindowInfo()
@@ -301,35 +308,6 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         TCSLogWithMark("Attempt to authenticate user")
         session.authenticate()
     }
-
-
-//    @IBAction func ChangePassword(_ sender: Any) {
-//        guard newPassword.stringValue == newPasswordConfirmation.stringValue else {
-//            os_log("New passwords didn't match", log: uiLog, type: .error)
-////            alertText.stringValue = "New passwords don't match"
-//            return
-//        }
-//
-//        // set the passChanged flag
-//
-//        passChanged = true
-//
-//        //TODO: Terrible hack to be fixed once AD Framework is refactored
-//        password.stringValue = newPassword.stringValue
-//
-//        session?.oldPass = oldPassword.stringValue
-//        session?.newPass = newPassword.stringValue
-//
-//        os_log("Attempting password change for %{public}@", log: uiLog, type: .debug, shortName)
-//
-//        // disable the fields
-//
-//        oldPassword.isEnabled = false
-//        newPassword.isEnabled = false
-//        newPasswordConfirmation.isEnabled = false
-//
-//        session?.changePassword()
-//    }
 
 
     /// Format the user and domain from the login window depending on the mode the window is in.
@@ -896,9 +874,11 @@ extension SignInViewController: NoMADUserSessionDelegate {
 //MARK: - NSTextField Delegate
 extension SignInViewController: NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
-        TCSLogWithMark()
         let passField = obj.object as! NSTextField
-        passString = passField.stringValue
+        if passField.tag == 99 {
+            TCSLogWithMark()
+            passString = passField.stringValue
+        }
     }
 }
 

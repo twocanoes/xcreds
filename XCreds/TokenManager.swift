@@ -325,11 +325,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             }
             guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
                 TCSLogErrorWithMark("email address invalid")
-                //                        throw ProcessTokenResult.error("The email address from the identity token is invalid.")
 
                 return .error("The email address from the identity token is invalid")
-//                mechanismDelegate.denyLogin(message:"The email address from the identity token is invalid")
-//                return
 
             }
 
