@@ -33,6 +33,166 @@ import OpenDirectory
     func run(){
         fatalError("superclass must implement")
     }
+    func setupHints(fromCredentials credentials:Creds, password:String) -> Bool {
+        var username:String?
+
+        do {
+
+            let tokenManager = TokenManager()
+            let idTokenInfo = try tokenManager.tokenInfo(fromCredentials: credentials)
+
+
+            guard let idTokenInfo = idTokenInfo else {
+                denyLogin(message: "invalid idtoken")
+                return false
+            }
+
+            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+
+            var userInfo:TokenManager.UserAccountInfo
+            switch userInfoResult {
+
+            case .success(let retUserAccountInfo):
+                userInfo = retUserAccountInfo
+            case .error(let message):
+                denyLogin(message:message)
+                return false
+            }
+
+            if let firstname = userInfo.firstName {
+                setHint(type: .firstName, hint: firstname)
+            }
+            if let lastName = userInfo.lastName {
+                setHint(type: .lastName, hint: lastName)
+            }
+            if let username = userInfo.username {
+                setHint(type: .user, hint: username)
+            }
+            if let fullName = userInfo.fullName {
+                setHint(type: .fullName, hint: fullName)
+            }
+            if let groups = userInfo.groups {
+                setHint(type: .groups, hint: groups)
+            }
+            if let aliasName = userInfo.alias {
+                setHint(type: .aliasName, hint: aliasName)
+            }
+
+//            guard let password = password, password.count>0 else {
+//                denyLogin(message:"password is not set")
+//                return
+//            }
+
+            let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
+            guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {
+                denyLogin(message:"could not find local user with findUserAndUpdatePassword")
+                return false
+            }
+
+
+            switch findUserAndUpdatePasswordResult {
+
+            case .successful(let localUsername):
+                username=localUsername
+            case .canceled:
+                denyLogin(message:"cancelled")
+                return false
+            case .createNewAccount:
+                break
+            case .error(let mesg):
+                denyLogin(message:mesg)
+                return false
+            }
+            guard let username = userInfo.username else {
+                TCSLogErrorWithMark("username or password are not set")
+                denyLogin(message:"username or password are not set")
+                return false
+            }
+
+            TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
+
+            let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)
+
+            switch passwordCheckStatus {
+            case .success:
+                TCSLogWithMark("Local password matches cloud password ")
+            case .incorrectPassword:
+
+                TCSLogWithMark("Sync password called.")
+
+                let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+
+                promptPasswordWindowController.showResetText=true
+                promptPasswordWindowController.showResetButton=true
+
+
+                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+
+
+                case .success(_):
+
+                    allowLogin()
+
+                case .resetKeychainRequested(let usernamePasswordCredentials):
+                    if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
+                        setHint(type: .adminUsername, hint:adminUsername )
+                        setHint(type: .adminPassword, hint: adminPassword)
+                        setHint(type: .passwordOverwrite, hint: true)
+
+                    }
+                    allowLogin()
+
+
+                case .userCancelled:
+                    return false
+                case .error(let errMsg):
+                    TCSLogWithMark("Error prompting: \(errMsg)")
+                    return false
+                }
+
+                break
+            case .accountDoesNotExist:
+                TCSLogWithMark("user account doesn't exist yet")
+
+            case .other(let mesg):
+                TCSLogWithMark("password check error:\(mesg)")
+
+                denyLogin(message:mesg)
+                return false
+            }
+            //        }
+            TCSLogWithMark("passing username:\(username), password, and tokens")
+            TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
+            setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+            TCSLogWithMark("setting kAuthorizationEnvironmentPassword")
+
+            setContextString(type: kAuthorizationEnvironmentPassword, value: password)
+            TCSLogWithMark("setting username")
+
+            setHint(type: .user, hint: username)
+            TCSLogWithMark("setting tokens.password")
+
+            setHint(type: .pass, hint: password)
+
+            TCSLogWithMark("setting tokens")
+
+            setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""])
+            TCSLogWithMark("calling allowLogin")
+            allowLogin()
+            return true
+        }
+        catch TokenManager.ProcessTokenResult.error(let msg){
+            denyLogin(message: msg)
+            return false
+        }
+        catch {
+
+            TCSLogWithMark("Error:\(error.localizedDescription)")
+            denyLogin(message:"credentialsUpdated error")
+            return false
+
+        }
+    }
     func setupPrefs(){
         TCSLogWithMark()
         UserDefaults.standard.addSuite(named: "com.twocanoes.xcreds")

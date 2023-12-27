@@ -7,64 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5"
+            uuid = "E1EA521E-AF06-45D9-98E9-8460A2C7CC2C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
+            filePath = "XCreds/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
-            landmarkName = "getNewAccessToken(completion:)"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "credentialsUpdated(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e4040"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "257"
-                  endingLineNumber = "257"
-                  offsetFromSymbolStart = "3772">
-               </Location>
-               <Location
-                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e4040"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "257"
-                  endingLineNumber = "257"
-                  offsetFromSymbolStart = "3768">
-               </Location>
-               <Location
-                  uuid = "44D1A17A-D1F3-4330-A18A-4A98A84231C5 - 5dc85c46130e40ef"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.TokenManager.getNewAccessToken(completion: (XCreds.TokenManager.TokenResult) -&gt; ()) -&gt; ()"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "262"
-                  endingLineNumber = "262"
-                  offsetFromSymbolStart = "3772">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1DB2C41B-B3ED-43F9-B705-D47D9DBFA539"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/AppDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

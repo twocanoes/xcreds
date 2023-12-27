@@ -21,7 +21,11 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     }
 
     func credentialsUpdated(_ credentials:Creds){
-        
+        TCSLogWithMark()
+        if mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ) == false {
+            TCSLogWithMark("error setting up hints")
+        }
+
     }
 
     struct UsernamePasswordCredentials {
@@ -234,29 +238,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         updateLoginWindowInfo()
         TCSLogWithMark()
 
-        if  UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == true {
-            if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) {
-                TCSLogWithMark("Checking credentials in keychain using ROPG")
-                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-                guard let userName = currentUser?.recordName else {
-                    TCSLogWithMark("no username")
-
-                    return
-                }
-                guard let endpoint = tokenManager.tokenEndpoint(), let url = URL(string: endpoint) else {
-                    TCSLogWithMark("no url for OIDC endpoint using ROPG")
-
-                    return
-
-                }
-                tokenManager.feedbackDelegate=self
-
-                tokenManager.oidc().requestTokenWithROPG(ropgClientID: ropgClientID, ropgClientSecret: ropgClientSecret, userName: userName,keychainPassword: passString, url: url)                
-                return
-            }
-
-        }
-        if self.domainName.isEmpty==true || self.localOnlyCheckBox.state == .on{
+        if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
@@ -268,10 +250,25 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
                 authFail()
             }
             return
+        } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
+            //                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+            //                guard let userName = currentUser?.recordName else {
+            //                    TCSLogWithMark("no username")
+            //                    return
+            //                }
+
+            tokenManager.feedbackDelegate=self
+
+            shortName = strippedUsername
+            tokenManager.oidc().requestTokenWithROPG(ropgUsername: strippedUsername, ropgPassword: passString)
+            return
+
 
         }
-        TCSLogWithMark("network auth.")
-        networkAuth()
+        else { // AD. So auth
+            TCSLogWithMark("network auth.")
+            networkAuth()
+        }
 
     }
 

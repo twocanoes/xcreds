@@ -104,7 +104,6 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                 return .createNewAccount
             }
         }
-        return .error("unknown error")
 
     }
     override func windowDidLoad() {
