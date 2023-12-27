@@ -17,13 +17,15 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
     func tokenError(_ err:String){
-
+        TCSLogWithMark("Token error: \(err)")
+        authFail()
     }
 
     func credentialsUpdated(_ credentials:Creds){
         TCSLogWithMark()
         if mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ) == false {
             TCSLogWithMark("error setting up hints")
+            authFail()
         }
 
     }
@@ -260,7 +262,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             tokenManager.feedbackDelegate=self
 
             shortName = strippedUsername
-            tokenManager.oidc().requestTokenWithROPG(ropgUsername: strippedUsername, ropgPassword: passString)
+            tokenManager.oidc().requestTokenWithROPG(username: strippedUsername, password: passString)
             return
 
 

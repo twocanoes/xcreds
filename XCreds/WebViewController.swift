@@ -12,7 +12,7 @@ import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     func credentialsUpdated(_ credentials: Creds) {
-
+        TCSLogWithMark()
     }
   
     @IBOutlet weak var refreshTitleTextField: NSTextField?

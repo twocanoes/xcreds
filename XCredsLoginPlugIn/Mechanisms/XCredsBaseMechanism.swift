@@ -182,7 +182,8 @@ import OpenDirectory
             return true
         }
         catch TokenManager.ProcessTokenResult.error(let msg){
-            denyLogin(message: msg)
+            TCSLogWithMark("invalid idToken:\(msg)")
+            denyLogin(message: nil)
             return false
         }
         catch {
@@ -297,7 +298,7 @@ import OpenDirectory
     func denyLogin(message: String?) {
         TCSLogErrorWithMark("***************** DENYING LOGIN ********************");
 
-        if let message  = message {
+        if let message = message {
             setStickyContextString(type: "ErrorMessage", value: message)
         }
 

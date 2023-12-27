@@ -26,7 +26,8 @@ protocol TokenManagerFeedbackDelegate {
 }
 class TokenManager: OIDCLiteDelegate,DSQueryable {
     func authFailure(message: String) {
-
+        TCSLogWithMark("authFailure: \(message)")
+        feedbackDelegate?.tokenError(message)
     }
 
     struct UserAccountInfo {
@@ -188,7 +189,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
                 completion(.error("no username for oidc config"))
                 return
             }
-            oidc().requestTokenWithROPG(ropgUsername: username, ropgPassword: keychainPassword)
+            oidc().requestTokenWithROPG(username: username, password: keychainPassword)
 
         }
         else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
@@ -208,8 +209,6 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         guard let idToken = credentials.idToken else {
             TCSLogErrorWithMark("invalid idToken")
             throw ProcessTokenResult.error("invalid idToken")
-            //            mechanismDelegate.denyLogin(message:"The identity token is invalid")
-            //            return
         }
 
         let array = idToken.components(separatedBy: ".")

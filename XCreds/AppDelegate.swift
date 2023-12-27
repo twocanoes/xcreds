@@ -8,16 +8,8 @@
 import Cocoa
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable, TokenManagerFeedbackDelegate {
-    func tokenError(_ err: String) {
-
-    }
-
-    func credentialsUpdated(_ credentials: Creds) {
-
-    }
-
-
+class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
+   
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
@@ -32,11 +24,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable, TokenManagerFee
             TCSLogWithMark("Build \(build)")
 
         }
-let tm = TokenManager()
-        tm.feedbackDelegate=self
-        tm.oidc().requestTokenWithROPG(ropgUsername:"fred@twocanoes.com", ropgPassword: "ChairBook1!")
-//
-//
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(screenLocked(_:)), name:NSNotification.Name("com.apple.screenIsLocked") , object: nil)
 
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(screenUnlocked(_:)), name:NSNotification.Name("com.apple.screenIsUnlocked") , object: nil)

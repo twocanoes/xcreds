@@ -89,7 +89,7 @@ class MainController: NSObject, NoMADUserSessionDelegate, TokenManagerFeedbackDe
 
 
     func tokenError(_ err: String) {
-        print(err)
+        TCSLogWithMark("Token error: \(err)")
     }
     
     func NoMADAuthenticationSucceded() {
