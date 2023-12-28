@@ -159,6 +159,7 @@
 		76BEF8002872A3030013E2A1 /* loginwindow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */; };
 		76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FF2872A3030013E2A1 /* loginwindow.png */; };
 		76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C084092A9A2635008039FA /* ControlsViewController.xib */; };
+		76C4ACBF2B3D0F8D003B3605 /* ShareMounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */; };
 		76C4BAB02B353A30007B2C57 /* KlistUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEC82B350606003A23DB /* KlistUtil.swift */; };
 		76C4BAB12B353A3A007B2C57 /* DNSResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEBE2B3505A3003A23DB /* DNSResolver.m */; };
 		76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C4BAB22B353AD7007B2C57 /* libresolv.tbd */; };
@@ -439,6 +440,7 @@
 		76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginwindow@2x.png"; sourceTree = "<group>"; };
 		76BEF7FF2872A3030013E2A1 /* loginwindow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginwindow.png; sourceTree = "<group>"; };
 		76C084092A9A2635008039FA /* ControlsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ControlsViewController.xib; sourceTree = "<group>"; };
+		76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMounter.swift; sourceTree = "<group>"; };
 		76C4BAB22B353AD7007B2C57 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		76C4BAB52B353AF7007B2C57 /* Kerberos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kerberos.framework; path = System/Library/Frameworks/Kerberos.framework; sourceTree = SDKROOT; };
 		76C4BABA2B353B4B007B2C57 /* KerbUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KerbUtil.m; sourceTree = "<group>"; };
@@ -759,6 +761,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */,
 				76C4BAB92B353B3F007B2C57 /* NoMAD */,
 				760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */,
 				7614D03B2B181A5D006EAF36 /* icon_128x128.png */,
@@ -1303,6 +1306,7 @@
 				7657DEAF2B3503BF003A23DB /* SessionManager.swift in Sources */,
 				7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */,
 				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,
+				76C4ACBF2B3D0F8D003B3605 /* ShareMounter.swift in Sources */,
 				7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */,
 				76E74DCF2B3902F0004C6429 /* XCredsMechanismProtocol.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
@@ -1410,7 +1414,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1447,7 +1451,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1568,7 +1572,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1605,7 +1609,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1755,7 +1759,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1797,7 +1801,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6174;
+				CURRENT_PROJECT_VERSION = 6175;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
