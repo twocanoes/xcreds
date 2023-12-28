@@ -143,7 +143,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     func tokenError(_ err: String) {
         TCSLogErrorWithMark("authFailure: \(err)")
         //TODO: need to post this?
-        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":err])
 
     }
 

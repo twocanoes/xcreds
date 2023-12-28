@@ -111,11 +111,17 @@ class MainController: NSObject, NoMADUserSessionDelegate {
                 }
 
                 guard let tokens = tokenInfo["credentials"] as? Creds else {
-                    let alert = NSAlert()
-                    alert.addButton(withTitle: "OK")
-                    alert.messageText="Invalid tokens or password not determined. Please check the log."
-                    alert.runModal()
+                    if let errorMessage = tokenInfo["errorMessage"] as? String, let cause = tokenInfo["cause"] as? AuthorizationResult {
+
+                        if cause != .userCanceled {
+                            let alert = NSAlert()
+                            alert.addButton(withTitle: "OK")
+                            alert.messageText=errorMessage
+                            alert.runModal()
+                        }
+                    }
                     return
+
                 }
                 if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
                     //                    Mark()

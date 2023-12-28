@@ -57,6 +57,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
 
+    var isInUserSpace = false
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
         return true
@@ -89,7 +90,6 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     //MARK: - Migrate Box IB outlets
     var migrate = false
     var migrateUserRecord : ODRecord?
-    let localCheck = LocalCheckAndMigrate()
     var didUpdateFail = false
     var setupDone=false
     //MARK: - UI Methods
@@ -111,6 +111,11 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
     func setupLoginAppearance() {
         TCSLogWithMark()
+        
+        alertTextField.isHidden=true
+
+        self.usernameTextField.stringValue=""
+        self.passwordTextField.stringValue=""
 
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
@@ -123,6 +128,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
             self.usernameTextField.placeholderString=usernamePlaceholder
         }
+        self.usernameTextField.isEnabled=true
 
         if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
             TCSLogWithMark("Setting password placeholder")
@@ -130,6 +136,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             self.passwordTextField.placeholderString=passwordPlaceholder
 
         }
+        passwordTextField.isEnabled=true
+        signIn.isEnabled=true
         TCSLogWithMark("Domain is \(domainName)")
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
             TCSLogWithMark("hiding local only")
@@ -215,13 +223,11 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     fileprivate func loginStartedUI() {
         TCSLogWithMark()
         signIn.isEnabled = !signIn.isEnabled
-//        signIn.isHidden = !signIn.isHidden
         TCSLogWithMark()
         usernameTextField.isEnabled = !usernameTextField.isEnabled
         passwordTextField.isEnabled = !passwordTextField.isEnabled
         localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
 
-//        localOnlyView.isHidden = !localOnlyView.isHidden
         TCSLogWithMark()
     }
 
@@ -426,10 +432,18 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
         case .deny:
             TCSLogWithMark("Complete login process with deny")
             mechanismDelegate?.denyLogin(message:nil)
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":"Login Denied","cause":authResult])
+
+
+        case .userCanceled:
+            TCSLogWithMark("Complete login process with deny")
+            mechanismDelegate?.denyLogin(message:nil)
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":"User Cancelled", "cause":authResult])
 
         default:
             TCSLogWithMark("deny login process with unknown error")
             mechanismDelegate?.denyLogin(message:nil)
+            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":"Unknown error","cause":authResult])
 
         }
         TCSLogWithMark()
@@ -726,14 +740,15 @@ extension SignInViewController: NoMADUserSessionDelegate {
         case .OffDomain:
             TCSLogErrorWithMark("OffDomain")
 
-            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+         if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)
             } else {
-                authFail()
+                authFail("Cannot reach domain controller")
+                TCSLogErrorWithMark("AD authentication failed, off domain.")
+
             }
 
-            TCSLogErrorWithMark("AD authentication failed, off domain.")
 //            if getManagedPreference(key: .LocalFallback) as? Bool ?? false {
 //                os_log("Local fallback enabled, passing off to local authentication", log: uiLog, type: .default)
 //                return
@@ -802,8 +817,10 @@ extension SignInViewController: NoMADUserSessionDelegate {
             
             setHints(user: user)
 
+
             // check for any migration and local auth requirements
             let localCheck = LocalCheckAndMigrate()
+            localCheck.isInUserSpace = self.isInUserSpace
             localCheck.delegate = mechanismDelegate
             switch localCheck.migrationTypeRequired(userToCheck: user.shortName, passToCheck: passString, kerberosPrincipalName:user.userPrincipal) {
 
@@ -819,6 +836,11 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 promptPasswordWindowController.showResetText=true
                 promptPasswordWindowController.showResetButton=true
 
+                if isInUserSpace==true{
+                    promptPasswordWindowController.showResetText=false
+                    promptPasswordWindowController.showResetButton=false
+
+                }
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
 
                 case .success(_):
@@ -835,7 +857,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 
                 case .userCancelled:
-                    completeLogin(authResult: .deny)
+                    completeLogin(authResult: .userCanceled)
+
 
                 case .error(_):
                     completeLogin(authResult: .deny)

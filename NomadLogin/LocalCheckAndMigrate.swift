@@ -30,7 +30,8 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
     private var pass = ""
     
     public var migrationUsers: [String]?
-    
+    var isInUserSpace = false
+
     func migrationTypeRequired(userToCheck: String, passToCheck: String, kerberosPrincipalName:String?) -> MigrationType {
 
         TCSLogWithMark()
@@ -38,10 +39,18 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         pass = passToCheck
         var user = userToCheck
 
-        if let kerberosPrincipalName = kerberosPrincipalName, let foundRecord = try? getUserRecord(kerberosPrincipalNameToFind: kerberosPrincipalName) {
-            user = foundRecord.recordName
-//            return .mappedUserFound(foundRecord)
+        //if we are in userspace, use the console user. If there not and there is a mapped user acccount with a kerb pricipal name in the DS record, use that. Otherwise, just keep on with the user passed in.
+        if isInUserSpace == true {
+            let consoleUser = getConsoleUser()
+            user=consoleUser
         }
+
+        else
+        {
+            if let kerberosPrincipalName = kerberosPrincipalName, let foundRecord = try? getUserRecord(kerberosPrincipalNameToFind: kerberosPrincipalName) {
+            user = foundRecord.recordName
+        }
+    }
         let shouldPromptToMigrate = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
         // check local user pass to see if user exists
@@ -58,7 +67,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                 
                 if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
                     DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
-                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false  && isInUserSpace == false {
                     TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
                     TCSLogWithMark("Setting password to be overwritten.")
                     delegate?.setHint(type: .passwordOverwrite, hint: true)

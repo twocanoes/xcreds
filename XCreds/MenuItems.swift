@@ -100,14 +100,18 @@ class SignInMenuItem: NSMenuItem {
     @objc func showSigninWindow() {
 
         ScheduleManager.shared.setNextCheckTime()
-        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) != nil {
+        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) != nil || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil
+        {
 
             if let window = sharedMainMenu.windowController.window{
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
                 if let bundle = bundle{
                     TCSLogWithMark("Creating signInViewController")
-                    signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+                    if signInViewController == nil {
+                        signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+                    }
 
+                    signInViewController?.isInUserSpace = true
                     guard let signInViewController = signInViewController else {
                         return
                     }
@@ -115,7 +119,17 @@ class SignInMenuItem: NSMenuItem {
                     if let contentView = window.contentView {
 
                         signInViewController.view.wantsLayer=true
-                        window.contentView?.addSubview(signInViewController.view)
+
+                        if let contentView = window.contentView{
+                            if contentView.subviews.contains(signInViewController.view)==false {
+                                window.contentView?.addSubview(signInViewController.view)
+
+                            }
+
+
+                        }
+                        signInViewController.setupLoginAppearance()
+
                         var x = NSMidX(contentView.frame)
                         var y = NSMidY(contentView.frame)
 
