@@ -37,6 +37,11 @@ public class DefaultsOverride: UserDefaults {
         do {
             let attributes = try FileManager.default.attributesOfItem(atPath: prefScriptPath)
 
+            if FileManager.default.isExecutableFile(atPath: prefScriptPath) == false {
+                TCSLogErrorWithMark("override script is not executible")
+
+                return
+            }
             guard let ownerID=attributes[.ownerAccountID] as? NSNumber else {
                 TCSLogErrorWithMark("Could not get owner id")
                 return
