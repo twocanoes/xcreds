@@ -7,91 +7,7 @@
 
 import Cocoa
 import OIDCLite
-class MainController: NSObject, NoMADUserSessionDelegate, TokenManagerFeedbackDelegate {
-    func credentialsUpdated(_ credentials: Creds) {
-
-
-
-            DispatchQueue.main.async {
-                sharedMainMenu.windowController.window?.close()
-
-
-//                guard let tokens = credentials else {
-//                    let alert = NSAlert()
-//                    alert.addButton(withTitle: "OK")
-//                    alert.messageText="Invalid tokens or password not determined. Please check the log."
-//                    alert.runModal()
-//                    return
-//                }
-                if let refreshToken = credentials.refreshToken, refreshToken.count>0 {
-                    //                    Mark()
-                    sharedMainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
-                }
-                let localAccountAndPassword = self.localAccountAndPassword()
-                if var localPassword=localAccountAndPassword.1{
-                    if (localPassword != credentials.password){
-                        var updatePassword = true
-                        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
-                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-                            NSApp.activate(ignoringOtherApps: true)
-
-                            while true {
-                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
-                                if response == .cancel {
-
-                                    let alert = NSAlert()
-                                    alert.addButton(withTitle: "Skip Updating Password")
-                                    alert.addButton(withTitle: "Cancel")
-                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
-                                    let resp = alert.runModal()
-                                    if resp == .alertFirstButtonReturn {
-                                        NSApp.stopModal(withCode: .cancel)
-                                        verifyOIDPassword.window?.close()
-                                        updatePassword=false
-                                        break
-
-                                    }
-                                }
-                                let verifyCloudPassword = verifyOIDPassword.password
-                                if verifyCloudPassword == credentials.password {
-
-                                    updatePassword=true
-
-                                    verifyOIDPassword.window?.close()
-                                    break;
-                                }
-                                else {
-                                    verifyOIDPassword.window?.shake(self)
-                                }
-
-                            }
-                        }
-                        if updatePassword {
-                            let updatedLocalAccountAndPassword = self.localAccountAndPassword()
-                            if let updatedLocalPassword = updatedLocalAccountAndPassword.1{
-
-                                localPassword=updatedLocalPassword
-                                try? PasswordUtils.changeLocalUserAndKeychainPassword(updatedLocalPassword, newPassword: localPassword)
-                            }
-
-
-                        }
-                    }
-                }
-                if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:credentials.password ) == false {
-                    TCSLogErrorWithMark("error saving tokens to keychain")
-                }
-                ScheduleManager.shared.startCredentialCheck()
-
-            }
-        }
-
-
-
-    func tokenError(_ err: String) {
-        TCSLogWithMark("Token error: \(err)")
-    }
-    
+class MainController: NSObject, NoMADUserSessionDelegate {
     func NoMADAuthenticationSucceded() {
         session?.userInfo()
 
@@ -185,86 +101,85 @@ class MainController: NSObject, NoMADUserSessionDelegate, TokenManagerFeedbackDe
             })
 
         }
-//        NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
-//
-//
-//            DispatchQueue.main.async {
-//                sharedMainMenu.windowController.window?.close()
-//
-//                guard let tokenInfo = notification.userInfo else {
-//                    return
-//                }
-//
-//                guard let tokens = tokenInfo["tokens"] as? Creds else {
-//                    let alert = NSAlert()
-//                    alert.addButton(withTitle: "OK")
-//                    alert.messageText="Invalid tokens or password not determined. Please check the log."
-//                    alert.runModal()
-//                    return
-//                }
-//                if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
-//                    //                    Mark()
-//                    sharedMainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
-//                }
-//                let localAccountAndPassword = self.localAccountAndPassword()
-//                if var localPassword=localAccountAndPassword.1{
-//                    if (localPassword != tokens.password){
-//                        var updatePassword = true
-//                        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
-//                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-//                            NSApp.activate(ignoringOtherApps: true)
-//
-//                            while true {
-//                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
-//                                if response == .cancel {
-//
-//                                    let alert = NSAlert()
-//                                    alert.addButton(withTitle: "Skip Updating Password")
-//                                    alert.addButton(withTitle: "Cancel")
-//                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
-//                                    let resp = alert.runModal()
-//                                    if resp == .alertFirstButtonReturn {
-//                                        NSApp.stopModal(withCode: .cancel)
-//                                        verifyOIDPassword.window?.close()
-//                                        updatePassword=false
-//                                        break
-//
-//                                    }
-//                                }
-//                                let verifyCloudPassword = verifyOIDPassword.password
-//                                if verifyCloudPassword == tokens.password {
-//
-//                                    updatePassword=true
-//
-//                                    verifyOIDPassword.window?.close()
-//                                    break;
-//                                }
-//                                else {
-//                                    verifyOIDPassword.window?.shake(self)
-//                                }
-//
-//                            }
-//                        }
-//                        if updatePassword {
-//                            let updatedLocalAccountAndPassword = self.localAccountAndPassword()
-//                            if let updatedLocalPassword = updatedLocalAccountAndPassword.1{
-//
-//                                localPassword=updatedLocalPassword
-//                                try? PasswordUtils.changeLocalUserAndKeychainPassword(updatedLocalPassword, newPassword: localPassword)
-//                            }
-//
-//
-//                        }
-//                    }
-//                }
-//                if TokenManager.saveTokensToKeychain(creds: tokens, setACL: true, password:tokens.password ) == false {
-//                    TCSLogErrorWithMark("error saving tokens to keychain")
-//                }
-//                ScheduleManager.shared.startCredentialCheck()
-//
-//            }
-//        }
-        ScheduleManager.shared.feedbackDelegate=self
+        NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
+
+
+            DispatchQueue.main.async {
+                sharedMainMenu.windowController.window?.close()
+
+                guard let tokenInfo = notification.userInfo else {
+                    return
+                }
+
+                guard let tokens = tokenInfo["credentials"] as? Creds else {
+                    let alert = NSAlert()
+                    alert.addButton(withTitle: "OK")
+                    alert.messageText="Invalid tokens or password not determined. Please check the log."
+                    alert.runModal()
+                    return
+                }
+                if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
+                    //                    Mark()
+                    sharedMainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+                }
+                let localAccountAndPassword = self.localAccountAndPassword()
+                if var localPassword=localAccountAndPassword.1{
+                    if (localPassword != tokens.password){
+                        var updatePassword = true
+                        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                            NSApp.activate(ignoringOtherApps: true)
+
+                            while true {
+                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                                if response == .cancel {
+
+                                    let alert = NSAlert()
+                                    alert.addButton(withTitle: "Skip Updating Password")
+                                    alert.addButton(withTitle: "Cancel")
+                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
+                                    let resp = alert.runModal()
+                                    if resp == .alertFirstButtonReturn {
+                                        NSApp.stopModal(withCode: .cancel)
+                                        verifyOIDPassword.window?.close()
+                                        updatePassword=false
+                                        break
+
+                                    }
+                                }
+                                let verifyCloudPassword = verifyOIDPassword.password
+                                if verifyCloudPassword == tokens.password {
+
+                                    updatePassword=true
+
+                                    verifyOIDPassword.window?.close()
+                                    break;
+                                }
+                                else {
+                                    verifyOIDPassword.window?.shake(self)
+                                }
+
+                            }
+                        }
+                        if updatePassword {
+                            let updatedLocalAccountAndPassword = self.localAccountAndPassword()
+                            if let updatedLocalPassword = updatedLocalAccountAndPassword.1{
+
+                                localPassword=updatedLocalPassword
+                                try? PasswordUtils.changeLocalUserAndKeychainPassword(updatedLocalPassword, newPassword: localPassword)
+                            }
+
+
+                        }
+                    }
+                }
+                if TokenManager.saveTokensToKeychain(creds: tokens, setACL: true, password:tokens.password ) == false {
+                    TCSLogErrorWithMark("error saving tokens to keychain")
+                }
+                ScheduleManager.shared.startCredentialCheck()
+
+            }
+        }
         //delay startup to give network time to settle.
         Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
             ScheduleManager.shared.startCredentialCheck()

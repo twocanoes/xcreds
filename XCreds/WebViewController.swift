@@ -13,6 +13,10 @@ import OIDCLite
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     func credentialsUpdated(_ credentials: Creds) {
         TCSLogWithMark()
+        var credWithPass = credentials
+        credWithPass.password = self.password
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
+                       )
     }
   
     @IBOutlet weak var refreshTitleTextField: NSTextField?

@@ -25,11 +25,6 @@ protocol TokenManagerFeedbackDelegate {
 
 }
 class TokenManager: OIDCLiteDelegate,DSQueryable {
-    func authFailure(message: String) {
-        TCSLogWithMark("authFailure: \(message)")
-        feedbackDelegate?.tokenError(message)
-    }
-
     struct UserAccountInfo {
         var fullName:String?
         var firstName:String?
@@ -50,24 +45,6 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         case error(String)
     }
 
-    func tokenResponse(tokens: OIDCLite.TokenResponse) {
-        
-        TCSLogWithMark("======== tokenResponse =========")
-        
-        RunLoop.main.perform {
-            let xcredCreds = Creds(password: nil, tokens: tokens)
-            self.feedbackDelegate?.credentialsUpdated(xcredCreds)
-            //TODO: post this?
-            NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["tokens":xcredCreds]
-            )
-//            }
-//            else {
-//                TCSLogWithMark("----- password was not set")
-//                NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-//                self.showErrorMessageAndDeny("The password was not set. Please check settings and verify passwordless sign-in was not used.")
-//            }
-        }
-    }
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
@@ -166,9 +143,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         return nil
     }
 
-    func getNewAccessToken(completion:@escaping (_ res:OIDCLiteTokenResult)->Void) -> Void {
+    func getNewAccessToken() -> Void {
         TCSLogWithMark()
-
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
@@ -178,7 +154,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
 
         TCSLogWithMark()
-        if 
+        //ropg
+        if
             let keychainAccountAndPassword = keychainAccountAndPassword,
            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true,
 
@@ -186,19 +163,20 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first else {
-                completion(.error("no username for oidc config"))
+                feedbackDelegate?.tokenError("no username for oidc config")
                 return
             }
+            // not return because we get a callback and then call the closure
             oidc().requestTokenWithROPG(username: username, password: keychainPassword)
 
-        }
+        } //use the refresh token
         else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
 
-            oidcLocal?.refreshTokens(refreshToken)
-        }
+            oidc().refreshTokens(refreshToken)
+        } // nothing. let delegate know
         else {
             TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
-            completion(.success)
+            feedbackDelegate?.tokenError("no refresh token")
 
         }
     }
@@ -412,6 +390,24 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
     }
 
 }
+// MARK: OIDC Lite Delegate Functions
 
-
+extension TokenManager {
+    func authFailure(message: String) {
+        TCSLogWithMark("authFailure: \(message)")
+        feedbackDelegate?.tokenError(message)
+    }
+    
+    
+    func tokenResponse(tokens: OIDCLite.TokenResponse) {
+        
+        TCSLogWithMark("======== tokenResponse =========")
+        
+        RunLoop.main.perform {
+            let xcredCreds = Creds(password: nil, tokens: tokens)
+            self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+            
+        }
+    }
+}
 
