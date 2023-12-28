@@ -16,6 +16,11 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
+    override var nibName: NSNib.Name{
+
+        return "LocalUsersViewController"
+    }
+
     func tokenError(_ err:String){
         TCSLogWithMark("Token error: \(err)")
         authFail()
@@ -27,6 +32,9 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             TCSLogWithMark("error setting up hints")
             authFail()
         }
+        var credWithPass = credentials
+        credWithPass.password = self.passString
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass])
 
     }
 

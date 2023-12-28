@@ -15,8 +15,8 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="XCreds Cloud Refresh" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="XCreds Password Update" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
@@ -37,7 +37,7 @@
                             <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="628" id="zPs-Yp-tRg"/>
                         </constraints>
-                        <textFieldCell key="cell" alignment="center" title="Your local password needs to be synced with your cloud password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
+                        <textFieldCell key="cell" alignment="center" title="Your local account password needs to be changed to match your online password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
                             <font key="font" metaFont="system" size="21"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <color key="backgroundColor" white="0.0062473695290000001" alpha="0.57066289449999996" colorSpace="custom" customColorSpace="calibratedWhite"/>

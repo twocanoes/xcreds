@@ -30,7 +30,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate {
         }
         DispatchQueue.main.async {
 
-            SignInMenuItem().doAction()
+            sharedMainMenu.signInMenuItem.showSigninWindow()
         }
 
     }

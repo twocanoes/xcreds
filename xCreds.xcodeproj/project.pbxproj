@@ -16,6 +16,10 @@
 		760418D72A1332660051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
 		760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D82A1332770051411B /* SystemInfoHelper.swift */; };
 		760418E02A133A370051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
+		761121B62B3D24FE005F7D02 /* SignInWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418CF2A1332210051411B /* SignInWindowController.swift */; };
+		761121B72B3D26EE005F7D02 /* SystemInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D82A1332770051411B /* SystemInfoHelper.swift */; };
+		761121B82B3D26F5005F7D02 /* LocalCheckAndMigrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */; };
+		761121B92B3D26FB005F7D02 /* DS+AD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D42A1332520051411B /* DS+AD.swift */; };
 		7611CEC0288B75140063A644 /* XCredsCreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CEBF288B75140063A644 /* XCredsCreateUser.swift */; };
 		7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */; };
 		7613FDF7289E114F00340CCD /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
@@ -1275,6 +1279,7 @@
 				089B22F22AFAED810006B6BC /* NetworkMonitor.swift in Sources */,
 				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
 				76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */,
+				761121B82B3D26F5005F7D02 /* LocalCheckAndMigrate.swift in Sources */,
 				76E74DD22B39034B004C6429 /* SelectLocalAccountWindowController.swift in Sources */,
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
@@ -1296,6 +1301,7 @@
 				76D175772B23C62A00E64A62 /* UpdatePasswordWindowController.swift in Sources */,
 				7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */,
 				76FDC5DA2B235A4F0035D61E /* StatusMenuWindowController.swift in Sources */,
+				761121B92B3D26FB005F7D02 /* DS+AD.swift in Sources */,
 				76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */,
 				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
 				764D8126284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift in Sources */,
@@ -1303,6 +1309,8 @@
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
 				7657DEBC2B35055F003A23DB /* Logger.swift in Sources */,
 				7657DEB62B3504A6003A23DB /* UserRecord.swift in Sources */,
+				761121B62B3D24FE005F7D02 /* SignInWindowController.swift in Sources */,
+				761121B72B3D26EE005F7D02 /* SystemInfoHelper.swift in Sources */,
 				7657DEAF2B3503BF003A23DB /* SessionManager.swift in Sources */,
 				7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */,
 				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,

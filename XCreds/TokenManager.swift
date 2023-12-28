@@ -404,9 +404,15 @@ extension TokenManager {
         TCSLogWithMark("======== tokenResponse =========")
         
         RunLoop.main.perform {
+
             let xcredCreds = Creds(password: nil, tokens: tokens)
-            self.feedbackDelegate?.credentialsUpdated(xcredCreds)
-            
+            if xcredCreds.hasTokens(){
+                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+            }
+            else {
+                self.feedbackDelegate?.tokenError("error gettings tokens")
+            }
+
         }
     }
 }

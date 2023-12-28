@@ -37,8 +37,11 @@ class MainMenu: NSObject, NSMenuDelegate {
     var webViewController: WebViewController?
     var prefsWindow: PreferencesWindowController?
     var aboutWindowController: AboutWindowController?
+    var signInMenuItem:SignInMenuItem
     override init() {
         mainMenu = NSMenu()
+        signInMenuItem = SignInMenuItem()
+
         super.init()
         buildMenu()
         windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
@@ -96,7 +99,7 @@ class MainMenu: NSObject, NSMenuDelegate {
 
         }
 
-        mainMenu.addItem(SignInMenuItem())
+        mainMenu.addItem(signInMenuItem)
         mainMenu.addItem(CheckTokenMenuItem())
         //        mainMenu.addItem(PrefsMenuItem())
         TCSLogWithMark()

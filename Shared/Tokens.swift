@@ -32,8 +32,12 @@ struct Creds {
         self.jsonDict=jsonDict
 
    }
+    func hasTokens() -> Bool {
 
-    
+        return (self.accessToken != nil) && (self.idToken != nil) && (self.refreshToken != nil)
+    }
+
+
 }
 
 

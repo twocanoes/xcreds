@@ -72,6 +72,7 @@ class ChangePasswordMenuItem: NSMenuItem {
 }
 class SignInMenuItem: NSMenuItem {
 
+    var signInViewController:SignInViewController?
     override var title: String {
         get {
             if sharedMainMenu.signedIn==true {
@@ -88,7 +89,7 @@ class SignInMenuItem: NSMenuItem {
     }
 
     init() {
-         super.init(title: "", action: #selector(doAction), keyEquivalent: "")
+         super.init(title: "", action: #selector(showSigninWindow), keyEquivalent: "")
          self.target = self
      }
 
@@ -96,26 +97,45 @@ class SignInMenuItem: NSMenuItem {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func doAction() {
+    @objc func showSigninWindow() {
 
         ScheduleManager.shared.setNextCheckTime()
-        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
-//            if (sharedMainMenu.webViewController==nil){
-//                windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-//
-////                sharedMainMenu.windowController=NSWindowController(windowNibName: "WebView")
-////                sharedMainMenu.webViewController = sharedMainMenu.windowController
-//
-//
-//            }
-//            
-            print(sharedMainMenu.windowController.window)
-            let view = sharedMainMenu.windowController.webViewController.view
-//            sharedMainMenu.windowController.window!.contentView?.addSubview(view)
-//            sharedMainMenu.windowController.showWindow(self)
+        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) != nil {
+
+            if let window = sharedMainMenu.windowController.window{
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                if let bundle = bundle{
+                    TCSLogWithMark("Creating signInViewController")
+                    signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+
+                    guard let signInViewController = signInViewController else {
+                        return
+                    }
+                    
+                    if let contentView = window.contentView {
+
+                        signInViewController.view.wantsLayer=true
+                        window.contentView?.addSubview(signInViewController.view)
+                        var x = NSMidX(contentView.frame)
+                        var y = NSMidY(contentView.frame)
+
+                        x = x - signInViewController.view.frame.size.width/2
+                        y = y - signInViewController.view.frame.size.height/2
+                        let lowerLeftCorner = NSPoint(x: x, y: y)
+                        signInViewController.localOnlyCheckBox.isHidden = true
+                        signInViewController.localOnlyView.isHidden = true
+
+                        signInViewController.view.setFrameOrigin(lowerLeftCorner)
+                    }
+
+                    window.makeKeyAndOrderFront(self)
+
+                }
+            }
+        }
+        else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
 
             sharedMainMenu.windowController.window!.makeKeyAndOrderFront(self)
-//            mainMenu.webView?.window!.forceToFrontAndFocus(nil)
             sharedMainMenu.windowController.webViewController?.loadPage()
         }
         else {
