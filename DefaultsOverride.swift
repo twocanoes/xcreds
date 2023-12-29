@@ -38,7 +38,7 @@ public class DefaultsOverride: UserDefaults {
             let attributes = try FileManager.default.attributesOfItem(atPath: prefScriptPath)
 
             if FileManager.default.isExecutableFile(atPath: prefScriptPath) == false {
-                TCSLogErrorWithMark("override script is not executible")
+                TCSLogErrorWithMark("override script is not executable")
 
                 return
             }
