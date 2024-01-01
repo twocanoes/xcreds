@@ -16,7 +16,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var networkChangeObserver:Any?
     var centerView:NSView?
     var mechanism:XCredsMechanismProtocol?
-
+    var timer:Timer?
     override func windowDidLoad() {
         TCSLogWithMark()
         super.windowDidLoad()
@@ -25,6 +25,25 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         let screenRect = NSScreen.screens[0].frame
         window?.setFrame(screenRect, display: true, animate: false)
         window?.alphaValue=0.9
+
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
+
+            if let path = DefaultsOverride.standardOverride.string(forKey: PrefKeys.hideIfPathExists.rawValue), FileManager.default.fileExists(atPath:path ) {
+
+                if self.window?.isVisible==true {
+                    TCSLogWithMark("window is visible and hide path has item at it so hiding window")
+                    self.window?.orderOut(self)
+                }
+            }
+            else { //
+                if self.window?.isVisible==false {
+                    TCSLogWithMark("window is not visible and default does exist so moving to front")
+
+                    self.window?.makeKeyAndOrderFront(self)
+                }
+
+            }
+        })
     }
 
     override func awakeFromNib() {
