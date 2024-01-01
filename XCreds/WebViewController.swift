@@ -81,15 +81,16 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
                 }
 
-                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)
 
-                if let bundle = bundle {
-                    TCSLogWithMark("getting loadPageURL")
-                    let loadPageURL = bundle.url(forResource: "loadpage", withExtension: "html")
-                    if let loadPageURL = loadPageURL {
-                        TCSLogWithMark("loading webview")
-                        self.webView.load(URLRequest(url:loadPageURL))
-                    }
+                let loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)
+
+                if let loadPageTitle = loadPageTitle?.stripped,
+                       let loadPageInfo = loadPageInfo?.stripped {
+                           let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+
+                           self.webView.loadHTMLString(html, baseURL: nil)
+
 
                 }
             }

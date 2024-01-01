@@ -233,6 +233,7 @@
 		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
 		76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
+		76F0B6E02B421FC8008F7D71 /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
 		76FDC5D62B22D47A0035D61E /* MainLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */; };
 		76FDC5D72B22D47A0035D61E /* MainLoginWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */; };
 		76FDC5DA2B235A4F0035D61E /* StatusMenuWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D82B235A4F0035D61E /* StatusMenuWindowController.swift */; };
@@ -1140,6 +1141,7 @@
 				76D1756A2B23C28700E64A62 /* MainLoginWindowController.xib in Resources */,
 				76EE06B227FD1E24009E0F3A /* DesktopLoginWindowController.xib in Resources */,
 				7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */,
+				76F0B6E02B421FC8008F7D71 /* loadpage.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
