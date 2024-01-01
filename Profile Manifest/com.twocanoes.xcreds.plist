@@ -483,6 +483,20 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
+			<string>If the domain controller returns back that the password is expired or needs to be changed, prompt the user. If this is set to false, login will fail and and error message will be shown.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>shouldPromptForADPasswordChange</string>
+			<key>pfm_title</key>
+			<string>Should Prompt For AD Password Change</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
+			<true/>
+			<key>pfm_description</key>
 			<string>Determine if the Mac login window or the cloud login window is shown by default.  When not set or set to true, show cloud login. If false, shows Mac login.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>

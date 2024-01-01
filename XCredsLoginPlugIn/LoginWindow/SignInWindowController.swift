@@ -728,9 +728,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
         switch error {
         case .PasswordExpired:
             TCSLogErrorWithMark("Password is expired or requires change.")
-//            authFail()
-//            delegate?.denyLogin(message:"Password is expired or requires change")
+            if DefaultsOverride().bool(forKey: PrefKeys.shouldPromptForADPasswordChange.rawValue) == false {
 
+                authFail("Password is expired or requires change.")
+                return
+
+            }
             let res = showResetUI()
 
             if res == false { //user cancelled so enable UI

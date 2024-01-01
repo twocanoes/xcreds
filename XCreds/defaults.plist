@@ -68,5 +68,7 @@
 	<string>Please Wait....</string>
 	<key>loadPageInfo</key>
 	<string>(or try connecting to network or check preferences)</string>
+	<key>shouldPromptForADPasswordChange</key>
+	<true/>
 </dict>
 </plist>
