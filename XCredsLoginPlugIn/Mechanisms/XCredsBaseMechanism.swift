@@ -33,9 +33,27 @@ import OpenDirectory
     func run(){
         fatalError("superclass must implement")
     }
-    func setupHints(fromCredentials credentials:Creds, password:String) -> Bool {
-        var username:String?
+    func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult {
 
+        TCSLogWithMark("Checking for allow login preference")
+        let tokenManager = TokenManager()
+        let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials)
+
+        if let allowUsersClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.allowUsersClaim.rawValue), let allowedUsersArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedUsersArray.rawValue) as? Array<String>, allowedUsersArray.count>0, let tokenInfo = idTokenInfo, let userValue = tokenInfo[allowUsersClaim] as? String {
+
+            TCSLogWithMark("allowUsersClaim defined as \(allowUsersClaim) and allowedUsersArray as \(allowedUsersArray.debugDescription)")
+
+            if allowedUsersArray.contains(userValue)==false {
+                TCSLogWithMark("user is not allowed to login")
+
+                denyLogin(message: "The user \"\(userValue)\" is not allowed to login")
+                return .failure("The user \"\(userValue)\" is not allowed to login")
+            }
+            else {
+                TCSLogWithMark("user allowed to login")
+
+            }
+        }
         do {
 
             let tokenManager = TokenManager()
@@ -44,7 +62,7 @@ import OpenDirectory
 
             guard let idTokenInfo = idTokenInfo else {
                 denyLogin(message: "invalid idtoken")
-                return false
+                return .failure("invalid idtoken")
             }
 
             let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
@@ -56,7 +74,7 @@ import OpenDirectory
                 userInfo = retUserAccountInfo
             case .error(let message):
                 denyLogin(message:message)
-                return false
+                return .failure(message)
             }
 
             if let firstname = userInfo.firstName {
@@ -78,35 +96,30 @@ import OpenDirectory
                 setHint(type: .aliasName, hint: aliasName)
             }
 
-//            guard let password = password, password.count>0 else {
-//                denyLogin(message:"password is not set")
-//                return
-//            }
-
             let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
             guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {
                 denyLogin(message:"could not find local user with findUserAndUpdatePassword")
-                return false
+                return .failure("could not find local user with findUserAndUpdatePassword")
             }
 
 
             switch findUserAndUpdatePasswordResult {
 
-            case .successful(let localUsername):
-                username=localUsername
+            case .successful(_):
+                break
             case .canceled:
                 denyLogin(message:"cancelled")
-                return false
+                return .failure("cancelled")
             case .createNewAccount:
                 break
             case .error(let mesg):
                 denyLogin(message:mesg)
-                return false
+                return .failure(mesg)
             }
             guard let username = userInfo.username else {
                 TCSLogErrorWithMark("username or password are not set")
                 denyLogin(message:"username or password are not set")
-                return false
+                return .failure("username or password are not set")
             }
 
             TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
@@ -144,10 +157,10 @@ import OpenDirectory
 
 
                 case .userCancelled:
-                    return false
+                    return .failure("user cancelled")
                 case .error(let errMsg):
                     TCSLogWithMark("Error prompting: \(errMsg)")
-                    return false
+                    return .failure(errMsg)
                 }
 
                 break
@@ -158,7 +171,7 @@ import OpenDirectory
                 TCSLogWithMark("password check error:\(mesg)")
 
                 denyLogin(message:mesg)
-                return false
+                return .failure(mesg)
             }
             //        }
             TCSLogWithMark("passing username:\(username), password, and tokens")
@@ -179,18 +192,18 @@ import OpenDirectory
             setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""])
             TCSLogWithMark("calling allowLogin")
             allowLogin()
-            return true
+            return .success
         }
         catch TokenManager.ProcessTokenResult.error(let msg){
             TCSLogWithMark("invalid idToken:\(msg)")
             denyLogin(message: nil)
-            return false
+            return .failure(msg)
         }
         catch {
 
             TCSLogWithMark("Error:\(error.localizedDescription)")
             denyLogin(message:"credentialsUpdated error")
-            return false
+            return .failure("credentialsUpdated error")
 
         }
     }

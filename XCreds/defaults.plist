@@ -70,5 +70,7 @@
 	<string>(or try connecting to network or check preferences)</string>
 	<key>shouldPromptForADPasswordChange</key>
 	<true/>
+	<key>allowUsersClaim</key>
+	<string>upn</string>
 </dict>
 </plist>

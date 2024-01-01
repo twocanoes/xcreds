@@ -118,9 +118,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
         return nil
     }
 
-//    @IBAction func clickCancel(_ sender: Any) {
-//        self.window?.close()
-//    }
+
 
     private func clearCookies() {
         let dataStore = WKWebsiteDataStore.default()
@@ -147,15 +145,6 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":err])
 
     }
-
-//    func setHints(_ hints: [HintType : Any]) {
-//        //TODO
-//
-//    }
-//
-//    func setContextStrings(_ contentStrings: [String : String]) {
-//        //TODO
-//    }
 }
 
 extension WebViewController: WKNavigationDelegate {
@@ -349,24 +338,6 @@ extension WebViewController: WKNavigationDelegate {
 
 }
 
-//extension WebViewController: TokenManagerFeedbackDelegate {
-//
-//    func tokenError(_ err: String) {
-//        TCSLogErrorWithMark("authFailure: \(err)")
-//        //TODO: need to post this?
-//        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-//
-//    }
-//
-//    func setHints(_ hints: [HintType : Any]) {
-//        //TODO
-//
-//    }
-//
-//    func setContextStrings(_ contentStrings: [String : String]) {
-//        //TODO
-//    }
-//}
 //TODO: Integrate?
 //extension WebViewController: OIDCLiteDelegate {
 //

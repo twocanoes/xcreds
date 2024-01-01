@@ -33,27 +33,22 @@ class LoginWebViewController: WebViewController, DSQueryable {
             return
         }
 
-    
-//    override func tokenError(_ err: String) {
-//        TCSLogErrorWithMark("authFailure: \(err)")
-//        //TODO: need to post this?
-//        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
-//
-//    }
 
-//    override func setHints(_ hints: [HintType : Any]) {
-//        mechanismDelegate?.setHints(hints)
-//
-//    }
-//
-//    override func setContextStrings(_ contentStrings: [String : String]) {
-//        mechanismDelegate?.setContextStrings(contentStrings)
-//    }
     override func credentialsUpdated(_ credentials:Creds){
-        if mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ) == false {
-            TCSLogWithMark("error setting up hints, reloading page")
-            loadPage()
+        
+        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ){
+
+            switch res {
+
+            case .success:
+                break
+            case .failure(let message):
+                TCSLogWithMark("error setting up hints, reloading page:\(message)")
+                loadPage()
+
+            }
         }
+
     }
 
 }

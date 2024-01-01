@@ -5,6 +5,11 @@
 //  Created by Timothy Perfitt on 12/24/23.
 //
 
+enum SetupHintsResult {
+    case success
+    case failure(String)
+}
+
 protocol XCredsMechanismProtocol {
     func allowLogin()
     func denyLogin(message:String?)
@@ -15,5 +20,5 @@ protocol XCredsMechanismProtocol {
     func setHint(type: HintType, hint: Any)
     func reload()
     func run()
-    func setupHints(fromCredentials credentials:Creds, password:String) -> Bool
+    func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult
 }

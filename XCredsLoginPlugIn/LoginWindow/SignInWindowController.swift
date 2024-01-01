@@ -28,10 +28,19 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
     func credentialsUpdated(_ credentials:Creds){
         TCSLogWithMark()
-        if mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ) == false {
-            TCSLogWithMark("error setting up hints")
-            authFail()
+        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
+            switch res {
+
+            case .success:
+                break
+            case .failure(let msg):
+                TCSLogWithMark(msg)
+                authFail(msg)
+
+            }
+
         }
+
         var credWithPass = credentials
         credWithPass.password = self.passString
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass])
@@ -819,7 +828,6 @@ extension SignInViewController: NoMADUserSessionDelegate {
         if allowedLogin {
             
             setHints(user: user)
-
 
             // check for any migration and local auth requirements
             let localCheck = LocalCheckAndMigrate()
