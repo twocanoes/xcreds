@@ -21,10 +21,6 @@ class DefaultsHelper: NSObject {
             return coreServicesDefaultImage
         }
         if includeDefault == true {
-//            let allBundles = Bundle.allBundles
-//            for currentBundle in allBundles {
-//                TCSLogWithMark(currentBundle.bundlePath)
-//                if currentBundle.bundlePath.contains("XCreds"), let imagePath = currentBundle.path(forResource: "DefaultBackground", ofType: "png") {
 
             let bundle = Bundle.findBundleWithName(name: "XCreds")
 

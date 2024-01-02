@@ -21,12 +21,34 @@ extension NSImage {
         }
 
         if let pathURL = pathURL {
+
+            let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .localDomainMask, true)
+            let cacheDir = applicationSupportPath[0] as NSString
+
+            let imageName = pathURL.lastPathComponent
+            let cacheFolder  = cacheDir.appendingPathComponent("com.twocanoes.xcreds") as NSString
+
+            if FileManager.default.fileExists(atPath: cacheFolder as String) == false {
+
+                try? FileManager.default.createDirectory(atPath: cacheFolder as String, withIntermediateDirectories: true)
+
+
+            }
+            let imageFullPath = cacheFolder.appendingPathComponent(imageName) as NSString
+            if FileManager.default.fileExists(atPath: imageFullPath as String) == true {
+                let image = NSImage.init(contentsOfFile: imageFullPath as String)
+                return image
+
+            }
             let image = NSImage.init(contentsOf: pathURL)
 
             if let image = image {
+                let tiff = image.tiffRepresentation
+                if let tiff = tiff {
+                    let url = URL(fileURLWithPath:imageFullPath as String)
+                    try? tiff.write(to:url )
+                }
                 return image
-//                image.size=screenRect.size
-//                backgroundImageView.image = image
             }
         }
 
