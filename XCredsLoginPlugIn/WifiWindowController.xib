@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,6 +19,7 @@
                 <outlet property="networkWifiPopup" destination="vwT-dQ-vyr" id="SUF-IL-RMQ"/>
                 <outlet property="wifiCredentialTitleLabel" destination="Tjq-cj-K2q" id="mkK-jQ-i7r"/>
                 <outlet property="wifiPopupMenu" destination="58J-Jm-X2j" id="EtJ-Gw-8uZ"/>
+                <outlet property="wifiSwitch" destination="yFB-SG-43g" id="Fhi-sh-pAT"/>
                 <outlet property="window" destination="QEp-dc-tSh" id="t7T-qq-1E5"/>
             </connections>
         </customObject>
@@ -28,20 +29,19 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="450" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
             <view key="contentView" id="82w-TR-3gA">
                 <rect key="frame" x="0.0" y="0.0" width="450" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="brE-li-Fg3">
-                        <rect key="frame" x="83" y="49" width="284" height="223"/>
+                        <rect key="frame" x="83" y="49" width="284" height="237"/>
                         <subviews>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Z7T-Xy-w9X">
-                                <rect key="frame" x="134" y="68" width="16" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Z7T-Xy-w9X">
+                                <rect key="frame" x="259" y="6" width="16" height="16"/>
                             </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iR4-yt-s83">
-                                <rect key="frame" x="259" y="101" width="37" height="15"/>
+                                <rect key="frame" x="259" y="88" width="37" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRefreshFreestandingTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Ekl-sd-DJK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -53,15 +53,15 @@
                                 </connections>
                             </button>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rQj-eC-ymc">
-                                <rect key="frame" x="97" y="129" width="91" height="97"/>
+                                <rect key="frame" x="102" y="166" width="82" height="54"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="91" id="DGN-3X-sra"/>
-                                    <constraint firstAttribute="width" constant="91" id="Rh5-9o-cuK"/>
+                                    <constraint firstAttribute="height" constant="48" id="FPm-UJ-bFA"/>
+                                    <constraint firstAttribute="width" constant="82" id="cB9-ep-mTD"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="globe" catalog="system" id="Yzt-2U-PjT"/>
                             </imageView>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwT-dQ-vyr" customClass="OKTabPopUpButton" customModule="XCredsLoginPlugin" customModuleProvider="target">
-                                <rect key="frame" x="28" y="94" width="236" height="25"/>
+                                <rect key="frame" x="28" y="81" width="236" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Choose Network" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="ejl-yP-KaF" id="gAm-ea-iCE">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -85,12 +85,37 @@
                                 </connections>
                             </popUpButton>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VOb-lv-VeC">
-                                <rect key="frame" x="5" y="94.5" width="23" height="26"/>
+                                <rect key="frame" x="5" y="81.5" width="23" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="wifi" catalog="system" id="2Jg-hD-hZt"/>
                             </imageView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kms-sE-nNp">
+                                <rect key="frame" x="103" y="124" width="78" height="22"/>
+                                <subviews>
+                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hzq-cw-efs">
+                                        <rect key="frame" x="-2" y="4" width="31" height="16"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="WiFi" id="e8q-2t-IwV">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="yFB-SG-43g">
+                                        <rect key="frame" x="38" y="-2" width="42" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <connections>
+                                            <action selector="wifiButtonPressed:" target="-2" id="0CC-zU-i3s"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="PGs-FC-Txv"/>
+                                    <constraint firstAttribute="width" constant="78" id="TKe-GE-Rba"/>
+                                </constraints>
+                            </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuQ-OG-WIQ">
-                                <rect key="frame" x="118" y="3" width="48" height="51"/>
+                                <rect key="frame" x="121" y="17" width="48" height="51"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="UsA-xf-nXF">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -110,32 +135,35 @@ Gw
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="width" constant="284" id="2tT-CM-f1g"/>
-                            <constraint firstAttribute="height" constant="223" id="I2A-qs-Isw"/>
-                            <constraint firstItem="rQj-eC-ymc" firstAttribute="leading" secondItem="brE-li-Fg3" secondAttribute="leading" constant="97" id="ZVO-Sq-Fz2"/>
-                            <constraint firstItem="rQj-eC-ymc" firstAttribute="top" secondItem="brE-li-Fg3" secondAttribute="top" id="ck0-Qd-AQ9"/>
-                            <constraint firstAttribute="trailing" secondItem="rQj-eC-ymc" secondAttribute="trailing" constant="96" id="h5H-wu-huH"/>
-                            <constraint firstAttribute="bottom" secondItem="kuQ-OG-WIQ" secondAttribute="bottom" constant="6" id="j95-bp-174"/>
-                            <constraint firstAttribute="trailing" secondItem="kuQ-OG-WIQ" secondAttribute="trailing" constant="118" id="mrR-I6-9lQ"/>
+                            <constraint firstItem="rQj-eC-ymc" firstAttribute="top" secondItem="brE-li-Fg3" secondAttribute="top" constant="20" symbolic="YES" id="AOP-D6-1UR"/>
+                            <constraint firstItem="rQj-eC-ymc" firstAttribute="leading" secondItem="brE-li-Fg3" secondAttribute="leading" constant="102" id="F0K-V8-Yq4"/>
+                            <constraint firstAttribute="height" constant="237" id="I2A-qs-Isw"/>
+                            <constraint firstAttribute="bottom" secondItem="Z7T-Xy-w9X" secondAttribute="bottom" constant="6" id="JSO-aG-z1G"/>
+                            <constraint firstItem="Kms-sE-nNp" firstAttribute="centerX" secondItem="brE-li-Fg3" secondAttribute="centerX" id="bF0-Uc-vAe"/>
+                            <constraint firstAttribute="trailing" secondItem="Z7T-Xy-w9X" secondAttribute="trailing" constant="9" id="dqB-Nh-jJU"/>
+                            <constraint firstAttribute="bottom" secondItem="kuQ-OG-WIQ" secondAttribute="bottom" constant="20" id="j95-bp-174"/>
+                            <constraint firstAttribute="trailing" secondItem="kuQ-OG-WIQ" secondAttribute="trailing" constant="115" id="mrR-I6-9lQ"/>
+                            <constraint firstItem="Kms-sE-nNp" firstAttribute="top" secondItem="rQj-eC-ymc" secondAttribute="bottom" constant="23" id="sw1-xH-pSA"/>
                         </constraints>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="brE-li-Fg3" firstAttribute="centerX" secondItem="82w-TR-3gA" secondAttribute="centerX" id="2fO-Lk-ZFa"/>
-                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerY" secondItem="82w-TR-3gA" secondAttribute="centerY" constant="17.5" id="R9C-rw-N18"/>
+                    <constraint firstItem="brE-li-Fg3" firstAttribute="centerY" secondItem="82w-TR-3gA" secondAttribute="centerY" constant="10.5" id="R9C-rw-N18"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="279" y="-429"/>
+            <point key="canvasLocation" x="267" y="-378"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="lLG-Bl-vZe">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="144" y="174" width="480" height="198"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
             <view key="contentView" id="Dza-jC-NB8">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-NK-A2W">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-NK-A2W">
                         <rect key="frame" x="20" y="154" width="4" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" id="Pku-Kx-wjy">
                             <font key="font" metaFont="system"/>
@@ -143,7 +171,7 @@ Gw
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-cj-K2q">
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Tjq-cj-K2q">
                         <rect key="frame" x="28" y="137" width="434" height="47"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="47" id="uYQ-Hk-yD8"/>
@@ -185,7 +213,7 @@ DQ
                             <action selector="wifiCredentialCancelButtonPressed:" target="-2" id="axX-HP-CGX"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ju4-Cc-cV9">
+                    <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ju4-Cc-cV9">
                         <rect key="frame" x="167" y="107" width="293" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Username" drawsBackground="YES" id="AWi-NV-QKq">
                             <font key="font" metaFont="message"/>
@@ -193,7 +221,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cST-FL-tNs">
                         <rect key="frame" x="28" y="110" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Username:" id="2MT-3V-4C7">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -201,7 +229,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bbs-5k-6Qs">
                         <rect key="frame" x="28" y="85" width="124" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Network Password:" id="gPn-og-da2">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -209,7 +237,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqw-jG-xk4">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqw-jG-xk4">
                         <rect key="frame" x="80" y="60" width="72" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Certificate:" id="zg7-zl-3F2">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -217,7 +245,7 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
+                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iXc-w6-KVu">
                         <rect key="frame" x="166" y="82" width="294" height="21"/>
                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="ytx-J6-yi1">
                             <font key="font" metaFont="message"/>

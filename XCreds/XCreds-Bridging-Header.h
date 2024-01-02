@@ -14,6 +14,7 @@
 #import <ProductLicense/ProductLicense.h>
 #import "TCSLoginWindowUtilities.h"
 #import "DNSResolver.h"
+#import "TCTaskWrapperWithBlocks.h"
 
 // Kerb bits
 #import "KerbUtil.h"
