@@ -70,12 +70,14 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
         }
         var isAdmin = false
+//        var shouldRemoveAdmin = false
         if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
             isAdmin = createAdmin
             TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
         }
         os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
         if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
+
             TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
             
             groups?.forEach { group in
@@ -84,6 +86,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                     TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
                 }
             }
+//            if isAdmin == false {
+//                shouldRemoveAdmin = true
+//            }
+
         }
 
 
@@ -94,13 +100,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 secureTokenCreds = creds
             }
 
-            //            if getManagedPreference(key: .ManageSecureTokens) as? Bool ?? false {
-            //                if let creds = PasswordUtils.GetSecureTokenCreds() {
-            //
-            //                    secureTokenCreds = creds
-            //                }
-            //            }
-            
             guard let uid = findFirstAvaliableUID() else {
                 TCSLogErrorWithMark("Could not find an available UID")
                 return
@@ -158,7 +157,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
             
         } else {
-            
+
             // Checking to see if we are doing a silent overwrite
             if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
@@ -206,19 +205,33 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
         }
         TCSLogWithMark("Checking if user should be made admin")
-        if isAdmin==true, let xcredsUser = xcredsUser {
+        if let xcredsUser = xcredsUser {
             do {
-                TCSLogWithMark("Making admin user")
                 let record = try getLocalRecord(xcredsUser)
-                if makeAdmin(record)==false {
-                    os_log("failed to make user an admin", log: createUserLog, type: .error)
+
+                if isAdmin == true {
+
+                    TCSLogWithMark("Making admin user")
+                    if makeAdmin(record)==false {
+                        os_log("failed to make user an admin", log: createUserLog, type: .error)
+
+                    }
                 }
+//                else if shouldRemoveAdmin == true {
+//                    if removeAdmin(record)==false {
+//                        os_log("failed to remove user an admin", log: createUserLog, type: .error)
+//
+//                    }
+//                }
             }
+
             catch {
                 os_log("error finding user to make admin", log: createUserLog, type: .error)
             }
 
+
         }
+
 
 
 

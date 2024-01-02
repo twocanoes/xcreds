@@ -281,6 +281,32 @@ public extension DSQueryable {
         }
         return true
     }
+    func removeAdmin(_ user:ODRecord) -> Bool {
+        if isAdmin(user)==false { //user is not an admin already
+            return true
+        }
+        do {
+            os_log("Find the administrators group",  type: .debug)
+            let query = try ODQuery.init(node: localNode,
+                                         forRecordTypes: kODRecordTypeGroups,
+                                         attribute: kODAttributeTypeRecordName,
+                                         matchType: ODMatchType(kODMatchEqualTo),
+                                         queryValues: "admin",
+                                         returnAttributes: kODAttributeTypeNativeOnly,
+                                         maximumResults: 1)
+            let results = try query.resultsAllowingPartial(false) as! [ODRecord]
+            let adminGroup = results.first
+
+            os_log("Remove user to administrators group", type: .debug)
+            try adminGroup?.removeMemberRecord(user)
+
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("Unable to add user to administrators group: %{public}@", type: .error, errorText)
+            return false
+        }
+        return true
+    }
     func getAllStandardUsers() throws -> [ODRecord] {
             let allRecords = try getAllNonSystemUsers()
             let nonSystem = allRecords.filter { (record) -> Bool in
