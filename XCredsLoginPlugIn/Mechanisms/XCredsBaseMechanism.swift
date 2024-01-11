@@ -105,7 +105,8 @@ import OpenDirectory
 
             switch findUserAndUpdatePasswordResult {
 
-            case .successful(_):
+            case .successful(let username):
+                userInfo.username = username
                 break
             case .canceled:
                 denyLogin(message:"cancelled")

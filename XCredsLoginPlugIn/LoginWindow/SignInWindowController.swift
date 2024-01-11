@@ -264,7 +264,6 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
             TCSLogWithMark("No password entered")
             return
         }
-        TCSLogWithMark("passtring:\(passString)")
         loginStartedUI()
         TCSLogWithMark()
         updateLoginWindowInfo()
@@ -794,6 +793,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
         
         TCSLogWithMark("Authentication succeeded, requesting user info")
+        self.view.window?.close()
         nomadSession?.userInfo()
     }
 

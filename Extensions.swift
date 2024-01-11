@@ -38,7 +38,11 @@ extension UserDefaults {
 }
 
 extension String {
-    
+    func safeURLPath() -> String? {
+        let allowedCharacters = CharacterSet(bitmapRepresentation: CharacterSet.urlPathAllowed.bitmapRepresentation)
+        return addingPercentEncoding(withAllowedCharacters: allowedCharacters)
+    }
+
     func trim() -> String {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }

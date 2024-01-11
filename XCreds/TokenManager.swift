@@ -259,7 +259,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
         else if let standardUsers = standardUsers, standardUsers.count>0, shouldPromptForMigration == true {
 
-            TCSLogWithMark("Preference set to prompt for migration and there are no standard users, so prompting")
+            TCSLogWithMark("Preference set to prompt for migration and there are standard users, so prompting")
 
 
             return SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: newPassword)

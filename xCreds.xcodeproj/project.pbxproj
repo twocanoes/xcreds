@@ -46,6 +46,7 @@
 		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
 		7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
+		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		764D8126284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */; };
 		764D8127284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib */; };
@@ -163,7 +164,6 @@
 		76BEF8002872A3030013E2A1 /* loginwindow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */; };
 		76BEF8012872A3030013E2A1 /* loginwindow.png in Resources */ = {isa = PBXBuildFile; fileRef = 76BEF7FF2872A3030013E2A1 /* loginwindow.png */; };
 		76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C084092A9A2635008039FA /* ControlsViewController.xib */; };
-		76C4ACBF2B3D0F8D003B3605 /* ShareMounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */; };
 		76C4BAB02B353A30007B2C57 /* KlistUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEC82B350606003A23DB /* KlistUtil.swift */; };
 		76C4BAB12B353A3A007B2C57 /* DNSResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEBE2B3505A3003A23DB /* DNSResolver.m */; };
 		76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C4BAB22B353AD7007B2C57 /* libresolv.tbd */; };
@@ -356,6 +356,8 @@
 		7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsKeychainAdd.swift; sourceTree = "<group>"; };
 		7632E3A02873497C00E37923 /* LogShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogShim.swift; path = Mechanisms/LogShim.swift; sourceTree = "<group>"; };
 		76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopLoginWindowController.swift; sourceTree = "<group>"; };
+		763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMounterMenu.swift; sourceTree = "<group>"; };
+		763DDF192B4F1DD4000D48CC /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
 		764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyLocalPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D8125284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerifyLocalPasswordWindowController.xib; sourceTree = "<group>"; };
 		764D8128284BCAB100B3EE54 /* Window+Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Window+Shake.swift"; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 			files = (
 				76C4BAB72B353AFD007B2C57 /* Kerberos.framework in Frameworks */,
 				76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */,
+				763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */,
 				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */,
@@ -754,6 +757,7 @@
 		76DD6D15285997F300A700ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				763DDF192B4F1DD4000D48CC /* GSS.framework */,
 				76C4BAB52B353AF7007B2C57 /* Kerberos.framework */,
 				76C4BAB22B353AD7007B2C57 /* libresolv.tbd */,
 				767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */,
@@ -770,6 +774,7 @@
 			children = (
 				76D4726B2B43B8FA0064380C /* TCTaskWrapperWithBlocks.h */,
 				76D4726C2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m */,
+				763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */,
 				76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */,
 				76C4BAB92B353B3F007B2C57 /* NoMAD */,
 				760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */,
@@ -1321,7 +1326,6 @@
 				7657DEAF2B3503BF003A23DB /* SessionManager.swift in Sources */,
 				7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */,
 				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,
-				76C4ACBF2B3D0F8D003B3605 /* ShareMounter.swift in Sources */,
 				7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */,
 				76E74DCF2B3902F0004C6429 /* XCredsMechanismProtocol.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
@@ -1430,7 +1434,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1467,7 +1471,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1588,7 +1592,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1625,7 +1629,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1775,7 +1779,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1817,7 +1821,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6203;
+				CURRENT_PROJECT_VERSION = 6211;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

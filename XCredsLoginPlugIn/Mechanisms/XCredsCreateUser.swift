@@ -69,6 +69,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 }
             }
         }
+        TCSLogWithMark("user:\(xcredsUser ?? "")")
         var isAdmin = false
 //        var shouldRemoveAdmin = false
         if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
@@ -199,7 +200,9 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         setTimestampFor(xcredsUser ?? "")
         let _ = updateOIDCInfo(user: xcredsUser ?? "")
 
+        TCSLogWithMark("seeing if we have an alias")
         if let alias = alias, let xcredsUser = xcredsUser {
+            TCSLogWithMark("adding alias: \(alias)")
             if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
                 os_log("error adding alias", log: createUserLog, type: .debug)
             }
@@ -300,6 +303,17 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             try? records.first?.setValue(kerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
 
         }
+
+
+        TCSLogWithMark("checking for alias to add as a username for rogp")
+        let alias = getHint(type: .aliasName) as? String
+
+        if let alias = alias {
+            TCSLogWithMark("saving alias to DS as a username for ropg as needed")
+            try? records.first?.setValue(alias, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
+
+        }
+
 
         let tokenArray = getHint(type: .tokens) as? Array<String>
 

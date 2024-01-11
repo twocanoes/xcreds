@@ -29,6 +29,9 @@ class MainController: NSObject, NoMADUserSessionDelegate {
         if let passExpired = user.passwordExpire {
             let dateString = dateFormatter.string(from: passExpired)
             sharedMainMenu.passwordExpires="Password Expires: \(dateString)"
+            sharedMainMenu.buildMenu()
+            sharedMainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
+
         }
     }
 
@@ -38,13 +41,23 @@ class MainController: NSObject, NoMADUserSessionDelegate {
     var feedbackDelegate:TokenManagerFeedbackDelegate?
 
     func checkPasswordExpire() {
+        
         let accountAndPassword = localAccountAndPassword()
 
         let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
 
-        if let userName=accountAndPassword.0, let passString = accountAndPassword.1, passString.isEmpty==false{
+        guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()), 
+                let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+              let kerbPrinc = kerbPrincArray.first else
+        {
+            return
+        }
 
-            if let domainName = domainName, let shortName = userName.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
+
+
+        if let passString = accountAndPassword.1, passString.isEmpty==false{
+
+            if let domainName = domainName, let shortName = kerbPrinc.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
                 session = NoMADSession.init(domain: domainName, user: shortName)
                 TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
                 guard let session = session else {
@@ -100,6 +113,11 @@ class MainController: NSObject, NoMADUserSessionDelegate {
                 self.checkPasswordExpire()
             })
 
+        }
+        let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+
+        if discoveryURL == nil {
+            return
         }
         NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
 
