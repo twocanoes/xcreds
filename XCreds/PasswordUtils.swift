@@ -368,6 +368,18 @@ class PasswordUtils: NSObject {
 
     }
 
+    func kerberosPrincipalFromCurrentLoggedInUser() -> String?  {
+        guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
+              let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+              let kerbPrinc = kerbPrincArray.first else
+        {
+            return nil
+        }
+        return kerbPrinc
+    }
+
+
+    
     /// Searches DSLocal for an account short name and returns the `ODRecord` for the user if found.
     ///
     /// - Parameter shortName: The name of the user to search for as a `String`.

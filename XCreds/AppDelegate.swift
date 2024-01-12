@@ -16,8 +16,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     var screenIsLocked=true
     var isDisplayAsleep=true
     var waitForScreenToWake=false
+//    @IBOutlet var shareMounterMenu: ShareMounterMenu?
     @IBOutlet weak var statusMenu: NSMenu!
-
+    var shareMenu:NSMenu?
     var statusBarItem:NSStatusItem?
 
     func updateStatusMenuIcon(showDot:Bool){
@@ -44,6 +45,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
         self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+//        shareMounterMenu = ShareMounterMenu()
+//        shareMounterMenu?.updateShares()
+//        shareMenu = shareMounterMenu?.buildMenu()
 
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
 

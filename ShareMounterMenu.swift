@@ -25,11 +25,16 @@ class ShareMounterMenu: NSObject {
     
     @objc func updateShares(connected: Bool=false, tickets: Bool=false) {
         
+        guard let kerbUser = PasswordUtils().kerberosPrincipalFromCurrentLoggedInUser() else {
+
+         return
+        }
+
         if (sharePrefs?.integer(forKey: "Version") ?? 0) >= 1 {
         shareMounterQueue.sync(execute: {
             self.myShareMounter.connectedState = connected
             self.myShareMounter.tickets = tickets
-            self.myShareMounter.userPrincipal = defaults.string(forKey: PrefKeys.userPrincipal.rawValue)!
+            self.myShareMounter.userPrincipal = kerbUser
             self.myShareMounter.getMountedShares()
             self.myShareMounter.getMounts()
             self.myShareMounter.mountShares()
@@ -47,18 +52,21 @@ class ShareMounterMenu: NSObject {
         
         klistUtil.klist()
         
-        if !klistUtil.state {
-            myLogger.logit(.debug, message: "No valid ticket, not attempting to mount shares.")
-            
-//            NotificationQueue.default.enqueue(updateNotification, postingStyle: .now)
-
-            return NSMenu.init()
-        }
-        
-        if defaults.object(forKey: PrefKeys.userShortName.rawValue) == nil {
-            myLogger.logit(.debug, message: "No user name, not attempting to mount shares.")
-            return NSMenu.init()
-        }
+//        if !klistUtil.state {
+//            myLogger.logit(.debug, message: "No valid ticket, not attempting to mount shares.")
+//            
+////            NotificationQueue.default.enqueue(updateNotification, postingStyle: .now)
+//
+//            return NSMenu.init()
+//        }
+//        guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()) else {
+//
+//            return NSMenu()
+//        }
+//        if defaults.object(forKey: PrefKeys.userShortName.rawValue) == nil {
+//            myLogger.logit(.debug, message: "No user name, not attempting to mount shares.")
+//            return NSMenu.init()
+//        }
         
         if myShareMounter.all_shares.count > 0 {
             // Menu Items and Menu
