@@ -15,8 +15,10 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
         TCSLogWithMark()
         var credWithPass = credentials
         credWithPass.password = self.password
-        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
-                       )
+//        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
+//                       )
+
+        updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
     }
   
     @IBOutlet weak var refreshTitleTextField: NSTextField?
@@ -24,6 +26,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     @IBOutlet weak var cancelButton: NSButton!
     var tokenManager=TokenManager()
     var password:String?
+    var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
 
     func loadPage() {
         DispatchQueue.main.async {

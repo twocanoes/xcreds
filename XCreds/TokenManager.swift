@@ -410,7 +410,7 @@ extension TokenManager {
         RunLoop.main.perform {
 
             let xcredCreds = Creds(password: nil, tokens: tokens)
-            if xcredCreds.hasTokens(){
+            if xcredCreds.hasAccessAndRefresh(){
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else {

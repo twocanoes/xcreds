@@ -104,6 +104,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
         else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
 
+            windowController.webViewController.updateCredentialsFeedbackDelegate=self
             windowController.window!.makeKeyAndOrderFront(self)
             windowController.webViewController?.loadPage()
         }
@@ -200,8 +201,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         DispatchQueue.main.async {
             self.windowController.window?.close()
             let localAccountAndPassword = self.localAccountAndPassword()
-            if var localPassword=localAccountAndPassword.1{
-                if (localPassword != credentials.password){
+            if credentials.password != nil, var localPassword=localAccountAndPassword.1{
+                if localPassword != credentials.password{
                     var updatePassword = true
                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
                         let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
@@ -250,7 +251,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     }
                 }
             }
-            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:credentials.password ) == false {
+            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localAccountAndPassword.1 ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
             self.scheduleManager.startCredentialCheck()

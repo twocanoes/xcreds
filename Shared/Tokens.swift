@@ -37,6 +37,10 @@ struct Creds {
         return (self.accessToken != nil) && (self.idToken != nil) && (self.refreshToken != nil)
     }
 
+    func hasAccessAndRefresh() -> Bool {
+
+        return (self.accessToken != nil) && (self.refreshToken != nil)
+    }
 
 }
 
