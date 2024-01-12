@@ -13,6 +13,8 @@ class UpdatePasswordWindowController: NSWindowController {
     @IBOutlet var verifyPasswordTextField:NSTextField!
     @IBOutlet var passwordMatchWarningLabel:NSTextField!
     var password:String?
+
+    
     override func windowDidLoad() {
         super.windowDidLoad()
 

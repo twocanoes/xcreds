@@ -157,9 +157,9 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         //ropg
         if
             let keychainAccountAndPassword = keychainAccountAndPassword,
-           DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true,
 
-            let keychainPassword = keychainAccountAndPassword.1{
+                let keychainPassword = keychainAccountAndPassword.1{
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first else {
@@ -174,6 +174,10 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
             oidc().refreshTokens(refreshToken)
         } // nothing. let delegate know
+        else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) == nil {
+
+            TCSLogWithMark("no discovery URL defined. returning silently.")
+            }
         else {
             TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
             feedbackDelegate?.tokenError("no refresh token")

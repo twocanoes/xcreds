@@ -12,7 +12,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="XCreds" customModuleProvider="target"/>
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="statusMenu" destination="6OK-7Y-Yf9" id="ESM-bD-ycD"/>
+            </connections>
+        </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
@@ -676,5 +680,70 @@
             </items>
             <point key="canvasLocation" x="200" y="121"/>
         </menu>
+        <menu id="6OK-7Y-Yf9">
+            <items>
+                <menuItem title="About XCreds (x.x.x)" tag="1" id="E49-8d-Cmr">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="aboutMenuItemSelected:" target="1OV-ou-Ss5" id="r1J-8r-Iax"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Uvh-o1-mcs"/>
+                <menuItem title="Next Password Check: Time" tag="2" enabled="NO" id="7wW-bt-MeR">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="Gny-X3-1ZT"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Credential Status: None" tag="3" enabled="NO" id="YLv-mh-piZ">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="VVt-Zd-Ui7"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Password Expires: " tag="4" enabled="NO" id="vin-yR-IbW">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="l6Y-88-b28"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="mwR-f8-XvQ"/>
+                <menuItem title="Sign In" tag="5" id="FH2-NT-oeX">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="signInMenuItemSelected:" target="1OV-ou-Ss5" id="Mra-OX-Nqy"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Change Password" tag="6" id="F1e-WL-4b2">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="dfP-8J-fS8"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="op6-Hq-2li"/>
+                <menuItem title="Quit" tag="7" id="OM5-mb-fFV">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="quitMenuItemSelected:" target="1OV-ou-Ss5" id="yL8-dQ-nRK"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <connections>
+                <outlet property="delegate" destination="1OV-ou-Ss5" id="eEG-jn-a2m"/>
+            </connections>
+            <point key="canvasLocation" x="-89" y="-133"/>
+        </menu>
+        <customObject id="1OV-ou-Ss5" customClass="StatusMenuController" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="aboutMenuItem" destination="E49-8d-Cmr" id="Uoc-2g-XI9"/>
+                <outlet property="aboutMenuItemSeparator" destination="Uvh-o1-mcs" id="FhI-xC-w67"/>
+                <outlet property="changePasswordMenuItem" destination="F1e-WL-4b2" id="5ah-PL-qxX"/>
+                <outlet property="credentialStatusMenuItem" destination="YLv-mh-piZ" id="zOP-7p-XcI"/>
+                <outlet property="nextPasswordCheckMenuItem" destination="7wW-bt-MeR" id="mLr-Dz-KFF"/>
+                <outlet property="quitMenuItem" destination="OM5-mb-fFV" id="M6F-cZ-LFl"/>
+                <outlet property="quitMenuItemSeparator" destination="op6-Hq-2li" id="zC1-TH-cF8"/>
+                <outlet property="signinMenuItem" destination="FH2-NT-oeX" id="een-3k-67g"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

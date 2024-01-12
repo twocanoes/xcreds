@@ -14,6 +14,15 @@ import OIDCLite
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
+protocol UpdateCredentialsFeedbackProtocol {
+
+    func passwordExpiryUpdate(_ passwordExpire:String)
+    func credentialsUpdated(_ credentials:Creds)
+    func credentialsCheckFailed()
+    func kerberosTicketUpdated()
+    func kerberosTicketCheckFailed()
+}
+
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
     override var nibName: NSNib.Name{
@@ -22,12 +31,14 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     }
 
     func tokenError(_ err:String){
+        updateCredentialsFeedbackDelegate?.credentialsCheckFailed()
         TCSLogWithMark("Token error: \(err)")
         authFail()
     }
 
     func credentialsUpdated(_ credentials:Creds){
         TCSLogWithMark()
+        updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
         if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
             switch res {
 
@@ -66,6 +77,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
 
+    var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
     var isInUserSpace = false
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
@@ -716,6 +728,8 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
+        updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed()
+
         TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
 //        alertTextField.isHidden=false
 //        alertTextField.stringValue = description
@@ -760,27 +774,18 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             }
 
-//            if getManagedPreference(key: .LocalFallback) as? Bool ?? false {
-//                os_log("Local fallback enabled, passing off to local authentication", log: uiLog, type: .default)
-//                return
-//            } else {
-//                authFail();
-//                return
-//            }
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description)")
-//            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-//                setRequiredHintsAndContext()
-//                completeLogin(authResult: .allow)
-//            } else {
+            loginStartedUI()
                 authFail(description)
-//            }
+//
             return
         }
     }
 
 
     func NoMADAuthenticationSucceded() {
+        updateCredentialsFeedbackDelegate?.kerberosTicketUpdated()
 
         if getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false {
             nomadSession?.recursiveGroupLookup = true
@@ -793,7 +798,9 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
         
         TCSLogWithMark("Authentication succeeded, requesting user info")
-        self.view.window?.close()
+        if isInUserSpace==true {
+            self.view.window?.close()
+        }
         nomadSession?.userInfo()
     }
 
@@ -802,7 +809,18 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark("User Info:\(user)")
         TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
-        
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        if let passExpired = user.passwordExpire {
+            let dateString = dateFormatter.string(from: passExpired)
+            updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(dateString)
+
+        }
+
+
         TCSLogWithMark("Checking for DenyLogin groupsChecking for DenyLogin groups")
         
         if let allowedGroups = getManagedPreference(key: .DenyLoginUnlessGroupMember) as? [String] {
@@ -918,7 +936,6 @@ extension SignInViewController: NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
         let passField = obj.object as! NSTextField
         if passField.tag == 99 {
-            TCSLogWithMark()
             passString = passField.stringValue
         }
     }

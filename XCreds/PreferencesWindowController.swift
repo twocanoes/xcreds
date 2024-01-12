@@ -23,8 +23,8 @@ class PreferencesWindowController: NSWindowController {
         let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.refreshToken.rawValue)
 
 
-        sharedMainMenu.signedIn=false
-        sharedMainMenu.buildMenu()
+//        sharedMainMenu.signedIn=false
+//        sharedMainMenu.buildMenu()
     }
 
 }

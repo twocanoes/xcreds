@@ -16,7 +16,44 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     var screenIsLocked=true
     var isDisplayAsleep=true
     var waitForScreenToWake=false
+    @IBOutlet weak var statusMenu: NSMenu!
+
+    var statusBarItem:NSStatusItem?
+
+    func updateStatusMenuIcon(showDot:Bool){
+
+
+        DispatchQueue.main.async {
+
+            TCSLogWithMark()
+            if showDot==true {
+                TCSLogWithMark("showing with dot")
+                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon check")
+
+            }
+            else {
+                TCSLogWithMark("showing without dot")
+                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+
+            }
+        }
+
+    }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusBarItem?.isVisible=true
+        statusBarItem?.menu = statusMenu
+        self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+
+        let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
+
+        if let defaultsPath = defaultsPath {
+
+            let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
+            TCSLogWithMark()
+            DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
+        }
+
 
         let infoPlist = Bundle.main.infoDictionary
 
@@ -32,9 +69,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(screenDidWake(_:)), name:NSWorkspace.screensDidWakeNotification , object: nil)
 
-        mainController = MainController.init()
-        mainController?.run()
-        sharedMainMenu.statusBarItem.menu = sharedMainMenu.mainMenu
+        mainController = MainController()
+        mainController?.setup()
 
     }
 

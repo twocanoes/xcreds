@@ -54,7 +54,6 @@
 		764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */; };
 		764D812D284BCC7400B3EE54 /* VerifyOIDCPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */; };
 		764D812F284C06AB00B3EE54 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764D812E284C06AB00B3EE54 /* defaults.plist */; };
-		764D8131284D11EE00B3EE54 /* MenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8130284D11EE00B3EE54 /* MenuItems.swift */; };
 		764D8133284D14A500B3EE54 /* Credits.txt in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.txt */; };
 		7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDEC2A1451590075980B /* LocalUsersViewController.xib */; };
 		7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDF62A1474330075980B /* LoginWebViewController.xib */; };
@@ -207,6 +206,7 @@
 		76DD6D17285997F300A700ED /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76DD6D16285997F300A700ED /* OIDCLite */; };
 		76DF1D5B2A2AD42C00770690 /* LocalCheckAndMigrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */; };
 		76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
+		76DF7FD52B50FA9A00B3B543 /* UpdatePasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76E466652B1A4C16006529B6 /* UpdatePasswordWindowController.xib */; };
 		76E466662B1A4C16006529B6 /* UpdatePasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E466642B1A4C16006529B6 /* UpdatePasswordWindowController.swift */; };
 		76E466672B1A4C16006529B6 /* UpdatePasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76E466652B1A4C16006529B6 /* UpdatePasswordWindowController.xib */; };
 		76E74DCF2B3902F0004C6429 /* XCredsMechanismProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E74DCE2B3902F0004C6429 /* XCredsMechanismProtocol.swift */; };
@@ -225,7 +225,7 @@
 		76EE06B227FD1E24009E0F3A /* DesktopLoginWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B127FD1E24009E0F3A /* DesktopLoginWindowController.xib */; };
 		76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */; };
 		76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */; };
-		76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06C127FD1F50009E0F3A /* MainMenu.swift */; };
+		76EE06C227FD1F50009E0F3A /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06C127FD1F50009E0F3A /* StatusMenuController.swift */; };
 		76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
 		76EECCFC2873E6E200483C66 /* VerifyLocalPasswordWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764D8125284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib */; };
 		76EECCFD2873E9ED00483C66 /* VerifyLocalPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */; };
@@ -364,7 +364,6 @@
 		764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyOIDCPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D812B284BCC7400B3EE54 /* VerifyOIDCPassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyOIDCPassword.xib; sourceTree = "<group>"; };
 		764D812E284C06AB00B3EE54 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = defaults.plist; sourceTree = "<group>"; };
-		764D8130284D11EE00B3EE54 /* MenuItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItems.swift; sourceTree = "<group>"; };
 		764D8132284D14A500B3EE54 /* Credits.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Credits.txt; sourceTree = "<group>"; };
 		7651EDEC2A1451590075980B /* LocalUsersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalUsersViewController.xib; sourceTree = "<group>"; };
 		7651EDF62A1474330075980B /* LoginWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginWebViewController.xib; sourceTree = "<group>"; };
@@ -493,7 +492,7 @@
 		76EE06B327FD1E5F009E0F3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
-		76EE06C127FD1F50009E0F3A /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		76EE06C127FD1F50009E0F3A /* StatusMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
 		76EECCFF2875135900483C66 /* LoggerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerHelper.swift; sourceTree = "<group>"; };
 		76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Base64URLEncoded.swift"; sourceTree = "<group>"; };
 		76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainLoginWindowController.swift; path = XCreds/MainLoginWindowController.swift; sourceTree = SOURCE_ROOT; };
@@ -839,7 +838,6 @@
 				76D7ADFA284EB15100332EBC /* TCSUnifiedLogger.h */,
 				76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */,
 				76EECCFF2875135900483C66 /* LoggerHelper.swift */,
-				764D8130284D11EE00B3EE54 /* MenuItems.swift */,
 				764D812A284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift */,
 				764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */,
 				764D8132284D14A500B3EE54 /* Credits.txt */,
@@ -864,7 +862,7 @@
 				7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */,
 				76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */,
 				767116A8284AAE2B00CCD6FF /* ScheduleManager.swift */,
-				76EE06C127FD1F50009E0F3A /* MainMenu.swift */,
+				76EE06C127FD1F50009E0F3A /* StatusMenuController.swift */,
 				76EE06AA27FD1D66009E0F3A /* Info.plist */,
 				76EE069D27FD1D00009E0F3A /* AppDelegate.swift */,
 				767116B0284B021500CCD6FF /* MainController.swift */,
@@ -1146,6 +1144,7 @@
 				76FDC5DB2B235A4F0035D61E /* StatusMenuWindowController.xib in Resources */,
 				76C63A322A22872700810C53 /* History.md in Resources */,
 				764D8127284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib in Resources */,
+				76DF7FD52B50FA9A00B3B543 /* UpdatePasswordWindowController.xib in Resources */,
 				76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */,
 				76D1756A2B23C28700E64A62 /* MainLoginWindowController.xib in Resources */,
 				76EE06B227FD1E24009E0F3A /* DesktopLoginWindowController.xib in Resources */,
@@ -1297,7 +1296,6 @@
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
 				76A8A4E32A0DF7C700AA6054 /* NSTaskWrapper.swift in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
-				764D8131284D11EE00B3EE54 /* MenuItems.swift in Sources */,
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
 				76CB907B2880E41E00C70D0C /* LogShim.swift in Sources */,
 				7657DEC92B350606003A23DB /* KlistUtil.swift in Sources */,
@@ -1328,7 +1326,7 @@
 				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,
 				7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */,
 				76E74DCF2B3902F0004C6429 /* XCredsMechanismProtocol.swift in Sources */,
-				76EE06C227FD1F50009E0F3A /* MainMenu.swift in Sources */,
+				76EE06C227FD1F50009E0F3A /* StatusMenuController.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
 				76D4726D2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m in Sources */,
 				767116B1284B021500CCD6FF /* MainController.swift in Sources */,
@@ -1434,7 +1432,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1471,7 +1469,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1592,7 +1590,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1629,7 +1627,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1779,7 +1777,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1821,7 +1819,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6211;
+				CURRENT_PROJECT_VERSION = 6225;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
