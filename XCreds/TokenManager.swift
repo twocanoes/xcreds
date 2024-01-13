@@ -52,26 +52,38 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         var scopes: [String]?
         var additionalParameters:[String:String]? = nil
         var clientSecret:String?
+        var clientID:String?
 
         if let oidcPrivate = oidcLocal {
             oidcPrivate.getEndpoints()
 
             return oidcPrivate
         }
-        if let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue),
+        let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
+            
+        if let clientSecretRaw = clientSecretRaw,
            clientSecretRaw != "" {
             clientSecret = clientSecretRaw
         }
+        
+        let clientIDRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
+        
+        if let clientIDRaw = clientIDRaw,
+           clientSecretRaw != "" {
+            clientID = clientIDRaw
+        }
+        
         if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
+
         //
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
 
             additionalParameters = ["access_type":"offline"]
         }
 
-        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret ?? "NONE", redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
         oidcLite.delegate=self
