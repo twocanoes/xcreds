@@ -106,7 +106,7 @@ class ShareMounter {
         if let homeDict = sharePrefs?.dictionary(forKey: ShareKeys.homeMount) {
             
             myLogger.logit(.debug, message: "Evaluating home share for automounts.")
-            if let homePathRaw = defaults.string(forKey: PrefKeys.userHome.rawValue) {
+            if let homePathRaw = adUserRecord?.homeDirectory {
                 if var homePath = URL(string: "smb:" + homePathRaw) {
                     
                     if defaults.bool(forKey: PrefKeys.homeAppendDomain.rawValue) {
