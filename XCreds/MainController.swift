@@ -56,7 +56,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         NSApp.activate(ignoringOtherApps: true)
 
         scheduleManager.setNextCheckTime()
-        if DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) != nil || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil
+        if (DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) != nil || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil) && DefaultsOverride.standardOverride.value(forKey: PrefKeys.shouldUpdatePasswordWithWebview.rawValue) == nil
         {
 
             if let window = windowController.window{
