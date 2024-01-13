@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>ADDomain</key>
+			<string>twocanoes.com</string>
+			<key>CreateAdminIfGroupMember</key>
+			<array>
+				<string>Administrators</string>
+			</array>
+			<key>PasswordOverwriteSilent</key>
+			<true/>
+			<key>PayloadDescription</key>
+			<string>Configures XCreds configuration preferences</string>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.47F59CD0-E476-4016-A8C6-82837B61C7CE.com.twocanoes.xcreds.F5B79C66-146F-4F8A-9237-CAF10606615C.11BE4B70-7A81-4351-A799-6B6BCBCF0900.C499E48D-61A5-4463-BB5A-FFFB14936411.0C06D77A-983C-43D4-939E-AA6AF0AF9AFA</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>0C06D77A-983C-43D4-939E-AA6AF0AF9AFA</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>cloudLoginText</key>
+			<string>Back to XCreds</string>
+			<key>loginWindowHeight</key>
+			<integer>500</integer>
+			<key>loginWindowWidth</key>
+			<integer>500</integer>
+			<key>shouldShowConfigureWifiButton</key>
+			<true/>
+			<key>shouldShowMacLoginButton</key>
+			<true/>
+			<key>shouldShowQuitMenu</key>
+			<true/>
+			<key>shouldShowSupportStatus</key>
+			<true/>
+			<key>shouldShowVersionInfo</key>
+			<true/>
+			<key>shouldSwitchToLoginWindowWhenLocked</key>
+			<true/>
+            <key>settingsOverrideScriptPath</key>
+            <string>/usr/local/xcreds/override.sh</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>AD Only</string>
+	<key>PayloadDisplayName</key>
+	<string>xcreds-AD Only</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreat0C865A8B-0494-42F7-9108-1AAFC2C85B72</string>
+	<key>PayloadOrganization</key>
+	<string>twocanoes</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>56A788D5-4AFE-48CD-81D0-7F455F2DD5E5</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
