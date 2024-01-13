@@ -16,11 +16,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     var screenIsLocked=true
     var isDisplayAsleep=true
     var waitForScreenToWake=false
-//    @IBOutlet var shareMounterMenu: ShareMounterMenu?
+    @IBOutlet var shareMounterMenu: ShareMounterMenu?
     @IBOutlet weak var statusMenu: NSMenu!
     var shareMenu:NSMenu?
     var statusBarItem:NSStatusItem?
 
+    func updateShareMenu(adUser:ADUserRecord){
+        shareMounterMenu?.shareMounter?.adUserRecord = adUser
+        shareMounterMenu?.updateShares()
+        shareMenu = shareMounterMenu?.buildMenu(connected: true)
+
+        if let sharesMenuItem = statusMenu.item(withTag: StatusMenuController.StatusMenuItemType.SharesMenuItem.rawValue) {
+
+            if shareMenu?.items.count==0{
+                sharesMenuItem.isHidden=true
+            }
+            else {
+                sharesMenuItem.isHidden=false
+                statusMenu.setSubmenu(shareMenu, for:sharesMenuItem )
+            }
+
+        }
+
+    }
     func updateStatusMenuIcon(showDot:Bool){
 
 
@@ -45,9 +63,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
         self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
-//        shareMounterMenu = ShareMounterMenu()
-//        shareMounterMenu?.updateShares()
-//        shareMenu = shareMounterMenu?.buildMenu()
+            let shareMounter = ShareMounter()
+
+        shareMounterMenu = ShareMounterMenu()
+        shareMounterMenu?.shareMounter = shareMounter
+        shareMounterMenu?.updateShares()
+        shareMenu = shareMounterMenu?.buildMenu(connected: true)
 
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
 

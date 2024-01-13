@@ -21,6 +21,8 @@ protocol UpdateCredentialsFeedbackProtocol {
     func credentialsCheckFailed()
     func kerberosTicketUpdated()
     func kerberosTicketCheckFailed()
+    func adUserUpdated(_ adUser:ADUserRecord)
+
 }
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
@@ -819,6 +821,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
             updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(dateString)
 
         }
+        updateCredentialsFeedbackDelegate?.adUserUpdated(user)
+
 
 
         TCSLogWithMark("Checking for DenyLogin groupsChecking for DenyLogin groups")

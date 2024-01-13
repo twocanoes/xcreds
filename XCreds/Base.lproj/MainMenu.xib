@@ -720,8 +720,14 @@
                         <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="dfP-8J-fS8"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Shares" tag="7" hidden="YES" id="qRq-yn-8sT">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="mhw-jg-LgC"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="op6-Hq-2li"/>
-                <menuItem title="Quit" tag="7" id="OM5-mb-fFV">
+                <menuItem title="Quit" tag="8" id="OM5-mb-fFV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="quitMenuItemSelected:" target="1OV-ou-Ss5" id="yL8-dQ-nRK"/>

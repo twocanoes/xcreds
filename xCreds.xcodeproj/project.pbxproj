@@ -29,6 +29,8 @@
 		761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */; };
 		761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486828A34CC900C6A02B /* LoginProgressWindowController.swift */; };
 		761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486B28A3575000C6A02B /* XCredsLoginDone.swift */; };
+		7623384C2B53029D00F2D714 /* ShareMounterMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */; };
+		7623384D2B53029D00F2D714 /* ShareMounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */; };
 		762761602B294A7C0067D1D4 /* icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7614D03B2B181A5D006EAF36 /* icon_128x128.png */; };
 		76319360287D22C700D36BF7 /* authrights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7631935F287D22C700D36BF7 /* authrights.swift */; };
 		76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319365287D24E100D36BF7 /* ArgumentParser */; };
@@ -1301,6 +1303,7 @@
 				7657DEC92B350606003A23DB /* KlistUtil.swift in Sources */,
 				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
 				76E74DD42B39037A004C6429 /* LoginProgressWindowController.swift in Sources */,
+				7623384D2B53029D00F2D714 /* ShareMounter.swift in Sources */,
 				7657DEB32B350476003A23DB /* NoMADSession.swift in Sources */,
 				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
 				76319373287E18BF00D36BF7 /* DataExtension.swift in Sources */,
@@ -1340,6 +1343,7 @@
 				7657DEC32B3505CB003A23DB /* ADLDAPPing.swift in Sources */,
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
 				76B882B229CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
+				7623384C2B53029D00F2D714 /* ShareMounterMenu.swift in Sources */,
 				7657DEC02B3505A3003A23DB /* DNSResolver.m in Sources */,
 				76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */,
 				76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */,

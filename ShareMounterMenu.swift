@@ -13,11 +13,11 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
 
 // class to build the share mount menu and accept clicks
 
-class ShareMounterMenu: NSObject {
-    
+@objc class ShareMounterMenu: NSObject {
+
     let defaults = UserDefaults.standard
 
-    let myShareMounter = ShareMounter()
+    var shareMounter:ShareMounter?
     @objc var worksWhenModal = true
     @objc let myShareMenu = NSMenu()
     
@@ -32,18 +32,22 @@ class ShareMounterMenu: NSObject {
 
         if (sharePrefs?.integer(forKey: "Version") ?? 0) >= 1 {
         shareMounterQueue.sync(execute: {
-            self.myShareMounter.connectedState = connected
-            self.myShareMounter.tickets = tickets
-            self.myShareMounter.userPrincipal = kerbUser
-            self.myShareMounter.getMountedShares()
-            self.myShareMounter.getMounts()
-            self.myShareMounter.mountShares()
+            self.shareMounter?.connectedState = connected
+            self.shareMounter?.tickets = tickets
+            self.shareMounter?.userPrincipal = kerbUser
+            self.shareMounter?.getMountedShares()
+            self.shareMounter?.getMounts()
+            self.shareMounter?.mountShares()
         })
         }
     }
     
     @objc func buildMenu(connected: Bool=false) -> NSMenu {
         
+        guard let shareMounter = shareMounter else {
+            return NSMenu()
+
+        }
         if sharePrefs?.integer(forKey: "Version") != 1 {
             return NSMenu.init()
         }
@@ -68,17 +72,17 @@ class ShareMounterMenu: NSObject {
 //            return NSMenu.init()
 //        }
         
-        if myShareMounter.all_shares.count > 0 {
+        if shareMounter.all_shares.count > 0 {
             // Menu Items and Menu
             
             myShareMenu.removeAllItems()
             
             if CommandLine.arguments.contains("-shares") {
                 print("***Building Share Menu***")
-                print(self.myShareMounter.all_shares)
+                print(shareMounter.all_shares)
             }
             
-            for share in self.myShareMounter.all_shares {
+            for share in shareMounter.all_shares {
                 let myItem = NSMenuItem()
                 myItem.title = share.name
                 
@@ -87,8 +91,8 @@ class ShareMounterMenu: NSObject {
                 } else {
                     myItem.target = nil
                 }
-                
-                myItem.action = #selector(openShareFromMenu)
+
+                myItem.action = #selector(openShareFromMenu(_:))
                 myItem.toolTip = String(describing: share.url)
                 if share.mountStatus == .mounted {
                     myItem.isEnabled = true
@@ -117,8 +121,10 @@ class ShareMounterMenu: NSObject {
     }
     
     @IBAction func openShareFromMenu(_ sender: AnyObject) {
-                
-        for share in myShareMounter.all_shares {
+        guard let shareMounter = shareMounter else {
+            return
+        }
+        for share in shareMounter.all_shares {
             if share.name == sender.title {
                 if share.mountStatus != .mounted {
                     myLogger.logit(.debug, message: "Mounting share: " + String(describing: share.url))

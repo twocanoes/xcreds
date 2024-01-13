@@ -10,6 +10,8 @@ import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     
+
+    
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
 
@@ -287,6 +289,11 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         credentialStatus="Kerberos Tickets Failed"
         showSignInWindow()
+    }
+    func adUserUpdated(_ adUser: ADUserRecord) {
+
+        (NSApp.delegate as? AppDelegate)?.updateShareMenu(adUser: adUser)
+
     }
 
 }

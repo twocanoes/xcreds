@@ -24,7 +24,7 @@ enum ShareKeys {
     static let homeMount = "HomeMount"
     static let mount = "Mount"
     static let shares = "Shares"
-    static let groups = "Groups"
+//    static let groups = "Groups"
     static let connectedOnly = "ConnectedOnly"
     static let options = "Options"
     static let name = "Name"
@@ -69,7 +69,7 @@ class ShareMounter {
 
     let fm = FileManager.default
     let ws = NSWorkspace.shared
-    let sharePrefs = UserDefaults.init(suiteName: "menu.nomad.shares")
+    let sharePrefs = UserDefaults.init(suiteName: "com.twocanoes.xcreds-shares")
     
     var mountedShares = [URL]()
     var mountedOriginalShares = [String]()
@@ -83,6 +83,7 @@ class ShareMounter {
     var userPrincipal = ""
     var connectedState = false
     
+    var adUserRecord:ADUserRecord?
     let openOptionsDict : [String : Any] = [
         kNAUIOptionKey : kNAUIOptionNoUI,
         kNetFSUseGuestKey : false,
@@ -98,7 +99,7 @@ class ShareMounter {
         
         var tempShares = [share_info]()
         
-        guard let groups = defaults.array(forKey: "Groups") else { return }
+        guard let groups = adUserRecord?.groups else { return }
         
         //TODO: ShareReset
         
@@ -477,10 +478,10 @@ class ShareMounter {
         // TODO: get e-mail address as a variable
         var createdURL = url
         
-        guard let domain = defaults.string(forKey: PrefKeys.aDDomain.rawValue),
-              let fullName = defaults.string(forKey: PrefKeys.displayName.rawValue)?.safeURLPath(),
+        guard let domain = adUserRecord?.domain,
+              let fullName = adUserRecord?.fullName.safeURLPath(),
             let serial = getSerial().safeURLPath(),
-              let shortName = defaults.string(forKey: PrefKeys.userShortName.rawValue)
+              let shortName = adUserRecord?.shortName
             else {
                 return nil
         }

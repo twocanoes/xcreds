@@ -17,8 +17,9 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case PasswordExpires=4
         case SignInMenuItem=5
         case ChangePasswordMenuItem=6
-        case QuitMenuItem=7
-        
+        case SharesMenuItem=7
+        case QuitMenuItem=8
+
     }
     var signedIn = false
     var aboutWindowController: AboutWindowController?
@@ -123,6 +124,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 
             }
             return false
+        case .SharesMenuItem:
+            return true
         }
         return true
     }

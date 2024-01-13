@@ -146,7 +146,11 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
         TCSLogWithMark("checking for oidc tokens if configured")
         tokenManager.feedbackDelegate=self
-        tokenManager.getNewAccessToken()
+
+        if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) {
+            
+            tokenManager.getNewAccessToken()
+        }
 
 
     }
@@ -175,6 +179,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         if let passExpired = user.passwordExpire {
             let dateString = dateFormatter.string(from: passExpired)
             feedbackDelegate?.passwordExpiryUpdate(dateString)
+            feedbackDelegate?.adUserUpdated(user)
 //            passwordExpires=dateString
 
         }
