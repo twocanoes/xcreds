@@ -239,17 +239,17 @@ protocol UpdateCredentialsFeedbackProtocol {
         passwordTextField.shake(self)
         alertTextField.isHidden=false
         alertTextField.stringValue = message ?? "Authentication Failed"
-        loginStartedUI()
+        setLoginWindowState(enabled: true)
     }
 
     /// Simple toggle to change the state of the NoLo window UI between active and inactive.
-    fileprivate func loginStartedUI() {
+    fileprivate func setLoginWindowState(enabled:Bool) {
         TCSLogWithMark()
-        signIn.isEnabled = !signIn.isEnabled
+        signIn.isEnabled = enabled
         TCSLogWithMark()
-        usernameTextField.isEnabled = !usernameTextField.isEnabled
-        passwordTextField.isEnabled = !passwordTextField.isEnabled
-        localOnlyCheckBox.isEnabled = !localOnlyCheckBox.isEnabled
+        usernameTextField.isEnabled = enabled
+        passwordTextField.isEnabled = enabled
+        localOnlyCheckBox.isEnabled = enabled
 
         TCSLogWithMark()
     }
@@ -278,7 +278,8 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-        loginStartedUI()
+        setLoginWindowState(enabled: false)
+
         TCSLogWithMark()
         updateLoginWindowInfo()
         TCSLogWithMark()
@@ -761,7 +762,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
             let res = showResetUI()
 
             if res == false { //user cancelled so enable UI
-                loginStartedUI()
+                setLoginWindowState(enabled: true)
+
             }
             return
         case .OffDomain:
@@ -778,7 +780,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description)")
-            loginStartedUI()
+//            loginStartedUI()
                 authFail(description)
 //
             return
