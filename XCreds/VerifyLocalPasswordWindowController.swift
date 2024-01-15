@@ -119,7 +119,6 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
                         return .error("Error setting local password to cloud password: \(error.localizedDescription)")
                     }
-                    TCSLogWithMark("setting original password to use to unlock keychain later")
                     isDone=true
                     window?.close()
                     return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))

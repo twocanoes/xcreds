@@ -878,7 +878,14 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 }
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
 
-                case .success(_):
+                case .success(let enteredUsernamePassword):
+
+                    TCSLogWithMark("setting original password to use to unlock keychain later")
+
+                    if let enteredUsernamePassword = enteredUsernamePassword {
+                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                    }
+
                     completeLogin(authResult: .allow)
 
                 case .resetKeychainRequested(let usernamePasswordCredentials):

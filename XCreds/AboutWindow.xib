@@ -77,7 +77,7 @@
             </connections>
             <point key="canvasLocation" x="401.5" y="387"/>
         </window>
-        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dXE-Xt-nIV">
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dXE-Xt-nIV">
             <rect key="frame" x="0.0" y="0.0" width="90" height="16"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <textFieldCell key="cell" lineBreakMode="clipping" title="DiscoveryURL" id="1hp-g2-T6a">
