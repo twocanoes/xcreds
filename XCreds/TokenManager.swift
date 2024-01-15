@@ -69,7 +69,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         let clientIDRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
         
         if let clientIDRaw = clientIDRaw,
-           clientSecretRaw != "" {
+           clientIDRaw != "" {
             clientID = clientIDRaw
         }
         
@@ -83,7 +83,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             additionalParameters = ["access_type":"offline"]
         }
 
-        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret ?? "NONE", redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
         oidcLite.delegate=self
@@ -125,7 +126,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
 
 
-        
+
         if let password = password, password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
@@ -138,8 +139,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
         return true
     }
-   
-   
+
+
 
     func tokenEndpoint() -> String? {
 
@@ -413,12 +414,12 @@ extension TokenManager {
         TCSLogWithMark("authFailure: \(message)")
         feedbackDelegate?.tokenError(message)
     }
-    
-    
+
+
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
-        
+
         TCSLogWithMark("======== tokenResponse =========")
-        
+
         RunLoop.main.perform {
 
             let xcredCreds = Creds(password: nil, tokens: tokens)
