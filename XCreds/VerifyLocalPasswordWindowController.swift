@@ -121,6 +121,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
                     }
                     isDone=true
                     window?.close()
+                    TCSLogWithMark("returning success with local password")
                     return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
                 default:
                     window?.shake(self)

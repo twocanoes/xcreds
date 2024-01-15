@@ -143,7 +143,12 @@ import OpenDirectory
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
 
 
-                case .success(_):
+                case .success(let enteredUsernamePassword):
+                    TCSLogWithMark("setting original password to use to unlock keychain later")
+
+                    if let enteredUsernamePassword = enteredUsernamePassword {
+                        setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                    }
 
                     allowLogin()
 

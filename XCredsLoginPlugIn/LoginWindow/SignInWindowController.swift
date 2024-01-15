@@ -876,6 +876,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     promptPasswordWindowController.showResetButton=false
 
                 }
+                TCSLogWithMark("switch  promptPasswordWindowController")
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
 
                 case .success(let enteredUsernamePassword):
@@ -889,6 +890,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     completeLogin(authResult: .allow)
 
                 case .resetKeychainRequested(let usernamePasswordCredentials):
+                    TCSLogWithMark("resetKeychainRequested")
+
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
                         mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername )
                         mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword)
@@ -899,10 +902,14 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 
                 case .userCancelled:
+                    TCSLogWithMark("userCancelled")
+
                     completeLogin(authResult: .userCanceled)
 
 
                 case .error(_):
+                    TCSLogWithMark("error")
+
                     completeLogin(authResult: .deny)
                 }
 
