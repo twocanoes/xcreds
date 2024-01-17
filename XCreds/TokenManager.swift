@@ -48,7 +48,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
-    func oidc() -> OIDCLite {
+    func oidc(useROPGSecretsIfAvailable: Bool = false) -> OIDCLite {
         var scopes: [String]?
         var additionalParameters:[String:String]? = nil
         var clientSecret:String?
@@ -59,14 +59,14 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
             return oidcPrivate
         }
-        let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
+        let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) != nil && useROPGSecretsIfAvailable ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
             
         if let clientSecretRaw = clientSecretRaw,
            clientSecretRaw != "" {
             clientSecret = clientSecretRaw
         }
         
-        let clientIDRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
+        let clientIDRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) != nil && useROPGSecretsIfAvailable ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
         
         if let clientIDRaw = clientIDRaw,
            clientIDRaw != "" {
@@ -180,7 +180,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
                 return
             }
             // not return because we get a callback and then call the closure
-            oidc().requestTokenWithROPG(username: username, password: keychainPassword)
+            oidc(useROPGSecretsIfAvailable: true).requestTokenWithROPG(username: username, password: keychainPassword)
 
         } //use the refresh token
         else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
