@@ -311,7 +311,9 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         if let alias = alias {
             TCSLogWithMark("saving alias to DS as a username for ropg as needed")
             try? records.first?.setValue(alias, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
-
+        } else {
+            TCSLogWithMark("Fallback,saving account name to DS as username for ropg as needed")
+            try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
         }
 
 
