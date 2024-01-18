@@ -166,7 +166,7 @@ import Network
         let preferLocalLogin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPreferLocalLoginInsteadOfCloudLogin.rawValue)
         let shouldDetectNetwork = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldDetectNetworkToDetermineLoginWindow.rawValue)
 
-        let useROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue)
+        let useROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForLoginWindow.rawValue)
 
 
         TCSLogWithMark("checking if local login")

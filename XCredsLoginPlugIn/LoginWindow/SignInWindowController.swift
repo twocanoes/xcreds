@@ -171,7 +171,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         else {
             //show based on if there is an AD domain or not
 
-            let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == false
+            let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true
             self.localOnlyCheckBox.isHidden = isLocalOnly
             self.localOnlyView.isHidden = isLocalOnly
 
@@ -284,7 +284,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateLoginWindowInfo()
         TCSLogWithMark()
 
-        if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
+        if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
@@ -296,7 +296,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                 authFail()
             }
             return
-        } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForOIDCLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
+        } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
             //                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             //                guard let userName = currentUser?.recordName else {
             //                    TCSLogWithMark("no username")

@@ -51,27 +51,19 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
     func oidc() -> OIDCLite {
         var scopes: [String]?
         var additionalParameters:[String:String]? = nil
-        var clientSecret:String?
-        var clientID:String?
 
         if let oidcPrivate = oidcLocal {
             oidcPrivate.getEndpoints()
 
             return oidcPrivate
         }
-        let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
-            
-        if let clientSecretRaw = clientSecretRaw,
-           clientSecretRaw != "" {
-            clientSecret = clientSecretRaw
-        }
+        let clientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
+
+
         
-        let clientIDRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) != nil ? DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) : DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
-        
-        if let clientIDRaw = clientIDRaw,
-           clientIDRaw != "" {
-            clientID = clientIDRaw
-        }
+        let clientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
+
+
         
         if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
@@ -170,7 +162,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         //ropg
         if
             let keychainAccountAndPassword = keychainAccountAndPassword,
-            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true,
 
                 let keychainPassword = keychainAccountAndPassword.1{
             TCSLogWithMark("Checking credentials in keychain using ROPG")
