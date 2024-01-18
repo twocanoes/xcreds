@@ -1,3 +1,40 @@
+## 4.0.6261 (2024-01-15)
+
+*  built release notes [View](https://github.com/twocanoes/xcreds/commit/7440e188957a5c489891d75513dad33df2ec6aec)
+*  applied patch from Jim Zajkowski to fix integration issues [View](https://github.com/twocanoes/xcreds/commit/278862f63decc361c2dcc1e99da541c431b7099d)
+*  fixed up kerb ticket status in menu [View](https://github.com/twocanoes/xcreds/commit/93371b9a3b32c7f09e23d1b55fb1c783ffd580de)
+*  refactored menu code [View](https://github.com/twocanoes/xcreds/commit/a76b7f843d4a156233abeb9039152748e2dc52c9)
+*  fixed issue with updating keychain [View](https://github.com/twocanoes/xcreds/commit/d0b70c3142e385a51c79c1f94812393a6067e178)
+*  more attempt at sharemounter integration [View](https://github.com/twocanoes/xcreds/commit/18e44d1d6b156ffb63686db8d52905e287dc5f24)
+*  implemented shares [View](https://github.com/twocanoes/xcreds/commit/8bd74a3ac8fe78088e280c19d9ee80eeb1658129)
+*  added additional sample profiles [View](https://github.com/twocanoes/xcreds/commit/721bf74a6f58cce0b09b1aa2e88f6317b643bede)
+*  fixed home mounting [View](https://github.com/twocanoes/xcreds/commit/b4ffa8ff9788cdd76694174c54dd0bc3ce9ddbcc)
+*  fixed enabing window state with AD [View](https://github.com/twocanoes/xcreds/commit/24d17c9845baa29acbd7ec408c02553dd4d7ea3d)
+*  pointed package to main branch for oidclite [View](https://github.com/twocanoes/xcreds/commit/7f23a07412363c7d45ce093eaff0bbac644265bb)
+*  Allow forcing of webview login window [View](https://github.com/twocanoes/xcreds/commit/88eaaf49ff27a7fb38c879d15e597912f06c0d29)
+*  Support separate client ID and secret for ropg [View](https://github.com/twocanoes/xcreds/commit/4e008168bbf206d6678d7c1649e26ec7424928a3)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/7d5fba55eab2430038c2a86b79c08f714316e57b)
+*  fixed issue with ropg clientid/secret selection [View](https://github.com/twocanoes/xcreds/commit/1642241ea03ddc43b4a04b7e9a4f0885113ab4dc)
+*  Keychain is reset on cloud password change when user enters old local password #148 [View](https://github.com/twocanoes/xcreds/commit/79f1bb531ce5fa20389b4fed319bac3539314e96)
+*  Admin status does not change after removed from group #145 [View](https://github.com/twocanoes/xcreds/commit/f9821f992afe305d2be9bec0ee0aec9e1b5dbdca)
+*  Fix manifest key name for loadPageInfo #143 [View](https://github.com/twocanoes/xcreds/commit/b747d621e864a40906b13b85e6d184ead1fb485c)
+*  bumped version [View](https://github.com/twocanoes/xcreds/commit/aad768b0f0b76345a3e7ee2ea0d02fbcf6e953b1)
+
+
+## 4.0.6203 (2024-01-01)
+
+*  added release notes and script to generate release notes [View](https://github.com/twocanoes/xcreds/commit/ff9dc64fea8e6f438755e1d72837fce4391d167c)
+*  Feature Request: Allow "loadpage.html" to be customized. #126. To test, add in new keys "loadPageTitle" and "loadPageInfo" or try the xcreds_example_azure_loadPageTitle_loadPageInfo.mobileconfig [View](https://github.com/twocanoes/xcreds/commit/37c7477f66362c1823c49138b49afcad388abbc5)
+*  Update description in manifest for loginWindowWidth and loginWindowHeight #138 [View](https://github.com/twocanoes/xcreds/commit/5951d753b391fda49534c5dda13d508479e66fd8)
+*  [feature request] LocalAD - make sync password with AD optional with preference key #130. To test, set the shouldPromptForADPasswordChange to false and set the user account to require password change on next login and verify the user is not prompted [View](https://github.com/twocanoes/xcreds/commit/0b85b4ffb8e95b8d79ffcf455ac034c05ce4d4f4)
+*  XCreds breaking Munki's logout/install @loginscreen logic #102. Test by defining hideIfPathExists to a path like /tmp/hide and then add/remove and UI should show /hide. Or use sample profile xcreds_example_azure_hide.mobileconfig [View](https://github.com/twocanoes/xcreds/commit/770c179262658ccfd27f9de3808b931cc69a86e4)
+*  Option to enforce account to log in #21. To test, create allowedUsersArray with name of user allowed to log in and define allowUsersClaim with an OIDC claim that contains that value. Or use the xcreds_example_azure_allow_fred.mobileconfig to test [View](https://github.com/twocanoes/xcreds/commit/ee95927865f1e912898c4d030cb367fd589db114)
+*  Feature Request: Force Wi-Fi on option or Wi-Fi on/off switch in "Configure Wi-Fi" #58 [View](https://github.com/twocanoes/xcreds/commit/bfa28014c7d0c000369d49bf9a3896128616901a)
+*  added removeadmin function but not used since it can cause local admins to unadmin [View](https://github.com/twocanoes/xcreds/commit/cc322befaf88bf3440a9d086089468660a4354f3)
+*  loginWindowBackgroundImageURL image should be cached if not a file:// URL #72 [View](https://github.com/twocanoes/xcreds/commit/b2cfd643ac6419904cc30037eaceaf5bb939cc7b)
+*  bumped build number [View](https://github.com/twocanoes/xcreds/commit/500575b7dfa81c7a9a7231aeac88bd3cfe6a5497)
+
+
 ## 4.0.6177 (2023-12-28)
 
 *  added date to license agreement to resolve Date not shown on user agreement #134 [View](https://github.com/twocanoes/xcreds/commit/17df8ec0734b9a8eddb2485e4d16af25ddd2df30)

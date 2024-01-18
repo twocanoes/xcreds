@@ -203,7 +203,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         DispatchQueue.main.async {
             self.windowController.window?.close()
             let localAccountAndPassword = self.localAccountAndPassword()
-            if credentials.password != nil, var localPassword=localAccountAndPassword.1{
+            if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
                     var updatePassword = true
                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
@@ -217,7 +217,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                                 let alert = NSAlert()
                                 alert.addButton(withTitle: "Skip Updating Password")
                                 alert.addButton(withTitle: "Cancel")
-                                alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
+                                alert.messageText="Are you sure you want to skip updating the local password and keychain? Your local password and keychain will be out of sync with your cloud password. "
                                 let resp = alert.runModal()
                                 if resp == .alertFirstButtonReturn {
                                     NSApp.stopModal(withCode: .cancel)
@@ -242,19 +242,15 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                         }
                     }
                     if updatePassword {
-                        let updatedLocalAccountAndPassword = self.localAccountAndPassword()
-                        if let updatedLocalPassword = updatedLocalAccountAndPassword.1{
+                        if let cloudPassword = credentials.password {
+                            try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword: cloudPassword)
+                            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:cloudPassword ) == false {
+                                TCSLogErrorWithMark("error saving tokens to keychain")
+                            }
 
-                            localPassword=updatedLocalPassword
-                            try? PasswordUtils.changeLocalUserAndKeychainPassword(updatedLocalPassword, newPassword: localPassword)
                         }
-
-
                     }
                 }
-            }
-            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localAccountAndPassword.1 ) == false {
-                TCSLogErrorWithMark("error saving tokens to keychain")
             }
             self.scheduleManager.startCredentialCheck()
 
