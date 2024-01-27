@@ -160,6 +160,7 @@ import OpenDirectory
                     allowLogin()
 
                 case .resetKeychainRequested(let usernamePasswordCredentials):
+                    
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
                         setHint(type: .adminUsername, hint:adminUsername )
                         setHint(type: .adminPassword, hint: adminPassword)

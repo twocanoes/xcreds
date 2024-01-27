@@ -152,10 +152,13 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
 
         //override or prefs has admin username / password so don't prompt
-        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil {
+        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false {
+            adminUsername = aUsername
+            adminPassword = aPassword
             if self.window?.isModalPanel==true {
                 resetKeychain=true
+                
                 NSApp.stopModal(withCode: .OK)
 
             }
