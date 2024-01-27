@@ -123,6 +123,13 @@ import OpenDirectory
                 return .failure("username or password are not set")
             }
 
+            if  password.isEmpty {
+                TCSLogWithMark("Empty password. Failing");
+                let message = "Password not set. Verify username mapping in configuration is correct and you are not using passwordless login."
+                denyLogin(message: message)
+                return .failure(message)
+
+            }
             TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
 
             let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)

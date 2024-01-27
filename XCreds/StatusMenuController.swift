@@ -110,9 +110,11 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 quitMenuItemSeparator.isHidden=true
                 
             }
-            quitMenuItem.isHidden=false
-            quitMenuItemSeparator.isHidden=false
-            
+            else {
+                quitMenuItem.isHidden=false
+                quitMenuItemSeparator.isHidden=false
+            }
+
         case .PasswordExpires:
             
             if let passwordExpires = mainController?.passwordExpires {

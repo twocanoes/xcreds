@@ -82,6 +82,38 @@
             endingLineNumber = "34"
             landmarkName = "selectLocalAccountAndUpdate(newPassword:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D9EEE7A5-0569-4F83-88AD-306E44567BFC - 87eebe3b1909fbb7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static XCreds.SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: Swift.String) -&gt; XCreds.SelectLocalAccountWindowController.VerifyLocalCredentialsResult"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/SelectLocalAccountWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "856">
+               </Location>
+               <Location
+                  uuid = "D9EEE7A5-0569-4F83-88AD-306E44567BFC - bddba436c7839a5a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in static XCreds.SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: Swift.String) -&gt; XCreds.SelectLocalAccountWindowController.VerifyLocalCredentialsResult"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/SelectLocalAccountWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -97,6 +129,22 @@
             startingLineNumber = "70"
             endingLineNumber = "70"
             landmarkName = "oidc()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6C3BB5C8-F87C-4280-A376-6FF3005B8236"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/StatusMenuController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "validateMenuItem(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
