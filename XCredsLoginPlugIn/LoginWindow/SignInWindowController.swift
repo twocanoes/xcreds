@@ -171,7 +171,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         else {
             //show based on if there is an AD domain or not
 
-            let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true
+            let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
             self.localOnlyView.isHidden = isLocalOnly
 
