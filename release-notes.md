@@ -1,3 +1,15 @@
+## 4.0.6274 (2024-01-26)
+
+*  fixed issue with local password update [View](https://github.com/twocanoes/xcreds/commit/b12e859184f6812080906256315d1d7b2f29e496)
+*  updated ropg prefs and checking [View](https://github.com/twocanoes/xcreds/commit/e3149de819f2b72a7e11f9891815de5d5c6511b9)
+*  Minor fixes for ropg [View](https://github.com/twocanoes/xcreds/commit/f99bdd5aa288331c469bd8d6fca83af3642fd622)
+*  fixed passwordElementID preference can cause issue with setting local password #161 [View](https://github.com/twocanoes/xcreds/commit/5b547377d591c7e8dcfc6165197fcf5d94bd881b)
+*  PasswordOverwriteSilent does not prevent user prompt for password #160 [View](https://github.com/twocanoes/xcreds/commit/a438d09a10fa35c914877559a8bab415083a428a)
+*  shouldUseROPGForMenuLogin hides offline login option at XCreds login window #158 [View](https://github.com/twocanoes/xcreds/commit/17f24dd92b8c83bb591b5cd9bb50e41c9ac4086f)
+*  Improvement for refreshRateMinutes description #157 [View](https://github.com/twocanoes/xcreds/commit/cc6e736f0429bb78ac0a925395b305f21d98af4a)
+*  Typos in manifest descriptions #156 [View](https://github.com/twocanoes/xcreds/commit/eae6dff1654237d13bbab857a5e1d8c30c5ffe11)
+
+
 ## 4.0.6261 (2024-01-15)
 
 *  built release notes [View](https://github.com/twocanoes/xcreds/commit/7440e188957a5c489891d75513dad33df2ec6aec)
