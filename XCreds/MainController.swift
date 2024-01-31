@@ -9,9 +9,6 @@ import Cocoa
 import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
-    
-
-    
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
 
@@ -202,6 +199,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         DispatchQueue.main.async {
             self.windowController.window?.close()
+
             let localAccountAndPassword = self.localAccountAndPassword()
             if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
@@ -244,14 +242,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     if updatePassword {
                         if let cloudPassword = credentials.password {
                             try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword: cloudPassword)
-                            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:cloudPassword ) == false {
-                                TCSLogErrorWithMark("error saving tokens to keychain")
-                            }
 
                         }
                     }
                 }
+                
             }
+            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:credentials.password ) == false {
+                TCSLogErrorWithMark("error saving tokens to keychain")
+            }
+
             self.scheduleManager.startCredentialCheck()
 
         }
