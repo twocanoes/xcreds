@@ -110,8 +110,22 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
 
+    func checkAndMountShares() {
+
+        let tickets = KlistUtil().returnTickets()
+        if tickets.count>0{
+            let appDelegate = NSApp.delegate as? AppDelegate
+
+            appDelegate?.shareMounterMenu?.updateShares(connected: true, tickets: true)
+        }
+
+    }
     func setup() {
 
+        NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
+            self.checkAndMountShares()
+        }
+        self.checkAndMountShares()
         TCSLogWithMark()
 
         // make sure we have the local password, else prompt. we don't need to save it

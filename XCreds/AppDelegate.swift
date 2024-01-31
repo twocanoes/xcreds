@@ -59,6 +59,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        NetworkMonitor.shared.startMonitoring()
+
+
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
