@@ -93,8 +93,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
 
         }
-
-
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
             
             var secureTokenCreds:SecureTokenCredential? = nil

@@ -285,6 +285,17 @@ public extension DSQueryable {
         return true
     }
     func removeAdmin(_ user:ODRecord) -> Bool {
+        do {
+            if try getAllAdminUsers().count<2 {
+                TCSLogError("Will not remove last admin!!")
+                return false
+            }
+
+        }
+        catch {
+            TCSLogErrorWithMark("Error when getting all admin users")
+            return false
+        }
         if isAdmin(user)==false { //user is not an admin already
             return true
         }
@@ -331,6 +342,26 @@ public extension DSQueryable {
                 return true
             }
         return nonSystem
+    }
+    func getAllAdminUsers() throws -> [ODRecord] {
+            let allRecords = try getAllNonSystemUsers()
+            let nonSystemAdminUsers = try allRecords.filter { (record) -> Bool in
+                let adminGroup = try? getLocalGroupRecord("admin")
+                do{
+
+                    if let adminGroup = adminGroup {
+                        try adminGroup.isMemberRecord(record)
+                        return true
+                    }
+                }
+                catch {
+                    TCSLog("error when looking for admin group membership")
+                    throw error
+                }
+
+                return true
+            }
+        return nonSystemAdminUsers
     }
 
 }
