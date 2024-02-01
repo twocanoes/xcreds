@@ -272,7 +272,10 @@ public extension DSQueryable {
             let adminGroup = results.first
 
             os_log("Adding user to administrators group", type: .debug)
+            
             try adminGroup?.addMemberRecord(user)
+            try? user.setValue("1", forAttribute: "dsAttrTypeNative:_xcreds_promoted_to_admin")
+
 
         } catch {
             let errorText = error.localizedDescription

@@ -7,112 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD703F2B-DAF1-4738-899C-11CCB6497F34"
+            uuid = "65CFC0FC-92F4-4EBE-B39C-06BAAED98738"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NoMADSession.swift"
+            filePath = "ShareMounter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1236"
-            endingLineNumber = "1236"
-            landmarkName = "userInfo()"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
+            landmarkName = "mountShares()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E7ACFAB4-E5A6-4D48-B4F7-0BC0DC6ED882"
+            uuid = "85E4B5A0-AC59-4F34-9569-31C68C501F17"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "ShareMounter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "checkAndMountShares()"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
+            landmarkName = "mountShares()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "00C34C5C-60B1-4C30-94C8-534B87C9B374"
+            uuid = "9EDF5B33-D76B-4DC7-A3D1-879A37CA1F48"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/ScheduleManager.swift"
+            filePath = "ShareMounter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "NoMADUserInformation(user:)"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "mountShares()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1A014A3F-393F-4FE5-9A83-79C8DE3F3295"
+            uuid = "28403DD2-8F25-45DC-A10C-EC0AB0526E1D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/ScheduleManager.swift"
+            filePath = "ShareMounter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "NoMADAuthenticationSucceded()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "895D5BFA-B444-4C09-BBEB-274B6989EC37"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "792"
-            endingLineNumber = "792"
-            landmarkName = "NoMADAuthenticationSucceded()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E50B6015-51C1-47D9-B267-0BF80EDEFC66"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/ScheduleManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
-            landmarkName = "NoMADAuthenticationFailed(error:description:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E0705EEB-075C-4FA0-A500-BD7C34B7F800"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NoMADSession.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1149"
-            endingLineNumber = "1149"
-            landmarkName = "authenticate(authTestOnly:)"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
+            landmarkName = "mountShares()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

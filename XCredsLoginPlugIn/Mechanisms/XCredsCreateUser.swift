@@ -71,7 +71,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
         TCSLogWithMark("user:\(xcredsUser ?? "")")
         var isAdmin = false
-//        var shouldRemoveAdmin = false
+        var shouldRemoveAdmin = false
         if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
             isAdmin = createAdmin
             TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
@@ -87,9 +87,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                     TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
                 }
             }
-//            if isAdmin == false {
-//                shouldRemoveAdmin = true
-//            }
+            if isAdmin == false {
+                TCSLogWithMark("admin groups defined but user is not a member, so marking remove if it exists and we created it")
+                shouldRemoveAdmin = true
+            }
 
         }
 
@@ -220,12 +221,24 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
                     }
                 }
-//                else if shouldRemoveAdmin == true {
-//                    if removeAdmin(record)==false {
-//                        os_log("failed to remove user an admin", log: createUserLog, type: .error)
-//
-//                    }
-//                }
+                else if shouldRemoveAdmin == true {
+                    TCSLogWithMark("removing admin if xcreds created")
+
+                    if let promotedToAdminArray = try record.values(forAttribute: "dsAttrTypeNative:_xcreds_promoted_to_admin") as? [String],promotedToAdminArray.count==1, promotedToAdminArray[0]=="1"  {
+                        TCSLogWithMark("we promoted so removing admin")
+
+                        if removeAdmin(record)==false {
+                            TCSLogErrorWithMark("failed to remove user an admin")
+
+                        }
+                        else { // success so remove attribute
+                            TCSLogWithMark("removing _xcreds_promoted_to_admin from record")
+
+                            try record.removeValues(forAttribute: "dsAttrTypeNative:_xcreds_promoted_to_admin")
+                        }
+
+                    }
+                }
             }
 
             catch {

@@ -345,7 +345,7 @@ class ShareMounter {
                     
                 }
                                 
-                if true {
+                if sharePrefs?.bool(forKey: ShareKeys.finderMount) ?? false {
 
                     myLogger.logit(.debug, message: "Mounting share via Finder")
                     _ = cliTask("/usr/bin/open \(all_shares[index].url.absoluteString)")
