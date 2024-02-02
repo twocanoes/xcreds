@@ -307,7 +307,11 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 }
                 
             }
-            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:credentials.password ) == false {
+            var localPassword = credentials.password
+            if localPassword==nil {
+                localPassword = localAccountAndPassword.1
+            }
+            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localPassword ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
 
