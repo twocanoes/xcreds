@@ -95,6 +95,9 @@ import OpenDirectory
             if let aliasName = userInfo.alias {
                 setHint(type: .aliasName, hint: aliasName)
             }
+            if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                setHint(type: .kerberos_principal, hint: kerberosPrincipalName)
+            }
 
             let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
             guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {

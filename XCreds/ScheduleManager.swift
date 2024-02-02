@@ -141,14 +141,20 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         }
         else {
             TCSLogWithMark("not checking for kerberos ticket")
-
         }
 
-        TCSLogWithMark("checking for oidc tokens if configured")
+        TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
         tokenManager.feedbackDelegate=self
 
-        if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) {
-            
+        let keychainUtil = KeychainUtil()
+
+        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
+
+        if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
+            let refreshAccountAndToken = refreshAccountAndToken,
+            let refreshToken = refreshAccountAndToken.1,
+                refreshToken != ""  {
+            TCSLogWithMark("requesting new access token")
             tokenManager.getNewAccessToken()
         }
 

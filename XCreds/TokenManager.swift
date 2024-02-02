@@ -32,6 +32,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         var username:String?
         var groups:Array<String>?
         var alias:String?
+        var kerberosPrincipalName:String?
     }
     enum ParseHintsResult:Error {
         case error(String)
@@ -289,7 +290,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         if let defaultsUsername = defaultsUsername {
             userAccountInfo.username = defaultsUsername
         }
-        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_username")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
+        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
 
             TCSLogWithMark()
             userAccountInfo.username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
@@ -321,14 +322,23 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             userAccountInfo.username = tUsername
         }
 
+        //kerberos principal name
+
+        //mapKerberosPrincipalName
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapKerberosPrincipalName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            //we have a mapping so use that.
+            TCSLogWithMark("mapKerberosPrincipalName name mapped to: \(mapKey)")
+            userAccountInfo.kerberosPrincipalName = mapValue
+        }
+
         //full name
         TCSLogWithMark("checking map_fullname")
 
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_fullname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
             //we have a mapping so use that.
             TCSLogWithMark("full name mapped to: \(mapKey)")
             userAccountInfo.fullName = mapValue
-//            mechanismDelegate.setHint(type: .fullName, hint: "\(mapValue)")
 
         }
 
@@ -336,46 +346,40 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark("firstName: \(firstName)")
             TCSLogWithMark("lastName: \(lastName)")
             userAccountInfo.fullName = "\(firstName) \(lastName)"
-//            mechanismDelegate.setHint(type: .fullName, hint: "\(firstName) \(lastName)")
 
         }
 
 
         //first name
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_firstname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFirstName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
             //we have a mapping for username, so use that.
             TCSLogWithMark("first name mapped to: \(mapKey)")
             userAccountInfo.firstName = mapValue
-//            mechanismDelegate.setHint(type: .firstName, hint:mapValue)
         }
 
         else if let given_name = idTokenObject.given_name {
             TCSLogWithMark("firstName from token: \(given_name)")
             userAccountInfo.firstName = given_name
-//            mechanismDelegate.setHint(type: .firstName, hint:firstName)
 
         }
         //last name
         TCSLogWithMark("checking map_lastname")
 
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: "map_lastname")  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapLastName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
             //we have a mapping for lastName, so use that.
             TCSLogWithMark("last name mapped to: \(mapKey)")
             userAccountInfo.lastName = mapValue
-//            mechanismDelegate.setHint(type: .lastName, hint:mapValue)
         }
 
         else if let familyName = idTokenObject.family_name {
             TCSLogWithMark("lastName from token: \(familyName)")
             userAccountInfo.lastName = familyName
-//            mechanismDelegate.setHint(type: .lastName, hint:familyName)
 
         }
         //groups
         if let mapValue = idTokenInfo["groups"] as? Array<String> {
             TCSLogWithMark("setting groups: \(mapValue)")
             userAccountInfo.groups = mapValue
-//            mechanismDelegate.setHint(type: .groups, hint:mapValue)
         }
         else {
 
@@ -386,7 +390,6 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         if let aliasClaim = aliasClaim, let aliasClaimValue = idTokenInfo[aliasClaim] as? String {
             TCSLogWithMark("found alias claim: \(aliasClaim):\(aliasClaimValue)")
 
-//            mechanismDelegate.setHint(type: .aliasName, hint: aliasClaimValue)
             userAccountInfo.alias = aliasClaimValue
         }
         else {
