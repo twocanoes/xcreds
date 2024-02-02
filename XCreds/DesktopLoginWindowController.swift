@@ -9,14 +9,23 @@ import Cocoa
 
 class DesktopLoginWindowController: NSWindowController {
     @IBOutlet var webViewController: WebViewController!
-    
+    @IBOutlet var backgroundImageView:NSImageView!
+
     override class func awakeFromNib() {
         
     }
     override func windowDidLoad() {
         super.windowDidLoad()
-    
-        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+
+
+        let backgroundImage = DefaultsHelper.desktopPasswordWindowBackgroundImage(includeDefault: false)
+
+        if let backgroundImage = backgroundImage   {
+            backgroundImageView.image = backgroundImage
+
+            backgroundImageView.image=backgroundImage
+            backgroundImageView.imageScaling = .scaleNone
+        }
     }
 
 }

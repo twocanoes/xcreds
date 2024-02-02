@@ -72,10 +72,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
                     if let contentView = window.contentView {
 
+                        windowController.webViewController.webView.isHidden=true
                         signInViewController.view.wantsLayer=true
 
                         if let contentView = window.contentView{
                             if contentView.subviews.contains(signInViewController.view)==false {
+
                                 window.contentView?.addSubview(signInViewController.view)
 
                             }
@@ -102,6 +104,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
         }
         else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
+            windowController.webViewController.webView.isHidden=false
 
             windowController.webViewController.updateCredentialsFeedbackDelegate=self
             windowController.window!.makeKeyAndOrderFront(self)

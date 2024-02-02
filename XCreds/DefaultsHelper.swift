@@ -50,4 +50,18 @@ class DefaultsHelper: NSObject {
         return nil
     }
 
+    static func desktopPasswordWindowBackgroundImage(includeDefault:Bool=true) -> NSImage? {
+        TCSLogWithMark()
+        if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.menuItemWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+            return image
+        }
+        else {
+
+            let image = NSImage(named: NSImage.Name("xcredsmenuItemWindowBackgroundImage"))
+            return image
+
+
+
+        }
+    }
 }

@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DesktopLoginWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundImageView" destination="JM0-W1-BrH" id="5T5-H1-QAl"/>
                 <outlet property="webViewController" destination="L0G-9E-ng8" id="o4U-Ou-7uU"/>
                 <outlet property="window" destination="KxT-zM-Vnn" id="iFX-Nl-XcT"/>
             </connections>
@@ -24,8 +25,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JM0-W1-BrH">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="OlB-3q-3c1"/>
+                    </imageView>
                     <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
                         <rect key="frame" x="0.0" y="0.0" width="628" height="610"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="610" id="G12-aL-wfj"/>
+                            <constraint firstAttribute="width" constant="628" id="jpw-kL-IRv"/>
+                        </constraints>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -40,14 +49,18 @@
                         <textFieldCell key="cell" alignment="center" title="Your local account password needs to be changed to match your online password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
                             <font key="font" metaFont="system" size="21"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <color key="backgroundColor" white="0.0062473695290000001" alpha="0.57066289449999996" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0062473695290000001" alpha="0.30882734634551495" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="JM0-W1-BrH" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="2r2-pY-UKT"/>
                     <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
                     <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="3" id="4mY-sf-GcF"/>
                     <constraint firstItem="YnV-QC-aTR" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="HXK-IK-ZHa"/>
+                    <constraint firstAttribute="bottom" secondItem="JM0-W1-BrH" secondAttribute="bottom" id="JTI-sR-i8N"/>
+                    <constraint firstItem="JM0-W1-BrH" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="Pm8-pN-bIU"/>
+                    <constraint firstAttribute="trailing" secondItem="JM0-W1-BrH" secondAttribute="trailing" id="amC-yF-CwG"/>
                     <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
                     <constraint firstItem="YnV-QC-aTR" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="1" id="hLH-fg-Sn6"/>
                     <constraint firstAttribute="trailing" secondItem="YnV-QC-aTR" secondAttribute="trailing" id="jgi-7V-Zhw"/>
