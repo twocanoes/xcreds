@@ -190,7 +190,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         let appDelegate = NSApp.delegate as? AppDelegate
         
         let mainController = appDelegate?.mainController
-        mainController?.showSignInWindow()
+        mainController?.showSignInWindow(force: true)
         
     }
 }

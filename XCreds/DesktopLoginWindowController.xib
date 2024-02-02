@@ -21,7 +21,7 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
-            <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
+            <view key="contentView" wantsLayer="YES" misplaced="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -30,9 +30,9 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="OlB-3q-3c1"/>
                     </imageView>
                     <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
-                        <rect key="frame" x="0.0" y="0.0" width="628" height="610"/>
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="610" id="G12-aL-wfj"/>
+                            <constraint firstAttribute="height" constant="613" id="G12-aL-wfj"/>
                             <constraint firstAttribute="width" constant="628" id="jpw-kL-IRv"/>
                         </constraints>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
@@ -56,7 +56,7 @@
                 <constraints>
                     <constraint firstItem="JM0-W1-BrH" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="2r2-pY-UKT"/>
                     <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
-                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="3" id="4mY-sf-GcF"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="4mY-sf-GcF"/>
                     <constraint firstItem="YnV-QC-aTR" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="HXK-IK-ZHa"/>
                     <constraint firstAttribute="bottom" secondItem="JM0-W1-BrH" secondAttribute="bottom" id="JTI-sR-i8N"/>
                     <constraint firstItem="JM0-W1-BrH" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="Pm8-pN-bIU"/>

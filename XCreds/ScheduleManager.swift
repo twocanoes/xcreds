@@ -137,7 +137,6 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         if let _ = domainName, let kerberosPassword = kerberosPassword {
             TCSLogWithMark("checking for kerberos ticket")
             checkADPasswordExpire(password: kerberosPassword)
-            return
         }
         else {
             TCSLogWithMark("not checking for kerberos ticket")

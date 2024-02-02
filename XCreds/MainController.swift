@@ -8,6 +8,10 @@
 import Cocoa
 import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
+    enum LoginWindowType {
+        case cloud
+        case usernamePassword
+    }
 
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
@@ -41,19 +45,64 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         self.signInViewController = signInViewController
         super.init()
         scheduleManager.feedbackDelegate=self
-        let accountAndPassword = localAccountAndPassword()
-        if let password = accountAndPassword.1 {
-            scheduleManager.kerberosPassword = password
+
+        if isLocalOnlyAccount() == false {
+            let accountAndPassword = localAccountAndPassword()
+            if let password = accountAndPassword.1 {
+                scheduleManager.kerberosPassword = password
+            }
+            self.scheduleManager.startCredentialCheck()
+
         }
-        self.scheduleManager.startCredentialCheck()
     }
 
-    func showSignInWindow()  {
+    func isLocalOnlyAccount() -> Bool {
+
+        let user = getConsoleUser()
+        guard let dsRecord =  try? PasswordUtils.getLocalRecord(user) else {
+            return false
+        }
+        let kerbPrinc = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal" )
+        let oidcIss = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_iss" )
+
+        if kerbPrinc == nil && oidcIss == nil {
+            TCSLogWithMark("no kerberos principal and no OIDC ISS in local DS console user, so skipping showing window")
+            return true
+
+        }
+        return false
+
+    }
+    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+        if isLocalOnlyAccount()==true && force==false{
+            return
+        }
         windowController.window?.makeKeyAndOrderFront(self)
         NSApp.activate(ignoringOtherApps: true)
 
         scheduleManager.setNextCheckTime()
-        if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
+
+        var forceUsernamePassword = false
+        var forceCloudPassword = false
+
+        if let forceLoginWindowType = forceLoginWindowType {
+
+            if forceLoginWindowType == .cloud {
+                forceCloudPassword = true
+            }
+            else {
+                forceUsernamePassword = true
+            }
+        }
+        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil)  {
+            windowController.webViewController.webView.isHidden=false
+
+            windowController.webViewController.updateCredentialsFeedbackDelegate=self
+            windowController.window!.makeKeyAndOrderFront(self)
+            windowController.webViewController?.loadPage()
+        }
+
+        else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
         {
 
             if let window = windowController.window{
@@ -102,13 +151,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
                 }
             }
-        }
-        else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil {
-            windowController.webViewController.webView.isHidden=false
-
-            windowController.webViewController.updateCredentialsFeedbackDelegate=self
-            windowController.window!.makeKeyAndOrderFront(self)
-            windowController.webViewController?.loadPage()
         }
 
     }
@@ -286,7 +328,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuIcon(showDot:false)
-        showSignInWindow()
+        showSignInWindow(forceLoginWindowType: .cloud)
     }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
@@ -301,7 +343,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:false)
 
         credentialStatus="Kerberos Tickets Failed"
-        showSignInWindow()
+        showSignInWindow(forceLoginWindowType: .usernamePassword)
     }
     func adUserUpdated(_ adUser: ADUserRecord) {
 
