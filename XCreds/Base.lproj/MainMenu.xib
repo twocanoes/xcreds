@@ -749,6 +749,7 @@
                 <outlet property="quitMenuItem" destination="OM5-mb-fFV" id="M6F-cZ-LFl"/>
                 <outlet property="quitMenuItemSeparator" destination="op6-Hq-2li" id="zC1-TH-cF8"/>
                 <outlet property="signinMenuItem" destination="FH2-NT-oeX" id="een-3k-67g"/>
+                <outlet property="statusMenu" destination="6OK-7Y-Yf9" id="WfZ-uc-xzV"/>
             </connections>
         </customObject>
     </objects>

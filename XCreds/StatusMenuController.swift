@@ -19,7 +19,18 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case ChangePasswordMenuItem=6
         case SharesMenuItem=7
         case QuitMenuItem=8
+        case Additional=9
 
+    }
+    enum MenuElements:String {
+        case linkOrAppPath
+        case menuItemName
+        case separatorAfter
+        case separatorBefore
+    }
+    struct StatusMenuItem {
+        var name:String
+        var path:String
     }
     var signedIn = false
     var aboutWindowController: AboutWindowController?
@@ -40,9 +51,56 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     @IBOutlet var aboutMenuItemSeparator:NSMenuItem!
     @IBOutlet var nextPasswordCheckMenuItem:NSMenuItem!
     @IBOutlet var credentialStatusMenuItem:NSMenuItem!
-    
-    
-    
+    @IBOutlet var statusMenu:NSMenu!
+
+    override func awakeFromNib() {
+        if let menuItems = DefaultsOverride.standardOverride.value(forKey: PrefKeys.menuItems.rawValue) as? Array<Dictionary<String,Any?>> {
+            let insertPos = 7
+            var index = 0
+            for item in menuItems {
+                if let name = item[MenuElements.menuItemName.rawValue] as? String,
+                   let path = item[MenuElements.linkOrAppPath.rawValue] as? String,
+                    let separatorBefore = item[MenuElements.separatorBefore.rawValue] as? Bool,
+                    let separatorAfter = item[MenuElements.separatorAfter.rawValue] as? Bool
+                {
+                    let menuItem = NSMenuItem(title: name, action:#selector(additionalMenuItemSelected(_:)) , keyEquivalent: "")
+                    menuItem.target=self
+                    menuItem.tag=9
+                    menuItem.representedObject=StatusMenuItem(name: name, path: path)
+                    if separatorBefore == true {
+                        statusMenu.insertItem(NSMenuItem.separator(), at: insertPos+index)
+                        index+=1
+                    }
+                    statusMenu.insertItem(menuItem, at:insertPos+index)
+                    index+=1
+                    if separatorAfter == true {
+                        statusMenu.insertItem(NSMenuItem.separator(), at:insertPos+index)
+                        index+=1
+                    }
+
+                }
+
+            }
+        }
+    }
+    @objc func additionalMenuItemSelected(_ sender:NSMenuItem){
+        guard let menuItemInfo = sender.representedObject as? StatusMenuItem else  {
+            return
+        }
+
+        let pathString = menuItemInfo.path
+
+        if pathString.hasPrefix("http"), let url = URL(string: pathString){
+
+            NSWorkspace.shared.open(url)
+
+        }
+        else  {
+            let fileUrl = URL(fileURLWithPath: pathString)
+            NSWorkspace.shared.openApplication(at: fileUrl, configuration: NSWorkspace.OpenConfiguration())
+        }
+
+    }
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         let appDelegate = NSApp.delegate as? AppDelegate
         let mainController = appDelegate?.mainController
@@ -128,7 +186,10 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             return false
         case .SharesMenuItem:
             return true
+        case .Additional:
+            return true
         }
+
         return true
     }
     
@@ -191,7 +252,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         
         let mainController = appDelegate?.mainController
         mainController?.showSignInWindow(force: true)
-        
+
     }
 }
 
