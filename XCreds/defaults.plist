@@ -76,5 +76,7 @@
 	<true/>
 	<key>allowUsersClaim</key>
 	<string>upn</string>
+	<key>shareMenuItemName</key>
+	<string>Shares</string>
 </dict>
 </plist>

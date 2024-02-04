@@ -8,18 +8,19 @@
 import Foundation
 import Cocoa
 
-
 class StatusMenuController: NSObject, NSMenuItemValidation {
     enum StatusMenuItemType:Int {
         case AboutMenuItem=1
-        case NextPasswordCheckMenuItem=2
-        case CredentialStatusMenuItem=3
-        case PasswordExpires=4
-        case SignInMenuItem=5
-        case ChangePasswordMenuItem=6
-        case SharesMenuItem=7
-        case QuitMenuItem=8
-        case Additional=9
+        case OIDCUsername=2
+        case KerberosUsername=3
+        case NextPasswordCheckMenuItem=4
+        case CredentialStatusMenuItem=5
+        case PasswordExpires=6
+        case SignInMenuItem=7
+        case ChangePasswordMenuItem=8
+        case SharesMenuItem=9
+        case QuitMenuItem=10
+        case Additional=11
 
     }
     enum MenuElements:String {
@@ -34,14 +35,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     }
     var signedIn = false
     var aboutWindowController: AboutWindowController?
-    
-    //    var mainController:MainController? {
-    //
-    //        let appDelegate = NSApp.delegate as? AppDelegate
-    //        return appDelegate?.mainController
-    //
-    //
-    //    }
+    var oidcUsername = ""
+    var kerberosPrincipalName = ""
     @IBOutlet var signinMenuItem:NSMenuItem!
     @IBOutlet var changePasswordMenuItem:NSMenuItem!
     @IBOutlet var quitMenuItem:NSMenuItem!
@@ -52,10 +47,27 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     @IBOutlet var nextPasswordCheckMenuItem:NSMenuItem!
     @IBOutlet var credentialStatusMenuItem:NSMenuItem!
     @IBOutlet var statusMenu:NSMenu!
-
+    @IBOutlet var sharesMenuItem:NSMenuItem!
     override func awakeFromNib() {
+
+
+//        sharesMenuItem
+
+
+
+        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+        if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
+            oidcUsername = username
+
+        }
+        if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String], userNames.count>0, let username = userNames.first {
+            kerberosPrincipalName = username
+
+        }
+
+
         if let menuItems = DefaultsOverride.standardOverride.value(forKey: PrefKeys.menuItems.rawValue) as? Array<Dictionary<String,Any?>> {
-            let insertPos = 7
+            let insertPos = StatusMenuItemType.SignInMenuItem.rawValue+1
             var index = 0
             for item in menuItems {
                 if let name = item[MenuElements.menuItemName.rawValue] as? String,
@@ -65,7 +77,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 {
                     let menuItem = NSMenuItem(title: name, action:#selector(additionalMenuItemSelected(_:)) , keyEquivalent: "")
                     menuItem.target=self
-                    menuItem.tag=9
+                    menuItem.tag=StatusMenuItemType.Additional.rawValue
                     menuItem.representedObject=StatusMenuItem(name: name, path: path)
                     if separatorBefore == true {
                         statusMenu.insertItem(NSMenuItem.separator(), at: insertPos+index)
@@ -102,6 +114,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
     }
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        
         let appDelegate = NSApp.delegate as? AppDelegate
         let mainController = appDelegate?.mainController
         
@@ -185,9 +198,31 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             return false
         case .SharesMenuItem:
+            if let shareMenuItemTitle = DefaultsOverride.standardOverride.value(forKey: PrefKeys.shareMenuItemName.rawValue) as? String {
+                menuItem.title = shareMenuItemTitle
+            }
             return true
         case .Additional:
             return true
+        case .OIDCUsername:
+            var userName = "None"
+            if oidcUsername.isEmpty == false {
+
+                userName = oidcUsername
+            }
+            menuItem.title = "OIDC Username: \(userName) "
+
+            return false
+        case .KerberosUsername:
+
+            var userName = "None"
+            if kerberosPrincipalName.isEmpty == false {
+
+                userName = kerberosPrincipalName
+            }
+            menuItem.title = "Active Directory Username: \(userName) "
+            return false
+
         }
 
         return true

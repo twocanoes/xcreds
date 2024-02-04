@@ -315,7 +315,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         }
 
-
         TCSLogWithMark("checking for alias to add as a username for rogp")
         let alias = getHint(type: .aliasName) as? String
 
