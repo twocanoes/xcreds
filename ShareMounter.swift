@@ -21,7 +21,7 @@ import Cocoa
 import NetFS
 
 enum ShareKeys {
-    static let homeMount = "HomeMount"
+    static let homeMount = "HomeMountEnabled"
     static let mount = "Mount"
     static let shares = "Shares"
 //    static let groups = "Groups"
@@ -69,8 +69,8 @@ class ShareMounter {
 
     let fm = FileManager.default
     let ws = NSWorkspace.shared
-    let sharePrefs = UserDefaults.init(suiteName: "com.twocanoes.xcreds-shares")
-    
+    let sharePrefs = UserDefaults.standard
+
     var mountedShares = [URL]()
     var mountedOriginalShares = [String]()
     var mountedSharePaths = [URL:String]()
@@ -100,43 +100,42 @@ class ShareMounter {
         var tempShares = [share_info]()
         
         guard let groups = adUserRecord?.groups else { return }
-        
-        //TODO: ShareReset
-        
-        if let homeDict = sharePrefs?.dictionary(forKey: ShareKeys.homeMount) {
-            
+
+        if sharePrefs.bool(forKey: ShareKeys.homeMount)==true{
+
             myLogger.logit(.debug, message: "Evaluating home share for automounts.")
             if let homePathRaw = adUserRecord?.homeDirectory {
                 if var homePath = URL(string: "smb:" + homePathRaw) {
                     
                     if defaults.bool(forKey: PrefKeys.homeAppendDomain.rawValue) {
-                        if let domain = defaults.string(forKey: PrefKeys.aDDomain.rawValue) {
-                            var newHome = "smb://" + homePath.host! + "." + domain
+                        if let domain = defaults.string(forKey: PrefKeys.aDDomain.rawValue),  let host = homePath.host {
+                            var newHome = "smb://" + host + "." + domain
                             newHome += homePath.path
-                            homePath = URL(string: newHome)!
+                            if let url = URL(string: newHome){
+                                homePath = url
+                            }
                         }
                     }
                     
-                    if let shareGroups = homeDict["Groups"] as! [String]?,
-                        let shareAutoMount = homeDict["Mount"] as? Bool,
-                        let shareOptions = homeDict["Options"] as! [String]? {
-                        
-                        var currentShare = share_info(groups: shareGroups, originalURL: homePathRaw, url: homePath, name: defaults.string(forKey: PrefKeys.menuHomeDirectory.rawValue) ?? "Network Home", options: shareOptions, connectedOnly: true, mountStatus: .unmounted, localMount: nil, autoMount: shareAutoMount, reqID: nil, attemptDate: nil, localMountPoints: nil)
+                    let homeShareGroups = sharePrefs.value(forKey: "HomeMountGroups") as? [String] ?? []
+                    let homeShareOptions = sharePrefs.value(forKey: "HomeMountOptions") as? [String] ?? []
 
-                        for share in all_shares {
-                            if share.originalURL == currentShare.originalURL {
-                                // share is still  mounting, so copy the share
-                                if CommandLine.arguments.contains("-shares") {
-                                    print("Share is still mounting, using existing information")
-                                    print(share)
-                                }
-                                currentShare = share
+                        var currentShare = share_info(groups: homeShareGroups, originalURL: homePathRaw, url: homePath, name: defaults.string(forKey: PrefKeys.menuHomeDirectory.rawValue) ?? "Network Home", options: homeShareOptions, connectedOnly: true, mountStatus: .unmounted, localMount: nil, autoMount: true, reqID: nil, attemptDate: nil, localMountPoints: nil)
+
+                    for share in all_shares {
+                        if share.originalURL == currentShare.originalURL {
+                            // share is still  mounting, so copy the share
+                            if CommandLine.arguments.contains("-shares") {
+                                print("Share is still mounting, using existing information")
+                                print(share)
                             }
+                            currentShare = share
                         }
-                        
-                        tempShares.append(currentShare)
-                        resolvedShares[currentShare.url] = homePathRaw
                     }
+
+                    tempShares.append(currentShare)
+                    resolvedShares[currentShare.url] = homePathRaw
+
                 }
             } else {
                 myLogger.logit(.debug, message: "Unable to get home share from preferences.")
@@ -145,24 +144,25 @@ class ShareMounter {
             myLogger.logit(.debug, message: "No home mount dictionary")
         }
         
-        if let mountsRaw = sharePrefs?.array(forKey: ShareKeys.shares) {
+        if let mountsRaw = sharePrefs.array(forKey: ShareKeys.shares) {
             
             if mountsRaw.count == 0 { return }
             
             for mount in mountsRaw {
                 
                 guard mount is Dictionary<String, AnyObject> else { continue }
-                let mountDict = mount as! [String:AnyObject]
-                if let shareGroups = mountDict["Groups"] as! [String]?,
-                    let shareName = mountDict["Name"] as? String,
+                let mountDict = mount as? [String:AnyObject] ?? [:]
+                let shareGroups = mountDict["Groups"] as? [String] ?? []
+                let shareLocalMount = mountDict["LocalMount"] as? String ?? ""
+                let shareOptions = mountDict["Options"] as? [String] ?? []
+
+                    if let shareName = mountDict["Name"] as? String,
                     let shareURL = mountDict["URL"] as? String,
                     let shareAutoMount = mountDict["AutoMount"] as? Bool,
-                    let shareLocalMount = mountDict["LocalMount"] as? String,
                     let shareConnectedOnly = mountDict["ConnectedOnly"] as? Bool,
-                    let shareOptions = mountDict["Options"] as! [String]?,
                     let urlRaw = subVariables(shareURL) {
                     
-                    let groupsArray = groups as! [String]
+                    let groupsArray = groups
                     
                     if Set(groupsArray).intersection(Set(shareGroups)).count < 1 && shareGroups.count > 0 {
                         myLogger.logit(.debug, message: "Not in the right group")
@@ -222,7 +222,7 @@ class ShareMounter {
         // we hardcode .timemachine in here b/c that will always fail on the getFileSystemInfo call
         var ignoreShares = [".timemachine", "/private/", "System/Volumes"]
         
-        if let ignoreShareNamesTemp = sharePrefs?.array(forKey: ShareKeys.ignoreShareNames) as? [String] {
+        if let ignoreShareNamesTemp = sharePrefs.array(forKey: ShareKeys.ignoreShareNames) as? [String] {
             ignoreShares.append(contentsOf: ignoreShareNamesTemp)
         }
         
@@ -337,15 +337,15 @@ class ShareMounter {
                 
                 myLogger.logit(.debug, message: "Attempting to mount: " + all_shares[index].url.absoluteString)
                 
-                if sharePrefs?.bool(forKey: ShareKeys.slowMount) ?? false {
+                if sharePrefs.bool(forKey: ShareKeys.slowMount) ?? false {
                     let delay: useconds_t
-                    delay = useconds_t(1000 * (sharePrefs?.integer(forKey: ShareKeys.slowMountDelay) ?? 250))
+                    delay = useconds_t(1000 * (sharePrefs.integer(forKey: ShareKeys.slowMountDelay) ?? 250))
                     usleep(delay)
                     myLogger.logit(.debug, message: "Delaying next Mount by " + String(delay/1000) + " milliseconds since SlowMount is set.")
                     
                 }
                                 
-                if sharePrefs?.bool(forKey: ShareKeys.finderMount) ?? false {
+                if sharePrefs.bool(forKey: ShareKeys.finderMount) {
 
                     myLogger.logit(.debug, message: "Mounting share via Finder")
                     _ = cliTask("/usr/bin/open \(all_shares[index].url.absoluteString)")
@@ -414,7 +414,7 @@ class ShareMounter {
         
         var mountArray: Unmanaged<CFArray>? = nil
         
-        let myResult = NetFSMountURLSync(serverAddress as CFURL?, nil, nil, nil, openOptions as! CFMutableDictionary, mountOptions as! CFMutableDictionary, &mountArray)
+        let myResult = NetFSMountURLSync(serverAddress as CFURL?, nil, nil, nil, (openOptions as! CFMutableDictionary), (mountOptions as! CFMutableDictionary), &mountArray)
         myLogger.logit(.debug, message: myResult.description)
         
         if let mountPoint = mountArray!.takeRetainedValue() as? [String] {
@@ -444,8 +444,8 @@ class ShareMounter {
                                    nil,
                                    userPrincipal as CFString?,
                                    nil,
-                                   openOptions as! CFMutableDictionary,
-                                   mountOptions as! CFMutableDictionary,
+                                   (openOptions as! CFMutableDictionary),
+                                   (mountOptions as! CFMutableDictionary),
                                    &requestID,
                                    queue)
         {(stat:Int32, requestID:AsyncRequestID?, mountpoints:CFArray?) -> Void in

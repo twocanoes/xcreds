@@ -21,8 +21,8 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
     @objc var worksWhenModal = true
     @objc let myShareMenu = NSMenu()
     
-    var sharePrefs: UserDefaults? = UserDefaults.init(suiteName: "com.twocanoes.xcreds-shares")
-    
+    var sharePrefs = UserDefaults.standard
+
     @objc func updateShares(connected: Bool=false, tickets: Bool=false) {
         
         guard let kerbUser = PasswordUtils().kerberosPrincipalFromCurrentLoggedInUser() else {
@@ -30,7 +30,6 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
          return
         }
 
-        if (sharePrefs?.integer(forKey: "Version") ?? 0) >= 1 {
         shareMounterQueue.sync(execute: {
             self.shareMounter?.connectedState = connected
             self.shareMounter?.tickets = tickets
@@ -39,7 +38,7 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
             self.shareMounter?.getMounts()
             self.shareMounter?.mountShares()
         })
-        }
+
     }
     
     @objc func buildMenu(connected: Bool=false) -> NSMenu {
@@ -48,9 +47,9 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
             return NSMenu()
 
         }
-        if sharePrefs?.integer(forKey: "Version") != 1 {
-            return NSMenu.init()
-        }
+//        if sharePrefs.integer(forKey: "Version") != 1 {
+//            return NSMenu.init()
+//        }
         
         // check for an actual ticket
         
@@ -85,27 +84,25 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
             for share in shareMounter.all_shares {
                 let myItem = NSMenuItem()
                 myItem.title = share.name
-                
-                if share.connectedOnly && connected {
-                    myItem.target = self
-                } else {
+                myItem.target = self
+
+                if share.connectedOnly == true  && connected == false {
                     myItem.target = nil
                 }
-
                 myItem.action = #selector(openShareFromMenu(_:))
                 myItem.toolTip = String(describing: share.url)
                 if share.mountStatus == .mounted {
                     myItem.isEnabled = true
-                    myItem.state = NSControl.StateValue(rawValue: 1)
+//                    myItem.state = NSControl.StateValue(rawValue: 1)
                 } else if share.mountStatus == .mounting {
                     myItem.isEnabled = false
-                    myItem.state = NSControl.StateValue(rawValue: 0)
+//                    myItem.state = NSControl.StateValue(rawValue: 0)
                 } else if share.mountStatus == .unmounted {
                     myItem.isEnabled = true
-                    myItem.state = NSControl.StateValue(rawValue: 0)
+//                    myItem.state = NSControl.StateValue(rawValue: 0)
                 } else if share.mountStatus == .errorOnMount {
                     myItem.isEnabled = false
-                    myItem.state = NSControl.StateValue(rawValue: 0)
+//                    myItem.state = NSControl.StateValue(rawValue: 0)
                 }
 
                 myShareMenu.addItem(myItem)
