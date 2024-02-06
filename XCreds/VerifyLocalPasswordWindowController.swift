@@ -135,16 +135,6 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     override func windowDidLoad() {
         super.windowDidLoad()
         TCSLogWithMark()
-//        if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-//            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
-//        {
-//            resetButton.isHidden=false
-//        }
-//        else {
-//            resetButton.isHidden=true
-//
-//        }
-
     }
   
 

@@ -144,6 +144,18 @@ import OpenDirectory
 
                 TCSLogWithMark("Sync password called.")
 
+                if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false, getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+
+
+                    setHint(type: .adminUsername, hint:aUsername )
+                    setHint(type: .adminPassword, hint: aPassword)
+                    setHint(type: .passwordOverwrite, hint: true)
+
+
+                    allowLogin()
+
+                }
                 let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
                 promptPasswordWindowController.showResetText=true
@@ -160,8 +172,6 @@ import OpenDirectory
                         setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
                     }
 
-                    allowLogin()
-
                 case .resetKeychainRequested(let usernamePasswordCredentials):
                     
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
@@ -170,7 +180,6 @@ import OpenDirectory
                         setHint(type: .passwordOverwrite, hint: true)
 
                     }
-                    allowLogin()
 
 
                 case .userCancelled:
@@ -190,7 +199,6 @@ import OpenDirectory
                 denyLogin(message:mesg)
                 return .failure(mesg)
             }
-            //        }
             TCSLogWithMark("passing username:\(username), password, and tokens")
             TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
             setContextString(type: kAuthorizationEnvironmentUsername, value: username)
