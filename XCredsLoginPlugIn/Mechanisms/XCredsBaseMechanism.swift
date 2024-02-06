@@ -152,44 +152,42 @@ import OpenDirectory
                     setHint(type: .adminPassword, hint: aPassword)
                     setHint(type: .passwordOverwrite, hint: true)
 
-
-                    allowLogin()
-
                 }
-                let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+                else {
+                    let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
-                promptPasswordWindowController.showResetText=true
-                promptPasswordWindowController.showResetButton=true
-
-
-                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+                    promptPasswordWindowController.showResetText=true
+                    promptPasswordWindowController.showResetButton=true
 
 
-                case .success(let enteredUsernamePassword):
-                    TCSLogWithMark("setting original password to use to unlock keychain later")
+                    switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
 
-                    if let enteredUsernamePassword = enteredUsernamePassword {
-                        setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+
+                    case .success(let enteredUsernamePassword):
+                        TCSLogWithMark("setting original password to use to unlock keychain later")
+
+                        if let enteredUsernamePassword = enteredUsernamePassword {
+                            setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                        }
+
+                    case .resetKeychainRequested(let usernamePasswordCredentials):
+
+                        if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
+                            setHint(type: .adminUsername, hint:adminUsername )
+                            setHint(type: .adminPassword, hint: adminPassword)
+                            setHint(type: .passwordOverwrite, hint: true)
+
+                        }
+
+
+                    case .userCancelled:
+                        return .failure("user cancelled")
+                    case .error(let errMsg):
+                        TCSLogWithMark("Error prompting: \(errMsg)")
+                        return .failure(errMsg)
                     }
-
-                case .resetKeychainRequested(let usernamePasswordCredentials):
-                    
-                    if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                        setHint(type: .adminUsername, hint:adminUsername )
-                        setHint(type: .adminPassword, hint: adminPassword)
-                        setHint(type: .passwordOverwrite, hint: true)
-
-                    }
-
-
-                case .userCancelled:
-                    return .failure("user cancelled")
-                case .error(let errMsg):
-                    TCSLogWithMark("Error prompting: \(errMsg)")
-                    return .failure(errMsg)
                 }
 
-                break
             case .accountDoesNotExist:
                 TCSLogWithMark("user account doesn't exist yet")
 
