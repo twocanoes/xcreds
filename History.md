@@ -1,5 +1,42 @@
 # What's New In XCreds #
 
+## XCreds 4.1 ##
+
+Customization of Menu
+
+Adding Menu Items
+
+Cloud + Active Directory
+
+SMB Share Mounting
+
+Admin Removal
+
+
+## XCreds 4.0 ##
+
+Select Existing User Account During Account Creation
+
+Allow Admin to Reset User Password at Login
+
+Key Combination for Showing Standard and Mac Login Window
+
+Account Alias
+
+Saving Groups to Account Attributes
+
+CreateAdminIfGroupMember Checked At Each Login
+
+Add Arbitrary Claims to Local DS User Account
+
+Refactored Preferences for ROPG
+
+Allowed Users
+
+Other New Features and Fixes
+
+
+
 ## XCreds 3.3 ##
 
 ### Select Existing User Account During Account Creation ###

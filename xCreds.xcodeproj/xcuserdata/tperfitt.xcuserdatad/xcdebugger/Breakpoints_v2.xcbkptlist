@@ -7,97 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "36BF6096-7FF6-4D0D-87C8-66473D5DC9FF"
+            uuid = "6B35082F-532C-43C0-9EC0-715F0B5384BC"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ShareMounterMenu.swift"
+            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "buildMenu(connected:)"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
+            landmarkName = "getToken(code:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "36BF6096-7FF6-4D0D-87C8-66473D5DC9FF - 4bd404b059f080a1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.ShareMounterMenu.buildMenu(connected: Swift.Bool) -&gt; __C.NSMenu"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/ShareMounterMenu.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
-                  offsetFromSymbolStart = "3116">
-               </Location>
-               <Location
-                  uuid = "36BF6096-7FF6-4D0D-87C8-66473D5DC9FF - 4bd404b059f080a1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.ShareMounterMenu.buildMenu(connected: Swift.Bool) -&gt; __C.NSMenu"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/ShareMounterMenu.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
-                  offsetFromSymbolStart = "3156">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0DD97B6B-31D5-4047-87B2-FED0729A57F3"
+            uuid = "8C62ADFE-5B7C-4D11-A26F-E4D228FB42F6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ShareMounterMenu.swift"
+            filePath = "XCreds/WebViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "buildMenu(connected:)"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "webView(_:didFailProvisionalNavigation:withError:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "0DD97B6B-31D5-4047-87B2-FED0729A57F3 - 4bd404b059f0836b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.ShareMounterMenu.buildMenu(connected: Swift.Bool) -&gt; __C.NSMenu"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/ShareMounterMenu.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "100"
-                  endingLineNumber = "100"
-                  offsetFromSymbolStart = "2504">
-               </Location>
-               <Location
-                  uuid = "0DD97B6B-31D5-4047-87B2-FED0729A57F3 - 4bd404b059f0836b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.ShareMounterMenu.buildMenu(connected: Swift.Bool) -&gt; __C.NSMenu"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/ShareMounterMenu.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "100"
-                  endingLineNumber = "100"
-                  offsetFromSymbolStart = "2544">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
