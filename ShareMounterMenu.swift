@@ -56,7 +56,7 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
         klistUtil.klist()
         
 //        if !klistUtil.state {
-//            myLogger.logit(.debug, message: "No valid ticket, not attempting to mount shares.")
+//            TCSLogWithMark("No valid ticket, not attempting to mount shares.")
 //            
 ////            NotificationQueue.default.enqueue(updateNotification, postingStyle: .now)
 //
@@ -67,7 +67,7 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
 //            return NSMenu()
 //        }
 //        if defaults.object(forKey: PrefKeys.userShortName.rawValue) == nil {
-//            myLogger.logit(.debug, message: "No user name, not attempting to mount shares.")
+//            TCSLogWithMark("No user name, not attempting to mount shares.")
 //            return NSMenu.init()
 //        }
         
@@ -124,7 +124,7 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
         for share in shareMounter.all_shares {
             if share.name == sender.title {
                 if share.mountStatus != .mounted {
-                    myLogger.logit(.debug, message: "Mounting share: " + String(describing: share.url))
+                    TCSLogWithMark("Mounting share: " + String(describing: share.url))
                     
                     //myShareMounter.asyncMountShare(share.url, options: share.options, open: true)
                     //_ = cliTask("open " + DFSResolver.checkAndReplace(url: share.url))

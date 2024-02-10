@@ -152,7 +152,7 @@ public class KlistUtil {
                 }
             }
             sema.signal()
-            myLogger.logit(.debug, message: "Tickets: " + self.tickets.keys.joined(separator: ", "))
+            TCSLogWithMark("Tickets: " + self.tickets.keys.joined(separator: ", "))
         })
         sema.wait()
         //return tickets
@@ -190,7 +190,7 @@ public class KlistUtil {
             name = princ
         }
 
-        myLogger.logit(.debug, message: "Destroying ticket for: " + princ)
+        TCSLogWithMark("Destroying ticket for: " + princ)
         // update this for GSSAPI when the functionality is there
 
         var context: krb5_context? = nil
@@ -215,7 +215,7 @@ public class KlistUtil {
 
         var nameInt = Int8(name)
 
-        myLogger.logit(.debug, message: "Switching ticket for: " + princ)
+        TCSLogWithMark("Switching ticket for: " + princ)
         // update this for GSSAPI when the functionality is there
 
         var context: krb5_context? = nil

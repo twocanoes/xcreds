@@ -103,7 +103,7 @@ class ShareMounter {
 
         if sharePrefs.bool(forKey: ShareKeys.homeMount)==true{
 
-            myLogger.logit(.debug, message: "Evaluating home share for automounts.")
+            TCSLogWithMark("Evaluating home share for automounts.")
             if let homePathRaw = adUserRecord?.homeDirectory {
                 if var homePath = URL(string: "smb:" + homePathRaw) {
                     
@@ -123,7 +123,7 @@ class ShareMounter {
                         var currentShare = share_info(groups: homeShareGroups, originalURL: homePathRaw, url: homePath, name: defaults.string(forKey: PrefKeys.menuHomeDirectory.rawValue) ?? "Network Home", options: homeShareOptions, connectedOnly: true, mountStatus: .unmounted, localMount: nil, autoMount: true, reqID: nil, attemptDate: nil, localMountPoints: nil)
 
                     for share in all_shares {
-                        if share.originalURL == currentShare.originalURL {
+                        if share.originalURL == currentShare.originalURL && (mountedOriginalShares.contains(share.originalURL) || share.mountStatus == .mounting) {
                             // share is still  mounting, so copy the share
                             if CommandLine.arguments.contains("-shares") {
                                 print("Share is still mounting, using existing information")
@@ -138,16 +138,21 @@ class ShareMounter {
 
                 }
             } else {
-                myLogger.logit(.debug, message: "Unable to get home share from preferences.")
+                TCSLogWithMark("Unable to get home share from preferences.")
             }
         } else {
-            myLogger.logit(.debug, message: "No home mount dictionary")
+            TCSLogWithMark("No home mount dictionary")
         }
         
+        TCSLogWithMark("evaluating Shares")
         if let mountsRaw = sharePrefs.array(forKey: ShareKeys.shares) {
             
-            if mountsRaw.count == 0 { return }
-            
+            if mountsRaw.count == 0 { 
+                TCSLogWithMark("Mounts Empty")
+
+                return
+            }
+
             for mount in mountsRaw {
                 
                 guard mount is Dictionary<String, AnyObject> else { continue }
@@ -155,28 +160,28 @@ class ShareMounter {
                 let shareGroups = mountDict["Groups"] as? [String] ?? []
                 let shareLocalMount = mountDict["LocalMount"] as? String ?? ""
                 let shareOptions = mountDict["Options"] as? [String] ?? []
+                let shareConnectedOnly = mountDict["ConnectedOnly"] as? Bool ?? true
+                if let shareName = mountDict["Name"] as? String,
+                   let shareURL = mountDict["URL"] as? String,
+                   let shareAutoMount = mountDict["AutoMount"] as? Bool,
+                   let urlRaw = subVariables(shareURL) {
 
-                    if let shareName = mountDict["Name"] as? String,
-                    let shareURL = mountDict["URL"] as? String,
-                    let shareAutoMount = mountDict["AutoMount"] as? Bool,
-                    let shareConnectedOnly = mountDict["ConnectedOnly"] as? Bool,
-                    let urlRaw = subVariables(shareURL) {
-                    
+                    TCSLogWithMark("checking group membership for mounts")
                     let groupsArray = groups
-                    
+
                     if Set(groupsArray).intersection(Set(shareGroups)).count < 1 && shareGroups.count > 0 {
-                        myLogger.logit(.debug, message: "Not in the right group")
+                        TCSLogWithMark("Not in the right group")
                         continue
                     }
-                    
+
                     guard let url = URL(string: urlRaw) else { continue }
-                    
+
                     var currentShare = share_info(groups: shareGroups, originalURL: shareURL, url: url, name: shareName, options: shareOptions, connectedOnly: shareConnectedOnly, mountStatus: .unmounted, localMount: shareLocalMount, autoMount: shareAutoMount, reqID: nil, attemptDate: nil, localMountPoints: nil)
-                    
+
                     if CommandLine.arguments.contains("-shares") {
                         print("Evaluating share: \(currentShare.originalURL)")
                     }
-                    
+
                     for share in all_shares {
                         if share.originalURL == currentShare.originalURL && (mountedOriginalShares.contains(share.originalURL) || share.mountStatus == .mounting) {
                             // share is still  mounting, so copy the share
@@ -196,14 +201,14 @@ class ShareMounter {
                 }
             }
         } else {
-            myLogger.logit(.debug, message: "No mount dictionary")
+            TCSLogWithMark("No mount dictionary")
         }
-        
+
         if CommandLine.arguments.contains("-shares") {
             print("***all_shares***")
             print(all_shares)
         }
-        
+
         // do this atomically since other serivces depend on this list
         all_shares = tempShares
     }
@@ -217,7 +222,7 @@ class ShareMounter {
         
         guard let myShares = fm.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: FileManager.VolumeEnumerationOptions(rawValue: 0)) else { return }
         
-        myLogger.logit(.debug, message: "Currently mounted shares: \n" + String(describing: myShares))
+        TCSLogWithMark("Currently mounted shares: \n" + String(describing: myShares))
         
         // we hardcode .timemachine in here b/c that will always fail on the getFileSystemInfo call
         var ignoreShares = [".timemachine", "/private/", "System/Volumes"]
@@ -238,7 +243,7 @@ class ShareMounter {
             }
             
             guard ws.getFileSystemInfo(forPath: share.path, isRemovable: nil, isWritable: nil, isUnmountable: nil, description: &myDes, type: &myType) else {
-                myLogger.logit(.debug, message: "Get File info failed. Probably a synthetic Shared Folder.")
+                TCSLogWithMark("Get File info failed. Probably a synthetic Shared Folder.")
                 // skip this share and move on to the next
                 continue
             }
@@ -247,7 +252,7 @@ class ShareMounter {
             
             switch shareType {
             case "smbfs", "afpfs", "nfsfs", "webdavfs" :
-                myLogger.logit(.debug, message: "Volume: " + share.path + ", is a \(shareType.uppercased()) network volume.")
+                TCSLogWithMark("Volume: " + share.path + ", is a \(shareType.uppercased()) network volume.")
                 guard let shareURL = getURL(share: share) else { continue }
                 mountedShares.append(shareURL)
                 mountedSharePaths[shareURL] = share.path
@@ -255,23 +260,23 @@ class ShareMounter {
                 
             default :
                 // not a remote share
-                myLogger.logit(.debug, message: "Volume: " + share.path + ", is not a network volume.")
+                TCSLogWithMark("Volume: " + share.path + ", is not a network volume.")
             }
         }
-        myLogger.logit(.debug, message: "Mounted shares: " + String(describing: mountedShares) )
+        TCSLogWithMark("Mounted shares: " + String(describing: mountedShares) )
     }
     
     func mountShares() {
         
         if all_shares.count == 0 {
-            // no need to continue
+            TCSLogWithMark("No shares to mount")
             return
         }
         
         for index in 0...(all_shares.count - 1) {
             
-            myLogger.logit(.debug, message: "Evaluating mount: " + all_shares[index].name)
-            
+            TCSLogWithMark("Evaluating mount: " + all_shares[index].name)
+
             // TODO: ensure the URL is reachable before attempting to mount
             
             // loop through all the reasons to not mount this share
@@ -283,16 +288,16 @@ class ShareMounter {
                     all_shares[index].mountStatus = .mounted
                 }
                 
-                myLogger.logit(.debug, message: "Skipping mount because it's already mounted.")
+                TCSLogWithMark("Skipping mount because it's already mounted.")
                 continue
             } else if mountedOriginalShares.contains(all_shares[index].originalURL) {
                 
                 all_shares[index].mountStatus = .mounted
                 
-                myLogger.logit(.debug, message: "Skipping mount because share is still mounted from a previous variable substitution.")
+                TCSLogWithMark("Skipping mount because share is still mounted from a previous variable substitution.")
                 continue
             } else if all_shares[index].mountStatus == .mounting {
-                myLogger.logit(.debug, message: "Skipping mount because share is still in the process of being mounted - kick back on a natural for a bit.")
+                TCSLogWithMark("Skipping mount because share is still in the process of being mounted - kick back on a natural for a bit.")
                 if let mountInterval = (all_shares[index].attemptDate?.timeIntervalSinceNow) {
                     if abs(mountInterval) > 5 * 60 {
                         all_shares[index].mountStatus = .toBeMounted
@@ -305,19 +310,19 @@ class ShareMounter {
             
             if !all_shares[index].autoMount {
                 // not to be automounted
-                myLogger.logit(.debug, message: "Skipping mount because it's not set to Automount.")
+                TCSLogWithMark("Skipping mount because it's not set to Automount.")
                 continue
             }
             
             if all_shares[index].connectedOnly && !connectedState {
                 // not connected
-                myLogger.logit(.debug, message: "Skipping mount because we're not connected.")
+                TCSLogWithMark("Skipping mount because we're not connected.")
                 continue
             }
             
             if !tickets {
                 // skipping b/c we don't have kerb tickets
-                myLogger.logit(.debug, message: "Skipping mount because we don't have tickets")
+                TCSLogWithMark("Skipping mount because we don't have tickets")
                 continue
             }
             
@@ -328,26 +333,25 @@ class ShareMounter {
                 
                 if all_shares[index].options.count > 0 {
                     let mountFlagValue = parseOptions(options: all_shares[index].options)
-                    myLogger.logit(.debug, message: "Mount options: (mountFlagValue)")
+                    TCSLogWithMark("Mount options: (mountFlagValue)")
                     mountOptions[kNetFSMountFlagsKey] = mountFlagValue
                 }
                 
                 var requestID: AsyncRequestID?
                 let queue = DispatchQueue.main
                 
-                myLogger.logit(.debug, message: "Attempting to mount: " + all_shares[index].url.absoluteString)
+                TCSLogWithMark("Attempting to mount: " + all_shares[index].url.absoluteString)
                 
-                if sharePrefs.bool(forKey: ShareKeys.slowMount) ?? false {
+                if sharePrefs.bool(forKey: ShareKeys.slowMount)  {
                     let delay: useconds_t
-                    delay = useconds_t(1000 * (sharePrefs.integer(forKey: ShareKeys.slowMountDelay) ?? 250))
+                    delay = useconds_t(1000 * (sharePrefs.integer(forKey: ShareKeys.slowMountDelay)))
                     usleep(delay)
-                    myLogger.logit(.debug, message: "Delaying next Mount by " + String(delay/1000) + " milliseconds since SlowMount is set.")
-                    
+                    TCSLogWithMark("Delaying next Mount by " + String(delay/1000) + " milliseconds since SlowMount is set.")
                 }
                                 
                 if sharePrefs.bool(forKey: ShareKeys.finderMount) {
 
-                    myLogger.logit(.debug, message: "Mounting share via Finder")
+                    TCSLogWithMark("Mounting share via Finder")
                     _ = cliTask("/usr/bin/open \(all_shares[index].url.absoluteString)")
                     all_shares[index].mountStatus = .mounted
                     all_shares[index].reqID = nil
@@ -365,24 +369,24 @@ class ShareMounter {
                                        (mountOptions as! CFMutableDictionary),
                                        &requestID,
                                        queue) {(stat: Int32, requestID: AsyncRequestID?, mountpoints: CFArray?) -> Void in
-                                        myLogger.logit(.debug, message: "Request ID: \(requestID!)")
-                                        for index in 0...(self.all_shares.count - 1) {
-                                            if self.all_shares[index].reqID == requestID {
-                                                if stat == 0 {
-                                                    myLogger.logit(.debug, message: "Mounted share: " + self.all_shares[index].name)
-                                                    self.all_shares[index].mountStatus = .mounted
-                                                    self.all_shares[index].reqID = nil
-                                                    let mounts = mountpoints as! Array<String>
-                                                    self.all_shares[index].localMountPoints = mounts[0]
-                                                } else {
-                                                    myLogger.logit(.debug, message: "Error on mounting share: " + self.all_shares[index].name)
-                                                    self.all_shares[index].mountStatus = .errorOnMount
-                                                    self.all_shares[index].reqID = nil
-                                                }
-                                            }
-                                        }
-                                        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "menu.nomad.NoMAD.updateNow"), object: self)
-                                        self.mountShares()
+                    TCSLogWithMark("Request ID: \(requestID!)")
+                    for index in 0...(self.all_shares.count - 1) {
+                        if self.all_shares[index].reqID == requestID {
+                            if stat == 0 {
+                                TCSLogWithMark("Mounted share: " + self.all_shares[index].name)
+                                self.all_shares[index].mountStatus = .mounted
+                                self.all_shares[index].reqID = nil
+                                let mounts = mountpoints as! Array<String>
+                                self.all_shares[index].localMountPoints = mounts[0]
+                            } else {
+                                TCSLogWithMark("Error on mounting share: " + self.all_shares[index].name)
+                                self.all_shares[index].mountStatus = .errorOnMount
+                                self.all_shares[index].reqID = nil
+                            }
+                        }
+                    }
+                    //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "menu.nomad.NoMAD.updateNow"), object: self)
+                    //                                        self.mountShares()
 
                 }
                 
@@ -397,7 +401,6 @@ class ShareMounter {
                     all_shares[index].mountStatus = .toBeMounted
                 }
             }
-            return
         }
     }
     
@@ -408,14 +411,14 @@ class ShareMounter {
         
         if options.count > 0 {
             let mountFlagValue = parseOptions(options: options)
-            myLogger.logit(.debug, message: "Mount options: (mountFlagValue)")
+            TCSLogWithMark("Mount options: (mountFlagValue)")
             mountOptions[kNetFSMountFlagsKey] = mountFlagValue
         }
         
         var mountArray: Unmanaged<CFArray>? = nil
         
         let myResult = NetFSMountURLSync(serverAddress as CFURL?, nil, nil, nil, (openOptions as! CFMutableDictionary), (mountOptions as! CFMutableDictionary), &mountArray)
-        myLogger.logit(.debug, message: myResult.description)
+        TCSLogWithMark(myResult.description)
         
         if let mountPoint = mountArray!.takeRetainedValue() as? [String] {
             if myResult == 0 && open {
@@ -431,14 +434,14 @@ class ShareMounter {
         
         if options.count > 0 {
             let mountFlagValue = parseOptions(options: options)
-            myLogger.logit(.debug, message: "Mount options: (mountFlagValue)")
+            TCSLogWithMark("Mount options: (mountFlagValue)")
             mountOptions[kNetFSMountFlagsKey] = mountFlagValue
         }
         
         var requestID: AsyncRequestID? = nil
         let queue = DispatchQueue.main
         
-        myLogger.logit(.debug, message: "Attempting to mount: " + String(describing: serverAddress))
+        TCSLogWithMark("Attempting to mount: " + String(describing: serverAddress))
         
         let _ = NetFSMountURLAsync(serverAddress as CFURL?,
                                    nil,
@@ -451,13 +454,13 @@ class ShareMounter {
         {(stat:Int32, requestID:AsyncRequestID?, mountpoints:CFArray?) -> Void in
             
             if stat == 0 {
-                myLogger.logit(.debug, message: "Mounted share: " + String(describing: serverAddress))
+                TCSLogWithMark("Mounted share: " + String(describing: serverAddress))
                 
                 if let mountPoint = (mountpoints! as! [String]).first {
                     NSWorkspace.shared.open(URL(fileURLWithPath: mountPoint, isDirectory: true))
                 }
             } else {
-                myLogger.logit(.debug, message: "Error mounting share: " + String(describing: serverAddress))
+                TCSLogWithMark("Error mounting share: " + String(describing: serverAddress))
             }
         }
     }

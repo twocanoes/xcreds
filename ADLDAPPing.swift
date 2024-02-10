@@ -136,11 +136,11 @@ class ADLDAPPing {
         flags = DS_FLAGS(rawValue: tempFlags)
         //flags.contains(.DS_PDC_FLAG)
 
-        myLogger.logit(.debug, message: "Is PDC: " + flags.contains(.DS_PDC_FLAG).description)
-        myLogger.logit(.debug, message: "Is GC: " + flags.contains(.DS_GC_FLAG).description)
-        myLogger.logit(.debug, message: "Is LDAP: " + flags.contains(.DS_LDAP_FLAG).description)
-        myLogger.logit(.debug, message: "Is Writable: " + flags.contains(.DS_WRITABLE_FLAG).description)
-        myLogger.logit(.debug, message: "Is Closest: " + flags.contains(.DS_CLOSEST_FLAG).description)
+        TCSLogWithMark("Is PDC: " + flags.contains(.DS_PDC_FLAG).description)
+        TCSLogWithMark("Is GC: " + flags.contains(.DS_GC_FLAG).description)
+        TCSLogWithMark("Is LDAP: " + flags.contains(.DS_LDAP_FLAG).description)
+        TCSLogWithMark("Is Writable: " + flags.contains(.DS_WRITABLE_FLAG).description)
+        TCSLogWithMark("Is Closest: " + flags.contains(.DS_CLOSEST_FLAG).description)
 
 
         // END

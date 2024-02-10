@@ -44,7 +44,7 @@ public func cliTask(_ command: String, arguments: [String]? = nil, waitForTermin
     } else {
         commandLaunchPath = command
         commandPieces = arguments!
-        //myLogger.logit(.debug, message: commandLaunchPath + " " + arguments!.joinWithSeparator(" "))
+        //TCSLogWithMark(commandLaunchPath + " " + arguments!.joinWithSeparator(" "))
     }
 
     // make sure the launch path is the full path -- think we're going down a rabbit hole here
@@ -120,7 +120,7 @@ public func cliTask(_ command: String,
     } else {
         commandLaunchPath = command
         commandPieces = arguments!
-        //myLogger.logit(.debug, message: commandLaunchPath + " " + arguments!.joinWithSeparator(" "))
+        //TCSLogWithMark(commandLaunchPath + " " + arguments!.joinWithSeparator(" "))
     }
 
     // make sure the launch path is the full path -- think we're going down a rabbit hole here

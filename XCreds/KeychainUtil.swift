@@ -318,9 +318,9 @@ class KeychainUtil {
 //                    if String(_cocoaString: value["label"]! as AnyObject) == "1.3.6.1.4.1.311.20.2.3" {
 //                        if let myNTPrincipal = value["value"] {
 //                            // we have an NT Principal, let's see if it's Kerberos Principal we're looking for
-//                            myLogger.logit(.debug, message: "Certificate NT Principal: " + String(describing: myNTPrincipal) )
+//                            TCSLogWithMark("Certificate NT Principal: " + String(describing: myNTPrincipal) )
 //                            if String(describing: myNTPrincipal) == identifier {
-//myLogger.logit(.debug, message: "Found cert match")
+//TCSLogWithMark("Found cert match")
 //
 //
 //                                                // we have a match now gather the expire date and the serial
@@ -346,7 +346,7 @@ class KeychainUtil {
 //                                                matchingCerts.append(certificate)
 //
 //                            } else {
-//myLogger.logit(.debug, message: "Certificate doesn't match current user principal.")
+//TCSLogWithMark("Certificate doesn't match current user principal.")
 //                            }
 //                        }
 //
@@ -355,8 +355,8 @@ class KeychainUtil {
 //            }
 //
 //            }
-//        myLogger.logit(.debug, message: "Found " + String(matchingCerts.count) + " certificates.")
-//        myLogger.logit(.debug, message: "Found certificates: " + String(describing: matchingCerts) )
+//        TCSLogWithMark("Found " + String(matchingCerts.count) + " certificates.")
+//        TCSLogWithMark("Found certificates: " + String(describing: matchingCerts) )
 //        return lastExpire
 //    }
 }

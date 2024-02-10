@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     func updateShareMenu(adUser:ADUserRecord){
         shareMounterMenu?.shareMounter?.adUserRecord = adUser
-        shareMounterMenu?.updateShares()
+        shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
 
         if let sharesMenuItem = statusMenu.item(withTag: StatusMenuController.StatusMenuItemType.SharesMenuItem.rawValue) {
@@ -70,7 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
         shareMounterMenu = ShareMounterMenu()
         shareMounterMenu?.shareMounter = shareMounter
-        shareMounterMenu?.updateShares()
+        shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
 
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")

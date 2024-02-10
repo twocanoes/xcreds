@@ -139,15 +139,15 @@ public class NoMADSession: NSObject {
     // Return the current server
     
     var currentServer: String {
-        myLogger.logit(.debug, message: "Computed currentServer accessed in state: \(String(describing: state))")
+        TCSLogWithMark("Computed currentServer accessed in state: \(String(describing: state))")
 
         if state != .offDomain {
 
             if hosts.isEmpty {
-                myLogger.logit(.debug, message: "Make sure we have LDAP servers")
+                TCSLogWithMark("Make sure we have LDAP servers")
                 getHosts(domain)
             }
-            myLogger.logit(.debug, message: "Lookup the current LDAP host in: \(String(describing: hosts))")
+            TCSLogWithMark("Lookup the current LDAP host in: \(String(describing: hosts))")
 
             return hosts[current].host
         } else {
@@ -159,19 +159,19 @@ public class NoMADSession: NSObject {
     
     fileprivate func parseSRVReply(_ results: inout [String]) {
         if (self.resolver.error == nil) {
-            myLogger.logit(.debug, message: "Did Receive Query Result: " + self.resolver.queryResults.description)
-            myLogger.logit(.debug, message: "Copy \(resolver.queryResults.count) result to records")
+            TCSLogWithMark("Did Receive Query Result: " + self.resolver.queryResults.description)
+            TCSLogWithMark("Copy \(resolver.queryResults.count) result to records")
             let records = self.resolver.queryResults as! [[String:AnyObject]]
-            myLogger.logit(.debug, message: "records dict ready: " + records.debugDescription)
+            TCSLogWithMark("records dict ready: " + records.debugDescription)
             for record: Dictionary in records {
-                myLogger.logit(.debug, message: "Adding: \(String(describing: record["target"]))")
+                TCSLogWithMark("Adding: \(String(describing: record["target"]))")
                 let host = record["target"] as! String
-                myLogger.logit(.debug, message: "Created host: " + host)
+                TCSLogWithMark("Created host: " + host)
                 results.append(host)
-                myLogger.logit(.debug, message: "Added host to results: \(String(describing: results))")
+                TCSLogWithMark("Added host to results: \(String(describing: results))")
             }
         } else {
-            myLogger.logit(.debug, message: "Query Error: " + self.resolver.error.localizedDescription)
+            TCSLogWithMark("Query Error: " + self.resolver.error.localizedDescription)
         }
     }
 
@@ -187,7 +187,7 @@ public class NoMADSession: NSObject {
         }
         var results = [String]()
         
-        myLogger.logit(.debug, message: "Starting DNS query for SRV records.")
+        TCSLogWithMark("Starting DNS query for SRV records.")
         
         self.resolver.startQuery()
         
@@ -196,13 +196,13 @@ public class NoMADSession: NSObject {
         }
 
         parseSRVReply(&results)
-        myLogger.logit(.debug, message: "Returning results: \(String(describing: results))")
+        TCSLogWithMark("Returning results: \(String(describing: results))")
         return results
     }
     
     fileprivate func parseHostsReply() {
         if (self.resolver.error == nil) {
-            myLogger.logit(.debug, message: "Did Receive Query Result: " + self.resolver.queryResults.description)
+            TCSLogWithMark("Did Receive Query Result: " + self.resolver.queryResults.description)
 
             var newHosts = [NoMADLDAPServer]()
             let records = self.resolver.queryResults as! [[String:AnyObject]]
@@ -230,7 +230,7 @@ public class NoMADSession: NSObject {
             state = .success
 
         } else {
-            myLogger.logit(.debug, message: "Query Error: " + self.resolver.error.localizedDescription)
+            TCSLogWithMark("Query Error: " + self.resolver.error.localizedDescription)
             state = .siteFailure
             self.hosts.removeAll()
         }
@@ -242,7 +242,7 @@ public class NoMADSession: NSObject {
         
         if let servers = ldapServers {
             
-            myLogger.logit(.debug, message: "Using static DC list.")
+            TCSLogWithMark("Using static DC list.")
             var newHosts = [NoMADLDAPServer]()
             for server in servers {
                 
@@ -276,13 +276,13 @@ public class NoMADSession: NSObject {
         
         // check for a query already running
         
-        myLogger.logit(.debug, message: "Starting DNS query for SRV records.")
+        TCSLogWithMark("Starting DNS query for SRV records.")
         
         self.resolver.startQuery()
         
         while ( !self.resolver.finished ) {
             RunLoop.current.run(mode: RunLoop.Mode.default, before: Date.distantFuture)
-            myLogger.logit(.debug, message: "Waiting for DNS query to return.")
+            TCSLogWithMark("Waiting for DNS query to return.")
         }
         
         parseHostsReply()
@@ -894,19 +894,19 @@ public class NoMADSession: NSObject {
 
     private func checkKpasswdServer() -> Bool {
         if hosts.isEmpty {
-            myLogger.logit(.debug, message: "Make sure we have LDAP servers")
+            TCSLogWithMark("Make sure we have LDAP servers")
             getHosts(domain)
         }
 
-        myLogger.logit(.debug, message: "Searching for kerberos srv records")
+        TCSLogWithMark("Searching for kerberos srv records")
 
         let myKpasswdServers = getSRVRecords(domain, srv_type: "_kpasswd._tcp.")
-        myLogger.logit(.debug, message: "New kpasswd Servers are: " + myKpasswdServers.description)
-        myLogger.logit(.debug, message: "Current Server is: " + currentServer)
+        TCSLogWithMark("New kpasswd Servers are: " + myKpasswdServers.description)
+        TCSLogWithMark("Current Server is: " + currentServer)
 
         if myKpasswdServers.contains(currentServer) {
-            myLogger.logit(.debug, message: "Found kpasswd server that matches current LDAP server.")
-            myLogger.logit(.debug, message: "Attempting to set kpasswd server to ensure Kerberos and LDAP are in sync.")
+            TCSLogWithMark("Found kpasswd server that matches current LDAP server.")
+            TCSLogWithMark("Attempting to set kpasswd server to ensure Kerberos and LDAP are in sync.")
 
             // get the defaults for com.apple.Kerberos
             let kerbPrefs = UserDefaults.init(suiteName: "com.apple.Kerberos")
@@ -916,7 +916,7 @@ public class NoMADSession: NSObject {
 
             // test to see if the domain_defaults key already exists, if not build it
             if kerbDefaults["default_realm"] != nil {
-                myLogger.logit(.debug, message: "Existing default realm. Skipping adding default realm to Kerberos prefs.")
+                TCSLogWithMark("Existing default realm. Skipping adding default realm to Kerberos prefs.")
             } else {
                 // build a dictionary and add the KDC into it then write it back to defaults
                 let libDefaults = NSMutableDictionary()
@@ -929,7 +929,7 @@ public class NoMADSession: NSObject {
 
             // test to see if the realm already exists, if not build it
             if kerbRealms[kerberosRealm] != nil {
-                myLogger.logit(.debug, message: "Existing Kerberos configuration for realm. Skipping adding KDC to Kerberos prefs.")
+                TCSLogWithMark("Existing Kerberos configuration for realm. Skipping adding KDC to Kerberos prefs.")
                 return false
             } else {
                 // build a dictionary and add the KDC into it then write it back to defaults
@@ -1010,9 +1010,9 @@ public class NoMADSession: NSObject {
         // test to see if the realm already exists, if it's already gone we are good
 
         if kerbRealms[kerberosRealm] == nil {
-            myLogger.logit(.debug, message: "No realm in com.apple.Kerberos defaults.")
+            TCSLogWithMark("No realm in com.apple.Kerberos defaults.")
         } else {
-            myLogger.logit(.debug, message: "Removing realm from Kerberos Preferences.")
+            TCSLogWithMark("Removing realm from Kerberos Preferences.")
             // remove the realm from the realms list
             kerbRealms.removeValue(forKey: kerberosRealm)
             // save the dictionary back to the pref file
@@ -1043,7 +1043,7 @@ public class NoMADSession: NSObject {
         // test to see if the domain_defaults key already exists, if not build it
 
         if kerbDefaults["default_realm"] != nil {
-            myLogger.logit(.debug, message: "Existing default realm. Skipping adding default realm to Kerberos prefs.")
+            TCSLogWithMark("Existing default realm. Skipping adding default realm to Kerberos prefs.")
         } else {
             // build a dictionary and add the KDC into it then write it back to defaults
             let libDefaults = NSMutableDictionary()
@@ -1185,7 +1185,7 @@ extension NoMADSession: NoMADUserSession {
 
     /// Change the password for the current user session via closure
     public func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void) {
-        myLogger.logit(.debug, message: "Change Kerberos password")
+        TCSLogWithMark("Change Kerberos password")
         KerbUtil().changeKerberosPassword(oldPassword, newPassword, userPrincipal) {
             if let errorValue = $0 {
                 completion(errorValue)
@@ -1199,14 +1199,14 @@ extension NoMADSession: NoMADUserSession {
     public func changePassword() {
         // change user's password
         // check kerb prefs - otherwise we can get an error here if not set
-        myLogger.logit(.debug, message: "Checking kpassword server.")
+        TCSLogWithMark("Checking kpassword server.")
         _ = checkKpasswdServer()
 
         // set up the KerbUtil
-        myLogger.logit(.debug, message: "Init KerbUtil.")
+        TCSLogWithMark("Init KerbUtil.")
 
         let kerbUtil = KerbUtil()
-        myLogger.logit(.debug, message: "Change password.")
+        TCSLogWithMark("Change password.")
 
         let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)
 
