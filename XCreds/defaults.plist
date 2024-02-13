@@ -80,5 +80,7 @@
 	<string>Shares</string>
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
+	<key>shouldLoginWindowBackgroundImageFillScreen</key>
+	<false/>
 </dict>
 </plist>
