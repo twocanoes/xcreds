@@ -2,9 +2,11 @@
 
 set -e
 
-echo "post to github? (y/N)"
+echo "post to github? (Y/n)"
 read should_upload
-if [ "${should_upload}" = "y" ]; then
+if [ "${should_upload}" = "n" ]; then
+	echo "not uploading"
+else
    export upload=1
    echo "uploading to github when done"
 fi
