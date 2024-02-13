@@ -78,5 +78,7 @@
 	<string>upn</string>
 	<key>shareMenuItemName</key>
 	<string>Shares</string>
+	<key>shouldShowSignInMenuItem</key>
+	<true/>
 </dict>
 </plist>

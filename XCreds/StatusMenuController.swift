@@ -159,7 +159,15 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             
         case .SignInMenuItem:
             print("SignInMenuItem")
-            
+            if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSignInMenuItem.rawValue) == false {
+
+                signinMenuItem.isHidden=true
+                return false
+            }
+            signinMenuItem.isHidden=false
+
+
+
             
         case .ChangePasswordMenuItem:
             
