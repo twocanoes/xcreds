@@ -1,4 +1,37 @@
-## 4.0.6274 (2024-01-26)
+## 4.1.6346 (2024-02-13)
+
+*  added fix for override still prompting when overridesilent set [View](https://github.com/twocanoes/xcreds/commit/dec4a69c78ff5ee8876c6b00d33a1a09400ced92)
+*  fixed silentoverride issue [View](https://github.com/twocanoes/xcreds/commit/253a29c608e728c6177bd86e4ec70339611e95a8)
+*  fixed multiple share mounting [View](https://github.com/twocanoes/xcreds/commit/fbc40e45085a2c338f671f5fb827828e2683950d)
+*  fixed Update manifest pfm_last_modified and pfm_version #164 [View](https://github.com/twocanoes/xcreds/commit/a9f5ccc89dd7a7b673d3886aedef8073fe87c980)
+*  implemented [Feature Request] AD - Option to hide Sign-In menu item #150 [View](https://github.com/twocanoes/xcreds/commit/629dfe117cd0665192a536f6f984dbf00a31ee57)
+*  implemented [Feature Request] Standard wallpaper options for default background #155 [View](https://github.com/twocanoes/xcreds/commit/81509683f4e54462c6cc697331132980ee7b58a1)
+
+
+## 4.1.6313 (2024-02-06)
+
+*  fixed issue with menu item not updating tokens [View](https://github.com/twocanoes/xcreds/commit/7661fc2d703c065a9a71b0751a6427f1b636783e)
+*  fixed automount [View](https://github.com/twocanoes/xcreds/commit/8a9f8c2aa143ab3138e2741e2ce6061cdd35419b)
+*  remove admin if we made them admin [View](https://github.com/twocanoes/xcreds/commit/e87ec92d5bdb3ace68060f6db3469d76d0dbf0cc)
+*  added check for not removing last admin user [View](https://github.com/twocanoes/xcreds/commit/fbe883413f83d7f96fb5ba0da68ca93ced5e9484)
+*  fixed prompting when both AD and cloud are configured [View](https://github.com/twocanoes/xcreds/commit/32f2bebb4707ed70e21ccfb50f30d09eff076ce9)
+*  added kerberosprincipalname pref and getting kerb ticket with oidc login [View](https://github.com/twocanoes/xcreds/commit/c14fd13e6e347d9be49a709531ecb24b08bafb96)
+*  added menuItemWindowBackgroundImageURL [View](https://github.com/twocanoes/xcreds/commit/7c81253b3643a76c0468d4424344f61fe578d520)
+*  better selection of menu item prompting if both AD and OIDC is setup [View](https://github.com/twocanoes/xcreds/commit/a4140ace5ca7f22d26bf502da72fd928dc4388c6)
+*  fixed issue with ACL on tokens in keychain [View](https://github.com/twocanoes/xcreds/commit/4aeda19969b358ae27baa02aec067ac0f9318a29)
+*  added custom menu item pref [View](https://github.com/twocanoes/xcreds/commit/9453fbd3a3b09887ffd1807dee6ae9e6e8eb574a)
+*  ability to customize Share menu item; added username for AD and OIDC in menu [View](https://github.com/twocanoes/xcreds/commit/b67970aaa2a5ef450cb6d5888338ce4536a2e891)
+*  added pref for shares [View](https://github.com/twocanoes/xcreds/commit/9c8d920744cd44a2b27163db2c1a84d81c5665b3)
+*  added better descriptions to share manifest [View](https://github.com/twocanoes/xcreds/commit/2004767b7c99782c41f3b0a43079ce92daa22374)
+*  updated whats new [View](https://github.com/twocanoes/xcreds/commit/f81c831706a7fdbf124a5d0926fe790b728a4366)
+*  updated manifest [View](https://github.com/twocanoes/xcreds/commit/a3ca6493d51a71006d2e612df747ea1c1747acb9)
+
+
+## release-4.0 (2024-01-29)
+
+
+
+## 4.0.6274 (2024-01-29)
 
 *  fixed issue with local password update [View](https://github.com/twocanoes/xcreds/commit/b12e859184f6812080906256315d1d7b2f29e496)
 *  updated ropg prefs and checking [View](https://github.com/twocanoes/xcreds/commit/e3149de819f2b72a7e11f9891815de5d5c6511b9)
@@ -8,6 +41,7 @@
 *  shouldUseROPGForMenuLogin hides offline login option at XCreds login window #158 [View](https://github.com/twocanoes/xcreds/commit/17f24dd92b8c83bb591b5cd9bb50e41c9ac4086f)
 *  Improvement for refreshRateMinutes description #157 [View](https://github.com/twocanoes/xcreds/commit/cc6e736f0429bb78ac0a925395b305f21d98af4a)
 *  Typos in manifest descriptions #156 [View](https://github.com/twocanoes/xcreds/commit/eae6dff1654237d13bbab857a5e1d8c30c5ffe11)
+*  added release notes [View](https://github.com/twocanoes/xcreds/commit/af102f94dd2fdf999b775f6c01cc2fbd98935819)
 
 
 ## 4.0.6261 (2024-01-15)
