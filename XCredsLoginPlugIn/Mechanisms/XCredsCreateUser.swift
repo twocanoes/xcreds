@@ -36,7 +36,14 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                               "dsAttrTypeNative:unlockOptions": "0"]
     
     @objc override func run() {
+        var localLogin=false
         TCSLogWithMark("CreateUser mech starting")
+
+        if let localLoginHintValue = getHint(type: .localLogin) as? Bool, localLoginHintValue==true{
+            TCSLogWithMark("Local Login Detected")
+
+            localLogin=true
+        }
 
         if let xcredsGroups = groups {
 
@@ -87,7 +94,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                     TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
                 }
             }
-            if isAdmin == false {
+            if isAdmin == false, localLogin==false {
                 TCSLogWithMark("admin groups defined but user is not a member, so marking remove if it exists and we created it")
                 shouldRemoveAdmin = true
             }

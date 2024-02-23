@@ -77,8 +77,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if isLocalOnlyAccount()==true && force==false{
             return
         }
-        windowController.window?.makeKeyAndOrderFront(self)
-        NSApp.activate(ignoringOtherApps: true)
 
         scheduleManager.setNextCheckTime()
 
@@ -99,11 +97,13 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
             windowController.webViewController.updateCredentialsFeedbackDelegate=self
             windowController.window!.makeKeyAndOrderFront(self)
+            NSApp.activate(ignoringOtherApps: true)
             windowController.webViewController?.loadPage()
         }
 
         else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
         {
+            windowController.webViewController.webView.isHidden=true
 
             if let window = windowController.window{
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
@@ -148,6 +148,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     }
 
                     window.makeKeyAndOrderFront(self)
+                    NSApp.activate(ignoringOtherApps: true)
 
                 }
             }

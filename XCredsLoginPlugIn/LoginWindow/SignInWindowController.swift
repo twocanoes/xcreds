@@ -294,6 +294,8 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("do local auth only")
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
+                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+
                 completeLogin(authResult:.allow)
 
             }
@@ -775,7 +777,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
         case .OffDomain:
             TCSLogErrorWithMark("OffDomain")
 
-         if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+            if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+                mechanismDelegate?.setHint(type: .localLogin, hint: true)
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)
             } else {

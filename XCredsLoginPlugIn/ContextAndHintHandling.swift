@@ -34,6 +34,7 @@ enum HintType: String {
     case claimsToAddToLocalUserAccount
     case adminUsername
     case adminPassword
+    case localLogin
 
 
 }
