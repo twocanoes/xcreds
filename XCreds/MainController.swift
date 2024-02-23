@@ -343,7 +343,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuIcon(showDot:false)
-        showSignInWindow(forceLoginWindowType: .cloud)
+        if WifiManager().isConnectedToNetwork()==true {
+            showSignInWindow(forceLoginWindowType: .cloud)
+        }
     }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
@@ -366,7 +368,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
         default:
-            showSignInWindow(forceLoginWindowType: .usernamePassword)
+            if WifiManager().isConnectedToNetwork()==true {
+                showSignInWindow(forceLoginWindowType: .usernamePassword)
+            }
 
         }
     }
