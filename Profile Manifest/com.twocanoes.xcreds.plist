@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 4.1 (6360) OAuth Settings</string>
+	<string>XCreds 4.1 (6363) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -13,7 +13,7 @@
 	<key>pfm_format_version</key>
 	<integer>1</integer>
 	<key>pfm_last_modified</key>
-	<date>2024-02-23T16:25:44Z</date>
+	<date>2024-02-23T17:21:19Z</date>
 	<key>pfm_platforms</key>
 	<array>
 		<string>macOS</string>
@@ -600,6 +600,50 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<string>Prefer Local Login over Cloud Login</string>
 			<key>pfm_type</key>
 			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_app_max</key>
+			<string>3.2.1</string>
+			<key>pfm_default</key>
+			<false/>
+			<key>pfm_description</key>
+			<string>(Deprecated in v4.0) When verifying password in the menu app, use ROPG.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>shouldVerifyPasswordWithRopg</string>
+			<key>pfm_title</key>
+			<string>Use ROPG when testing password</string>
+			<key>pfm_type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>pfm_app_max</key>
+			<string>3.2.1</string>
+			<key>pfm_description</key>
+			<string>(Deprecated in v4.0) ROPG Client ID for use when checking password.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>ropgClientID</string>
+			<key>pfm_title</key>
+			<string>ROPG Client ID</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_app_max</key>
+			<string>3.2.1</string>
+			<key>pfm_description</key>
+			<string>(Deprecated in v4.0) ROPG Client Secret for use when checking password.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>ropgClientSecret</string>
+			<key>pfm_title</key>
+			<string>ROPG Client Secret</string>
+			<key>pfm_type</key>
+			<string>string</string>
 		</dict>
 		<dict>
 			<key>pfm_default</key>
@@ -1228,7 +1272,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 							<key>pfm_title</key>
 							<string>Groups</string>
 							<key>pfm_type</key>
-							<string>string</string>
+							<string>array</string>
 						</dict>
 						<dict>
 							<key>pfm_description</key>
@@ -1303,6 +1347,6 @@ changing “passwordID” to the correct element ID. If the value you typed into
 	<key>pfm_unique</key>
 	<false/>
 	<key>pfm_version</key>
-	<integer>6</integer>
+	<integer>7</integer>
 </dict>
 </plist>
