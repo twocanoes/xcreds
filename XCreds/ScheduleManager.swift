@@ -121,16 +121,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
         }
     }
-
-    func checkToken()  {
-        TCSLogWithMark("checking token")
-        if nextCheckTime>Date() {
-            TCSLogWithMark("Token will be checked at \(nextCheckTime)")
-
-            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
-            return
-        }
-        setNextCheckTime()
+    func checkKerberosTicket(){
         let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
 
 
@@ -141,6 +132,18 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         else {
             TCSLogWithMark("not checking for kerberos ticket")
         }
+
+    }
+    func checkToken()  {
+        TCSLogWithMark("checking token")
+        if nextCheckTime>Date() {
+            TCSLogWithMark("Token will be checked at \(nextCheckTime)")
+
+            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
+            return
+        }
+        setNextCheckTime()
+        checkKerberosTicket()
 
         TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
         tokenManager.feedbackDelegate=self
@@ -169,7 +172,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogErrorWithMark("NoMADAuthenticationFailed:\(description)")
-        feedbackDelegate?.kerberosTicketCheckFailed()
+        feedbackDelegate?.kerberosTicketCheckFailed(error)
     }
 
     func NoMADUserInformation(user: ADUserRecord) {

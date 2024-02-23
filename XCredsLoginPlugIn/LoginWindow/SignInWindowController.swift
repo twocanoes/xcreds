@@ -20,7 +20,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     func credentialsUpdated(_ credentials:Creds)
     func credentialsCheckFailed()
     func kerberosTicketUpdated()
-    func kerberosTicketCheckFailed()
+    func kerberosTicketCheckFailed(_ error:NoMADSessionError)
     func adUserUpdated(_ adUser:ADUserRecord)
 
 }
@@ -737,7 +737,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
-        updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed()
+        updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
         TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
 //        alertTextField.isHidden=false

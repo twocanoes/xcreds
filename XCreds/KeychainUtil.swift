@@ -91,7 +91,7 @@ class KeychainUtil {
 
             return (account,password as? String ?? "")
         } else {
-            TCSLogErrorWithMark("Password not found in keychain")
+            TCSLogErrorWithMark("\(serviceName) not found in keychain")
             throw KeychainError.noStoredPassword
         }
     }

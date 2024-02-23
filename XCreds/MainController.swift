@@ -167,8 +167,18 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func setup() {
 
+
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didUnmountNotification, object: nil, queue: nil) { notification in
+                self.scheduleManager.checkKerberosTicket()
+                self.checkAndMountShares()
+
+        }
+
         NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
-            self.checkAndMountShares()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+10) {
+                self.scheduleManager.checkKerberosTicket()
+                self.checkAndMountShares()
+            }
         }
         self.checkAndMountShares()
         TCSLogWithMark()
@@ -320,7 +330,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
         //delay startup to give network time to settle.
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { timer in
             self.scheduleManager.startCredentialCheck()
         }
 
@@ -341,13 +351,23 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         credentialStatus="Valid kerberos tickets"
     }
-    func kerberosTicketCheckFailed() {
+    func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
+
         TCSLogWithMark()
         hasKerberosTicket=false
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:false)
 
         credentialStatus="Kerberos Tickets Failed"
-        showSignInWindow(forceLoginWindowType: .usernamePassword)
+        switch error{
+
+        case .OffDomain:
+            TCSLogWithMark("Off domain so not prompting")
+
+
+        default:
+            showSignInWindow(forceLoginWindowType: .usernamePassword)
+
+        }
     }
     func adUserUpdated(_ adUser: ADUserRecord) {
 
