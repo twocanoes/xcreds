@@ -46,7 +46,7 @@ public enum NoMADSessionError: String, Error {
     case AuthenticationFailure
     case KerbError
     case PasswordExpired = "Password has expired"
-    case unknownPrincipal
+    case UnknownPrincipal
     case wrongRealm = "Wrong realm"
 }
 
@@ -55,6 +55,23 @@ public enum LDAPType {
     case OD
 }
 
+public enum GSSErrorKey : String {
+
+    case mechanismKey = "kGSSMechanism"
+    case mechanismOIDKey = "kGSSMechanismOID"
+    case majorErrorCodeKey = "kGSSMajorErrorCode"
+    case minorErrorCodeKey = "kGSSMinorErrorCode"
+    case descriptionKey = "NSDescription"
+
+}
+public struct GSSError {
+    var mechanism:String
+    var mechanismOID:String
+    var majorErrorCode:Int
+    var minorErrorCode:UInt
+    var description:String
+
+}
 public struct NoMADLDAPServer {
     var host: String
     var status: String
@@ -1062,11 +1079,14 @@ extension NoMADSession: NoMADUserSession {
             return
         }
 
-        KerbUtil().getKerberosCredentials(userPass, userPrincipal) { [unowned self] errorValue in
+        KerbUtil().getKerberosCredentials(userPass, userPrincipal) {  errorDict in
             self.userPass = ""
-            if let errorValue = errorValue {
+            if let errorDict = errorDict {
                 self.state = .kerbError
                 let sessionError: NoMADSessionError
+
+                let errorValue = errorDict["NSDescription"] as? String ?? "Unknown error"
+
                 switch errorValue {
                 case NoMADSessionError.PasswordExpired.rawValue:
                     sessionError = .PasswordExpired
@@ -1147,40 +1167,53 @@ extension NoMADSession: NoMADUserSession {
     public func authenticate(authTestOnly: Bool = false) {
         // authenticate
         let kerbUtil = KerbUtil()
-        let kerbError = kerbUtil.getKerbCredentials(userPass, userPrincipal)
+//        let kerbError = kerbUtil.getKerbCredentials(userPass, userPrincipal)
 
-        //TODO: Make this not a war crime - Josh
-        // wait for auth to finish
-        while !kerbUtil.finished {
-            RunLoop.current.run(mode: RunLoop.Mode.default, before: Date.distantFuture)
+        kerbUtil.getKerberosCredentials(userPass, userPrincipal) { errorDict in
+            // scrub the password field
+            self.userPass = ""
+
+            if let errorDict = errorDict as? Dictionary<String,Any>,
+               let description = errorDict[GSSErrorKey.descriptionKey.rawValue] as? String,
+               let majorErrorCode = errorDict[GSSErrorKey.majorErrorCodeKey.rawValue] as? Int,
+               let minorErrorCode = errorDict[GSSErrorKey.minorErrorCodeKey.rawValue] as? NSNumber,
+               let mechanism = errorDict[GSSErrorKey.mechanismKey.rawValue] as? String,
+               let mechanismOID = errorDict[GSSErrorKey.mechanismOIDKey.rawValue] as? String
+
+            {
+                let error = GSSError(mechanism: mechanism, mechanismOID: mechanismOID, majorErrorCode: majorErrorCode, minorErrorCode: UInt(UInt32(truncating:minorErrorCode)), description: description)
+
+                // error
+                self.state = .kerbError
+
+                switch error.description {
+                case "Password has expired" :
+                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.PasswordExpired, description: error.description)
+                    break
+                case "Wrong realm" :
+                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.wrongRealm, description: error.description)
+                    break
+                case _ where error.description.range(of: "unable to reach any KDC in realm") != nil :
+                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.OffDomain, description: error.description)
+                    break
+                default:
+                    //user not found
+                    if error.majorErrorCode == 0x0D0000, error.minorErrorCode == 0x96C73A06, mechanismOID == "1 2 840 113554 1 2 2" {
+                        self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.UnknownPrincipal, description: error.description)
+
+                        return
+                    }
+                    //other error
+                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: error.description)
+                }
+            } else {
+                if authTestOnly {
+                    klistUtil.kdestroy(princ: self.userPrincipal)
+                }
+                self.delegate?.NoMADAuthenticationSucceded()
+            }
         }
 
-        // scrub the password field
-        userPass = ""
-
-        if let kerbError = kerbError {
-            // error
-            state = .kerbError
-            //TODO: Change to actual throws and error handling
-            switch kerbError {
-            case "Password has expired" :
-                delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.PasswordExpired, description: kerbError)
-                break
-            case "Wrong realm" :
-                delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.wrongRealm, description: kerbError)
-                break
-            case _ where kerbError.range(of: "unable to reach any KDC in realm") != nil :
-                delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.OffDomain, description: kerbError)
-                break
-            default:
-                delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: kerbError)
-            }
-        } else {
-            if authTestOnly {
-                klistUtil.kdestroy(princ: userPrincipal)
-            }
-            delegate?.NoMADAuthenticationSucceded()
-        }
     }
 
     /// Change the password for the current user session via closure
@@ -1208,28 +1241,27 @@ extension NoMADSession: NoMADUserSession {
         let kerbUtil = KerbUtil()
         TCSLogWithMark("Change password.")
 
-        let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)
+        kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal) { errorString in
+//            let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)
 
-        while !kerbUtil.finished {
-            RunLoop.current.run(mode: RunLoop.Mode.default, before: Date.distantFuture)
+            if let errorString = errorString {
+                // error
+                self.state = .kerbError
+                self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: errorString)
+            } else {
+                // If the password change worked then we are online. Reauthenticate with new password.
+                self.userPass = self.newPass
+                self.authenticate(authTestOnly: false)
+            }
+
+            // scrub the passwords
+            self.oldPass = ""
+            self.newPass = ""
+
+            // clean the kerb prefs so we don't reuse the KDCs
+            self.cleanKerbPrefs()
         }
 
-        if let error = error {
-            // error
-            state = .kerbError
-            delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: error)
-        } else {
-            // If the password change worked then we are online. Reauthenticate with new password.
-            userPass = newPass
-            authenticate(authTestOnly: false)
-        }
-
-        // scrub the passwords
-        oldPass = ""
-        newPass = ""
-
-        // clean the kerb prefs so we don't reuse the KDCs
-        cleanKerbPrefs()
     }
 
     public func userInfo() {

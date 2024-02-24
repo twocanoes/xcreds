@@ -103,7 +103,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
         {
-            windowController.webViewController.webView.isHidden=true
+            if let webView = windowController.webViewController?.webView {
+                webView.isHidden=true
+            }
 
             if let window = windowController.window{
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
@@ -366,6 +368,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         case .OffDomain:
             TCSLogWithMark("Off domain so not prompting")
 
+        case .UnknownPrincipal:
+            TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
             if WifiManager().isConnectedToNetwork()==true {

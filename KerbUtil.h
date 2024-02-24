@@ -18,7 +18,8 @@ extern OSStatus SecKeychainItemSetAccessWithPassword(SecKeychainItemRef item, Se
 @interface KerbUtil : NSObject
 @property (nonatomic, assign, readonly) BOOL						finished;   // observable
 
-- (void)getKerberosCredentials:(NSString *)password :(NSString *)userPrincipal completion:(void(^)(NSString *))callback;
+- (NSDictionary *)getKerbCredentialWithPassword:password userPrincipal:(NSString *)userPrincipal;
+- (void)getKerberosCredentials:(NSString *)password :(NSString *)userPrincipal completion:(void(^)(NSDictionary *))callback;
 - (NSString *)getKerbCredentials:(NSString *)password :(NSString *)userPrincipal;
 - (void)changeKerberosPassword:(NSString *)oldPassword :(NSString *)newPassword :(NSString *)userPrincipal completion:(void(^)(NSString *))callback;
 - (NSString *)changeKerbPassword:(NSString *)oldPassword :(NSString *)newPassword :(NSString *)userPrincipal;

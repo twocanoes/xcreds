@@ -10,7 +10,7 @@ import Foundation
 import OpenDirectory
 
 enum MigrationType {
-    case errorSkipMigration // unable to complete migration
+    case errorSkipMigration(String) // unable to complete migration
     case fullMigration // perform full migration
     case skipMigration // no need to migrate
     case syncPassword // local password needs to be synced with local
@@ -94,8 +94,8 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
             return .fullMigration
 
         } catch {
-            TCSLogWithMark("Unknown migration check error. skipping migration.")
-            return .errorSkipMigration
+            TCSLogWithMark("Unknown migration check error. skipping migration:\(error.localizedDescription)")
+            return .errorSkipMigration(error.localizedDescription)
         }
     }
     

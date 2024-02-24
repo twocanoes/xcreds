@@ -774,21 +774,32 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             }
             return
-        case .OffDomain:
-            TCSLogErrorWithMark("OffDomain")
+        case .OffDomain, .UnknownPrincipal:
+            TCSLogErrorWithMark("\(error)")
 
             if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 mechanismDelegate?.setHint(type: .localLogin, hint: true)
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)
             } else {
-                authFail("Cannot reach domain controller")
-                TCSLogErrorWithMark("AD authentication failed, off domain.")
+                if error == .OffDomain {
+                    TCSLogErrorWithMark("AD authentication failed, off domain.")
+                    authFail("Cannot reach domain controller")
+
+                }
+                else if error == .UnknownPrincipal {
+                    TCSLogErrorWithMark("AD authentication failed, Unknown AD User.")
+                    authFail("Unknown AD User")
+                }
+                else {
+                    TCSLogErrorWithMark("Unknown Error")
+                    authFail("Unknown Error")
+
+                }
 
             }
-
         default:
-            TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description)")
+            TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description):\(error.rawValue)")
 //            loginStartedUI()
                 authFail(description)
 //
@@ -922,8 +933,9 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     completeLogin(authResult: .deny)
                 }
 
-
-            case .errorSkipMigration, .skipMigration, .userMatchSkipMigration, .complete:
+            case .errorSkipMigration(let mesg):
+                mechanismDelegate?.denyLogin(message:mesg)
+            case .skipMigration, .userMatchSkipMigration, .complete:
                 completeLogin(authResult: .allow)
 //            case .mappedUserFound(let foundODUserRecord):
 //                shortName = foundODUserRecord.recordName
