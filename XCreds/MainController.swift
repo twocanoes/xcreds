@@ -78,6 +78,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             return
         }
 
+
+        if  let webViewController = windowController.webViewController{
+            webViewController.webView.isHidden=true
+        }
         scheduleManager.setNextCheckTime()
 
         var forceUsernamePassword = false
@@ -93,12 +97,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
         }
         if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil)  {
-            windowController.webViewController.webView.isHidden=false
-
-            windowController.webViewController.updateCredentialsFeedbackDelegate=self
             windowController.window!.makeKeyAndOrderFront(self)
+
+            if  let webViewController = windowController.webViewController{
+                webViewController.webView.isHidden=false
+
+                windowController.webViewController.updateCredentialsFeedbackDelegate=self
+                windowController.webViewController?.loadPage()
+            }
             NSApp.activate(ignoringOtherApps: true)
-            windowController.webViewController?.loadPage()
+
         }
 
         else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
