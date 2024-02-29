@@ -142,12 +142,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
-
-        if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == true {
-
-            self.view.layer?.contentsGravity = CALayerContentsGravity.resizeAspectFill
-        }
-
         localOnlyCheckBox.isEnabled=true
         localOnlyView.isHidden=false
         // make things look better

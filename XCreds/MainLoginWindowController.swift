@@ -103,14 +103,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         let backgroundImage = DefaultsHelper.backgroundImage()
         TCSLogWithMark()
-        if let backgroundImage = backgroundImage {
-            backgroundImage.size=screenRect.size
-            self.backgroundImageView.image=backgroundImage
-            self.backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
-
-            self.backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-
-        }
         self.window?.level = .normal
 
         if self.controlsViewController==nil {
@@ -180,27 +172,37 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     }
 
     fileprivate func createBackground() {
+        TCSLogWithMark()
+
         let backgroundImage = DefaultsHelper.backgroundImage()
         let screenRect = NSScreen.screens[0].frame
-        TCSLogWithMark()
+        var newHeight = screenRect.height
+        var newWidth = screenRect.width
+
         if let backgroundImage = backgroundImage {
-            TCSLogWithMark()
-            backgroundImageView.image?.size=screenRect.size
-            TCSLogWithMark()
 
+            if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
+                let ratio = backgroundImage.size.width/backgroundImage.size.height
+                newHeight = screenRect.size.height
+                newWidth = screenRect.size.height * ratio
+
+                if newWidth > screenRect.size.width {
+                    newWidth = screenRect.size.width
+                    newHeight = screenRect.size.width / ratio
+                }
+
+            }
+
+
+
+            backgroundImage.size.height = newHeight
+            backgroundImage.size.width = newWidth
             backgroundImageView.image=backgroundImage
-            TCSLogWithMark()
-
-            backgroundImage.size=screenRect.size
-            TCSLogWithMark()
 
             backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
-            TCSLogWithMark()
             backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-            TCSLogWithMark()
 
         }
-        TCSLogWithMark()
 
     }
     func recenterCenterView()  {
