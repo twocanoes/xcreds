@@ -48,9 +48,9 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         else
         {
             if let kerberosPrincipalName = kerberosPrincipalName, let foundRecord = try? getUserRecord(kerberosPrincipalNameToFind: kerberosPrincipalName) {
-            user = foundRecord.recordName
+                user = foundRecord.recordName
+            }
         }
-    }
         let shouldPromptToMigrate = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
         // check local user pass to see if user exists

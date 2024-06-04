@@ -68,10 +68,10 @@ public class DefaultsOverride: UserDefaults {
             
             let scriptRes=cliTask(prefScriptPath)
 
-            if scriptRes.count==0{
-                TCSLogErrorWithMark("script did not return anything")
-                return
-            }
+                if scriptRes.count==0{
+                    TCSLogErrorWithMark("script did not return anything")
+                    return
+                }
             TCSLogWithMark()
             guard let rawData = scriptRes.data(using: .utf8) else {
                 TCSLogErrorWithMark("could not convert raw data");

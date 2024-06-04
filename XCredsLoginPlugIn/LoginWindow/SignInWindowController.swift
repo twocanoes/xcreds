@@ -735,7 +735,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
-        TCSLogWithMark("NoMADAuthenticationFailed: \(description)")
+        TCSLogWithMark("AuthenticationFailed: \(description)")
 //        alertTextField.isHidden=false
 //        alertTextField.stringValue = description
 //        if passChanged {

@@ -171,7 +171,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     }
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
-        TCSLogErrorWithMark("NoMADAuthenticationFailed:\(description)")
+        TCSLogErrorWithMark("AuthenticationFailed:\(description)")
         feedbackDelegate?.kerberosTicketCheckFailed(error)
     }
 

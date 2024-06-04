@@ -413,15 +413,34 @@ extension TokenManager {
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
 
         TCSLogWithMark("======== tokenResponse =========")
-
         RunLoop.main.perform {
+            let googleAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue)
+
 
             let xcredCreds = Creds(password: nil, tokens: tokens)
-            if xcredCreds.hasAccessAndRefresh(){
+
+            if xcredCreds.hasAccessAndRefresh() {
+                TCSLogWithMark("Found access and refresh token")
+
+            }
+            if googleAuth {
+                TCSLogWithMark("Found google auth")
+
+            }
+            if xcredCreds.hasAccess() {
+                TCSLogWithMark("found access token")
+
+            }
+            if googleAuth && xcredCreds.hasAccess() {
+                TCSLogWithMark("Found google auth and access token")
+
+            }
+
+            if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else {
-                self.feedbackDelegate?.tokenError("error gettings tokens")
+                self.feedbackDelegate?.tokenError("error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))")
             }
 
         }
