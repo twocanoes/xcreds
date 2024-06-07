@@ -12,6 +12,7 @@ enum HintType: String {
     case existingLocalUserName
     case networkSignIn
     case user
+    case fullusername
     case domain
     case pass
     case firstName

@@ -322,6 +322,13 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         }
 
+        TCSLogWithMark("setting oidc full username to DS")
+        let fullUserName = getHint(type: .fullusername) as? String
+
+        if let fullUserName = fullUserName {
+            TCSLogWithMark("setting fullUserName")
+            try? records.first?.setValue(fullUserName, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
+        }
         TCSLogWithMark("checking for alias to add as a username for rogp")
         let alias = getHint(type: .aliasName) as? String
 

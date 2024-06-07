@@ -86,6 +86,9 @@ import OpenDirectory
             if let username = userInfo.username {
                 setHint(type: .user, hint: username)
             }
+            if let fullUsername = userInfo.fullUsername {
+                setHint(type: .fullusername, hint: fullUsername)
+            }
             if let fullName = userInfo.fullName {
                 setHint(type: .fullName, hint: fullName)
             }

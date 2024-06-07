@@ -30,6 +30,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         var firstName:String?
         var lastName:String?
         var username:String?
+        var fullUsername:String?
         var groups:Array<String>?
         var alias:String?
         var kerberosPrincipalName:String?
@@ -286,10 +287,10 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         let defaultsUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.username.rawValue)
 
         // username static map
-        if let defaultsUsername = defaultsUsername {
+        if let defaultsUsername = defaultsUsername, defaultsUsername.count>0 {
             userAccountInfo.username = defaultsUsername
         }
-        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first{
+        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first, leftSide.count>0{
 
             TCSLogWithMark()
             userAccountInfo.username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
@@ -299,10 +300,10 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark()
             var emailString:String
 
-            if let email = idTokenObject.email  {
+            if let email = idTokenObject.email, email.count>0  {
                 emailString=email.lowercased()
             }
-            else if let uniqueName=idTokenObject.unique_name {
+            else if let uniqueName=idTokenObject.unique_name, uniqueName.count>0 {
                 emailString=uniqueName
             }
 
@@ -319,6 +320,12 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
             TCSLogWithMark("username found: \(tUsername)")
             userAccountInfo.username = tUsername
+        }
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            
+            userAccountInfo.fullUsername = mapValue
+            
         }
 
         //kerberos principal name

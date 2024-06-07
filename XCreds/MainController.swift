@@ -243,7 +243,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 return (nil,nil)
 
             }
-            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass:localPassword, shouldUpdateACL: true)
+            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass:localPassword, shouldUpdateACL: true, keychainPassword: localPassword)
             if err == false {
                 return (nil,nil)
             }

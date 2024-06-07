@@ -88,7 +88,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark("setting up window...")
 
-        self.window?.backgroundColor = NSColor.gray
+        self.window?.backgroundColor = NSColor.black
         self.window?.titlebarAppearsTransparent = true
 
         self.window?.isMovable = false
@@ -199,7 +199,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             backgroundImage.size.width = newWidth
             backgroundImageView.image=backgroundImage
 
-            backgroundImageView.imageScaling = .scaleProportionallyUpOrDown
+            backgroundImageView.imageScaling = .scaleAxesIndependently
             backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
 
         }
