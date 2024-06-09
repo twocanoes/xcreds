@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>ADDomain</key>
+			<string>twocanoes.com</string>
+			<key>CreateAdminIfGroupMember</key>
+			<array>
+				<string>93392af1-8e10-4691-9702-a4d5e7f7c781</string>
+				<string>47b36644-8477-4194-b42d-9e519e9193e7</string>
+			</array>
+			<key>PasswordOverwriteSilent</key>
+			<true/>
+			<key>PayloadDescription</key>
+			<string>Configures XCreds configuration preferences</string>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.47F59CD0-E476-4016-A8C6-82837B61C7CE.com.twocanoes.xcreds.F5B79C66-146F-4F8A-9237-CAF10606615C.11BE4B70-7A81-4351-A799-6B6BCBCF0900.C499E48D-61A5-4463-BB5A-FFFB14936411.0C06D77A-983C-43D4-939E-AA6AF0AF9AFA</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>0C06D77A-983C-43D4-939E-AA6AF0AF9AFA</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>cloudLoginText</key>
+			<string>Back to XCreds</string>
+			<key>loginWindowHeight</key>
+			<integer>500</integer>
+			<key>loginWindowWidth</key>
+			<integer>500</integer>
+			<key>HomeMountEnabled</key>
+			<false/>
+			<key>HomeMountOptions</key>
+			<array/>
+			<key>HomeMountGroups</key>
+			<array>
+				<string>All</string>
+			</array>
+			<key>Shares</key>
+			<array>
+				<dict>
+					<key>Groups</key>
+					<array>
+						<string>XCred Shares</string>
+					</array>
+					<key>ConnectedOnly</key>
+					<true/>
+					<key>Options</key>
+					<array/>
+					<key>LocalMount</key>
+					<string></string>
+					<key>AutoMount</key>
+					<true/>
+					<key>Name</key>
+					<string>server22 files</string>
+					<key>URL</key>
+					<string>smb://server22.twocanoes.com/Files</string>
+				</dict>
+				<dict>
+					<key>Groups</key>
+					<array/>
+					<key>ConnectedOnly</key>
+					<true/>
+					<key>Options</key>
+					<array/>
+					<key>LocalMount</key>
+					<string></string>
+					<key>AutoMount</key>
+					<true/>
+					<key>Name</key>
+					<string>Home Shares</string>
+					<key>URL</key>
+					<string>smb://dc1.nomad.test/Homes</string>
+				</dict>
+				<dict>
+					<key>Groups</key>
+					<array/>
+					<key>ConnectedOnly</key>
+					<true/>
+					<key>Options</key>
+					<array/>
+					<key>LocalMount</key>
+					<string></string>
+					<key>AutoMount</key>
+					<false/>
+					<key>Name</key>
+					<string>File Space</string>
+					<key>URL</key>
+					<string>smb://dc1.nomad.test/File Space</string>
+				</dict>
+                <dict>
+                    <key>Groups</key>
+                    <array>
+                        <string>one</string>
+                    </array>
+                    <key>Options</key>
+                    <array/>
+                    <key>LocalMount</key>
+                    <string></string>
+                    <key>AutoMount</key>
+                    <false/>
+                    <key>Name</key>
+                    <string>File Space</string>
+                    <key>URL</key>
+                    <string>smb://dc1.nomad.test/File Space</string>
+                </dict>
+
+			</array>
+			<key>shouldShowConfigureWifiButton</key>
+			<true/>
+			<key>shouldShowMacLoginButton</key>
+			<true/>
+			<key>shouldShowQuitMenu</key>
+			<true/>
+			<key>shouldShowSupportStatus</key>
+			<true/>
+			<key>shouldShowVersionInfo</key>
+			<true/>
+			<key>shouldSwitchToLoginWindowWhenLocked</key>
+			<true/>
+            <key>settingsOverrideScriptPath</key>
+            <string>/usr/local/xcreds/override.sh</string>
+			<key>menuItems</key>
+			<array>
+				<dict>
+					<key>linkOrAppPath</key>
+					<string>https://twocanoes.com</string>
+					<key>menuItemName</key>
+					<string>Home</string>
+					<key>separatorAfter</key>
+					<false/>
+					<key>separatorBefore</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>linkOrAppPath</key>
+					<string>/System/Applications/Utilities/Keychain Access.app</string>
+					<key>menuItemName</key>
+					<string>Keychain Access</string>
+					<key>separatorAfter</key>
+					<true/>
+					<key>separatorBefore</key>
+					<false/>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>AD Only</string>
+	<key>PayloadDisplayName</key>
+	<string>xcreds-AD Only</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreat0C865A8B-0494-42F7-9108-1AAFC2C85B72</string>
+	<key>PayloadOrganization</key>
+	<string>twocanoes</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>56A788D5-4AFE-48CD-81D0-7F455F2DD5E5</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
