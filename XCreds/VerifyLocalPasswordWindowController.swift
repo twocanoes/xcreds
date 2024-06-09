@@ -29,6 +29,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var adminCredentialsWindow: NSWindow!
     @IBOutlet weak var resetButton: NSButton!
     @IBOutlet weak var resetText: NSTextField!
+    @IBOutlet weak var resetTitle: NSTextField!
 
     var showResetButton = true
     var showResetText = true
@@ -45,6 +46,13 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     override func awakeFromNib() {
         resetButton.isHidden = !showResetButton
         resetText.isHidden = !showResetText
+
+        if let resetPasswordDialogTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.resetPasswordDialogTitle.rawValue), resetPasswordDialogTitle.count>0{
+
+            resetTitle.stringValue=resetPasswordDialogTitle
+        }
+
+//        resetPasswordDialogTitle
 
     }
     func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
