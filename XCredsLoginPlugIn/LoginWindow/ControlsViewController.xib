@@ -12,6 +12,9 @@
                 <outlet property="refreshGridColumn" destination="8Cw-21-fob" id="TAZ-uh-ulp"/>
                 <outlet property="restartGridColumn" destination="AiZ-fa-C1D" id="r8h-HG-Jsh"/>
                 <outlet property="shutdownGridColumn" destination="vSV-Ol-eHY" id="Mqo-KA-YRS"/>
+                <outlet property="systemInfoPopover" destination="Pge-rG-2P0" id="5Zw-N4-pgI"/>
+                <outlet property="systemInfoPopoverViewController" destination="65f-EP-uMZ" id="ncc-d6-G7v"/>
+                <outlet property="systemInfoTextField" destination="05Z-yi-Wg3" id="aJQ-GF-OKf"/>
                 <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
                 <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
                 <outlet property="versionTextField" destination="p61-id-z2n" id="qZT-E7-l0T"/>
@@ -33,6 +36,20 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="hD0-2k-DNh">
+                    <rect key="frame" x="910" y="0.0" width="92" height="16"/>
+                    <buttonCell key="cell" type="bevel" title="System Info" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="fGu-PP-maa">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <color key="contentTintColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="92" id="1ZO-Li-X27"/>
+                    </constraints>
+                    <connections>
+                        <action selector="showSystemInfoButtonPressed:" target="-2" id="QsR-iB-FJl"/>
+                    </connections>
+                </button>
                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p61-id-z2n">
                     <rect key="frame" x="10" y="-1" width="122" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="XCreds 1.1.1 (2000)" id="RPn-fH-Reb">
@@ -147,16 +164,49 @@ DQ
                 <constraint firstAttribute="bottom" secondItem="p61-id-z2n" secondAttribute="bottom" constant="-1" id="HTP-yV-Yjg"/>
                 <constraint firstAttribute="trailing" secondItem="4X8-WT-UyO" secondAttribute="trailing" id="I78-R5-t6d"/>
                 <constraint firstItem="p61-id-z2n" firstAttribute="top" secondItem="4X8-WT-UyO" secondAttribute="bottom" constant="-1" id="Kcd-gD-FlV"/>
+                <constraint firstAttribute="bottom" secondItem="hD0-2k-DNh" secondAttribute="bottom" id="Wz2-7N-dbo"/>
+                <constraint firstAttribute="trailing" secondItem="hD0-2k-DNh" secondAttribute="trailing" id="h4E-XL-gJC"/>
                 <constraint firstAttribute="height" constant="117" id="p34-fX-f9F"/>
                 <constraint firstItem="p61-id-z2n" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" constant="12" id="sc0-Ik-DVB"/>
             </constraints>
-            <point key="canvasLocation" x="55" y="732"/>
+            <point key="canvasLocation" x="55" y="731.5"/>
         </view>
+        <viewController id="65f-EP-uMZ" userLabel="Popover View Controller">
+            <connections>
+                <outlet property="view" destination="Nxe-Fs-xYc" id="ce1-lc-EKd"/>
+            </connections>
+        </viewController>
+        <popover id="Pge-rG-2P0">
+            <connections>
+                <outlet property="contentViewController" destination="65f-EP-uMZ" id="7eg-qS-1nM"/>
+            </connections>
+        </popover>
+        <customView id="Nxe-Fs-xYc" customClass="WhitePopoverBackgroundView" customModule="XCredsLoginPlugin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="223" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="05Z-yi-Wg3">
+                    <rect key="frame" x="18" y="20" width="187" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="System Info" id="0Ud-2a-Hjd">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="05Z-yi-Wg3" firstAttribute="leading" secondItem="Nxe-Fs-xYc" secondAttribute="leading" constant="20" symbolic="YES" id="5pd-zb-MFY"/>
+                <constraint firstAttribute="bottom" secondItem="05Z-yi-Wg3" secondAttribute="bottom" constant="20" symbolic="YES" id="8rs-pT-LQq"/>
+                <constraint firstAttribute="trailing" secondItem="05Z-yi-Wg3" secondAttribute="trailing" constant="20" symbolic="YES" id="cQ0-pY-A8q"/>
+                <constraint firstItem="05Z-yi-Wg3" firstAttribute="top" secondItem="Nxe-Fs-xYc" secondAttribute="top" constant="20" symbolic="YES" id="yH8-qZ-OKd"/>
+            </constraints>
+            <point key="canvasLocation" x="-181.5" y="93"/>
+        </customView>
     </objects>
     <resources>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
-        <image name="loginwindow" width="41" height="32"/>
+        <image name="loginwindow" width="41" height="31.5"/>
         <image name="refresh symbol" width="989" height="989"/>
         <image name="wifi" width="32" height="32"/>
     </resources>

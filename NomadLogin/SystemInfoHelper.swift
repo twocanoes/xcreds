@@ -15,15 +15,19 @@ class SystemInfoHelper {
     func info() -> [String] {
         var info = [String]()
         
-        info.append(ProcessInfo.processInfo.operatingSystemVersionString)
+        info.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
         info.append("Serial: \(getSerial())")
         info.append("MAC: \(getMAC())")
-        info.append(Host.current().localizedName!)
-        info.append(ProcessInfo.processInfo.hostName)
-        
+        info.append("Computer Name: \(Host.current().localizedName!)")
+        info.append("Hostname: \(ProcessInfo.processInfo.hostName)")
+
+        if let ssid = WifiManager().getCurrentSSID(){
+            info.append("SSID: \(ssid)")
+        }
+
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {
-            info.append(ipAddresses[0])
+            info.append("IP Address: \(ipAddresses[0])")
         }
         
         return info

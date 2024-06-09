@@ -7,7 +7,9 @@
 
 import Cocoa
 
-class ControlsViewController: NSViewController {
+class ControlsViewController: NSViewController, NSPopoverDelegate {
+    @IBOutlet var systemInfoPopover: NSPopover!
+    @IBOutlet var systemInfoPopoverViewController: NSViewController!
     var delegate: XCredsMechanismProtocol?
 
     @IBOutlet weak var refreshGridColumn: NSGridColumn?
@@ -20,6 +22,8 @@ class ControlsViewController: NSViewController {
 
     let uiLog = "uiLog"
     @IBOutlet weak var versionTextField: NSTextField?
+    @IBOutlet weak var systemInfoTextField: NSTextField?
+
     var loadPageURL:URL?
 //    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
@@ -86,6 +90,31 @@ class ControlsViewController: NSViewController {
     func keyUp(key: NSEvent) -> NSEvent?{
         keyCodesPressed.removeValue(forKey: key.keyCode)
         return key
+    }
+    @IBAction func showSystemInfoButtonPressed(_ sender: NSButton) {
+        if systemInfoPopover.isShown==true {
+            systemInfoPopover.performClose(self)
+            return
+        }
+        
+        var sysInfo = SystemInfoHelper().info().joined(separator: "\n")
+
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+
+            let adSession = NoMADSession(domain:prefDomainName , user: "")
+            let ldapServers = adSession.getSRVRecords(prefDomainName)
+
+            if ldapServers.count>0{
+                sysInfo.append("\nAD Domain:\(prefDomainName) (Reachable)\n")
+            }
+            else {
+                sysInfo.append("\nAD Domain: \(prefDomainName) (Not Reachable)\n")
+            }
+
+        }
+        self.systemInfoTextField?.stringValue = sysInfo
+        self.systemInfoPopover.delegate=self
+        systemInfoPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxY)
     }
     func keyDown(key: NSEvent) -> NSEvent?{
         keyCodesPressed[key.keyCode]=true
@@ -178,7 +207,6 @@ class ControlsViewController: NSViewController {
 
             }
         }
-
 //        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
 //            TCSLogWithMark("Resolution changed. Resetting size")
 //            self.setupLoginWindowControlsAppearance()
