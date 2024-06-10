@@ -1,5 +1,17 @@
 # What's New In XCreds #
 
+## XCreds 5.0 ##
+
+[Feature Request] Add option to customize the Refresh Banner text #176
+Feature Request: EnforceSignIn #199
+added new preference to manage more buttons on login screen: shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton. Feature Request - Add key to disable showing shutdown and/or restart on login overlay #203
+Allow override of killall loginwindow in xcreds postinstall script #181
+bumped version of manifest Update manifest pfm_last_modified and pfm_version #164
+fixed Fix manifest title for ROPG pref #183
+added option for system info button title #154
+System Info on XCreds Login Window #154
+implemented Feature Request - Change the wording of the password change pop-up #202
+
 ## XCreds 4.1 ##
 
 Customization of Menu
