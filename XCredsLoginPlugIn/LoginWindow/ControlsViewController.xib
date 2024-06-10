@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ControlsViewController" customModule="XCredsLoginPlugin">
             <connections>
+                <outlet property="buttonGridView" destination="Of1-FL-rgU" id="U9d-R0-Z4b"/>
                 <outlet property="macLoginWindowGridColumn" destination="Qgw-6x-QRs" id="YHA-Qx-deF"/>
                 <outlet property="refreshGridColumn" destination="8Cw-21-fob" id="TAZ-uh-ulp"/>
                 <outlet property="restartGridColumn" destination="AiZ-fa-C1D" id="r8h-HG-Jsh"/>

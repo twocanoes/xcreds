@@ -12,6 +12,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet var systemInfoPopoverViewController: NSViewController!
     var delegate: XCredsMechanismProtocol?
 
+    @IBOutlet weak var buttonGridView: NSGridView!
     @IBOutlet weak var refreshGridColumn: NSGridColumn?
     @IBOutlet weak var shutdownGridColumn: NSGridColumn?
     @IBOutlet weak var restartGridColumn: NSGridColumn?
@@ -19,6 +20,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet weak var systemInfoButton: NSButton!
     @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
+
     @IBOutlet weak var toolsView: NSView?
 
     let uiLog = "uiLog"
@@ -264,6 +266,16 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             TCSLogWithMark()
 
             self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+
+            self.shutdownGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowShutdownButton.rawValue)
+
+
+            self.restartGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRestartButton.rawValue)
+
+
+            self.systemInfoButton?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSystemInfoButton.rawValue)
+
+
             TCSLogWithMark()
 
             self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)

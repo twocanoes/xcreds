@@ -30,6 +30,12 @@
 	<string>1</string>
 	<key>shouldShowConfigureWifiButton</key>
 	<true/>
+	<key>shouldShowShutdownButton</key>
+	<true/>
+	<key>shouldShowRestartButton</key>
+	<true/>
+	<key>shouldShowSystemInfoButton</key>
+	<true/>
 	<key>shouldShowMacLoginButton</key>
 	<string>1</string>
 	<key>shouldShowRefreshBanner</key>
