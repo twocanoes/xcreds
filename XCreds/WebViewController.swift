@@ -36,7 +36,15 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             let licenseState = LicenseChecker().currentLicenseState()
             if let refreshTitleTextField = self.refreshTitleTextField {
                 refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+
+
+                if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
+                    self.refreshTitleTextField?.stringValue = refreshBannerText
+                }
+
             }
+
+            
 
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self

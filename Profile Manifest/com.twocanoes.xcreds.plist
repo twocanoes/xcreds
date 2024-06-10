@@ -769,6 +769,20 @@ Note that Google does not support the offline_access scope so instead use the pr
 		</dict>
 		<dict>
 			<key>pfm_default</key>
+			<string>Your local account password needs to be changed to match your online password. Please authenticate now.</string>
+			<key>pfm_description</key>
+			<string>Text at top of window shown in user session when prompting for password.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>refreshBannerText</string>
+			<key>pfm_title</key>
+			<string>Refresh Banner Text</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
 			<string>Show text at the top of the prompt window when tokens expire.</string>

@@ -68,6 +68,8 @@
 	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
+	<key>refreshBannerText</key>
+	<string>Your local account password needs to be changed to match your online password. Please authenticate now.</string>
 	<key>shouldPromptForMigration</key>
 	<false/>
 	<key>shouldAllowKeyComboForMacLoginWindow</key>
