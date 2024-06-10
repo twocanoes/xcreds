@@ -12,6 +12,7 @@
                 <outlet property="refreshGridColumn" destination="8Cw-21-fob" id="TAZ-uh-ulp"/>
                 <outlet property="restartGridColumn" destination="AiZ-fa-C1D" id="r8h-HG-Jsh"/>
                 <outlet property="shutdownGridColumn" destination="vSV-Ol-eHY" id="Mqo-KA-YRS"/>
+                <outlet property="systemInfoButton" destination="hD0-2k-DNh" id="mDV-FR-BvK"/>
                 <outlet property="systemInfoPopover" destination="Pge-rG-2P0" id="5Zw-N4-pgI"/>
                 <outlet property="systemInfoPopoverViewController" destination="65f-EP-uMZ" id="ncc-d6-G7v"/>
                 <outlet property="systemInfoTextField" destination="05Z-yi-Wg3" id="aJQ-GF-OKf"/>
@@ -37,15 +38,12 @@
                     </textFieldCell>
                 </textField>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="hD0-2k-DNh">
-                    <rect key="frame" x="910" y="0.0" width="92" height="16"/>
+                    <rect key="frame" x="926" y="0.0" width="76" height="16"/>
                     <buttonCell key="cell" type="bevel" title="System Info" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="fGu-PP-maa">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <color key="contentTintColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="92" id="1ZO-Li-X27"/>
-                    </constraints>
                     <connections>
                         <action selector="showSystemInfoButtonPressed:" target="-2" id="QsR-iB-FJl"/>
                     </connections>

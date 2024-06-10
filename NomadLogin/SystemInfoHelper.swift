@@ -33,6 +33,14 @@ class SystemInfoHelper {
         return info
     }
     
+    func ipAddress() -> String? {
+        let ipAddresses = getIFAddresses()
+
+        if ipAddresses.count>0{
+            return ipAddresses[0]
+        }
+        return nil
+    }
     private func getIFAddresses() -> [String] {
         var addresses = [String]()
 

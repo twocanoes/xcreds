@@ -16,6 +16,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet weak var shutdownGridColumn: NSGridColumn?
     @IBOutlet weak var restartGridColumn: NSGridColumn?
 
+    @IBOutlet weak var systemInfoButton: NSButton!
     @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
     @IBOutlet weak var toolsView: NSView?
@@ -145,6 +146,34 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         }
         return key
     }
+    func setupSystemInfoButton() {
+        let systemInfoButtonTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.systemInfoButtonTitle.rawValue)
+
+        switch systemInfoButtonTitle {
+        case ".os":
+            systemInfoButton.title = "macOS " + ProcessInfo.processInfo.operatingSystemVersionString
+
+        case ".hostname":
+            systemInfoButton.title = "Hostname: " + ProcessInfo.processInfo.hostName
+        case ".ipaddress":
+            systemInfoButton.title = "IP Address: " + (SystemInfoHelper().ipAddress() ?? "No IPAddress")
+
+        case ".serial":
+            systemInfoButton.title = "Serial: " + getSerial()
+
+        case ".mac":
+            systemInfoButton.title = "MAC Address:" + getMAC()
+
+        case ".computername":
+            systemInfoButton.title = "Computer Name" +  (Host.current().localizedName ?? "unknown computername")
+
+        case ".ssid":
+            systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
+
+        default:
+            break
+        }
+    }
     override func awakeFromNib() {
         TCSLogWithMark()
         super.awakeFromNib()
@@ -154,7 +183,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
         NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
 
-
+        setupSystemInfoButton()
         switch licenseState {
 
         case .valid:

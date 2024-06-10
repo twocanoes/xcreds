@@ -591,7 +591,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>Favor using XCreds' local login screen over the cloud login UI.</string>
+			<string>Favor using XCreds&apos; local login screen over the cloud login UI.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -689,7 +689,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Don't show the UI if this key is defined and a file or folder exists at this path.</string>
+			<string>Don&apos;t show the UI if this key is defined and a file or folder exists at this path.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -701,7 +701,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Name of OIDC claim that contains an alias to add to a user account. Usually this is the "upn" (eg syd@twocanoes.com) so the user can log in at the standard login window the same as the IdP login window. Adds the value to record name of the user account as an alias.</string>
+			<string>Name of OIDC claim that contains an alias to add to a user account. Usually this is the &quot;upn&quot; (eg syd@twocanoes.com) so the user can log in at the standard login window the same as the IdP login window. Adds the value to record name of the user account as an alias.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -947,7 +947,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>Reset the keychain without prompting if the login password doesn't match the local password.</string>
+			<string>Reset the keychain without prompting if the login password doesn&apos;t match the local password.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1006,6 +1006,20 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<string>Reset Password Dialog Title</string>
 			<key>pfm_default</key>
 			<string>Please enter your local login password to sync your cloud password and login.</string>
+			<key>pfm_type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>The title of the button for system info in the bottom right corner of the login screen. This can either be plain text or one of these special values: .os, .hostname, .ipaddress, .serial, .mac, .computername, .ssid. Using the special value will populate the associated infomation as the button title</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>systemInfoButtonTitle</string>
+			<key>pfm_title</key>
+			<string>System Info Button Title</string>
+			<key>pfm_default</key>
+			<string>System Info</string>
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
@@ -1070,9 +1084,9 @@ Note that Google does not support the offline_access scope so instead use the pr
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Password element id of the html element that has the password. It is read by using JavaScript to get the value (for example, for Azure, the JavaScript document.getElementById('i0118').value is sent. If this default is not set, standard values for Azure and Google Cloud will be used. To find out this value, use a browser to inspect the source of the page that has the password on it. Find the id of the textfield that has the password. Fill in the password and then open the JavaScript console. Run:
+			<string>Password element id of the html element that has the password. It is read by using JavaScript to get the value (for example, for Azure, the JavaScript document.getElementById(&apos;i0118&apos;).value is sent. If this default is not set, standard values for Azure and Google Cloud will be used. To find out this value, use a browser to inspect the source of the page that has the password on it. Find the id of the textfield that has the password. Fill in the password and then open the JavaScript console. Run:
 
-document.getElementById('passwordID').value
+document.getElementById(&apos;passwordID&apos;).value
 
 changing “passwordID” to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.</string>
 			<key>pfm_documentation_url</key>
@@ -1340,7 +1354,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>Name for Shares menu item. Default: "Shares".</string>
+			<string>Name for Shares menu item. Default: &quot;Shares&quot;.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
