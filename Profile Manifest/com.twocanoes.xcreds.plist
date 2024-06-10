@@ -669,7 +669,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_name</key>
 			<string>shouldUseROPGForMenuLogin</string>
 			<key>pfm_title</key>
-			<string>Use ROPG when testing password</string>
+			<string>Use ROPG for menu login</string>
 			<key>pfm_type</key>
 			<string>boolean</string>
 		</dict>
