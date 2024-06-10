@@ -122,7 +122,6 @@ public class DefaultsOverride: UserDefaults {
         return UserDefaults.standard.string(forKey: defaultName)
     }
     override public func object(forKey defaultName: String) -> Any? {
-        TCSLogWithMark()
 
         if let defaultName = cachedPrefs[defaultName]{
             return defaultName

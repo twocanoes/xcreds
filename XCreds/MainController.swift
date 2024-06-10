@@ -46,16 +46,27 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         super.init()
         scheduleManager.feedbackDelegate=self
 
-        if isLocalOnlyAccount() == false {
+        let shouldShowIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowIfLocalOnlyUser.rawValue)
+
+        if isLocalOnlyAccount() == false || shouldShowIfLocalOnlyUser==true {
             let accountAndPassword = localAccountAndPassword()
             if let password = accountAndPassword.1 {
                 scheduleManager.kerberosPassword = password
             }
             self.scheduleManager.startCredentialCheck()
-
         }
+//        if shouldHideIfLocalOnlyUser == true {
+//            showSignInWindow(forceLoginWindowType: .cloud)
+//        }
+
+
     }
 
+
+//    override func awakeFromNib() {
+//        let shouldHideIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideIfLocalOnlyUser.rawValue)
+//
+//    }
     func isLocalOnlyAccount() -> Bool {
 
         let user = getConsoleUser()
@@ -212,6 +223,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if discoveryURL == nil {
             return
         }
+        let shouldShowIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowIfLocalOnlyUser.rawValue)
+
+        if shouldShowIfLocalOnlyUser == true {
+            showSignInWindow(forceLoginWindowType: .cloud)
+        }
+
 
     }
 

@@ -34,6 +34,8 @@
 	<true/>
 	<key>shouldShowRestartButton</key>
 	<true/>
+	<key>shouldHideIfLocalOnlyUser</key>
+	<string>NO</string>
 	<key>shouldShowSystemInfoButton</key>
 	<true/>
 	<key>shouldShowMacLoginButton</key>
