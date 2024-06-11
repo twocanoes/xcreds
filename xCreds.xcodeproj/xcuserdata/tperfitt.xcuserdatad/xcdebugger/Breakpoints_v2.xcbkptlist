@@ -7,48 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3D041CA9-66A3-48AD-B367-00CD44752DEA"
+            uuid = "3B9A5832-55E4-4B9E-BCA2-84B8A91C03F2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/MainController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "init(passwordCheckTimer:feedbackDelegate:passwordExpires:nextPasswordCheck:credentialStatus:hasCredential:signInViewController:)"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "credentialsUpdated(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD4C6C9E-97AE-442D-87FD-1EB0F561D1D1"
+            uuid = "DDC73327-74F7-404F-B0B5-603FECAC09A7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/MainController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
-            landmarkName = "setup()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3F558A36-D8ED-4163-AA3C-9BC90690D28B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/ScheduleManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "startCredentialCheck()"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "isLocalOnlyAccount()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

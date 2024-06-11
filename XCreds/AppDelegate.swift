@@ -9,7 +9,7 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
-   
+
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
@@ -60,13 +60,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()
-
-
+        updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
         self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
-            let shareMounter = ShareMounter()
+        let shareMounter = ShareMounter()
 
         shareMounterMenu = ShareMounterMenu()
         shareMounterMenu?.shareMounter = shareMounter
@@ -146,6 +145,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     }
 
+    func updatePrefsFromDS(){
+        if let currentUser = PasswordUtils.getCurrentConsoleUserRecord() {
 
+            do {
+                let attributesArray = try currentUser.recordDetails(forAttributes: nil)
+                for currAttribute in attributesArray {
+                    if let key = currAttribute.key as? String, key.hasPrefix("dsAttrTypeNative:_xcreds"), let value = currAttribute.value as? Array<String>, let lastValue = value.last {
+                        let components = key.components(separatedBy: ":")
+                        if let strippedKey = components.last{
+                            UserDefaults.standard.set(lastValue, forKey:strippedKey)
+                        }
+                    }
+                }
+            }
+            catch {
+                TCSLogWithMark("could not get attributes from user")
+            }
+        }
+
+    }
 }
 

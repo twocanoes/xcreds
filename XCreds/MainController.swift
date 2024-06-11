@@ -74,10 +74,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             return false
         }
         let kerbPrinc = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal" )
-        let oidcIss = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_iss" )
 
-        if kerbPrinc == nil && oidcIss == nil {
-            TCSLogWithMark("no kerberos principal and no OIDC ISS in local DS console user, so skipping showing window")
+        let kerbPrincPrefs = UserDefaults.standard.string(forKey:"_xcreds_activedirectory_kerberosPrincipal" )
+
+        let oidcUsername = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_username" )
+
+        let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+
+
+        if kerbPrinc == nil && oidcUsername == nil && kerbPrincPrefs == nil && oidcUsernamePrefs == nil {
+            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user, so skipping showing window")
             return true
 
         }
@@ -277,14 +283,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
-/*
- let scheduleManager = ScheduleManager()
- var passwordExpires:String?
- var nextPasswordCheck:String?
- var credentialStatus:String?
- var hasCredential:Bool?
-
- */
     func passwordExpiryUpdate(_ passwordExpire: String) {
 
         self.passwordExpires=passwordExpire
@@ -293,7 +291,29 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasCredential=true
         credentialStatus="Valid Tokens"
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+        let tokenManager = TokenManager()
 
+        if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+
+            switch userInfoResult {
+
+            case .success(let retUserAccountInfo):
+                let userInfo = retUserAccountInfo
+                if let username = userInfo.username {
+                    UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                }
+                if let fullUsername = userInfo.fullUsername {
+                    UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
+                }
+                if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                    UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                }
+            case .error(let message):
+                TCSLogWithMark("Error getting infoResult: \(message)")
+            }
+
+        }
         DispatchQueue.main.async {
             self.windowController.window?.close()
 
