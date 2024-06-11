@@ -173,7 +173,9 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
 
         default:
-            break
+            if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {
+                systemInfoButton.title = systemInfoButtonTitle
+            }
         }
     }
     override func awakeFromNib() {
