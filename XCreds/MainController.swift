@@ -46,9 +46,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         super.init()
         scheduleManager.feedbackDelegate=self
 
-        let shouldShowIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowIfLocalOnlyUser.rawValue)
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-        if isLocalOnlyAccount() == false || shouldShowIfLocalOnlyUser==true {
+        if isLocalOnlyAccount() == false || shouldShowMenuBarSignInWithoutLoginWindowSignin==true {
             let accountAndPassword = localAccountAndPassword()
             if let password = accountAndPassword.1 {
                 scheduleManager.kerberosPassword = password
@@ -229,9 +229,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if discoveryURL == nil {
             return
         }
-        let shouldShowIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowIfLocalOnlyUser.rawValue)
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-        if shouldShowIfLocalOnlyUser == true {
+        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }
 

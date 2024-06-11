@@ -757,13 +757,13 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
-			<string>If the discovery URL is defined and shouldShowIfLocalOnlyUser is true, then the login window will be shown on first launch</string>
+			<string>If the discovery URL is defined and there are no token or tickets, the sign in window in the user session will show even if the user did not log in from the XCreds Login Window</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
-			<string>shouldShowIfLocalOnlyUser</string>
+			<string>shouldShowMenuBarSignInWithoutLoginWindowSignin</string>
 			<key>pfm_title</key>
-			<string>Show If Local Only User</string>
+			<string>Should Show Menu Bar SignIn Without Login Window Signin</string>
 			<key>pfm_type</key>
 			<string>boolean</string>
 		</dict>
