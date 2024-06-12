@@ -648,9 +648,32 @@ public class NoMADSession: NSObject {
                 let computedExpireDateRaw = ldapResult["msDS-UserPasswordExpiryTimeComputed"]
                 let userPasswordUACFlag = ldapResult["userAccountControl"] ?? ""
                 let userHomeTemp = ldapResult["homeDirectory"] ?? ""
-                let userDisplayName = ldapResult["displayName"] ?? ""
-                let firstName = ldapResult["givenName"] ?? ""
-                let lastName = ldapResult["sn"] ?? ""
+
+                var userDisplayName = ldapResult["displayName"] ?? ""
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.displayName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    userDisplayName=mapValue
+                }
+
+
+                var firstName = ldapResult["givenName"] ?? ""
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFirstName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    firstName=mapValue
+                }
+                var lastName = ldapResult["sn"] ?? ""
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapLastName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    lastName=mapValue
+                }
+
+                var shortName = userPrincipalShort
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    shortName=mapValue
+                }
+
+
                 var groupsTemp = ldapResult["memberOf"]
                 let userEmail = ldapResult["mail"] ?? ""
                 let UPN = ldapResult["userPrincipalName"] ?? ""
@@ -689,8 +712,7 @@ public class NoMADSession: NSObject {
                 
                 // pack up user record
                 TCSLogWithMark("ldifResult: \(ldifResult.debugDescription)")
-                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: userPrincipalShort, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults, rawAttributes: ldifResult.first)
-                TCSLogWithMark("ldifResult2: \(userRecord?.rawAttributes?.debugDescription)")
+                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: shortName, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults, rawAttributes: ldifResult.first)
 
             } else {
                 myLogger.logit(.base, message: "Unable to find user.")

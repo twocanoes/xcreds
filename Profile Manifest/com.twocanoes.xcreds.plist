@@ -1191,15 +1191,15 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>given_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for First Name. Default value: “given_name”. map_firstname should be set to an OIDC claim for first name.</string>
+			<string>Local DS to OIDC/AD Mapping for First Name. Default value: “given_name”. map_firstname should be set to an OIDC claim/AD Attribute for first name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
 			<string>map_firstname</string>
 			<key>pfm_note</key>
-			<string>Map firstName to OIDC claim</string>
+			<string>Map firstName to OIDC claim/AD Attribute</string>
 			<key>pfm_title</key>
-			<string>First Name OIDC Mapping</string>
+			<string>First Name OIDC Mapping/AD Attribute</string>
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
@@ -1207,13 +1207,13 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>family_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Last Name. Default value: “family_name”. map_lastname should be set to an OIDC claim for last name.</string>
+			<string>Local DS to OIDC/AD Mapping for Last Name. Default value: “family_name” (OIDC), &quot;sn&quot; (AD). map_lastname should be set to an OIDC claim for last name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
 			<string>map_lastname</string>
 			<key>pfm_note</key>
-			<string>Map lastName to OIDC claim</string>
+			<string>Map lastName to OIDC claim/AD Attribute</string>
 			<key>pfm_title</key>
 			<string>Last Name OIDC Mapping</string>
 			<key>pfm_type</key>
@@ -1223,15 +1223,15 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Full Name. Default value: “name”. map_fullname should be set to an OIDC claim for full name.</string>
+			<string>Local DS to OIDC/AD Attribute Mapping for Full Name. Default value: “name”(OIDC), &quot;displayName&quot; (AD). map_fullname should be set to an OIDC claim/AD Attribute for full name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
 			<string>map_fullname</string>
 			<key>pfm_note</key>
-			<string>Map fullName to OIDC claim</string>
+			<string>Map fullName to OIDC claim/AD Attribute</string>
 			<key>pfm_title</key>
-			<string>Full Name OIDC Mapping</string>
+			<string>Full Name OIDC Mapping/AD Attribute</string>
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
@@ -1239,15 +1239,15 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Name. Default value: “name”. map_username should be set to an OIDC claim for name.</string>
+			<string>Local DS to OIDC Mapping/AD Attribute for Name. Default value: “name” (OIDC), &quot;sAMAccountName&quot; (AD). map_username should be set to an OIDC claim/AD Attribute for name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
 			<string>map_username</string>
 			<key>pfm_note</key>
-			<string>Map Username to OIDC claim</string>
+			<string>Map Username to OIDC claim/AD Attribute</string>
 			<key>pfm_title</key>
-			<string>Username OIDC Mapping</string>
+			<string>Username OIDC Mapping/AD Attribute</string>
 			<key>pfm_type</key>
 			<string>string</string>
 		</dict>
