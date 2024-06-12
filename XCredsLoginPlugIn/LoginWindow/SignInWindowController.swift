@@ -238,7 +238,15 @@ protocol UpdateCredentialsFeedbackProtocol {
         passwordTextField.stringValue = ""
         passwordTextField.shake(self)
         alertTextField.isHidden=false
-        alertTextField.stringValue = message ?? "Authentication Failed"
+        if message?.lowercased() == "preauthentication failed" {
+            alertTextField.stringValue = "Authentication Failed"
+        }
+        else if message?.lowercased() == "unknown ad user" {
+            alertTextField.stringValue = "Authentication Failed"
+        }
+        else {
+            alertTextField.stringValue = message ?? "Authentication Failed"
+        }
         setLoginWindowState(enabled: true)
     }
 
