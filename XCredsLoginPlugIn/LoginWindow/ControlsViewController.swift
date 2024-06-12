@@ -167,7 +167,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             systemInfoButton.title = "MAC Address:" + getMAC()
 
         case ".computername":
-            systemInfoButton.title = "Computer Name" +  (Host.current().localizedName ?? "unknown computername")
+            systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
 
         case ".ssid":
             systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
