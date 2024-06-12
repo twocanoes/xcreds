@@ -110,7 +110,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         }
 
         nextCheckTime=Date()
-        timer=Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in //check every 5 minutes
+        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 5 minutes
             self.checkToken()
         })
         self.checkToken()
