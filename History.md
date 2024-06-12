@@ -2,6 +2,14 @@
 
 ## XCreds 5.0 ##
 
+Customize the XCReds app's native login dialog box #179
+[Feature Request] AD User Account Creation Name Mapping #172
+[Feature Request] AD - User friendly fail prompts #193
+AD attributes #166
+systemInfoButtonTitle does not respond to plain text values #220
+Clarify key name an description for shouldShowIfLocalOnlyUser #219
+changed manifest version back one; added copying DS user attibutes to prefs. Enhancement Request: XCreds app cant update ds #212
+----------
 [Feature Request] Add option to customize the Refresh Banner text #176
 Feature Request: EnforceSignIn #199
 added new preference to manage more buttons on login screen: shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton. Feature Request - Add key to disable showing shutdown and/or restart on login overlay #203
