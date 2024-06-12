@@ -307,11 +307,6 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
             return
         } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
-            //                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            //                guard let userName = currentUser?.recordName else {
-            //                    TCSLogWithMark("no username")
-            //                    return
-            //                }
 
             tokenManager.feedbackDelegate=self
 

@@ -31,6 +31,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var resetText: NSTextField!
     @IBOutlet weak var resetTitle: NSTextField!
 
+    @IBOutlet weak var usernameTextField: NSTextField!
     var showResetButton = true
     var showResetText = true
     var shouldPromptForAdmin=false
@@ -52,11 +53,9 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
             resetTitle.stringValue=resetPasswordDialogTitle
         }
 
-//        resetPasswordDialogTitle
-
     }
     func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
-
+        usernameTextField.stringValue = username
         if newPassword == nil {
          TCSLogWithMark("new password is nil")
         }
