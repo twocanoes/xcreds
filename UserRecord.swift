@@ -46,7 +46,8 @@ public struct ADUserRecord: NoMADUserRecord, Equatable {
     public var passwordLength: Int?
     public var ntName: String
     public var customAttributes: [String:Any]?
-    
+    public var rawAttributes:[String:String]?
+
     public static func ==(lhs: ADUserRecord, rhs: ADUserRecord) -> Bool {
         return (lhs.firstName == rhs.firstName && lhs.lastName == rhs.lastName)
     }

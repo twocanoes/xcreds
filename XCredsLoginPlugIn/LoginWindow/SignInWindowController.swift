@@ -332,6 +332,12 @@ protocol UpdateCredentialsFeedbackProtocol {
         session.delegate = self
         session.recursiveGroupLookup = getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false
         
+
+        if let customLDAPAttributes = getManagedPreference(key: .CustomLDAPAttributes) as? Array<String> {
+            TCSLogWithMark("Adding requested Custom Attributes:\(customLDAPAttributes)")
+            session.customAttributes=customLDAPAttributes
+        }
+
         if let ignoreSites = getManagedPreference(key: .IgnoreSites) as? Bool {
             os_log("Ignoring AD sites", log: uiLog, type: .debug)
 
@@ -839,8 +845,6 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
         updateCredentialsFeedbackDelegate?.adUserUpdated(user)
 
-
-
         TCSLogWithMark("Checking for DenyLogin groupsChecking for DenyLogin groups")
         
         if let allowedGroups = getManagedPreference(key: .DenyLoginUnlessGroupMember) as? [String] {
@@ -961,6 +965,13 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         // set the network auth time to be added to the user record
         mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+
+        if let userAttributes = user.rawAttributes{
+            TCSLogWithMark("Setting AD user attributes")
+            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes )
+
+        }
+
     }
 
 }

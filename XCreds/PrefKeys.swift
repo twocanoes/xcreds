@@ -9,7 +9,7 @@ import Foundation
 
 enum PrefKeys: String {
     case clientID, clientSecret, password="xcreds local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours,refreshRateMinutes, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowVersionInfo, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault, shouldPreferLocalLoginInsteadOfCloudLogin, idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked,accounts = "Accounts",
-         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow, showLoginWindowDelaySeconds, shouldPromptForMigration, shouldAllowKeyComboForMacLoginWindow, aliasName,claimsToAddToLocalUserAccount, loadPageTitle, loadPageInfo,shouldPromptForADPasswordChange, hideIfPathExists, allowedUsersArray, allowUsersClaim, mapKerberosPrincipalName, mapFirstName = "map_firstname",mapFullName = "map_fullname", mapUserName = "map_username", mapLastName = "map_lastname",menuItemWindowBackgroundImageURL, menuItems, shareMenuItemName, shouldShowSignInMenuItem, shouldLoginWindowBackgroundImageFillScreen,resetPasswordDialogTitle, systemInfoButtonTitle, shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton, shouldShowMenuBarSignInWithoutLoginWindowSignin, refreshBannerText
+         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow, showLoginWindowDelaySeconds, shouldPromptForMigration, shouldAllowKeyComboForMacLoginWindow, aliasName,claimsToAddToLocalUserAccount, loadPageTitle, loadPageInfo,shouldPromptForADPasswordChange, hideIfPathExists, allowedUsersArray, allowUsersClaim, mapKerberosPrincipalName, mapFirstName = "map_firstname",mapFullName = "map_fullname", mapUserName = "map_username", mapLastName = "map_lastname",menuItemWindowBackgroundImageURL, menuItems, shareMenuItemName, shouldShowSignInMenuItem, shouldLoginWindowBackgroundImageFillScreen,resetPasswordDialogTitle, systemInfoButtonTitle, shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton, shouldShowMenuBarSignInWithoutLoginWindowSignin, refreshBannerText,adUserAttributesToAddToLocalUserAccount
     case shouldUseROPGForPasswordChangeChecking
     case shouldUseROPGForMenuLogin
     case shouldUseROPGForLoginWindowLogin
@@ -219,6 +219,8 @@ enum Preferences: String {
     /// Should existing mobile accounts be converted into plain local accounts? Set as a `Bool`.
     case CustomNoMADLocation
     /// If defined it specifies the custom location of the application to be given access to the keychain item. Set as a `String`
+    ///
+    case CustomLDAPAttributes
     case DemobilizeUsers
     /// Should we always have a password already set up before demobilizing
     case DemobilizeForcePasswordCheck

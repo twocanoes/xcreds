@@ -361,7 +361,7 @@ import OpenDirectory
         }
     }
     func setHint(type: HintType, hint: Any) {
-        guard (hint is String || hint is [String] || hint is Bool) else {
+        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
             TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }

@@ -340,6 +340,31 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
         }
 
+        let adAttributes = getHint(type: .allADAttributes) as? Dictionary<String, String>
+
+        let adUserAttributesToAddToLocalUserAccount = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.adUserAttributesToAddToLocalUserAccount.rawValue) ?? []) as? [String]
+
+
+        if let adAttributes = adAttributes {
+            TCSLogWithMark("AD Attributes: \(adAttributes)")
+            for adAttribute in adAttributes {
+                let key = adAttribute.key
+                let value = adAttribute.value
+                if let adUserAttributesToAddToLocalUserAccount = adUserAttributesToAddToLocalUserAccount, adUserAttributesToAddToLocalUserAccount.contains(key){
+                    TCSLogWithMark("Found Matching AD attribute: \(key)")
+                    let sanitizedKey = key.oidc_allowed_chars
+                    if sanitizedKey.count<50 && value.count<256 {
+                        TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
+                        try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_\(sanitizedKey)")
+                    }
+
+                }
+            }
+
+        }
+        else {
+            TCSLogWithMark("No AD Attributes")
+        }
 
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
@@ -358,7 +383,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                         TCSLogWithMark("Found Matching Claim: \(currClaim)")
                         if let value = idTokenInfo[currClaim] as? String {
                             let sanitizedKey = currClaim.oidc_allowed_chars
-                            if sanitizedKey.count<20 || value.count<256 {
+                            if sanitizedKey.count<50 && value.count<256 {
                                 TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
                                 try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
 

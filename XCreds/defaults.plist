@@ -78,6 +78,11 @@
 	<array>
 		<string>groups</string>
 	</array>
+	<key>adUserAttributesToAddToLocalUserAccount</key>
+	<array>
+		<string>userPrincipalName</string>
+		<string>dn</string>
+	</array>
 	<key>loadPageTitle</key>
 	<string>Please Wait....</string>
 	<key>loadPageInfo</key>

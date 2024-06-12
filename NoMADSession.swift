@@ -643,6 +643,7 @@ public class NoMADSession: NSObject {
             
             if let ldifResult = try? getLDAPInformation(attributes, searchTerm: searchTerm) {
                 let ldapResult = getAttributesForSingleRecordFromCleanedLDIF(attributes, ldif: ldifResult)
+                TCSLogWithMark(ldapResult.description)
                 let passwordSetDate = ldapResult["pwdLastSet"]
                 let computedExpireDateRaw = ldapResult["msDS-UserPasswordExpiryTimeComputed"]
                 let userPasswordUACFlag = ldapResult["userAccountControl"] ?? ""
@@ -687,9 +688,10 @@ public class NoMADSession: NSObject {
                 userHome = userHome.replacingOccurrences(of: " ", with: "%20")
                 
                 // pack up user record
+                TCSLogWithMark("ldifResult: \(ldifResult.debugDescription)")
+                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: userPrincipalShort, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults, rawAttributes: ldifResult.first)
+                TCSLogWithMark("ldifResult2: \(userRecord?.rawAttributes?.debugDescription)")
 
-                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: userPrincipalShort, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults)
-                
             } else {
                 myLogger.logit(.base, message: "Unable to find user.")
             }
