@@ -243,7 +243,22 @@ public extension DSQueryable {
             throw error
         }
     }
+    func userWithUID(uid:String) throws -> [ODRecord] {
+        do {
+            let query = try ODQuery.init(node: localNode,
+                                         forRecordTypes: kODRecordTypeUsers,
+                                         attribute: kODAttributeTypeUniqueID,
+                                         matchType: ODMatchType(kODMatchEqualTo),
+                                         queryValues: uid,
+                                         returnAttributes: kODAttributeTypeAllAttributes,
+                                         maximumResults: 0)
+            return try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            os_log("ODError while user with \(uid).", type: .error)
+            throw error
+        }
 
+    }
     func isAdmin(_ user:ODRecord) -> Bool {
         let adminGroup = try? getLocalGroupRecord("admin")
         do{

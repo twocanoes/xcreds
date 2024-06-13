@@ -34,6 +34,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         var groups:Array<String>?
         var alias:String?
         var kerberosPrincipalName:String?
+        var uid:String?
     }
     enum ParseHintsResult:Error {
         case error(String)
@@ -402,6 +403,22 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark("no alias claim: \(aliasClaim ?? "none")")
         }
 
+        //uid
+        let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
+
+        if let mapUID = mapUID, let uid = idTokenInfo[mapUID] as? String {
+            if let mapValueInt = Int(uid), mapValueInt > 499 {
+                TCSLogWithMark("setting uid: \(uid)")
+                userAccountInfo.uid = uid
+            }
+            else {
+                TCSLogWithMark("invalid uid mapping value")
+            }
+
+        }
+        else {
+            TCSLogWithMark("No uid mapping")
+        }
 
         return .success(userAccountInfo)
 

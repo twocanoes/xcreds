@@ -107,11 +107,38 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 secureTokenCreds = creds
             }
 
-            guard let uid = findFirstAvaliableUID() else {
-                TCSLogErrorWithMark("Could not find an available UID")
-                return
+            var uid:String?
+            if let hintUID = getHint(type: .uid) as? String{
+                if let hintUIDInt = Int(hintUID), hintUIDInt>499 {
+                    do {
+                        let user = try userWithUID(uid: hintUID)
+                        if user.count==0 {
+                            TCSLogWithMark("setting uid to \(hintUID) from mapped value)")
+                            uid = hintUID
+                        }
+                        else {
+                            TCSLogWithMark("user already exists with uid of \(hintUID).")
+                            denyLogin(message: "Could not create new user. Existing user already using uid of \(hintUID)")
+                        }
+                    }
+                    catch {
+                        TCSLogWithMark("Unable to lookup user with uid \(hintUID)")
+                        denyLogin(message: "Unable to lookup user with uid \(hintUID)")
+
+                    }
+                }
+                else {
+                    TCSLogWithMark("Invalid UID provided in mapping")
+                }
             }
-            
+            else {
+                guard  let firstAvailableUid = findFirstAvailableUID() else {
+                    TCSLogErrorWithMark("Could not find an available UID")
+                    denyLogin(message: "invalid UID")
+                    return
+                }
+                uid = firstAvailableUid
+            }
             TCSLog("Checking for createLocalAdmin key")
             var fullname:String?
 
@@ -136,6 +163,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
                 return
 
+            }
+            guard let uid = uid else {
+                denyLogin(message:"bad uid.")
+                return
             }
             do {
                 try createUser(shortName: xcredsUser,
@@ -701,7 +732,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     /// Finds the first avaliable UID in the DSLocal domain above 500 and returns it as a `String`
     ///
     /// - Returns: `String` representing the UID
-    func findFirstAvaliableUID() -> String? {
+    func findFirstAvailableUID() -> String? {
         var newUID = ""
         os_log("Checking for available UID", log: createUserLog, type: .debug)
         

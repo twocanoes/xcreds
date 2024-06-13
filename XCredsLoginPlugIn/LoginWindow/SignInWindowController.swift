@@ -865,6 +865,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
             }
         }
     
+        let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
+
+        if let mapUID = mapUID, let rawAttributes = user.rawAttributes, let uidString = rawAttributes[mapUID]  {
+            mechanismDelegate?.setHint(type: .uid, hint: uidString)
+
+        }
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
             mechanismDelegate?.setHint(type: .ntName, hint: ntName)

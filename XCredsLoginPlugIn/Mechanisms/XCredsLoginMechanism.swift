@@ -15,14 +15,12 @@ import Network
     var timer:Timer?
     let checkADLog = "checkADLog"
     var loginWindowType = LoginWindowType.cloud
-    var mainLoginWindowController:MainLoginWindowController
+    var mainLoginWindowController:MainLoginWindowController?
     override init(mechanism: UnsafePointer<MechanismRecord>) {
 
-        mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
 
         super.init(mechanism: mechanism)
 
-        mainLoginWindowController.mechanism=self
 
 //        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
@@ -69,12 +67,12 @@ import Network
     override func reload() {
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")
-            mainLoginWindowController.setupLoginWindowAppearance()
-            mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=false
+            mainLoginWindowController?.setupLoginWindowAppearance()
+            mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=false
             loginWebViewController?.loadPage()
         }
         else {
-            mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=true
+            mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=true
 
         }
     }
@@ -154,7 +152,7 @@ import Network
     }
     func selectAndShowLoginWindow(){
         TCSLogWithMark()
-        if let window = mainLoginWindowController.window {
+        if let window = mainLoginWindowController?.window {
             window.makeKeyAndOrderFront(self)
             window.orderFrontRegardless()
         }
@@ -192,7 +190,11 @@ import Network
         }
     }
     @objc override func run() {
+        loginWebViewController=nil
+        signInViewController=nil
         TCSLogWithMark("XCredsLoginMechanism mech starting")
+        mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
+        mainLoginWindowController?.mechanism=self
 
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
@@ -261,9 +263,8 @@ import Network
 
         if loginWebViewController != nil || signInViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
-            mainLoginWindowController.loginTransition {
+            mainLoginWindowController?.loginTransition {
                 super.allowLogin()
-
             }
         }
         else {
@@ -287,7 +288,7 @@ import Network
 
         case .cloud:
             self.loginWindowType = LoginWindowType.cloud
-            self.mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=false
+            self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=false
 
             if loginWebViewController==nil{
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
@@ -333,11 +334,11 @@ import Network
             TCSLogWithMark("setting loginWindowHeight to \(loginWindowHeight)")
 
             loginWebViewController.view.setFrameSize(NSMakeSize(loginWindowWidth, loginWindowHeight))
-            mainLoginWindowController.addCenterView(loginWebViewController.view)
+            mainLoginWindowController?.addCenterView(loginWebViewController.view)
 
 
         case .usernamePassword:
-            self.mainLoginWindowController.controlsViewController?.refreshGridColumn?.isHidden=true
+            self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=true
 
             NetworkMonitor.shared.stopMonitoring()
             self.loginWindowType = .usernamePassword
@@ -357,10 +358,10 @@ import Network
             }
             TCSLogWithMark()
 
-            mainLoginWindowController.addCenterView(signInViewController.view)
-            
+            mainLoginWindowController?.addCenterView(signInViewController.view)
+
             TCSLogWithMark()
-            mainLoginWindowController.window?.makeFirstResponder(signInViewController.view)
+            mainLoginWindowController?.window?.makeFirstResponder(signInViewController.view)
 
             signInViewController.mechanismDelegate=self
             if signInViewController.usernameTextField != nil {
@@ -377,8 +378,8 @@ import Network
                 signInViewController.localOnlyCheckBox.isEnabled = true
             }
             TCSLogWithMark("forcing front")
-            mainLoginWindowController.window?.forceToFrontAndFocus(self)
-            mainLoginWindowController.window?.makeFirstResponder(signInViewController.usernameTextField)
+            mainLoginWindowController?.window?.forceToFrontAndFocus(self)
+            mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
 
         }
 //        var app = NSWorkspace.shared.frontmostApplication
