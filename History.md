@@ -2,6 +2,14 @@
 
 ## XCreds 5.0 ##
 
+
+----------
+Map UID #186
+Menubar refresh is delayed when setting shouldPromptForADPasswordChange #195
+Fix formatting for systemInfoButtonTitle #221
+Corrections for manifest #224
+Hang at login after password reset #223
+----------
 Customize the XCReds app's native login dialog box #179
 [Feature Request] AD User Account Creation Name Mapping #172
 [Feature Request] AD - User friendly fail prompts #193
