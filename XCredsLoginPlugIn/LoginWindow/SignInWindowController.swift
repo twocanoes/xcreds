@@ -833,6 +833,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
+
         TCSLogWithMark("User Info:\(user)")
         TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
@@ -903,8 +904,15 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     promptPasswordWindowController.showResetButton=false
 
                 }
+                var currUser = user.shortName
                 TCSLogWithMark("switch  promptPasswordWindowController")
-                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
+                if isInUserSpace == true {
+                    let consoleUser = getConsoleUser()
+                    currUser=consoleUser
+                }
+
+
+                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: currUser, newPassword: passString, shouldUpdatePassword: true) {
 
                 case .success(let enteredUsernamePassword):
 

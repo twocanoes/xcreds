@@ -55,18 +55,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
             self.scheduleManager.startCredentialCheck()
         }
-//        if shouldHideIfLocalOnlyUser == true {
-//            showSignInWindow(forceLoginWindowType: .cloud)
-//        }
 
 
     }
 
 
-//    override func awakeFromNib() {
-//        let shouldHideIfLocalOnlyUser = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideIfLocalOnlyUser.rawValue)
-//
-//    }
+
     func isLocalOnlyAccount() -> Bool {
 
         let user = getConsoleUser()

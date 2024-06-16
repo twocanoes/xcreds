@@ -93,16 +93,16 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
                 myItem.toolTip = String(describing: share.url)
                 if share.mountStatus == .mounted {
                     myItem.isEnabled = true
-//                    myItem.state = NSControl.StateValue(rawValue: 1)
+                    myItem.state = NSControl.StateValue(rawValue: 1)
                 } else if share.mountStatus == .mounting {
                     myItem.isEnabled = false
-//                    myItem.state = NSControl.StateValue(rawValue: 0)
+                    myItem.state = NSControl.StateValue(rawValue: 0)
                 } else if share.mountStatus == .unmounted {
                     myItem.isEnabled = true
-//                    myItem.state = NSControl.StateValue(rawValue: 0)
+                    myItem.state = NSControl.StateValue(rawValue: 0)
                 } else if share.mountStatus == .errorOnMount {
                     myItem.isEnabled = false
-//                    myItem.state = NSControl.StateValue(rawValue: 0)
+                    myItem.state = NSControl.StateValue(rawValue: 0)
                 }
 
                 myShareMenu.addItem(myItem)

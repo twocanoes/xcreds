@@ -7,63 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EE2CA700-9225-4C1E-8E49-50AD3892762A"
+            uuid = "0BD5758E-6B4D-47C7-8321-B33125CF8535"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/NetworkMonitor.swift"
+            filePath = "ShareMounter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "stopMonitoring()"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "mountShares()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "26EB074E-D94B-42DD-8E31-4C67E1C6376A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
-            landmarkName = "setup()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "26EB074E-D94B-42DD-8E31-4C67E1C6376A - 39bc26e3b1abac38"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.MainController.setup() -&gt; ()"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "205"
-                  endingLineNumber = "205">
-               </Location>
-               <Location
-                  uuid = "26EB074E-D94B-42DD-8E31-4C67E1C6376A - 50e68070b3be47b9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 @Sendable (Foundation.Notification) -&gt; () in XCreds.MainController.setup() -&gt; ()"
-                  moduleName = "XCreds"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/MainController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "206"
-                  endingLineNumber = "206">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
