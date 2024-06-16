@@ -54,6 +54,8 @@ import OpenDirectory
 
             }
         }
+
+
         do {
 
             let tokenManager = TokenManager()
@@ -75,6 +77,34 @@ import OpenDirectory
             case .error(let message):
                 denyLogin(message:message)
                 return .failure(message)
+            }
+
+
+            if  let allowedGroupsArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowLoginIfMemberOfGroup.rawValue) as? Array<String>, allowedGroupsArray.count>0 {
+
+                TCSLogWithMark("allowedGroupsArray as \(allowedGroupsArray.debugDescription)")
+
+                var isMemberOfAllowedGroup=false
+                userInfo.groups?.map({ group in
+                    group.lowercased()
+                }).forEach({ userGroup in
+                    if allowedGroupsArray.contains(userGroup.lowercased()){
+                        TCSLogWithMark("user is in group \(userGroup)")
+                        isMemberOfAllowedGroup=true
+                        return
+                    }
+                })
+
+                if isMemberOfAllowedGroup==false {
+                    TCSLogWithMark("user is not allowed to login. not in member of allowed group.")
+
+                    denyLogin(message: "user is not allowed to login. not in member of allowed group")
+                    return .failure("The user is not allowed to login due to allowLoginIfMemberOfGroup")
+                }
+                else {
+                    TCSLogWithMark("user allowed to login")
+
+                }
             }
 
             if let firstname = userInfo.firstName {
