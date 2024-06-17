@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0BD5758E-6B4D-47C7-8321-B33125CF8535"
+            uuid = "5B49E266-6AE6-4B6A-874B-B820858AB9A4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ShareMounter.swift"
+            filePath = "XCreds/MainController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "mountShares()"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "passwordExpiryUpdate(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

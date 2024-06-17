@@ -93,6 +93,8 @@
 	<string>upn</string>
 	<key>shareMenuItemName</key>
 	<string>Shares</string>
+	<key>map_password_expiry</key>
+	<string>pwd_exp</string>
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>

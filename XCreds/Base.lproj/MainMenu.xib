@@ -714,14 +714,20 @@
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="VVt-Zd-Ui7"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Password Expires: " tag="6" enabled="NO" id="vin-yR-IbW">
+                <menuItem title="OIDC Password Expires: " tag="6" enabled="NO" id="vin-yR-IbW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="l6Y-88-b28"/>
                     </connections>
                 </menuItem>
+                <menuItem title="AD Password Expires: " tag="7" enabled="NO" id="pb3-CP-R5l">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="n1c-gu-1iO"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="mwR-f8-XvQ"/>
-                <menuItem title="Sign In" tag="7" id="FH2-NT-oeX">
+                <menuItem title="Sign In" tag="8" id="FH2-NT-oeX">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="signInMenuItemSelected:" target="1OV-ou-Ss5" id="Mra-OX-Nqy"/>
@@ -733,14 +739,14 @@
                         <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="dfP-8J-fS8"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Shares" tag="9" hidden="YES" id="qRq-yn-8sT">
+                <menuItem title="Shares" tag="10" hidden="YES" id="qRq-yn-8sT">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="mhw-jg-LgC"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="op6-Hq-2li"/>
-                <menuItem title="Quit" tag="10" id="OM5-mb-fFV">
+                <menuItem title="Quit" tag="11" id="OM5-mb-fFV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="quitMenuItemSelected:" target="1OV-ou-Ss5" id="yL8-dQ-nRK"/>

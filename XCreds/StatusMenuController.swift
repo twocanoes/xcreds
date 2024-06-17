@@ -15,12 +15,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case KerberosUsername=3
         case NextPasswordCheckMenuItem=4
         case CredentialStatusMenuItem=5
-        case PasswordExpires=6
-        case SignInMenuItem=7
-        case ChangePasswordMenuItem=8
-        case SharesMenuItem=9
-        case QuitMenuItem=10
-        case Additional=11
+        case CloudPasswordExpires=6
+        case ADPasswordExpires=7
+        case SignInMenuItem=8
+        case ChangePasswordMenuItem=9
+        case SharesMenuItem=10
+        case QuitMenuItem=11
+        case Additional=12
 
     }
     enum MenuElements:String {
@@ -155,14 +156,14 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case .SignInMenuItem:
             print("SignInMenuItem")
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSignInMenuItem.rawValue) == false {
-
+                
                 signinMenuItem.isHidden=true
                 return false
             }
             signinMenuItem.isHidden=false
-
-
-
+            
+            
+            
             
         case .ChangePasswordMenuItem:
             
@@ -188,16 +189,26 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 quitMenuItem.isHidden=false
                 quitMenuItemSeparator.isHidden=false
             }
-
-        case .PasswordExpires:
             
-            if let passwordExpires = mainController?.passwordExpires {
+        case .CloudPasswordExpires:
+            
+            if let passwordExpires = mainController?.cloudPasswordExpires {
                 menuItem.isHidden=false
-                menuItem.title="Password Expires: \(passwordExpires)"
+                menuItem.title="OIDC Password Expires: \(passwordExpires)"
             }
             else {
                 menuItem.isHidden=true
-                
+            }
+            return false
+            
+        case .ADPasswordExpires:
+            
+            if let passwordExpires = mainController?.adPasswordExpires {
+                menuItem.isHidden=false
+                menuItem.title="AD Password Expires: \(passwordExpires)"
+            }
+            else {
+                menuItem.isHidden=true
             }
             return false
         case .SharesMenuItem:
@@ -210,23 +221,23 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case .OIDCUsername:
             var userName = "None"
             if oidcUsername.isEmpty == false {
-
+                
                 userName = oidcUsername
             }
             menuItem.title = "OIDC Username: \(userName) "
-
+            
             return false
         case .KerberosUsername:
-
+            
             var userName = "None"
             if kerberosPrincipalName.isEmpty == false {
-
+                
                 userName = kerberosPrincipalName
             }
             menuItem.title = "Active Directory Username: \(userName) "
             return false
-
         }
+
 
         return true
     }

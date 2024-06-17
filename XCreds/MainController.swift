@@ -17,7 +17,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     var feedbackDelegate:TokenManagerFeedbackDelegate?
 
     let scheduleManager = ScheduleManager()
-    var passwordExpires:String?
+    var adPasswordExpires:String?
+    var cloudPasswordExpires:String?
     var nextPasswordCheck:String {
         let dateFormatter = DateFormatter()
 
@@ -36,10 +37,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     var signInViewController:SignInViewController?
 
 
-    init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, passwordExpires: String? = nil, nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
+    init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
         self.passwordCheckTimer = passwordCheckTimer
         self.feedbackDelegate = feedbackDelegate
-        self.passwordExpires = passwordExpires
+        self.adPasswordExpires = adPasswordExpires
+        self.cloudPasswordExpires = cloudPasswordExpires
+
         self.credentialStatus = credentialStatus
         self.hasCredential = hasCredential
         self.signInViewController = signInViewController
@@ -188,8 +191,18 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func setup() {
+        if let cloudPasswordExpiresDate = OIDCPasswordExpiryDate(){
 
-
+            if OIDCPasswordExpiryDate()?.timeIntervalSinceNow ?? 0>0 {
+                self.cloudPasswordExpires = "Password Expired!"
+                return
+            }
+            if #available(macOS 12.0, *) {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.formatted(date: .abbreviated, time: .shortened)
+            } else {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.debugDescription
+            }
+        }
         NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didUnmountNotification, object: nil, queue: nil) { notification in
                 self.scheduleManager.checkKerberosTicket()
                 self.checkAndMountShares()
@@ -279,7 +292,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func passwordExpiryUpdate(_ passwordExpire: String) {
 
-        self.passwordExpires=passwordExpire
+        self.adPasswordExpires=passwordExpire
     }
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true
@@ -414,7 +427,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if WifiManager().isConnectedToNetwork()==true {
                 showSignInWindow(forceLoginWindowType: .usernamePassword)
             }
-
         }
     }
     func adUserUpdated(_ adUser: ADUserRecord) {
@@ -422,6 +434,40 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         (NSApp.delegate as? AppDelegate)?.updateShareMenu(adUser: adUser)
 
     }
+    func OIDCPasswordExpiryDate() -> Date?{
+
+        let keychainUtil = KeychainUtil()
+
+        guard let idToken = try? keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken").1 else {
+            return nil
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+
+        guard let idTokenInfo = idTokenInfo else {
+            return nil
+        }
+
+        guard let expiryKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapPasswordExpiry.rawValue)  as? String,
+              expiryKey.count>0,
+              let expiryString = idTokenInfo[expiryKey] as? String,
+              let expiryNumber = Int(expiryString) else {
+            return nil
+        }
+
+        guard let iatInt = idTokenInfo["iat"] as? Int
+              else {
+            return nil
+        }
+
+        let expirySecondsFromEpoch = expiryNumber + iatInt
+
+        let expiryDate = Date(timeIntervalSince1970: TimeInterval(expirySecondsFromEpoch))
+
+        return expiryDate
+
+    }
+
 
 }
 
