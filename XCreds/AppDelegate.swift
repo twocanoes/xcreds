@@ -61,6 +61,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()
 
+       let bl =  SystemInfoHelper().batteryLevel()
+        
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
