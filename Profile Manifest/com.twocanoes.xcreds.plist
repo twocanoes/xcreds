@@ -222,7 +222,7 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>List of groups that should have members be given local administrator status. Local administrator status can be given on first authentication when account created, or on later sign in of existing user when a group member. Administrator status not removed if group membership later revoked. Set as an Array of Strings of the group identifier.</string>
+			<string>Allow login if member of group. Empty array or not defined does not allow or deny based on group membership</string>
 			<key>pfm_name</key>
 			<string>allowLoginIfMemberOfGroup</string>
 			<key>pfm_subkeys</key>
@@ -235,7 +235,7 @@ A profile can consist of payloads with different version numbers. For example, c
 				</dict>
 			</array>
 			<key>pfm_title</key>
-			<string>Allow login if member of group. Empty array or not defined does not allow or deny based on group membership</string>
+			<string>Allow Login If Member Of Group</string>
 			<key>pfm_type</key>
 			<string>array</string>
 		</dict>
