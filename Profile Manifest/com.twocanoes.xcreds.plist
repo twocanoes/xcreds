@@ -447,6 +447,30 @@ A profile can consist of payloads with different version numbers. For example, c
 		</dict>
 		<dict>
 			<key>pfm_description</key>
+			<string>Base64 data of icon. Should be 48 x 48.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>menuItemIconData</string>
+			<key>pfm_title</key>
+			<string>Menu Item Icon Data</string>
+			<key>pfm_type</key>
+			<string>data</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
+			<string>Base64 data of icon with checkmark. Should be 48 x 48.</string>
+			<key>pfm_documentation_url</key>
+			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+			<key>pfm_name</key>
+			<string>menuItemIconCheckedData</string>
+			<key>pfm_title</key>
+			<string>Menu Item Icon Checked Data</string>
+			<key>pfm_type</key>
+			<string>data</string>
+		</dict>
+		<dict>
+			<key>pfm_description</key>
 			<string>URL to an image to show in the background of the window that appears when logged in and prompting for Active Directory username and password.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>

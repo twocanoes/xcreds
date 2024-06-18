@@ -47,12 +47,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
             TCSLogWithMark()
             if showDot==true {
                 TCSLogWithMark("showing with dot")
-                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon check")
+
+                if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconCheckedData.rawValue), let image = NSImage(data: iconData) {
+                    image.size=NSMakeSize(16, 16)
+                    self.statusBarItem?.button?.image=image
+
+                }
+                else {
+                    self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon check")
+                }
 
             }
             else {
                 TCSLogWithMark("showing without dot")
-                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+                if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
+                    image.size=NSMakeSize(16, 16)
+
+                    self.statusBarItem?.button?.image=image
+
+                }
+                else {
+                    self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+                }
 
             }
         }
@@ -65,7 +81,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
-        self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+
+        if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
+            image.size=NSMakeSize(16, 16)
+
+            self.statusBarItem?.button?.image=image
+        }
+        else {
+            self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+        }
         let shareMounter = ShareMounter()
 
         shareMounterMenu = ShareMounterMenu()
