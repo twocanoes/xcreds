@@ -131,7 +131,7 @@ public extension DSQueryable {
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                os_log("No local user found. Passing on demobilizing allow login.", type: .default)
+                os_log("No local user found.", type: .default)
                 throw DSQueryableErrors.notLocalUser
             }
 //            os_log("Found local user: %{public}@", record)

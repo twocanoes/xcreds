@@ -294,17 +294,18 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateLoginWindowInfo()
         TCSLogWithMark()
 
-        guard let resolvedName = try? PasswordUtils.resolveName(shortName) else {
-            usernameTextField.shake(self)
-            TCSLogWithMark("No user found for user \(shortName)")
-
-            return
-        }
         setLoginWindowState(enabled: false)
 
-        shortName = resolvedName
         if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
+            guard let resolvedName = try? PasswordUtils.resolveName(shortName) else {
+                usernameTextField.shake(self)
+                TCSLogWithMark("No user found for user \(shortName)")
+
+                return
+            }
+            shortName = resolvedName
+
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true)
@@ -791,10 +792,10 @@ extension SignInViewController: NoMADUserSessionDelegate {
             passChanged = false
         }
         
-        TCSLogWithMark("Authentication succeeded, requesting user info")
         if isInUserSpace==true {
             self.view.window?.close()
         }
+        TCSLogWithMark("Authentication succeeded, requesting user info")
         nomadSession?.userInfo()
     }
 

@@ -505,7 +505,7 @@ public class NoMADSession: NSObject {
         }
         arguments.append(contentsOf: attributes)
         let ldapResult = cliTask(command, arguments: arguments)
-        
+        TCSLogWithMark("command: \(command) args: \(arguments)")
         if (ldapResult.contains("GSSAPI Error") || ldapResult.contains("Can't contact")) {
             throw NoMADSessionError.StateError
         }
@@ -621,8 +621,8 @@ public class NoMADSession: NSObject {
         }
     }
     
-    func getUserInformation() {
-        
+    func getUserInformation() -> Bool {
+
         // some setup
         
         var passwordAging = true
@@ -639,9 +639,19 @@ public class NoMADSession: NSObject {
                 attributes.append(contentsOf: customAttributes!)
             }
             
-            let searchTerm = "sAMAccountName=" + userPrincipalShort
-            
+             let searchTerm = "(|(sAMAccountName="+userPrincipalShort+")(userPrincipalName="+userPrincipalShort+"@"+domain+"))"
+
             if let ldifResult = try? getLDAPInformation(attributes, searchTerm: searchTerm) {
+                if ldifResult.count>1 {
+
+                    TCSLogWithMark("Multiple records found. exiting")
+                    return false
+                }
+                else if ldifResult.count==0 {
+
+                    TCSLogWithMark("no user records found. exiting")
+                    return false
+                }
                 let ldapResult = getAttributesForSingleRecordFromCleanedLDIF(attributes, ldif: ldifResult)
                 TCSLogWithMark(ldapResult.description)
                 let passwordSetDate = ldapResult["pwdLastSet"]
@@ -729,7 +739,7 @@ public class NoMADSession: NSObject {
         }
         
         // pack up the user record
-        
+        return true
     }
     
     // MARK: LDAP cleanup functions
@@ -1173,7 +1183,6 @@ extension NoMADSession: NoMADUserSession {
     }
 
     private func shareKerberosResult(completion: (KerberosTicketResult) -> Void) {
-        getUserInformation()
         let result: KerberosTicketResult
         if let userRecord = userRecord {
             result = .success(userRecord)
@@ -1351,7 +1360,11 @@ extension NoMADSession: NoMADUserSession {
             siteManager.sites[domain] = hosts
         }
 
-        getUserInformation()
+        if getUserInformation()==false {
+            delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.UnknownPrincipal, description: "Invalid user account")
+            return
+        }
+
         // return the userRecord unless we came back empty
         if userRecord != nil {
             delegate?.NoMADUserInformation(user: userRecord!)
