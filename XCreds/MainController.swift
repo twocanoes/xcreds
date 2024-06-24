@@ -110,7 +110,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 forceUsernamePassword = true
             }
         }
-        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil)  {
+        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
             windowController.window!.makeKeyAndOrderFront(self)
 
             if  let webViewController = windowController.webViewController{
