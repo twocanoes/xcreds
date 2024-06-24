@@ -2,6 +2,21 @@
 
 ## XCreds 5.0 ##
 
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227
+[Feature Request] Add a Password Expire date or Days for OIDC users and more #165. To test, set map_password_expiry to a claim in Azure (like street address) with a value in seconds from token issue (like 300 seconds) and verify that menu shows the correct date
+Custom Mac login window key combo #206
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+Setting HomeMountEnabled to false removes the home folder from the XCreds menuitems #213
 
 ----------
 Map UID #186
