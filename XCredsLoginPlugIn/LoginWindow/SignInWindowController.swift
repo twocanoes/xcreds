@@ -289,12 +289,20 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-        setLoginWindowState(enabled: false)
 
         TCSLogWithMark()
         updateLoginWindowInfo()
         TCSLogWithMark()
 
+        guard let resolvedName = try? PasswordUtils.resolveName(shortName) else {
+            usernameTextField.shake(self)
+            TCSLogWithMark("No user found for user \(shortName)")
+
+            return
+        }
+        setLoginWindowState(enabled: false)
+
+        shortName = resolvedName
         if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
@@ -382,51 +390,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark(providedDomainName)
         }
         TCSLogWithMark()
-//        if strippedUsername.contains("\\") {
-//            os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
-//            if let ntDomains = getManagedPreference(key: .NTtoADDomainMappings) as? [String:String],
-//                let ntDomain = strippedUsername.components(separatedBy: "\\").first?.uppercased(),
-//                let user = strippedUsername.components(separatedBy: "\\").last,
-//                let convertedDomain =  ntDomains[ntDomain] {
-//                    shortName = user
-//                    providedDomainName = convertedDomain
-//            } else {
-//                os_log("NT Domain mapping failed, wishing the user luck on authentication", log: uiLog, type: .default)
-//            }
-//        }
-//        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
-//
-//            domainName = prefDomainName
-//        }
-//        if domainName != "" && providedDomainName.lowercased() == domainName.lowercased() {
-//            TCSLogWithMark("ADDomain being used")
-//            domainName = providedDomainName.uppercased()
-//        }
 
-//        if providedDomainName == domainName {
-//
-//        }
-//        else if !providedDomainName.isEmpty {
-//            TCSLogWithMark("Optional domain provided in text field: \(providedDomainName)")
-//            if getManagedPreference(key: .AdditionalADDomains) as? Bool == true {
-//                os_log("Optional domain name allowed by AdditionalADDomains allow-all policy", log: uiLog, type: .default)
-//                domainName = providedDomainName
-//                return
-//            }
-//
-//            if let optionalDomains = getManagedPreference(key: .AdditionalADDomains) as? [String] {
-//                guard optionalDomains.contains(providedDomainName.lowercased()) else {
-//                    TCSLogWithMark("Optional domain name not allowed by AdditionalADDomains whitelist policy")
-//                    return
-//                }
-//                TCSLogWithMark("Optional domain name allowed by AdditionalADDomains whitelist policy")
-//                domainName = providedDomainName
-//                return
-//            }
-//
-//            TCSLogWithMark("Optional domain not name allowed by AdditionalADDomains policy (false or not defined)")
-//        }
-        
         if providedDomainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
             TCSLogWithMark("Defaulting to managed domain as there is nothing else")

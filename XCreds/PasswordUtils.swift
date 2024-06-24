@@ -378,6 +378,48 @@ class PasswordUtils: NSObject {
         return kerbPrinc
     }
 
+    public class func resolveName(_ name:String) throws -> String{
+
+        var record:ODRecord
+        do{
+
+            record = try getLocalRecord(name)
+
+        }
+        catch {
+            record = try getLocalRecord(fullName: name)
+
+        }
+        return record.recordName
+
+    }
+    public class func getLocalRecord(fullName: String) throws -> ODRecord {
+        do {
+            TCSLogWithMark("Building OD query for name \(fullName)")
+            let query = try ODQuery.init(node: localNode,
+                                         forRecordTypes: kODRecordTypeUsers,
+                                         attribute: kODAttributeTypeFullName,
+                                         matchType: ODMatchType(kODMatchEqualTo),
+                                         queryValues: fullName,
+                                         returnAttributes: kODAttributeTypeNativeOnly,
+                                         maximumResults: 0)
+            let records = try query.resultsAllowingPartial(false) as! [ODRecord]
+
+            if records.count > 1 {
+                TCSLogErrorWithMark("More than one local user found for name.")
+                throw DSQueryableErrors.multipleUsersFound
+            }
+            guard let record = records.first else {
+                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                throw DSQueryableErrors.notLocalUser
+            }
+            TCSLogWithMark("Found local user: \(record)")
+            return record
+        } catch {
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(error.localizedDescription)")
+            throw error
+        }
+    }
 
     
     /// Searches DSLocal for an account short name and returns the `ODRecord` for the user if found.
