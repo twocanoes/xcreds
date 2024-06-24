@@ -733,7 +733,7 @@
                         <action selector="signInMenuItemSelected:" target="1OV-ou-Ss5" id="Mra-OX-Nqy"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Change Password" tag="8" id="F1e-WL-4b2">
+                <menuItem title="Change Password" tag="9" id="F1e-WL-4b2">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="dfP-8J-fS8"/>

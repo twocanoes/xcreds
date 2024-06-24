@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "72D68316-96E3-4F6E-B88F-E0CAF322FFB5"
+            uuid = "5FC59E77-840E-4962-80C9-71B2CF8A15EA"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
+            filePath = "XCreds/StatusMenuController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "setupLoginAppearance()"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "validateMenuItem(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

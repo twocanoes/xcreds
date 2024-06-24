@@ -229,6 +229,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             menuItem.title = "OIDC Username: \(userName) "
             
             return false
+
         case .KerberosUsername:
             
             var userName = "None"
