@@ -11,6 +11,7 @@ import Security.AuthorizationPlugin
 import os.log
 import OpenDirectory
 import OIDCLite
+import CryptoTokenKit
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
@@ -81,6 +82,8 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
     var isInUserSpace = false
+    var watcher:TKTokenWatcher?
+
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
         return true
@@ -129,9 +132,105 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
             setupLoginAppearance()
         }
-         
+        TCSLogWithMark("setting up smart card listener")
+                watcher = TKTokenWatcher()
+                watcher?.setInsertionHandler({ tokenID in
+                    self.watcher?.addRemovalHandler({ tokenID in
+                        TCSLogWithMark("card removed")
+                    }, forTokenID: tokenID)
+                    TCSLogWithMark("card inserted")
+                    TCSLogWithMark("getting slotNames")
+
+                    let slotNames = TKSmartCardSlotManager.default?.slotNames
+                    TCSLogWithMark("got slotNames")
+
+                    guard let slotNames = slotNames else {
+                        TCSLogWithMark("bad slotnames")
+                        return
+                    }
+
+                    let slotName=slotNames.first { currString in
+                        currString.contains("Feitian") && currString.contains("Contactless") 
+                    }
+
+                    guard let slotName = slotName else {
+                        TCSLogWithMark("bad slotnames")
+                        return
+                    }
+                    TCSLogWithMark()
+                    let slot = TKSmartCardSlotManager.default?.slotNamed(slotName)
+                    TCSLogWithMark()
+                    guard let tkSmartCard = slot?.makeSmartCard() else {
+                        return
+                    }
+                    TCSLogWithMark()
+                    let builtInReader = BuiltInPIVCardReader(tkSmartCard: tkSmartCard)
+                    TCSLogWithMark()
+                    let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
+                    TCSLogWithMark()
+                    if let returnData=returnData, returnData.count>2{
+                        TCSLogWithMark()
+                        print(returnData[0...returnData.count-3].hexEncodedString())
+                        DispatchQueue.main.async {
+                            TCSLogWithMark()
+                            let hex=returnData[0...returnData.count-3].hexEncodedString()
+                            self.cardLogin(uid: hex)
+                        }
+                    }
+
+                })
+
+
     }
 
+    func cardLogin(uid:String) {
+        guard let userArray = UserDefaults.standard.array(forKey: PrefKeys.uidUsers.rawValue) as? Array<Dictionary<String,String>> else {
+            TCSLogWithMark("no user preferences for uid. check your profile. \(uid)")
+            passwordTextField.shake(self)
+
+            return
+        }
+        let user = userArray.first { currUser in
+            return currUser["uid"]==uid
+        }
+        guard let user = user,
+        let username = user["username"],
+        let password = user["password"] else {
+            TCSLogWithMark("no users for: \(uid)")
+            passwordTextField.shake(self)
+            return
+
+        }
+        shortName=username
+        passString=password
+        let userExists = try? PasswordUtils.isUserLocal(shortName)
+        guard let userExists = userExists else {
+            TCSLogWithMark("DS error")
+            passwordTextField.shake(self)
+            return
+        }
+        if (userExists==true){
+            //local user exists. try password
+            TCSLogWithMark("local user exists. trying password")
+            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+                TCSLogWithMark("local user valid. logging in")
+
+                setRequiredHintsAndContext()
+                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                completeLogin(authResult:.allow)
+            }
+            else {
+                TCSLogWithMark("invalid password for user \(shortName)")
+                authFail()
+            }
+        }
+        else {
+            //new user, so we create the account and move along
+            setRequiredHintsAndContext()
+            completeLogin(authResult:.allow)
+        }
+
+    }
     func setupLoginAppearance() {
         TCSLogWithMark()
         

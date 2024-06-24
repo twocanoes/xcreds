@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "5B49E266-6AE6-4B6A-874B-B820858AB9A4"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/MainController.swift"
@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "2B6D8BAF-0B5E-4C38-A747-F08E2A566210"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/AppDelegate.swift"
@@ -39,16 +39,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "64424144-D6FB-46C3-A8C1-72C435D3340B"
+            uuid = "FF1B78C8-9DB0-44BC-A5C5-8D5349CC91FF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/AppDelegate.swift"
+            filePath = "tapgo/TokenDriver.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "updateStatusMenuIcon(showDot:)"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "tokenDriver(_:createTokenFor:aid:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

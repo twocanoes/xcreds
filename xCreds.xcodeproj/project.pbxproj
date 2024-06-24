@@ -79,6 +79,7 @@
 		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
 		7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
+		7639B9BA2C2281F30073F05A /* BuiltInPIVCardReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7639B9B92C2281F30073F05A /* BuiltInPIVCardReader.swift */; };
 		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
@@ -152,6 +153,10 @@
 		7677908628908E40004E7085 /* WifiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908328908E40004E7085 /* WifiWindowController.swift */; };
 		7677908728908E40004E7085 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		7677908828908E40004E7085 /* WifiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7677908528908E40004E7085 /* WifiWindowController.xib */; };
+		767832712C2349A300E31295 /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* LoggerHelper.swift */; };
+		767832722C2349B900E31295 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
+		7678327D2C23E14800E31295 /* BuiltInPIVCardReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7639B9B92C2281F30073F05A /* BuiltInPIVCardReader.swift */; };
+		7678327E2C24F4B400E31295 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		76786F562A27C36A00AA8DB9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F552A27C36A00AA8DB9 /* main.swift */; };
 		76786F5A2A27C37100AA8DB9 /* AuthRightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */; };
 		76786F5B2A27C38800AA8DB9 /* AuthorizationDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */; };
@@ -171,6 +176,11 @@
 		768633D92AFC4908004065E5 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* WifiManager.swift */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
 		76873E302A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
+		76A247552C22747400859E0A /* CryptoTokenKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76A247542C22747400859E0A /* CryptoTokenKit.framework */; };
+		76A247582C22747400859E0A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247572C22747400859E0A /* Token.swift */; };
+		76A2475A2C22747400859E0A /* TokenDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247592C22747400859E0A /* TokenDriver.swift */; };
+		76A2475C2C22747400859E0A /* TokenSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A2475B2C22747400859E0A /* TokenSession.swift */; };
+		76A247612C22747400859E0A /* tapgo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76A247532C22747400859E0A /* tapgo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		76A8A4E32A0DF7C700AA6054 /* NSTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F528724FA80013E2A1 /* NSTaskWrapper.swift */; };
 		76AB89E12A12FAF900529D90 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89E02A12FAF900529D90 /* OIDCLite */; };
 		76AB89E32A12FB4900529D90 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89E22A12FB4900529D90 /* ArgumentParser */; };
@@ -305,6 +315,13 @@
 			remoteGlobalIDString = 7631935C287D22C700D36BF7;
 			remoteInfo = authrights;
 		};
+		76A2475F2C22747400859E0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 76A247522C22747400859E0A;
+			remoteInfo = tapgo;
+		};
 		76DC0A7A28837152007C42B2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -389,6 +406,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		76A247622C22747400859E0A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				76A247612C22747400859E0A /* tapgo.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -427,6 +455,7 @@
 		7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsKeychainAdd.swift; sourceTree = "<group>"; };
 		7632E3A02873497C00E37923 /* LogShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogShim.swift; path = Mechanisms/LogShim.swift; sourceTree = "<group>"; };
 		76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopLoginWindowController.swift; sourceTree = "<group>"; };
+		7639B9B92C2281F30073F05A /* BuiltInPIVCardReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuiltInPIVCardReader.swift; sourceTree = "<group>"; };
 		763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePopoverBackgroundView.swift; sourceTree = "<group>"; };
 		763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMounterMenu.swift; sourceTree = "<group>"; };
 		763DDF192B4F1DD4000D48CC /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
@@ -481,6 +510,7 @@
 		7677908328908E40004E7085 /* WifiWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiWindowController.swift; sourceTree = "<group>"; };
 		7677908428908E40004E7085 /* WifiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiManager.swift; sourceTree = "<group>"; };
 		7677908528908E40004E7085 /* WifiWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiWindowController.xib; sourceTree = "<group>"; };
+		767832732C234A6200E31295 /* tapgo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "tapgo-Bridging-Header.h"; sourceTree = "<group>"; };
 		76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthRightsHelper.swift; path = Shared/AuthRightsHelper.swift; sourceTree = SOURCE_ROOT; };
 		76786F532A27C36A00AA8DB9 /* auth_mech_fixup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = auth_mech_fixup; sourceTree = BUILT_PRODUCTS_DIR; };
 		76786F552A27C36A00AA8DB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -496,6 +526,13 @@
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsHelper.swift; path = XCreds/DefaultsHelper.swift; sourceTree = "<group>"; };
+		76A247532C22747400859E0A /* tapgo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tapgo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		76A247542C22747400859E0A /* CryptoTokenKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoTokenKit.framework; path = System/Library/Frameworks/CryptoTokenKit.framework; sourceTree = SDKROOT; };
+		76A247572C22747400859E0A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		76A247592C22747400859E0A /* TokenDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDriver.swift; sourceTree = "<group>"; };
+		76A2475B2C22747400859E0A /* TokenSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSession.swift; sourceTree = "<group>"; };
+		76A2475D2C22747400859E0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76A2475E2C22747400859E0A /* tapgo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tapgo.entitlements; sourceTree = "<group>"; };
 		76B040A328EFC788002A289B /* Helper+JWTDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Helper+JWTDecode.swift"; path = "XCreds/Helper+JWTDecode.swift"; sourceTree = "<group>"; };
 		76B882A829CCFD7900BB8186 /* TCSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSKeychain.m; sourceTree = "<group>"; };
 		76B882A929CCFD7A00BB8186 /* TCSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSKeychain.h; sourceTree = "<group>"; };
@@ -622,6 +659,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A247502C22747400859E0A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76A247552C22747400859E0A /* CryptoTokenKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +807,18 @@
 			path = test;
 			sourceTree = "<group>";
 		};
+		76A247562C22747400859E0A /* tapgo */ = {
+			isa = PBXGroup;
+			children = (
+				76A247572C22747400859E0A /* Token.swift */,
+				76A247592C22747400859E0A /* TokenDriver.swift */,
+				76A2475B2C22747400859E0A /* TokenSession.swift */,
+				76A2475D2C22747400859E0A /* Info.plist */,
+				76A2475E2C22747400859E0A /* tapgo.entitlements */,
+			);
+			path = tapgo;
+			sourceTree = "<group>";
+		};
 		76BEF7D32871F36C0013E2A1 /* FakeTrue */ = {
 			isa = PBXGroup;
 			children = (
@@ -878,6 +935,7 @@
 				766CC42129D3A320009BC526 /* Paddle.framework */,
 				766CC42229D3A321009BC526 /* ProductLicense.framework */,
 				760291CB2C1166870075FBD8 /* AuthenticationServices.framework */,
+				76A247542C22747400859E0A /* CryptoTokenKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -885,6 +943,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				7639B9B92C2281F30073F05A /* BuiltInPIVCardReader.swift */,
 				76D4726B2B43B8FA0064380C /* TCTaskWrapperWithBlocks.h */,
 				76D4726C2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m */,
 				763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */,
@@ -897,6 +956,7 @@
 				760418CC2A1331710051411B /* NomadLogin */,
 				76873E2E2A107736001418A9 /* DefaultsHelper.swift */,
 				76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */,
+				760291E12C116E450075FBD8 /* XCreds AutoFill */,
 				76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */,
 				76673CD429D3D5F500452848 /* LicenseChecker.swift */,
 				7683973029A854EC003D9B9F /* NSImage+String.swift */,
@@ -904,8 +964,8 @@
 				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */,
 				7675444428918CD100613840 /* Info.plist */,
-				760291E12C116E450075FBD8 /* XCreds AutoFill */,
 				760291F62C116EDB0075FBD8 /* XCreds AutoFill Extension */,
+				76A247562C22747400859E0A /* tapgo */,
 				76DD6D15285997F300A700ED /* Frameworks */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
 				76B040A328EFC788002A289B /* Helper+JWTDecode.swift */,
@@ -935,6 +995,7 @@
 				76786F632A27C62D00AA8DB9 /* test */,
 				760291E02C116E450075FBD8 /* XCreds Login Autofill.app */,
 				760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */,
+				76A247532C22747400859E0A /* tapgo.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -975,6 +1036,7 @@
 				767116AB284AB4C000CCD6FF /* PasswordUtils.swift */,
 				76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */,
 				764D812E284C06AB00B3EE54 /* defaults.plist */,
+				767832732C234A6200E31295 /* tapgo-Bridging-Header.h */,
 				767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */,
 				76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */,
 				7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */,
@@ -1125,6 +1187,23 @@
 			productReference = 76786F632A27C62D00AA8DB9 /* test */;
 			productType = "com.apple.product-type.tool";
 		};
+		76A247522C22747400859E0A /* tapgo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "tapgo" */;
+			buildPhases = (
+				76A2474F2C22747400859E0A /* Sources */,
+				76A247502C22747400859E0A /* Frameworks */,
+				76A247512C22747400859E0A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tapgo;
+			productName = tapgo;
+			productReference = 76A247532C22747400859E0A /* tapgo.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		76DC0A6428836EB1007C42B2 /* XCreds Login Overlay */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 76DC0A6F28836EB2007C42B2 /* Build configuration list for PBXNativeTarget "XCreds Login Overlay" */;
@@ -1151,6 +1230,7 @@
 				76EE069727FD1D00009E0F3A /* Frameworks */,
 				76EE069827FD1D00009E0F3A /* Resources */,
 				766CC42C29D3A3DC009BC526 /* Embed Frameworks */,
+				76A247622C22747400859E0A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -1159,6 +1239,7 @@
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
 				76319376287E19A500D36BF7 /* PBXTargetDependency */,
 				76319379287E204500D36BF7 /* PBXTargetDependency */,
+				76A247602C22747400859E0A /* PBXTargetDependency */,
 			);
 			name = XCreds;
 			packageProductDependencies = (
@@ -1203,6 +1284,9 @@
 					76786F622A27C62D00AA8DB9 = {
 						CreatedOnToolsVersion = 14.3;
 					};
+					76A247522C22747400859E0A = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					76DC0A6428836EB1007C42B2 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -1237,6 +1321,7 @@
 				76786F622A27C62D00AA8DB9 /* test */,
 				760291DF2C116E450075FBD8 /* XCreds Login Autofill */,
 				760291F32C116EDB0075FBD8 /* XCreds Login Password */,
+				76A247522C22747400859E0A /* tapgo */,
 			);
 		};
 /* End PBXProject section */
@@ -1287,6 +1372,13 @@
 				7677908828908E40004E7085 /* WifiWindowController.xib in Resources */,
 				76DB5CF52A09AE9A0014F8E1 /* get_pw.js in Resources */,
 				76BEF7E9287202AF0013E2A1 /* ShutdownX@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A247512C22747400859E0A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1448,6 +1540,7 @@
 				76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */,
 				76EECD012875135900483C66 /* LoggerHelper.swift in Sources */,
 				7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */,
+				7639B9BA2C2281F30073F05A /* BuiltInPIVCardReader.swift in Sources */,
 				7657DEBD2B35055F003A23DB /* Logger.swift in Sources */,
 				76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */,
 				76B882B329CCFDBA00BB8186 /* NSData+HexString.m in Sources */,
@@ -1482,6 +1575,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				76786F662A27C62D00AA8DB9 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A2474F2C22747400859E0A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76A2475C2C22747400859E0A /* TokenSession.swift in Sources */,
+				767832722C2349B900E31295 /* TCSUnifiedLogger.m in Sources */,
+				7678327E2C24F4B400E31295 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				767832712C2349A300E31295 /* LoggerHelper.swift in Sources */,
+				76A247582C22747400859E0A /* Token.swift in Sources */,
+				76A2475A2C22747400859E0A /* TokenDriver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1538,6 +1644,7 @@
 				764D8129284BCAB100B3EE54 /* Window+Shake.swift in Sources */,
 				764D8126284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift in Sources */,
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
+				7678327D2C23E14800E31295 /* BuiltInPIVCardReader.swift in Sources */,
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
 				7657DEBC2B35055F003A23DB /* Logger.swift in Sources */,
 				7657DEB62B3504A6003A23DB /* UserRecord.swift in Sources */,
@@ -1599,6 +1706,11 @@
 			target = 7631935C287D22C700D36BF7 /* authrights */;
 			targetProxy = 76319378287E204500D36BF7 /* PBXContainerItemProxy */;
 		};
+		76A247602C22747400859E0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 76A247522C22747400859E0A /* tapgo */;
+			targetProxy = 76A2475F2C22747400859E0A /* PBXContainerItemProxy */;
+		};
 		76DC0A7B28837152007C42B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 76DC0A6428836EB1007C42B2 /* XCreds Login Overlay */;
@@ -1653,7 +1765,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1695,7 +1807,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1728,7 +1840,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1767,7 +1879,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1798,7 +1910,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1817,7 +1929,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1837,7 +1949,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1874,7 +1986,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1910,7 +2022,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
@@ -1926,7 +2038,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				OTHER_CFLAGS = "";
@@ -1940,7 +2052,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1956,7 +2068,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1972,7 +2084,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -1987,12 +2099,81 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		76A247632C22747400859E0A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7130;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tapgo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tapgo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.tapgo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/tapgo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		76A247642C22747400859E0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7130;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = tapgo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = tapgo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.tapgo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/tapgo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -2005,7 +2186,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2042,7 +2223,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2193,7 +2374,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2237,7 +2418,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7066;
+				CURRENT_PROJECT_VERSION = 7130;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2334,6 +2515,15 @@
 			buildConfigurations = (
 				76786F682A27C62D00AA8DB9 /* Debug */,
 				76786F692A27C62D00AA8DB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "tapgo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76A247632C22747400859E0A /* Debug */,
+				76A247642C22747400859E0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
