@@ -120,12 +120,23 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     }
     func keyDown(key: NSEvent) -> NSEvent?{
         keyCodesPressed[key.keyCode]=true
-       
+       var correctKeyPressed = false
         let keyCodeOverride  = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.keyCodeForLoginWindowChange.rawValue)
 
-        let keyPressed = (keyCodeOverride > 0 && keyCodesPressed[UInt16(keyCodeOverride)] == true) || (keyCodesPressed[76]==true || keyCodesPressed[36]==true)
+        if keyCodeOverride > 0 {
 
-        if keyPressed && controlKeyDown==true && optionKeyDown==true {
+            if keyCodesPressed[UInt16(keyCodeOverride)] == true{
+                correctKeyPressed=true
+            }
+        }
+        else {
+            if keyCodesPressed[76]==true || keyCodesPressed[36]==true {
+                correctKeyPressed=true
+            }
+        }
+
+
+        if correctKeyPressed && controlKeyDown==true && optionKeyDown==true {
             guard let delegate = delegate else {
                 TCSLogWithMark("No delegate set for restart")
 
