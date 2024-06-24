@@ -64,6 +64,10 @@ import Network
 
 
     }
+    @objc func tearDown() {
+            TCSLogWithMark("Got teardown request")
+            self.mainLoginWindowController?.window?.orderOut(self)
+        }
     override func reload() {
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")

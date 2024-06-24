@@ -186,6 +186,8 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
     if (mechanism->fLoginWindow) {
+
+        [loginWindowMechanism tearDown];
 //        if (loginWindowMechanism.signIn.visible == true) {
 //            [loginWindowMechanism tearDown];
 //        }
@@ -193,6 +195,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     free(mechanism);
     return noErr;
 }
+
 
 - (OSStatus)PluginDestroy:(AuthorizationPluginRef)inPlugin {
     TCSLog([NSString stringWithFormat:@"%s %s:%d",__FUNCTION__, [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lastPathComponent] cStringUsingEncoding:NSUTF8StringEncoding],__LINE__]);

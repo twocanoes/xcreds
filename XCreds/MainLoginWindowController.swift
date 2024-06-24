@@ -135,6 +135,11 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         DispatchQueue.main.async {
 
 
+            if let timer = self.timer, timer.isValid==true {
+                TCSLogWithMark("invalidating timer")
+                timer.invalidate()
+
+            }
             TCSLogWithMark()
             let screenRect = NSScreen.screens[0].frame
             let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
@@ -142,9 +147,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             progressIndicator.startAnimation(self)
             self.window?.contentView?.addSubview(progressIndicator)
 
-            if let resolutionObserver = self.resolutionObserver {
-                NotificationCenter.default.removeObserver(resolutionObserver)
-            }
+            NotificationCenter.default.removeObserver(self)
+
             if let networkChangeObserver = self.networkChangeObserver {
                 NotificationCenter.default.removeObserver(networkChangeObserver)
             }
@@ -165,6 +169,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                 self.centerView?.removeFromSuperview()
                 self.controlsViewController?.view.removeFromSuperview()
+                //                self.window?.orderOut(self)
+                TCSLogWithMark("completion")
                 completion()
             })
         }
