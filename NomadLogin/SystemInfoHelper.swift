@@ -13,9 +13,30 @@ import IOKit.ps
 class SystemInfoHelper {
     enum BatteryError: Error { case error }
 
+    func appVersion() -> String? {
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        if let bundle = bundle {
+
+            let infoPlist = bundle.infoDictionary
+            if let infoPlist = infoPlist,
+               let verString = infoPlist["CFBundleShortVersionString"],
+               let buildString = infoPlist["CFBundleVersion"]
+            {
+
+                return "XCreds \(verString) (\(buildString))"
+            }
+        }
+        return nil
+
+    }
     func info() -> [String] {
         var info = [String]()
         
+        if let versionInfo = appVersion(){
+            info.append(versionInfo)
+
+        }
         info.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
         info.append("Serial: \(getSerial())")
         info.append("MAC: \(getMAC())")
@@ -71,7 +92,7 @@ class SystemInfoHelper {
         let ipAddresses = getIFAddresses()
 
         if ipAddresses.count>0{
-            return ipAddresses[0]
+            return ipAddresses.joined(separator: ",")
         }
         return nil
     }

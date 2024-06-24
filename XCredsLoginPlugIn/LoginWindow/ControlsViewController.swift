@@ -24,7 +24,6 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet weak var toolsView: NSView?
 
     let uiLog = "uiLog"
-    @IBOutlet weak var versionTextField: NSTextField?
     @IBOutlet weak var systemInfoTextField: NSTextField?
 
     var loadPageURL:URL?
@@ -108,10 +107,10 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             let ldapServers = adSession.getSRVRecords(prefDomainName)
 
             if ldapServers.count>0{
-                sysInfo.append("\nAD Domain:\(prefDomainName) (Reachable)\n")
+                sysInfo.append("\nAD Domain:\(prefDomainName) (Reachable)")
             }
             else {
-                sysInfo.append("\nAD Domain: \(prefDomainName) (Not Reachable)\n")
+                sysInfo.append("\nAD Domain: \(prefDomainName) (Not Reachable)")
             }
 
         }
@@ -167,8 +166,8 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         case ".serial":
             systemInfoButton.title = "Serial: " + getSerial()
 
-        case ".mac":
-            systemInfoButton.title = "MAC Address:" + getMAC()
+//        case ".mac":
+//            systemInfoButton.title = "MAC Address:" + getMAC()
 
         case ".computername":
             systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
@@ -179,6 +178,9 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         default:
             if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {
                 systemInfoButton.title = systemInfoButtonTitle
+            }
+            else if let appVersion = SystemInfoHelper().appVersion(){
+                systemInfoButton.title = appVersion
             }
         }
     }
@@ -229,21 +231,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         }
         TCSLogWithMark()
         setupLoginWindowControlsAppearance()
-        versionTextField?.stringValue = ""
 
-        let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-        if let bundle = bundle {
-
-            let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist,
-               let verString = infoPlist["CFBundleShortVersionString"],
-               let buildString = infoPlist["CFBundleVersion"]
-            {
-                versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
-
-            }
-        }
 //        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
 //            TCSLogWithMark("Resolution changed. Resetting size")
 //            self.setupLoginWindowControlsAppearance()
@@ -287,7 +275,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
             TCSLogWithMark()
 
-            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+//            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
             TCSLogWithMark()
 

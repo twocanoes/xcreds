@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2A9E85DD-A71F-4943-B42F-07B37EC725FE"
+            uuid = "72D68316-96E3-4F6E-B88F-E0CAF322FFB5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "showSignInWindow(force:forceLoginWindowType:)"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "setupLoginAppearance()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

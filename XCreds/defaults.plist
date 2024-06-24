@@ -22,8 +22,6 @@
 	<true/>
 	<key>shouldShowQuitMenu</key>
 	<true/>
-	<key>shouldShowVersionInfo</key>
-	<true/>
 	<key>shouldFindPasswordElement</key>
 	<true/>
 	<key>shouldShowSupportStatus</key>

@@ -140,6 +140,9 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.usernameTextField.stringValue=""
         self.passwordTextField.stringValue=""
 
+
+        self.usernameTextField.wantsLayer=true
+        self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true

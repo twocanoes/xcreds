@@ -19,7 +19,6 @@
                 <outlet property="systemInfoTextField" destination="05Z-yi-Wg3" id="aJQ-GF-OKf"/>
                 <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
                 <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
-                <outlet property="versionTextField" destination="p61-id-z2n" id="qZT-E7-l0T"/>
                 <outlet property="view" destination="GEH-rQ-5ly" id="Lvx-Jg-8CQ"/>
                 <outlet property="wifiGridColumn" destination="vWr-UA-21l" id="qVZ-LM-BCg"/>
             </connections>
@@ -35,25 +34,6 @@
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="bHC-M4-jfl">
                         <font key="font" metaFont="system" size="16"/>
                         <color key="textColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="hD0-2k-DNh">
-                    <rect key="frame" x="926" y="0.0" width="76" height="16"/>
-                    <buttonCell key="cell" type="bevel" title="System Info" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="fGu-PP-maa">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <color key="contentTintColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
-                    <connections>
-                        <action selector="showSystemInfoButtonPressed:" target="-2" id="QsR-iB-FJl"/>
-                    </connections>
-                </button>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p61-id-z2n">
-                    <rect key="frame" x="10" y="-1" width="122" height="16"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="XCreds 1.1.1 (2000)" id="RPn-fH-Reb">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -154,19 +134,28 @@ DQ
                         <constraint firstItem="Of1-FL-rgU" firstAttribute="centerX" secondItem="4X8-WT-UyO" secondAttribute="centerX" id="WnJ-zT-uLN"/>
                     </constraints>
                 </customView>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="hD0-2k-DNh">
+                    <rect key="frame" x="0.0" y="0.0" width="76" height="16"/>
+                    <buttonCell key="cell" type="bevel" title="System Info" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="fGu-PP-maa">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <color key="contentTintColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                    <connections>
+                        <action selector="showSystemInfoButtonPressed:" target="-2" id="QsR-iB-FJl"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="D8S-gh-gv5" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" id="1KA-Xz-a3o"/>
                 <constraint firstItem="4X8-WT-UyO" firstAttribute="top" secondItem="D8S-gh-gv5" secondAttribute="bottom" constant="-4" id="1wf-Rx-6Xq"/>
                 <constraint firstItem="4X8-WT-UyO" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" id="B4J-hr-OCp"/>
                 <constraint firstAttribute="trailing" secondItem="D8S-gh-gv5" secondAttribute="trailing" id="Eih-ds-XN3"/>
-                <constraint firstAttribute="bottom" secondItem="p61-id-z2n" secondAttribute="bottom" constant="-1" id="HTP-yV-Yjg"/>
                 <constraint firstAttribute="trailing" secondItem="4X8-WT-UyO" secondAttribute="trailing" id="I78-R5-t6d"/>
-                <constraint firstItem="p61-id-z2n" firstAttribute="top" secondItem="4X8-WT-UyO" secondAttribute="bottom" constant="-1" id="Kcd-gD-FlV"/>
-                <constraint firstAttribute="bottom" secondItem="hD0-2k-DNh" secondAttribute="bottom" id="Wz2-7N-dbo"/>
-                <constraint firstAttribute="trailing" secondItem="hD0-2k-DNh" secondAttribute="trailing" id="h4E-XL-gJC"/>
+                <constraint firstAttribute="bottom" secondItem="hD0-2k-DNh" secondAttribute="bottom" id="YOQ-s7-Vus"/>
                 <constraint firstAttribute="height" constant="117" id="p34-fX-f9F"/>
-                <constraint firstItem="p61-id-z2n" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" constant="12" id="sc0-Ik-DVB"/>
+                <constraint firstAttribute="bottom" secondItem="4X8-WT-UyO" secondAttribute="bottom" constant="14" id="qqw-Td-A3o"/>
+                <constraint firstItem="hD0-2k-DNh" firstAttribute="leading" secondItem="GEH-rQ-5ly" secondAttribute="leading" id="zBZ-eE-pMz"/>
             </constraints>
             <point key="canvasLocation" x="55" y="731.5"/>
         </view>
