@@ -39,7 +39,7 @@ class SystemInfoHelper {
         }
         info.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
         info.append("Serial: \(getSerial())")
-        info.append("MAC: \(getMAC())")
+//        info.append("MAC: \(getMAC())")
         info.append("Computer Name: \(Host.current().localizedName!)")
         info.append("Hostname: \(ProcessInfo.processInfo.hostName)")
 
@@ -49,7 +49,7 @@ class SystemInfoHelper {
 
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {
-            info.append("IP Address: \(ipAddresses[0])")
+            info.append("IP Address: \(ipAddresses.joined(separator: ","))")
         }
         
         return info

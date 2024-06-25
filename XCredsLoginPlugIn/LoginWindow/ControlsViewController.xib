@@ -16,7 +16,7 @@
                 <outlet property="systemInfoButton" destination="hD0-2k-DNh" id="mDV-FR-BvK"/>
                 <outlet property="systemInfoPopover" destination="Pge-rG-2P0" id="5Zw-N4-pgI"/>
                 <outlet property="systemInfoPopoverViewController" destination="65f-EP-uMZ" id="ncc-d6-G7v"/>
-                <outlet property="systemInfoTextField" destination="05Z-yi-Wg3" id="aJQ-GF-OKf"/>
+                <outlet property="systemInfoTextField" destination="B3h-KN-ejK" id="Cde-Hk-pF0"/>
                 <outlet property="toolsView" destination="4X8-WT-UyO" id="TTk-aU-6Vw"/>
                 <outlet property="trialVersionStatusTextField" destination="D8S-gh-gv5" id="yc8-WQ-xH8"/>
                 <outlet property="view" destination="GEH-rQ-5ly" id="Lvx-Jg-8CQ"/>
@@ -29,7 +29,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1002" height="117"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
                     <rect key="frame" x="0.0" y="98" width="1002" height="19"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="bHC-M4-jfl">
                         <font key="font" metaFont="system" size="16"/>
@@ -173,20 +173,20 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="223" height="56"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="05Z-yi-Wg3">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B3h-KN-ejK">
                     <rect key="frame" x="18" y="20" width="187" height="16"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="System Info" id="0Ud-2a-Hjd">
-                        <font key="font" usesAppearanceFont="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="7lK-sV-1fw">
+                        <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="05Z-yi-Wg3" firstAttribute="leading" secondItem="Nxe-Fs-xYc" secondAttribute="leading" constant="20" symbolic="YES" id="5pd-zb-MFY"/>
-                <constraint firstAttribute="bottom" secondItem="05Z-yi-Wg3" secondAttribute="bottom" constant="20" symbolic="YES" id="8rs-pT-LQq"/>
-                <constraint firstAttribute="trailing" secondItem="05Z-yi-Wg3" secondAttribute="trailing" constant="20" symbolic="YES" id="cQ0-pY-A8q"/>
-                <constraint firstItem="05Z-yi-Wg3" firstAttribute="top" secondItem="Nxe-Fs-xYc" secondAttribute="top" constant="20" symbolic="YES" id="yH8-qZ-OKd"/>
+                <constraint firstAttribute="trailing" secondItem="B3h-KN-ejK" secondAttribute="trailing" constant="20" symbolic="YES" id="MPh-gn-7pE"/>
+                <constraint firstItem="B3h-KN-ejK" firstAttribute="top" secondItem="Nxe-Fs-xYc" secondAttribute="top" constant="20" symbolic="YES" id="Ojo-ul-hDO"/>
+                <constraint firstAttribute="bottom" secondItem="B3h-KN-ejK" secondAttribute="bottom" constant="20" symbolic="YES" id="Vit-8o-P69"/>
+                <constraint firstItem="B3h-KN-ejK" firstAttribute="leading" secondItem="Nxe-Fs-xYc" secondAttribute="leading" constant="20" symbolic="YES" id="pSd-bh-VAS"/>
             </constraints>
             <point key="canvasLocation" x="-181.5" y="93"/>
         </customView>

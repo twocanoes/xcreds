@@ -300,8 +300,9 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("do local auth only")
             guard let resolvedName = try? PasswordUtils.resolveName(shortName) else {
                 usernameTextField.shake(self)
+                passwordTextField.shake(self)
                 TCSLogWithMark("No user found for user \(shortName)")
-
+                authFail()
                 return
             }
             shortName = resolvedName

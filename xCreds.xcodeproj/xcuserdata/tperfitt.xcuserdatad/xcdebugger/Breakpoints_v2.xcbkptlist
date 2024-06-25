@@ -14,8 +14,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "799"
-            endingLineNumber = "799"
+            startingLineNumber = "800"
+            endingLineNumber = "800"
             landmarkName = "NoMADAuthenticationSucceded()"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "796"
-            endingLineNumber = "796"
+            startingLineNumber = "797"
+            endingLineNumber = "797"
             landmarkName = "NoMADAuthenticationSucceded()"
             landmarkType = "7">
          </BreakpointContent>
