@@ -459,7 +459,7 @@ extension TokenManager {
                 TCSLogWithMark("Found google auth and access token")
 
             }
-
+ 
             if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }

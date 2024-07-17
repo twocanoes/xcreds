@@ -193,7 +193,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func setup() {
         if let cloudPasswordExpiresDate = OIDCPasswordExpiryDate(){
 
-            if OIDCPasswordExpiryDate()?.timeIntervalSinceNow ?? 0>0 {
+            if OIDCPasswordExpiryDate()?.timeIntervalSinceNow ?? 0<0 {
                 self.cloudPasswordExpires = "Password Expired!"
                 return
             }
@@ -439,12 +439,15 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         let keychainUtil = KeychainUtil()
 
         guard let idToken = try? keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken").1 else {
+            TCSLogWithMark("cannot find ID token")
+
             return nil
         }
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
 
         guard let idTokenInfo = idTokenInfo else {
+            TCSLogWithMark("idTokenInfo invalid")
             return nil
         }
 
@@ -452,17 +455,26 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
               expiryKey.count>0,
               let expiryString = idTokenInfo[expiryKey] as? String,
               let expiryNumber = Int(expiryString) else {
+            TCSLogWithMark("mapPasswordExpiry invalid")
+
             return nil
         }
 
         guard let iatInt = idTokenInfo["iat"] as? Int
               else {
+            TCSLogWithMark("iatInt invalid")
+
             return nil
         }
+        TCSLogWithMark("iatInt: \(iatInt)")
+        TCSLogWithMark("expiryNumber: \(expiryNumber)")
 
         let expirySecondsFromEpoch = expiryNumber + iatInt
+        TCSLogWithMark("expirySecondsFromEpoch: \(expirySecondsFromEpoch)")
 
         let expiryDate = Date(timeIntervalSince1970: TimeInterval(expirySecondsFromEpoch))
+
+        TCSLogWithMark("expiryDate: \(expiryDate)")
 
         return expiryDate
 
