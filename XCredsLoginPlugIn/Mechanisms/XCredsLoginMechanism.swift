@@ -308,36 +308,9 @@ import Network
             }
 
             loginWebViewController.mechanismDelegate=self
-            let screenRect = NSScreen.screens[0].frame
-
-            let screenWidth = screenRect.width
-            let screenHeight = screenRect.height
-
-            var loginWindowWidth = screenWidth //start with full size
-            var loginWindowHeight = screenHeight //start with full size
 
 
-            //if prefs define smaller, then resize window
-            TCSLogWithMark("checking for custom height and width")
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
-                if val > 149 {
-                    TCSLogWithMark("setting loginWindowWidth to \(val)")
-                    loginWindowWidth = val
-                }
-            }
-            if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
-                let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
-                if val > 149 {
-                    TCSLogWithMark("setting loginWindowHeight to \(val)")
-                    loginWindowHeight = val
-                }
-            }
-            TCSLogWithMark("setting loginWindowWidth to \(loginWindowWidth)")
 
-            TCSLogWithMark("setting loginWindowHeight to \(loginWindowHeight)")
-
-            loginWebViewController.view.setFrameSize(NSMakeSize(loginWindowWidth, loginWindowHeight))
             mainLoginWindowController?.addCenterView(loginWebViewController.view)
 
 
