@@ -54,8 +54,8 @@ public class SessionManager: NoMADUserSessionDelegate {
         }
         
         sessions[user]?.session.delegate = self
-        sessions[user]?.session.getUserInformation()
-        
+        let _ = sessions[user]?.session.getUserInformation()
+
     }
     
     // updates all known users
@@ -69,7 +69,7 @@ public class SessionManager: NoMADUserSessionDelegate {
         
         for session in sessions {
             session.value.session.delegate = self
-            session.value.session.getUserInformation()
+            let _ = session.value.session.getUserInformation()
         }
         
     }
@@ -110,7 +110,7 @@ public class SessionManager: NoMADUserSessionDelegate {
             // update the information
 
             session.delegate = self
-            session.getUserInformation()
+            let _ = session.getUserInformation()
         }
         
     }
