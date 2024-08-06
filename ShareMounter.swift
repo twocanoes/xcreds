@@ -276,7 +276,7 @@ class ShareMounter {
         
         for index in 0...(all_shares.count - 1) {
             
-            if sharePrefs.bool(forKey: ShareKeys.homeMount)==true && all_shares[index].isHome==true {
+            if sharePrefs.bool(forKey: ShareKeys.homeMount)==false && all_shares[index].isHome==true {
                 continue
             }
 
