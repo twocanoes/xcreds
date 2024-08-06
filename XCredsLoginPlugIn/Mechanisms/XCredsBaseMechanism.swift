@@ -114,6 +114,8 @@ import OpenDirectory
                 setHint(type: .lastName, hint: lastName)
             }
             if let username = userInfo.username {
+                TCSLogWithMark("set shortname to \(username)")
+
                 setHint(type: .user, hint: username)
             }
             if let fullUsername = userInfo.fullUsername {
@@ -240,7 +242,7 @@ import OpenDirectory
 
             setContextString(type: kAuthorizationEnvironmentPassword, value: password)
             TCSLogWithMark("setting username")
-
+            TCSLogWithMark("setting username to \(username)")
             setHint(type: .user, hint: username)
             TCSLogWithMark("setting tokens.password")
 
@@ -313,6 +315,7 @@ import OpenDirectory
 
                 return nil
             }
+            TCSLogWithMark("username is \(userName)")
             return userName
         }
     }

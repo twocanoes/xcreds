@@ -410,6 +410,8 @@ protocol UpdateCredentialsFeedbackProtocol {
     fileprivate func setRequiredHintsAndContext() {
         TCSLogWithMark()
         TCSLogWithMark("Setting hints for user: \(shortName)")
+        TCSLogWithMark("Setting user to \(shortName)")
+
         mechanismDelegate?.setHint(type: .user, hint: shortName)
         mechanismDelegate?.setHint(type: .pass, hint: passString)
         TCSLogWithMark()
@@ -941,6 +943,10 @@ extension SignInViewController: NoMADUserSessionDelegate {
         setRequiredHintsAndContext()
         mechanismDelegate?.setHint(type: .firstName, hint: user.firstName)
         mechanismDelegate?.setHint(type: .lastName, hint: user.lastName)
+        TCSLogWithMark("Setting user to \(user.shortName)")
+        mechanismDelegate?.setHint(type: .user, hint: user.shortName)
+        mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: user.shortName)
+
         mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
         mechanismDelegate?.setHint(type: .groups, hint: user.groups)
         mechanismDelegate?.setHint(type: .fullName, hint: user.cn)
