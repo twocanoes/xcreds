@@ -197,7 +197,9 @@ import Network
         loginWebViewController=nil
         signInViewController=nil
         TCSLogWithMark("XCredsLoginMechanism mech starting")
-        mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
+        if mainLoginWindowController == nil {
+            mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
+        }
         mainLoginWindowController?.mechanism=self
 
         if useAutologin() {
