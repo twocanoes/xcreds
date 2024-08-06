@@ -102,12 +102,12 @@ class ShareMounter {
         
         guard let groups = adUserRecord?.groups else { return }
 
-//        if sharePrefs.bool(forKey: ShareKeys.homeMount)==true{
+        if sharePrefs.bool(forKey: ShareKeys.homeMount)==true{
 
             TCSLogWithMark("Evaluating home share for automounts.")
             if let homePathRaw = adUserRecord?.homeDirectory {
                 if var homePath = URL(string: "smb:" + homePathRaw) {
-                    
+
                     if defaults.bool(forKey: PrefKeys.homeAppendDomain.rawValue) {
                         if let domain = defaults.string(forKey: PrefKeys.aDDomain.rawValue),  let host = homePath.host {
                             var newHome = "smb://" + host + "." + domain
@@ -117,7 +117,7 @@ class ShareMounter {
                             }
                         }
                     }
-                    
+
                     let homeShareGroups = sharePrefs.value(forKey: "HomeMountGroups") as? [String] ?? []
                     let homeShareOptions = sharePrefs.value(forKey: "HomeMountOptions") as? [String] ?? []
 
@@ -141,9 +141,9 @@ class ShareMounter {
             } else {
                 TCSLogWithMark("Unable to get home share from preferences.")
             }
-//        } else {
-//            TCSLogWithMark("No home mount dictionary")
-//        }
+        } else {
+            TCSLogWithMark("No home mount dictionary")
+        }
         
         TCSLogWithMark("evaluating Shares")
         if let mountsRaw = sharePrefs.array(forKey: ShareKeys.shares) {
