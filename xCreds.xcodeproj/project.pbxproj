@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -81,6 +81,7 @@
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
 		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
+		76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76477E032C626B5D00F01D56 /* OIDCLite */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		7649056F2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */; };
 		764D8126284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */; };
@@ -638,6 +639,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */,
 				76C4BAB72B353AFD007B2C57 /* Kerberos.framework in Frameworks */,
 				762177E62B7144460051B756 /* OIDCLite in Frameworks */,
 				76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */,
@@ -1166,6 +1168,7 @@
 				76319365287D24E100D36BF7 /* ArgumentParser */,
 				76319368287D24F600D36BF7 /* ArgumentParser */,
 				762177E52B7144460051B756 /* OIDCLite */,
+				76477E032C626B5D00F01D56 /* OIDCLite */,
 			);
 			productName = xCreds;
 			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
@@ -1222,7 +1225,7 @@
 			mainGroup = 76EE069127FD1D00009E0F3A;
 			packageReferences = (
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				762177E42B7144460051B756 /* XCLocalSwiftPackageReference "https://github.com/twocanoes/OIDCLite.git" */,
+				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
@@ -2367,13 +2370,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		762177E42B7144460051B756 /* XCLocalSwiftPackageReference "https://github.com/twocanoes/OIDCLite.git" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "https://github.com/twocanoes/OIDCLite.git";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2381,6 +2377,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twocanoes/OIDCLite.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -2399,6 +2403,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		76477E032C626B5D00F01D56 /* OIDCLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */;
+			productName = OIDCLite;
 		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
