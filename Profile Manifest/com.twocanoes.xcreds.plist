@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 5.0 (7096) OAuth Settings</string>
+	<string>XCreds 5.0 (7105) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -13,7 +13,7 @@
 	<key>pfm_format_version</key>
 	<integer>1</integer>
 	<key>pfm_last_modified</key>
-	<date>2024-07-03T19:45:16Z</date>
+	<date>2024-07-26T01:52:34Z</date>
 	<key>pfm_platforms</key>
 	<array>
 		<string>macOS</string>
@@ -242,7 +242,7 @@ part of a group the login will be denied.</string>
 		</dict>
 		<dict>
 			<key>pfm_description</key>
-			<string>List of groups that should have members be given local administrator status. Local administrator status can be given on first authentication when account created, or on later sign in of existing user when a group member. Administrator status not removed if group membership later revoked. Set as an Array of Strings of the group identifier.</string>
+			<string>List of groups that should have members be given local administrator status. Local administrator status can be given on first authentication when account created, or on later sign in of existing user when a group member. Administrator status is removed if group membership later revoked. Administrator status is not removed if user is the only XCreds admin user. Set as an Array of Strings of the group identifier.</string>
 			<key>pfm_name</key>
 			<string>CreateAdminIfGroupMember</string>
 			<key>pfm_subkeys</key>
