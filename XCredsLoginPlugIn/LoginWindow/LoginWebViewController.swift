@@ -81,7 +81,24 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 break
             case .failure(let message):
                 TCSLogWithMark("error setting up hints, reloading page:\(message)")
-                loadPage()
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText=message
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+                }
+                alert.runModal()
+
+                self.updateView()
+
 
             }
         }

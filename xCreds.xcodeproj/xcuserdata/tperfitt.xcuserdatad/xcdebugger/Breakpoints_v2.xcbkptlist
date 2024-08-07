@@ -60,8 +60,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "832"
-            endingLineNumber = "832"
+            startingLineNumber = "847"
+            endingLineNumber = "847"
             landmarkName = "NoMADUserInformation(user:)"
             landmarkType = "7">
          </BreakpointContent>

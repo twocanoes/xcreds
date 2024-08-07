@@ -48,7 +48,22 @@ protocol UpdateCredentialsFeedbackProtocol {
                 break
             case .failure(let msg):
                 TCSLogWithMark(msg)
-                authFail(msg)
+                TCSLogWithMark("error setting up hints, reloading page:\(msg)")
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText=msg
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+                }
+                alert.runModal()
 
             }
 
