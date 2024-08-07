@@ -2,6 +2,50 @@
 
 ## XCreds 5.0 ##
 
+
+fixed HideExpiration in manifest
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+added build file instructions
+updated package ref
+add missing files to repo
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+Fail on map_username for AD #244
+Issue with HomeMountEnabled #236
+Clarify manifest descriptions for AD property names #245
+XCreds Login Window Overlay Wallpaper not caching? #247
+Update manifest description for CreateAdminIfGroupMember #251
+Update login window when resolution changes #187
+added missing files
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+more
+Local login window dims and gets stuck after failed login attempt #242
+updated history
+Expected AD field values not shown in XCreds log #237
+updated history
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+
+---------
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227 View
+Add LocalFallback to manifest #229 View
+Update description for allowLoginIfMemberOfGroup #228 View
+Customize menu bar app icon #189 View
+improved login animation View
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184 View
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232 View
+Feature Request: HideExpiration key #198 View
+Allow user to use full name to sign in at XCreds username/password screen #178 View
+"Change Password" menuitem is now greyed out #239 View
+keyCodeForLoginWindowChange not working as expected #231 View
+updated history View
 Expected AD field values not shown in XCreds log #237
 -------
 keyCodeForLoginWindowChange not working as expected #231
