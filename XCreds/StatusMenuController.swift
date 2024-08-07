@@ -206,10 +206,12 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
 
             if let passwordExpires = mainController?.adPasswordExpires, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.hideExpiration.rawValue)==false {
+                TCSLogWithMark("Unhidng password expires")
                 menuItem.isHidden=false
                 menuItem.title="AD Password Expires: \(passwordExpires)"
             }
             else {
+                TCSLogWithMark("hiding password expires")
                 menuItem.isHidden=true
             }
             return false
