@@ -255,7 +255,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
 
         TCSLogWithMark("getting users")
-        let standardUsers = try? getAllStandardUsers()
+        let nonSystemUsers = try? getAllNonSystemUsers()
         let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
         let shouldPromptForMigration = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
@@ -268,9 +268,9 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
             return .successful(odUsername)
         }
-        else if let standardUsers = standardUsers, standardUsers.count>0, shouldPromptForMigration == true {
+        else if let nonSystemUsers = nonSystemUsers, nonSystemUsers.count>0, shouldPromptForMigration == true {
 
-            TCSLogWithMark("Preference set to prompt for migration and there are standard users, so prompting")
+            TCSLogWithMark("Preference set to prompt for migration and there are existing users, so prompting")
 
 
             return SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: newPassword)
