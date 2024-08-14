@@ -185,8 +185,8 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {
-            let dateString = dateFormatter.string(from: passExpired)
-            feedbackDelegate?.passwordExpiryUpdate(dateString)
+//            let dateString = dateFormatter.string(from: passExpired)
+            feedbackDelegate?.passwordExpiryUpdate(passExpired)
             feedbackDelegate?.adUserUpdated(user)
 
         }

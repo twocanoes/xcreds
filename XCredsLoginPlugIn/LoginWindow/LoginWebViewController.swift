@@ -21,10 +21,19 @@ class LoginWebViewController: WebViewController, DSQueryable {
     @IBOutlet weak var backgroundImageView: NSImageView!
 
     override func awakeFromNib() {
-        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
-            self.updateView()
-        }
+//        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+//            TCSLogWithMark("Updating view")
+//            self.updateView()
+//        }
 
+    }
+    override func viewDidLayout() {
+TCSLogWithMark()
+    }
+
+    override func viewWillLayout() {
+        TCSLogWithMark()
+        updateView()
     }
     func updateView(){
         let screenRect = NSScreen.screens[0].frame

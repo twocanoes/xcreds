@@ -12,7 +12,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var setupDone=false
     @IBOutlet weak var backgroundImageView: NSImageView!
     @IBOutlet weak var loginWindowView: NSView!
-    var resolutionObserver:Any?
+//    var resolutionObserver:Any?
     var networkChangeObserver:Any?
     var centerView:NSView?
     var mechanism:XCredsMechanismProtocol?
