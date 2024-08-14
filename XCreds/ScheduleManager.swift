@@ -188,7 +188,6 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
             let dateString = dateFormatter.string(from: passExpired)
             feedbackDelegate?.passwordExpiryUpdate(dateString)
             feedbackDelegate?.adUserUpdated(user)
-//            passwordExpires=dateString
 
         }
     }

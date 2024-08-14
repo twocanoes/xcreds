@@ -39,6 +39,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
 
     }
+    func updateStatusMenuExpiration(_ expires:Date?) {
+
+        ///TODO: implement edge cases
+        return
+        DispatchQueue.main.async {
+
+            TCSLogWithMark()
+
+            if let expires = expires {
+                let daysToGo = Int(abs(expires.timeIntervalSinceNow)/86400)
+
+                self.statusBarItem?.button?.title="\(daysToGo)d"
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .medium
+                dateFormatter.timeStyle = .short
+
+
+                self.statusBarItem?.button?.toolTip = dateFormatter.string(from: expires as Date)
+
+            }
+            else {
+                self.statusBarItem?.button?.title=""
+                self.statusBarItem?.button?.toolTip = ""
+            }
+
+
+        }
+    }
     func updateStatusMenuIcon(showDot:Bool){
 
 
@@ -71,6 +99,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
                 }
 
             }
+
         }
 
     }

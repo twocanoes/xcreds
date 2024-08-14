@@ -98,7 +98,7 @@ import OpenDirectory
                 if isMemberOfAllowedGroup==false {
                     TCSLogWithMark("user is not allowed to login. not in member of allowed group.")
 
-                    return .failure("The user is not allowed to login because they not in member of allowed group.")
+                    return .failure("The user is not allowed to log in because they are not a member of an allowed group.")
                 }
                 else {
                     TCSLogWithMark("user allowed to login")

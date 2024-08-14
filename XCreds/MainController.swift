@@ -290,14 +290,24 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
-    func passwordExpiryUpdate(_ passwordExpire: String) {
+    func passwordExpiryUpdate(_ passwordExpire: Date) {
 
-        self.adPasswordExpires=passwordExpire
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        let dateString = dateFormatter.string(from: passwordExpire)
+
+        self.adPasswordExpires=dateString
+        let appDelegate = NSApp.delegate as? AppDelegate
+        appDelegate?.updateStatusMenuExpiration(passwordExpire)
+
+
     }
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true
         credentialStatus="Valid Tokens"
-        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
         let tokenManager = TokenManager()
 
         if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
@@ -396,7 +406,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasCredential=false
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
-        appDelegate?.updateStatusMenuIcon(showDot:false)
+        appDelegate?.updateStatusMenuExpiration(nil)
         if WifiManager().isConnectedToNetwork()==true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }

@@ -16,7 +16,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
 protocol UpdateCredentialsFeedbackProtocol {
 
-    func passwordExpiryUpdate(_ passwordExpire:String)
+    func passwordExpiryUpdate(_ passwordExpires:Date)
     func credentialsUpdated(_ credentials:Creds)
     func credentialsCheckFailed()
     func kerberosTicketUpdated()
@@ -823,14 +823,9 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark("User Info:\(user)")
         TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
-        let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {
-            let dateString = dateFormatter.string(from: passExpired)
-            updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(dateString)
+            updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(passExpired)
 
         }
         updateCredentialsFeedbackDelegate?.adUserUpdated(user)
