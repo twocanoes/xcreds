@@ -662,7 +662,7 @@ public class NoMADSession: NSObject {
                 var userDisplayName = ldapResult["displayName"] ?? ""
 
                 TCSLogWithMark("userDisplayName: \(userDisplayName)")
-                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.displayName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
                     userDisplayName=mapValue
                     TCSLogWithMark("userDisplayName: \(userDisplayName)")
                 }

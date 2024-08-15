@@ -32,7 +32,7 @@ enum PrefKeys: String {
     case customLDAPAttributes = "CustomLDAPAttributes"
     case customLDAPAttributesResults = "CustomLDAPAttributesResults"
     case deadLDAPKillTickets = "DeadLDAPKillTickets"
-    case displayName = "DisplayName"
+//    case displayName = "DisplayName"
     case dontMatchKerbPrefs = "DontMatchKerbPrefs"
     case dontShowWelcome = "DontShowWelcome"
     case dontShowWelcomeDefaultOn = "DontShowWelcomeDefaultOn"

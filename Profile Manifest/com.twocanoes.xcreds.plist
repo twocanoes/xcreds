@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 5.0 (7141) OAuth Settings</string>
+	<string>XCreds 5.0 (7144) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -13,7 +13,7 @@
 	<key>pfm_format_version</key>
 	<integer>1</integer>
 	<key>pfm_last_modified</key>
-	<date>2024-08-14T15:26:52Z</date>
+	<date>2024-08-15T17:40:31Z</date>
 	<key>pfm_platforms</key>
 	<array>
 		<string>macOS</string>

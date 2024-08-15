@@ -18,6 +18,36 @@
             endingLineNumber = "842"
             landmarkName = "NoMADUserInformation(user:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3A2C2F5B-DD9E-4A8E-9E3A-ED92F7915CEB - 5cef771fc540c367"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XCreds.SignInViewController.NoMADUserInformation(user: XCreds.ADUserRecord) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "842"
+                  endingLineNumber = "842">
+               </Location>
+               <Location
+                  uuid = "3A2C2F5B-DD9E-4A8E-9E3A-ED92F7915CEB - 2e1b538288281de3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; () in XCreds.SignInViewController.NoMADUserInformation(user: XCreds.ADUserRecord) -&gt; ()"
+                  moduleName = "XCreds"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "843"
+                  endingLineNumber = "843">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
