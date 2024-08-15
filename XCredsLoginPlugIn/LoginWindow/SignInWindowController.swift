@@ -959,7 +959,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
         mechanismDelegate?.setHint(type: .groups, hint: user.groups)
-        mechanismDelegate?.setHint(type: .fullName, hint: user.cn)
+        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName)
         TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
 
         mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)

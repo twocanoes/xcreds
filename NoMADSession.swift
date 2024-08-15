@@ -661,10 +661,13 @@ public class NoMADSession: NSObject {
 
                 var userDisplayName = ldapResult["displayName"] ?? ""
 
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
                 if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.displayName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
                     userDisplayName=mapValue
+                    TCSLogWithMark("userDisplayName: \(userDisplayName)")
                 }
 
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
 
                 var firstName = ldapResult["givenName"] ?? ""
 
@@ -721,6 +724,7 @@ public class NoMADSession: NSObject {
                 userHome = userHome.replacingOccurrences(of: " ", with: "%20")
                 
                 // pack up user record
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
                 TCSLogWithMark("ldifResult: \(ldifResult.debugDescription)")
                 userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: shortName, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults, rawAttributes: ldifResult.first)
 
