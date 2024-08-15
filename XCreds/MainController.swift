@@ -308,6 +308,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true
         credentialStatus="Valid Tokens"
+        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
         let tokenManager = TokenManager()
 
         if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
@@ -406,7 +407,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasCredential=false
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
-        appDelegate?.updateStatusMenuExpiration(nil)
+        appDelegate?.updateStatusMenuIcon(showDot:false)
         if WifiManager().isConnectedToNetwork()==true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }
