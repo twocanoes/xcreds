@@ -22,13 +22,19 @@
 	<true/>
 	<key>shouldShowQuitMenu</key>
 	<true/>
-	<key>shouldShowVersionInfo</key>
-	<true/>
 	<key>shouldFindPasswordElement</key>
 	<true/>
 	<key>shouldShowSupportStatus</key>
 	<string>1</string>
 	<key>shouldShowConfigureWifiButton</key>
+	<true/>
+	<key>shouldShowShutdownButton</key>
+	<true/>
+	<key>shouldShowRestartButton</key>
+	<true/>
+	<key>shouldHideIfLocalOnlyUser</key>
+	<string>NO</string>
+	<key>shouldShowSystemInfoButton</key>
 	<true/>
 	<key>shouldShowMacLoginButton</key>
 	<string>1</string>
@@ -60,6 +66,8 @@
 	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
+	<key>refreshBannerText</key>
+	<string>Your local account password needs to be changed to match your online password. Please authenticate now.</string>
 	<key>shouldPromptForMigration</key>
 	<false/>
 	<key>shouldAllowKeyComboForMacLoginWindow</key>
@@ -67,6 +75,11 @@
 	<key>claimsToAddToLocalUserAccount</key>
 	<array>
 		<string>groups</string>
+	</array>
+	<key>adUserAttributesToAddToLocalUserAccount</key>
+	<array>
+		<string>userPrincipalName</string>
+		<string>dn</string>
 	</array>
 	<key>loadPageTitle</key>
 	<string>Please Wait....</string>
@@ -78,6 +91,8 @@
 	<string>upn</string>
 	<key>shareMenuItemName</key>
 	<string>Shares</string>
+	<key>map_password_expiry</key>
+	<string>pwd_exp</string>
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>

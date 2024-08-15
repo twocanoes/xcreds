@@ -7,19 +7,25 @@
 
 import Cocoa
 
-class ControlsViewController: NSViewController {
+class ControlsViewController: NSViewController, NSPopoverDelegate {
+    @IBOutlet var systemInfoPopover: NSPopover!
+    @IBOutlet var systemInfoPopoverViewController: NSViewController!
     var delegate: XCredsMechanismProtocol?
 
+    @IBOutlet weak var buttonGridView: NSGridView!
     @IBOutlet weak var refreshGridColumn: NSGridColumn?
     @IBOutlet weak var shutdownGridColumn: NSGridColumn?
     @IBOutlet weak var restartGridColumn: NSGridColumn?
 
+    @IBOutlet weak var systemInfoButton: NSButton!
     @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
+
     @IBOutlet weak var toolsView: NSView?
 
     let uiLog = "uiLog"
-    @IBOutlet weak var versionTextField: NSTextField?
+    @IBOutlet weak var systemInfoTextField: NSTextField?
+
     var loadPageURL:URL?
 //    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
@@ -87,10 +93,50 @@ class ControlsViewController: NSViewController {
         keyCodesPressed.removeValue(forKey: key.keyCode)
         return key
     }
+    @IBAction func showSystemInfoButtonPressed(_ sender: NSButton) {
+        if systemInfoPopover.isShown==true {
+            systemInfoPopover.performClose(self)
+            return
+        }
+        
+        var sysInfo = SystemInfoHelper().info().joined(separator: "\n")
+
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+
+            let adSession = NoMADSession(domain:prefDomainName , user: "")
+            let ldapServers = adSession.getSRVRecords(prefDomainName)
+
+            if ldapServers.count>0{
+                sysInfo.append("\nAD Domain:\(prefDomainName) (Reachable)")
+            }
+            else {
+                sysInfo.append("\nAD Domain: \(prefDomainName) (Not Reachable)")
+            }
+
+        }
+        self.systemInfoTextField?.stringValue = sysInfo
+        self.systemInfoPopover.delegate=self
+        systemInfoPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxY)
+    }
     func keyDown(key: NSEvent) -> NSEvent?{
         keyCodesPressed[key.keyCode]=true
+       var correctKeyPressed = false
+        let keyCodeOverride  = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.keyCodeForLoginWindowChange.rawValue)
 
-        if (keyCodesPressed[76]==true || keyCodesPressed[36]==true) && (controlKeyDown==true && optionKeyDown==true) {
+        if keyCodeOverride > 0 {
+
+            if keyCodesPressed[UInt16(keyCodeOverride)] == true{
+                correctKeyPressed=true
+            }
+        }
+        else {
+            if keyCodesPressed[76]==true || keyCodesPressed[36]==true {
+                correctKeyPressed=true
+            }
+        }
+
+
+        if correctKeyPressed && controlKeyDown==true && optionKeyDown==true {
             guard let delegate = delegate else {
                 TCSLogWithMark("No delegate set for restart")
 
@@ -116,6 +162,39 @@ class ControlsViewController: NSViewController {
         }
         return key
     }
+    func setupSystemInfoButton() {
+        let systemInfoButtonTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.systemInfoButtonTitle.rawValue)
+
+        switch systemInfoButtonTitle {
+        case ".os":
+            systemInfoButton.title = "macOS " + ProcessInfo.processInfo.operatingSystemVersionString
+
+        case ".hostname":
+            systemInfoButton.title = "Hostname: " + ProcessInfo.processInfo.hostName
+        case ".ipaddress":
+            systemInfoButton.title = "IP Address: " + (SystemInfoHelper().ipAddress() ?? "No IPAddress")
+
+        case ".serial":
+            systemInfoButton.title = "Serial: " + getSerial()
+
+//        case ".mac":
+//            systemInfoButton.title = "MAC Address:" + getMAC()
+
+        case ".computername":
+            systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
+
+        case ".ssid":
+            systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
+
+        default:
+            if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {
+                systemInfoButton.title = systemInfoButtonTitle
+            }
+            else if let appVersion = SystemInfoHelper().appVersion(){
+                systemInfoButton.title = appVersion
+            }
+        }
+    }
     override func awakeFromNib() {
         TCSLogWithMark()
         super.awakeFromNib()
@@ -125,7 +204,7 @@ class ControlsViewController: NSViewController {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
         NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
 
-
+        setupSystemInfoButton()
         switch licenseState {
 
         case .valid:
@@ -163,21 +242,6 @@ class ControlsViewController: NSViewController {
         }
         TCSLogWithMark()
         setupLoginWindowControlsAppearance()
-        versionTextField?.stringValue = ""
-
-        let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-        if let bundle = bundle {
-
-            let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist,
-               let verString = infoPlist["CFBundleShortVersionString"],
-               let buildString = infoPlist["CFBundleVersion"]
-            {
-                versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
-
-            }
-        }
 
 //        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
 //            TCSLogWithMark("Resolution changed. Resetting size")
@@ -207,12 +271,22 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark()
 
             self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+
+            self.shutdownGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowShutdownButton.rawValue)
+
+
+            self.restartGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRestartButton.rawValue)
+
+
+            self.systemInfoButton?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSystemInfoButton.rawValue)
+
+
             TCSLogWithMark()
 
             self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
             TCSLogWithMark()
 
-            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+//            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
             TCSLogWithMark()
 

@@ -9,26 +9,93 @@
 import Foundation
 
 import NetworkExtension
-
+import IOKit.ps
 class SystemInfoHelper {
-    
+    enum BatteryError: Error { case error }
+
+    func appVersion() -> String? {
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        if let bundle = bundle {
+
+            let infoPlist = bundle.infoDictionary
+            if let infoPlist = infoPlist,
+               let verString = infoPlist["CFBundleShortVersionString"],
+               let buildString = infoPlist["CFBundleVersion"]
+            {
+
+                return "XCreds \(verString) (\(buildString))"
+            }
+        }
+        return nil
+
+    }
     func info() -> [String] {
         var info = [String]()
         
-        info.append(ProcessInfo.processInfo.operatingSystemVersionString)
+        if let versionInfo = appVersion(){
+            info.append(versionInfo)
+
+        }
+        info.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
         info.append("Serial: \(getSerial())")
-        info.append("MAC: \(getMAC())")
-        info.append(Host.current().localizedName!)
-        info.append(ProcessInfo.processInfo.hostName)
-        
+//        info.append("MAC: \(getMAC())")
+        info.append("Computer Name: \(Host.current().localizedName!)")
+        info.append("Hostname: \(ProcessInfo.processInfo.hostName)")
+
+        if let ssid = WifiManager().getCurrentSSID(){
+            info.append("SSID: \(ssid)")
+        }
+
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {
-            info.append(ipAddresses[0])
+            info.append("IP Address: \(ipAddresses.joined(separator: ","))")
         }
         
         return info
     }
     
+    func batteryLevel() -> (isCharging:Bool, percent:Int)? {
+        var batteryLevelInt:Int = 0
+        var isChargingBool:Bool = false
+        do {
+            guard let powerSourceInfo = IOPSCopyPowerSourcesInfo()?.takeRetainedValue()
+                else { throw BatteryError.error }
+
+            guard let sources: NSArray = IOPSCopyPowerSourcesList(powerSourceInfo)?.takeRetainedValue()
+                else { throw BatteryError.error }
+            if sources.count == 0 {
+                return nil
+            }
+            guard let info: NSDictionary = IOPSGetPowerSourceDescription(powerSourceInfo, sources[0] as CFTypeRef)?.takeUnretainedValue()
+            else { return nil }
+
+            if let _ = info[kIOPSNameKey] as? String,
+               let state = info[kIOPSIsChargingKey] as? Bool,
+               let capacity = info[kIOPSCurrentCapacityKey] as? Int,
+               let _ = info[kIOPSMaxCapacityKey] as? Int {
+                isChargingBool = state
+                batteryLevelInt=capacity
+            }
+            else {
+                return nil
+            }
+
+        } catch {
+            print("Unable to get mac battery percent.")
+            return nil
+        }
+
+        return (isChargingBool, batteryLevelInt)
+    }
+    func ipAddress() -> String? {
+        let ipAddresses = getIFAddresses()
+
+        if ipAddresses.count>0{
+            return ipAddresses.joined(separator: ",")
+        }
+        return nil
+    }
     private func getIFAddresses() -> [String] {
         var addresses = [String]()
 

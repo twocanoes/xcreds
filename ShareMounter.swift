@@ -55,6 +55,7 @@ struct share_info {
     var reqID: AsyncRequestID?
     var attemptDate: Date?
     var localMountPoints: String?
+    var isHome=false
 }
 
 struct mounting_shares_info {
@@ -106,7 +107,7 @@ class ShareMounter {
             TCSLogWithMark("Evaluating home share for automounts.")
             if let homePathRaw = adUserRecord?.homeDirectory {
                 if var homePath = URL(string: "smb:" + homePathRaw) {
-                    
+
                     if defaults.bool(forKey: PrefKeys.homeAppendDomain.rawValue) {
                         if let domain = defaults.string(forKey: PrefKeys.aDDomain.rawValue),  let host = homePath.host {
                             var newHome = "smb://" + host + "." + domain
@@ -116,11 +117,11 @@ class ShareMounter {
                             }
                         }
                     }
-                    
+
                     let homeShareGroups = sharePrefs.value(forKey: "HomeMountGroups") as? [String] ?? []
                     let homeShareOptions = sharePrefs.value(forKey: "HomeMountOptions") as? [String] ?? []
 
-                        var currentShare = share_info(groups: homeShareGroups, originalURL: homePathRaw, url: homePath, name: defaults.string(forKey: PrefKeys.menuHomeDirectory.rawValue) ?? "Network Home", options: homeShareOptions, connectedOnly: true, mountStatus: .unmounted, localMount: nil, autoMount: true, reqID: nil, attemptDate: nil, localMountPoints: nil)
+                    var currentShare = share_info(groups: homeShareGroups, originalURL: homePathRaw, url: homePath, name: defaults.string(forKey: PrefKeys.menuHomeDirectory.rawValue) ?? "Network Home", options: homeShareOptions, connectedOnly: true, mountStatus: .unmounted, localMount: nil, autoMount: true, reqID: nil, attemptDate: nil, localMountPoints: nil, isHome:true)
 
                     for share in all_shares {
                         if share.originalURL == currentShare.originalURL && (mountedOriginalShares.contains(share.originalURL) || share.mountStatus == .mounting) {
@@ -275,6 +276,10 @@ class ShareMounter {
         
         for index in 0...(all_shares.count - 1) {
             
+            if sharePrefs.bool(forKey: ShareKeys.homeMount)==false && all_shares[index].isHome==true {
+                continue
+            }
+
             TCSLogWithMark("Evaluating mount: " + all_shares[index].name)
 
             // TODO: ensure the URL is reachable before attempting to mount

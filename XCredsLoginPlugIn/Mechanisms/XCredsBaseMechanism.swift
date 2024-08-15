@@ -54,6 +54,8 @@ import OpenDirectory
 
             }
         }
+
+
         do {
 
             let tokenManager = TokenManager()
@@ -77,6 +79,33 @@ import OpenDirectory
                 return .failure(message)
             }
 
+
+            if  let allowedGroupsArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowLoginIfMemberOfGroup.rawValue) as? Array<String>, allowedGroupsArray.count>0 {
+
+                TCSLogWithMark("allowedGroupsArray as \(allowedGroupsArray.debugDescription)")
+
+                var isMemberOfAllowedGroup=false
+                userInfo.groups?.map({ group in
+                    group.lowercased()
+                }).forEach({ userGroup in
+                    if allowedGroupsArray.contains(userGroup.lowercased()){
+                        TCSLogWithMark("user is in group \(userGroup)")
+                        isMemberOfAllowedGroup=true
+                        return
+                    }
+                })
+
+                if isMemberOfAllowedGroup==false {
+                    TCSLogWithMark("user is not allowed to login. not in member of allowed group.")
+
+                    return .failure("The user is not allowed to log in because they are not a member of an allowed group.")
+                }
+                else {
+                    TCSLogWithMark("user allowed to login")
+
+                }
+            }
+
             if let firstname = userInfo.firstName {
                 setHint(type: .firstName, hint: firstname)
             }
@@ -84,6 +113,8 @@ import OpenDirectory
                 setHint(type: .lastName, hint: lastName)
             }
             if let username = userInfo.username {
+                TCSLogWithMark("set shortname to \(username)")
+
                 setHint(type: .user, hint: username)
             }
             if let fullUsername = userInfo.fullUsername {
@@ -100,6 +131,9 @@ import OpenDirectory
             }
             if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
                 setHint(type: .kerberos_principal, hint: kerberosPrincipalName)
+            }
+            if let uid = userInfo.uid {
+                setHint(type: .uid, hint: uid)
             }
 
             let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
@@ -207,7 +241,7 @@ import OpenDirectory
 
             setContextString(type: kAuthorizationEnvironmentPassword, value: password)
             TCSLogWithMark("setting username")
-
+            TCSLogWithMark("setting username to \(username)")
             setHint(type: .user, hint: username)
             TCSLogWithMark("setting tokens.password")
 
@@ -280,6 +314,7 @@ import OpenDirectory
 
                 return nil
             }
+            TCSLogWithMark("username is \(userName)")
             return userName
         }
     }
@@ -361,7 +396,7 @@ import OpenDirectory
         }
     }
     func setHint(type: HintType, hint: Any) {
-        guard (hint is String || hint is [String] || hint is Bool) else {
+        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
             TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }

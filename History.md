@@ -1,5 +1,95 @@
 # What's New In XCreds #
 
+## XCreds 5.0 ##
+
+
+fixed HideExpiration in manifest
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+added build file instructions
+updated package ref
+add missing files to repo
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+Fail on map_username for AD #244
+Issue with HomeMountEnabled #236
+Clarify manifest descriptions for AD property names #245
+XCreds Login Window Overlay Wallpaper not caching? #247
+Update manifest description for CreateAdminIfGroupMember #251
+Update login window when resolution changes #187
+added missing files
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+more
+Local login window dims and gets stuck after failed login attempt #242
+updated history
+Expected AD field values not shown in XCreds log #237
+updated history
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+
+---------
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227 View
+Add LocalFallback to manifest #229 View
+Update description for allowLoginIfMemberOfGroup #228 View
+Customize menu bar app icon #189 View
+improved login animation View
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184 View
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232 View
+Feature Request: HideExpiration key #198 View
+Allow user to use full name to sign in at XCreds username/password screen #178 View
+"Change Password" menuitem is now greyed out #239 View
+keyCodeForLoginWindowChange not working as expected #231 View
+updated history View
+Expected AD field values not shown in XCreds log #237
+-------
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227
+-----
+[Feature Request] Add a Password Expire date or Days for OIDC users and more #165. To test, set map_password_expiry to a claim in Azure (like street address) with a value in seconds from token issue (like 300 seconds) and verify that menu shows the correct date
+Custom Mac login window key combo #206
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+Setting HomeMountEnabled to false removes the home folder from the XCreds menuitems #213
+
+----------
+Map UID #186
+Menubar refresh is delayed when setting shouldPromptForADPasswordChange #195
+Fix formatting for systemInfoButtonTitle #221
+Corrections for manifest #224
+Hang at login after password reset #223
+----------
+Customize the XCReds app's native login dialog box #179
+[Feature Request] AD User Account Creation Name Mapping #172
+[Feature Request] AD - User friendly fail prompts #193
+AD attributes #166
+systemInfoButtonTitle does not respond to plain text values #220
+Clarify key name an description for shouldShowIfLocalOnlyUser #219
+changed manifest version back one; added copying DS user attibutes to prefs. Enhancement Request: XCreds app cant update ds #212
+----------
+[Feature Request] Add option to customize the Refresh Banner text #176
+Feature Request: EnforceSignIn #199
+added new preference to manage more buttons on login screen: shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton. Feature Request - Add key to disable showing shutdown and/or restart on login overlay #203
+Allow override of killall loginwindow in xcreds postinstall script #181
+bumped version of manifest Update manifest pfm_last_modified and pfm_version #164
+fixed Fix manifest title for ROPG pref #183
+added option for system info button title #154
+System Info on XCreds Login Window #154
+implemented Feature Request - Change the wording of the password change pop-up #202
+
 ## XCreds 4.1 ##
 
 Customization of Menu

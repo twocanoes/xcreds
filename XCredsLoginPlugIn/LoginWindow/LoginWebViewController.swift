@@ -20,10 +20,56 @@ class LoginWebViewController: WebViewController, DSQueryable {
     var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
 
+    override func awakeFromNib() {
+//        NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
+//            TCSLogWithMark("Updating view")
+//            self.updateView()
+//        }
+
+    }
+    override func viewDidLayout() {
+TCSLogWithMark()
+    }
+
+    override func viewWillLayout() {
+        TCSLogWithMark()
+        updateView()
+    }
+    func updateView(){
+        let screenRect = NSScreen.screens[0].frame
+
+        let screenWidth = screenRect.width
+        let screenHeight = screenRect.height
+
+        var loginWindowWidth = screenWidth //start with full size
+        var loginWindowHeight = screenHeight //start with full size
+
+        if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowWidth.rawValue) != nil  {
+            let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowWidth.rawValue))
+            if val > 149 {
+                TCSLogWithMark("setting loginWindowWidth to \(val)")
+                loginWindowWidth = val
+            }
+        }
+        if DefaultsOverride.standardOverride.object(forKey: PrefKeys.loginWindowHeight.rawValue) != nil {
+            let val = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowHeight.rawValue))
+            if val > 149 {
+                TCSLogWithMark("setting loginWindowHeight to \(val)")
+                loginWindowHeight = val
+            }
+        }
+        TCSLogWithMark("setting loginWindowWidth to \(loginWindowWidth)")
+
+        TCSLogWithMark("setting loginWindowHeight to \(loginWindowHeight)")
+
+        view.setFrameSize(NSMakeSize(loginWindowWidth, loginWindowHeight))
+        loadPage()
+    }
     override func viewDidAppear() {
         TCSLogWithMark("loading page")
-        loadPage()
-
+        //if prefs define smaller, then resize window
+        TCSLogWithMark("checking for custom height and width")
+        updateView()
     }
 
 
@@ -44,7 +90,24 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 break
             case .failure(let message):
                 TCSLogWithMark("error setting up hints, reloading page:\(message)")
-                loadPage()
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText=message
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+                }
+                alert.runModal()
+
+                self.updateView()
+
 
             }
         }

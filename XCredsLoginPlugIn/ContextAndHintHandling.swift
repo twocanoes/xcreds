@@ -33,9 +33,11 @@ enum HintType: String {
 //    case noMADFull
     case aliasName
     case claimsToAddToLocalUserAccount
+    case adUserAttributesToAddToLocalUserAccount
     case adminUsername
     case adminPassword
     case localLogin
+    case allADAttributes
 
 
 }

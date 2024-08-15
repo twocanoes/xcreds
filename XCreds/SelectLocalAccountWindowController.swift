@@ -70,15 +70,7 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                     }
                     do {
                         TCSLogWithMark("Changing password")
-                        if localPassword == newPassword {
-                            TCSLogWithMark("cloud password is already the local password.")
-
-                            return .successful(localUsername)
-                        }
-                        try localUser.changePassword(localPassword, toPassword: newPassword)
-
-                        TCSLogWithMark("local password set successfully to network / cloud password")
-                        return .successful(localUsername)
+                         return .successful(localUsername)
 
                     }
                     catch {

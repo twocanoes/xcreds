@@ -29,7 +29,9 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     @IBOutlet weak var adminCredentialsWindow: NSWindow!
     @IBOutlet weak var resetButton: NSButton!
     @IBOutlet weak var resetText: NSTextField!
+    @IBOutlet weak var resetTitle: NSTextField!
 
+    @IBOutlet weak var usernameTextField: NSTextField!
     var showResetButton = true
     var showResetText = true
     var shouldPromptForAdmin=false
@@ -37,6 +39,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     var resetKeychain = false
     var adminUsername:String?
     var adminPassword:String?
+    var currentUsername:String?
 
     override var windowNibName: NSNib.Name {
 
@@ -45,10 +48,18 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     override func awakeFromNib() {
         resetButton.isHidden = !showResetButton
         resetText.isHidden = !showResetText
+        if let currentUsername = currentUsername {
+            usernameTextField.stringValue = currentUsername
+        }
+
+        if let resetPasswordDialogTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.resetPasswordDialogTitle.rawValue), resetPasswordDialogTitle.count>0{
+
+            resetTitle.stringValue=resetPasswordDialogTitle
+        }
 
     }
     func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
-
+        currentUsername = username
         if newPassword == nil {
          TCSLogWithMark("new password is nil")
         }

@@ -16,7 +16,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 
 protocol UpdateCredentialsFeedbackProtocol {
 
-    func passwordExpiryUpdate(_ passwordExpire:String)
+    func passwordExpiryUpdate(_ passwordExpires:Date)
     func credentialsUpdated(_ credentials:Creds)
     func credentialsCheckFailed()
     func kerberosTicketUpdated()
@@ -48,7 +48,22 @@ protocol UpdateCredentialsFeedbackProtocol {
                 break
             case .failure(let msg):
                 TCSLogWithMark(msg)
-                authFail(msg)
+                TCSLogWithMark("error setting up hints, reloading page:\(msg)")
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText=msg
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+                }
+                alert.runModal()
 
             }
 
@@ -140,6 +155,9 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.usernameTextField.stringValue=""
         self.passwordTextField.stringValue=""
 
+
+        self.usernameTextField.wantsLayer=true
+        self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true
@@ -238,7 +256,15 @@ protocol UpdateCredentialsFeedbackProtocol {
         passwordTextField.stringValue = ""
         passwordTextField.shake(self)
         alertTextField.isHidden=false
-        alertTextField.stringValue = message ?? "Authentication Failed"
+        if message?.lowercased() == "preauthentication failed" {
+            alertTextField.stringValue = "Authentication Failed"
+        }
+        else if message?.lowercased() == "unknown ad user" {
+            alertTextField.stringValue = "Authentication Failed"
+        }
+        else {
+            alertTextField.stringValue = message ?? "Authentication Failed"
+        }
         setLoginWindowState(enabled: true)
     }
 
@@ -278,14 +304,24 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-        setLoginWindowState(enabled: false)
 
         TCSLogWithMark()
         updateLoginWindowInfo()
         TCSLogWithMark()
 
+        setLoginWindowState(enabled: false)
+
         if (self.domainName.isEmpty==true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false) || self.localOnlyCheckBox.state == .on{
             TCSLogWithMark("do local auth only")
+            guard let resolvedName = try? PasswordUtils.resolveName(shortName) else {
+                usernameTextField.shake(self)
+                passwordTextField.shake(self)
+                TCSLogWithMark("No user found for user \(shortName)")
+                authFail()
+                return
+            }
+            shortName = resolvedName
+
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true)
@@ -299,11 +335,6 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
             return
         } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
-            //                let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            //                guard let userName = currentUser?.recordName else {
-            //                    TCSLogWithMark("no username")
-            //                    return
-            //                }
 
             tokenManager.feedbackDelegate=self
 
@@ -332,6 +363,12 @@ protocol UpdateCredentialsFeedbackProtocol {
         session.delegate = self
         session.recursiveGroupLookup = getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false
         
+
+        if let customLDAPAttributes = getManagedPreference(key: .CustomLDAPAttributes) as? Array<String> {
+            TCSLogWithMark("Adding requested Custom Attributes:\(customLDAPAttributes)")
+            session.customAttributes=customLDAPAttributes
+        }
+
         if let ignoreSites = getManagedPreference(key: .IgnoreSites) as? Bool {
             os_log("Ignoring AD sites", log: uiLog, type: .debug)
 
@@ -370,51 +407,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark(providedDomainName)
         }
         TCSLogWithMark()
-//        if strippedUsername.contains("\\") {
-//            os_log("User entered an NT Domain name, doing lookup", log: uiLog, type: .default)
-//            if let ntDomains = getManagedPreference(key: .NTtoADDomainMappings) as? [String:String],
-//                let ntDomain = strippedUsername.components(separatedBy: "\\").first?.uppercased(),
-//                let user = strippedUsername.components(separatedBy: "\\").last,
-//                let convertedDomain =  ntDomains[ntDomain] {
-//                    shortName = user
-//                    providedDomainName = convertedDomain
-//            } else {
-//                os_log("NT Domain mapping failed, wishing the user luck on authentication", log: uiLog, type: .default)
-//            }
-//        }
-//        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
-//
-//            domainName = prefDomainName
-//        }
-//        if domainName != "" && providedDomainName.lowercased() == domainName.lowercased() {
-//            TCSLogWithMark("ADDomain being used")
-//            domainName = providedDomainName.uppercased()
-//        }
 
-//        if providedDomainName == domainName {
-//
-//        }
-//        else if !providedDomainName.isEmpty {
-//            TCSLogWithMark("Optional domain provided in text field: \(providedDomainName)")
-//            if getManagedPreference(key: .AdditionalADDomains) as? Bool == true {
-//                os_log("Optional domain name allowed by AdditionalADDomains allow-all policy", log: uiLog, type: .default)
-//                domainName = providedDomainName
-//                return
-//            }
-//
-//            if let optionalDomains = getManagedPreference(key: .AdditionalADDomains) as? [String] {
-//                guard optionalDomains.contains(providedDomainName.lowercased()) else {
-//                    TCSLogWithMark("Optional domain name not allowed by AdditionalADDomains whitelist policy")
-//                    return
-//                }
-//                TCSLogWithMark("Optional domain name allowed by AdditionalADDomains whitelist policy")
-//                domainName = providedDomainName
-//                return
-//            }
-//
-//            TCSLogWithMark("Optional domain not name allowed by AdditionalADDomains policy (false or not defined)")
-//        }
-        
         if providedDomainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
             TCSLogWithMark("Defaulting to managed domain as there is nothing else")
@@ -432,6 +425,8 @@ protocol UpdateCredentialsFeedbackProtocol {
     fileprivate func setRequiredHintsAndContext() {
         TCSLogWithMark()
         TCSLogWithMark("Setting hints for user: \(shortName)")
+        TCSLogWithMark("Setting user to \(shortName)")
+
         mechanismDelegate?.setHint(type: .user, hint: shortName)
         mechanismDelegate?.setHint(type: .pass, hint: passString)
         TCSLogWithMark()
@@ -815,31 +810,25 @@ extension SignInViewController: NoMADUserSessionDelegate {
             passChanged = false
         }
         
-        TCSLogWithMark("Authentication succeeded, requesting user info")
         if isInUserSpace==true {
             self.view.window?.close()
         }
+        TCSLogWithMark("Authentication succeeded, requesting user info")
         nomadSession?.userInfo()
     }
 
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
+
         TCSLogWithMark("User Info:\(user)")
         TCSLogWithMark("Groups:\(user.groups)")
         var allowedLogin = true
-        let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {
-            let dateString = dateFormatter.string(from: passExpired)
-            updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(dateString)
+            updateCredentialsFeedbackDelegate?.passwordExpiryUpdate(passExpired)
 
         }
         updateCredentialsFeedbackDelegate?.adUserUpdated(user)
-
-
 
         TCSLogWithMark("Checking for DenyLogin groupsChecking for DenyLogin groups")
         
@@ -858,6 +847,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
             }
         }
     
+        let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
+
+        if let mapUID = mapUID, let rawAttributes = user.rawAttributes, let uidString = rawAttributes[mapUID]  {
+            mechanismDelegate?.setHint(type: .uid, hint: uidString)
+
+        }
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
             mechanismDelegate?.setHint(type: .ntName, hint: ntName)
@@ -890,8 +885,15 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     promptPasswordWindowController.showResetButton=false
 
                 }
+                var currUser = user.shortName
                 TCSLogWithMark("switch  promptPasswordWindowController")
-                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: user.shortName, newPassword: passString, shouldUpdatePassword: true) {
+                if isInUserSpace == true {
+                    let consoleUser = getConsoleUser()
+                    currUser=consoleUser
+                }
+
+
+                switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: currUser, newPassword: passString, shouldUpdatePassword: true) {
 
                 case .success(let enteredUsernamePassword):
 
@@ -951,9 +953,13 @@ extension SignInViewController: NoMADUserSessionDelegate {
         setRequiredHintsAndContext()
         mechanismDelegate?.setHint(type: .firstName, hint: user.firstName)
         mechanismDelegate?.setHint(type: .lastName, hint: user.lastName)
+        TCSLogWithMark("Setting user to \(user.shortName)")
+        mechanismDelegate?.setHint(type: .user, hint: user.shortName)
+        mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: user.shortName)
+
         mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
         mechanismDelegate?.setHint(type: .groups, hint: user.groups)
-        mechanismDelegate?.setHint(type: .fullName, hint: user.cn)
+        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName)
         TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
 
         mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
@@ -961,6 +967,13 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         // set the network auth time to be added to the user record
         mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+
+        if let userAttributes = user.rawAttributes{
+            TCSLogWithMark("Setting AD user attributes")
+            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes )
+
+        }
+
     }
 
 }

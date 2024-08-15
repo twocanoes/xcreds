@@ -505,7 +505,7 @@ public class NoMADSession: NSObject {
         }
         arguments.append(contentsOf: attributes)
         let ldapResult = cliTask(command, arguments: arguments)
-        
+        TCSLogWithMark("command: \(command) args: \(arguments)")
         if (ldapResult.contains("GSSAPI Error") || ldapResult.contains("Can't contact")) {
             throw NoMADSessionError.StateError
         }
@@ -621,8 +621,8 @@ public class NoMADSession: NSObject {
         }
     }
     
-    func getUserInformation() {
-        
+    func getUserInformation() -> Bool {
+
         // some setup
         
         var passwordAging = true
@@ -639,17 +639,54 @@ public class NoMADSession: NSObject {
                 attributes.append(contentsOf: customAttributes!)
             }
             
-            let searchTerm = "sAMAccountName=" + userPrincipalShort
-            
+             let searchTerm = "(|(sAMAccountName="+userPrincipalShort+")(userPrincipalName="+userPrincipalShort+"@"+domain+"))"
+
             if let ldifResult = try? getLDAPInformation(attributes, searchTerm: searchTerm) {
+                if ldifResult.count>1 {
+
+                    TCSLogWithMark("Multiple records found. exiting")
+                    return false
+                }
+                else if ldifResult.count==0 {
+
+                    TCSLogWithMark("no user records found. exiting")
+                    return false
+                }
                 let ldapResult = getAttributesForSingleRecordFromCleanedLDIF(attributes, ldif: ldifResult)
+                TCSLogWithMark(ldapResult.description)
                 let passwordSetDate = ldapResult["pwdLastSet"]
                 let computedExpireDateRaw = ldapResult["msDS-UserPasswordExpiryTimeComputed"]
                 let userPasswordUACFlag = ldapResult["userAccountControl"] ?? ""
                 let userHomeTemp = ldapResult["homeDirectory"] ?? ""
-                let userDisplayName = ldapResult["displayName"] ?? ""
-                let firstName = ldapResult["givenName"] ?? ""
-                let lastName = ldapResult["sn"] ?? ""
+
+                var userDisplayName = ldapResult["displayName"] ?? ""
+
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    userDisplayName=mapValue
+                    TCSLogWithMark("userDisplayName: \(userDisplayName)")
+                }
+
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
+
+                var firstName = ldapResult["givenName"] ?? ""
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFirstName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    firstName=mapValue
+                }
+                var lastName = ldapResult["sn"] ?? ""
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapLastName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    lastName=mapValue
+                }
+
+                var shortName = userPrincipalShort
+
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
+                    shortName=mapValue
+                }
+
+
                 var groupsTemp = ldapResult["memberOf"]
                 let userEmail = ldapResult["mail"] ?? ""
                 let UPN = ldapResult["userPrincipalName"] ?? ""
@@ -687,9 +724,10 @@ public class NoMADSession: NSObject {
                 userHome = userHome.replacingOccurrences(of: " ", with: "%20")
                 
                 // pack up user record
+                TCSLogWithMark("userDisplayName: \(userDisplayName)")
+                TCSLogWithMark("ldifResult: \(ldifResult.debugDescription)")
+                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: shortName, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults, rawAttributes: ldifResult.first)
 
-                userRecord = ADUserRecord(userPrincipal: userPrincipal,firstName: firstName, lastName: lastName, fullName: userDisplayName, shortName: userPrincipalShort, upn: UPN, email: userEmail, groups: groups, homeDirectory: userHome, passwordSet: tempPasswordSetDate, passwordExpire: userPasswordExpireDate, uacFlags: Int(userPasswordUACFlag), passwordAging: passwordAging, computedExireDate: userPasswordExpireDate, updatedLast: Date(), domain: domain, cn: cn, pso: pso, passwordLength: getComplexity(pso: pso), ntName: ntName, customAttributes: customAttributeResults)
-                
             } else {
                 myLogger.logit(.base, message: "Unable to find user.")
             }
@@ -705,7 +743,7 @@ public class NoMADSession: NSObject {
         }
         
         // pack up the user record
-        
+        return true
     }
     
     // MARK: LDAP cleanup functions
@@ -1149,7 +1187,6 @@ extension NoMADSession: NoMADUserSession {
     }
 
     private func shareKerberosResult(completion: (KerberosTicketResult) -> Void) {
-        getUserInformation()
         let result: KerberosTicketResult
         if let userRecord = userRecord {
             result = .success(userRecord)
@@ -1327,7 +1364,11 @@ extension NoMADSession: NoMADUserSession {
             siteManager.sites[domain] = hosts
         }
 
-        getUserInformation()
+        if getUserInformation()==false {
+            delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.UnknownPrincipal, description: "Invalid user account")
+            return
+        }
+
         // return the userRecord unless we came back empty
         if userRecord != nil {
             delegate?.NoMADUserInformation(user: userRecord!)

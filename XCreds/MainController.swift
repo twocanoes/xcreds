@@ -17,7 +17,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     var feedbackDelegate:TokenManagerFeedbackDelegate?
 
     let scheduleManager = ScheduleManager()
-    var passwordExpires:String?
+    var adPasswordExpires:String?
+    var cloudPasswordExpires:String?
     var nextPasswordCheck:String {
         let dateFormatter = DateFormatter()
 
@@ -36,25 +37,32 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     var signInViewController:SignInViewController?
 
 
-    init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, passwordExpires: String? = nil, nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
+    init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
         self.passwordCheckTimer = passwordCheckTimer
         self.feedbackDelegate = feedbackDelegate
-        self.passwordExpires = passwordExpires
+        self.adPasswordExpires = adPasswordExpires
+        self.cloudPasswordExpires = cloudPasswordExpires
+
         self.credentialStatus = credentialStatus
         self.hasCredential = hasCredential
         self.signInViewController = signInViewController
         super.init()
         scheduleManager.feedbackDelegate=self
 
-        if isLocalOnlyAccount() == false {
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
+
+        if isLocalOnlyAccount() == false || shouldShowMenuBarSignInWithoutLoginWindowSignin==true {
             let accountAndPassword = localAccountAndPassword()
             if let password = accountAndPassword.1 {
                 scheduleManager.kerberosPassword = password
             }
             self.scheduleManager.startCredentialCheck()
-
         }
+
+
     }
+
+
 
     func isLocalOnlyAccount() -> Bool {
 
@@ -63,10 +71,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             return false
         }
         let kerbPrinc = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal" )
-        let oidcIss = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_iss" )
 
-        if kerbPrinc == nil && oidcIss == nil {
-            TCSLogWithMark("no kerberos principal and no OIDC ISS in local DS console user, so skipping showing window")
+        let kerbPrincPrefs = UserDefaults.standard.string(forKey:"_xcreds_activedirectory_kerberosPrincipal" )
+
+        let oidcUsername = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_username" )
+
+        let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+
+
+        if kerbPrinc == nil && oidcUsername == nil && kerbPrincPrefs == nil && oidcUsernamePrefs == nil {
+            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user, so skipping showing window")
             return true
 
         }
@@ -96,7 +110,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 forceUsernamePassword = true
             }
         }
-        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil)  {
+        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
             windowController.window!.makeKeyAndOrderFront(self)
 
             if  let webViewController = windowController.webViewController{
@@ -177,8 +191,18 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func setup() {
+        if let cloudPasswordExpiresDate = OIDCPasswordExpiryDate(){
 
-
+            if OIDCPasswordExpiryDate()?.timeIntervalSinceNow ?? 0<0 {
+                self.cloudPasswordExpires = "Password Expired!"
+                return
+            }
+            if #available(macOS 12.0, *) {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.formatted(date: .abbreviated, time: .shortened)
+            } else {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.debugDescription
+            }
+        }
         NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didUnmountNotification, object: nil, queue: nil) { notification in
                 self.scheduleManager.checkKerberosTicket()
                 self.checkAndMountShares()
@@ -212,6 +236,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if discoveryURL == nil {
             return
         }
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
+
+        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
+            showSignInWindow(forceLoginWindowType: .cloud)
+        }
+
 
     }
 
@@ -260,23 +290,47 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
-/*
- let scheduleManager = ScheduleManager()
- var passwordExpires:String?
- var nextPasswordCheck:String?
- var credentialStatus:String?
- var hasCredential:Bool?
+    func passwordExpiryUpdate(_ passwordExpire: Date) {
 
- */
-    func passwordExpiryUpdate(_ passwordExpire: String) {
+        let dateFormatter = DateFormatter()
 
-        self.passwordExpires=passwordExpire
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        let dateString = dateFormatter.string(from: passwordExpire)
+
+        self.adPasswordExpires=dateString
+        let appDelegate = NSApp.delegate as? AppDelegate
+        appDelegate?.updateStatusMenuExpiration(passwordExpire)
+
+
     }
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true
         credentialStatus="Valid Tokens"
-        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+        let tokenManager = TokenManager()
 
+        if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+
+            switch userInfoResult {
+
+            case .success(let retUserAccountInfo):
+                let userInfo = retUserAccountInfo
+                if let username = userInfo.username {
+                    UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                }
+                if let fullUsername = userInfo.fullUsername {
+                    UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
+                }
+                if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                    UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                }
+            case .error(let message):
+                TCSLogWithMark("Error getting infoResult: \(message)")
+            }
+
+        }
         DispatchQueue.main.async {
             self.windowController.window?.close()
 
@@ -352,7 +406,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasCredential=false
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
-        appDelegate?.updateStatusMenuIcon(showDot:false)
+        appDelegate?.updateStatusMenuExpiration(nil)
         if WifiManager().isConnectedToNetwork()==true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }
@@ -383,7 +437,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if WifiManager().isConnectedToNetwork()==true {
                 showSignInWindow(forceLoginWindowType: .usernamePassword)
             }
-
         }
     }
     func adUserUpdated(_ adUser: ADUserRecord) {
@@ -391,6 +444,52 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         (NSApp.delegate as? AppDelegate)?.updateShareMenu(adUser: adUser)
 
     }
+    func OIDCPasswordExpiryDate() -> Date?{
+
+        let keychainUtil = KeychainUtil()
+
+        guard let idToken = try? keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken").1 else {
+            TCSLogWithMark("cannot find ID token")
+
+            return nil
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+
+        guard let idTokenInfo = idTokenInfo else {
+            TCSLogWithMark("idTokenInfo invalid")
+            return nil
+        }
+
+        guard let expiryKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapPasswordExpiry.rawValue)  as? String,
+              expiryKey.count>0,
+              let expiryString = idTokenInfo[expiryKey] as? String,
+              let expiryNumber = Int(expiryString) else {
+            TCSLogWithMark("mapPasswordExpiry invalid")
+
+            return nil
+        }
+
+        guard let iatInt = idTokenInfo["iat"] as? Int
+              else {
+            TCSLogWithMark("iatInt invalid")
+
+            return nil
+        }
+        TCSLogWithMark("iatInt: \(iatInt)")
+        TCSLogWithMark("expiryNumber: \(expiryNumber)")
+
+        let expirySecondsFromEpoch = expiryNumber + iatInt
+        TCSLogWithMark("expirySecondsFromEpoch: \(expirySecondsFromEpoch)")
+
+        let expiryDate = Date(timeIntervalSince1970: TimeInterval(expirySecondsFromEpoch))
+
+        TCSLogWithMark("expiryDate: \(expiryDate)")
+
+        return expiryDate
+
+    }
+
 
 }
 

@@ -34,6 +34,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         var groups:Array<String>?
         var alias:String?
         var kerberosPrincipalName:String?
+        var uid:String?
     }
     enum ParseHintsResult:Error {
         case error(String)
@@ -254,7 +255,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
 
         TCSLogWithMark("getting users")
-        let standardUsers = try? getAllStandardUsers()
+        let nonSystemUsers = try? getAllNonSystemUsers()
         let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
         let shouldPromptForMigration = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
 
@@ -267,9 +268,9 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
             return .successful(odUsername)
         }
-        else if let standardUsers = standardUsers, standardUsers.count>0, shouldPromptForMigration == true {
+        else if let nonSystemUsers = nonSystemUsers, nonSystemUsers.count>0, shouldPromptForMigration == true {
 
-            TCSLogWithMark("Preference set to prompt for migration and there are standard users, so prompting")
+            TCSLogWithMark("Preference set to prompt for migration and there are existing users, so prompting")
 
 
             return SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: newPassword)
@@ -402,6 +403,22 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark("no alias claim: \(aliasClaim ?? "none")")
         }
 
+        //uid
+        let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
+
+        if let mapUID = mapUID, let uid = idTokenInfo[mapUID] as? String {
+            if let mapValueInt = Int(uid), mapValueInt > 499 {
+                TCSLogWithMark("setting uid: \(uid)")
+                userAccountInfo.uid = uid
+            }
+            else {
+                TCSLogWithMark("invalid uid mapping value")
+            }
+
+        }
+        else {
+            TCSLogWithMark("No uid mapping")
+        }
 
         return .success(userAccountInfo)
 
@@ -442,7 +459,7 @@ extension TokenManager {
                 TCSLogWithMark("Found google auth and access token")
 
             }
-
+ 
             if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }

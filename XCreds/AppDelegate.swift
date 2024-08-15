@@ -9,7 +9,7 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
-   
+
     @IBOutlet weak var loginPasswordWindow: NSWindow!
     @IBOutlet var window: NSWindow!
     var mainController:MainController?
@@ -39,6 +39,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
 
     }
+    func updateStatusMenuExpiration(_ expires:Date?) {
+
+        ///TODO: implement edge cases
+        return
+//        DispatchQueue.main.async {
+//
+//            TCSLogWithMark()
+//
+//            if let expires = expires {
+//                let daysToGo = Int(abs(expires.timeIntervalSinceNow)/86400)
+//
+//                self.statusBarItem?.button?.title="\(daysToGo)d"
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateStyle = .medium
+//                dateFormatter.timeStyle = .short
+//
+//
+//                self.statusBarItem?.button?.toolTip = dateFormatter.string(from: expires as Date)
+//
+//            }
+//            else {
+//                self.statusBarItem?.button?.title=""
+//                self.statusBarItem?.button?.toolTip = ""
+//            }
+//
+//
+//        }
+    }
     func updateStatusMenuIcon(showDot:Bool){
 
 
@@ -47,26 +75,50 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
             TCSLogWithMark()
             if showDot==true {
                 TCSLogWithMark("showing with dot")
-                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon check")
+
+                if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconCheckedData.rawValue), let image = NSImage(data: iconData) {
+                    image.size=NSMakeSize(16, 16)
+                    self.statusBarItem?.button?.image=image
+
+                }
+                else {
+                    self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon check")
+                }
 
             }
             else {
                 TCSLogWithMark("showing without dot")
-                self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+                if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
+                    image.size=NSMakeSize(16, 16)
+
+                    self.statusBarItem?.button?.image=image
+
+                }
+                else {
+                    self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+                }
 
             }
+
         }
 
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()
-
-
+        updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
-        self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
-            let shareMounter = ShareMounter()
+
+        if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
+            image.size=NSMakeSize(16, 16)
+
+            self.statusBarItem?.button?.image=image
+        }
+        else {
+            self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
+        }
+        let shareMounter = ShareMounter()
 
         shareMounterMenu = ShareMounterMenu()
         shareMounterMenu?.shareMounter = shareMounter
@@ -146,6 +198,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     }
 
+    func updatePrefsFromDS(){
+        if let currentUser = PasswordUtils.getCurrentConsoleUserRecord() {
 
+            do {
+                let attributesArray = try currentUser.recordDetails(forAttributes: nil)
+                for currAttribute in attributesArray {
+                    if let key = currAttribute.key as? String, key.hasPrefix("dsAttrTypeNative:_xcreds"), let value = currAttribute.value as? Array<String>, let lastValue = value.last {
+                        let components = key.components(separatedBy: ":")
+                        if let strippedKey = components.last{
+                            UserDefaults.standard.set(lastValue, forKey:strippedKey)
+                        }
+                    }
+                }
+            }
+            catch {
+                TCSLogWithMark("could not get attributes from user")
+            }
+        }
+
+    }
 }
 

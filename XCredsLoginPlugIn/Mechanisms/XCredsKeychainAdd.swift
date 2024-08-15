@@ -142,6 +142,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         let domainName = getHint(type: .noMADDomain) as? String
         let shortName = getHint(type: .user) as? String
 
+        TCSLogWithMark("got shortname of \(shortName ?? "Unknown")")
+
         if let tokenArray = tokenArray, tokenArray.count>2 {
             TCSLogWithMark("We have tokens, so cloud login")
 //            let tokenArray = getHint(type: .tokens) as? Array<String>

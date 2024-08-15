@@ -107,11 +107,38 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 secureTokenCreds = creds
             }
 
-            guard let uid = findFirstAvaliableUID() else {
-                TCSLogErrorWithMark("Could not find an available UID")
-                return
+            var uid:String?
+            if let hintUID = getHint(type: .uid) as? String{
+                if let hintUIDInt = Int(hintUID), hintUIDInt>499 {
+                    do {
+                        let user = try userWithUID(uid: hintUID)
+                        if user.count==0 {
+                            TCSLogWithMark("setting uid to \(hintUID) from mapped value)")
+                            uid = hintUID
+                        }
+                        else {
+                            TCSLogWithMark("user already exists with uid of \(hintUID).")
+                            denyLogin(message: "Could not create new user. Existing user already using uid of \(hintUID)")
+                        }
+                    }
+                    catch {
+                        TCSLogWithMark("Unable to lookup user with uid \(hintUID)")
+                        denyLogin(message: "Unable to lookup user with uid \(hintUID)")
+
+                    }
+                }
+                else {
+                    TCSLogWithMark("Invalid UID provided in mapping")
+                }
             }
-            
+            else {
+                guard  let firstAvailableUid = findFirstAvailableUID() else {
+                    TCSLogErrorWithMark("Could not find an available UID")
+                    denyLogin(message: "invalid UID")
+                    return
+                }
+                uid = firstAvailableUid
+            }
             TCSLog("Checking for createLocalAdmin key")
             var fullname:String?
 
@@ -136,6 +163,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
                 return
 
+            }
+            guard let uid = uid else {
+                denyLogin(message:"bad uid.")
+                return
             }
             do {
                 try createUser(shortName: xcredsUser,
@@ -340,6 +371,31 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
         }
 
+        let adAttributes = getHint(type: .allADAttributes) as? Dictionary<String, String>
+
+        let adUserAttributesToAddToLocalUserAccount = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.adUserAttributesToAddToLocalUserAccount.rawValue) ?? []) as? [String]
+
+
+        if let adAttributes = adAttributes {
+            TCSLogWithMark("AD Attributes: \(adAttributes)")
+            for adAttribute in adAttributes {
+                let key = adAttribute.key
+                let value = adAttribute.value
+                if let adUserAttributesToAddToLocalUserAccount = adUserAttributesToAddToLocalUserAccount, adUserAttributesToAddToLocalUserAccount.contains(key){
+                    TCSLogWithMark("Found Matching AD attribute: \(key)")
+                    let sanitizedKey = key.oidc_allowed_chars
+                    if sanitizedKey.count<50 && value.count<256 {
+                        TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
+                        try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_\(sanitizedKey)")
+                    }
+
+                }
+            }
+
+        }
+        else {
+            TCSLogWithMark("No AD Attributes")
+        }
 
         let tokenArray = getHint(type: .tokens) as? Array<String>
 
@@ -358,7 +414,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                         TCSLogWithMark("Found Matching Claim: \(currClaim)")
                         if let value = idTokenInfo[currClaim] as? String {
                             let sanitizedKey = currClaim.oidc_allowed_chars
-                            if sanitizedKey.count<20 || value.count<256 {
+                            if sanitizedKey.count<50 && value.count<256 {
                                 TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
                                 try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
 
@@ -676,7 +732,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     /// Finds the first avaliable UID in the DSLocal domain above 500 and returns it as a `String`
     ///
     /// - Returns: `String` representing the UID
-    func findFirstAvaliableUID() -> String? {
+    func findFirstAvailableUID() -> String? {
         var newUID = ""
         os_log("Checking for available UID", log: createUserLog, type: .debug)
         

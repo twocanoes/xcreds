@@ -110,7 +110,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         }
 
         nextCheckTime=Date()
-        timer=Timer.scheduledTimer(withTimeInterval: 60*5, repeats: true, block: { timer in //check every 5 minutes
+        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 5 minutes
             self.checkToken()
         })
         self.checkToken()
@@ -185,10 +185,9 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {
-            let dateString = dateFormatter.string(from: passExpired)
-            feedbackDelegate?.passwordExpiryUpdate(dateString)
+//            let dateString = dateFormatter.string(from: passExpired)
+            feedbackDelegate?.passwordExpiryUpdate(passExpired)
             feedbackDelegate?.adUserUpdated(user)
-//            passwordExpires=dateString
 
         }
     }

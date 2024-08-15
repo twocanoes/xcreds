@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Configures XCreds configuration preferences</string>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.47F59CD0-E476-4016-A8C6-82837B61C7CE.com.twocanoes.xcreds.F5B79C66-146F-4F8A-9237-CAF10606615C.11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>clientID</key>
+			<string>0oae3u4ktuUuqSAcJ5d7</string>
+			<key>discoveryURL</key>
+			<string>https://twocanoes.okta.com/.well-known/openid-configuration</string>
+			<key>redirectURI</key>
+			<string>https://127.0.0.1/xcreds</string>
+			<key>aliasName</key>
+			<string>preferred_username</string>
+			<key>scopes</key>
+			<string>profile openid email offline_access</string>
+            <key>shouldUseROPGForOIDCLogin</key>
+            <true/>
+            <key>shouldVerifyPasswordWithRopg</key>
+            <true/>
+			<key>shouldUseROPGForMenuLogin</key>
+			<true/>
+<key>shouldShowMacLoginButton</key>
+<false/>
+<key>shouldAllowKeyComboForMacLoginWindow</key>
+<true/>
+<key>shouldPromptForMigration</key>
+<true/>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>okta xcreds</string>
+	<key>PayloadDisplayName</key>
+	<string>okta xcreds</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreatorAF7B74FE-BF9D-4789-9E78-519C49324120</string>
+	<key>PayloadOrganization</key>
+	<string>twocanoes</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>7620DBF9-295B-4DFF-B0AE-0629207ECF5A</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

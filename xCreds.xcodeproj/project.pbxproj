@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,36 @@
 		54848E902B47336D000DF420 /* KerbUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 76C4BABA2B353B4B007B2C57 /* KerbUtil.m */; };
 		760148A92B23639D00E119A2 /* NSBundle+FindBundlePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */; };
 		760148AA2B2365F100E119A2 /* NSBundle+FindBundlePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */; };
+		760291E32C116E450075FBD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760291E22C116E450075FBD8 /* AppDelegate.swift */; };
+		760291E52C116E450075FBD8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760291E42C116E450075FBD8 /* ViewController.swift */; };
+		760291E72C116E470075FBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 760291E62C116E470075FBD8 /* Assets.xcassets */; };
+		760291EA2C116E470075FBD8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 760291E92C116E470075FBD8 /* Base */; };
+		760291EF2C116E5F0075FBD8 /* XCreds Login Autofill.app in Resources */ = {isa = PBXBuildFile; fileRef = 760291E02C116E450075FBD8 /* XCreds Login Autofill.app */; };
+		760291F52C116EDB0075FBD8 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760291CB2C1166870075FBD8 /* AuthenticationServices.framework */; };
+		760291F82C116EDB0075FBD8 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760291F72C116EDB0075FBD8 /* CredentialProviderViewController.swift */; };
+		760291FB2C116EDB0075FBD8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 760291FA2C116EDB0075FBD8 /* Base */; };
+		760292002C116EDB0075FBD8 /* XCreds Login Password.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		760292072C11751E0075FBD8 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
+		760292092C1175360075FBD8 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
+		7602920B2C1175620075FBD8 /* PrefKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */; };
+		7602920D2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
+		7602920E2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
+		7602920F2C1175DA0075FBD8 /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* LoggerHelper.swift */; };
+		760292102C1175DA0075FBD8 /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECCFF2875135900483C66 /* LoggerHelper.swift */; };
+		760292112C1176010075FBD8 /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
+		760292122C1176010075FBD8 /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
+		760292132C11763B0075FBD8 /* PrefKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AD27FD1DC3009E0F3A /* PrefKeys.swift */; };
+		760292142C1176450075FBD8 /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
+		760292152C1176450075FBD8 /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
+		760292162C1176A90075FBD8 /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADF9284EB15000332EBC /* TCSUnifiedLogger.m */; };
+		760292172C1176BE0075FBD8 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
+		760292182C1176BF0075FBD8 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
+		760292192C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
+		7602921A2C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
+		7602921B2C117B3F0075FBD8 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
+		7602921C2C117B400075FBD8 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116AB284AB4C000CCD6FF /* PasswordUtils.swift */; };
+		7602921D2C117B490075FBD8 /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
+		7602921E2C117B490075FBD8 /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
 		760418D22A1332210051411B /* SignInWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418CF2A1332210051411B /* SignInWindowController.swift */; };
 		760418D52A1332520051411B /* DS+AD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D42A1332520051411B /* DS+AD.swift */; };
 		760418D72A1332660051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
@@ -49,7 +79,9 @@
 		7632E3A2287357CC00E37923 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AB27FD1D92009E0F3A /* TokenManager.swift */; };
 		7632E3A32873581100E37923 /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
+		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
+		76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76477E032C626B5D00F01D56 /* OIDCLite */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		7649056F2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */; };
 		764D8126284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */; };
@@ -246,6 +278,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		760291FE2C116EDB0075FBD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 760291F32C116EDB0075FBD8;
+			remoteInfo = "XCreds AutoFill Extension";
+		};
+		760292052C116EEE0075FBD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 760291DF2C116E450075FBD8;
+			remoteInfo = "XCreds AutoFill";
+		};
 		76319375287E19A500D36BF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -270,6 +316,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		760292042C116EDB0075FBD8 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				760292002C116EDB0075FBD8 /* XCreds Login Password.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7631935B287D22C700D36BF7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -338,6 +395,18 @@
 /* Begin PBXFileReference section */
 		089B22F02AFAED280006B6BC /* NetworkMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkMonitor.swift; path = XCredsLoginPlugIn/LoginWindow/NetworkMonitor.swift; sourceTree = SOURCE_ROOT; };
 		760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBundle+FindBundlePath.swift"; sourceTree = "<group>"; };
+		760291CB2C1166870075FBD8 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		760291E02C116E450075FBD8 /* XCreds Login Autofill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XCreds Login Autofill.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		760291E22C116E450075FBD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		760291E42C116E450075FBD8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		760291E62C116E470075FBD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		760291E92C116E470075FBD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		760291EB2C116E470075FBD8 /* XCreds_AutoFill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XCreds_AutoFill.entitlements; sourceTree = "<group>"; };
+		760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "XCreds Login Password.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		760291F72C116EDB0075FBD8 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		760291FA2C116EDB0075FBD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CredentialProviderViewController.xib; sourceTree = "<group>"; };
+		760291FC2C116EDB0075FBD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		760291FD2C116EDB0075FBD8 /* XCreds_AutoFill_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XCreds_AutoFill_Extension.entitlements; sourceTree = "<group>"; };
 		760418CE2A1332210051411B /* SignIn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignIn.xib; sourceTree = "<group>"; };
 		760418CF2A1332210051411B /* SignInWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWindowController.swift; sourceTree = "<group>"; };
 		760418D42A1332520051411B /* DS+AD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DS+AD.swift"; sourceTree = "<group>"; };
@@ -359,6 +428,7 @@
 		7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsKeychainAdd.swift; sourceTree = "<group>"; };
 		7632E3A02873497C00E37923 /* LogShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogShim.swift; path = Mechanisms/LogShim.swift; sourceTree = "<group>"; };
 		76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopLoginWindowController.swift; sourceTree = "<group>"; };
+		763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePopoverBackgroundView.swift; sourceTree = "<group>"; };
 		763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMounterMenu.swift; sourceTree = "<group>"; };
 		763DDF192B4F1DD4000D48CC /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
 		7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xcredsmenuItemWindowBackgroundImage.png; sourceTree = "<group>"; };
@@ -506,6 +576,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		760291DD2C116E450075FBD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		760291F12C116EDB0075FBD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760291F52C116EDB0075FBD8 /* AuthenticationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7631935A287D22C700D36BF7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -554,6 +639,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */,
 				76C4BAB72B353AFD007B2C57 /* Kerberos.framework in Frameworks */,
 				762177E62B7144460051B756 /* OIDCLite in Frameworks */,
 				76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */,
@@ -570,6 +656,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		760291E12C116E450075FBD8 /* XCreds AutoFill */ = {
+			isa = PBXGroup;
+			children = (
+				760291E22C116E450075FBD8 /* AppDelegate.swift */,
+				760291E42C116E450075FBD8 /* ViewController.swift */,
+				760291E62C116E470075FBD8 /* Assets.xcassets */,
+				760291E82C116E470075FBD8 /* Main.storyboard */,
+				760291EB2C116E470075FBD8 /* XCreds_AutoFill.entitlements */,
+			);
+			path = "XCreds AutoFill";
+			sourceTree = "<group>";
+		};
+		760291F62C116EDB0075FBD8 /* XCreds AutoFill Extension */ = {
+			isa = PBXGroup;
+			children = (
+				760291F72C116EDB0075FBD8 /* CredentialProviderViewController.swift */,
+				760291F92C116EDB0075FBD8 /* CredentialProviderViewController.xib */,
+				760291FC2C116EDB0075FBD8 /* Info.plist */,
+				760291FD2C116EDB0075FBD8 /* XCreds_AutoFill_Extension.entitlements */,
+			);
+			path = "XCreds AutoFill Extension";
+			sourceTree = "<group>";
+		};
 		760418CC2A1331710051411B /* NomadLogin */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +800,7 @@
 				76BEF7DC2871F5F00013E2A1 /* TCSReturnWindow.h */,
 				76BEF7DB2871F5F00013E2A1 /* TCSReturnWindow.m */,
 				76C084092A9A2635008039FA /* ControlsViewController.xib */,
+				763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */,
 				76BEF7E02871F74D0013E2A1 /* ControlsViewController.swift */,
 				766355E128713C47002E3867 /* LoginWindow.swift */,
 				7651EDEC2A1451590075980B /* LocalUsersViewController.xib */,
@@ -769,6 +879,7 @@
 				767CB2CC2B13B8EB006CA2AC /* libinfo.tbd */,
 				766CC42129D3A320009BC526 /* Paddle.framework */,
 				766CC42229D3A321009BC526 /* ProductLicense.framework */,
+				760291CB2C1166870075FBD8 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -795,6 +906,8 @@
 				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */,
 				7675444428918CD100613840 /* Info.plist */,
+				760291E12C116E450075FBD8 /* XCreds AutoFill */,
+				760291F62C116EDB0075FBD8 /* XCreds AutoFill Extension */,
 				76DD6D15285997F300A700ED /* Frameworks */,
 				76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */,
 				76B040A328EFC788002A289B /* Helper+JWTDecode.swift */,
@@ -822,6 +935,8 @@
 				76DC0A6528836EB1007C42B2 /* XCreds Login Overlay.app */,
 				76786F532A27C36A00AA8DB9 /* auth_mech_fixup */,
 				76786F632A27C62D00AA8DB9 /* test */,
+				760291E02C116E450075FBD8 /* XCreds Login Autofill.app */,
+				760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -900,6 +1015,42 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		760291DF2C116E450075FBD8 /* XCreds Login Autofill */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 760291EC2C116E470075FBD8 /* Build configuration list for PBXNativeTarget "XCreds Login Autofill" */;
+			buildPhases = (
+				760291DC2C116E450075FBD8 /* Sources */,
+				760291DD2C116E450075FBD8 /* Frameworks */,
+				760291DE2C116E450075FBD8 /* Resources */,
+				760292042C116EDB0075FBD8 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				760291FF2C116EDB0075FBD8 /* PBXTargetDependency */,
+			);
+			name = "XCreds Login Autofill";
+			productName = "XCreds AutoFill";
+			productReference = 760291E02C116E450075FBD8 /* XCreds Login Autofill.app */;
+			productType = "com.apple.product-type.application";
+		};
+		760291F32C116EDB0075FBD8 /* XCreds Login Password */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 760292012C116EDB0075FBD8 /* Build configuration list for PBXNativeTarget "XCreds Login Password" */;
+			buildPhases = (
+				760291F02C116EDB0075FBD8 /* Sources */,
+				760291F12C116EDB0075FBD8 /* Frameworks */,
+				760291F22C116EDB0075FBD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "XCreds Login Password";
+			productName = "XCreds AutoFill Extension";
+			productReference = 760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7631935C287D22C700D36BF7 /* authrights */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 76319363287D22C700D36BF7 /* Build configuration list for PBXNativeTarget "authrights" */;
@@ -1006,6 +1157,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				760292062C116EEE0075FBD8 /* PBXTargetDependency */,
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
 				76319376287E19A500D36BF7 /* PBXTargetDependency */,
 				76319379287E204500D36BF7 /* PBXTargetDependency */,
@@ -1016,6 +1168,7 @@
 				76319365287D24E100D36BF7 /* ArgumentParser */,
 				76319368287D24F600D36BF7 /* ArgumentParser */,
 				762177E52B7144460051B756 /* OIDCLite */,
+				76477E032C626B5D00F01D56 /* OIDCLite */,
 			);
 			productName = xCreds;
 			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
@@ -1028,9 +1181,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
+					760291DF2C116E450075FBD8 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					760291F32C116EDB0075FBD8 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					7631935C287D22C700D36BF7 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -1066,7 +1225,7 @@
 			mainGroup = 76EE069127FD1D00009E0F3A;
 			packageReferences = (
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				762177E42B7144460051B756 /* XCLocalSwiftPackageReference "../OIDCLite" */,
+				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
@@ -1079,11 +1238,30 @@
 				766F4C4C2883B88F0021F548 /* Send To Test */,
 				76786F522A27C36A00AA8DB9 /* auth_mech_fixup */,
 				76786F622A27C62D00AA8DB9 /* test */,
+				760291DF2C116E450075FBD8 /* XCreds Login Autofill */,
+				760291F32C116EDB0075FBD8 /* XCreds Login Password */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		760291DE2C116E450075FBD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760291E72C116E470075FBD8 /* Assets.xcassets in Resources */,
+				760291EA2C116E470075FBD8 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		760291F22C116EDB0075FBD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760291FB2C116EDB0075FBD8 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		766355BB2870CA6A002E3867 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1132,6 +1310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				760291EF2C116E5F0075FBD8 /* XCreds Login Autofill.app in Resources */,
 				76DC0A7C28837158007C42B2 /* XCreds Login Overlay.app in Resources */,
 				76DB5CF42A09AE9A0014F8E1 /* get_pw.js in Resources */,
 				762761602B294A7C0067D1D4 /* icon_128x128.png in Resources */,
@@ -1162,6 +1341,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		760291DC2C116E450075FBD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760292132C11763B0075FBD8 /* PrefKeys.swift in Sources */,
+				760292142C1176450075FBD8 /* LogShim.swift in Sources */,
+				7602921C2C117B400075FBD8 /* PasswordUtils.swift in Sources */,
+				760291E52C116E450075FBD8 /* ViewController.swift in Sources */,
+				760292162C1176A90075FBD8 /* TCSUnifiedLogger.m in Sources */,
+				7602921D2C117B490075FBD8 /* DSQueryable.swift in Sources */,
+				760292192C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				7602920F2C1175DA0075FBD8 /* LoggerHelper.swift in Sources */,
+				760291E32C116E450075FBD8 /* AppDelegate.swift in Sources */,
+				760292112C1176010075FBD8 /* UNIXUtilities.swift in Sources */,
+				760292172C1176BE0075FBD8 /* DataExtension.swift in Sources */,
+				7602920E2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		760291F02C116EDB0075FBD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760291F82C116EDB0075FBD8 /* CredentialProviderViewController.swift in Sources */,
+				7602920B2C1175620075FBD8 /* PrefKeys.swift in Sources */,
+				7602921B2C117B3F0075FBD8 /* PasswordUtils.swift in Sources */,
+				760292072C11751E0075FBD8 /* KeychainUtil.swift in Sources */,
+				760292152C1176450075FBD8 /* LogShim.swift in Sources */,
+				7602921E2C117B490075FBD8 /* DSQueryable.swift in Sources */,
+				7602921A2C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				760292092C1175360075FBD8 /* TCSUnifiedLogger.m in Sources */,
+				7602920D2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */,
+				760292102C1175DA0075FBD8 /* LoggerHelper.swift in Sources */,
+				760292182C1176BF0075FBD8 /* DataExtension.swift in Sources */,
+				760292122C1176010075FBD8 /* UNIXUtilities.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76319359287D22C700D36BF7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1246,6 +1463,7 @@
 				766355DB287132E9002E3867 /* LoginWebViewController.swift in Sources */,
 				7657DEDA2B351B5B003A23DB /* UNIXUtilities.swift in Sources */,
 				089B22F12AFAED280006B6BC /* NetworkMonitor.swift in Sources */,
+				763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1364,6 +1582,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		760291FF2C116EDB0075FBD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 760291F32C116EDB0075FBD8 /* XCreds Login Password */;
+			targetProxy = 760291FE2C116EDB0075FBD8 /* PBXContainerItemProxy */;
+		};
+		760292062C116EEE0075FBD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 760291DF2C116E450075FBD8 /* XCreds Login Autofill */;
+			targetProxy = 760292052C116EEE0075FBD8 /* PBXContainerItemProxy */;
+		};
 		76319376287E19A500D36BF7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 766355BC2870CA6A002E3867 /* XCredsLoginPlugin */;
@@ -1382,6 +1610,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		760291E82C116E470075FBD8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				760291E92C116E470075FBD8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		760291F92C116EDB0075FBD8 /* CredentialProviderViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				760291FA2C116EDB0075FBD8 /* Base */,
+			);
+			name = CredentialProviderViewController.xib;
+			sourceTree = "<group>";
+		};
 		76DC0A6B28836EB2007C42B2 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1401,15 +1645,168 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		760291ED2C116E470075FBD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7144;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"AUTOFILL_TARGET=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		760291EE2C116E470075FBD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7144;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "AUTOFILL_TARGET=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		760292022C116EDB0075FBD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"AUTOFILL_TARGET=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "XCreds AutoFill Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "XCreds AutoFill Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill.XCreds-AutoFill-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		760292032C116EDB0075FBD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "AUTOFILL_TARGET=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "XCreds AutoFill Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "XCreds AutoFill Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill.XCreds-AutoFill-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		76319361287D22C700D36BF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1423,11 +1820,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1442,7 +1840,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1461,7 +1859,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1479,7 +1877,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1498,7 +1896,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1515,6 +1913,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
@@ -1530,6 +1929,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				OTHER_CFLAGS = "";
@@ -1543,9 +1943,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1557,9 +1959,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1571,9 +1975,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1584,9 +1990,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1600,7 +2008,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1617,7 +2025,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1637,7 +2045,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1654,7 +2062,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1782,12 +2190,13 @@
 		76EE06A827FD1D01009E0F3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1798,6 +2207,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = headers;
 				INFOPLIST_FILE = XCreds/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1810,7 +2220,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1824,12 +2234,13 @@
 		76EE06A927FD1D01009E0F3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6409;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1840,6 +2251,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = headers;
 				INFOPLIST_FILE = XCreds/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1852,7 +2264,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1866,6 +2278,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		760291EC2C116E470075FBD8 /* Build configuration list for PBXNativeTarget "XCreds Login Autofill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				760291ED2C116E470075FBD8 /* Debug */,
+				760291EE2C116E470075FBD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		760292012C116EDB0075FBD8 /* Build configuration list for PBXNativeTarget "XCreds Login Password" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				760292022C116EDB0075FBD8 /* Debug */,
+				760292032C116EDB0075FBD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		76319363287D22C700D36BF7 /* Build configuration list for PBXNativeTarget "authrights" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1940,13 +2370,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		762177E42B7144460051B756 /* XCLocalSwiftPackageReference "../OIDCLite" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../OIDCLite;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1954,6 +2377,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twocanoes/OIDCLite.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1972,6 +2403,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		76477E032C626B5D00F01D56 /* OIDCLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */;
+			productName = OIDCLite;
 		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;
