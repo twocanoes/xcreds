@@ -25,8 +25,13 @@ class LoginWebViewController: WebViewController, DSQueryable {
 //            TCSLogWithMark("Updating view")
 //            self.updateView()
 //        }
+        TCSLogWithMark()
+
+        updateView()
+
 
     }
+    
     override func viewDidLayout() {
 TCSLogWithMark()
     }
@@ -63,6 +68,7 @@ TCSLogWithMark()
         TCSLogWithMark("setting loginWindowHeight to \(loginWindowHeight)")
 
         view.setFrameSize(NSMakeSize(loginWindowWidth, loginWindowHeight))
+        
         loadPage()
     }
     override func viewDidAppear() {

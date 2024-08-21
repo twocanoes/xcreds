@@ -212,15 +212,25 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     }
     func recenterCenterView()  {
+         TCSLogWithMark()
         if let contentView = self.window?.contentView, let centerView = self.centerView {
+            TCSLogWithMark()
+
             var x = NSMidX(contentView.frame)
             var y = NSMidY(contentView.frame)
+            TCSLogWithMark("\(x):\(y)")
 
+            TCSLogWithMark("center width: \(centerView.frame.size.width), centerview height: \(centerView.frame.size.height)")
             x = x - centerView.frame.size.width/2
             y = y - centerView.frame.size.height/2
             let lowerLeftCorner = NSPoint(x: x, y: y)
 
             centerView.setFrameOrigin(lowerLeftCorner)
+            TCSLogWithMark("\(x):\(y)")
+
+        }
+        else {
+            TCSLogWithMark("invalid contentView or center view")
         }
         if let controlsView = controlsViewController?.view {
             controlsView.removeFromSuperview()
