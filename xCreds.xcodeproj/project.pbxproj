@@ -1744,7 +1744,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XCreds AutoFill Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "XCreds AutoFill Extension";
-				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1780,7 +1779,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "XCreds AutoFill Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "XCreds AutoFill Extension";
-				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
