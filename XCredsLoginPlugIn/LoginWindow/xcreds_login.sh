@@ -13,6 +13,9 @@ launch_agent_config_name="com.twocanoes.xcreds-overlay.plist"
 launch_agent_destination_path="/Library/LaunchAgents/"
 launch_agent_source_path="${overlay_resources_path}"/"${launch_agent_config_name}"
 
+autofill_path="${target_path}/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex"
+
+
 f_install=0
 f_remove=0
 f_restore=0
@@ -64,7 +67,10 @@ if [ $f_install -eq 1 ]; then
 		security authorizationdb read system.login.console > "${rights_backup_path}"
 		
 	fi
-	
+
+    if [ -e "${autofill_path}" ]; then
+        /usr/bin/pluginkit -a "${autofill_path}"
+    fi
 	if [ -e  "${plugin_path}" ]; then
 		
 		cp -R "${plugin_path}" "${target_volume}"/Library/Security/SecurityAgentPlugins/
