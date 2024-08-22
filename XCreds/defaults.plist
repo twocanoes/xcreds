@@ -93,6 +93,8 @@
 	<string>Shares</string>
 	<key>map_password_expiry</key>
 	<string>pwd_exp</string>
+	<key>map_fullusername</key>
+	<string>unique_name</string>
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>

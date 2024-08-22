@@ -60,19 +60,27 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
 
         guard let keychainAccountAndPassword = keychainAccountAndPassword  else {
+            TCSLogWithMark("No keychainAccountAndPassword")
+            self.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
+
             return
         }
         var dsUsername:String?
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
         if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first {
+            TCSLogWithMark()
             dsUsername = username
 
         }
         else if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String], userNames.count>0, let username = userNames.first {
+            TCSLogWithMark()
             dsUsername = username
 
         }
         guard let dsUsername = dsUsername else {
+            TCSLogWithMark("Invalid dsUsername")
+            self.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
+
             return
         }
 
@@ -97,7 +105,24 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                     }
                 }
             }
-        } else {
+        }
+        else if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+            let reason = "XCreds Login Password"
+
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) {
+                [weak self] success, authenticationError in
+
+                DispatchQueue.main.async {
+                    if success {
+                        self?.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+
+                    } else {
+                        self?.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
+                    }
+                }
+            }
+        }
+        else {
             self.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
         }
     }

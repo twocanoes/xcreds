@@ -11,6 +11,7 @@
 #import "XCredsLoginPlugin.h"
 #import "TCSKeychain.h"
 #import "TCSUnifiedLogger.h"
+#import "TCTaskHelper.h"
 #ifndef AUTOFILL_TARGET
 #import <ProductLicense/ProductLicense.h>
 #endif

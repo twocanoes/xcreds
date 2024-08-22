@@ -110,6 +110,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
 
+        
         if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
             image.size=NSMakeSize(16, 16)
 
@@ -149,6 +150,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(screenDidWake(_:)), name:NSWorkspace.screensDidWakeNotification , object: nil)
 
+        if let autofillAppPath = Bundle.main.path(forResource: "XCreds Login Autofill", ofType: "app"){
+
+            if FileManager.default.fileExists(atPath: autofillAppPath){
+
+                let msg = TCTaskHelper.shared().runCommand("/usr/bin/pluginkit", withOptions: ["/usr/bin/pluginkit","-a", autofillAppPath])
+
+                TCSLogWithMark(msg ?? "")
+            }
+        }
         mainController = MainController()
         mainController?.setup()
 

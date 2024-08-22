@@ -318,16 +318,28 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
                 return .error("The email address from the identity token is invalid")
 
             }
-
             TCSLogWithMark("username found: \(tUsername)")
             userAccountInfo.username = tUsername
         }
 
-        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
-            
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            TCSLogWithMark("setting fullUsername to \(mapValue)")
             userAccountInfo.fullUsername = mapValue
             
         }
+
+        else if let email = idTokenObject.email {
+            TCSLogWithMark()
+            userAccountInfo.fullUsername = email.lowercased()
+
+        }
+        else if let mapValue = idTokenInfo["upn"] as? String {
+            TCSLogWithMark()
+            userAccountInfo.fullUsername = mapValue
+
+        }
+
+            
 
         //kerberos principal name
 
