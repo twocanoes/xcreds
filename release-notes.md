@@ -1,3 +1,15 @@
+## 5.0.7176 (2024-08-28)
+
+*  fixed issue with green dot [View](https://github.com/twocanoes/xcreds/commit/9bf6d0379105220e2f9de3f435f301c0ac5f81ae)
+*  fixed initial off center of main view at login window [View](https://github.com/twocanoes/xcreds/commit/5c1e3b392b8837ee1595dd01d40ea644782c7533)
+*  added autofill plugin registration in setup script [View](https://github.com/twocanoes/xcreds/commit/c387a5c4f841112c45a65df4a7afb8ca42d72331)
+*  Fix manifest description for settingsOverrideScriptPath #261 [View](https://github.com/twocanoes/xcreds/commit/0961143a8e5ea0a2ab2eaea8188594c36ad88459)
+*  Fix description for allowLoginIfMemberOfGroup #260 [View](https://github.com/twocanoes/xcreds/commit/024a639ad64d13afb47e734419496c2edc075ca0)
+*  fixed autofill [View](https://github.com/twocanoes/xcreds/commit/bb5aa802af0904d153a4ea0a305960aa8af8c1b7)
+*  fixed autofill launching [View](https://github.com/twocanoes/xcreds/commit/1aec12c21b55fbe3b9024cac36a608e03462b196)
+*  5.0.7176 [View](https://github.com/twocanoes/xcreds/commit/1968fdeac3f816661c66d5f362e71544984ffedc)
+
+
 ## 5.0.7144 (2024-08-15)
 
 *  migration changed to include admin user [View](https://github.com/twocanoes/xcreds/commit/7fcc359648de23b1f3791b4039f93cdc04eece3b)
