@@ -4,7 +4,7 @@
 XCreds has 2 components: the XCreds app that runs in user space and XCreds Login Window that is a security agent that runs when the user is logging in to their mac. Both the security agent and the app share keychain items in the user's keychain to key track of the current local password and the tokens from the cloud provider. Both items prompt the user withe a web view to authenticate to their cloud provider, verify log in was successful and then updates the local password and user keychain passwords as needed. 
 
 ## Requirements
-XCreds currently works with Azure and Google cloud as an OIDC identity provider. It has been testing on macOS Monterey but should support earlier version of macOS.
+XCreds currently works with Azure and Google cloud as an OIDC identity provider. It has been tested on macOS Monterey but should support earlier version of macOS.
 
 ## Components
 XCreds consists of XCreds Login and XCreds app. They do similar tasks but run at different times. 
@@ -20,10 +20,10 @@ The XCreds app runs when the user logs in. On first launch, it checks to see if 
 See the [admin guide](https://github.com/twocanoes/xcreds/wiki/AdminGuide) on the wiki.
 
 ## Video
-See the [video on youtube](https://youtu.be/6V5MCQNWVTE)
+See the [video on youtube](https://www.youtube.com/watch?v=qtPy5ddp9kg&list=PLFtGGT240LAMYGcueZT76BySBQRFCzdce)
 
 ## Support
-Please join the #xcreds MacAdmins slack channel for any questions you have. Paid support is [available from Twocanoes Software](https://twocanoes.com/products/mac/xcreds/).
+Please join the #xcreds MacAdmins slack channel for any questions you have. 
 
 ## Thanks
 
