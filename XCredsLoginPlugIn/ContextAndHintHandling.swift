@@ -8,10 +8,11 @@
 
 enum HintType: String {
     case guestUser
-    case migratePass
-    case migrateUser
+    case existingLocalUserPassword
+    case existingLocalUserName
     case networkSignIn
     case user
+    case fullusername
     case domain
     case pass
     case firstName
@@ -30,7 +31,13 @@ enum HintType: String {
 //    case noMADFirst
 //    case noMADLast
 //    case noMADFull
-    case adGroups
+    case aliasName
+    case claimsToAddToLocalUserAccount
+    case adUserAttributesToAddToLocalUserAccount
+    case adminUsername
+    case adminPassword
+    case localLogin
+    case allADAttributes
 
 
 }

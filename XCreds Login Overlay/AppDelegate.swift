@@ -8,9 +8,6 @@
 import Cocoa
 import AppKit
 
-
-
-
 @main
 class App {
     static func main() {
@@ -43,7 +40,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
 //                let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
             let _ = AuthRightsHelper.addRights()
-            let _ = cliTask("/usr/bin/killall loginwindow")
+//            let _ = cliTask("/usr/bin/killall loginwindow")
+
+            cliTask("/usr/bin/killall", arguments: ["loginwindow"], completion: {_ in })
 
 
         }

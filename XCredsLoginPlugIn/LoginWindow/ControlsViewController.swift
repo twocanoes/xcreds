@@ -7,21 +7,34 @@
 
 import Cocoa
 
-class ControlsViewController: NSViewController {
+class ControlsViewController: NSViewController, NSPopoverDelegate {
+    @IBOutlet var systemInfoPopover: NSPopover!
+    @IBOutlet var systemInfoPopoverViewController: NSViewController!
     var delegate: XCredsMechanismProtocol?
 
-    @IBOutlet weak var macLoginWindowGribColumn: NSGridColumn?
+    @IBOutlet weak var buttonGridView: NSGridView!
+    @IBOutlet weak var refreshGridColumn: NSGridColumn?
+    @IBOutlet weak var shutdownGridColumn: NSGridColumn?
+    @IBOutlet weak var restartGridColumn: NSGridColumn?
+
+    @IBOutlet weak var systemInfoButton: NSButton!
+    @IBOutlet weak var macLoginWindowGridColumn: NSGridColumn?
     @IBOutlet weak var wifiGridColumn: NSGridColumn?
+
     @IBOutlet weak var toolsView: NSView?
 
     let uiLog = "uiLog"
-    @IBOutlet weak var versionTextField: NSTextField?
+    @IBOutlet weak var systemInfoTextField: NSTextField?
+
     var loadPageURL:URL?
 //    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
     var refreshTimer:Timer?
     var commandKeyDown = false
+    var optionKeyDown = false
+    var controlKeyDown = false
+    var keyCodesPressed:[UInt16:Bool]=[:]
 //    func dismiss() {
 ////        if let resolutionObserver = resolutionObserver {
 ////            NotificationCenter.default.removeObserver(resolutionObserver)
@@ -31,31 +44,167 @@ class ControlsViewController: NSViewController {
 //    @objc override var windowNibName: NSNib.Name {
 //        return NSNib.Name("ControlsViewController")
 //    }
+
+    static func initFromPlugin() -> ControlsViewController?{
+
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        guard let bundle = bundle else {
+            return nil
+        }
+        let controlsViewController = ControlsViewController.init(nibName: NSNib.Name("ControlsViewController"), bundle: bundle)
+        return controlsViewController
+
+    }
+
+
     func commandKey(evt: NSEvent) -> NSEvent{
-        TCSLogWithMark(evt.debugDescription)
 
         let flags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.command.rawValue
-        TCSLogWithMark("\(flags.description)")
         if flags != 0 { //key code for command is 55
             commandKeyDown = true
-            TCSLogWithMark("command down")
         }
         else {
             commandKeyDown=false
-            TCSLogWithMark("not command down")
 
+        }
+
+        let optionKeyFlags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.option.rawValue
+
+        if optionKeyFlags != 0 {
+            optionKeyDown=true
+        }
+        else {
+            optionKeyDown=false
+        }
+
+        let controlKeyFlags = evt.modifierFlags.rawValue & NSEvent.ModifierFlags.control.rawValue
+
+        if controlKeyFlags != 0 {
+            controlKeyDown=true
+        }
+        else {
+            controlKeyDown=false
         }
         return evt
     }
 
+    func keyUp(key: NSEvent) -> NSEvent?{
+        keyCodesPressed.removeValue(forKey: key.keyCode)
+        return key
+    }
+    @IBAction func showSystemInfoButtonPressed(_ sender: NSButton) {
+        if systemInfoPopover.isShown==true {
+            systemInfoPopover.performClose(self)
+            return
+        }
+        
+        var sysInfo = SystemInfoHelper().info().joined(separator: "\n")
 
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+
+            let adSession = NoMADSession(domain:prefDomainName , user: "")
+            let ldapServers = adSession.getSRVRecords(prefDomainName)
+
+            if ldapServers.count>0{
+                sysInfo.append("\nAD Domain:\(prefDomainName) (Reachable)")
+            }
+            else {
+                sysInfo.append("\nAD Domain: \(prefDomainName) (Not Reachable)")
+            }
+
+        }
+        self.systemInfoTextField?.stringValue = sysInfo
+        self.systemInfoPopover.delegate=self
+        systemInfoPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxY)
+    }
+    func keyDown(key: NSEvent) -> NSEvent?{
+        keyCodesPressed[key.keyCode]=true
+       var correctKeyPressed = false
+        let keyCodeOverride  = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.keyCodeForLoginWindowChange.rawValue)
+
+        if keyCodeOverride > 0 {
+
+            if keyCodesPressed[UInt16(keyCodeOverride)] == true{
+                correctKeyPressed=true
+            }
+        }
+        else {
+            if keyCodesPressed[76]==true || keyCodesPressed[36]==true {
+                correctKeyPressed=true
+            }
+        }
+
+
+        if correctKeyPressed && controlKeyDown==true && optionKeyDown==true {
+            guard let delegate = delegate else {
+                TCSLogWithMark("No delegate set for restart")
+
+                return key
+            }
+
+            let allowCombo = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowKeyComboForMacLoginWindow.rawValue)
+            if allowCombo == true {
+                keyCodesPressed.removeAll()
+                if commandKeyDown == false {
+                    NotificationCenter.default.post(name: NSNotification.Name("SwitchLoginWindow"), object: self)
+
+
+                }
+                else {
+                    delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+                    delegate.allowLogin()
+
+                }
+                return nil
+            }
+
+        }
+        return key
+    }
+    func setupSystemInfoButton() {
+        let systemInfoButtonTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.systemInfoButtonTitle.rawValue)
+
+        switch systemInfoButtonTitle {
+        case ".os":
+            systemInfoButton.title = "macOS " + ProcessInfo.processInfo.operatingSystemVersionString
+
+        case ".hostname":
+            systemInfoButton.title = "Hostname: " + ProcessInfo.processInfo.hostName
+        case ".ipaddress":
+            systemInfoButton.title = "IP Address: " + (SystemInfoHelper().ipAddress() ?? "No IPAddress")
+
+        case ".serial":
+            systemInfoButton.title = "Serial: " + getSerial()
+
+//        case ".mac":
+//            systemInfoButton.title = "MAC Address:" + getMAC()
+
+        case ".computername":
+            systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
+
+        case ".ssid":
+            systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
+
+        default:
+            if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {
+                systemInfoButton.title = systemInfoButtonTitle
+            }
+            else if let appVersion = SystemInfoHelper().appVersion(){
+                systemInfoButton.title = appVersion
+            }
+        }
+    }
     override func awakeFromNib() {
+        TCSLogWithMark()
         super.awakeFromNib()
         let licenseState = LicenseChecker().currentLicenseState()
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
         self.trialVersionStatusTextField?.isHidden = false
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
+        NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
 
-
+        setupSystemInfoButton()
         switch licenseState {
 
         case .valid:
@@ -71,11 +220,11 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark("Trial")
             self.trialVersionStatusTextField?.isHidden = false
             if daysRemaining==1 {
-                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining on trial."
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. One day remaining."
 
             }
             else {
-                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining on trial."
+                self.trialVersionStatusTextField.stringValue = "XCreds Trial. \(daysRemaining) days remaining."
             }
 
         case .trialExpired:
@@ -93,21 +242,6 @@ class ControlsViewController: NSViewController {
         }
         TCSLogWithMark()
         setupLoginWindowControlsAppearance()
-        let allBundles = Bundle.allBundles
-        versionTextField?.stringValue = ""
-        for currentBundle in allBundles {
-            if currentBundle.bundlePath.contains("XCreds") {
-                let infoPlist = currentBundle.infoDictionary
-                if let infoPlist = infoPlist,
-                   let verString = infoPlist["CFBundleShortVersionString"],
-                   let buildString = infoPlist["CFBundleVersion"]
-                {
-                    versionTextField?.stringValue = "XCreds \(verString) (\(buildString))"
-
-                }
-
-            }
-        }
 
 //        resolutionObserver = NotificationCenter.default.addObserver(forName:NSApplication.didChangeScreenParametersNotification, object: nil, queue: nil) { notification in
 //            TCSLogWithMark("Resolution changed. Resetting size")
@@ -137,12 +271,22 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark()
 
             self.wifiGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowConfigureWifiButton.rawValue)
+
+            self.shutdownGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowShutdownButton.rawValue)
+
+
+            self.restartGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRestartButton.rawValue)
+
+
+            self.systemInfoButton?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSystemInfoButton.rawValue)
+
+
             TCSLogWithMark()
 
-            self.macLoginWindowGribColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
+            self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
             TCSLogWithMark()
 
-            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
+//            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
 
             TCSLogWithMark()
 
@@ -180,6 +324,7 @@ class ControlsViewController: NSViewController {
             TCSLogWithMark("no window for wifi")
             return
         }
+        windowController.delegate=self.delegate
         TCSLogWithMark("setting window level")
 //        let colorValue=0.9
 //        let alpha=0.95

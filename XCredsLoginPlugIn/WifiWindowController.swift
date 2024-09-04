@@ -28,6 +28,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBOutlet weak var addSSIDText: NSTextField?
     @IBOutlet weak var addSSIDLabel: NSTextField?
     
+    @IBOutlet weak var wifiSwitch: NSSwitch!
     @IBOutlet weak var networkUsernameLabel: NSTextField!
     @IBOutlet weak var wifiPopupMenu: NSMenu!
     @IBAction func help(_ sender: Any) {
@@ -41,6 +42,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     let wifiLog = "wifiLog"
     private var defaultFadeDuration: TimeInterval = 0.1
     private var completionHandler: (() -> Void)?
+    var delegate: XCredsMechanismProtocol?
     let wifiManager = WifiManager()
 
     @IBAction func wifiCredentialCancelButtonPressed(_ sender: NSButton) {
@@ -64,6 +66,16 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
         TCSLogWithMark("adding wifi networks")
         certificatePopupButton.addItems(withTitles: WifiManager().identityCommonNames())
 
+
+        wifiManager.wifiState() { state in
+            switch state {
+            case .off:
+                self.wifiSwitch.state = .off
+
+            case .on:
+                self.wifiSwitch.state = .on
+            }
+        }
     }
 
 
@@ -104,7 +116,6 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
                 self.networkConnectionSpinner?.stopAnimation(self)
                 self.networkConnectionSpinner?.isHidden=true
                 self.updateNetworks()
-
             }
         }
 
@@ -156,6 +167,8 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBAction func dismissButton(_ sender: Any) {
         TCSLogWithMark("closing window")
         DispatchQueue.main.async {
+            TCSLogWithMark("Triggering login window reload")
+            self.delegate?.reload()
             self.window?.close()
         }
     }
@@ -196,6 +209,31 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     }
 
 
+    @IBAction func wifiButtonPressed(_ sender: NSSwitch) {
+
+        if sender.state == .off {
+            wifiManager.setWiFiState(.off) {
+                self.updateAvailableNetworks()
+
+
+
+            }
+        }
+        else {
+            wifiManager.setWiFiState(.on) {
+                self.networkWifiPopup?.isEnabled=false
+                self.networkConnectionSpinner?.startAnimation(true)
+                self.networkConnectionSpinner?.isHidden=false
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.updateAvailableNetworks()
+                }
+            }
+        }
+        TCSLogWithMark("Wifi Button Switch changed")
+
+
+    }
     func configureUIForSelectedNetwork(network: CWNetwork) {
         self.networkUsername?.stringValue = ""
         self.networkPassword?.stringValue = ""
@@ -286,7 +324,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     }
 
     func wifiManagerConnectedToNetwork() {
-        TCSLogWithMark("dismissing")
+        TCSLogWithMark("WiFi successfully connected leaving manager")
         self.dismissButton(self)
     }
 }

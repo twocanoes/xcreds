@@ -96,7 +96,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             TCSLogErrorWithMark("Unable to unlock keychain reference.")
             // check if we should reset
             
-            if let resetPass = getHint(type: .migratePass) as? String {
+            if let resetPass = getHint(type: .existingLocalUserPassword) as? String {
                 
                 TCSLogWithMark("Resetting keychain with migrated user/pass.")
                 
@@ -142,6 +142,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         let domainName = getHint(type: .noMADDomain) as? String
         let shortName = getHint(type: .user) as? String
 
+        TCSLogWithMark("got shortname of \(shortName ?? "Unknown")")
+
         if let tokenArray = tokenArray, tokenArray.count>2 {
             TCSLogWithMark("We have tokens, so cloud login")
 //            let tokenArray = getHint(type: .tokens) as? Array<String>
@@ -154,7 +156,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
             let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
             TCSLogWithMark("saving tokens to keychain")
-            if TokenManager.shared.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
+            if TokenManager.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
                 TCSLogErrorWithMark("Error saving tokens to keychain")
             }
 

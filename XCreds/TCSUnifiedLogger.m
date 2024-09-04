@@ -64,6 +64,7 @@ void TCSLogError(NSString *string)
 
         //not root
         } else {
+            system("/usr/bin/touch /tmp/xcd");
             NSString *homePath = [[NSFileManager defaultManager] realHomeFolder];
             logFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Logs", homePath]];
             if (![fm fileExistsAtPath:logFolderURL.path]) {

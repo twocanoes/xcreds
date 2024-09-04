@@ -20,11 +20,9 @@ fi
 
 if [ ! -e "${rights_backup_path}" ]; then 
 	security authorizationdb read system.login.console > "${rights_backup_path}"
-
 fi
 
 if [ -e  "${plugin_path}" ]; then
-	
 	if [ -e "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle ]; then
 		rm -rf "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle
 	fi
@@ -34,8 +32,26 @@ fi
 
 if [ -e ${xcreds_login_script} ]; then
 	"${xcreds_login_script}" -i 
-
 else
 	echo "could not find xcreds_login_script tool"
 	exit -1
+fi
+
+if /usr/bin/pgrep -q "Setup Assistant"; then
+    # loginwindow hasn't been displayed yet - exit successfully
+    /usr/bin/logger "XCreds: authorization mechanic setup complete"
+    exit 0
+fi
+
+while [[ ! -f "/var/db/.AppleSetupDone" ]]; do
+ sleep 1
+ /usr/bin/logger "Waiting for Setup Assistant to complete"
+done
+
+# if Finder is not loaded and override file doesn't exist, reload the loginwindow
+if  /usr/bin/pgrep -q "Finder"  || [ -f /Users/Shared/.xcredsPreventLoginWindowKill ]; then
+	exit 0
+else 
+	/usr/bin/logger "XCreds: Reload loginwindow"
+	/usr/bin/killall -9 loginwindow
 fi

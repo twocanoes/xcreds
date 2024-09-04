@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22690"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="DesktopLoginWindowController" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundImageView" destination="JM0-W1-BrH" id="5T5-H1-QAl"/>
+                <outlet property="webViewController" destination="L0G-9E-ng8" id="o4U-Ou-7uU"/>
+                <outlet property="window" destination="KxT-zM-Vnn" id="iFX-Nl-XcT"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="XCreds Password Update" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="453" y="250" width="628" height="613"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
+                <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JM0-W1-BrH">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="OlB-3q-3c1"/>
+                    </imageView>
+                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1x-1L-05D">
+                        <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="613" id="G12-aL-wfj"/>
+                            <constraint firstAttribute="width" constant="628" id="jpw-kL-IRv"/>
+                        </constraints>
+                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
+                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                            <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
+                        </wkWebViewConfiguration>
+                    </wkWebView>
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
+                        <rect key="frame" x="0.0" y="562" width="628" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="628" id="zPs-Yp-tRg"/>
+                        </constraints>
+                        <textFieldCell key="cell" alignment="center" title="Your local account password needs to be changed to match your online password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
+                            <font key="font" metaFont="system" size="21"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0062473695290000001" alpha="0.30882734634551495" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="JM0-W1-BrH" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="2r2-pY-UKT"/>
+                    <constraint firstAttribute="trailing" secondItem="p1x-1L-05D" secondAttribute="trailing" id="3Xb-lz-75r"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" id="4mY-sf-GcF"/>
+                    <constraint firstItem="YnV-QC-aTR" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="HXK-IK-ZHa"/>
+                    <constraint firstAttribute="bottom" secondItem="JM0-W1-BrH" secondAttribute="bottom" id="JTI-sR-i8N"/>
+                    <constraint firstItem="JM0-W1-BrH" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="Pm8-pN-bIU"/>
+                    <constraint firstAttribute="trailing" secondItem="JM0-W1-BrH" secondAttribute="trailing" id="amC-yF-CwG"/>
+                    <constraint firstItem="p1x-1L-05D" firstAttribute="leading" secondItem="2LH-tE-efn" secondAttribute="leading" id="ejy-F7-Axt"/>
+                    <constraint firstItem="YnV-QC-aTR" firstAttribute="top" secondItem="2LH-tE-efn" secondAttribute="top" constant="1" id="hLH-fg-Sn6"/>
+                    <constraint firstAttribute="trailing" secondItem="YnV-QC-aTR" secondAttribute="trailing" id="jgi-7V-Zhw"/>
+                    <constraint firstAttribute="bottom" secondItem="p1x-1L-05D" secondAttribute="bottom" id="vCP-fw-q3U"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="250" y="297.5"/>
+        </window>
+        <viewController id="L0G-9E-ng8" customClass="WebViewController" customModule="XCreds" customModuleProvider="target">
+            <connections>
+                <outlet property="refreshTitleTextField" destination="YnV-QC-aTR" id="llX-y9-ZSG"/>
+                <outlet property="view" destination="2LH-tE-efn" id="wro-LJ-uq7"/>
+                <outlet property="webView" destination="p1x-1L-05D" id="d7f-o6-H5S"/>
+            </connections>
+        </viewController>
+    </objects>
+</document>

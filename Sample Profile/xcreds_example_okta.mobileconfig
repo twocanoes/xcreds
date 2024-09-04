@@ -10,41 +10,43 @@
 			<key>PayloadDisplayName</key>
 			<string>XCreds</string>
 			<key>PayloadIdentifier</key>
-			<string>com.github.erikberglund.ProfileCreator.2011ABA8-75EC-47CF-B8C8-887767E0044A.com.twocanoes.xcreds.CF7C80E3-1A70-4560-A485-42EA3D20523B.B50342B9-55C1-412C-A05F-88052C1884E8.E37DED7B-E52D-486B-9A04-5FDB305D9729</string>
+			<string>com.github.erikberglund.ProfileCreator.47F59CD0-E476-4016-A8C6-82837B61C7CE.com.twocanoes.xcreds.F5B79C66-146F-4F8A-9237-CAF10606615C.11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
 			<key>PayloadOrganization</key>
 			<string></string>
 			<key>PayloadType</key>
 			<string>com.twocanoes.xcreds</string>
 			<key>PayloadUUID</key>
-			<string>E37DED7B-E52D-486B-9A04-5FDB305D9729</string>
+			<string>11BE4B70-7A81-4351-A799-6B6BCBCF0900</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>clientID</key>
-			<string>[redacted]</string>
-			<key>clientSecret</key>
-			<string>[redacted]</string>
+			<string>0oae3u4ktuUuqSAcJ5d7</string>
 			<key>discoveryURL</key>
 			<string>https://twocanoes.okta.com/.well-known/openid-configuration</string>
-			<key>passwordElementID</key>
-			<string>okta-signin-password</string>
 			<key>redirectURI</key>
-			<string>http://127.0.0.1/xcreds</string>
+			<string>https://127.0.0.1/xcreds</string>
+			<key>scopes</key>
+			<string>profile openid email offline_access</string>
+            <key>shouldUseROPGForOIDCLogin</key>
+            <true/>
+            <key>shouldVerifyPasswordWithRopg</key>
+            <true/>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>XCreds Okta Test</string>
+	<string>azure xcreds</string>
 	<key>PayloadDisplayName</key>
-	<string>XCreds Okta Test</string>
+	<string>azure xcreds</string>
 	<key>PayloadIdentifier</key>
-	<string>com.github.erikberglund.ProfileCreato588CFC46-5295-4F89-9C58-D53E003F11A1</string>
+	<string>com.github.erikberglund.ProfileCreatorAF7B74FE-BF9D-4789-9E78-519C49324120</string>
 	<key>PayloadOrganization</key>
-	<string>TCS</string>
+	<string>twocanoes</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>3ED5B8B3-7523-48D8-9765-CB28BB374E5A</string>
+	<string>7620DBF9-295B-4DFF-B0AE-0629207ECF5A</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>

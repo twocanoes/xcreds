@@ -37,10 +37,11 @@ enum PasswordVerificationResult {
     case other(String)
 }
 
-class SecureTokenCredential {
 
-    var username = ""
-    var password = ""
+struct SecureTokenCredential {
+
+    var username:String
+    var password:String
 }
 class PasswordUtils: NSObject {
 
@@ -104,10 +105,7 @@ class PasswordUtils: NSObject {
 
 
         if let username = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-            let secureTokenCreds = SecureTokenCredential()
-            secureTokenCreds.username=username
-            secureTokenCreds.password=password
-            return secureTokenCreds
+            return SecureTokenCredential(username: username, password: password)
 
         }
 //        if let scriptPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
@@ -207,10 +205,8 @@ class PasswordUtils: NSObject {
         }
         return true
     }
-    static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword1: String, newPassword2: String) throws {
-        if (newPassword1 != newPassword2) {
-            throw PasswordError.invalidParamater("New passwords do not match.")
-        }
+    static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
+
 
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
@@ -233,14 +229,14 @@ class PasswordUtils: NSObject {
         }
 
         do {
-            try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword1)
+            try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword)
         } catch  {
             throw PasswordError.unknownError("error changing password")
 
         }
 
 
-        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword1.count), newPassword1)
+        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword.count), newPassword)
 
         if (err == noErr) {
             return
@@ -336,10 +332,9 @@ class PasswordUtils: NSObject {
             let userRecord = try PasswordUtils.getLocalRecord(userName)
 //            TCSLogWithMark("Checking if password is allowed")
 //            try userRecord.passwordChangeAllowed(userPass)
-//xyzzy
             TCSLogWithMark("checking password")
             try userRecord.verifyPassword(userPass)
-            TCSLogWithMark("checking password done")
+            TCSLogWithMark("checking password done, returning success")
             return .success
 
         } catch {
@@ -362,7 +357,7 @@ class PasswordUtils: NSObject {
 
             case Int(kODErrorCredentialsMethodNotSupported.rawValue):
                 TCSLogWithMark("credential type not supported: \(userName).")
-                return .incorrectPassword
+                return .other("credential type not supported")
 
 
             default:
@@ -373,6 +368,60 @@ class PasswordUtils: NSObject {
 
     }
 
+    func kerberosPrincipalFromCurrentLoggedInUser() -> String?  {
+        guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
+              let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+              let kerbPrinc = kerbPrincArray.first else
+        {
+            return nil
+        }
+        return kerbPrinc
+    }
+
+    public class func resolveName(_ name:String) throws -> String{
+
+        var record:ODRecord
+        do{
+
+            record = try getLocalRecord(name)
+
+        }
+        catch {
+            record = try getLocalRecord(fullName: name)
+
+        }
+        return record.recordName
+
+    }
+    public class func getLocalRecord(fullName: String) throws -> ODRecord {
+        do {
+            TCSLogWithMark("Building OD query for name \(fullName)")
+            let query = try ODQuery.init(node: localNode,
+                                         forRecordTypes: kODRecordTypeUsers,
+                                         attribute: kODAttributeTypeFullName,
+                                         matchType: ODMatchType(kODMatchEqualTo),
+                                         queryValues: fullName,
+                                         returnAttributes: kODAttributeTypeNativeOnly,
+                                         maximumResults: 0)
+            let records = try query.resultsAllowingPartial(false) as! [ODRecord]
+
+            if records.count > 1 {
+                TCSLogErrorWithMark("More than one local user found for name.")
+                throw DSQueryableErrors.multipleUsersFound
+            }
+            guard let record = records.first else {
+                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                throw DSQueryableErrors.notLocalUser
+            }
+            TCSLogWithMark("Found local user: \(record)")
+            return record
+        } catch {
+            TCSLogErrorWithMark("ODError while trying to check for local user: \(error.localizedDescription)")
+            throw error
+        }
+    }
+
+    
     /// Searches DSLocal for an account short name and returns the `ODRecord` for the user if found.
     ///
     /// - Parameter shortName: The name of the user to search for as a `String`.

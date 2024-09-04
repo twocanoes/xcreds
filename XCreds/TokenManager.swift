@@ -7,36 +7,6 @@
 import Foundation
 import OIDCLite
 
-@propertyWrapper
-struct IntConvertible: Decodable {
-    var wrappedValue: Int
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        wrappedValue = 0
-        if let intValue = try? container.decode(Int.self) {
-            wrappedValue = intValue
-        } else if  let stringValue = try? container.decode(String.self), let intValue = Int(stringValue) {
-            wrappedValue = intValue
-        }
-    }
-}
-
-struct RefreshTokenResponse: Decodable {
-    let accessToken, refreshToken, tokenType: String
-    @IntConvertible var expiresIn: Int
-    let expiresOn, extExpiresIn: String?
-
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-        case expiresIn = "expires_in"
-        case expiresOn = "expires_on"
-        case refreshToken = "refresh_token"
-        case extExpiresIn = "ext_expires_in"
-        case tokenType = "token_type"
-    }
-}
-
 struct IDToken:Codable {
     let iss,sub,aud:String
     let iat, exp:Int
@@ -48,44 +18,76 @@ struct IDToken:Codable {
 
     }
 }
-class TokenManager {
 
-    static let shared = TokenManager()
+protocol TokenManagerFeedbackDelegate {
+    func tokenError(_ err:String)
+    func credentialsUpdated(_ credentials:Creds)
 
+}
+class TokenManager: OIDCLiteDelegate,DSQueryable {
+    struct UserAccountInfo {
+        var fullName:String?
+        var firstName:String?
+        var lastName:String?
+        var username:String?
+        var fullUsername:String?
+        var groups:Array<String>?
+        var alias:String?
+        var kerberosPrincipalName:String?
+        var uid:String?
+    }
+    enum ParseHintsResult:Error {
+        case error(String)
+    }
+    enum ProcessTokenResult:Error {
+        case success
+        case error(String)
+    }
+    enum CalculateUserAccountInfoResult {
+        case success(UserAccountInfo)
+        case error(String)
+    }
+
+    var feedbackDelegate:TokenManagerFeedbackDelegate?
     let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
     func oidc() -> OIDCLite {
         var scopes: [String]?
         var additionalParameters:[String:String]? = nil
-        var clientSecret:String?
 
         if let oidcPrivate = oidcLocal {
             oidcPrivate.getEndpoints()
 
             return oidcPrivate
         }
-        if let clientSecretRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue),
-           clientSecretRaw != "" {
-            clientSecret = clientSecretRaw
-        }
+        let clientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientSecret.rawValue)
+
+
+        
+        let clientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
+
+
+        
         if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
             scopes = scopesRaw.components(separatedBy: " ")
         }
+
         //
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
 
             additionalParameters = ["access_type":"offline"]
         }
-
-        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue) ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
+        oidcLite.delegate=self
         return oidcLite
 
 
     }
 
-    func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
+    static func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
         let keychainUtil = KeychainUtil()
 
         if let accessToken = creds.accessToken, accessToken.count>0{
@@ -118,11 +120,11 @@ class TokenManager {
         }
 
 
-        
-        if creds.password.count>0 {
+
+        if let password = password, password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: creds.password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password,shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating password")
 
                 return false
@@ -131,6 +133,9 @@ class TokenManager {
         }
         return true
     }
+
+
+
     func tokenEndpoint() -> String? {
 
         let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
@@ -145,15 +150,8 @@ class TokenManager {
         return nil
     }
 
-    func getNewAccessToken(completion:@escaping (_ isSuccessful:Bool,_ hadConnectionError:Bool)->Void) -> Void {
+    func getNewAccessToken() -> Void {
         TCSLogWithMark()
-        guard let endpoint = TokenManager.shared.tokenEndpoint(), let url = URL(string: endpoint) else {
-            TCSLogWithMark()
-            completion(false,true)
-            return
-        }
-
-        var req = URLRequest(url: url)
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
@@ -161,106 +159,325 @@ class TokenManager {
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
-        
-        func handleIdpResponse(data: Data?, response: URLResponse?, error: Error?, keychainPassword: String) {
-            guard let data = data else {
-                print(String(describing: error))
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                completion(false,true)
-                return
-            }
-              if let response = response as? HTTPURLResponse {
-                  if response.statusCode == 200 {
-                      let decoder = JSONDecoder()
-                      do {
-
-                          let json = try decoder.decode(RefreshTokenResponse.self, from: data)
-                          let expirationDate = Date().addingTimeInterval(TimeInterval(json.expiresIn))
-                          DefaultsOverride.standardOverride.set(expirationDate, forKey: PrefKeys.expirationDate.rawValue)
-
-                          let keychainUtil = KeychainUtil()
-                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.refreshToken.rawValue, pass: json.refreshToken, shouldUpdateACL: true, keychainPassword: keychainPassword)
-                          let _ = keychainUtil.updatePassword(serviceName: "xcreds",accountName:PrefKeys.accessToken.rawValue, pass: json.accessToken, shouldUpdateACL:true, keychainPassword: keychainPassword)
-                          TCSLogWithMark("Credentials are current.")
-                          completion(true,false)
-
-                      }
-                      catch {
-                          TCSLogWithMark("Credentials are current, but failed to decode response")
-                          completion(true,false)
-                          return
-                      }
-
-                  }
-                  else {
-                      TCSLogErrorWithMark("Failed to verify credentials status code returned: \(response.statusCode):\(response)")
-                      completion(false,false)
-
-                  }
-              }
-        }
 
         TCSLogWithMark()
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldVerifyPasswordWithRopg.rawValue) == true, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1, let ropgClientSecret = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientSecret.rawValue), let ropgClientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgClientID.rawValue) {
+        //ropg
+        if
+            let keychainAccountAndPassword = keychainAccountAndPassword,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true,
+
+                let keychainPassword = keychainAccountAndPassword.1{
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            guard let userName = currentUser?.recordName else {
-                completion(false,true)
+            guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first else {
+                feedbackDelegate?.tokenError("no username for oidc config")
                 return
             }
-            let loginString = "\(ropgClientID):\(ropgClientSecret)"
-            guard let loginData = loginString.data(using: .utf8) else {
-                completion(false,true)
-                return
+            // not return because we get a callback and then call the closure
+            oidc().requestTokenWithROPG(username: username, password: keychainPassword)
+
+        } //use the refresh token
+        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
+
+            oidc().refreshTokens(refreshToken)
+        } // nothing. let delegate know
+        else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) == nil {
+
+            TCSLogWithMark("no discovery URL defined. returning silently.")
             }
-            let base64LoginString = loginData.base64EncodedString()
-            let urlEncodedUsername = userName.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed)
-            let urlEncodedPassword = keychainPassword.addingPercentEncoding(withAllowedCharacters: .urlPasswordAllowed)
-            guard let urlEncodedPassword = urlEncodedPassword, let urlEncodedUsername = urlEncodedUsername else {
-                completion(false,true)
-                return
-            }
-            let parameters = "grant_type=password&username=\(urlEncodedUsername)&password=\(urlEncodedPassword)&scope=offline_access"
-
-            let postData =  parameters.data(using: .utf8)
-            req.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            req.addValue("application/json", forHTTPHeaderField: "Accept")
-            
-
-            req.httpMethod = "POST"
-            req.httpBody = postData
-
-            let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
-            }
-
-            task.resume()
-        }
-        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1, let clientID = clientID, let keychainAccountAndPassword = keychainAccountAndPassword, let keychainPassword = keychainAccountAndPassword.1 {
-            TCSLogWithMark("Checking credentials in keychain using refresh token")
-            var parameters = "grant_type=refresh_token&refresh_token=\(refreshToken)&client_id=\(clientID )"
-            if let clientSecret = defaults.string(forKey: PrefKeys.clientSecret.rawValue) {
-                parameters.append("&client_secret=\(clientSecret)")
-            }
-
-            let postData =  parameters.data(using: .utf8)
-            req.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-            req.httpMethod = "POST"
-            req.httpBody = postData
-
-            let task = URLSession.shared.dataTask(with: req) { data, response, error in
-                handleIdpResponse(data: data, response: response, error: error, keychainPassword: keychainPassword)
-            }
-
-            task.resume()
-        }
         else {
             TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
-            completion(false,false)
+            feedbackDelegate?.tokenError("no refresh token")
+
+        }
+    }
+    func tokenInfo(fromCredentials credentials:Creds) throws -> Dictionary<String, Any>? {
+        //if we have tokens, that means that authentication was successful.
+
+
+        guard let idToken = credentials.idToken else {
+            TCSLogErrorWithMark("invalid idToken")
+            throw ProcessTokenResult.error("invalid idToken")
+        }
+
+        let array = idToken.components(separatedBy: ".")
+
+        if array.count != 3 {
+            TCSLogErrorWithMark("idToken is invalid")
+            throw ProcessTokenResult.error("The identity token is incorrect length.")
+            //            mechanismDelegate.denyLogin(message:"The identity token is incorrect length.")
+        }
+        let body = array[1]
+        TCSLogWithMark("base64 encoded IDToken: \(body)");
+        guard let data = base64UrlDecode(value:body ) else {
+            TCSLogErrorWithMark("error decoding id token base64")
+            throw ProcessTokenResult.error("The identity token could not be decoded from base64.")
+
+            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from base64.")
+            //            return
+        }
+        if let decodedTokenString = String(data: data, encoding: .utf8) {
+            TCSLogWithMark("IDToken:\(decodedTokenString)")
+
+        }
+        let decoder = JSONDecoder()
+        var idTokenObject:IDToken
+        do {
+            idTokenObject = try decoder.decode(IDToken.self, from: data)
+
+        }
+        catch {
+            TCSLogErrorWithMark("error decoding idtoken::")
+            TCSLogErrorWithMark("Token:\(body)")
+            throw ProcessTokenResult.error("The identity token could not be decoded from json")
+//
+//            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from json.")
+//            //            return
+//
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+        guard var idTokenInfo = idTokenInfo else {
+            throw ProcessTokenResult.error("No idTokenInfo found")
+
+            //            mechanismDelegate.denyLogin(message:"No idTokenInfo found.")
+            //            return
+        }
+
+        idTokenInfo["idToken"]=idTokenObject
+        return idTokenInfo
+    }
+    func findUserAndUpdatePassword(idTokenInfo:Dictionary<String, Any>,newPassword:String) -> SelectLocalAccountWindowController.VerifyLocalCredentialsResult?{
+
+        TCSLogWithMark()
+        guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
+            return nil
+        }
+
+        TCSLogWithMark("getting users")
+        let nonSystemUsers = try? getAllNonSystemUsers()
+        let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue)
+        let shouldPromptForMigration = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldPromptForMigration.rawValue)
+
+        if shouldPromptForMigration == false {
+            TCSLogWithMark("not prompting for migration")
+
+        }
+        if  let existingUser = existingUser, let odUsername = existingUser.recordName  {
+            TCSLogWithMark("prior local user found. using.")
+
+            return .successful(odUsername)
+        }
+        else if let nonSystemUsers = nonSystemUsers, nonSystemUsers.count>0, shouldPromptForMigration == true {
+
+            TCSLogWithMark("Preference set to prompt for migration and there are existing users, so prompting")
+
+
+            return SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: newPassword)
+        }
+        return .createNewAccount
+    }
+    func setupUserAccountInfo(idTokenInfo:Dictionary<String, Any>)  -> CalculateUserAccountInfoResult {
+
+        TCSLogWithMark()
+        var userAccountInfo = UserAccountInfo()
+        guard let idTokenObject = idTokenInfo["idToken"] as? IDToken else {
+            return .error("invalid token object")
+
+        }
+        let defaultsUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.username.rawValue)
+
+        // username static map
+        if let defaultsUsername = defaultsUsername, defaultsUsername.count>0 {
+            userAccountInfo.username = defaultsUsername
+        }
+        else if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String, let leftSide = mapValue.components(separatedBy: "@").first, leftSide.count>0{
+
+            TCSLogWithMark()
+            userAccountInfo.username = leftSide.replacingOccurrences(of: " ", with: "_").stripped
+            TCSLogWithMark("mapped username found: \(mapValue) clean version:\(userAccountInfo.username ?? "nil")")
+        }
+        else {
+            TCSLogWithMark()
+            var emailString:String
+
+            if let email = idTokenObject.email, email.count>0  {
+                emailString=email.lowercased()
+            }
+            else if let uniqueName=idTokenObject.unique_name, uniqueName.count>0 {
+                emailString=uniqueName
+            }
+
+            else {
+                TCSLogWithMark("no username found. Using sub.")
+                emailString=idTokenObject.sub
+            }
+            guard let tUsername = emailString.components(separatedBy: "@").first?.lowercased() else {
+                TCSLogErrorWithMark("email address invalid")
+
+                return .error("The email address from the identity token is invalid")
+
+            }
+            TCSLogWithMark("username found: \(tUsername)")
+            userAccountInfo.username = tUsername
+        }
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullUserName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            TCSLogWithMark("setting fullUsername to \(mapValue)")
+            userAccountInfo.fullUsername = mapValue
+            
+        }
+
+        else if let email = idTokenObject.email {
+            TCSLogWithMark()
+            userAccountInfo.fullUsername = email.lowercased()
+
+        }
+        else if let mapValue = idTokenInfo["upn"] as? String {
+            TCSLogWithMark()
+            userAccountInfo.fullUsername = mapValue
+
+        }
+
+            
+
+        //kerberos principal name
+
+        //mapKerberosPrincipalName
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapKerberosPrincipalName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            //we have a mapping so use that.
+            TCSLogWithMark("mapKerberosPrincipalName name mapped to: \(mapKey)")
+            userAccountInfo.kerberosPrincipalName = mapValue
+        }
+
+        //full name
+        TCSLogWithMark("checking map_fullname")
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFullName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            //we have a mapping so use that.
+            TCSLogWithMark("full name mapped to: \(mapKey)")
+            userAccountInfo.fullName = mapValue
+
+        }
+
+        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+            TCSLogWithMark("firstName: \(firstName)")
+            TCSLogWithMark("lastName: \(lastName)")
+            userAccountInfo.fullName = "\(firstName) \(lastName)"
+
+        }
+
+
+        //first name
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapFirstName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            //we have a mapping for username, so use that.
+            TCSLogWithMark("first name mapped to: \(mapKey)")
+            userAccountInfo.firstName = mapValue
+        }
+
+        else if let given_name = idTokenObject.given_name {
+            TCSLogWithMark("firstName from token: \(given_name)")
+            userAccountInfo.firstName = given_name
+
+        }
+        //last name
+        TCSLogWithMark("checking map_lastname")
+
+        if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapLastName.rawValue)  as? String, mapKey.count>0, let mapValue = idTokenInfo[mapKey] as? String {
+            //we have a mapping for lastName, so use that.
+            TCSLogWithMark("last name mapped to: \(mapKey)")
+            userAccountInfo.lastName = mapValue
+        }
+
+        else if let familyName = idTokenObject.family_name {
+            TCSLogWithMark("lastName from token: \(familyName)")
+            userAccountInfo.lastName = familyName
+
+        }
+        //groups
+        if let mapValue = idTokenInfo["groups"] as? Array<String> {
+            TCSLogWithMark("setting groups: \(mapValue)")
+            userAccountInfo.groups = mapValue
+        }
+        else {
+
+            TCSLogWithMark("No groups found")
+        }
+
+        let aliasClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aliasName.rawValue)
+        if let aliasClaim = aliasClaim, let aliasClaimValue = idTokenInfo[aliasClaim] as? String {
+            TCSLogWithMark("found alias claim: \(aliasClaim):\(aliasClaimValue)")
+
+            userAccountInfo.alias = aliasClaimValue
+        }
+        else {
+            TCSLogWithMark("no alias claim: \(aliasClaim ?? "none")")
+        }
+
+        //uid
+        let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
+
+        if let mapUID = mapUID, let uid = idTokenInfo[mapUID] as? String {
+            if let mapValueInt = Int(uid), mapValueInt > 499 {
+                TCSLogWithMark("setting uid: \(uid)")
+                userAccountInfo.uid = uid
+            }
+            else {
+                TCSLogWithMark("invalid uid mapping value")
+            }
+
+        }
+        else {
+            TCSLogWithMark("No uid mapping")
+        }
+
+        return .success(userAccountInfo)
+
+    }
+
+}
+// MARK: OIDC Lite Delegate Functions
+
+extension TokenManager {
+    func authFailure(message: String) {
+        TCSLogWithMark("authFailure: \(message)")
+        feedbackDelegate?.tokenError(message)
+    }
+
+
+    func tokenResponse(tokens: OIDCLite.TokenResponse) {
+
+        TCSLogWithMark("======== tokenResponse =========")
+        RunLoop.main.perform {
+            let googleAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue)
+
+
+            let xcredCreds = Creds(password: nil, tokens: tokens)
+
+            if xcredCreds.hasAccessAndRefresh() {
+                TCSLogWithMark("Found access and refresh token")
+
+            }
+            if googleAuth {
+                TCSLogWithMark("Found google auth")
+
+            }
+            if xcredCreds.hasAccess() {
+                TCSLogWithMark("found access token")
+
+            }
+            if googleAuth && xcredCreds.hasAccess() {
+                TCSLogWithMark("Found google auth and access token")
+
+            }
+ 
+            if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
+                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+            }
+            else {
+                self.feedbackDelegate?.tokenError("error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))")
+            }
 
         }
     }

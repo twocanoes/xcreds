@@ -10,7 +10,7 @@ import OpenDirectory
 
 
 /// Mechanism to create a local user and homefolder.
-class XCredsCreateUser: XCredsBaseMechanism {
+class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
     let createUserLog = "createUserLog"
     let uiLog = "uiLog"
@@ -35,8 +35,15 @@ class XCredsCreateUser: XCredsBaseMechanism {
     let nativeAttrsDetails = ["dsAttrTypeNative:AvatarRepresentation": "",
                               "dsAttrTypeNative:unlockOptions": "0"]
     
-    @objc override   func run() {
+    @objc override func run() {
+        var localLogin=false
         TCSLogWithMark("CreateUser mech starting")
+
+        if let localLoginHintValue = getHint(type: .localLogin) as? Bool, localLoginHintValue==true{
+            TCSLogWithMark("Local Login Detected")
+
+            localLogin=true
+        }
 
         if let xcredsGroups = groups {
 
@@ -69,7 +76,30 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 }
             }
         }
-        
+        TCSLogWithMark("user:\(xcredsUser ?? "")")
+        var isAdmin = false
+        var shouldRemoveAdmin = false
+        if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
+            isAdmin = createAdmin
+            TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
+        }
+        os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
+        if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
+
+            TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
+            
+            groups?.forEach { group in
+                if adminGroups.contains(group) {
+                    isAdmin = true
+                    TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
+                }
+            }
+            if isAdmin == false, localLogin==false {
+                TCSLogWithMark("admin groups defined but user is not a member, so marking remove if it exists and we created it")
+                shouldRemoveAdmin = true
+            }
+
+        }
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
             
             var secureTokenCreds:SecureTokenCredential? = nil
@@ -77,39 +107,45 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 secureTokenCreds = creds
             }
 
-            //            if getManagedPreference(key: .ManageSecureTokens) as? Bool ?? false {
-            //                if let creds = PasswordUtils.GetSecureTokenCreds() {
-            //
-            //                    secureTokenCreds = creds
-            //                }
-            //            }
-            
-            guard let uid = findFirstAvaliableUID() else {
-                TCSLogErrorWithMark("Could not find an available UID")
-                return
-            }
-            
-            TCSLog("Checking for createLocalAdmin key")
-            var isAdmin = false
-            if let createAdmin = getManagedPreference(key: .CreateAdminUser) as? Bool {
-                isAdmin = createAdmin
-                TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
-            }
-            os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
-            if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
-                TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")
-                groups?.forEach { group in
-                    if adminGroups.contains(group) {
-                        isAdmin = true
-                        TCSLogWithMark("User is a member of \(group) group. Setting isAdmin = true ")
+            var uid:String?
+            if let hintUID = getHint(type: .uid) as? String{
+                if let hintUIDInt = Int(hintUID), hintUIDInt>499 {
+                    do {
+                        let user = try userWithUID(uid: hintUID)
+                        if user.count==0 {
+                            TCSLogWithMark("setting uid to \(hintUID) from mapped value)")
+                            uid = hintUID
+                        }
+                        else {
+                            TCSLogWithMark("user already exists with uid of \(hintUID).")
+                            denyLogin(message: "Could not create new user. Existing user already using uid of \(hintUID)")
+                        }
+                    }
+                    catch {
+                        TCSLogWithMark("Unable to lookup user with uid \(hintUID)")
+                        denyLogin(message: "Unable to lookup user with uid \(hintUID)")
+
                     }
                 }
+                else {
+                    TCSLogWithMark("Invalid UID provided in mapping")
+                }
             }
-
+            else {
+                guard  let firstAvailableUid = findFirstAvailableUID() else {
+                    TCSLogErrorWithMark("Could not find an available UID")
+                    denyLogin(message: "invalid UID")
+                    return
+                }
+                uid = firstAvailableUid
+            }
+            TCSLog("Checking for createLocalAdmin key")
             var fullname:String?
+
             if let fullnameHint = getHint(type: .fullName) as? String {
                 fullname=fullnameHint
             }
+
 
             var customAttributes = [String: String]()
             
@@ -120,12 +156,17 @@ class XCredsCreateUser: XCredsBaseMechanism {
             let currentDate = ISO8601DateFormatter().string(from: Date())
             customAttributes["dsAttrTypeNative:\(metaPrefix)_creationDate"] = currentDate
 
+
             guard let xcredsFirst=xcredsFirst, let xcredsLast = xcredsLast else {
                 TCSLogErrorWithMark("first or last name not defined. bailing")
                 denyLogin(message:"first or last name not defined.")
 
                 return
 
+            }
+            guard let uid = uid else {
+                denyLogin(message:"bad uid.")
+                return
             }
             do {
                 try createUser(shortName: xcredsUser,
@@ -154,51 +195,291 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
             
         } else {
-            
+
             // Checking to see if we are doing a silent overwrite
             if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
-                // Checking to see if we can get secureToken Creds
-//                var secureTokenCreds = PasswordUtils.GetSecureTokenCreds()
+                TCSLogWithMark("trying to getting admin user and password")
 
-//                os_log("User has a SecureToken and we do not, so just change the password and leave it up to a bootstap token to give us what we need.", log: createUserLog, type: .debug)
-//                // changing the with OpenDirectory
-//                do {
+                if let adminUsername = getHint(type: .adminUsername) as? String,
+                   let adminPassword = getHint(type: .adminPassword) as? String{
+                    TCSLogWithMark("resetting password with admin username and password that was prompted before")
 
-                TCSLogWithMark("Getting secure token admin user and password")
-                if let creds =  PasswordUtils.GetSecureTokenCreds(){
-                    do {
-                        TCSLogWithMark("secure token admin user and password obtained")
+                    resetUserPassword(adminUserName: adminUsername, adminPassword: adminPassword)
 
-                        let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
-                        let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
+                }
+                else if let creds =  PasswordUtils.GetSecureTokenCreds(){
+                    TCSLogWithMark("resetting password with admin username and password from override script")
 
-                        try user.setNodeCredentials(creds.username, password: creds.password)
+                    resetUserPassword(adminUserName: creds.username, adminPassword: creds.password)
+                }
+                else {
 
-                        TCSLogWithMark("changing password with secure token admin")
-                        try user.changePassword(nil, toPassword: xcredsPass!)
+                    TCSLogWithMark("password overwrite set but could not get admin username and password. this should not happen")
+                    denyLogin(message:"password overwrite set but could not get admin username and password. this should not happen")
+                    return
 
-                    }
-                    catch {
-                        TCSLogErrorWithMark("error: \(error.localizedDescription)")
-                    }
                 }
             }
-
             else {
                 // no user to create
                 os_log("Skipping local account creation", log: createUserLog, type: .default)
             }
-            
-            // Set the login timestamp if requested
-            setTimestampFor(xcredsUser ?? "")
+
         }
+        var alias:String?
+
+        if let aliasHint = getHint(type: .aliasName) as? String {
+            alias=aliasHint
+        }
+        // Set the xcreds attributes to stamp this account as the mapped one
+        setTimestampFor(xcredsUser ?? "")
+        let _ = updateOIDCInfo(user: xcredsUser ?? "")
+
+        TCSLogWithMark("seeing if we have an alias")
+        if let alias = alias, let xcredsUser = xcredsUser {
+            TCSLogWithMark("adding alias: \(alias)")
+            if XCredsCreateUser.addAlias(name: xcredsUser, alias: alias)==false {
+                os_log("error adding alias", log: createUserLog, type: .debug)
+            }
+        }
+        TCSLogWithMark("Checking if user should be made admin")
+        if let xcredsUser = xcredsUser {
+            do {
+                let record = try getLocalRecord(xcredsUser)
+
+                if isAdmin == true {
+
+                    TCSLogWithMark("Making admin user")
+                    if makeAdmin(record)==false {
+                        os_log("failed to make user an admin", log: createUserLog, type: .error)
+
+                    }
+                }
+                else if shouldRemoveAdmin == true {
+                    TCSLogWithMark("removing admin if xcreds created")
+
+                    if let promotedToAdminArray = try record.values(forAttribute: "dsAttrTypeNative:_xcreds_promoted_to_admin") as? [String],promotedToAdminArray.count==1, promotedToAdminArray[0]=="1"  {
+                        TCSLogWithMark("we promoted so removing admin")
+
+                        if removeAdmin(record)==false {
+                            TCSLogErrorWithMark("failed to remove user an admin")
+
+                        }
+                        else { // success so remove attribute
+                            TCSLogWithMark("removing _xcreds_promoted_to_admin from record")
+
+                            try record.removeValues(forAttribute: "dsAttrTypeNative:_xcreds_promoted_to_admin")
+                        }
+
+                    }
+                }
+            }
+
+            catch {
+                os_log("error finding user to make admin", log: createUserLog, type: .error)
+            }
+
+
+        }
+
+
+
+
         os_log("Allowing login", log: createUserLog, type: .debug)
         let _ = allowLogin()
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
     }
+    func resetUserPassword(adminUserName:String, adminPassword:String) {
+        do {
+            TCSLogWithMark("secure token admin user and password obtained")
 
+            let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
+            let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
+
+            try user.setNodeCredentials(adminUserName, password: adminPassword)
+
+            TCSLogWithMark("changing password with secure token admin")
+            try user.changePassword(nil, toPassword: xcredsPass!)
+
+        }
+        catch {
+            TCSLogErrorWithMark("error: \(error.localizedDescription)")
+        }
+    }
+
+    func updateOIDCInfo(user: String) -> Bool {
+        TCSLogWithMark("Checking for local username")
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: user, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            let errorText = error.localizedDescription
+            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return false
+        }
+
+        let isLocal = records.isEmpty ? false : true
+        os_log("Results of local user check %{public}@", log: noLoMechlog, type: .default, isLocal.description)
+
+        if !isLocal {
+            return false
+        }
+
+        // now to update the attribute
+        TCSLogWithMark("updating info in DS")
+        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
+
+        TCSLogWithMark("Checking if member of group")
+        let userGroups = getHint(type: .groups) as? [String]
+
+        if let userGroups = userGroups, userGroups.count>0 {
+            TCSLogWithMark("is a member of \(userGroups.count) groups. Adding to OD record.")
+            let groupsString = userGroups.joined(separator: ",")
+            try? records.first?.setValue(groupsString, forAttribute: "dsAttrTypeNative:_xcreds_groups")
+
+        }
+
+        TCSLogWithMark("checking for kerberos principal")
+        let kerberosPrincipal = getHint(type: .kerberos_principal) as? String
+
+        if let kerberosPrincipal = kerberosPrincipal {
+            TCSLogWithMark("saving kerberos pricipal to user DS record")
+            try? records.first?.setValue(kerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
+
+        }
+
+        TCSLogWithMark("setting oidc full username to DS")
+        let fullUserName = getHint(type: .fullusername) as? String
+
+        if let fullUserName = fullUserName {
+            TCSLogWithMark("setting fullUserName")
+            try? records.first?.setValue(fullUserName, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
+        }
+        TCSLogWithMark("checking for alias to add as a username for rogp")
+        let alias = getHint(type: .aliasName) as? String
+
+        if let alias = alias {
+            TCSLogWithMark("saving alias to DS as a username for ropg as needed")
+            try? records.first?.setValue(alias, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
+        } else {
+            TCSLogWithMark("Fallback,saving account name to DS as username for ropg as needed")
+            try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
+        }
+
+        let adAttributes = getHint(type: .allADAttributes) as? Dictionary<String, String>
+
+        let adUserAttributesToAddToLocalUserAccount = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.adUserAttributesToAddToLocalUserAccount.rawValue) ?? []) as? [String]
+
+
+        if let adAttributes = adAttributes {
+            TCSLogWithMark("AD Attributes: \(adAttributes)")
+            for adAttribute in adAttributes {
+                let key = adAttribute.key
+                let value = adAttribute.value
+                if let adUserAttributesToAddToLocalUserAccount = adUserAttributesToAddToLocalUserAccount, adUserAttributesToAddToLocalUserAccount.contains(key){
+                    TCSLogWithMark("Found Matching AD attribute: \(key)")
+                    let sanitizedKey = key.oidc_allowed_chars
+                    if sanitizedKey.count<50 && value.count<256 {
+                        TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
+                        try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_\(sanitizedKey)")
+                    }
+
+                }
+            }
+
+        }
+        else {
+            TCSLogWithMark("No AD Attributes")
+        }
+
+        let tokenArray = getHint(type: .tokens) as? Array<String>
+
+        if let tokenArray = tokenArray , tokenArray.count>0{
+            TCSLogWithMark("Found claims")
+            let idToken = tokenArray[0]
+            let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+            if let idTokenInfo = idTokenInfo {
+                TCSLogWithMark("Decoded Claims")
+                if var claimsToDSArray = claimsToDSArray {
+
+                    claimsToDSArray.append("iss")
+                    claimsToDSArray.append("sub")
+
+                    for currClaim in claimsToDSArray {
+                        TCSLogWithMark("Found Matching Claim: \(currClaim)")
+                        if let value = idTokenInfo[currClaim] as? String {
+                            let sanitizedKey = currClaim.oidc_allowed_chars
+                            if sanitizedKey.count<50 && value.count<256 {
+                                TCSLogWithMark("Adding \(sanitizedKey) = \(value)")
+                                try? records.first?.setValue(value, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
+
+                            }
+                            else {
+                                TCSLogWithMark("key or value too long to put into DS")
+                            }
+
+                        }
+                        else if let value = idTokenInfo[currClaim] as? Array<String> {
+                            let sanitizedKey = currClaim.oidc_allowed_chars
+                            let oneLine = value.joined(separator: ";")
+                            if sanitizedKey.count<256 || oneLine.count<20 {
+                                TCSLogWithMark("Adding \(sanitizedKey) = \(oneLine)")
+
+                                try? records.first?.setValue(oneLine, forAttribute: "dsAttrTypeNative:_xcreds_oidc_\(sanitizedKey)")
+                            }
+                            else {
+                                TCSLogWithMark("key or value too long to put into DS")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+//        var sub:String?
+//        var iss:String?
+//        if let oidcSubHint = getHint(type: .oidcSub) as? String {
+//            sub=oidcSubHint
+//        }
+//        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+//            iss=oidcIssHint
+//        }
+//
+//        if let oidcSubHint = getHint(type: .oidcSub) as? String {
+//            customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_sub"] = oidcSubHint
+//        }
+//        if let oidcIssHint = getHint(type: .oidcIssuer) as? String {
+//            customAttributes["dsAttrTypeNative:\(metaPrefix)_oidc_iss"] = oidcIssHint
+//        }
+
+//        do {
+//            os_log("updating sub",log: noLoMechlog, type: .error)
+//
+//            try records.first?.setValue(sub, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
+//
+//
+//            os_log("updating iss",log: noLoMechlog, type: .error)
+//
+//            try records.first?.setValue(iss, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
+//
+//
+////            if let groups = groups?.joined(separator: ";") {
+////                try records.first?.setValue(groups, forAttribute: "dsAttrTypeNative:_xcreds_oidc_groups")
+////
+////            }
+//        } catch {
+//            os_log("Unable to add OIDC Info", log: noLoMechlog, type: .error)
+//            return false
+//        }
+
+        return true
+
+    }
     func createHome(xcredsUser:String, uid:String) {
         TCSLogWithMark("Creating local homefolder for \(xcredsUser)")
         createHomeDirFor(xcredsUser)
@@ -345,26 +626,10 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
         }
         
-        if isAdmin {
-            do {
-                os_log("Find the administrators group", log: createUserLog, type: .debug)
-                let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
-                let query = try ODQuery.init(node: node,
-                                             forRecordTypes: kODRecordTypeGroups,
-                                             attribute: kODAttributeTypeRecordName,
-                                             matchType: ODMatchType(kODMatchEqualTo),
-                                             queryValues: "admin",
-                                             returnAttributes: kODAttributeTypeNativeOnly,
-                                             maximumResults: 1)
-                let results = try query.resultsAllowingPartial(false) as! [ODRecord]
-                let adminGroup = results.first
-                
-                os_log("Adding user to administrators group", log: createUserLog, type: .debug)
-                try adminGroup?.addMemberRecord(newRecord)
+        if isAdmin, let newRecord = newRecord {
+            if makeAdmin(newRecord)==false {
+                os_log("failed to make user an admin", log: createUserLog, type: .error)
 
-            } catch {
-                let errorText = error.localizedDescription
-                os_log("Unable to add user to administrators group: %{public}@", log: createUserLog, type: .error, errorText)
             }
         }
         
@@ -425,7 +690,15 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 os_log("Adding UPN result: %{public}@", log: createUserLog, type: .debug, result.description)
             }
         }
-        
+
+        if let aliasHint = getHint(type: .aliasName) as? String {
+            if XCredsCreateUser.addAlias(name: shortName, alias: aliasHint)==false {
+                os_log("error adding alias", log: createUserLog, type: .debug)
+            }
+        }
+
+
+
         if getManagedPreference(key: .AliasNTName) as? Bool ?? false {
             if let ntName = getHint(type: .ntName) as? String {
                 os_log("Adding NTName as an alias: %{public}@", log: createUserLog, type: .debug, ntName)
@@ -459,9 +732,9 @@ class XCredsCreateUser: XCredsBaseMechanism {
     /// Finds the first avaliable UID in the DSLocal domain above 500 and returns it as a `String`
     ///
     /// - Returns: `String` representing the UID
-    func findFirstAvaliableUID() -> String? {
+    func findFirstAvailableUID() -> String? {
         var newUID = ""
-        os_log("Checking for avaliable UID", log: createUserLog, type: .debug)
+        os_log("Checking for available UID", log: createUserLog, type: .debug)
         
         if let uidToolpath = getManagedPreference(key: .UIDTool) as? String {
             os_log("Checking UIDTool", log: createUserLog, type: .debug)
@@ -629,11 +902,14 @@ class XCredsCreateUser: XCredsBaseMechanism {
             if XCredsCreateUser.updateSignIn(name: nomadUser, time: signInTime as AnyObject) {
                 os_log("Sign in time updated", log: createUserLog, type: .default)
             } else {
-                os_log("Dould not add timestamp", log: createUserLog, type: .error)
+                os_log("Could not add timestamp", log: createUserLog, type: .error)
             }
         }
+
     }
-    
+
+
+
     fileprivate func addSecureToken(_ username: String, _ userPass: String?,_ adminUsername: String,_ adminPassword: String?) {
         //MARK: 10.14 fix
         // check for 10.14
@@ -765,4 +1041,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
 //        return true
 //    }
     
+}
+extension String {
+    var oidc_allowed_chars: String {
+        var allowed = CharacterSet()
+        allowed.formUnion(CharacterSet.alphanumerics)
+        allowed.insert(charactersIn: "_#")
+        return self.components(separatedBy: allowed.inverted).joined()
+    }
 }

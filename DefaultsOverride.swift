@@ -37,6 +37,11 @@ public class DefaultsOverride: UserDefaults {
         do {
             let attributes = try FileManager.default.attributesOfItem(atPath: prefScriptPath)
 
+            if FileManager.default.isExecutableFile(atPath: prefScriptPath) == false {
+                TCSLogErrorWithMark("override script is not executable")
+
+                return
+            }
             guard let ownerID=attributes[.ownerAccountID] as? NSNumber else {
                 TCSLogErrorWithMark("Could not get owner id")
                 return
@@ -63,10 +68,10 @@ public class DefaultsOverride: UserDefaults {
             
             let scriptRes=cliTask(prefScriptPath)
 
-            if scriptRes.count==0{
-                TCSLogErrorWithMark("script did not return anything")
-                return
-            }
+                if scriptRes.count==0{
+                    TCSLogErrorWithMark("script did not return anything")
+                    return
+                }
             TCSLogWithMark()
             guard let rawData = scriptRes.data(using: .utf8) else {
                 TCSLogErrorWithMark("could not convert raw data");
@@ -110,7 +115,6 @@ public class DefaultsOverride: UserDefaults {
         }
     }
     override public func string(forKey defaultName: String) -> String? {
-        TCSLogWithMark()
 
         if let defaultName = cachedPrefs[defaultName] as? String{
             return defaultName
@@ -118,7 +122,6 @@ public class DefaultsOverride: UserDefaults {
         return UserDefaults.standard.string(forKey: defaultName)
     }
     override public func object(forKey defaultName: String) -> Any? {
-        TCSLogWithMark()
 
         if let defaultName = cachedPrefs[defaultName]{
             return defaultName
@@ -172,12 +175,12 @@ public class DefaultsOverride: UserDefaults {
         return UserDefaults.standard.double(forKey: defaultName)
     }
     override public func bool(forKey defaultName: String) -> Bool {
-        TCSLogWithMark()
 
         if let defaultName = cachedPrefs[defaultName] as? Bool {
+            TCSLogWithMark("override value \(defaultName)")
+
             return defaultName
         }
-        TCSLogWithMark()
 
         return UserDefaults.standard.bool(forKey: defaultName)
     }

@@ -1,16 +1,16 @@
 import Cocoa
 import OpenDirectory
 
-protocol XCredsMechanismProtocol {
-    func allowLogin()
-    func denyLogin(message:String?)
-    func setContextString(type: String, value: String)
-    func setStickyContextString(type: String, value: String)
-
-    func setHint(type: HintType, hint: Any)
-    func reload()
-    func run()
-}
+//protocol XCredsMechanismProtocol {
+//    func allowLogin()
+//    func denyLogin(message:String?)
+//    func setContextString(type: String, value: String)
+//    func setStickyContextString(type: String, value: String)
+//
+//    func setHint(type: HintType, hint: Any)
+//    func reload()
+//    func run()
+//}
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
     func reload() {
         fatalError()
@@ -20,7 +20,7 @@ protocol XCredsMechanismProtocol {
     let mechEngine: AuthorizationEngineRef
     let mech: MechanismRecord?
     @objc init(mechanism: UnsafePointer<MechanismRecord>) {
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
         self.mech = mechanism.pointee
         self.mechCallbacks = mechanism.pointee.fPlugin.pointee.fCallbacks.pointee
         self.mechEngine = mechanism.pointee.fEngine
@@ -32,6 +32,240 @@ protocol XCredsMechanismProtocol {
     }
     func run(){
         fatalError("superclass must implement")
+    }
+    func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult {
+
+        TCSLogWithMark("Checking for allow login preference")
+        let tokenManager = TokenManager()
+        let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials)
+
+        if let allowUsersClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.allowUsersClaim.rawValue), let allowedUsersArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedUsersArray.rawValue) as? Array<String>, allowedUsersArray.count>0, let tokenInfo = idTokenInfo, let userValue = tokenInfo[allowUsersClaim] as? String {
+
+            TCSLogWithMark("allowUsersClaim defined as \(allowUsersClaim) and allowedUsersArray as \(allowedUsersArray.debugDescription)")
+
+            if allowedUsersArray.contains(userValue)==false {
+                TCSLogWithMark("user is not allowed to login")
+
+                denyLogin(message: "The user \"\(userValue)\" is not allowed to login")
+                return .failure("The user \"\(userValue)\" is not allowed to login")
+            }
+            else {
+                TCSLogWithMark("user allowed to login")
+
+            }
+        }
+
+
+        do {
+
+            let tokenManager = TokenManager()
+            let idTokenInfo = try tokenManager.tokenInfo(fromCredentials: credentials)
+
+
+            guard let idTokenInfo = idTokenInfo else {
+                denyLogin(message: "invalid idtoken")
+                return .failure("invalid idtoken")
+            }
+
+            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+
+            var userInfo:TokenManager.UserAccountInfo
+            switch userInfoResult {
+
+            case .success(let retUserAccountInfo):
+                userInfo = retUserAccountInfo
+            case .error(let message):
+                denyLogin(message:message)
+                return .failure(message)
+            }
+
+
+            if  let allowedGroupsArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowLoginIfMemberOfGroup.rawValue) as? Array<String>, allowedGroupsArray.count>0 {
+
+                TCSLogWithMark("allowedGroupsArray as \(allowedGroupsArray.debugDescription)")
+
+                var isMemberOfAllowedGroup=false
+                userInfo.groups?.map({ group in
+                    group.lowercased()
+                }).forEach({ userGroup in
+                    if allowedGroupsArray.contains(userGroup.lowercased()){
+                        TCSLogWithMark("user is in group \(userGroup)")
+                        isMemberOfAllowedGroup=true
+                        return
+                    }
+                })
+
+                if isMemberOfAllowedGroup==false {
+                    TCSLogWithMark("user is not allowed to login. not in member of allowed group.")
+
+                    return .failure("The user is not allowed to log in because they are not a member of an allowed group.")
+                }
+                else {
+                    TCSLogWithMark("user allowed to login")
+
+                }
+            }
+
+            if let firstname = userInfo.firstName {
+                setHint(type: .firstName, hint: firstname)
+            }
+            if let lastName = userInfo.lastName {
+                setHint(type: .lastName, hint: lastName)
+            }
+            if let username = userInfo.username {
+                TCSLogWithMark("set shortname to \(username)")
+
+                setHint(type: .user, hint: username)
+            }
+            if let fullUsername = userInfo.fullUsername {
+                setHint(type: .fullusername, hint: fullUsername)
+            }
+            if let fullName = userInfo.fullName {
+                setHint(type: .fullName, hint: fullName)
+            }
+            if let groups = userInfo.groups {
+                setHint(type: .groups, hint: groups)
+            }
+            if let aliasName = userInfo.alias {
+                setHint(type: .aliasName, hint: aliasName)
+            }
+            if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                setHint(type: .kerberos_principal, hint: kerberosPrincipalName)
+            }
+            if let uid = userInfo.uid {
+                setHint(type: .uid, hint: uid)
+            }
+
+            let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
+            guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {
+                denyLogin(message:"could not find local user with findUserAndUpdatePassword")
+                return .failure("could not find local user with findUserAndUpdatePassword")
+            }
+
+
+            switch findUserAndUpdatePasswordResult {
+
+            case .successful(let username):
+                userInfo.username = username
+                break
+            case .canceled:
+                denyLogin(message:"cancelled")
+                return .failure("cancelled")
+            case .createNewAccount:
+                break
+            case .error(let mesg):
+                denyLogin(message:mesg)
+                return .failure(mesg)
+            }
+            guard let username = userInfo.username else {
+                TCSLogErrorWithMark("username or password are not set")
+                denyLogin(message:"username or password are not set")
+                return .failure("username or password are not set")
+            }
+
+            if  password.isEmpty {
+                TCSLogWithMark("Empty password. Failing");
+                let message = "Password not set. Verify username mapping in configuration is correct and you are not using passwordless login."
+                denyLogin(message: message)
+                return .failure(message)
+
+            }
+            TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
+
+            let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)
+
+            switch passwordCheckStatus {
+            case .success:
+                TCSLogWithMark("Local password matches cloud password ")
+            case .incorrectPassword:
+
+                TCSLogWithMark("Sync password called.")
+
+                if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false, getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+
+
+                    setHint(type: .adminUsername, hint:aUsername )
+                    setHint(type: .adminPassword, hint: aPassword)
+                    setHint(type: .passwordOverwrite, hint: true)
+
+                }
+                else {
+                    let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+
+                    promptPasswordWindowController.showResetText=true
+                    promptPasswordWindowController.showResetButton=true
+
+
+                    switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+
+
+                    case .success(let enteredUsernamePassword):
+                        TCSLogWithMark("setting original password to use to unlock keychain later")
+
+                        if let enteredUsernamePassword = enteredUsernamePassword {
+                            setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                        }
+
+                    case .resetKeychainRequested(let usernamePasswordCredentials):
+
+                        if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
+                            setHint(type: .adminUsername, hint:adminUsername )
+                            setHint(type: .adminPassword, hint: adminPassword)
+                            setHint(type: .passwordOverwrite, hint: true)
+
+                        }
+
+
+                    case .userCancelled:
+                        return .failure("user cancelled")
+                    case .error(let errMsg):
+                        TCSLogWithMark("Error prompting: \(errMsg)")
+                        return .failure(errMsg)
+                    }
+                }
+
+            case .accountDoesNotExist:
+                TCSLogWithMark("user account doesn't exist yet")
+
+            case .other(let mesg):
+                TCSLogWithMark("password check error:\(mesg)")
+
+                denyLogin(message:mesg)
+                return .failure(mesg)
+            }
+            TCSLogWithMark("passing username:\(username), password, and tokens")
+            TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
+            setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+            TCSLogWithMark("setting kAuthorizationEnvironmentPassword")
+
+            setContextString(type: kAuthorizationEnvironmentPassword, value: password)
+            TCSLogWithMark("setting username")
+            TCSLogWithMark("setting username to \(username)")
+            setHint(type: .user, hint: username)
+            TCSLogWithMark("setting tokens.password")
+
+            setHint(type: .pass, hint: password)
+
+            TCSLogWithMark("setting tokens")
+
+            setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""])
+            TCSLogWithMark("calling allowLogin")
+            allowLogin()
+            return .success
+        }
+        catch TokenManager.ProcessTokenResult.error(let msg){
+            TCSLogWithMark("invalid idToken:\(msg)")
+            denyLogin(message: nil)
+            return .failure(msg)
+        }
+        catch {
+
+            TCSLogWithMark("Error:\(error.localizedDescription)")
+            denyLogin(message:"credentialsUpdated error")
+            return .failure("credentialsUpdated error")
+
+        }
     }
     func setupPrefs(){
         TCSLogWithMark()
@@ -80,6 +314,7 @@ protocol XCredsMechanismProtocol {
 
                 return nil
             }
+            TCSLogWithMark("username is \(userName)")
             return userName
         }
     }
@@ -124,9 +359,9 @@ protocol XCredsMechanismProtocol {
         }
     }
     func allowLogin() {
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
         let error = mechCallbacks.SetResult(mechEngine, .allow)
-        TCSLogWithMark("\(#function) \(#file):\(#line)")
+        TCSLogWithMark()
 
         if error != noErr {
             TCSLogErrorWithMark("Error: \(error)")
@@ -137,7 +372,7 @@ protocol XCredsMechanismProtocol {
     func denyLogin(message: String?) {
         TCSLogErrorWithMark("***************** DENYING LOGIN ********************");
 
-        if let message  = message {
+        if let message = message {
             setStickyContextString(type: "ErrorMessage", value: message)
         }
 
@@ -148,8 +383,20 @@ protocol XCredsMechanismProtocol {
         }
     }
 
+    func setHints(_ hints:[HintType:Any]){
+
+        for hint in hints {
+            setHint(type: hint.key, hint: hint.value)
+        }
+    }
+    func setContextStrings(_ contentStrings: [String : String]){
+
+        for contextString in contentStrings {
+            setContextString(type: contextString.key, value:contextString.value)
+        }
+    }
     func setHint(type: HintType, hint: Any) {
-        guard (hint is String || hint is [String] || hint is Bool) else {
+        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
             TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
             return
         }
@@ -162,6 +409,7 @@ protocol XCredsMechanismProtocol {
             return
         }
     }
+    
     var groups: [String]? {
         get {
             guard let userGroups = getHint(type: .groups) as? [String] else {
@@ -265,6 +513,8 @@ protocol XCredsMechanismProtocol {
 
         do {
             try records.first?.setValue(time, forAttribute: kODAttributeNetworkSignIn)
+            
+
         } catch {
             os_log("Unable to add sign in time to record", log: noLoMechlog, type: .error)
             return false
@@ -272,6 +522,7 @@ protocol XCredsMechanismProtocol {
 
         return true
     }
+    
     /// Set one of the known `AuthorizationTags` values to be used during mechanism evaluation.
     ///
     /// - Parameters:

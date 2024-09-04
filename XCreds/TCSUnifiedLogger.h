@@ -21,7 +21,7 @@ typedef enum : NSUInteger {
     {                                                                                                               \
         char *log_string = malloc(1024);                                                                            \
         snprintf(log_string, 1024, ##__VA_ARGS__);                                                                  \
-        [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithUTF8String:log_string] level:LOGLEVELDEBUG]; \
+        TCSLog([NSString stringWithUTF8String:log_string]); \
         free(log_string);                                                                                           \
     }
 #define os_log_info(log, ...)                                                                                      \
@@ -29,7 +29,7 @@ typedef enum : NSUInteger {
     {                                                                                                              \
         char *log_string = malloc(1024);                                                                           \
         snprintf(log_string, 1024, ##__VA_ARGS__);                                                                 \
-        [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithUTF8String:log_string] level:LOGLEVELINFO]; \
+        TCSLog([NSString stringWithUTF8String:log_string] level:LOGLEVELINFO]; \
         free(log_string);                                                                                          \
     }
 #define os_log_error(log, ...)                                                                                      \
@@ -37,13 +37,13 @@ typedef enum : NSUInteger {
     {                                                                                                               \
         char *log_string = malloc(1024);                                                                            \
         snprintf(log_string, 1024, ##__VA_ARGS__);                                                                  \
-        [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithUTF8String:log_string] level:LOGLEVELERROR]; \
+        TCSLog([NSString stringWithUTF8String:log_string] level:LOGLEVELERROR]; \
         free(log_string);                                                                                           \
     }
 #define NSLog(fmt, ...)                                                                                                 \
     ;                                                                                                                   \
     {                                                                                                                   \
-        [[TCSUnifiedLogger sharedLogger] logString:[NSString stringWithFormat:fmt, ##__VA_ARGS__] level:LOGLEVELDEBUG]; \
+        TCSLog([NSString stringWithFormat:fmt, ##__VA_ARGS__]); \
     }
 
 

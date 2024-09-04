@@ -18,6 +18,10 @@ enum SecurityType {
     case enterpriseUserPassword //show user and password
 }
 
+enum WiFiPowerState:String {
+    case off = "off"
+    case on = "on"
+}
 @objc protocol WifiManagerDelegate: AnyObject {
     func wifiManagerFullyFinishedInternetConnectionTimer()
     @objc optional func wifiManagerConnectedToNetwork()
@@ -30,7 +34,7 @@ class WifiManager: CWEventDelegate {
     var timer: Timer?
     weak var delegate: WifiManagerDelegate?
     var monitor:NWPathMonitor?
-
+    var task:TCTaskWrapperWithBlocks?
     init() {
         let defaultInterface = CWWiFiClient.shared().interface()
 //        CWWiFiClient.shared().delegate = self
@@ -50,8 +54,64 @@ class WifiManager: CWEventDelegate {
                 currentInterface = CWWiFiClient.shared().interface(withName: "en1")
             }
         }
+
+    }
+    func wifiState(completion:@escaping(WiFiPowerState)->Void) {
+        let interface = wifiInterface()
+
+        var output:String = ""
+        var errOutput = ""
+        task = TCTaskWrapperWithBlocks(start: {
+
+        }, end: {
+
+            if output.contains("On") {
+                completion(.on)
+            }
+            else {
+                completion(.off)
+
+            }
+        }, outputBlock: { outputMsg in
+            if let outputMsg = outputMsg {
+                output += outputMsg
+            }
+        }, errorOutputBlock: { outputErr in
+            if let outputErr = outputErr {
+                errOutput += outputErr
+            }
+        }, arguments: ["/usr/sbin/networksetup","-getairportpower", interface])
+        task?.startProcess()
+
+
     }
 
+    func setWiFiState(_ powerState:WiFiPowerState,completion:@escaping()->Void)  {
+
+        let interface = wifiInterface()
+
+        task = TCTaskWrapperWithBlocks(start: {
+
+        }, end: {
+            completion()
+        }, outputBlock: { outputMsg in
+            TCSLogWithMark(outputMsg ?? "")
+        }, errorOutputBlock: { outputErr in
+            TCSLogWithMark(outputErr ?? "")
+        }, arguments: ["/usr/sbin/networksetup","-setairportpower", interface,powerState.rawValue])
+        task?.startProcess()
+
+    }
+    func wifiInterface() -> String {
+        let names = CWWiFiClient.interfaceNames()
+
+        if names?.contains("en0") != nil {
+            return "en0"
+        }
+        else {
+            return "en1"
+        }
+    }
     func getCurrentSSID() -> String? {
         TCSLogWithMark()
         return currentInterface?.ssid()
@@ -132,27 +192,34 @@ class WifiManager: CWEventDelegate {
         return false
     }
 
+    func turnWiFiOff()  {
+
+
+    }
     func connectWifi(with network: CWNetwork, password: String?, username: String?, identity: SecIdentity? = nil) -> Bool {
         var result = false
-        do {
-            TCSLogWithMark("connecting")
-            currentInterface?.disassociate()
 
-            if username != nil && username != "" {
-                TCSLogWithMark("connecting \(username ?? "<unknown username")")
-                try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
-            } else {
-                TCSLogWithMark("connecting with password only \(network)")
-                try currentInterface?.associate(to: network, password: password)
-                TCSLogWithMark("done associating")
+        for _ in 1...3 {
+            do {
+                TCSLogWithMark("connecting")
+                currentInterface?.disassociate()
 
-            }
-            result = true
-        } catch {
-            TCSLogWithMark("caught error: \(error)")
+                if username != nil && username != "" {
+                    TCSLogWithMark("connecting \(username ?? "<unknown username")")
+                    try currentInterface?.associate(toEnterpriseNetwork: network, identity: identity, username: username, password: password)
+                } else {
+                    TCSLogWithMark("connecting with password only \(network)")
+                    try currentInterface?.associate(to: network, password: password)
+                    TCSLogWithMark("done associating")
 
-            self.error = error
-        }
+                }
+                result = true
+                break
+            } catch {
+                TCSLogWithMark("caught error: \(error)")
+                self.error = error
+            } //do
+        } //for
         return result
     }
 

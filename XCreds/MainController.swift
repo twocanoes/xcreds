@@ -6,157 +6,242 @@
 //
 
 import Cocoa
-import NoMAD_ADAuth
-class MainController: NSObject, NoMADUserSessionDelegate {
-    func NoMADAuthenticationSucceded() {
-        session?.userInfo()
-
+import OIDCLite
+class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
+    enum LoginWindowType {
+        case cloud
+        case usernamePassword
     }
 
-    func NoMADAuthenticationFailed(error: NoMAD_ADAuth.NoMADSessionError, description: String) {
-        TCSLogErrorWithMark("NoMADAuthenticationFailed:\(description)")
+    var passwordCheckTimer:Timer?
+    var feedbackDelegate:TokenManagerFeedbackDelegate?
+
+    let scheduleManager = ScheduleManager()
+    var adPasswordExpires:String?
+    var cloudPasswordExpires:String?
+    var nextPasswordCheck:String {
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+
+            let dateString = dateFormatter.string(from: scheduleManager.nextCheckTime)
+            return dateString
+
     }
-    
-    func NoMADUserInformation(user: NoMAD_ADAuth.ADUserRecord) {
-        TCSLogWithMark("AD user password expires: \(user.passwordExpire?.description ?? "unknown")")
-    }
+    var credentialStatus:String?
+    var hasCredential:Bool?
+    var hasKerberosTicket:Bool?
+    let windowController =  DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
+    var signInViewController:SignInViewController?
 
 
-    var session:NoMADSession?
-    func run() -> Void {
+    init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
+        self.passwordCheckTimer = passwordCheckTimer
+        self.feedbackDelegate = feedbackDelegate
+        self.adPasswordExpires = adPasswordExpires
+        self.cloudPasswordExpires = cloudPasswordExpires
 
-        TCSLogWithMark()
-        let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
+        self.credentialStatus = credentialStatus
+        self.hasCredential = hasCredential
+        self.signInViewController = signInViewController
+        super.init()
+        scheduleManager.feedbackDelegate=self
 
-        if let defaultsPath = defaultsPath {
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-            let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
-            TCSLogWithMark()
-            DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
+        if isLocalOnlyAccount() == false || shouldShowMenuBarSignInWithoutLoginWindowSignin==true {
+            let accountAndPassword = localAccountAndPassword()
+            if let password = accountAndPassword.1 {
+                scheduleManager.kerberosPassword = password
+            }
+            self.scheduleManager.startCredentialCheck()
         }
-        
+
+
+    }
+
+
+
+    func isLocalOnlyAccount() -> Bool {
+
+        let user = getConsoleUser()
+        guard let dsRecord =  try? PasswordUtils.getLocalRecord(user) else {
+            return false
+        }
+        let kerbPrinc = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal" )
+
+        let kerbPrincPrefs = UserDefaults.standard.string(forKey:"_xcreds_activedirectory_kerberosPrincipal" )
+
+        let oidcUsername = try? dsRecord.values(forAttribute:"dsAttrTypeNative:_xcreds_oidc_username" )
+
+        let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+
+
+        if kerbPrinc == nil && oidcUsername == nil && kerbPrincPrefs == nil && oidcUsernamePrefs == nil {
+            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user, so skipping showing window")
+            return true
+
+        }
+        return false
+
+    }
+    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+        if isLocalOnlyAccount()==true && force==false{
+            return
+        }
+
+
+        if  let webViewController = windowController.webViewController{
+            webViewController.webView.isHidden=true
+        }
+        scheduleManager.setNextCheckTime()
+
+        var forceUsernamePassword = false
+        var forceCloudPassword = false
+
+        if let forceLoginWindowType = forceLoginWindowType {
+
+            if forceLoginWindowType == .cloud {
+                forceCloudPassword = true
+            }
+            else {
+                forceUsernamePassword = true
+            }
+        }
+        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
+            windowController.window!.makeKeyAndOrderFront(self)
+
+            if  let webViewController = windowController.webViewController{
+                webViewController.webView.isHidden=false
+
+                windowController.webViewController.updateCredentialsFeedbackDelegate=self
+                windowController.webViewController?.loadPage()
+            }
+            NSApp.activate(ignoringOtherApps: true)
+
+        }
+
+        else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
+        {
+            if let webView = windowController.webViewController?.webView {
+                webView.isHidden=true
+            }
+
+            if let window = windowController.window{
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                if let bundle = bundle{
+                    TCSLogWithMark("Creating signInViewController")
+                    if signInViewController == nil {
+                        signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+                    }
+
+                    signInViewController?.isInUserSpace = true
+                    signInViewController?.updateCredentialsFeedbackDelegate=self
+                    guard let signInViewController = signInViewController else {
+                        return
+                    }
+
+                    if let contentView = window.contentView {
+
+                        windowController.webViewController.webView.isHidden=true
+                        signInViewController.view.wantsLayer=true
+
+                        if let contentView = window.contentView{
+                            if contentView.subviews.contains(signInViewController.view)==false {
+
+                                window.contentView?.addSubview(signInViewController.view)
+
+                            }
+
+
+                        }
+                        signInViewController.setupLoginAppearance()
+
+                        var x = NSMidX(contentView.frame)
+                        var y = NSMidY(contentView.frame)
+
+                        x = x - signInViewController.view.frame.size.width/2
+                        y = y - signInViewController.view.frame.size.height/2
+                        let lowerLeftCorner = NSPoint(x: x, y: y)
+                        signInViewController.localOnlyCheckBox.isHidden = true
+                        signInViewController.localOnlyView.isHidden = true
+
+                        signInViewController.view.setFrameOrigin(lowerLeftCorner)
+                    }
+
+                    window.makeKeyAndOrderFront(self)
+                    NSApp.activate(ignoringOtherApps: true)
+
+                }
+            }
+        }
+
+    }
+
+    func checkAndMountShares() {
+
+        let tickets = KlistUtil().returnTickets()
+        if tickets.count>0{
+            let appDelegate = NSApp.delegate as? AppDelegate
+
+            appDelegate?.shareMounterMenu?.updateShares(connected: true, tickets: true)
+        }
+
+    }
+    func setup() {
+        if let cloudPasswordExpiresDate = OIDCPasswordExpiryDate(){
+
+            if OIDCPasswordExpiryDate()?.timeIntervalSinceNow ?? 0<0 {
+                self.cloudPasswordExpires = "Password Expired!"
+                return
+            }
+            if #available(macOS 12.0, *) {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.formatted(date: .abbreviated, time: .shortened)
+            } else {
+                self.cloudPasswordExpires=cloudPasswordExpiresDate.debugDescription
+            }
+        }
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didUnmountNotification, object: nil, queue: nil) { notification in
+                self.scheduleManager.checkKerberosTicket()
+                self.checkAndMountShares()
+
+        }
+
+        NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+10) {
+                self.scheduleManager.checkKerberosTicket()
+                self.checkAndMountShares()
+            }
+        }
+        self.checkAndMountShares()
+        TCSLogWithMark()
 
         // make sure we have the local password, else prompt. we don't need to save it
         // just make sure we prompt if not in the keychain. if the user cancels, then it will
         // prompt when using OAuth.
         // don't need to save it. just need to prompt and it gets saved
         // in the keychain
-        let accountAndPassword = localAccountAndPassword()
 
+//
+//            scheduleManager.checkADPasswordExpire(password: password)
+//            passwordCheckTimer = Timer.scheduledTimer(withTimeInterval: 3*60*60, repeats: true, block: { _ in
+//                self.scheduleManager.checkADPasswordExpire(password: password)
+//            })
+//
+//        }
+        let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
 
-        if let userName=accountAndPassword.0, let passString = accountAndPassword.1, passString.isEmpty==false{
+        if discoveryURL == nil {
+            return
+        }
+        let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-            if let domainName = userName.components(separatedBy: "@").last, let shortName = userName.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
-                session = NoMADSession.init(domain: domainName, user: shortName)
-                TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
-                guard let session = session else {
-                    TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
-                    return
-                }
-                session.useSSL = getManagedPreference(key: .LDAPOverSSL) as? Bool ?? false
-                session.userPass = passString
-                session.delegate = self
-                session.recursiveGroupLookup = getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false
-
-                if let ignoreSites = getManagedPreference(key: .IgnoreSites) as? Bool {
-                    //                os_log("Ignoring AD sites", log: uiLog, type: .debug)
-
-                    session.siteIgnore = ignoreSites
-                }
-
-                if let ldapServers = getManagedPreference(key: .LDAPServers) as? [String] {
-                    TCSLogWithMark("Adding custom LDAP servers")
-
-                    session.ldapServers = ldapServers
-                }
-
-                TCSLogWithMark("Attempt to authenticate user")
-                session.authenticate()
-            }
+        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
+            showSignInWindow(forceLoginWindowType: .cloud)
         }
 
-        NotificationCenter.default.addObserver(forName: Notification.Name("TCSTokensUpdated"), object: nil, queue: nil) { notification in
-
-
-            DispatchQueue.main.async {
-                mainMenu.webView?.window?.close()
-
-                guard let tokenInfo = notification.userInfo else {
-                    return
-                }
-
-                guard let tokens = tokenInfo["tokens"] as? Creds else {
-                    let alert = NSAlert()
-                    alert.addButton(withTitle: "OK")
-                    alert.messageText="Invalid tokens or password not determined. Please check the log."
-                    alert.runModal()
-                    return
-                }
-                if let refreshToken = tokens.refreshToken, refreshToken.count>0 {
-                    //                    Mark()
-                    mainMenu.statusBarItem.button?.image=NSImage(named: "xcreds menu icon check")
-                }
-                let localAccountAndPassword = self.localAccountAndPassword()
-                if var localPassword=localAccountAndPassword.1{
-                    if (localPassword != tokens.password){
-                        var updatePassword = true
-                        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
-                            let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
-                            NSApp.activate(ignoringOtherApps: true)
-
-                            while true {
-                                let response = NSApp.runModal(for: verifyOIDPassword.window!)
-                                if response == .cancel {
-
-                                    let alert = NSAlert()
-                                    alert.addButton(withTitle: "Skip Updating Password")
-                                    alert.addButton(withTitle: "Cancel")
-                                    alert.messageText="Are you sure you want to skip updating the local password and keychain? You local password and keychain will be out of sync with your cloud password. "
-                                    let resp = alert.runModal()
-                                    if resp == .alertFirstButtonReturn {
-                                        NSApp.stopModal(withCode: .cancel)
-                                        verifyOIDPassword.window?.close()
-                                        updatePassword=false
-                                        break
-
-                                    }
-                                }
-                                let verifyCloudPassword = verifyOIDPassword.password
-                                if verifyCloudPassword == tokens.password {
-
-                                    updatePassword=true
-
-                                    verifyOIDPassword.window?.close()
-                                    break;
-                                }
-                                else {
-                                    verifyOIDPassword.window?.shake(self)
-                                }
-
-                            }
-                        }
-                        if updatePassword {
-                            let updatedLocalAccountAndPassword = self.localAccountAndPassword()
-                            if let updatedLocalPassword = updatedLocalAccountAndPassword.1{
-                                localPassword=updatedLocalPassword
-                                try? PasswordUtils.changeLocalUserAndKeychainPassword(updatedLocalPassword, newPassword1: tokens.password, newPassword2: tokens.password)
-                            }
-
-
-                        }
-                    }
-                }
-                if TokenManager.shared.saveTokensToKeychain(creds: tokens, setACL: true, password:tokens.password ) == false {
-                    TCSLogErrorWithMark("error saving tokens to keychain")
-                }
-                ScheduleManager.shared.startCredentialCheck()
-
-            }
-        }
-        //delay startup to give network time to settle.
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
-            ScheduleManager.shared.startCredentialCheck()
-        }
 
     }
 
@@ -175,56 +260,237 @@ class MainController: NSObject, NoMADUserSessionDelegate {
             }
         }
         TCSLogWithMark()
-        let passwordWindowController = LoginPasswordWindowController.init(windowNibName: NSNib.Name("LoginPasswordWindowController"))
+        let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+
         
-        TCSLogWithMark()
-        while (true){
-            TCSLogWithMark()
-            NSApp.activate(ignoringOtherApps: true)
-            let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
-                NSApp.activate(ignoringOtherApps: true)
+        promptPasswordWindowController.showResetText=false
+        promptPasswordWindowController.showResetButton=false
+
+        switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: PasswordUtils.currentConsoleUserName, newPassword: nil, shouldUpdatePassword: false) {
+
+        case .success(let localUsernamePassword):
+            guard let localPassword = localUsernamePassword?.password else {
+                return (nil,nil)
 
             }
-            TCSLogWithMark()
-            let response = NSApp.runModal(for: passwordWindowController.window!)
-
-            timer.invalidate()
-            if response == .cancel {
-                break
-            }
-            if passwordWindowController.resetKeychain==true {
+            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass:localPassword, shouldUpdateACL: true, keychainPassword: localPassword)
+            if err == false {
                 return (nil,nil)
             }
-            let localPassword = passwordWindowController.password
-            guard let localPassword = localPassword else {
-                continue
-            }
-            let isPasswordValid = PasswordUtils.verifyCurrentUserPassword(password:localPassword )
-            if isPasswordValid==true {
-                passwordWindowController.window?.close()
-                let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass: localPassword, shouldUpdateACL: true)
-                if err == false {
-                    return (nil,nil)
-                }
-                return (accountName,localPassword)
-            }
-            else{
-                passwordWindowController.window?.shake(self)
-            }
+            return (accountName,localPassword)
+
+        case .resetKeychainRequested(_):
+            return (nil,nil)
+
+        case .userCancelled:
+            return (nil,nil)
+        case .error(_):
+            return (nil,nil)
+
         }
 
-        return (nil,nil)
     }
+    func passwordExpiryUpdate(_ passwordExpire: Date) {
+
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        let dateString = dateFormatter.string(from: passwordExpire)
+
+        self.adPasswordExpires=dateString
+        let appDelegate = NSApp.delegate as? AppDelegate
+        appDelegate?.updateStatusMenuExpiration(passwordExpire)
+
+
+    }
+    func credentialsUpdated(_ credentials:Creds) {
+        hasCredential=true
+        credentialStatus="Valid Tokens"
+        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+        let tokenManager = TokenManager()
+
+        if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+
+            switch userInfoResult {
+
+            case .success(let retUserAccountInfo):
+                let userInfo = retUserAccountInfo
+                if let username = userInfo.username {
+                    UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                }
+                if let fullUsername = userInfo.fullUsername {
+                    UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
+                }
+                if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                    UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                }
+            case .error(let message):
+                TCSLogWithMark("Error getting infoResult: \(message)")
+            }
+
+        }
+        DispatchQueue.main.async {
+            self.windowController.window?.close()
+
+            let localAccountAndPassword = self.localAccountAndPassword()
+            if credentials.password != nil, let localPassword=localAccountAndPassword.1{
+                if localPassword != credentials.password{
+                    var updatePassword = true
+                    if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
+                        let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
+                        NSApp.activate(ignoringOtherApps: true)
+
+                        while true {
+                            let response = NSApp.runModal(for: verifyOIDPassword.window!)
+                            if response == .cancel {
+
+                                let alert = NSAlert()
+                                alert.addButton(withTitle: "Skip Updating Password")
+                                alert.addButton(withTitle: "Cancel")
+                                alert.messageText="Are you sure you want to skip updating the local password and keychain? Your local password and keychain will be out of sync with your cloud password. "
+                                let resp = alert.runModal()
+                                if resp == .alertFirstButtonReturn {
+                                    NSApp.stopModal(withCode: .cancel)
+                                    verifyOIDPassword.window?.close()
+                                    updatePassword=false
+                                    break
+
+                                }
+                            }
+                            let verifyCloudPassword = verifyOIDPassword.password
+                            if verifyCloudPassword == credentials.password {
+
+                                updatePassword=true
+
+                                verifyOIDPassword.window?.close()
+                                break;
+                            }
+                            else {
+                                verifyOIDPassword.window?.shake(self)
+                            }
+
+                        }
+                    }
+                    if updatePassword {
+                        if let cloudPassword = credentials.password {
+                            try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword: cloudPassword)
+
+                        }
+                    }
+                }
+                
+            }
+            var localPassword = credentials.password
+            if localPassword==nil {
+                localPassword = localAccountAndPassword.1
+            }
+            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localPassword ) == false {
+                TCSLogErrorWithMark("error saving tokens to keychain")
+            }
+
+            self.scheduleManager.startCredentialCheck()
+
+        }
+
+        //delay startup to give network time to settle.
+        Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { timer in
+            self.scheduleManager.startCredentialCheck()
+        }
+
+    }
+
+    func credentialsCheckFailed() {
+        TCSLogWithMark()
+        hasCredential=false
+        credentialStatus="Invalid Credentials"
+        let appDelegate = NSApp.delegate as? AppDelegate
+        appDelegate?.updateStatusMenuIcon(showDot:false)
+        if WifiManager().isConnectedToNetwork()==true {
+            showSignInWindow(forceLoginWindowType: .cloud)
+        }
+    }
+    func kerberosTicketUpdated() {
+        TCSLogWithMark()
+        hasKerberosTicket=true
+        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+
+        credentialStatus="Valid kerberos tickets"
+    }
+    func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
+
+        TCSLogWithMark()
+        hasKerberosTicket=false
+        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:false)
+
+        credentialStatus="Kerberos Tickets Failed"
+        switch error{
+
+        case .OffDomain:
+            TCSLogWithMark("Off domain so not prompting")
+
+        case .UnknownPrincipal:
+            TCSLogWithMark("UnknownPrincipal so not prompting")
+
+        default:
+            if WifiManager().isConnectedToNetwork()==true {
+                showSignInWindow(forceLoginWindowType: .usernamePassword)
+            }
+        }
+    }
+    func adUserUpdated(_ adUser: ADUserRecord) {
+
+        (NSApp.delegate as? AppDelegate)?.updateShareMenu(adUser: adUser)
+
+    }
+    func OIDCPasswordExpiryDate() -> Date?{
+
+        let keychainUtil = KeychainUtil()
+
+        guard let idToken = try? keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken").1 else {
+            TCSLogWithMark("cannot find ID token")
+
+            return nil
+        }
+
+        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+
+        guard let idTokenInfo = idTokenInfo else {
+            TCSLogWithMark("idTokenInfo invalid")
+            return nil
+        }
+
+        guard let expiryKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapPasswordExpiry.rawValue)  as? String,
+              expiryKey.count>0,
+              let expiryString = idTokenInfo[expiryKey] as? String,
+              let expiryNumber = Int(expiryString) else {
+            TCSLogWithMark("mapPasswordExpiry invalid")
+
+            return nil
+        }
+
+        guard let iatInt = idTokenInfo["iat"] as? Int
+              else {
+            TCSLogWithMark("iatInt invalid")
+
+            return nil
+        }
+        TCSLogWithMark("iatInt: \(iatInt)")
+        TCSLogWithMark("expiryNumber: \(expiryNumber)")
+
+        let expirySecondsFromEpoch = expiryNumber + iatInt
+        TCSLogWithMark("expirySecondsFromEpoch: \(expirySecondsFromEpoch)")
+
+        let expiryDate = Date(timeIntervalSince1970: TimeInterval(expirySecondsFromEpoch))
+
+        TCSLogWithMark("expiryDate: \(expiryDate)")
+
+        return expiryDate
+
+    }
+
+
 }
 
-
-/*
- if let password = password {
-
- NotifyManager.shared.sendMessage(message: "valid password")
- }
- else {
- NotifyManager.shared.sendMessage(message: "cancelled")
- }
-
- */

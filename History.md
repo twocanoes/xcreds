@@ -1,5 +1,179 @@
 # What's New In XCreds #
 
+## XCreds 5.0 ##
+
+
+fixed HideExpiration in manifest
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+added build file instructions
+updated package ref
+add missing files to repo
+allowLoginIfMemberOfGroup causes screen rendering issue after blocking sign in #233
+Fail on map_username for AD #244
+Issue with HomeMountEnabled #236
+Clarify manifest descriptions for AD property names #245
+XCreds Login Window Overlay Wallpaper not caching? #247
+Update manifest description for CreateAdminIfGroupMember #251
+Update login window when resolution changes #187
+added missing files
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+more
+Local login window dims and gets stuck after failed login attempt #242
+updated history
+Expected AD field values not shown in XCreds log #237
+updated history
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+
+---------
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227 View
+Add LocalFallback to manifest #229 View
+Update description for allowLoginIfMemberOfGroup #228 View
+Customize menu bar app icon #189 View
+improved login animation View
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184 View
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232 View
+Feature Request: HideExpiration key #198 View
+Allow user to use full name to sign in at XCreds username/password screen #178 View
+"Change Password" menuitem is now greyed out #239 View
+keyCodeForLoginWindowChange not working as expected #231 View
+updated history View
+Expected AD field values not shown in XCreds log #237
+-------
+keyCodeForLoginWindowChange not working as expected #231
+"Change Password" menuitem is now greyed out #239
+Allow user to use full name to sign in at XCreds username/password screen #178
+Feature Request: HideExpiration key #198
+XCreds 5: Unexpected behavior of IP & MAC info via XCReds login window #232
+Menubar sign in does not follow shouldUseROPGForMenuLogin #184
+improved login animation
+Customize menu bar app icon #189
+Update description for allowLoginIfMemberOfGroup #228
+Add LocalFallback to manifest #229
+Enhancement Request "Mechanism to force xCreds to reevaluate Login Window Background Image" #227
+-----
+[Feature Request] Add a Password Expire date or Days for OIDC users and more #165. To test, set map_password_expiry to a claim in Azure (like street address) with a value in seconds from token issue (like 300 seconds) and verify that menu shows the correct date
+Custom Mac login window key combo #206
+Enhancement request: Group Membership Zendesk Ticket 69193 #209
+Setting HomeMountEnabled to false removes the home folder from the XCreds menuitems #213
+
+----------
+Map UID #186
+Menubar refresh is delayed when setting shouldPromptForADPasswordChange #195
+Fix formatting for systemInfoButtonTitle #221
+Corrections for manifest #224
+Hang at login after password reset #223
+----------
+Customize the XCReds app's native login dialog box #179
+[Feature Request] AD User Account Creation Name Mapping #172
+[Feature Request] AD - User friendly fail prompts #193
+AD attributes #166
+systemInfoButtonTitle does not respond to plain text values #220
+Clarify key name an description for shouldShowIfLocalOnlyUser #219
+changed manifest version back one; added copying DS user attibutes to prefs. Enhancement Request: XCreds app cant update ds #212
+----------
+[Feature Request] Add option to customize the Refresh Banner text #176
+Feature Request: EnforceSignIn #199
+added new preference to manage more buttons on login screen: shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton. Feature Request - Add key to disable showing shutdown and/or restart on login overlay #203
+Allow override of killall loginwindow in xcreds postinstall script #181
+bumped version of manifest Update manifest pfm_last_modified and pfm_version #164
+fixed Fix manifest title for ROPG pref #183
+added option for system info button title #154
+System Info on XCreds Login Window #154
+implemented Feature Request - Change the wording of the password change pop-up #202
+
+## XCreds 4.1 ##
+
+Customization of Menu
+
+Adding Menu Items
+
+Cloud + Active Directory
+
+SMB Share Mounting
+
+Admin Removal
+
+
+## XCreds 4.0 ##
+
+Select Existing User Account During Account Creation
+
+Allow Admin to Reset User Password at Login
+
+Key Combination for Showing Standard and Mac Login Window
+
+Account Alias
+
+Saving Groups to Account Attributes
+
+CreateAdminIfGroupMember Checked At Each Login
+
+Add Arbitrary Claims to Local DS User Account
+
+Refactored Preferences for ROPG
+
+Allowed Users
+
+Other New Features and Fixes
+
+
+
+## XCreds 3.3 ##
+
+### Select Existing User Account During Account Creation ###
+Using the new preference key “shouldPromptForMigration”, when a new login is detected and there are existing standard user accounts on the system, the user will be prompted for a username and password (#98).
+
+If the username and password are successfully entered for an existing account, this local account will then be used when logging in with this cloud account. The local account has 2 new DS attributes added:
+
+dsAttrTypeNative:_xcreds_oidc_sub: Subscriber. Unique identifier for account within the current issuer. 
+
+dsAttrTypeNative:_xcreds_oidc_iss: Issuer
+In subsequent logins, the user account is selected by matching the sub and iss from the identity token to the values in the local account.
+
+Note that the user will only be prompted if there are existing standard accounts on the system and the login does not have a locally mapped account.
+
+The dialog for migration has a “Create New Account” button that will allow them to skip migration and create a local account. If a local account using the prior logic exists, it will be mapped.
+
+### Key Combination for showing Standard and Mac login window ###
+Setting the new preference key “shouldAllowKeyComboForMacLoginWindow” allows switch login between cloud and standard/Mac login using a key combination regardless of the hidden state of the Switch Login Window button (#121). The keys are as follows:
+
+Option-Control-Return: Switch between cloud and standard login window.
+Command-Option-Control-Return: Switch between cloud and Mac login window.
+
+### Account Alias ###
+When a new preference is set (“aliasName”) to a claim in the identity token, the value in that claim is used to set an alias to the user account, allowing them to login with it.
+
+An example: Set the preferences to have aliasName = “upn”. Log in as barney@twocanoes.com. The identity token has a claim called “upn” whose value was “barney@twocanoes.com“. XCreds then adds barney@twocanoes.com that is an alias and the user can login with either barney or barney@twocanoes.com at the local and mac login window. This gives the user a consistent way to log in at the cloud login or the standard / Mac login window.
+
+### New Features ###
+* Removed logging messages that had a local path from the build system.
+* Updates postinstall to better handle the setup assistant and userland install scenarios. Thanks to Clkw0rk for the pull request.
+* Reload login window on network changes. Thanks to Clkw0rk for the pull request and credit to @hurricanehrndz and the CPE Team at Yelp
+* Reload login window after wifi connected. Thanks to Clkw0rk for the pull request.
+* add encoding for special characters to tokenmanager. Thanks to Clkw0rk for the pull request.
+* use default desktop from CoreServices. Thanks to Clkw0rk and the CPE Team at Yelp for the pull request.
+
+
+## XCreds 3.2 ##
+
+* Support for Okta ROPG
+* New preference key to force local login: shouldPreferLocalLoginInsteadOfCloudLogin
+* New preference key show login window based on detecting network status: shouldDetectNetworkToDetermineLoginWindow
+* Added self healing for auth rights
+* Added support for keyboard nav for controls
+* Detect offline and automatically switch to local login
+* Remove trailing and leading spaces entered in username
+
+
 ## XCreds 3.1 ##
 
 ### Active Directory Login ###

@@ -1,0 +1,397 @@
+//
+//  WebView.swift
+//  xCreds
+//
+//  Created by Timothy Perfitt on 4/5/22.
+//
+
+import Foundation
+import Cocoa
+import WebKit
+import OIDCLite
+
+class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+    func credentialsUpdated(_ credentials: Creds) {
+        TCSLogWithMark()
+        var credWithPass = credentials
+        credWithPass.password = self.password
+//        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
+//                       )
+
+        updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
+    }
+  
+    @IBOutlet weak var refreshTitleTextField: NSTextField?
+    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var cancelButton: NSButton!
+    var tokenManager=TokenManager()
+    var password:String?
+    var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
+
+    func loadPage() {
+        DispatchQueue.main.async {
+            TCSLogWithMark("Clearing cookies")
+            self.webView.cleanAllCookies()
+            TCSLogWithMark()
+            let licenseState = LicenseChecker().currentLicenseState()
+            if let refreshTitleTextField = self.refreshTitleTextField {
+                refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+
+
+                if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
+                    self.refreshTitleTextField?.stringValue = refreshBannerText
+                }
+
+            }
+
+            
+
+            self.webView.navigationDelegate = self
+            self.tokenManager.feedbackDelegate=self
+//            TokenManager.shared.oidc().delegate = self
+            self.clearCookies()
+            TCSLogWithMark()
+            switch licenseState {
+
+            case .valid, .trial(_):
+                break
+            case .invalid,.trialExpired, .expired:
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    let loadPageURL = bundle.url(forResource: "errorpage", withExtension: "html")
+                    if let loadPageURL = loadPageURL {
+                        self.webView.load(URLRequest(url:loadPageURL))
+
+                    }
+                }
+                return
+
+            }
+
+            NotificationCenter.default.addObserver(self, selector: #selector(self.connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
+
+            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+
+            if discoveryURL != nil {
+                NetworkMonitor.shared.startMonitoring()
+                TCSLogWithMark("Network monitor: adding connectivity status change observer")
+            }
+
+            if discoveryURL != nil, let url = self.getOidcLoginURL(){
+                self.webView.load(URLRequest(url: url))
+                NetworkMonitor.shared.stopMonitoring()
+
+            }
+            else {
+                if discoveryURL == nil {
+                    TCSLogWithMark("no discovery URL")
+                }
+                else {
+                    TCSLogWithMark("no discovery URL")
+
+                }
+
+                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)
+
+                let loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)
+
+                if let loadPageTitle = loadPageTitle?.stripped,
+                       let loadPageInfo = loadPageInfo?.stripped {
+                           let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+
+                           self.webView.loadHTMLString(html, baseURL: nil)
+
+
+                }
+            }
+        }
+    }
+
+    @objc func connectivityStatusHandler(notification: Notification) {
+        TCSLogWithMark("Network monitor: handling connectivity status update")
+        if NetworkMonitor.shared.isConnected {
+            TCSLogWithMark("Refresh webview login")
+
+            self.loadPage()
+        }
+    }
+
+    private func getOidcLoginURL() -> URL? {
+        for _ in 1...5 {
+            if let url = tokenManager.oidc().createLoginURL() {
+                return url
+            }
+            TCSLogWithMark("Trying to get login url again")
+            Thread.sleep(forTimeInterval: 1)
+        }
+        TCSLogWithMark()
+        return nil
+    }
+
+
+
+    private func clearCookies() {
+        let dataStore = WKWebsiteDataStore.default()
+        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+                                 for: records,
+                                 completionHandler: {
+                print("Removing Cookie")
+            })
+        }
+
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
+    }
+   
+    func showErrorMessageAndDeny(_ message:String){
+    }
+    func tokenError(_ err: String) {
+        TCSLogErrorWithMark("authFailure: \(err)")
+        //TODO: need to post this?
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":err])
+
+    }
+}
+
+extension WebViewController: WKNavigationDelegate {
+
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+
+        let idpHostName = DefaultsOverride.standardOverride.value(forKey: PrefKeys.idpHostName.rawValue)
+        var idpHostNames = DefaultsOverride.standardOverride.value(forKey: PrefKeys.idpHostNames.rawValue)
+
+        if idpHostNames == nil && idpHostName != nil {
+            idpHostNames=[idpHostName]
+        }
+        let passwordElementID:String? = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordElementID.rawValue) as? String
+
+        TCSLogWithMark("inserting javascript to get password")
+        webView.evaluateJavaScript("result", completionHandler: { response, error in
+            if error != nil {
+                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+            }
+            else {
+                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
+
+                    TCSLogWithMark("found password elements with ids:\(ids)")
+
+                    guard let host = navigationAction.request.url?.host else {
+
+                        return
+                    }
+                    var foundHostname = ""
+                    if  let idpHostNames = idpHostNames as? Array<String?>,
+                        idpHostNames.contains(host) {
+                        foundHostname=host
+
+                    }
+                    else if ["login.microsoftonline.com", "login.live.com", "accounts.google.com"].contains(host) || host.contains("okta.com"){
+                        foundHostname=host
+
+                    }
+                    else {
+                        TCSLogWithMark("hostname (\(host)) not matched so not looking for password")
+                        return
+                    }
+
+                    TCSLogWithMark("host matches custom idpHostName \(foundHostname)")
+
+
+                    if passwords.count==3, passwords[1]==passwords[2] {
+                        TCSLogWithMark("found 3 password fields. so it is a reset password situation")
+                        TCSLogWithMark("========= password set===========")
+                        self.password=passwords[2]
+                    }
+
+                    else if let passwordElementID = passwordElementID{
+                        TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
+
+                    // we have a mapped field defined in prefs so only check this.
+                        if ids.count==1, ids[0]==passwordElementID, passwords.count==1 {
+                            TCSLogWithMark("========= password set===========")
+                            self.password=passwords[0]
+                        }
+                        else {
+
+                            TCSLogWithMark("did not find a single password field on the page with the specified ID so not setting password")
+                        }
+
+                    }
+                    //
+                    else if passwords.count==1 {
+                        TCSLogWithMark("found 1 password field on the specified page with the set idpHostName. setting password.")
+                        TCSLogWithMark("========= password set===========")
+                        self.password=passwords[0]
+
+                    }
+                    else {
+                        TCSLogWithMark("password not set")
+                    }
+                }
+            }
+        })
+        decisionHandler(.allow)
+
+    }
+
+//    func setupAppearance() {
+//        let screenRect = NSScreen.screens[0].frame
+//
+//        let screenWidth = screenRect.width
+//        let screenHeight = screenRect.height
+//
+//
+//        self.view.frame=NSMakeRect((screenWidth-CGFloat(loginWindowWidth))/2,(screenHeight-CGFloat(loginWindowHeight))/2, CGFloat(loginWindowWidth), CGFloat(loginWindowHeight))
+//        TCSLogWithMark()
+//
+//    }
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        //this inserts javascript to copy passwords to a variable. Sometimes the
+        //div gets removed before we can evaluate it so this helps. It works by
+        // attaching to keydown. At each keydown, it attaches to password elements
+        // for keyup. When a key is released, it copies all the passwords to an array
+        // to be read later.
+
+        TCSLogWithMark("adding listener for password")
+        var pathURL:URL?
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+        if let bundle = bundle {
+            TCSLogWithMark()
+            pathURL = bundle.url(forResource: "get_pw", withExtension: "js")
+            
+        }
+
+        guard let pathURL = pathURL else {
+            TCSLogErrorWithMark("get_pw.js not found")
+            return
+        }
+
+        let javascript = try? String(contentsOf: pathURL, encoding: .utf8)
+
+        guard let javascript = javascript else {
+            return
+        }
+
+        webView.evaluateJavaScript(javascript, completionHandler: { response, error in
+            if (error != nil){
+//                TCSLogWithMark(error?.localizedDescription ?? "empty error")
+            }
+            else {
+                TCSLogWithMark("inserted javascript for password setup")
+            }
+        })
+
+    }
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+
+
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        TCSLogErrorWithMark(error.localizedDescription)
+
+
+    }
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        TCSLogWithMark("Redirect error. if the error is \"Could not connect to the server.\", it is probably safe to ignore. If the error is \"unsupported URL\", please check your redirectURL in prefs matches the one defined in your OIDC app. Error: \(error.localizedDescription)")
+    }
+    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+        TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
+
+         let redirectURI = tokenManager.oidc().redirectURI
+            TCSLogWithMark("redirectURI: \(redirectURI)")
+            TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
+            if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+                TCSLogWithMark("got redirect URI match. separating URL")
+                var code = ""
+                let fullCommand = webView.url?.absoluteString ?? ""
+                let pathParts = fullCommand.components(separatedBy: "&")
+                for part in pathParts {
+                    if part.contains("code=") {
+                        TCSLogWithMark("found code=. cleaning up.")
+
+                        code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
+                        TCSLogWithMark("getting tokens")
+
+                        tokenManager.oidc().getToken(code: code)
+                        return
+                    }
+                }
+            }
+        
+
+    }
+
+    private func queryToDict(query: String) -> [String:String]? {
+        let components = query.components(separatedBy: "&")
+        var dictionary = [String:String]()
+
+        for pairs in components {
+            let pair = pairs.components(separatedBy: "=")
+            if pair.count == 2 {
+                dictionary[pair[0]] = pair[1]
+            }
+        }
+
+        if dictionary.count == 0 {
+            return nil
+        }
+
+        return dictionary
+    }
+
+
+}
+
+//TODO: Integrate?
+//extension WebViewController: OIDCLiteDelegate {
+//
+////    func authFailure(message: String) {
+////        TCSLogErrorWithMark("authFailure: \(message)")
+////        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
+////
+////    }
+//
+//    
+//}
+extension String {
+    func sanitized() -> String {
+        // see for ressoning on charachrer sets https://superuser.com/a/358861
+        let invalidCharacters = CharacterSet(charactersIn: "\\/:*?\"<>| ")
+            .union(.newlines)
+            .union(.illegalCharacters)
+            .union(.controlCharacters)
+
+        return self
+            .components(separatedBy: invalidCharacters)
+            .joined(separator: "")
+    }
+
+    mutating func sanitize() -> Void {
+        self = self.sanitized()
+    }
+}
+extension WKWebView {
+
+    func cleanAllCookies() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        print("All cookies deleted")
+
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                print("Cookie ::: \(record) deleted")
+            }
+        }
+    }
+
+    func refreshCookies() {
+        self.configuration.processPool = WKProcessPool()
+    }
+}

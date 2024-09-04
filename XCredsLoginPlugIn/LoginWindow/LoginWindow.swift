@@ -9,7 +9,6 @@ import Cocoa
 
 class LoginWindow: NSWindow {
     override var canBecomeKey: Bool {
-        TCSLogWithMark()
         return true
     }
 

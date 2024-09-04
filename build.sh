@@ -2,12 +2,23 @@
 
 set -e
 
-echo "post to github? (y/N)"
+echo "post to github? (Y/n)"
 read should_upload
-if [ "${should_upload}" = "y" ]; then
-   upload=1
-echo "uploading to github when done"
+if [ "${should_upload}" = "n" ]; then
+	echo "not uploading"
+else
+   export upload=1
+   echo "uploading to github when done"
 fi
+
+
+echo "updated manifest version? (y/N)"
+read should_update_manifest
+if [ "${should_update_manifest}" = "y" ]; then
+   export update_manifest=1
+   echo "updating manifest"
+fi
+
 
 carthage update
 xcodebuild -resolvePackageDependencies
