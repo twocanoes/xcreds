@@ -207,9 +207,17 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         setupSystemInfoButton()
         switch licenseState {
 
-        case .valid:
-            TCSLogWithMark("valid license")
+        case .valid(let secRemaining):
             self.trialVersionStatusTextField?.isHidden = true
+
+            let daysRemaining = Int(secRemaining/(24*60*60))
+            TCSLogWithMark("valid license. Days remaining: \(daysRemaining) (\(secRemaining) seconds)")
+            if daysRemaining < 14 {
+                self.trialVersionStatusTextField.stringValue = "License Expires in \(daysRemaining) days"
+                self.trialVersionStatusTextField?.isHidden = false
+            }
+
+            break;
 
         case .expired:
             self.trialVersionStatusTextField?.isHidden = false

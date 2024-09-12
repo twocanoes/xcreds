@@ -9,11 +9,12 @@ import Cocoa
 
 class LicenseChecker: NSObject {
     enum LicenseState {
-        case valid
+        case valid(Int)
         case invalid
         case trial(Int)
         case trialExpired
         case expired
+
     }
 
     func currentLicenseState() -> LicenseState {
@@ -41,12 +42,19 @@ class LicenseChecker: NSObject {
         }
         let check = TCSLicenseCheck()
         let status = check.checkLicenseStatus("com.twocanoes.xcreds", withExtension: "")
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withFractionalSeconds, .withFullDate]
 
         switch status {
 
         case .valid:
             TCSLogWithMark("valid license")
-            return .valid
+            if let dateExpiredString = check.license.dateExpired,let dateExpires = dateFormatter.date(from:dateExpiredString ){
+
+                return .valid(Int(dateExpires.timeIntervalSinceNow))
+            }
+
+            return .valid(0)
         case .expired:
             TCSLogErrorWithMark("expired license")
             return trialState

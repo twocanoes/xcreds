@@ -29,7 +29,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1002" height="117"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-gh-gv5">
                     <rect key="frame" x="0.0" y="98" width="1002" height="19"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Unsupported – Visit twocanoes.com/xcreds/support for support options." drawsBackground="YES" id="bHC-M4-jfl">
                         <font key="font" metaFont="system" size="16"/>
@@ -173,7 +173,7 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="223" height="56"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B3h-KN-ejK">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B3h-KN-ejK">
                     <rect key="frame" x="18" y="20" width="187" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="7lK-sV-1fw">
                         <font key="font" metaFont="system"/>

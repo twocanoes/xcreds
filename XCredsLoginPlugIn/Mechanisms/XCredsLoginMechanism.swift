@@ -20,9 +20,6 @@ import Network
 
 
         super.init(mechanism: mechanism)
-
-
-//        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
         NotificationCenter.default.addObserver(forName: Notification.Name("SwitchLoginWindow"), object: nil, queue: nil) { notification in
 
@@ -314,6 +311,7 @@ import Network
 
 
             mainLoginWindowController?.addCenterView(loginWebViewController.view)
+            loginWebViewController.webView.nextKeyView=mainLoginWindowController?.controlsViewController?.view
 
 
         case .usernamePassword:
@@ -359,6 +357,8 @@ import Network
             TCSLogWithMark("forcing front")
             mainLoginWindowController?.window?.forceToFrontAndFocus(self)
             mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
+
+            signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
 
         }
 //        var app = NSWorkspace.shared.frontmostApplication

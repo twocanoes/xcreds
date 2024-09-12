@@ -19,7 +19,7 @@
         <window title="Sign In" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCredsLoginPlugin">
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="1002" height="883"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1055"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="1002" height="883"/>
                 <autoresizingMask key="autoresizingMask"/>

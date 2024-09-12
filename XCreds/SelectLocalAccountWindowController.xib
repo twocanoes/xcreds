@@ -19,7 +19,7 @@
         <window title="Local Credentials" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="198"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1496" height="910"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1055"/>
             <value key="minSize" type="size" width="480" height="198"/>
             <value key="maxSize" type="size" width="480" height="198"/>
             <view key="contentView" id="se5-gp-TjO">

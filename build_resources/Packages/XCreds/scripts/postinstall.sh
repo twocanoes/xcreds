@@ -40,12 +40,14 @@ fi
 if /usr/bin/pgrep -q "Setup Assistant"; then
     # loginwindow hasn't been displayed yet - exit successfully
     /usr/bin/logger "XCreds: authorization mechanic setup complete"
+    echo "XCreds: authorization mechanic setup complete"
     exit 0
 fi
 
 while [[ ! -f "/var/db/.AppleSetupDone" ]]; do
  sleep 1
  /usr/bin/logger "Waiting for Setup Assistant to complete"
+ echo "Waiting for Setup Assistant to complete"
 done
 
 # if Finder is not loaded and override file doesn't exist, reload the loginwindow

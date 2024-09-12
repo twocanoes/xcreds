@@ -119,6 +119,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark()
         self.window?.contentView?.addSubview(controlsViewController.view)
+        
         if let width = self.window?.frame.size.width {
             let rect2 = NSMakeRect(0, 0, width,controlsViewController.view.frame.size.height)
             controlsViewController.view.frame=rect2

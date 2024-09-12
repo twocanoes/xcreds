@@ -53,7 +53,14 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             TCSLogWithMark()
             switch licenseState {
 
-            case .valid, .trial(_):
+            case .valid(let sec):
+                let daysRemaining = Int(sec/(24*60*60))
+                TCSLogWithMark("valid license. Days remaining: \(daysRemaining) (\(sec) seconds)")
+                if daysRemaining < 14 {
+                }
+                break;
+
+            case .trial(_):
                 break
             case .invalid,.trialExpired, .expired:
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
