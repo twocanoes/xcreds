@@ -27,7 +27,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         window?.alphaValue=0.9
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
-
             if let path = DefaultsOverride.standardOverride.string(forKey: PrefKeys.hideIfPathExists.rawValue), FileManager.default.fileExists(atPath:path ) {
 
                 if self.window?.isVisible==true {
@@ -48,6 +47,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     override func awakeFromNib() {
         TCSLogWithMark()
+
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone == false {
 //            updateLoginWindowInfo()
