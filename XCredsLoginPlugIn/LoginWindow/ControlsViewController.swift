@@ -198,13 +198,15 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     override func awakeFromNib() {
         TCSLogWithMark()
         super.awakeFromNib()
-        let licenseState = LicenseChecker().currentLicenseState()
-        NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
-        self.trialVersionStatusTextField?.isHidden = false
         NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
         NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
-
         setupSystemInfoButton()
+        NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
+
+
+        let licenseState = LicenseChecker().currentLicenseState()
+        self.trialVersionStatusTextField?.isHidden = false
+
         switch licenseState {
 
         case .valid(let secRemaining):

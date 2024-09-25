@@ -40,7 +40,7 @@
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                         </wkWebViewConfiguration>
                     </wkWebView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YnV-QC-aTR">
                         <rect key="frame" x="0.0" y="562" width="628" height="50"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>

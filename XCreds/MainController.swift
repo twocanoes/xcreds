@@ -88,34 +88,35 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+        TCSLogWithMark()
         if isLocalOnlyAccount()==true && force==false{
+            TCSLogWithMark()
             return
         }
 
 
         if  let webViewController = windowController.webViewController{
+            TCSLogWithMark()
             webViewController.webView.isHidden=true
         }
         scheduleManager.setNextCheckTime()
 
         var forceUsernamePassword = false
-        var forceCloudPassword = false
 
         if let forceLoginWindowType = forceLoginWindowType {
-
-            if forceLoginWindowType == .cloud {
-                forceCloudPassword = true
-            }
-            else {
+            TCSLogWithMark()
+            if forceLoginWindowType == .usernamePassword {
+                TCSLogWithMark()
                 forceUsernamePassword = true
             }
         }
         if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
+            TCSLogWithMark()
             windowController.window!.makeKeyAndOrderFront(self)
 
             if  let webViewController = windowController.webViewController{
                 webViewController.webView.isHidden=false
-
+                TCSLogWithMark()
                 windowController.webViewController.updateCredentialsFeedbackDelegate=self
                 windowController.webViewController?.loadPage()
             }
@@ -127,6 +128,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         {
             if let webView = windowController.webViewController?.webView {
                 webView.isHidden=true
+                TCSLogWithMark()
             }
 
             if let window = windowController.window{
@@ -136,7 +138,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     if signInViewController == nil {
                         signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
                     }
-
+                    TCSLogWithMark()
                     signInViewController?.isInUserSpace = true
                     signInViewController?.updateCredentialsFeedbackDelegate=self
                     guard let signInViewController = signInViewController else {
@@ -144,7 +146,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     }
 
                     if let contentView = window.contentView {
-
+                        TCSLogWithMark()
                         windowController.webViewController.webView.isHidden=true
                         signInViewController.view.wantsLayer=true
 

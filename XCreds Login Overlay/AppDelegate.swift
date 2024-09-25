@@ -11,7 +11,6 @@ import AppKit
 @main
 class App {
     static func main() {
-        sleep(5)
         _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     }
 }
