@@ -20,7 +20,7 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>clientID</key>
-			<string>[redacted]</string>
+			<string>5487c4cd-949a-402d-9eee-ae8fb696b415</string>
 			<key>discoveryURL</key>
 			<string>https://login.microsoftonline.com/common/.well-known/openid-configuration</string>
 			<key>redirectURI</key>
