@@ -45,8 +45,9 @@ import OpenDirectory
 
             if allowedUsersArray.contains(userValue)==false {
                 TCSLogWithMark("user is not allowed to login")
+                //no need to send back message because failure will show it.
 
-                denyLogin(message: "The user \"\(userValue)\" is not allowed to login")
+                denyLogin(message: nil)
                 return .failure("The user \"\(userValue)\" is not allowed to login")
             }
             else {
@@ -61,9 +62,10 @@ import OpenDirectory
             let tokenManager = TokenManager()
             let idTokenInfo = try tokenManager.tokenInfo(fromCredentials: credentials)
 
+            //no need to send back message because failure will show it.
 
             guard let idTokenInfo = idTokenInfo else {
-                denyLogin(message: "invalid idtoken")
+                denyLogin(message: nil)
                 return .failure("invalid idtoken")
             }
 
@@ -75,7 +77,9 @@ import OpenDirectory
             case .success(let retUserAccountInfo):
                 userInfo = retUserAccountInfo
             case .error(let message):
-                denyLogin(message:message)
+                //no need to send back message because failure will show it.
+
+                denyLogin(message:nil)
                 return .failure(message)
             }
 
@@ -138,7 +142,9 @@ import OpenDirectory
 
             let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
             guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {
-                denyLogin(message:"could not find local user with findUserAndUpdatePassword")
+                //no need to send back message because failure will show it.
+
+                denyLogin(message:nil)
                 return .failure("could not find local user with findUserAndUpdatePassword")
             }
 
@@ -149,24 +155,31 @@ import OpenDirectory
                 userInfo.username = username
                 break
             case .canceled:
-                denyLogin(message:"cancelled")
+                //no need to send back message because failure will show it.
+
+                denyLogin(message:nil)
                 return .failure("cancelled")
             case .createNewAccount:
                 break
             case .error(let mesg):
-                denyLogin(message:mesg)
+                //no need to send back message because failure will show it.
+
+                denyLogin(message:nil)
                 return .failure(mesg)
             }
             guard let username = userInfo.username else {
                 TCSLogErrorWithMark("username or password are not set")
-                denyLogin(message:"username or password are not set")
+                //no need to send back message because failure will show it.
+
+                denyLogin(message:nil)
                 return .failure("username or password are not set")
             }
 
             if  password.isEmpty {
                 TCSLogWithMark("Empty password. Failing");
                 let message = "Password not set. Verify username mapping in configuration is correct and you are not using passwordless login."
-                denyLogin(message: message)
+                //no need to send back message because failure will show it.
+                denyLogin(message: nil)
                 return .failure(message)
 
             }
@@ -230,8 +243,9 @@ import OpenDirectory
 
             case .other(let mesg):
                 TCSLogWithMark("password check error:\(mesg)")
+                //no need to send back message because failure will show it.
 
-                denyLogin(message:mesg)
+                denyLogin(message:nil)
                 return .failure(mesg)
             }
             TCSLogWithMark("passing username:\(username), password, and tokens")
@@ -262,7 +276,9 @@ import OpenDirectory
         catch {
 
             TCSLogWithMark("Error:\(error.localizedDescription)")
-            denyLogin(message:"credentialsUpdated error")
+            //no need to send back message because failure will show it.
+
+            denyLogin(message:nil)
             return .failure("credentialsUpdated error")
 
         }
