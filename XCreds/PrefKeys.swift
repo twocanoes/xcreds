@@ -13,6 +13,7 @@ enum PrefKeys: String {
     case shouldUseROPGForPasswordChangeChecking
     case shouldUseROPGForMenuLogin
     case shouldUseROPGForLoginWindowLogin
+    case shouldActivateSystemInfoButton
     case actionItemOnly = "ActionItemOnly"
     case systemInfoAdditionsArray
     case aDDomain = "ADDomain"

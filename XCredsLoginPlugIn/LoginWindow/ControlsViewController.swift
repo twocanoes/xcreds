@@ -290,6 +290,12 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 
             self.systemInfoButton?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSystemInfoButton.rawValue)
 
+            if self.systemInfoButton?.isHidden == false,  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+
+                    self.showSystemInfoButtonPressed(self.systemInfoButton)
+                }
+            }
 
             TCSLogWithMark()
 

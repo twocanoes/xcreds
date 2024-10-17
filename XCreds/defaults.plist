@@ -99,5 +99,7 @@
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
 	<false/>
+	<key>shouldActivateSystemInfoButton</key>
+	<true/>
 </dict>
 </plist>
