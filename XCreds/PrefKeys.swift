@@ -14,6 +14,7 @@ enum PrefKeys: String {
     case shouldUseROPGForMenuLogin
     case shouldUseROPGForLoginWindowLogin
     case actionItemOnly = "ActionItemOnly"
+    case systemInfoAdditionsArray
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"
     case aDDomainController = "ADDomainController"

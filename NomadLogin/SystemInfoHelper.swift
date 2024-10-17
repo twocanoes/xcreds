@@ -51,7 +51,17 @@ class SystemInfoHelper {
         if ipAddresses.count > 0 {
             info.append("IP Address: \(ipAddresses.joined(separator: ","))")
         }
-        
+
+//        systemInfoAdditions
+        if let systemInfoAdditionsArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.systemInfoAdditionsArray.rawValue) as? Array <String>, systemInfoAdditionsArray.count>0 {
+
+            for line in systemInfoAdditionsArray {
+                info.append(line)
+            }
+
+
+            
+        }
         return info
     }
     
