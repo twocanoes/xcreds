@@ -482,6 +482,8 @@ extension TokenManager {
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
+                TCSLogWithMark("ropgResponseValue matched to \(error)")
+
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else {

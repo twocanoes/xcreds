@@ -150,13 +150,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(screenDidWake(_:)), name:NSWorkspace.screensDidWakeNotification , object: nil)
 
-        if var autofillAppPath = Bundle.main.path(forResource: "XCreds Login Autofill", ofType: "app"){
-            autofillAppPath = autofillAppPath + "/Contents/MacOS/XCreds Login Autofill"
-            if FileManager.default.fileExists(atPath: autofillAppPath){
+        DispatchQueue.global().async{
 
-                let msg = TCTaskHelper.shared().runCommand(autofillAppPath, withOptions:["-r"] )
+            if var autofillAppPath = Bundle.main.path(forResource: "XCreds Login Autofill", ofType: "app"){
+                autofillAppPath = autofillAppPath + "/Contents/MacOS/XCreds Login Autofill"
+                if FileManager.default.fileExists(atPath: autofillAppPath){
 
-                print(msg)
+                    let _ = TCTaskHelper.shared().runCommand(autofillAppPath, withOptions:["-r"] )
+                    TCSLogWithMark("autofill registered")
+                }
             }
         }
         mainController = MainController()
