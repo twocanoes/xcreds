@@ -90,7 +90,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
         TCSLogWithMark()
-        let licenseState = LicenseChecker().currentLicenseState()
 
         if isLocalOnlyAccount()==true && force==false{
             TCSLogWithMark()
@@ -310,7 +309,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     }
- 
+
 
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true

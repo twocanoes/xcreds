@@ -170,7 +170,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true,
 
                 let keychainPassword = keychainAccountAndPassword.1{
-            TCSLogWithMark("Checking credentials in keychain using ROPG")
+            TCSLogWithMark("Checking credentials using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first else {
                 feedbackDelegate?.tokenError("no username for oidc config")

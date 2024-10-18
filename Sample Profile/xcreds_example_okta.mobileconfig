@@ -27,9 +27,7 @@
 			<string>https://127.0.0.1/xcreds</string>
 			<key>scopes</key>
 			<string>profile openid email offline_access</string>
-            <key>shouldUseROPGForOIDCLogin</key>
-            <true/>
-            <key>shouldVerifyPasswordWithRopg</key>
+            <key>shouldUseROPGForPasswordChangeChecking</key>
             <true/>
 		</dict>
 	</array>

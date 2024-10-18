@@ -61,7 +61,7 @@ class LicenseChecker: NSObject {
 
         case .invalid:
             TCSLogErrorWithMark("license invalid")
-            return trialState
+            return LicenseState.invalid
         case .unset:
             TCSLogErrorWithMark("No License")
             return trialState

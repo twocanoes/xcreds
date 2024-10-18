@@ -238,9 +238,9 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             }
 
         case .trialExpired:
-            TCSLogErrorWithMark("Trial Expired")
+            TCSLogErrorWithMark("Trial Expired. Purchase a license at twocanoes.com")
             self.trialVersionStatusTextField?.isHidden = false
-            self.trialVersionStatusTextField.stringValue = "Trial Expired"
+            self.trialVersionStatusTextField.stringValue = "Trial Expired. Purchase a license at twocanoes.com"
 
 
 
