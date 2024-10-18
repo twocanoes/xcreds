@@ -25,6 +25,8 @@ protocol TokenManagerFeedbackDelegate {
 
 }
 class TokenManager: OIDCLiteDelegate,DSQueryable {
+
+    
     struct UserAccountInfo {
         var fullName:String?
         var firstName:String?
@@ -66,6 +68,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         
         let clientID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.clientID.rawValue)
 
+        let resource = DefaultsOverride.standardOverride.string(forKey: PrefKeys.resource.rawValue)
 
         
         if let scopesRaw = DefaultsOverride.standardOverride.string(forKey: PrefKeys.scopes.rawValue) {
@@ -78,7 +81,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             additionalParameters = ["access_type":"offline"]
         }
         
-        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters )
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters, resource: resource)
         oidcLite.getEndpoints()
         oidcLocal = oidcLite
         oidcLite.delegate=self
@@ -169,7 +172,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
                 let keychainPassword = keychainAccountAndPassword.1{
             TCSLogWithMark("Checking credentials in keychain using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first else {
+            guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first else {
                 feedbackDelegate?.tokenError("no username for oidc config")
                 return
             }
@@ -448,6 +451,9 @@ extension TokenManager {
 
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
 
+        let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
+
+
         TCSLogWithMark("======== tokenResponse =========")
         RunLoop.main.perform {
             let googleAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue)
@@ -471,8 +477,11 @@ extension TokenManager {
                 TCSLogWithMark("Found google auth and access token")
 
             }
- 
+
             if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
+                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+            }
+            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else {

@@ -11,6 +11,10 @@ import WebKit
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+    func authenticationSuccessful() {
+        
+    }
+
     func credentialsUpdated(_ credentials: Creds) {
         TCSLogWithMark()
         var credWithPass = credentials

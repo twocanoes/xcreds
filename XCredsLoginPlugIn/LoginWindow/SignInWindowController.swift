@@ -27,6 +27,8 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
+    
+
     override var nibName: NSNib.Name{
 
         return "LocalUsersViewController"

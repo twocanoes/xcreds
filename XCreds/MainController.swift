@@ -8,6 +8,7 @@
 import Cocoa
 import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
+
     enum LoginWindowType {
         case cloud
         case usernamePassword
@@ -89,6 +90,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
         TCSLogWithMark()
+        let licenseState = LicenseChecker().currentLicenseState()
+
         if isLocalOnlyAccount()==true && force==false{
             TCSLogWithMark()
             return
@@ -307,6 +310,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     }
+ 
+
     func credentialsUpdated(_ credentials:Creds) {
         hasCredential=true
         credentialStatus="Valid Tokens"

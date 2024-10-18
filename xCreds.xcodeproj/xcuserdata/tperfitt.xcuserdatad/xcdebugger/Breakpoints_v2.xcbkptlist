@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "264F5D42-1F11-4CF3-A857-D12229EC8551"
+            uuid = "324BB2EA-21A5-4D2D-A0D3-673CE1B41987"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds/WebViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "showSignInWindow(force:forceLoginWindowType:)"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "authenticationSuccessful()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B54C560C-DF1F-472C-881D-F38611953749"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/TokenManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
+            landmarkName = "tokenResponse(tokens:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

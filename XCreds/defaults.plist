@@ -101,5 +101,7 @@
 	<false/>
 	<key>shouldActivateSystemInfoButton</key>
 	<true/>
+	<key>ropgResponseValue</key>
+	<string>interaction_required</string>
 </dict>
 </plist>
