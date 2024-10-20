@@ -28,7 +28,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
             //added this because https://github.com/twocanoes/xcreds/issues/272
-            self.window?.forceToFrontAndFocus(self)
 
             if let path = DefaultsOverride.standardOverride.string(forKey: PrefKeys.hideIfPathExists.rawValue), FileManager.default.fileExists(atPath:path ) {
 
@@ -43,7 +42,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                     self.window?.makeKeyAndOrderFront(self)
                 }
-
+                self.window?.forceToFrontAndFocus(self)
             }
         })
     }
