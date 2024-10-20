@@ -195,8 +195,15 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             }
         }
     }
+    func popoverShouldClose(_ popover: NSPopover) -> Bool {
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
+            return false
+        }
+        return true
+    }
     override func awakeFromNib() {
         TCSLogWithMark()
+        systemInfoPopover.delegate = self
         super.awakeFromNib()
         NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: keyDown(key:))
         NSEvent.addLocalMonitorForEvents(matching: .keyUp, handler: keyUp(key:))
@@ -260,6 +267,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 //
 //        }
 
+
         let refreshTimerSecs = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.autoRefreshLoginTimer.rawValue)
 
         if refreshTimerSecs > 0 {
@@ -290,44 +298,23 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 
             self.systemInfoButton?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSystemInfoButton.rawValue)
 
-            if self.systemInfoButton?.isHidden == false,  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-
-                    self.showSystemInfoButtonPressed(self.systemInfoButton)
-                }
-            }
 
             TCSLogWithMark()
 
             self.macLoginWindowGridColumn?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMacLoginButton.rawValue)
-            TCSLogWithMark()
-
-//            self.versionTextField?.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowVersionInfo.rawValue)
-
-            TCSLogWithMark()
-
-//            self.window?.level = .normal+1
-            TCSLogWithMark("ordering controls front")
-//            self.window?.orderFrontRegardless()
-
-//            self.window?.titlebarAppearsTransparent = true
-//            self.window?.isMovable = false
-//            self.window?.canBecomeVisibleWithoutLogin = true
-            TCSLogWithMark()
-//
-//            let screenRect = NSScreen.screens[0].frame
-//            let windowRec = NSMakeRect(0, 0, screenRect.width,109)
-//            self.frame=windowRec
 
 
-//            TCSLogWithMark("screens: \(NSScreen.screens) height is \(windowRec), secreenredc is \(screenRect)")
-            TCSLogWithMark()
-
-//            self.window?.setFrame(windowRec, display: true, animate: false)
-//            self.window?.viewsNeedDisplay=true
-//            TCSLogWithMark("height is \(String(describing: self.window?.frame))")
         }
 
+    }
+
+    func showPopoverIfNeeded(){
+        if self.systemInfoButton?.isHidden == false,  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+
+                self.showSystemInfoButtonPressed(self.systemInfoButton)
+            }
+        }
     }
     @IBAction func showNetworkConnection(_ sender: Any) {
 //        username.isHidden = true

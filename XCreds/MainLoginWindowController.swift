@@ -131,8 +131,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         self.createBackground()
 
         TCSLogWithMark()
-
-
+        controlsViewController.showPopoverIfNeeded()
     }
 
     func loginTransition( completion:@escaping ()->Void) {

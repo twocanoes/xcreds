@@ -70,6 +70,8 @@ TCSLogWithMark()
         view.setFrameSize(NSMakeSize(loginWindowWidth, loginWindowHeight))
         
         loadPage()
+        
+
     }
     override func viewDidAppear() {
         TCSLogWithMark("loading page")
