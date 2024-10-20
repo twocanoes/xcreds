@@ -361,20 +361,6 @@ import Network
             signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
 
         }
-//        var app = NSWorkspace.shared.frontmostApplication
-//
-//        TCSLogWithMark("frontmost: \(app.debugDescription)")
-//
-//        sleep(1)
-//        app = NSWorkspace.shared.frontmostApplication
-//        TCSLogWithMark("frontmost: \(app.debugDescription)")
-//        sleep(1)
-//        app = NSWorkspace.shared.frontmostApplication
-//        TCSLogWithMark("frontmost: \(app.debugDescription)")
-//        app = NSWorkspace.shared.frontmostApplication
-//        TCSLogWithMark("frontmost: \(app.debugDescription)")
-
-
 
     }
 }

@@ -27,6 +27,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         window?.alphaValue=0.9
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
+            self.window?.forceToFrontAndFocus(self)
+
             if let path = DefaultsOverride.standardOverride.string(forKey: PrefKeys.hideIfPathExists.rawValue), FileManager.default.fileExists(atPath:path ) {
 
                 if self.window?.isVisible==true {
@@ -129,6 +131,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         self.createBackground()
 
         TCSLogWithMark()
+
 
     }
 

@@ -244,7 +244,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 
 
 
-        default:
+        case .invalid:
             TCSLogErrorWithMark("invalid license")
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
