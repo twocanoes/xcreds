@@ -7,92 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "14227B4E-17C7-4AC6-B338-77927E30FE59"
+            uuid = "614D9AA9-E0AE-4718-9B4E-1A0078C33C11"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../productlicense/ProductLicense/TCSLicenseCheck.m"
+            filePath = "XCreds/WebViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "-checkLicenseStatus:withExtension:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CD94D6FD-BB5E-4537-A8E7-69F7FA5E9C79"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../productlicense/ProductLicense/TCSLicenseCheck.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "-checkLicenseStatus:withExtension:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "CD94D6FD-BB5E-4537-A8E7-69F7FA5E9C79 - 80daa76b7dbb06a2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[TCSLicenseCheck checkLicenseStatus:withExtension:]"
-                  moduleName = "ProductLicense"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/productlicense/ProductLicense/TCSLicenseCheck.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30">
-               </Location>
-               <Location
-                  uuid = "CD94D6FD-BB5E-4537-A8E7-69F7FA5E9C79 - 80daa76b7dbb06a2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[TCSLicenseCheck checkLicenseStatus:withExtension:]"
-                  moduleName = "ProductLicense"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/productlicense/ProductLicense/TCSLicenseCheck.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30">
-               </Location>
-               <Location
-                  uuid = "CD94D6FD-BB5E-4537-A8E7-69F7FA5E9C79 - 80daa76b7dbb06a2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[TCSLicenseCheck checkLicenseStatus:withExtension:]"
-                  moduleName = "ProductLicense"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/productlicense/ProductLicense/TCSLicenseCheck.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6A71DF44-246A-4989-824A-9FB218831447"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LicenseChecker.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "currentLicenseState()"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "loadPage()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
