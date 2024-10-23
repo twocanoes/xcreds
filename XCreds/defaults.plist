@@ -100,7 +100,7 @@
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
 	<false/>
 	<key>shouldActivateSystemInfoButton</key>
-	<true/>
+	<false/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
 </dict>
