@@ -194,17 +194,18 @@ import Network
         loginWebViewController=nil
         signInViewController=nil
         TCSLogWithMark("XCredsLoginMechanism mech starting")
+
+        if useAutologin() {
+            os_log("Using autologin", log: checkADLog, type: .debug)
+            os_log("Check autologin complete", log: checkADLog, type: .debug)
+            super.allowLogin()
+            return
+        }
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
         mainLoginWindowController?.mechanism=self
 
-        if useAutologin() {
-            os_log("Using autologin", log: checkADLog, type: .debug)
-            os_log("Check autologin complete", log: checkADLog, type: .debug)
-            allowLogin()
-            return
-        }
         let showLoginWindowDelaySeconds = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.showLoginWindowDelaySeconds.rawValue)
 
         if showLoginWindowDelaySeconds > 0 {
