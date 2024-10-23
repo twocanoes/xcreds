@@ -28,7 +28,7 @@
 			<key>shouldUseROPGForPasswordChangeChecking</key>
 			<true/>
 			<key>clientSecret</key>
-			<string>p3j8Q~Rzku6Y2Eh6bLVR1IZvgeWmBLWv..Ui7azd</string>
+			<string>[REDACTED]</string>
 			<key>resource</key>
 			<string>https://graph.microsoft.com</string>
 		</dict>
