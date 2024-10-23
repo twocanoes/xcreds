@@ -15,6 +15,7 @@
 		760148AA2B2365F100E119A2 /* NSBundle+FindBundlePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */; };
 		760291E32C116E450075FBD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760291E22C116E450075FBD8 /* AppDelegate.swift */; };
 		760291E52C116E450075FBD8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760291E42C116E450075FBD8 /* ViewController.swift */; };
+		760291E72C116E470075FBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 760291E62C116E470075FBD8 /* Assets.xcassets */; };
 		760291EA2C116E470075FBD8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 760291E92C116E470075FBD8 /* Base */; };
 		760291EF2C116E5F0075FBD8 /* XCreds Login Autofill.app in Resources */ = {isa = PBXBuildFile; fileRef = 760291E02C116E450075FBD8 /* XCreds Login Autofill.app */; };
 		760291F52C116EDB0075FBD8 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760291CB2C1166870075FBD8 /* AuthenticationServices.framework */; };
@@ -80,9 +81,6 @@
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
 		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
-		7644C9C92C76E38700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
-		7644C9CA2C76E38700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
-		7644C9CB2C76E45700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
 		76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76477E032C626B5D00F01D56 /* OIDCLite */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		7649056F2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */; };
@@ -132,10 +130,16 @@
 		76673CD229D3CFF900452848 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
 		76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
 		76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
+		766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC42929D3A3DC009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
 		766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC42D29D3A3EC009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC42E29D3A3EC009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
 		766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		766CC43229D3A3F8009BC526 /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
+		766CC43329D3A3F8009BC526 /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
 		766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC43829D3AED2009BC526 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
@@ -173,7 +177,6 @@
 		76AB89E32A12FB4900529D90 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76AB89E22A12FB4900529D90 /* ArgumentParser */; };
 		76B040A428EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
 		76B040A528EFC788002A289B /* Helper+JWTDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B040A328EFC788002A289B /* Helper+JWTDecode.swift */; };
-		76B83A662C75711E00709C17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
 		76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AB29CCFD7A00BB8186 /* TCSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882A829CCFD7900BB8186 /* TCSKeychain.m */; };
 		76B882AE29CCFDAE00BB8186 /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B882AC29CCFDAE00BB8186 /* NSData+SHA1.m */; };
@@ -340,6 +343,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC42929D3A3DC009BC526 /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +355,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC42E29D3A3EC009BC526 /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +367,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */,
+				766CC43329D3A3F8009BC526 /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +399,7 @@
 		760291E02C116E450075FBD8 /* XCreds Login Autofill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XCreds Login Autofill.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		760291E22C116E450075FBD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		760291E42C116E450075FBD8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		760291E62C116E470075FBD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		760291E92C116E470075FBD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		760291EB2C116E470075FBD8 /* XCreds_AutoFill.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XCreds_AutoFill.entitlements; sourceTree = "<group>"; };
 		760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "XCreds Login Password.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -424,8 +431,6 @@
 		763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitePopoverBackgroundView.swift; sourceTree = "<group>"; };
 		763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMounterMenu.swift; sourceTree = "<group>"; };
 		763DDF192B4F1DD4000D48CC /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
-		7644C9C72C76E38700178884 /* TCTaskHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCTaskHelper.m; sourceTree = "<group>"; };
-		7644C9C82C76E38700178884 /* TCTaskHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCTaskHelper.h; sourceTree = "<group>"; };
 		7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xcredsmenuItemWindowBackgroundImage.png; sourceTree = "<group>"; };
 		764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyLocalPasswordWindowController.swift; sourceTree = "<group>"; };
 		764D8125284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerifyLocalPasswordWindowController.xib; sourceTree = "<group>"; };
@@ -601,6 +606,7 @@
 			files = (
 				76C4BAB62B353AF7007B2C57 /* Kerberos.framework in Frameworks */,
 				76C4BAB42B353ADD007B2C57 /* libresolv.tbd in Frameworks */,
+				766CC42D29D3A3EC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */,
 				766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */,
 			);
@@ -625,6 +631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */,
+				766CC43229D3A3F8009BC526 /* ProductLicense.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +644,7 @@
 				762177E62B7144460051B756 /* OIDCLite in Frameworks */,
 				76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */,
 				763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */,
+				766CC42829D3A3DC009BC526 /* ProductLicense.framework in Frameworks */,
 				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
@@ -653,6 +661,7 @@
 			children = (
 				760291E22C116E450075FBD8 /* AppDelegate.swift */,
 				760291E42C116E450075FBD8 /* ViewController.swift */,
+				760291E62C116E470075FBD8 /* Assets.xcassets */,
 				760291E82C116E470075FBD8 /* Main.storyboard */,
 				760291EB2C116E470075FBD8 /* XCreds_AutoFill.entitlements */,
 			);
@@ -878,8 +887,6 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
-				7644C9C82C76E38700178884 /* TCTaskHelper.h */,
-				7644C9C72C76E38700178884 /* TCTaskHelper.m */,
 				76D4726B2B43B8FA0064380C /* TCTaskWrapperWithBlocks.h */,
 				76D4726C2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m */,
 				763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */,
@@ -1242,7 +1249,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76B83A662C75711E00709C17 /* Assets.xcassets in Resources */,
+				760291E72C116E470075FBD8 /* Assets.xcassets in Resources */,
 				760291EA2C116E470075FBD8 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1342,7 +1349,6 @@
 				760292142C1176450075FBD8 /* LogShim.swift in Sources */,
 				7602921C2C117B400075FBD8 /* PasswordUtils.swift in Sources */,
 				760291E52C116E450075FBD8 /* ViewController.swift in Sources */,
-				7644C9C92C76E38700178884 /* TCTaskHelper.m in Sources */,
 				760292162C1176A90075FBD8 /* TCSUnifiedLogger.m in Sources */,
 				7602921D2C117B490075FBD8 /* DSQueryable.swift in Sources */,
 				760292192C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
@@ -1362,7 +1368,6 @@
 				7602920B2C1175620075FBD8 /* PrefKeys.swift in Sources */,
 				7602921B2C117B3F0075FBD8 /* PasswordUtils.swift in Sources */,
 				760292072C11751E0075FBD8 /* KeychainUtil.swift in Sources */,
-				7644C9CA2C76E38700178884 /* TCTaskHelper.m in Sources */,
 				760292152C1176450075FBD8 /* LogShim.swift in Sources */,
 				7602921E2C117B490075FBD8 /* DSQueryable.swift in Sources */,
 				7602921A2C1178090075FBD8 /* NSFileManager+TCSRealHomeFolder.m in Sources */,
@@ -1563,7 +1568,6 @@
 				7623384C2B53029D00F2D714 /* ShareMounterMenu.swift in Sources */,
 				7657DEC02B3505A3003A23DB /* DNSResolver.m in Sources */,
 				76E9CE702A0DC6E30060220C /* TCSLoginWindowUtilities.m in Sources */,
-				7644C9CB2C76E45700178884 /* TCTaskHelper.m in Sources */,
 				76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */,
 				76D7ADFE284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */,
@@ -1652,7 +1656,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1663,7 +1667,6 @@
 					"$(inherited)",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1673,7 +1676,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1695,14 +1698,13 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = "AUTOFILL_TARGET=1";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSBackgroundOnly = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1712,7 +1714,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1729,7 +1731,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1750,7 +1752,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill.XCreds-AutoFill-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1768,7 +1770,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1785,7 +1787,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds.XCreds-AutoFill.XCreds-AutoFill-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1799,12 +1801,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1818,12 +1820,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1838,7 +1840,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1857,7 +1859,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1875,7 +1877,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1894,7 +1896,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.XCredsLoginPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1911,7 +1913,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
@@ -1927,7 +1929,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				OTHER_CFLAGS = "";
@@ -1941,11 +1943,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1957,11 +1959,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1973,11 +1975,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1988,11 +1990,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -2006,7 +2008,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2023,7 +2025,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2043,7 +2045,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2060,7 +2062,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.XCreds-Login-Overlay";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2188,12 +2190,13 @@
 		76EE06A827FD1D01009E0F3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2205,7 +2208,7 @@
 				HEADER_SEARCH_PATHS = headers;
 				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2024 Twocanoes Software, Inc";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2217,7 +2220,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -2231,12 +2234,13 @@
 		76EE06A927FD1D01009E0F3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7250;
+				CURRENT_PROJECT_VERSION = 7144;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2248,7 +2252,7 @@
 				HEADER_SEARCH_PATHS = headers;
 				INFOPLIST_FILE = XCreds/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2024 Twocanoes Software, Inc";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2022 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2260,7 +2264,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

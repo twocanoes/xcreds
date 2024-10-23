@@ -3,6 +3,12 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+Carthage/
+auth.db
+build/
+old/
+products/
+
 # Node artifact files
 node_modules/
 dist/
