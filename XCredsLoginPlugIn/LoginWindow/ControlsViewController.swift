@@ -34,6 +34,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     var commandKeyDown = false
     var optionKeyDown = false
     var controlKeyDown = false
+    var allowPopoverClose:Bool = false
     var keyCodesPressed:[UInt16:Bool]=[:]
 //    func dismiss() {
 ////        if let resolutionObserver = resolutionObserver {
@@ -196,7 +197,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         }
     }
     func popoverShouldClose(_ popover: NSPopover) -> Bool {
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true && allowPopoverClose==false{
             return false
         }
         return true

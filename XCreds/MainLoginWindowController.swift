@@ -132,6 +132,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark()
         controlsViewController.showPopoverIfNeeded()
+         
     }
 
     func loginTransition( completion:@escaping ()->Void) {
@@ -154,6 +155,11 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
             if let networkChangeObserver = self.networkChangeObserver {
                 NotificationCenter.default.removeObserver(networkChangeObserver)
+            }
+            self.controlsViewController?.allowPopoverClose=true
+            if self.controlsViewController?.systemInfoPopover.isShown==true {
+                self.controlsViewController?.systemInfoPopover.performClose(self)
+
             }
 
             NSAnimationContext.runAnimationGroup({ (context) in
