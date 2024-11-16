@@ -42,7 +42,7 @@ temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
 BUILD_FOLDER="${temp_folder}/build"
 
 
-xcodebuild archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${PRODUCT_NAME}" -archivePath  "${temp_folder}/${PRODUCT_NAME}.xcarchive"
+xcodebuild ONLY_ACTIVE_ARCH=NO archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${PRODUCT_NAME}" -archivePath  "${temp_folder}/${PRODUCT_NAME}.xcarchive"
 
 
 xcodebuild -exportArchive -archivePath "${temp_folder}/${PRODUCT_NAME}.xcarchive"  -exportOptionsPlist "${SRC_PATH}/build_resources/exportOptions.plist" -exportPath "${BUILD_FOLDER}" -allowProvisioningUpdates 

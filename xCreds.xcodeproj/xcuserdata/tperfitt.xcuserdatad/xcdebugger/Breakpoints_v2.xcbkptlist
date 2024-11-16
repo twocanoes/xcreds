@@ -7,64 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BA4FEF2C-7668-4536-BDF1-8337B54D1FAC"
+            uuid = "E234ABD0-11FC-4CC7-9127-2D3F8D2F12D5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds AutoFill Extension/CredentialProviderViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "init(passwordCheckTimer:feedbackDelegate:cloudPasswordExpires:adPasswordExpires:nextPasswordCheck:credentialStatus:hasCredential:signInViewController:)"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "passwordSelected(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "53364FE2-196C-450C-9FEA-DE9E1C2485A0"
+            uuid = "7F6025AD-580D-4FF7-82DB-F3A36E900781"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "isLocalOnlyAccount()"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
+            landmarkName = "applicationDidFinishLaunching(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6A7FA835-8771-4B46-B138-1853A1F84DC2"
+            uuid = "223FCAF4-88D8-4221-B134-2897CC19A2F1"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds AutoFill Extension/CredentialProviderViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "isLocalOnlyAccount()"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "passwordSelected(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C8D63112-C43E-4011-A4DA-2ACCFEE90776"
+            uuid = "6D0380B0-5E8A-4134-9EBD-F6F7D432B408"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/MainController.swift"
+            filePath = "XCreds/KeychainUtil.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "isLocalOnlyAccount()"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "findPassword(serviceName:accountName:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
