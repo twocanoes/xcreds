@@ -1,4 +1,5 @@
 import Cocoa
+import CryptoTokenKit
 import Network
 
 
@@ -17,9 +18,9 @@ import Network
     var loginWindowType = LoginWindowType.cloud
     var mainLoginWindowController:MainLoginWindowController?
     override init(mechanism: UnsafePointer<MechanismRecord>) {
-
-
         super.init(mechanism: mechanism)
+
+//        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
         NotificationCenter.default.addObserver(forName: Notification.Name("SwitchLoginWindow"), object: nil, queue: nil) { notification in
 
@@ -62,9 +63,10 @@ import Network
 
     }
     @objc func tearDown() {
-            TCSLogWithMark("Got teardown request")
-            self.mainLoginWindowController?.window?.orderOut(self)
-        }
+        TCSLogWithMark("Got teardown request")
+        self.mainLoginWindowController?.window?.orderOut(self)
+    }
+
     override func reload() {
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")

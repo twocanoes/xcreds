@@ -178,7 +178,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                 self.centerView?.removeFromSuperview()
                 self.controlsViewController?.view.removeFromSuperview()
-                //                self.window?.orderOut(self)
+//                self.window?.orderOut(self)
                 TCSLogWithMark("completion")
                 completion()
             })

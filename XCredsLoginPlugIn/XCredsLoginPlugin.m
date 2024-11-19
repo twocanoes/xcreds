@@ -186,7 +186,6 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
     if (mechanism->fLoginWindow) {
-
         [loginWindowMechanism tearDown];
 //        if (loginWindowMechanism.signIn.visible == true) {
 //            [loginWindowMechanism tearDown];

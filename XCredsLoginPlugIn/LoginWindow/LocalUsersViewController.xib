@@ -21,14 +21,14 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <view wantsLayer="YES" id="Vpj-iV-5Db">
-            <rect key="frame" x="0.0" y="0.0" width="336" height="178"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="220"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="11" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRJ-Lo-UdT" userLabel="login stack">
-                    <rect key="frame" x="27" y="24" width="283" height="134"/>
+                    <rect key="frame" x="27" y="26" width="283" height="173"/>
                     <subviews>
-                        <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
-                            <rect key="frame" x="0.0" y="104" width="250" height="30"/>
+                        <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
+                            <rect key="frame" x="0.0" y="143" width="250" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="PcC-1B-yi1"/>
                                 <constraint firstAttribute="height" constant="30" id="ecj-Kv-Zev"/>
@@ -44,7 +44,7 @@
                             </connections>
                         </textField>
                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZJ-ht-zuy">
-                            <rect key="frame" x="0.0" y="63" width="283" height="30"/>
+                            <rect key="frame" x="0.0" y="102" width="283" height="30"/>
                             <subviews>
                                 <secureTextField verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
@@ -94,7 +94,15 @@ DQ
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
+                            <rect key="frame" x="-2" y="63" width="189" height="28"/>
+                            <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Login" id="67B-K8-Q2B">
+                                <font key="font" metaFont="system" size="24"/>
+                                <color key="textColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
                             <rect key="frame" x="-2" y="36" width="254" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="f1h-xK-zpp"/>
@@ -146,8 +154,10 @@ DQ
                         <integer value="1000"/>
                         <integer value="1000"/>
                         <integer value="1000"/>
+                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
@@ -159,7 +169,7 @@ DQ
                 <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerX" secondItem="Vpj-iV-5Db" secondAttribute="centerX" id="VoM-t2-bfE"/>
                 <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerY" secondItem="Vpj-iV-5Db" secondAttribute="centerY" constant="-2" id="iAg-d7-QS6"/>
             </constraints>
-            <point key="canvasLocation" x="-365" y="-212"/>
+            <point key="canvasLocation" x="-365" y="-191"/>
         </view>
     </objects>
     <resources>
