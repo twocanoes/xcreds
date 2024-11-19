@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -46,7 +46,7 @@
                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZJ-ht-zuy">
                             <rect key="frame" x="0.0" y="102" width="283" height="30"/>
                             <subviews>
-                                <secureTextField verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
+                                <secureTextField focusRingType="none" verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="37q-P0-BRW"/>
@@ -128,7 +128,7 @@ DQ
                                         <outlet property="nextKeyView" destination="XnO-81-SH2" id="QRA-ps-KSC"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5fp-gV-bSn">
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5fp-gV-bSn">
                                     <rect key="frame" x="22" y="5" width="136" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" title="Offline Authentication" id="6YI-la-oeR">
