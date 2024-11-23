@@ -117,6 +117,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     mechanism->fEngine = inEngine;
     mechanism->fPlugin = (PluginRecord *)inPlugin;
     mechanism->fMechID = mechanismId;
+    mechanism->fUserSetup = (strcmp(mechanismId, "UserSetup") == 0);
     mechanism->fLoginWindow = (strcmp(mechanismId, "LoginWindow") == 0);
     mechanism->fPowerControl = (strcmp(mechanismId, "PowerControl") == 0);
     mechanism->fEnableFDE = (strcmp(mechanismId, "EnableFDE") == 0);
@@ -140,6 +141,11 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
             loginWindowMechanism = [[XCredsLoginMechanism alloc] initWithMechanism:mechanism];
         }
         [loginWindowMechanism run];
+
+    }
+    else if (mechanism->fUserSetup){
+        XCredsUserSetup *userSetup = [[XCredsUserSetup alloc] initWithMechanism:mechanism];
+        [userSetup run];
 
     }
     else if (mechanism->fPowerControl){

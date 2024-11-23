@@ -52,12 +52,17 @@
 		<key>auth_mech_fixup.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>10</integer>
 		</dict>
 		<key>authrights.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
+		</dict>
+		<key>encryptor.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>tapgo.xcscheme_^#shared#^_</key>
 		<dict>
@@ -67,7 +72,7 @@
 		<key>test.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>11</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -108,6 +113,11 @@
 			<true/>
 		</dict>
 		<key>76EE069927FD1D00009E0F3A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>76FBD1B92CED7676003280CD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

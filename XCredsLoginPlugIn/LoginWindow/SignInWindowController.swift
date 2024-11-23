@@ -111,6 +111,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     @IBOutlet weak var localOnlyCheckBox: NSButton!
     @IBOutlet weak var localOnlyView: NSView!
     @IBOutlet var alertTextField:NSTextField!
+    @IBOutlet var tapLoginLabel:NSTextField!
 
     @IBOutlet weak var stackView: NSStackView!
 
@@ -166,12 +167,17 @@ protocol UpdateCredentialsFeedbackProtocol {
                         return
                     }
 
+                    guard let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
+                        TCSLogWithMark("No slotname defined in prefs. Slot names found: \(slotNames)")
+
+                        return
+                    }
                     let slotName=slotNames.first { currString in
-                        currString.contains("Feitian") && currString.contains("Contactless") 
+                        currString == ccidSlotName
                     }
 
                     guard let slotName = slotName else {
-                        TCSLogWithMark("bad slotnames")
+                        TCSLogWithMark("no matches found for slotname \(ccidSlotName)")
                         return
                     }
                     TCSLogWithMark()
@@ -233,7 +239,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark("local user valid. logging in")
 
                 setRequiredHintsAndContext()
-                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
                 completeLogin(authResult:.allow)
             }
             else {
@@ -250,7 +256,12 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
     func setupLoginAppearance() {
         TCSLogWithMark()
-        
+
+        tapLoginLabel.isHidden=true
+
+        if DefaultsOverride().array(forKey: PrefKeys.uidUsers.rawValue) != nil {
+            tapLoginLabel.isHidden=false
+        }
         alertTextField.isHidden=true
 
         self.usernameTextField.stringValue=""
@@ -425,7 +436,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
-                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
                 completeLogin(authResult:.allow)
 
@@ -528,8 +539,8 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark("Setting hints for user: \(shortName)")
         TCSLogWithMark("Setting user to \(shortName)")
 
-        mechanismDelegate?.setHint(type: .user, hint: shortName)
-        mechanismDelegate?.setHint(type: .pass, hint: passString)
+        mechanismDelegate?.setHint(type: .user, hint: shortName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .pass, hint: passString as NSSecureCoding)
         TCSLogWithMark()
         os_log("Setting context values for user: %{public}@", log: uiLog, type: .debug, shortName)
         mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
@@ -868,7 +879,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             TCSLogErrorWithMark("\(error)")
 
             if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)
             } else {
@@ -951,12 +962,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
         let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
 
         if let mapUID = mapUID, let rawAttributes = user.rawAttributes, let uidString = rawAttributes[mapUID]  {
-            mechanismDelegate?.setHint(type: .uid, hint: uidString)
+            mechanismDelegate?.setHint(type: .uid, hint: uidString as NSSecureCoding)
 
         }
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
-            mechanismDelegate?.setHint(type: .ntName, hint: ntName)
+            mechanismDelegate?.setHint(type: .ntName, hint: ntName as NSSecureCoding)
         }
         
         if allowedLogin {
@@ -1001,7 +1012,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     TCSLogWithMark("setting original password to use to unlock keychain later")
 
                     if let enteredUsernamePassword = enteredUsernamePassword {
-                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as! NSSecureCoding  )
                     }
 
                     completeLogin(authResult: .allow)
@@ -1010,9 +1021,9 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     TCSLogWithMark("resetKeychainRequested")
 
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                        mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername )
-                        mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword)
-                        mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true)
+                        mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername as NSSecureCoding )
+                        mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword as NSSecureCoding)
+                        mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
                     }
                     completeLogin(authResult: .allow)
@@ -1052,26 +1063,26 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark()
         TCSLogWithMark("NoMAD Login Looking up info");
         setRequiredHintsAndContext()
-        mechanismDelegate?.setHint(type: .firstName, hint: user.firstName)
-        mechanismDelegate?.setHint(type: .lastName, hint: user.lastName)
+        mechanismDelegate?.setHint(type: .firstName, hint: user.firstName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .lastName, hint: user.lastName as NSSecureCoding)
         TCSLogWithMark("Setting user to \(user.shortName)")
-        mechanismDelegate?.setHint(type: .user, hint: user.shortName)
+        mechanismDelegate?.setHint(type: .user, hint: user.shortName as NSSecureCoding)
         mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: user.shortName)
 
-        mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
-        mechanismDelegate?.setHint(type: .groups, hint: user.groups)
-        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName)
+        mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .groups, hint: user.groups as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName as NSSecureCoding)
         TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
 
-        mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
-        mechanismDelegate?.setHint(type: .ntName, hint: user.ntName)
+        mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .ntName, hint: user.ntName as NSSecureCoding)
 
         // set the network auth time to be added to the user record
-        mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+        mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description) as NSSecureCoding)
 
         if let userAttributes = user.rawAttributes{
             TCSLogWithMark("Setting AD user attributes")
-            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes )
+            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes as NSSecureCoding )
 
         }
 

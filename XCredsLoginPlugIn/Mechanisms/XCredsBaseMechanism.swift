@@ -1,16 +1,6 @@
 import Cocoa
 import OpenDirectory
 
-//protocol XCredsMechanismProtocol {
-//    func allowLogin()
-//    func denyLogin(message:String?)
-//    func setContextString(type: String, value: String)
-//    func setStickyContextString(type: String, value: String)
-//
-//    func setHint(type: HintType, hint: Any)
-//    func reload()
-//    func run()
-//}
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
     func reload() {
         fatalError()
@@ -111,33 +101,33 @@ import OpenDirectory
             }
 
             if let firstname = userInfo.firstName {
-                setHint(type: .firstName, hint: firstname)
+                setHint(type: .firstName, hint: firstname as NSSecureCoding)
             }
             if let lastName = userInfo.lastName {
-                setHint(type: .lastName, hint: lastName)
+                setHint(type: .lastName, hint: lastName as NSSecureCoding)
             }
             if let username = userInfo.username {
                 TCSLogWithMark("set shortname to \(username)")
 
-                setHint(type: .user, hint: username)
+                setHint(type: .user, hint: username as NSSecureCoding)
             }
             if let fullUsername = userInfo.fullUsername {
-                setHint(type: .fullusername, hint: fullUsername)
+                setHint(type: .fullusername, hint: fullUsername as NSSecureCoding)
             }
             if let fullName = userInfo.fullName {
-                setHint(type: .fullName, hint: fullName)
+                setHint(type: .fullName, hint: fullName as NSSecureCoding)
             }
             if let groups = userInfo.groups {
-                setHint(type: .groups, hint: groups)
+                setHint(type: .groups, hint: groups as NSSecureCoding)
             }
             if let aliasName = userInfo.alias {
-                setHint(type: .aliasName, hint: aliasName)
+                setHint(type: .aliasName, hint: aliasName as NSSecureCoding)
             }
             if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
-                setHint(type: .kerberos_principal, hint: kerberosPrincipalName)
+                setHint(type: .kerberos_principal, hint: kerberosPrincipalName as NSSecureCoding)
             }
             if let uid = userInfo.uid {
-                setHint(type: .uid, hint: uid)
+                setHint(type: .uid, hint: uid as NSSecureCoding )
             }
 
             let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
@@ -198,9 +188,9 @@ import OpenDirectory
                     DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false, getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
 
 
-                    setHint(type: .adminUsername, hint:aUsername )
-                    setHint(type: .adminPassword, hint: aPassword)
-                    setHint(type: .passwordOverwrite, hint: true)
+                    setHint(type: .adminUsername, hint:aUsername as NSSecureCoding  )
+                    setHint(type: .adminPassword, hint: aPassword as NSSecureCoding )
+                    setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
                 }
                 else {
@@ -216,16 +206,16 @@ import OpenDirectory
                     case .success(let enteredUsernamePassword):
                         TCSLogWithMark("setting original password to use to unlock keychain later")
 
-                        if let enteredUsernamePassword = enteredUsernamePassword {
-                            setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                        if let enteredUsernamePassword = enteredUsernamePassword, let password = enteredUsernamePassword.password {
+                            setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
                         }
 
                     case .resetKeychainRequested(let usernamePasswordCredentials):
 
                         if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                            setHint(type: .adminUsername, hint:adminUsername )
-                            setHint(type: .adminPassword, hint: adminPassword)
-                            setHint(type: .passwordOverwrite, hint: true)
+                            setHint(type: .adminUsername, hint:adminUsername as NSSecureCoding)
+                            setHint(type: .adminPassword, hint: adminPassword as NSSecureCoding)
+                            setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
                         }
 
@@ -256,14 +246,14 @@ import OpenDirectory
             setContextString(type: kAuthorizationEnvironmentPassword, value: password)
             TCSLogWithMark("setting username")
             TCSLogWithMark("setting username to \(username)")
-            setHint(type: .user, hint: username)
+            setHint(type: .user, hint: username as NSSecureCoding)
             TCSLogWithMark("setting tokens.password")
 
-            setHint(type: .pass, hint: password)
+            setHint(type: .pass, hint: password as NSSecureCoding)
 
             TCSLogWithMark("setting tokens")
 
-            setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""])
+            setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""] as NSSecureCoding)
             TCSLogWithMark("calling allowLogin")
             allowLogin()
             return .success
@@ -402,7 +392,13 @@ import OpenDirectory
     func setHints(_ hints:[HintType:Any]){
 
         for hint in hints {
-            setHint(type: hint.key, hint: hint.value)
+            if let hintValue = hint.value as? NSSecureCoding{
+                setHint(type: hint.key, hint:hintValue )
+            }
+            else {
+                TCSLogErrorWithMark("hint \(hint.key) does not conform to NSSecureCoding")
+
+            }
         }
     }
     func setContextStrings(_ contentStrings: [String : String]){
@@ -411,12 +407,17 @@ import OpenDirectory
             setContextString(type: contextString.key, value:contextString.value)
         }
     }
-    func setHint(type: HintType, hint: Any) {
-        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
-            TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
+    func setHint(type: HintType, hint: NSSecureCoding) {
+//        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
+//            TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
+//            return
+//        }
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: hint, requiringSecureCoding: true) else {
+            TCSLogErrorWithMark("Login Set hint failed: cant archive data to a data object")
             return
         }
-        let data = NSKeyedArchiver.archivedData(withRootObject: hint)
+
+//        let data = NSKeyedArchiver.archivedData(withRootObject: hint)
         var value = AuthorizationValue(length: data.count, data: UnsafeMutableRawPointer(mutating: (data as NSData).bytes.bindMemory(to: Void.self, capacity: data.count)))
 
         let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
@@ -659,7 +660,7 @@ import OpenDirectory
             let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeGUID, matchType: ODMatchType(kODMatchEqualTo), queryValues: uuid, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
             records = try query.resultsAllowingPartial(false) as! [ODRecord]
         } catch {
-            let errorText = error.localizedDescription
+            _ = error.localizedDescription
 //            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
             return nil
         }

@@ -6,8 +6,254 @@
 //
 
 import Cocoa
+import ArgumentParser
 
 @main
+struct xcreds:ParsableCommand {
+
+    static var configuration = CommandConfiguration(
+        abstract: "Command line interface for XCreds.",
+        subcommands: [ImportUsers.self, ImportUser.self, ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self, RunApp.self],
+        defaultSubcommand: RunApp.self)
+
+}
+
+extension xcreds {
+    struct RunApp:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Start app normally.")
+            @Argument(parsing: .allUnrecognized)
+            var other: [String] = []
+
+        func run() throws {
+
+            let app = NSApplication.shared
+
+            let appDelegate = AppDelegate()
+            app.delegate = appDelegate
+            _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
+        }
+
+    }
+}
+
+extension xcreds {
+    struct ShowAdminUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Show currently set admin user. Used for resetting keychain.")
+
+        func run() throws {
+//            if geteuid() != 0  {
+//                print("This operation requires root. Please run with sudo.")
+//                NSApplication.shared.terminate(self)
+//
+//            }
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            if let adminUser = try userManager.localAdminCredentials() {
+                print("\(adminUser.username)")
+            }
+            else {
+                print("admin user not set")
+            }
+
+        }
+    }
+}
+
+extension xcreds {
+    struct ClearAdminUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Clear the current admin user used for resetting keychain.")
+
+        func run() throws {
+//            if geteuid() != 0  {
+//                print("This operation requires root. Please run with sudo.")
+//                NSApplication.shared.terminate(self)
+//
+//            }
+//
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1))
+
+        }
+    }
+}
+extension xcreds {
+    struct UpdateAdminUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Set the current admin user used for resetting keychain.")
+
+        @Option(help: "Update Admin username")
+        var adminusername:String
+
+        @Option(help: "Update Admin password")
+        var adminpassword:String
+
+        func run() throws {
+//            if geteuid() != 0  {
+//                print("This operation requires root. Please run with sudo.")
+//                NSApplication.shared.terminate(self)
+//            }
+//
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1)))
+        }
+
+    }
+}
+extension xcreds {
+    struct ImportUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Import an RFID user.")
+
+        @Option(help: "Update Fullname")
+        var fullname:String
+
+        @Option(help: "Update username")
+        var username:String
+
+        @Option(help: "Update Password")
+        var password:String
+
+        @Option(help: "Update UID")
+        var uid:String = ""
+
+        @Option(help: "Update RFID-uid")
+        var rfiduid:String
+
+        func run() throws {
+//            if geteuid() != 0  {
+//                print("This operation requires root. Please run with sudo.")
+//                NSApplication.shared.terminate(self)
+//
+//            }
+
+            do {
+                if !username.isEmpty && !password.isEmpty && !fullname.isEmpty && !rfiduid.isEmpty{
+
+
+                    let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+
+                    let userManager = UserSecretManager(secretKeeper: secretKeeper)
+
+                    try userManager.updateUIDUser(fullName: fullname, rfidUid: rfiduid, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
+
+                }
+            }
+            catch {
+                print(error.localizedDescription)
+
+            }
+        }
+
+    }
+}
+extension xcreds {
+    struct ShowUsers:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Show RFID users.")
+
+
+        func run() throws {
+//            if geteuid() != 0  {
+//                print("This operation requires root. Please run with sudo.")
+//                NSApplication.shared.terminate(self)
+//
+//            }
+
+
+            do {
+
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                let users = try userManager.uidUsers()
+
+
+
+                print("RFID UID:Full Name:Username:UserID")
+
+                guard let rfidUsers = users.userDict else {
+                    return
+
+                }
+                for currKey in rfidUsers.keys{
+                    if let user = rfidUsers[currKey] {
+//                        print("\(currKey):\(user.fullName):\(user.username):\(user.uid)")
+                        print("\(currKey):\(user.fullName):\(user.username):\(user.uid)")
+
+                    }
+                }
+
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+
+
+        }
+    }
+}
+
+extension xcreds {
+    struct ImportUsers:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,UID,RFID-UID. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
+
+
+        @Option(help: "infilepath")
+        var infilepath:String
+
+        func run() throws {
+
+            if !infilepath.isEmpty {
+
+                if FileManager.default.fileExists(atPath: infilepath)==false {
+
+                    print("\(infilepath) does not exist.")
+
+                }
+
+                do {
+                    let contentsOfFile = try String(contentsOfFile: infilepath, encoding: .windowsCP1250)
+
+                    var rfidUsers=RFIDUsers(rfidUsers: [:])
+                    print("separating")
+                    let lineArray = contentsOfFile.components(separatedBy:"\n")
+
+                    let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+
+                    let userManager = UserSecretManager(secretKeeper: secretKeeper)
+
+                    for line in lineArray {
+
+                        let userInfo = line.components(separatedBy: ",")
+                        if userInfo.count != 5 {
+                            print("invalid line. skippinng. \(line)")
+
+                        }
+                        let fullname = userInfo[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let username = userInfo[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let password = userInfo[2].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let uid = Int(userInfo[3].trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1
+                        let rfidUid = userInfo[4].trimmingCharacters(in: .whitespacesAndNewlines)
+                        print("importing \(rfidUid):\(fullname):\(username):\(uid)")
+
+
+                        rfidUsers.userDict?[rfidUid]=SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)))
+
+                    }
+
+                    try userManager.setUIDUsers(rfidUsers)
+
+                }
+                catch {
+                    print("\(infilepath) cannot be read. \(error)")
+
+                }
+            }
+
+        }
+
+    }
+}
+
+
 class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     @IBOutlet weak var loginPasswordWindow: NSWindow!
@@ -20,6 +266,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     @IBOutlet weak var statusMenu: NSMenu!
     var shareMenu:NSMenu?
     var statusBarItem:NSStatusItem?
+
+
+
 
     func updateShareMenu(adUser:ADUserRecord){
         shareMounterMenu?.shareMounter?.adUserRecord = adUser
@@ -97,11 +346,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
                 else {
                     self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
                 }
-
             }
-
         }
-
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()

@@ -7,7 +7,7 @@
 
 
 import Foundation
-func TCSLogWithMark(_ message: String = "",
+public func TCSLogWithMark(_ message: String = "",
              file: String = #file, line: Int = #line, function: String = #function ) {
 
 

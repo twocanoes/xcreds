@@ -45,6 +45,7 @@ struct MechanismRecord {
     const PluginRecord *            fPlugin;
     AuthorizationString             fMechID;
     Boolean                         fCheckAD;
+    Boolean                         fUserSetup;
 
     Boolean                         fLoginWindow;
     Boolean                         fPowerControl;

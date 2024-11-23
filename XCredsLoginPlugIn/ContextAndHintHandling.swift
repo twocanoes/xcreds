@@ -38,6 +38,7 @@ enum HintType: String {
     case adminPassword
     case localLogin
     case allADAttributes
+    case secureUsers
 
 
 }
@@ -50,7 +51,7 @@ let kODAttributeNetworkSignIn = "dsAttrTypeStandard:NetworkSignIn"
 protocol ContextAndHintHandling {
     var mech: MechanismRecord? {get}
     func setContextString(type: String, value: String)
-    func setHint(type: HintType, hint: Any)
+    func setHint(type: HintType, hint: NSSecureCoding)
     func getContextString(type: String) -> String?
     func getHint(type: HintType) -> Any?
 }

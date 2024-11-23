@@ -14,6 +14,7 @@
                 <outlet property="passwordTextField" destination="UJh-bj-CPX" id="YZl-II-FDB"/>
                 <outlet property="signIn" destination="XnO-81-SH2" id="VQg-nQ-slV"/>
                 <outlet property="stackView" destination="eRJ-Lo-UdT" id="b9W-ja-J8M"/>
+                <outlet property="tapLoginLabel" destination="9E1-Yr-3LY" id="U1r-fL-ec2"/>
                 <outlet property="usernameTextField" destination="pMs-hI-jaw" id="7EL-6L-Ju6"/>
                 <outlet property="view" destination="Vpj-iV-5Db" id="JcN-lE-Ijf"/>
             </connections>

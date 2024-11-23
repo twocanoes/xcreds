@@ -70,7 +70,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                     getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false  && isInUserSpace == false {
                     TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
                     TCSLogWithMark("Setting password to be overwritten.")
-                    delegate?.setHint(type: .passwordOverwrite, hint: true)
+                    delegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
                     TCSLogWithMark("Hint set")
                     return .complete
                 } else {
@@ -132,7 +132,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         }
         
         //os_log("Local password changed.", log: uiLog, type: .default)
-        delegate?.setHint(type: .existingLocalUserPassword, hint: oldPass)
+        delegate?.setHint(type: .existingLocalUserPassword, hint: oldPass as NSSecureCoding)
         return true
     }
 }
