@@ -275,7 +275,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         localOnlyCheckBox.isEnabled=true
         localOnlyView.isHidden=false
         // make things look better
-        TCSLog("Tweaking appearance")
+        TCSLogWithMark("Tweaking appearance")
 
         if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
             TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")

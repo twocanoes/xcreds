@@ -36,29 +36,7 @@ import Network
             }
         }
 
-        let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-        if let bundle = bundle {
-            let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-                TCSLogInfoWithMark("------------------------------------------------------------------")
-                TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
-                if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
-                    TCSLogInfoWithMark("Log showing only basic info and errors.")
-                    TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
-                    TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
-                }
-                else {
-                    TCSLogInfoWithMark("To disable verbose logging:")
-                    TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
-
-                }
-
-                TCSLogInfoWithMark("------------------------------------------------------------------")
-            }
-
-
-        }
+      
 
 
     }
@@ -86,7 +64,7 @@ import Network
             return false
         }
 
-        os_log("Checking for autologin.", log: checkADLog, type: .default)
+        TCSLogWithMark("Checking for autologin.")
         if FileManager.default.fileExists(atPath: "/tmp/xcredsrun") {
             os_log("XCreds has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
             return false
@@ -160,7 +138,7 @@ import Network
             window.orderFrontRegardless()
         }
         else {
-            TCSLogWithMark("NO WINDOW")
+            TCSLogWithMark("NO MAIN WINDOW FOUND")
         }
 
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
@@ -193,16 +171,35 @@ import Network
         }
     }
     @objc override func run() {
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
+
         loginWebViewController=nil
         signInViewController=nil
-        TCSLogWithMark("XCredsLoginMechanism mech starting")
-    
+
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
-            os_log("Check autologin complete", log: checkADLog, type: .debug)
             super.allowLogin()
             return
         }
+
+//        if let rfidUser = getHint(type: .rfidUsers) as? RFIDUsers {
+//
+//            TCSLogWithMark("rfidUsers! \(rfidUser.userDict?.count ?? 0)")
+//
+//        }
+//        else {
+//            TCSLogWithMark("no rfidUsers in hints")
+//
+//        }
+
+//
+//        if let localAdmin = getHint(type: .localAdmin) as? SecretKeeperUser {
+//
+//       }
+//        else {
+//         TCSLogWithMark("no localAdmin found in hints")
+//
+//        }
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
@@ -357,7 +354,6 @@ import Network
             if signInViewController.localOnlyCheckBox != nil {
                 signInViewController.localOnlyCheckBox.isEnabled = true
             }
-            TCSLogWithMark("forcing front")
             mainLoginWindowController?.window?.forceToFrontAndFocus(self)
             mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
 

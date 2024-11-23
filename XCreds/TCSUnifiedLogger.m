@@ -64,7 +64,6 @@ void TCSLogError(NSString *string)
 
         //not root
         } else {
-            system("/usr/bin/touch /tmp/xcd");
             NSString *homePath = [[NSFileManager defaultManager] realHomeFolder];
             logFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Logs", homePath]];
             if (![fm fileExistsAtPath:logFolderURL.path]) {
@@ -101,7 +100,7 @@ void TCSLogError(NSString *string)
 
     sharedLogger.logFileURL = [logFolderURL URLByAppendingPathComponent:logFileName];
     if (![fm fileExistsAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent]]) {
-        if ([fm createDirectoryAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil] == NO) {
+        if ([fm createDirectoryAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:@{@"NSFilePosixPermissions":[NSNumber numberWithUnsignedLong:0770U],NSFileOwnerAccountID:[NSNumber numberWithUnsignedLong:92]} error:nil] == NO) {
         }
     }
     return sharedLogger;
@@ -130,7 +129,7 @@ void TCSLogError(NSString *string)
         NSFileManager *fm = [NSFileManager defaultManager];
 
         if (![fm fileExistsAtPath:self.logFileURL.path]) {
-            [[NSFileManager defaultManager] createFileAtPath:self.logFileURL.path contents:nil attributes:nil];
+            [[NSFileManager defaultManager] createFileAtPath:self.logFileURL.path contents:nil attributes:@{NSFilePosixPermissions:[NSNumber numberWithUnsignedLong:0660U], NSFileOwnerAccountID:[NSNumber numberWithUnsignedLong:92]}];
         }
 
 

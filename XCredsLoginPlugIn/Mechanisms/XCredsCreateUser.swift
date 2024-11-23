@@ -37,7 +37,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     
     @objc override func run() {
         var localLogin=false
-        TCSLogWithMark("CreateUser mech starting")
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ CreateUser mech starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
         if let localLoginHintValue = getHint(type: .localLogin) as? Bool, localLoginHintValue==true{
             TCSLogWithMark("Local Login Detected")
@@ -83,7 +83,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             isAdmin = createAdmin
             TCSLog("Found a createLocalAdmin key value: \(isAdmin.description)")
         }
-        os_log("Checking for CreateAdminIfGroupMember groups", log: uiLog, type: .debug)
+        TCSLogWithMark("Checking for CreateAdminIfGroupMember groups")
         if let adminGroups = getManagedPreference(key: .CreateAdminIfGroupMember) as? [String] {
 
             TCSLogWithMark("Found a CreateAdminIfGroupMember key value: \(String(describing: groups))")

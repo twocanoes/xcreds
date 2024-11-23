@@ -11,7 +11,6 @@ import Cocoa
 extension NSWindow {
     @objc func forceToFrontAndFocus(_ sender: AnyObject?) {
         NSApp.activate(ignoringOtherApps: true)
-        TCSLogWithMark("forcing front")
         self.makeKeyAndOrderFront(sender);
     }
 }

@@ -19,7 +19,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
     let kItemName = "xcreds"
     
     @objc override func run() {
-        TCSLogWithMark("XCredsKeychainAdd mech starting")
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsKeychainAdd mech starting starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
         // get username and password
         // get reference to user's keychain

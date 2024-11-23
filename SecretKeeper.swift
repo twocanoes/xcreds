@@ -291,11 +291,9 @@ public class SecretKeeper {
         throw SecreteKeeperError.errorRetrievingPublicKey
     }
     func decryptData(_ data:Data) throws -> Data {
-        TCSLogWithMark("data length is \(data.count)")
         var error: Unmanaged<CFError>?
 
         let privateKey = try privateKey()
-        TCSLogWithMark("got private key")
         let decryptedData = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.eciesEncryptionStandardX963SHA1AESGCM, data as CFData, &error)
 
         if let decryptedData = decryptedData {
@@ -355,8 +353,7 @@ extension SecretKeeper {
             TCSLogWithMark("file not found. returning empty value")
             return Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0), uidUsers:RFIDUsers(rfidUsers: [:]))
         }
-        TCSLogWithMark("reading")
-
+        
         let secretData = try Data(contentsOf: secretsFileURL)
 
         let decryptedData = try decryptData(secretData)

@@ -38,7 +38,8 @@ enum HintType: String {
     case adminPassword
     case localLogin
     case allADAttributes
-    case secureUsers
+    case rfidUsers
+    case localAdmin
 
 
 }

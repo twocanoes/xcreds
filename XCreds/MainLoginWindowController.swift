@@ -227,9 +227,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
             var x = NSMidX(contentView.frame)
             var y = NSMidY(contentView.frame)
-            TCSLogWithMark("\(x):\(y)")
-
-            TCSLogWithMark("center width: \(centerView.frame.size.width), centerview height: \(centerView.frame.size.height)")
+            TCSLogWithMark("x:\(x) y:\(y) center width: \(centerView.frame.size.width), centerview height: \(centerView.frame.size.height)")
             x = x - centerView.frame.size.width/2
             y = y - centerView.frame.size.height/2
             let lowerLeftCorner = NSPoint(x: x, y: y)

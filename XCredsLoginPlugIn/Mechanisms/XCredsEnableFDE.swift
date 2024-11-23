@@ -15,8 +15,7 @@ class XCredsEnableFDE : XCredsBaseMechanism {
     // needs to be a separate mech b/c it needs to run after loginwindow:done
     
     @objc override  func run() {
-        
-        TCSLogWithMark("EnableFDE mech starting")
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ EnableFDE mech starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
         // FileVault
         

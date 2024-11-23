@@ -14,6 +14,7 @@ class CheckAD: NoLoMechanism {
     
     @objc func run() {
         os_log("CheckAD mech starting", log: checkADLog, type: .debug)
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ CheckAD mech starting ~~~~~~~~~~~~~~~~~~~")
 
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
@@ -59,7 +60,7 @@ class CheckAD: NoLoMechanism {
             return false
         }
         
-        os_log("Checking for autologin.", log: checkADLog, type: .default)
+        TCSLogWithMark("Checking for autologin.")
         if FileManager.default.fileExists(atPath: "/tmp/nolorun") {
             os_log("NoLo has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
             return false

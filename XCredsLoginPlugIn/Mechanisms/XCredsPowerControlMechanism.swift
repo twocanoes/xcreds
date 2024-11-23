@@ -19,7 +19,7 @@ enum SpecialUsers: String {
 class XCredsPowerControlMechanism: XCredsBaseMechanism {
 
     @objc override func run() {
-        TCSLogWithMark("XCredsPowerControlMechanism mech starting")
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsPowerControlMechanism mech starting starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
         if FileManager.default.fileExists(atPath: "/tmp/xcreds_return")==true{
             TCSLogWithMark("xcreds_return exists, removing")

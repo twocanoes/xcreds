@@ -365,9 +365,9 @@ import OpenDirectory
         }
     }
     func allowLogin() {
-        TCSLogWithMark()
+        TCSLogWithMark("================== Mech Complete ==================")
+
         let error = mechCallbacks.SetResult(mechEngine, .allow)
-        TCSLogWithMark()
 
         if error != noErr {
             TCSLogErrorWithMark("Error: \(error)")
@@ -446,12 +446,15 @@ import OpenDirectory
             TCSLogWithMark("No hint retrieved for: \(type.rawValue)")
             return nil
         }
+
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
+        
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
             TCSLogErrorWithMark("Couldn't unpack hint value: %{public}@")
                 return nil
         }
+
         return result
     }
 
@@ -569,13 +572,13 @@ import OpenDirectory
 
 
     func getContextString(type: String) -> String? {
-        TCSLogWithMark("Getting stick context \(type)")
+        TCSLogWithMark()
 
         var value: UnsafePointer<AuthorizationValue>?
         var flags = AuthorizationContextFlags()
         let err = mech?.fPlugin.pointee.fCallbacks.pointee.GetContextValue((mech?.fEngine)!, type, &flags, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("Couldn't retrieve context value \(type)")
+            TCSLogWithMark("No context string for \(type)")
             return nil
         }
 
