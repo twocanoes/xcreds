@@ -41,14 +41,14 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Show currently set admin user. Used for resetting keychain.")
 
         func run() throws {
-//            if geteuid() != 0  {
-//                print("This operation requires root. Please run with sudo.")
-//                NSApplication.shared.terminate(self)
-//
-//            }
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            if let adminUser = try userManager.localAdminCredentials() {
+            if let adminUser = try userManager.localAdminCredentials(), !adminUser.username.isEmpty {
                 print("\(adminUser.username)")
             }
             else {
@@ -64,12 +64,12 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Clear the current admin user used for resetting keychain.")
 
         func run() throws {
-//            if geteuid() != 0  {
-//                print("This operation requires root. Please run with sudo.")
-//                NSApplication.shared.terminate(self)
-//
-//            }
-//
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
             try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1))
@@ -88,11 +88,11 @@ extension xcreds {
         var adminpassword:String
 
         func run() throws {
-//            if geteuid() != 0  {
-//                print("This operation requires root. Please run with sudo.")
-//                NSApplication.shared.terminate(self)
-//            }
-//
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+            }
+
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
             try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1)))
@@ -120,11 +120,11 @@ extension xcreds {
         var rfiduid:String
 
         func run() throws {
-//            if geteuid() != 0  {
-//                print("This operation requires root. Please run with sudo.")
-//                NSApplication.shared.terminate(self)
-//
-//            }
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
 
             do {
                 if !username.isEmpty && !password.isEmpty && !fullname.isEmpty && !rfiduid.isEmpty{
@@ -152,11 +152,11 @@ extension xcreds {
 
 
         func run() throws {
-//            if geteuid() != 0  {
-//                print("This operation requires root. Please run with sudo.")
-//                NSApplication.shared.terminate(self)
-//
-//            }
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
 
 
             do {
@@ -174,9 +174,8 @@ extension xcreds {
 
                 }
                 for currKey in rfidUsers.keys{
-                    if let user = rfidUsers[currKey] {
-//                        print("\(currKey):\(user.fullName):\(user.username):\(user.uid)")
-                        print("\(currKey):\(user.fullName):\(user.username):\(user.uid)")
+                    if let user = rfidUsers[currKey], let fullname = user.fullName {
+                        print("\(currKey):\(fullname):\(user.username):\(user.uid)")
 
                     }
                 }

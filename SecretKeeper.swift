@@ -53,9 +53,9 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
     public required init?(coder: NSCoder) {
 
         fullName = coder.decodeObject(forKey: "fullName") as? String
-        username = coder.decodeObject(forKey: "username") as! String
-        password = coder.decodeObject(forKey: "password") as! String
-        uid = coder.decodeObject(forKey: "uid") as! NSNumber
+        username = coder.decodeObject(forKey: "username") as? String ?? ""
+        password = coder.decodeObject(forKey: "password") as? String ?? ""
+        uid = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
     }
 
     init(fullName: String, username: String, password: String, uid:NSNumber) {
@@ -256,7 +256,7 @@ public class SecretKeeper {
          kSecUseKeychain as String:keychain as Any,
          kSecAttrKeySizeInBits as String:      256,
          kSecAttrIsExtractable as String:false,
-         kSecAttrAccess as String: secAccess!,
+         kSecAttrAccess as String: secAccess ?? "",
          kSecPrivateKeyAttrs as String:
             [kSecAttrLabel : label as CFString,
              kSecAttrIsPermanent as String:    true,
