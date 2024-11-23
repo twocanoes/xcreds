@@ -8,6 +8,7 @@
 import Foundation
 
 
+@objc(RFIDUsers)
 public class RFIDUsers:NSObject, NSSecureCoding {
     public static var supportsSecureCoding: Bool {
         return true
@@ -33,6 +34,7 @@ public class RFIDUsers:NSObject, NSSecureCoding {
 
 
 
+@objc(SecretKeeperUser)
 public class SecretKeeperUser:NSObject, NSSecureCoding {
     public static var supportsSecureCoding: Bool {
         return true
@@ -67,8 +69,9 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
 
 
 }
-class Secrets:NSObject, NSSecureCoding {
-    static var supportsSecureCoding: Bool {
+@objc(Secrets)
+public class Secrets:NSObject, NSSecureCoding {
+    public static var supportsSecureCoding: Bool {
         return true
     }
     public var localAdmin:SecretKeeperUser
@@ -288,7 +291,6 @@ public class SecretKeeper {
         throw SecreteKeeperError.errorRetrievingPublicKey
     }
     func decryptData(_ data:Data) throws -> Data {
-        TCSLogWithMark("decryptData")
         TCSLogWithMark("data length is \(data.count)")
         var error: Unmanaged<CFError>?
 
@@ -297,7 +299,6 @@ public class SecretKeeper {
         let decryptedData = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.eciesEncryptionStandardX963SHA1AESGCM, data as CFData, &error)
 
         if let decryptedData = decryptedData {
-            TCSLogWithMark("returning decrupted data")
 
             return decryptedData as Data
         }
@@ -359,23 +360,19 @@ extension SecretKeeper {
         let secretData = try Data(contentsOf: secretsFileURL)
 
         let decryptedData = try decryptData(secretData)
-        do {
-            
 
-            guard let secrets = try
 
-                    NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decryptedData) as? Secrets  else {
-                throw SecreteKeeperError.unknownError
-            }
+        guard let secrets = NSKeyedUnarchiver.unarchiveObject(with: decryptedData) as? Secrets else {
+            TCSLog("Error unarchiving")
+            throw SecreteKeeperError.otherError("Error unarchiving")
+        }
 
-            return secrets
+
+
+        return secrets
 
 
         }
-        catch{
-            TCSLog(error.localizedDescription)
-            throw SecreteKeeperError.unknownError
-        }
 
-    }
+
 }

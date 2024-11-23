@@ -14,7 +14,7 @@ class XCredsUserSetup: XCredsBaseMechanism {
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
 
             let users = try userManager.uidUsers()
-
+            TCSLogWithMark("\(users.userDict?.keys.count ?? 0)")
             self.setHint(type: .secureUsers, hint: users as NSSecureCoding)
 
         }
