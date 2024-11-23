@@ -182,24 +182,6 @@ import Network
             return
         }
 
-//        if let rfidUser = getHint(type: .rfidUsers) as? RFIDUsers {
-//
-//            TCSLogWithMark("rfidUsers! \(rfidUser.userDict?.count ?? 0)")
-//
-//        }
-//        else {
-//            TCSLogWithMark("no rfidUsers in hints")
-//
-//        }
-
-//
-//        if let localAdmin = getHint(type: .localAdmin) as? SecretKeeperUser {
-//
-//       }
-//        else {
-//         TCSLogWithMark("no localAdmin found in hints")
-//
-//        }
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
@@ -334,6 +316,23 @@ import Network
                 return
             }
             TCSLogWithMark()
+
+            if let rfidUser = getHint(type: .rfidUsers) as? RFIDUsers {
+                signInViewController.rfidUsers = rfidUser
+                TCSLogWithMark("rfidUsers! \(rfidUser.userDict?.count ?? 0)")
+            }
+            else {
+                TCSLogWithMark("no rfidUsers in hints")
+            }
+
+            if let localAdmin = getHint(type: .localAdmin) as? SecretKeeperUser {
+                signInViewController.localAdmin = localAdmin
+            }
+            else {
+                TCSLogWithMark("no localAdmin found in hints")
+            }
+
+
 
             mainLoginWindowController?.addCenterView(signInViewController.view)
 

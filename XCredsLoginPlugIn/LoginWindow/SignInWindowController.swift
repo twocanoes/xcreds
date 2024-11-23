@@ -28,7 +28,45 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
-    
+    //MARK: - setup properties
+    var mech: MechanismRecord?
+    var nomadSession: NoMADSession?
+    var shortName = ""
+    var domainName = ""
+    var passString = ""
+    var newPassword = ""
+    var isDomainManaged = false
+    var isSSLRequired = false
+    var passChanged = false
+    let sysInfo = SystemInfoHelper().info()
+    var sysInfoIndex = 0
+    let tokenManager = TokenManager()
+
+    var localAdmin:SecretKeeperUser?
+    var rfidUsers:RFIDUsers?
+    var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
+    var isInUserSpace = false
+    var watcher:TKTokenWatcher?
+
+    @objc var visible = true
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+    //MARK: - IB outlets
+    @IBOutlet weak var usernameTextField: NSTextField!
+    @IBOutlet weak var passwordTextField: NSSecureTextField!
+    @IBOutlet weak var localOnlyCheckBox: NSButton!
+    @IBOutlet weak var localOnlyView: NSView!
+    @IBOutlet var alertTextField:NSTextField!
+    @IBOutlet var tapLoginLabel:NSTextField!
+
+    @IBOutlet weak var stackView: NSStackView!
+
+//    @IBOutlet weak var domain: NSPopUpButton!
+    @IBOutlet weak var signIn: NSButton!
+    @IBOutlet weak var imageView: NSImageView!
+
+    var mechanismDelegate:XCredsMechanismProtocol?
 
     override var nibName: NSNib.Name{
 
@@ -83,43 +121,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         var password:String?
     }
 
-    //MARK: - setup properties
-    var mech: MechanismRecord?
-    var nomadSession: NoMADSession?
-    var shortName = ""
-    var domainName = ""
-    var passString = ""
-    var newPassword = ""
-    var isDomainManaged = false
-    var isSSLRequired = false
-    var passChanged = false
-    let sysInfo = SystemInfoHelper().info()
-    var sysInfoIndex = 0
-    let tokenManager = TokenManager()
 
-    var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
-    var isInUserSpace = false
-    var watcher:TKTokenWatcher?
-
-    @objc var visible = true
-    override var acceptsFirstResponder: Bool {
-        return true
-    }
-    //MARK: - IB outlets
-    @IBOutlet weak var usernameTextField: NSTextField!
-    @IBOutlet weak var passwordTextField: NSSecureTextField!
-    @IBOutlet weak var localOnlyCheckBox: NSButton!
-    @IBOutlet weak var localOnlyView: NSView!
-    @IBOutlet var alertTextField:NSTextField!
-    @IBOutlet var tapLoginLabel:NSTextField!
-
-    @IBOutlet weak var stackView: NSStackView!
-
-//    @IBOutlet weak var domain: NSPopUpButton!
-    @IBOutlet weak var signIn: NSButton!
-    @IBOutlet weak var imageView: NSImageView!
-
-    var mechanismDelegate:XCredsMechanismProtocol?
 
 //    var mechanism:XCredsMechanismProtocol? {
 //        set {
@@ -156,17 +158,13 @@ protocol UpdateCredentialsFeedbackProtocol {
                     self.watcher?.addRemovalHandler({ tokenID in
                         TCSLogWithMark("card removed")
                     }, forTokenID: tokenID)
-                    TCSLogWithMark("card inserted")
-                    TCSLogWithMark("getting slotNames")
 
                     let slotNames = TKSmartCardSlotManager.default?.slotNames
-                    TCSLogWithMark("got slotNames")
 
-                    guard let slotNames = slotNames else {
-                        TCSLogWithMark("bad slotnames")
+                    guard let slotNames = slotNames, slotNames.count>0 else {
+                        TCSLogWithMark("No rfid readers")
                         return
                     }
-
                     guard let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
                         TCSLogWithMark("No slotname defined in prefs. Slot names found: \(slotNames)")
 
@@ -207,25 +205,40 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
     func cardLogin(uid:String) {
-        guard let userArray = UserDefaults.standard.array(forKey: PrefKeys.uidUsers.rawValue) as? Array<Dictionary<String,String>> else {
-            TCSLogWithMark("no user preferences for uid. check your profile. \(uid)")
+//        guard let userArray = UserDefaults.standard.array(forKey: PrefKeys.uidUsers.rawValue) as? Array<Dictionary<String,String>> else {
+//            TCSLogWithMark("no user preferences for uid. check your profile. \(uid)")
+//            passwordTextField.shake(self)
+//
+//            return
+//        }
+//        let user = userArray.first { currUser in
+//            return currUser["uid"]==uid
+//        }
+//        guard let user = user,
+//        let username = user["username"],
+//        let password = user["password"] else {
+//            TCSLogWithMark("no users for: \(uid)")
+//            passwordTextField.shake(self)
+//            return
+//
+//        }
+//        shortName=username
+//        passString=password
+
+        guard let rfidUsers = rfidUsers else {
+            TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
             passwordTextField.shake(self)
 
             return
         }
-        let user = userArray.first { currUser in
-            return currUser["uid"]==uid
-        }
-        guard let user = user,
-        let username = user["username"],
-        let password = user["password"] else {
-            TCSLogWithMark("no users for: \(uid)")
+        guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[uid]  else {
+            TCSLogWithMark("No RFID user with uid: \(uid)")
             passwordTextField.shake(self)
             return
 
         }
-        shortName=username
-        passString=password
+        shortName = rfidUser.username
+        passString = rfidUser.password
         let userExists = try? PasswordUtils.isUserLocal(shortName)
         guard let userExists = userExists else {
             TCSLogWithMark("DS error")
@@ -243,6 +256,8 @@ protocol UpdateCredentialsFeedbackProtocol {
                 completeLogin(authResult:.allow)
             }
             else {
+                passwordTextField.shake(self)
+
                 TCSLogWithMark("invalid password for user \(shortName)")
                 authFail()
             }
@@ -1021,10 +1036,20 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     TCSLogWithMark("resetKeychainRequested")
 
                     if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
+                        TCSLogWithMark("Setting local admin from settings")
+
                         mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername as NSSecureCoding )
                         mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword as NSSecureCoding)
                         mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
+                    }
+                    else {
+                        if let localAdmin = localAdmin, localAdmin.username.isEmpty == false, localAdmin.password.isEmpty==false {
+                            TCSLogWithMark("Setting local admin from secure users")
+                            mechanismDelegate?.setHint(type: .adminUsername, hint:localAdmin.username as NSSecureCoding )
+                            mechanismDelegate?.setHint(type: .adminPassword, hint: localAdmin.password as NSSecureCoding)
+                            mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
+                        }
                     }
                     completeLogin(authResult: .allow)
 
