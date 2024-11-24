@@ -95,7 +95,7 @@ class PasswordUtils: NSObject {
 
     class func GetSecureTokenCreds() -> SecureTokenCredential? {
 
-        TCSLogWithMark("Starting SecureToken Credential acquisition process")
+//        TCSLogWithMark("Starting SecureToken Credential acquisition process")
         // Initializing the return variables
 //        var secureTokenManagementUsername = ""
 //        var secureTokenManagementPassword = ""

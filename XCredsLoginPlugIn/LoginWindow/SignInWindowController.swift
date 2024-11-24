@@ -225,6 +225,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 //        shortName=username
 //        passString=password
 
+        TCSLogWithMark("RFID UID \"\(uid)\" detected")
         guard let rfidUsers = rfidUsers else {
             TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
             passwordTextField.shake(self)
@@ -239,6 +240,10 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
         shortName = rfidUser.username
         passString = rfidUser.password
+        let fullName = rfidUser.fullName
+        let useruid = rfidUser.uid
+
+        TCSLogWithMark("UserID: \(useruid.stringValue)")
         let userExists = try? PasswordUtils.isUserLocal(shortName)
         guard let userExists = userExists else {
             TCSLogWithMark("DS error")
@@ -252,6 +257,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark("local user valid. logging in")
 
                 setRequiredHintsAndContext()
+
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
                 completeLogin(authResult:.allow)
             }
@@ -263,8 +269,25 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
         }
         else {
+            TCSLogWithMark("New user. Creating...")
             //new user, so we create the account and move along
             setRequiredHintsAndContext()
+            if let fullName = fullName {
+                TCSLogWithMark("Setting fullName to \(fullName)")
+
+                mechanismDelegate?.setHint(type: .fullName, hint: fullName as NSSecureCoding)
+
+            }
+            if useruid.intValue>499 {
+                TCSLogWithMark("Setting uid to \(useruid.stringValue)")
+                mechanismDelegate?.setHint(type: .uid, hint: useruid.stringValue as NSSecureCoding)
+            }
+
+            else if useruid.intValue != -1 {
+                TCSLogWithMark("invalid uid. selecting available UID.")
+
+            }
+
             completeLogin(authResult:.allow)
         }
 

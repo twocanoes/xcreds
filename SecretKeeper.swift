@@ -350,7 +350,6 @@ extension SecretKeeper {
     func secrets() throws -> Secrets {
 
         if FileManager.default.fileExists(atPath: secretsFileURL.path()) == false {
-            TCSLogWithMark("file not found. returning empty value")
             return Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0), uidUsers:RFIDUsers(rfidUsers: [:]))
         }
         
@@ -367,8 +366,6 @@ extension SecretKeeper {
 
 
         return secrets
-
-
         }
 
 

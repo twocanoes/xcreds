@@ -142,7 +142,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             TCSLog("Checking for createLocalAdmin key")
             var fullname:String?
 
-            if let fullnameHint = getHint(type: .fullName) as? String {
+            if let fullnameHint = getHint(type: .fullName) as? String, fullnameHint.isEmpty == false {
                 fullname=fullnameHint
             }
 
