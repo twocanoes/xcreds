@@ -90,7 +90,7 @@ extension xcreds {
 
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1))
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data()))
 
         }
     }
@@ -113,7 +113,7 @@ extension xcreds {
 
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1)))
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data()))
         }
 
     }
@@ -158,7 +158,7 @@ extension xcreds {
                     }
 
 
-                    try userManager.updateUIDUser(fullName: fullname, rfidUid: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
+                    try userManager.updateUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
 
                 }
             }
@@ -245,10 +245,6 @@ extension xcreds {
                     return
 
                 }
-                guard let rfidUID64 = UInt64(rfidUIDString, radix: 16) else {
-                    print("bad RFID UID")
-                    return
-                }
                 let rfidUidData = Data(fromHexEncodedString: rfidUIDString)
                 guard let rfidUidData = rfidUidData else {
                     print("bad RFID rfidUidData")
@@ -264,14 +260,12 @@ extension xcreds {
                     return
 
                 }
-                let password = try PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: rfidUID64)
-//                    if let user = rfidUsers[currKey], let fullname = user.fullName,let passwordData = rfidUsers[currKey]?.password {
-////                        print(passwordData)
-////                        PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: uid)
-//                        print("\(currKey):\(fullname):\(user.username):\(user.uid)")
-//
-//                    }
+                let password = try PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: rfidUidData)
 
+
+                if password.count>0 {
+                    print("password set")
+                }
 
             }
             catch {
@@ -329,12 +323,14 @@ extension xcreds {
                         print("importing \(rfidUid):\(fullname):\(username):\(uid)")
 
 
-                        let rfidUidData = withUnsafeBytes(of: rfidUid) {
-                            Data($0)
+                        guard let rfidUidData = Data(fromHexEncodedString: rfidUid) else {
+
+                            print("invalid uid")
+                            return
                         }
                         let hashedUID=Data(SHA256.hash(data: rfidUidData))
 
-                        rfidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)))
+                        rfidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData)
                     }
 
                     try userManager.setUIDUsers(rfidUsers)

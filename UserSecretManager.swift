@@ -35,13 +35,11 @@ public struct UserSecretManager {
         return secrets.localAdmin
 
     }
-    public func updateUIDUser(fullName:String, rfidUid:Data, username:String, password:String, uid:NSNumber) throws {
+    public func updateUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber) throws {
         let secrets = try secrets()
+        let hashedUID=Data(SHA256.hash(data: rfidUID))
 
-        let hashedUID=Data(SHA256.hash(data: rfidUid))
-
-
-        secrets.uidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid)
+        secrets.uidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID)
         try secretKeeper.addSecrets(secrets)
     }
 
@@ -51,12 +49,9 @@ public struct UserSecretManager {
         try secretKeeper.addSecrets(secrets)
     }
 
-    public func uidUser(uid:UInt64) throws -> SecretKeeperUser?{
+    public func uidUser(uid:Data) throws -> SecretKeeperUser?{
         let secrets = try secrets()
-        let uidData = withUnsafeBytes(of: uid) { ptr in
-            Data(ptr)
-        }
-        let hashedUID=Data(SHA256.hash(data: uidData))
+        let hashedUID=Data(SHA256.hash(data: uid))
 
         let uidUsers = secrets.uidUsers
         return uidUsers.userDict?[hashedUID]

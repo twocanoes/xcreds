@@ -144,23 +144,21 @@ protocol UpdateCredentialsFeedbackProtocol {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let uidString = "001231231231001231231231"
-        let uidInt = Int64(uidString)
-
-        var data = withUnsafeBytes(of: uidInt, { ptr  in
-            print(ptr.count)
-            return Data(ptr).base64EncodedString()
-        })
-        let sampleVar = 5
-
-        let p = withUnsafePointer(to: sampleVar) { p in
-            print("Memory address of sampleVar: \(p)")
-            memcpy(nil, p, 1)
-        }
-        print(data)
-
-
-
+//        let uidString = "001231231231001231231231"
+//        let uidInt = Int64(uidString)
+//
+//        var data = withUnsafeBytes(of: uidInt, { ptr  in
+//            print(ptr.count)
+//            return Data(ptr).base64EncodedString()
+//        })
+//        let sampleVar = 5
+//
+//        let p = withUnsafePointer(to: sampleVar) { p in
+//            print("Memory address of sampleVar: \(p)")
+//            memcpy(nil, p, 1)
+//        }
+//        print(data)
+//
         alertTextField.isHidden=true
         TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
@@ -269,7 +267,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         let encryptedPasswordData = rfidUser.password
 
 
-        guard let uidData = UInt64(uid) else {
+        guard let uidData = Data(fromHexEncodedString: uid) else {
             TCSLogWithMark("invalid UID Data")
             passwordTextField.shake(self)
             return
@@ -281,6 +279,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             passwordTextField.shake(self)
             return
         }
+        passString = String(decoding: passwordData, as: UTF8.self)
         let fullName = rfidUser.fullName
         let useruid = rfidUser.uid
 

@@ -36,10 +36,8 @@ public struct PasswordCryptor{
     func keyForAES(uid:Data) throws -> SymmetricKey {
         var keyBuffer = Data()
 
-        let uidData = withUnsafeBytes(of: uid) { ptr in
-            Data(ptr)
-        }
-        keyBuffer.append(uidData)
+
+        keyBuffer.append(uid)
 
         if keyBuffer.count<7 {
             for _ in keyBuffer.count..<7 {
@@ -55,21 +53,17 @@ public struct PasswordCryptor{
         }
 
         keyBuffer.append(serialNumber)
-        print(keyBuffer.hexEncodedString())
 
 
-        print(keyBuffer.count)
         let hashedBuffer = SHA256.hash(data: keyBuffer)
-        print(hashedBuffer.description)
 
         let symmetricKey = SymmetricKey(data: hashedBuffer)
 
         return symmetricKey
     }
-    func aesDecrypt(encryptedData:Data, uid:UInt64) throws -> Data{
+    func aesDecrypt(encryptedData:Data, uid:Data) throws -> Data{
         let sealedBox = try AES.GCM.SealedBox(combined: encryptedData)
         let clearTextData = try AES.GCM.open(sealedBox, using: keyForAES(uid:uid))
-        print(clearTextData.hexEncodedString())
 
         return clearTextData
 
@@ -119,7 +113,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         uid = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
     }
 
-    init(fullName: String, username: String, password: String, uid:NSNumber, rfidUIDData:Data)  throws {
+    init(fullName: String, username: String, password: String, uid:NSNumber, rfidUID:Data)  throws {
 
 
         self.fullName = fullName
@@ -127,7 +121,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         guard let passwordData = password.data(using: .utf8) else {
             throw SecretKeeper.SecretKeeperError.otherError("error converting password")
         }
-        let encryptedPassword = try PasswordCryptor().aesEncrypt(clearTextData: passwordData, uid: rfidUIDData)
+        let encryptedPassword = try PasswordCryptor().aesEncrypt(clearTextData: passwordData, uid: rfidUID)
         self.password = encryptedPassword
 
         self.uid = uid
@@ -161,7 +155,7 @@ public class Secrets:NSObject, NSSecureCoding {
     public required init?(coder: NSCoder) {
 
         do{
-            localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1)
+            localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data())
             uidUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "uidUsers") ?? RFIDUsers(rfidUsers: [:])
         }
         catch {
@@ -427,7 +421,7 @@ extension SecretKeeper {
     func secrets() throws -> Secrets {
 
         if FileManager.default.fileExists(atPath: secretsFileURL.path()) == false {
-            return try Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0), uidUsers:RFIDUsers(rfidUsers: [:]))
+            return try Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0, rfidUID: Data()), uidUsers:RFIDUsers(rfidUsers: [:]))
         }
         
         let secretData = try Data(contentsOf: secretsFileURL)
