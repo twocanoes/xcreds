@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CryptoKit
 
 public struct UserSecretManager {
 
@@ -34,9 +35,13 @@ public struct UserSecretManager {
         return secrets.localAdmin
 
     }
-    public func updateUIDUser(fullName:String, rfidUid:String, username:String, password:String, uid:NSNumber) throws {
+    public func updateUIDUser(fullName:String, rfidUid:Data, username:String, password:String, uid:NSNumber) throws {
         let secrets = try secrets()
-        secrets.uidUsers.userDict?[rfidUid] = SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid)
+
+        let hashedUID=Data(SHA256.hash(data: rfidUid))
+
+
+        secrets.uidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid)
         try secretKeeper.addSecrets(secrets)
     }
 
@@ -46,11 +51,15 @@ public struct UserSecretManager {
         try secretKeeper.addSecrets(secrets)
     }
 
-    public func uidUser(uid:String) throws -> SecretKeeperUser?{
+    public func uidUser(uid:UInt64) throws -> SecretKeeperUser?{
         let secrets = try secrets()
+        let uidData = withUnsafeBytes(of: uid) { ptr in
+            Data(ptr)
+        }
+        let hashedUID=Data(SHA256.hash(data: uidData))
 
         let uidUsers = secrets.uidUsers
-        return uidUsers.userDict?[uid]
+        return uidUsers.userDict?[hashedUID]
     }
 
     public func clearUIDUsers() throws {

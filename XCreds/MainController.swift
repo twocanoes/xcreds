@@ -251,6 +251,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
     func localAccountAndPassword() -> (String?,String?) {
+
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
+            return (nil,nil)
+
+        }
+
         let keychainUtil = KeychainUtil()
         var accountName=""
         let accountInfo = try? keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)

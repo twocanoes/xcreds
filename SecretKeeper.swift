@@ -6,14 +6,14 @@
 //
 
 import Foundation
-
+import CryptoKit
 
 @objc(RFIDUsers)
 public class RFIDUsers:NSObject, NSSecureCoding {
     public static var supportsSecureCoding: Bool {
         return true
     }
-    public var userDict:Dictionary<String,SecretKeeperUser>?
+    public var userDict:Dictionary<Data,SecretKeeperUser>?
     public func encode(with coder: NSCoder) {
 
         coder.encode(userDict, forKey:"userDict")
@@ -21,10 +21,10 @@ public class RFIDUsers:NSObject, NSSecureCoding {
 
     public required init?(coder: NSCoder) {
 
-        userDict = coder.decodeObject(forKey: "userDict") as? Dictionary<String,SecretKeeperUser>
+        userDict = coder.decodeObject(forKey: "userDict") as? Dictionary<Data,SecretKeeperUser>
     }
 
-    init(rfidUsers:[String:SecretKeeperUser]) {
+    init(rfidUsers:[Data:SecretKeeperUser]) {
         self.userDict = rfidUsers
     }
 
@@ -32,7 +32,66 @@ public class RFIDUsers:NSObject, NSSecureCoding {
 }
 
 
+public struct PasswordCryptor{
+    func keyForAES(uid:Data) throws -> SymmetricKey {
+        var keyBuffer = Data()
 
+        let uidData = withUnsafeBytes(of: uid) { ptr in
+            Data(ptr)
+        }
+        keyBuffer.append(uidData)
+
+        if keyBuffer.count<7 {
+            for _ in keyBuffer.count..<7 {
+                keyBuffer.append(0x00)
+            }
+        }
+        let serialNumber = getSerial().data(using: .utf8)
+
+        guard let serialNumber = serialNumber else {
+            TCSLogWithMark("serial number error")
+            throw SecretKeeper.SecretKeeperError.aesEncryptionError
+
+        }
+
+        keyBuffer.append(serialNumber)
+        print(keyBuffer.hexEncodedString())
+
+
+        print(keyBuffer.count)
+        let hashedBuffer = SHA256.hash(data: keyBuffer)
+        print(hashedBuffer.description)
+
+        let symmetricKey = SymmetricKey(data: hashedBuffer)
+
+        return symmetricKey
+    }
+    func aesDecrypt(encryptedData:Data, uid:UInt64) throws -> Data{
+        let sealedBox = try AES.GCM.SealedBox(combined: encryptedData)
+        let clearTextData = try AES.GCM.open(sealedBox, using: keyForAES(uid:uid))
+        print(clearTextData.hexEncodedString())
+
+        return clearTextData
+
+    }
+    func aesEncrypt(clearTextData:Data, uid:Data) throws -> Data{
+
+
+
+        let sealed = try AES.GCM.seal(clearTextData, using: keyForAES(uid:uid))
+
+        guard let encryptedData = sealed.combined else {
+            TCSLogWithMark("seal error")
+
+            throw SecretKeeper.SecretKeeperError.aesEncryptionError
+        }
+
+        print(encryptedData.hexEncodedString())
+
+
+        return encryptedData
+    }
+}
 
 @objc(SecretKeeperUser)
 public class SecretKeeperUser:NSObject, NSSecureCoding {
@@ -41,7 +100,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
     }
     public var fullName:String?
     public var username:String
-    public var password:String
+    public var password:Data
     public var uid:NSNumber
 
     public func encode(with coder: NSCoder) {
@@ -56,16 +115,25 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
 
         fullName = coder.decodeObject(forKey: "fullName") as? String
         username = coder.decodeObject(forKey: "username") as? String ?? ""
-        password = coder.decodeObject(forKey: "password") as? String ?? ""
+        password = coder.decodeObject(forKey: "password") as? Data ?? Data()
         uid = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
     }
 
-    init(fullName: String, username: String, password: String, uid:NSNumber) {
+    init(fullName: String, username: String, password: String, uid:NSNumber, rfidUIDData:Data)  throws {
+
+
         self.fullName = fullName
         self.username = username
-        self.password = password
+        guard let passwordData = password.data(using: .utf8) else {
+            throw SecretKeeper.SecretKeeperError.otherError("error converting password")
+        }
+        let encryptedPassword = try PasswordCryptor().aesEncrypt(clearTextData: passwordData, uid: rfidUIDData)
+        self.password = encryptedPassword
+
         self.uid = uid
+
     }
+
 
 
 }
@@ -91,13 +159,19 @@ public class Secrets:NSObject, NSSecureCoding {
     }
 
     public required init?(coder: NSCoder) {
-        localAdmin = coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1)
-        uidUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "uidUsers") ?? RFIDUsers(rfidUsers: [:])
 
+        do{
+            localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1)
+            uidUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "uidUsers") ?? RFIDUsers(rfidUsers: [:])
+        }
+        catch {
+            TCSLogWithMark("error init of user object")
+            return nil
+        }
     }
 }
 public class SecretKeeper {
-        public enum SecreteKeeperError:Error {
+    public enum SecretKeeperError:Error {
         case errorFindingKey
         case privateKeyNotFound
         case errorCreatingKey(String)
@@ -110,6 +184,9 @@ public class SecretKeeper {
         case errorWritingToSecretsFile
         case errorReadingSecretsFile
         case unknownError
+        case aesEncryptionError
+        case aesDecryptionError
+
         case otherError(String)
 
         func localizedDescription() -> String {
@@ -153,6 +230,12 @@ public class SecretKeeper {
             case .otherError(let error):
                 return error
 
+            case .aesEncryptionError:
+                return "aesEncryptionError"
+
+            case .aesDecryptionError:
+                return "aesDecryptionError"
+
             }
 
 
@@ -172,7 +255,7 @@ public class SecretKeeper {
             self.tag = tagData
         }
         else {
-            throw SecreteKeeperError.invalidTag
+            throw SecretKeeperError.invalidTag
         }
     }
 
@@ -209,13 +292,13 @@ public class SecretKeeper {
     func systemKeychain()  throws -> SecKeychain{
         var keychain:SecKeychain?
         if SecKeychainCopyDomainDefault(SecPreferencesDomain.system, &keychain) != errSecSuccess {
-            throw SecreteKeeperError.errorFindingKey
+            throw SecretKeeperError.errorFindingKey
         }
 
         if let keychain = keychain {
             return keychain
         }
-        throw SecreteKeeperError.unknownError
+        throw SecretKeeperError.unknownError
 
 
     }
@@ -271,11 +354,11 @@ public class SecretKeeper {
             if let err = error?.takeUnretainedValue().localizedDescription{
                 errorString = err
             }
-            throw SecreteKeeperError.errorCreatingKey(errorString)
+            throw SecretKeeperError.errorCreatingKey(errorString)
 
         }
         guard let privateKey = try findExistingPrivateKey() else {
-            throw SecreteKeeperError.privateKeyNotFound
+            throw SecretKeeperError.privateKeyNotFound
         }
         return privateKey
     }
@@ -288,7 +371,7 @@ public class SecretKeeper {
         if let publicKey = publicKey {
             return publicKey
         }
-        throw SecreteKeeperError.errorRetrievingPublicKey
+        throw SecretKeeperError.errorRetrievingPublicKey
     }
     func decryptData(_ data:Data) throws -> Data {
         var error: Unmanaged<CFError>?
@@ -300,7 +383,7 @@ public class SecretKeeper {
 
             return decryptedData as Data
         }
-        throw SecreteKeeperError.errorDecrypting
+        throw SecretKeeperError.errorDecrypting
 
 
     }
@@ -315,19 +398,13 @@ public class SecretKeeper {
         if let encryptedData = encryptedData {
             return encryptedData as Data
         }
-        throw SecreteKeeperError.errorEncrypting
+        throw SecretKeeperError.errorEncrypting
 
-        /*
-
-         1. Add local admin password
-         2. delete local admin password
-         3. add uid user:
-         4. remove uid user:
-
-
-         */
 
     }
+
+
+
 }
 
 extension SecretKeeper {
@@ -350,7 +427,7 @@ extension SecretKeeper {
     func secrets() throws -> Secrets {
 
         if FileManager.default.fileExists(atPath: secretsFileURL.path()) == false {
-            return Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0), uidUsers:RFIDUsers(rfidUsers: [:]))
+            return try Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0), uidUsers:RFIDUsers(rfidUsers: [:]))
         }
         
         let secretData = try Data(contentsOf: secretsFileURL)
@@ -360,7 +437,7 @@ extension SecretKeeper {
 
         guard let secrets = NSKeyedUnarchiver.unarchiveObject(with: decryptedData) as? Secrets else {
             TCSLog("Error unarchiving")
-            throw SecreteKeeperError.otherError("Error unarchiving")
+            throw SecretKeeperError.otherError("Error unarchiving")
         }
 
 

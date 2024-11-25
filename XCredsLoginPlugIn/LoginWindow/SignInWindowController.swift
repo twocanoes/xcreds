@@ -12,6 +12,7 @@ import os.log
 import OpenDirectory
 import OIDCLite
 import CryptoTokenKit
+import CryptoKit
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
@@ -142,6 +143,24 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        let uidString = "001231231231001231231231"
+        let uidInt = Int64(uidString)
+
+        var data = withUnsafeBytes(of: uidInt, { ptr  in
+            print(ptr.count)
+            return Data(ptr).base64EncodedString()
+        })
+        let sampleVar = 5
+
+        let p = withUnsafePointer(to: sampleVar) { p in
+            print("Memory address of sampleVar: \(p)")
+            memcpy(nil, p, 1)
+        }
+        print(data)
+
+
+
         alertTextField.isHidden=true
         TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
@@ -182,6 +201,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     let slot = TKSmartCardSlotManager.default?.slotNamed(slotName)
                     TCSLogWithMark()
                     guard let tkSmartCard = slot?.makeSmartCard() else {
+                        TCSLogWithMark("Could not setup reader")
                         return
                     }
                     TCSLogWithMark()
@@ -232,14 +252,35 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             return
         }
-        guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[uid]  else {
+
+        let rfidUidData = withUnsafeBytes(of: uid) { ptr in
+            Data(ptr)
+        }
+        let hashedUID=Data(SHA256.hash(data: rfidUidData))
+
+
+        guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[hashedUID]  else {
             TCSLogWithMark("No RFID user with uid: \(uid)")
             passwordTextField.shake(self)
             return
 
         }
         shortName = rfidUser.username
-        passString = rfidUser.password
+        let encryptedPasswordData = rfidUser.password
+
+
+        guard let uidData = UInt64(uid) else {
+            TCSLogWithMark("invalid UID Data")
+            passwordTextField.shake(self)
+            return
+
+        }
+
+        guard let passwordData = try? PasswordCryptor().aesDecrypt(encryptedData: encryptedPasswordData, uid: uidData) else {
+            TCSLogWithMark("error decrypted password")
+            passwordTextField.shake(self)
+            return
+        }
         let fullName = rfidUser.fullName
         let useruid = rfidUser.uid
 
@@ -297,7 +338,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         tapLoginLabel.isHidden=true
 
-        if DefaultsOverride().array(forKey: PrefKeys.uidUsers.rawValue) != nil {
+        if let _ = rfidUsers {
             tapLoginLabel.isHidden=false
         }
         alertTextField.isHidden=true

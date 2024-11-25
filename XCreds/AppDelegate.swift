@@ -7,13 +7,14 @@
 
 import Cocoa
 import ArgumentParser
+import CryptoKit
 
 @main
 struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [ImportUsers.self, ImportUser.self, ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self, RunApp.self],
+        subcommands: [ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -55,6 +56,23 @@ extension xcreds {
                 print("admin user not set")
             }
 
+        }
+    }
+}
+extension xcreds {
+    struct ClearAllUsers:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Clear all users. Does not clear the admin user.")
+
+        func run() throws {
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            try userManager.clearUIDUsers()
         }
     }
 }
@@ -133,8 +151,14 @@ extension xcreds {
                     let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
 
                     let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                    guard let rfidUIDData = Data(fromHexEncodedString: rfiduid) else {
+                        print("invalid rfid. Must be hex with no 0x in front")
+                        return
 
-                    try userManager.updateUIDUser(fullName: fullname, rfidUid: rfiduid, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
+                    }
+
+
+                    try userManager.updateUIDUser(fullName: fullname, rfidUid: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
 
                 }
             }
@@ -174,7 +198,9 @@ extension xcreds {
 
                 }
                 for currKey in rfidUsers.keys{
-                    if let user = rfidUsers[currKey], let fullname = user.fullName {
+                    if let user = rfidUsers[currKey], let fullname = user.fullName,let passwordData = rfidUsers[currKey]?.password {
+//                        print(passwordData)
+//                        PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: uid)
                         print("\(currKey):\(fullname):\(user.username):\(user.uid)")
 
                     }
@@ -189,6 +215,76 @@ extension xcreds {
         }
     }
 }
+
+
+extension xcreds {
+    struct ShowUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Show RFID user.")
+
+
+        @Option(help: "RFID-uid in hex with no 0x in front.")
+        var rfidUIDString:String
+
+
+        func run() throws {
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+
+
+            do {
+
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                let users = try userManager.uidUsers()
+
+
+                guard let rfidUsers = users.userDict else {
+                    return
+
+                }
+                guard let rfidUID64 = UInt64(rfidUIDString, radix: 16) else {
+                    print("bad RFID UID")
+                    return
+                }
+                let rfidUidData = Data(fromHexEncodedString: rfidUIDString)
+                guard let rfidUidData = rfidUidData else {
+                    print("bad RFID rfidUidData")
+
+                    return
+                }
+                let hashedUID=Data(SHA256.hash(data: rfidUidData))
+
+                let user = rfidUsers[hashedUID]
+                guard let passwordData = user?.password else {
+                    print("could not find user.")
+
+                    return
+
+                }
+                let password = try PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: rfidUID64)
+//                    if let user = rfidUsers[currKey], let fullname = user.fullName,let passwordData = rfidUsers[currKey]?.password {
+////                        print(passwordData)
+////                        PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: uid)
+//                        print("\(currKey):\(fullname):\(user.username):\(user.uid)")
+//
+//                    }
+
+
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+
+
+        }
+    }
+}
+
+
+
 
 extension xcreds {
     struct ImportUsers:ParsableCommand {
@@ -211,8 +307,7 @@ extension xcreds {
                 do {
                     let contentsOfFile = try String(contentsOfFile: infilepath, encoding: .windowsCP1250)
 
-                    var rfidUsers=RFIDUsers(rfidUsers: [:])
-                    print("separating")
+                    let rfidUsers=RFIDUsers(rfidUsers: [:])
                     let lineArray = contentsOfFile.components(separatedBy:"\n")
 
                     let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
@@ -234,8 +329,12 @@ extension xcreds {
                         print("importing \(rfidUid):\(fullname):\(username):\(uid)")
 
 
-                        rfidUsers.userDict?[rfidUid]=SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)))
+                        let rfidUidData = withUnsafeBytes(of: rfidUid) {
+                            Data($0)
+                        }
+                        let hashedUID=Data(SHA256.hash(data: rfidUidData))
 
+                        rfidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)))
                     }
 
                     try userManager.setUIDUsers(rfidUsers)

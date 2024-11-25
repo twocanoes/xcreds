@@ -103,5 +103,7 @@
 	<false/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
+	<key>shouldSuppressLocalPasswordPrompt</key>
+	<false/>
 </dict>
 </plist>
