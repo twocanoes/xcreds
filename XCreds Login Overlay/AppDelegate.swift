@@ -87,16 +87,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        TCSLogWithMark("starting")
         if AuthRightsHelper.verifyRights()==false {
             let _ = AuthRightsHelper.resetRights()
             cloudLoginButtonPressed(self)
             return
         }
-        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
+//        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
+            TCSLogWithMark("right exists, setting timer")
 
             Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
                 NSApp.activate(ignoringOtherApps: true)
+                TCSLogWithMark()
                 self.window.orderFrontRegardless()
                 DispatchQueue.main.async {
 
@@ -107,7 +110,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             setupWindow()
             NSApp.activate(ignoringOtherApps: true)
             window.orderFrontRegardless()
-        }
+//        }
+//        else {
+//            TCSLogWithMark("right does not exist")
+//        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

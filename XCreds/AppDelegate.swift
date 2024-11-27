@@ -27,6 +27,14 @@ extension xcreds {
 
         func run() throws {
 
+            //used to register ccid reader as root. no idea why
+            //this is needed.
+            if other.contains("-r") {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+5) {
+                    NSApplication.shared.terminate(self)
+                }
+            }
+
             let app = NSApplication.shared
 
             let appDelegate = AppDelegate()
@@ -232,8 +240,6 @@ extension xcreds {
                 NSApplication.shared.terminate(self)
 
             }
-
-
             do {
 
                 let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")

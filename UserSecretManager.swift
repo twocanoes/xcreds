@@ -37,7 +37,11 @@ public struct UserSecretManager {
     }
     public func updateUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber) throws {
         let secrets = try secrets()
-        let hashedUID=Data(SHA256.hash(data: rfidUID))
+        var hashedUID=Data(SHA256.hash(data: rfidUID))
+        for _ in 0...99999 {
+            hashedUID=Data(SHA256.hash(data: hashedUID+rfidUID))
+
+        }
 
         secrets.uidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID)
         try secretKeeper.addSecrets(secrets)

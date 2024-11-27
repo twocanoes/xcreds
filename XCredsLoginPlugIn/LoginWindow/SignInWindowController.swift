@@ -203,7 +203,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                         return
                     }
                     TCSLogWithMark()
-                    let builtInReader = BuiltInPIVCardReader(tkSmartCard: tkSmartCard)
+                    let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
                     TCSLogWithMark()
                     let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
                     TCSLogWithMark()
@@ -223,26 +223,6 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
     func cardLogin(uid:String) {
-//        guard let userArray = UserDefaults.standard.array(forKey: PrefKeys.uidUsers.rawValue) as? Array<Dictionary<String,String>> else {
-//            TCSLogWithMark("no user preferences for uid. check your profile. \(uid)")
-//            passwordTextField.shake(self)
-//
-//            return
-//        }
-//        let user = userArray.first { currUser in
-//            return currUser["uid"]==uid
-//        }
-//        guard let user = user,
-//        let username = user["username"],
-//        let password = user["password"] else {
-//            TCSLogWithMark("no users for: \(uid)")
-//            passwordTextField.shake(self)
-//            return
-//
-//        }
-//        shortName=username
-//        passString=password
-
         TCSLogWithMark("RFID UID \"\(uid)\" detected")
         guard let rfidUsers = rfidUsers else {
             TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
