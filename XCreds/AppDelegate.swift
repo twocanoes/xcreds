@@ -199,17 +199,15 @@ extension xcreds {
 
 
 
-                print("RFID UID:Full Name:Username:UserID")
+                print("Full Name:Username:UserID")
 
                 guard let rfidUsers = users.userDict else {
                     return
 
                 }
                 for currKey in rfidUsers.keys{
-                    if let user = rfidUsers[currKey], let fullname = user.fullName,let passwordData = rfidUsers[currKey]?.password {
-//                        print(passwordData)
-//                        PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: uid)
-                        print("\(currKey):\(fullname):\(user.username):\(user.uid)")
+                    if let user = rfidUsers[currKey], let fullname = user.fullName,let _ = rfidUsers[currKey]?.password {
+                        print("\(fullname):\(user.username):\(user.userUID)")
 
                     }
                 }
@@ -257,17 +255,20 @@ extension xcreds {
 
                     return
                 }
-                let hashedUID=Data(SHA256.hash(data: rfidUidData))
+                let salt = users.salt
+                if salt.count != 16 {
+
+                    print("error with salt")
+                }
+                let (hashedUID, _) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData, salt: salt)
 
                 let user = rfidUsers[hashedUID]
-                guard let passwordData = user?.password else {
+                guard let encryptedUserPassword = user?.password else {
                     print("could not find user.")
-
                     return
 
                 }
-                let password = try PasswordCryptor().aesDecrypt(encryptedData: passwordData, uid: rfidUidData)
-
+                let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedUserPassword, rfidUID: rfidUidData)
 
                 if password.count>0 {
                     print("password set")
@@ -329,14 +330,15 @@ extension xcreds {
                         print("importing \(rfidUid):\(fullname):\(username):\(uid)")
 
 
-                        guard let rfidUidData = Data(fromHexEncodedString: rfidUid) else {
+                        guard let rfidUidData = rfidUid.data(using: .hexadecimal) else {
 
                             print("invalid uid")
                             return
                         }
-                        let hashedUID=Data(SHA256.hash(data: rfidUidData))
+                        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData,salt: nil)
 
-                        rfidUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData)
+
+                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData)
                     }
 
                     try userManager.setUIDUsers(rfidUsers)

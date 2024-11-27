@@ -112,7 +112,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 forceUsernamePassword = true
             }
         }
-        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
+        if forceUsernamePassword == false,
+           DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil,
+            DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
             windowController.window!.makeKeyAndOrderFront(self)
 
@@ -243,7 +246,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
         if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
-            showSignInWindow(forceLoginWindowType: .cloud)
+            showSignInWindow(force:true,forceLoginWindowType: .cloud)
         }
 
 
@@ -420,7 +423,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuIcon(showDot:false)
-        if WifiManager().isConnectedToNetwork()==true {
+        if NetworkMonitor.shared.isConnected==true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }
     }
@@ -447,7 +450,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
-            if WifiManager().isConnectedToNetwork()==true {
+            if NetworkMonitor.shared.isConnected==true {
                 showSignInWindow(forceLoginWindowType: .usernamePassword)
             }
         }

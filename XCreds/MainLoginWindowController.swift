@@ -161,7 +161,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                 self.controlsViewController?.systemInfoPopover.performClose(self)
 
             }
-
             NSAnimationContext.runAnimationGroup({ (context) in
                 context.duration = 1.0
                 context.allowsImplicitAnimation = true

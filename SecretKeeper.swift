@@ -10,22 +10,33 @@ import CryptoKit
 
 @objc(RFIDUsers)
 public class RFIDUsers:NSObject, NSSecureCoding {
+
+
+
     public static var supportsSecureCoding: Bool {
         return true
     }
     public var userDict:Dictionary<Data,SecretKeeperUser>?
+    public var salt:Data
     public func encode(with coder: NSCoder) {
 
         coder.encode(userDict, forKey:"userDict")
+        coder.encode(salt, forKey:"salt")
+
     }
 
     public required init?(coder: NSCoder) {
 
         userDict = coder.decodeObject(forKey: "userDict") as? Dictionary<Data,SecretKeeperUser>
+        self.salt = coder.decodeObject(forKey: "salt") as? Data ?? Data()
     }
 
     init(rfidUsers:[Data:SecretKeeperUser]) {
         self.userDict = rfidUsers
+        var bytes = [Int8](repeating: 0, count: 10)
+        let _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+
+        self.salt = Data(bytes: bytes, count: 16)
     }
 
 
@@ -33,11 +44,24 @@ public class RFIDUsers:NSObject, NSSecureCoding {
 
 
 public struct PasswordCryptor{
-    func keyForAES(uid:Data) throws -> SymmetricKey {
+
+    public enum PasswordCryptorError:Error {
+        case saltLengthError
+        case randomNumberGeneratingError
+        case badInputDataLength
+        case badSalt
+    }
+
+    //the uid is less than 16 byte for AES128, so the user
+    //password is not encrypted with just the UID. The UID
+    //is padded with 0 byte to get it up to 7 bytes. then
+    //the mac serial number is appended to it and and SHA256
+    //is taken to get exactly 16 bytes for the symmetric key
+
+    func keyForAES(rfidUID:Data, salt:Data?) throws -> (key:SymmetricKey,salt:Data?) {
         var keyBuffer = Data()
-
-
-        keyBuffer.append(uid)
+        
+        keyBuffer.append(rfidUID)
 
         if keyBuffer.count<7 {
             for _ in keyBuffer.count..<7 {
@@ -54,25 +78,36 @@ public struct PasswordCryptor{
 
         keyBuffer.append(serialNumber)
 
+        let (hashedData, salt) = try hashSecretWithKeyStretchingAndSalt(secret: keyBuffer, salt: salt)
+//        let hashedBuffer = SHA256.hash(data: keyBuffer)
 
-        let hashedBuffer = SHA256.hash(data: keyBuffer)
+        let symmetricKey = SymmetricKey(data: hashedData)
 
-        let symmetricKey = SymmetricKey(data: hashedBuffer)
-
-        return symmetricKey
+        return (symmetricKey,salt)
     }
-    func aesDecrypt(encryptedData:Data, uid:Data) throws -> Data{
-        let sealedBox = try AES.GCM.SealedBox(combined: encryptedData)
-        let clearTextData = try AES.GCM.open(sealedBox, using: keyForAES(uid:uid))
+    func passwordDecrypt(encryptedDataWithSalt:Data, rfidUID:Data) throws -> Data{
+        if encryptedDataWithSalt.count < 16 {
+
+            throw PasswordCryptorError.badInputDataLength
+
+        }
+        let salt = encryptedDataWithSalt[0...15]
+        let data = encryptedDataWithSalt[16...]
+
+        let sealedBox = try AES.GCM.SealedBox(combined: data)
+        let (key, _) = try keyForAES(rfidUID:rfidUID, salt: salt)
+        let clearTextData = try AES.GCM.open(sealedBox, using:key )
 
         return clearTextData
 
     }
-    func aesEncrypt(clearTextData:Data, uid:Data) throws -> Data{
+    func passwordEncrypt(clearTextData:Data, rfidUID:Data) throws -> Data{
 
-
-
-        let sealed = try AES.GCM.seal(clearTextData, using: keyForAES(uid:uid))
+        let (key, salt) = try keyForAES(rfidUID:rfidUID, salt:nil)
+        guard let salt = salt else {
+            throw PasswordCryptorError.badSalt
+        }
+        let sealed = try AES.GCM.seal(clearTextData, using:key )
 
         guard let encryptedData = sealed.combined else {
             TCSLogWithMark("seal error")
@@ -80,29 +115,65 @@ public struct PasswordCryptor{
             throw SecretKeeper.SecretKeeperError.aesEncryptionError
         }
 
-        print(encryptedData.hexEncodedString())
+//        print(encryptedData.hexEncodedString())
 
 
-        return encryptedData
+        return salt+encryptedData
+    }
+    public func hashSecretWithKeyStretchingAndSalt(secret:Data, salt inSalt:Data?) throws -> (hashedValue:Data,salt:Data)  {
+
+        var salt:Data
+        if let inSalt = inSalt {
+            salt = inSalt
+        }
+        else {
+            var newSaltBytes = [Int8](repeating: 0, count: 16)
+
+            let status = SecRandomCopyBytes(kSecRandomDefault, newSaltBytes.count, &newSaltBytes)
+
+            if status != errSecSuccess { // Always test the status.
+                throw PasswordCryptorError.randomNumberGeneratingError
+                // Prints something different every time you run.
+            }
+            let newSalt = Data(bytes: newSaltBytes, count: 16)
+            salt = newSalt
+        }
+
+
+        var hashedUID=Data(SHA256.hash(data: secret+salt))
+        for _ in 0...65535 {
+            hashedUID=Data(SHA256.hash(data: hashedUID+secret+salt))
+        }
+
+
+//        hashedUID += Data(bytes: salt, count: 16)
+        print("HashedUID:\(hashedUID.hexEncodedString())")
+        print("salt:\(salt.hexEncodedString())")
+        print("secret:\(secret.hexEncodedString())")
+        return (hashedUID,salt)
     }
 }
 
 @objc(SecretKeeperUser)
 public class SecretKeeperUser:NSObject, NSSecureCoding {
+    enum SecretKeeperUserError:Error {
+        case errorCreatingSalt
+
+    }
     public static var supportsSecureCoding: Bool {
         return true
     }
     public var fullName:String?
     public var username:String
     public var password:Data
-    public var uid:NSNumber
+    public var userUID:NSNumber
 
     public func encode(with coder: NSCoder) {
 
         coder.encode(fullName, forKey:"fullName")
         coder.encode(username,forKey:"username")
         coder.encode(password,forKey:"password")
-        coder.encode(uid,forKey:"uid")
+        coder.encode(userUID,forKey:"uid")
     }
 
     public required init?(coder: NSCoder) {
@@ -110,7 +181,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         fullName = coder.decodeObject(forKey: "fullName") as? String
         username = coder.decodeObject(forKey: "username") as? String ?? ""
         password = coder.decodeObject(forKey: "password") as? Data ?? Data()
-        uid = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
+        userUID = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
     }
 
     init(fullName: String, username: String, password: String, uid:NSNumber, rfidUID:Data)  throws {
@@ -121,10 +192,15 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         guard let passwordData = password.data(using: .utf8) else {
             throw SecretKeeper.SecretKeeperError.otherError("error converting password")
         }
-        let encryptedPassword = try PasswordCryptor().aesEncrypt(clearTextData: passwordData, uid: rfidUID)
+//        let (key,salt) = try PasswordCryptor().keyForAES(rfidUID: rfidUID, salt: nil)
+//
+//        guard let salt = salt else {
+//            throw SecretKeeperUserError.errorCreatingSalt
+//        }
+        let encryptedPassword = try PasswordCryptor().passwordEncrypt(clearTextData: passwordData, rfidUID: rfidUID)
         self.password = encryptedPassword
 
-        self.uid = uid
+        self.userUID = uid
 
     }
 
@@ -137,26 +213,33 @@ public class Secrets:NSObject, NSSecureCoding {
         return true
     }
     public var localAdmin:SecretKeeperUser
-    public var uidUsers:RFIDUsers
-
+    public var rfidUIDUsers:RFIDUsers
+    var salt:Data
 
     init(localAdmin:SecretKeeperUser, uidUsers:RFIDUsers){
 
         self.localAdmin = localAdmin
-        self.uidUsers = uidUsers
+        self.rfidUIDUsers = uidUsers
+        var salt = [Int8](repeating: 0, count: 16)
+        let _ = SecRandomCopyBytes(kSecRandomDefault, salt.count, &salt)
+        self.salt = Data(bytes: salt, count: 16)
 
     }
 
     public func encode(with coder: NSCoder) {
         coder.encode(localAdmin, forKey: "localAdmin")
-        coder.encode(uidUsers, forKey: "uidUsers")
+        coder.encode(rfidUIDUsers, forKey: "rfidUIDUsers")
+        coder.encode(salt, forKey: "salt")
+
     }
 
     public required init?(coder: NSCoder) {
 
         do{
             localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data())
-            uidUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "uidUsers") ?? RFIDUsers(rfidUsers: [:])
+            rfidUIDUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "rfidUIDUsers") ?? RFIDUsers(rfidUsers: [:])
+
+            salt = coder.decodeObject(forKey: "salt") as? Data ?? Data()
         }
         catch {
             TCSLogWithMark("error init of user object")

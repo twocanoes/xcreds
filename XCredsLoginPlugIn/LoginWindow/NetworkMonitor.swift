@@ -12,7 +12,7 @@ extension Notification.Name {
     static let connectivityStatus = Notification.Name(rawValue: "connectivityStatusChanged")
 }
 
-extension NWInterface.InterfaceType: CaseIterable {
+extension NWInterface.InterfaceType: @retroactive CaseIterable {
     public static var allCases: [NWInterface.InterfaceType] = [
         .other,
         .wifi,
@@ -38,28 +38,11 @@ final class NetworkMonitor {
     }
 
     func startMonitoring() {
-        monitor.pathUpdateHandler = { [weak self] path in
-            TCSLogWithMark("Network monitor: path updated")
-            self?.isConnected = path.status == .satisfied
-            self?.isExpensive = path.isExpensive
-            self?.currentConnectionType = NWInterface.InterfaceType.allCases.filter { path.usesInterfaceType($0) }.first
-            if WifiManager().isConnectedToNetwork() == true {
-                TCSLogWithMark("Network monitor: connected to network")
-                if let lastNotification = self?.lastNotification {
-                    if abs(lastNotification.timeIntervalSinceNow) > 5 {
-                        TCSLogWithMark("Network monitor: posting connectivity status to NC: \(path.status) for \(String(describing: self?.currentConnectionType))")
-                        self?.lastNotification = Date()
-                        NotificationCenter.default.post(name: .connectivityStatus, object: nil)
-                    } else {
-                        TCSLogWithMark("Network monitor: debouncing connectivity status to NC")
-                    }
-                } else {
-                    TCSLogWithMark("Network monitor: posting connectivity status to NC: \(path.status) for \(String(describing: self?.currentConnectionType))")
-                    self?.lastNotification = Date()
-                    NotificationCenter.default.post(name: .connectivityStatus, object: nil)
-                }
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                self.isConnected=true
             } else {
-                TCSLogWithMark("Not connected to network, no notfication posted")
+                self.isConnected=false
             }
         }
         monitor.start(queue: queue)

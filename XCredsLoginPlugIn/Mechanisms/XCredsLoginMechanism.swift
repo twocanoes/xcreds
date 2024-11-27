@@ -153,7 +153,7 @@ import Network
         if preferLocalLogin == false,
            let _ = discoveryURL { // oidc is configured
             if shouldDetectNetwork == true,
-               WifiManager().isConnectedToNetwork()==false {
+               NetworkMonitor.shared.isConnected==true {
                 showLoginWindowType(loginWindowType: .usernamePassword)
             }
             else if useROPG == true {

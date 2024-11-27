@@ -231,37 +231,44 @@ protocol UpdateCredentialsFeedbackProtocol {
             return
         }
 
-        let rfidUidData = withUnsafeBytes(of: uid) { ptr in
-            Data(ptr)
+        guard let rfidUidData = Data(fromHexEncodedString: uid) else {
+            TCSLogWithMark("error in RFID UID")
+            return
         }
-        let hashedUID=Data(SHA256.hash(data: rfidUidData))
 
-
+        var hashedUID:Data
+        do {
+            (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData, salt: rfidUsers.salt)
+        }
+        catch {
+            TCSLogWithMark("error hashing key")
+            return
+        }
         guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[hashedUID]  else {
             TCSLogWithMark("No RFID user with uid: \(uid)")
             passwordTextField.shake(self)
             return
-
         }
+
         shortName = rfidUser.username
         let encryptedPasswordData = rfidUser.password
 
 
-        guard let uidData = Data(fromHexEncodedString: uid) else {
+        guard let rfidUIDdata = Data(fromHexEncodedString: uid) else {
             TCSLogWithMark("invalid UID Data")
             passwordTextField.shake(self)
             return
 
         }
 
-        guard let passwordData = try? PasswordCryptor().aesDecrypt(encryptedData: encryptedPasswordData, uid: uidData) else {
+        guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata) else {
             TCSLogWithMark("error decrypted password")
             passwordTextField.shake(self)
             return
         }
         passString = String(decoding: passwordData, as: UTF8.self)
         let fullName = rfidUser.fullName
-        let useruid = rfidUser.uid
+        let useruid = rfidUser.userUID
 
         TCSLogWithMark("UserID: \(useruid.stringValue)")
         let userExists = try? PasswordUtils.isUserLocal(shortName)
