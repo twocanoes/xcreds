@@ -21,28 +21,16 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsPowerControlMechanism mech starting starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
-        if FileManager.default.fileExists(atPath: "/tmp/xcreds_return")==true{
-            TCSLogWithMark("xcreds_return exists, removing")
-
-            do{
-                try FileManager.default.removeItem(atPath: "/tmp/xcreds_return")
-            }
-            catch {
-                TCSLogWithMark("Error removing xcreds_return \(error.localizedDescription)")
-            }
-        }
-        
-        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
-            TCSLogWithMark("setting standard login back to XCreds login")
-            let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
-        }
+//        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login"){
+//            TCSLogWithMark("setting standard login back to XCreds login")
+//            let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
+//        }
         guard let userName = usernameContext else {
             TCSLogWithMark("No username was set somehow, pass the login to the next mech.")
             let _ = allowLogin()
             return
 
         }
-
 
         switch userName {
         case SpecialUsers.sleep.rawValue:
@@ -58,17 +46,30 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
             let _ = cliTask("/sbin/shutdown -r now")
 
         case SpecialUsers.standardLoginWindow.rawValue:
-            TCSLogWithMark("Setting back to login window")
-            let res = AuthorizationDBManager.shared.replace(right:"XCredsLoginPlugin:LoginWindow", withNewRight: "loginwindow:login")
-
-            if res == false {
-                TCSLogWithMark("could not restore loginwindow right")
-                denyLogin(message: "Login rights could not be restored")
-                return
+            TCSLogWithMark("mechanism right to boot back to mac login window (SpecialUsers.standardLoginWindow)")
+//            if
+//                AuthorizationDBManager.shared.rightExists(right: "XCredsLoginPlugin:LoginWindow")==true{
+//                if AuthorizationDBManager.shared.replace(right:"XCredsLoginPlugin:LoginWindow", withNewRight: "loginwindow:login") == false {
+//                    TCSLogWithMark("could not replace loginwindow:login with XCredsLoginPlugin:LoginWindow")
+//                }
+//            }
+//            for right in ["XCredsLoginPlugin:UserSetup,privileged","XCredsLoginPlugin:PowerControl,privileged","XCredsLoginPlugin:KeychainAdd,privileged","XCredsLoginPlugin:CreateUser,privileged","XCredsLoginPlugin:EnableFDE,privileged","XCredsLoginPlugin:LoginDone"] {
+//
+//                if AuthorizationDBManager.shared.rightExists(right:right)==true {
+//                    if AuthorizationDBManager.shared.remove(right: right)
+//                        == false {
+//                        TCSLogWithMark("could not remove loginwindow right \(right)")
+//                    }
+//                }
+//
+//            }
+            try? StateFileHelper().createFile(.returnType)
+           let _ = AuthRightsHelper.resetRights()
+            if UserDefaults.standard.bool(forKey: "slowReboot")==true {
+               sleep(30)
             }
-            let _ = cliTask("/usr/bin/killall 'XCreds Login Overlay'")
+            StateFileHelper().killOrReboot()
 
-            let _ = cliTask("/usr/bin/killall loginwindow")
 
         default:
             TCSLogWithMark("No special users named. pass login to the next mech.")

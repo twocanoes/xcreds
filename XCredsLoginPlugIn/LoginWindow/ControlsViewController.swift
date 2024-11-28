@@ -407,6 +407,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         delegate.allowLogin()
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
+        var shouldSwitch = true
         TCSLogWithMark("switch login window")
         if commandKeyDown == false {
 
@@ -414,13 +415,37 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             return
         }
 
-        guard let delegate = delegate else {
-            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
-            return
-        }
-        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+        if UserDefaults.standard.bool(forKey:PrefKeys.shouldUseKillWhenLoginWindowSwitching.rawValue)==false{
 
-        delegate.allowLogin()
+            let alert = NSAlert()
+            alert.addButton(withTitle: "Restart")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText="Switching login windows requires a restart. Do you want to restart now?"
+
+            alert.window.canBecomeVisibleWithoutLogin=true
+
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                TCSLogWithMark("Found bundle")
+
+                alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+            }
+            if alert.runModal() == .alertSecondButtonReturn {
+                shouldSwitch=false
+            }
+        }
+
+        if shouldSwitch == true {
+            guard let delegate = delegate else {
+                TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
+                return
+            }
+            delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+
+            delegate.allowLogin()
+        }
     }
 
 

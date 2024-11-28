@@ -172,42 +172,69 @@ import Network
     }
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
-
+        
         loginWebViewController=nil
         signInViewController=nil
-
+        
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
             super.allowLogin()
             return
         }
-
+        
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
         mainLoginWindowController?.mechanism=self
-
+        
         let showLoginWindowDelaySeconds = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.showLoginWindowDelaySeconds.rawValue)
-
+        
         if showLoginWindowDelaySeconds > 0 {
             TCSLogWithMark("Delaying showing window by \(showLoginWindowDelaySeconds) seconds")
-
+            
             sleep(UInt32(showLoginWindowDelaySeconds))
         }
-
+        
         selectAndShowLoginWindow()
-
-        let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
+        
         TCSLogWithMark("Verifying if we should show cloud login.")
-
-        if isReturning == false,
+        
+        if (StateFileHelper().fileExists(.returnType)==true){
+            TCSLogWithMark("xcreds_return exists")
+        }
+        else {
+            TCSLogWithMark("xcreds_return does NOT exist")
+        }
+        if StateFileHelper().fileExists(.returnType) == false,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
 
+            do {
+                try StateFileHelper().createFile(.returnType)
+            }
+            catch {
+                TCSLogWithMark("error creating return file")
+
+            }
             allowLogin()
             return
         }
+
+        if StateFileHelper().fileExists(.returnType)==true{
+            TCSLogWithMark("xcreds_return exists, removing")
+            do {
+
+                try StateFileHelper().removeFile(.returnType)
+            }
+            catch {
+
+                TCSLogWithMark("Could not remove /usr/local/var/xcreds_return")
+
+            }
+
+        }
+
         TCSLogWithMark("Showing XCreds Login Window")
 
         //for some reason, software update activates and gets in the way. so we delay for 3 seconds before coming back to front

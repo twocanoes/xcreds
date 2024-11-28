@@ -11,6 +11,17 @@ import AppKit
 @main
 class App {
     static func main() {
+        if StateFileHelper().fileExists(.delayType){
+            TCSLogWithMark("Delaying startup of overlay to give login window a chance to start")
+            sleep(3)
+            do {
+                try StateFileHelper().removeFile(.delayType)
+            }
+            catch{
+
+                TCSLogWithMark("Error removing delay file")
+            }
+        }
         _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     }
 }
@@ -20,9 +31,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var cloudLoginTextField: NSTextField!
     @IBOutlet var window: NSWindow!
     @IBOutlet var waitWindow: NSWindow!
+    var returnFileExistedOnStart = false
 
+    var timer:Timer?
     @IBAction func cloudLoginButtonPressed(_ sender: Any) {
 
+        var shouldSwitch = true
+
+        if UserDefaults.standard.bool(forKey:PrefKeys.shouldUseKillWhenLoginWindowSwitching.rawValue)==false{
+
+            let alert = NSAlert()
+            alert.addButton(withTitle: "Restart")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText="Switching login windows requires a restart. Do you want to restart now?"
+
+            alert.window.canBecomeVisibleWithoutLogin=true
+
+
+            alert.icon=Bundle.main.image(forResource: NSImage.Name("icon_128x128"))
+
+
+            if alert.runModal() == .alertSecondButtonReturn {
+                shouldSwitch=false
+            }
+        }
+        if shouldSwitch == false {
+            return
+
+        }
         waitWindow.level = .modalPanel
         waitWindow.canBecomeVisibleWithoutLogin = true
         let screenRect = NSScreen.screens[0].visibleFrame
@@ -34,14 +70,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let newPos = NSMakePoint(screenWidth/2-waitWindowWidth/2, screenHeight/2)
         waitWindow.setFrameOrigin(newPos)
         waitWindow.makeKeyAndOrderFront(self)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            TCSLogWithMark("setting standard login back to XCreds login")
-            try? "".write(toFile: "/tmp/xcreds_return", atomically: false, encoding: .utf8)
-//                let _ = AuthorizationDBManager.shared.replace(right:"loginwindow:login", withNewRight: "XCredsLoginPlugin:LoginWindow")
-            let _ = AuthRightsHelper.addRights()
-//            let _ = cliTask("/usr/bin/killall loginwindow")
 
-            cliTask("/usr/bin/killall", arguments: ["loginwindow"], completion: {_ in })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            
+            TCSLogWithMark("creating return file so XCreds does not return to mac login if it is set to go to mac login window by default.")
+            do {
+                try StateFileHelper().createFile(.returnType)
+            }
+            catch {
+                TCSLogWithMark("not create xcreds_return file:\(error)")
+            }
+            if UserDefaults.standard.bool(forKey: "slowReboot")==true {
+               sleep(30)
+            }
+            let _ = AuthRightsHelper.addRights()
+
+            StateFileHelper().killOrReboot()
+
 
 
         }
@@ -87,33 +132,77 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        TCSLogWithMark("starting")
-        if AuthRightsHelper.verifyRights()==false {
+        
+        TCSLogWithMark("starting overlay")
+        UserDefaults.standard.addSuite(named: "com.twocanoes.xcreds")
+
+        do {
+
+            if StateFileHelper().fileExists(.returnType) == true {
+                returnFileExistedOnStart = true
+                try StateFileHelper().removeFile(.returnType)
+            }
+
+        }
+
+        catch {
+
+            TCSLogWithMark("Error removing return file: \(error)")
+        }
+        self.checkStatus()
+        DispatchQueue.main.async {
+
+            self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
+
+                self.checkStatus()
+
+            }
+        }
+
+    }
+    func checkStatus()  {
+        if  AuthRightsHelper.verifyRights() == false {
+            TCSLogWithMark("rights are not correct. Fixing setting to xcloud. if mac login window is forced, will bounce back there after the cloud window shows.")
             let _ = AuthRightsHelper.resetRights()
-            cloudLoginButtonPressed(self)
+
+            StateFileHelper().killOrReboot()
             return
         }
-//        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
-            TCSLogWithMark("right exists, setting timer")
+        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"){
 
-            Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
-                NSApp.activate(ignoringOtherApps: true)
-                TCSLogWithMark()
-                self.window.orderFrontRegardless()
-                DispatchQueue.main.async {
+            if ud.bool(forKey: "shouldShowCloudLoginByDefault") == true,
+               returnFileExistedOnStart == false,
+               AuthorizationDBManager.shared.rightExists(right: "loginwindow:login")==true
+            {
+                TCSLogWithMark("we should be at XCreds window but we are at mac login window. Resetting and rebooting")
 
-
-                    self.setupWindow()
+                let _ = AuthRightsHelper.addRights()
+                TCSLogWithMark("XCreds rights added. Rebooting")
+                if UserDefaults.standard.bool(forKey: "slowReboot")==true {
+                   sleep(30)
                 }
+                StateFileHelper().killOrReboot()
+                return
             }
-            setupWindow()
-            NSApp.activate(ignoringOtherApps: true)
-            window.orderFrontRegardless()
-//        }
+
+        }
 //        else {
-//            TCSLogWithMark("right does not exist")
+//            TCSLogWithMark("rights correct")
 //        }
+
+        if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
+
+            NSApp.activate(ignoringOtherApps: true)
+            self.setupWindow()
+            NSApp.activate(ignoringOtherApps: true)
+            self.window.orderFrontRegardless()
+        }
+//        else {
+//            TCSLogWithMark("loginwindow:login does not exist so we are at xcreds login")
+//        }
+
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

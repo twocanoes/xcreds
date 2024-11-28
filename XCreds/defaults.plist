@@ -105,5 +105,7 @@
 	<string>interaction_required</string>
 	<key>shouldSuppressLocalPasswordPrompt</key>
 	<false/>
+	<key>shouldUseKillWhenLoginWindowSwitching</key>
+	<false/>
 </dict>
 </plist>
