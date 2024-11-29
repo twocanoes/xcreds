@@ -8,15 +8,94 @@
 import Cocoa
 import ArgumentParser
 import CryptoKit
+import CryptoTokenKit
 
 @main
 struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, RunApp.self],
+        subcommands: [ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
+}
+extension xcreds {
+    struct ListReaders:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Listen and print the RFID of scanned cards.")
+
+        func run() throws {
+            let slotNames = TKSmartCardSlotManager.default?.slotNames
+
+            guard let slotNames = slotNames, slotNames.count>0 else {
+                print("No readers found")
+                return
+            }
+
+            for slot in slotNames {
+
+                print(slot)
+            }
+            return
+        }
+
+
+
+    }
+}
+
+
+extension xcreds {
+    struct RFIDListener:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Listen and print the RFID of scanned cards.")
+
+        @Option(help: "reader name")
+        var readerName:String
+
+        func run() throws {
+            print("press control-c to exit")
+
+            let watcher = TKTokenWatcher()
+            watcher.setInsertionHandler({ tokenID in
+                watcher.addRemovalHandler({ tokenID in
+                    print("card removed")
+                }, forTokenID: tokenID)
+
+                let slotNames = TKSmartCardSlotManager.default?.slotNames
+
+                guard let slotNames = slotNames, slotNames.count>0 else {
+                    return
+                }
+
+                if slotNames.contains(readerName) == false {
+
+                    print("reader \(readerName) not found")
+                    NSApplication.shared.terminate(self)
+
+                }
+
+
+
+                let slot = TKSmartCardSlotManager.default?.slotNamed(readerName)
+                guard let tkSmartCard = slot?.makeSmartCard() else {
+                    return
+                }
+                print("card inserted")
+
+                let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
+                let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
+                if let returnData=returnData, returnData.count>2{
+                    DispatchQueue.main.async {
+                        let hex=returnData[0...returnData.count-3].hexEncodedString()
+                        print(hex)
+                    }
+                }
+
+            })
+
+            RunLoop.main.run()
+
+        }
+    }
 }
 
 extension xcreds {
@@ -368,7 +447,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     @IBOutlet weak var statusMenu: NSMenu!
     var shareMenu:NSMenu?
     var statusBarItem:NSStatusItem?
-
+    var watcher: TKTokenWatcher?
 
 
 

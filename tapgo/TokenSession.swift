@@ -10,8 +10,6 @@ import CryptoTokenKit
 class TokenSession: TKSmartCardTokenSession, TKTokenSessionDelegate {
 
     func tokenSession(_ session: TKTokenSession, beginAuthFor operation: TKTokenOperation, constraint: Any) throws -> TKTokenAuthOperation {
-        // Insert code here to create an instance of TKTokenAuthOperation based on the specified operation and constraint.
-        // Note that the constraint was previously established when populating keychainContents during token initialization.
         return TKTokenSmartCardPINAuthOperation()
     }
     
