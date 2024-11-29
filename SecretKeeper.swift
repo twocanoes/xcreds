@@ -145,11 +145,6 @@ public struct PasswordCryptor{
             hashedUID=Data(SHA256.hash(data: hashedUID+secret+salt))
         }
 
-
-//        hashedUID += Data(bytes: salt, count: 16)
-        print("HashedUID:\(hashedUID.hexEncodedString())")
-        print("salt:\(salt.hexEncodedString())")
-        print("secret:\(secret.hexEncodedString())")
         return (hashedUID,salt)
     }
 }
