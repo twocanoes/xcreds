@@ -250,7 +250,6 @@ class PasswordUtils: NSObject {
     /// `ODNode` to DSLocal for queries and account manipulation.
     public class var localNode: ODNode? {
         do {
-            TCSLogWithMark("Finding the DSLocal node")
             return try ODNode.init(session: ODSession.default(), type: ODNodeType(kODNodeTypeLocalNodes))
         } catch {
             TCSLogWithMark("ODError creating local node.")

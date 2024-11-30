@@ -46,8 +46,8 @@
             filePath = "XCreds/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
             landmarkName = "applicationDidFinishLaunching(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "XCreds/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "run()"
             landmarkType = "7">
          </BreakpointContent>

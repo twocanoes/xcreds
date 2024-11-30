@@ -15,9 +15,112 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
+        subcommands: [Status.self,ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
+}
+extension xcreds {
+    struct Status:ParsableCommand {
+
+        @Flag(help:"JSON output") var json:Bool = false
+        static var configuration = CommandConfiguration(abstract: "Get status of XCreds")
+        @Argument(parsing: .allUnrecognized)
+
+
+        var other: [String] = []
+
+        func run() throws {
+            struct XCredsInfo:Codable {
+                var consoleRights:[String]?
+                var userInfo:[String:Dictionary<String,String>]?
+                var oidcUsers:[[String:String]]?
+
+            }
+            enum UserKeys:String {
+                case realName="dsAttrTypeStandard:RealName"
+                case homeDirectory="dsAttrTypeStandard:NFSHomeDirectory"
+                case recordName="dsAttrTypeStandard:RecordName"
+                case authenticationAuthority="dsAttrTypeStandard:AuthenticationAuthority"
+                case oidcUsername="dsAttrTypeNative:_xcreds_oidc_username"
+                case primaryGID="dsAttrTypeStandard:PrimaryGroupID"
+                case shell="dsAttrTypeStandard:UserShell"
+                case uid="dsAttrTypeStandard:UniqueID"
+            }
+
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+            var info = XCredsInfo()
+
+            let rightsInfo =  AuthorizationDBManager().consoleRights()
+            var oidcUsers = [[String:String]]()
+            var usersResult=[String:Dictionary<String, String>]()
+            info.consoleRights = rightsInfo
+            if !json{
+
+
+                print("----- CONSOLE RIGHTS -----")
+                for thisRight in rightsInfo {
+
+                    print("     " + thisRight)
+                }
+            }
+            do {
+                let users = try PasswordUtils().getAllNonSystemUsers()
+                var userDetailsInfo = [String:String]()
+                print("----- OIDC User Info -----")
+
+                for user in users {
+                    let userDetails = try? user.recordDetails(forAttributes: nil)
+                    if let userDetails = userDetails {
+
+                        for userDetail in userDetails {
+                            if let key = userDetail.key as? String,let _ = UserKeys(rawValue: key), let values = userDetail.value as? [String]
+
+                                {
+                                let value = values.joined(separator: "")
+                                userDetailsInfo[key] = value
+                                if key == UserKeys.oidcUsername.rawValue {
+                                    oidcUsers.append(["localUsername":user.recordName,"oidcUsername":value])
+                                    if !json {
+                                        print("     " + user.recordName)
+                                        print("          localUsername" + ":" + user.recordName)
+                                        print("          oidcUsername" +  ": " + value)
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    usersResult[user.recordName] = userDetailsInfo
+
+                }
+                info.oidcUsers=oidcUsers
+                info.userInfo = usersResult
+                let encoder =  JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let jsonOutput = try encoder.encode(info)
+                if json {
+                    print(String(data: jsonOutput, encoding: .utf8)!)
+                }
+
+
+
+
+
+            }
+            catch {
+                print(error)
+            }
+
+            return
+        }
+
+
+
+    }
 }
 extension xcreds {
     struct ListReaders:ParsableCommand {
@@ -268,8 +371,6 @@ extension xcreds {
                 NSApplication.shared.terminate(self)
 
             }
-
-
             do {
 
                 let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
@@ -290,13 +391,10 @@ extension xcreds {
 
                     }
                 }
-
             }
             catch {
                 print(error.localizedDescription)
             }
-
-
         }
     }
 }

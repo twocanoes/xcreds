@@ -11,8 +11,6 @@ import CryptoKit
 @objc(RFIDUsers)
 public class RFIDUsers:NSObject, NSSecureCoding {
 
-
-
     public static var supportsSecureCoding: Bool {
         return true
     }
@@ -153,7 +151,6 @@ public struct PasswordCryptor{
 public class SecretKeeperUser:NSObject, NSSecureCoding {
     enum SecretKeeperUserError:Error {
         case errorCreatingSalt
-
     }
     public static var supportsSecureCoding: Bool {
         return true
