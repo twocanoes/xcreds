@@ -395,28 +395,44 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         TCSLogWithMark("Format user and domain strings")
         TCSLogWithMark()
-        var providedDomainName = ""
+//        var providedDomainName:String?
 
+        domainName = ""
         let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
         shortName = strippedUsername
 
 
         TCSLogWithMark()
-        if strippedUsername.range(of:"@") != nil && getManagedPreference(key: .ADDomain) != nil {
+        let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+        var allDomainsFromPrefs = DefaultsOverride.standardOverride.array(forKey: PrefKeys.additionalADDomainList.rawValue)  as? [String] ?? []
+
+        if let adDomainFromPrefs=adDomainFromPrefs  {
+            allDomainsFromPrefs.append(adDomainFromPrefs)
+        }
+        allDomainsFromPrefs = allDomainsFromPrefs.map { currVal in
+            currVal.uppercased()
+        }
+
+
+        if strippedUsername.range(of:"@") != nil {
             shortName = (strippedUsername.components(separatedBy: "@").first)!
 
-            providedDomainName = strippedUsername.components(separatedBy: "@").last!.uppercased()
-            TCSLogWithMark(providedDomainName)
-        }
-        TCSLogWithMark()
+            if let providedDomainName = (strippedUsername.components(separatedBy: "@").last)?.uppercased(), allDomainsFromPrefs.contains(providedDomainName){
+                domainName = providedDomainName
 
-        if providedDomainName == "",
+            }
+        }
+
+
+
+
+        if  domainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
             TCSLogWithMark("Defaulting to managed domain as there is nothing else")
             domainName = managedDomain
-        }
+            TCSLogWithMark("Using domain from managed domain")
 
-        TCSLogWithMark("Using domain from managed domain")
+        }
         return
     }
 
