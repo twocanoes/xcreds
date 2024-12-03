@@ -18,6 +18,7 @@ enum PrefKeys: String {
     case systemInfoAdditionsArray
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"
+    case additionalADDomainList = "AdditionalADDomains"
     case aDDomainController = "ADDomainController"
     case allowEAPOL = "AllowEAPOL"
     case allUserInformation = "AllUserInformation"
