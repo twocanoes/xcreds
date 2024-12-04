@@ -592,15 +592,33 @@ protocol UpdateCredentialsFeedbackProtocol {
         if strippedUsername.range(of:"@") != nil {
             shortName = (strippedUsername.components(separatedBy: "@").first)!
 
-            if let providedDomainName = (strippedUsername.components(separatedBy: "@").last)?.uppercased(), allDomainsFromPrefs.contains(providedDomainName){
+            if let providedDomainName = (strippedUsername.components(separatedBy: "@").last)?.uppercased(){
                 domainName = providedDomainName
 
             }
         }
 
 
+        if let upnMappings = DefaultsOverride.standardOverride.array(forKey: PrefKeys.upnSuffixToDomainMappings.rawValue)  as? [[String:String]]{
+            for upnMapping in upnMappings {
+                if let upn = upnMapping["upn"]?.uppercased(),
+                    let mappedDomain = upnMapping["domain"]?.uppercased(),
+                    upn == domainName.uppercased()
+                {
+                    TCSLogWithMark("changing domain from \(domainName) to \(mappedDomain)")
+                    domainName = mappedDomain
+                    break
+                }
+
+            }
+        }
 
 
+
+        if allDomainsFromPrefs.contains(domainName.uppercased())==false {
+            TCSLogWithMark("domain \(domainName) is not the adDomain or in additionalADDomainList.")
+            domainName = ""
+        }
         if  domainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
             TCSLogWithMark("Defaulting to managed domain as there is nothing else")
