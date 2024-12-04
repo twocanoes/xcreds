@@ -304,7 +304,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func passwordExpiryUpdate(_ passwordExpire: Date) {
-
         let dateFormatter = DateFormatter()
 
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -312,7 +311,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         dateFormatter.timeStyle = .short
         let dateString = dateFormatter.string(from: passwordExpire)
 
-        self.adPasswordExpires=dateString
+
+        if passwordExpire.timeIntervalSinceNow>10*365*24*60*60{
+            self.adPasswordExpires="Never"
+        }
+        else {
+            self.adPasswordExpires=dateString
+
+        }
+
+
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuExpiration(passwordExpire)
 
