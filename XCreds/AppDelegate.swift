@@ -15,7 +15,7 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [Status.self,ImportUsers.self, ImportUser.self, ShowUser.self,ShowUsers.self, UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
+        subcommands: [Status.self,ImportUsers.self, SetUser.self, ShowUser.self,ShowUsers.self, RemoveUser.self,UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -277,7 +277,6 @@ extension xcreds {
                 NSApplication.shared.terminate(self)
 
             }
-
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
             try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data()))
@@ -309,7 +308,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct ImportUser:ParsableCommand {
+    struct SetUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Import an RFID user.")
 
         @Option(help: "Update Fullname")
@@ -348,7 +347,7 @@ extension xcreds {
                     }
 
 
-                    try userManager.updateUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
+                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
 
                 }
             }
@@ -406,7 +405,7 @@ extension xcreds {
 
 
         @Option(help: "RFID-uid in hex with no 0x in front.")
-        var rfidUIDString:String
+        var rfidUID:String
 
 
         func run() throws {
@@ -416,36 +415,20 @@ extension xcreds {
 
             }
             do {
-
-                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
-                let userManager = UserSecretManager(secretKeeper: secretKeeper)
-                let users = try userManager.uidUsers()
-
-
-                guard let rfidUsers = users.userDict else {
-                    return
-
-                }
-                let rfidUidData = Data(fromHexEncodedString: rfidUIDString)
+                let rfidUidData = Data(fromHexEncodedString: rfidUID)
                 guard let rfidUidData = rfidUidData else {
                     print("bad RFID rfidUidData")
 
                     return
                 }
-                let salt = users.salt
-                if salt.count != 16 {
 
-                    print("error with salt")
-                }
-                let (hashedUID, _) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData, salt: salt)
-
-                let user = rfidUsers[hashedUID]
-                guard let encryptedUserPassword = user?.password else {
-                    print("could not find user.")
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                guard let user = try userManager.uidUser(uid: rfidUidData) else {
+                    print("user not found")
                     return
-
                 }
-                let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedUserPassword, rfidUID: rfidUidData)
+                let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: user.password, rfidUID: rfidUidData)
 
                 if password.count>0 {
                     print("password set")
@@ -460,6 +443,53 @@ extension xcreds {
         }
     }
 }
+extension xcreds {
+    struct RemoveUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Remove RFID user by rfid-uid.")
+
+
+        @Option(help: "RFID-uid in hex with no 0x in front.")
+        var rfidUID:String
+
+
+        func run() throws {
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+            do {
+                let rfidUidData = Data(fromHexEncodedString: rfidUID)
+                guard let rfidUidData = rfidUidData else {
+                    print("bad RFID rfidUidData")
+
+                    return
+                }
+
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                guard let user = try userManager.uidUser(uid: rfidUidData) else {
+                    print("user not found")
+                    return
+                }
+                if try userManager.removeUIDUser(uid: rfidUidData) == false {
+                    print("user could not be removed")
+                }
+                else {
+                    print("user removed")
+
+                }
+
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+
+
+        }
+    }
+}
+
 
 
 

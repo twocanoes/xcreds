@@ -32,52 +32,116 @@ public struct UserSecretManager {
 
         let secrets = try secrets()
         secrets.localAdmin=user
-        try secretKeeper.addSecrets(secrets)
+        try secretKeeper.saveSecrets(secrets)
     }
     public func localAdminCredentials() throws -> SecretKeeperUser?{
         let secrets = try secrets()
         return secrets.localAdmin
 
     }
-    public func updateUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber) throws {
+    public func setUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber) throws {
 
         //passsword is rfid uid, which is typically max 7 bytes.
         //using key stretching:
         //https://en.wikipedia.org/wiki/Key_stretching
         //the rfid is hashed, and then that result is added to the original rfid and hashed again over and over
-        //the
 
-        let secrets = try secrets()
-        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUID, salt: nil)
+        var secretKeeperSecrets = try secrets()
+        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUID, salt: secretKeeperSecrets.rfidUIDUsers.salt)
 
         if salt.count<16 {
             throw UserSecretManagerError.saltLengthError
         }
-        secrets.rfidUIDUsers.salt = salt
-        secrets.rfidUIDUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID)
-        try secretKeeper.addSecrets(secrets)
+//        secretKeeperSecrets.rfidUIDUsers.salt = salt
+        if let existingUser = try uidUser(uid: rfidUID)  {
+            TCSLogWithMark("user \(existingUser.username) with rfid already found. removing")
+
+            if try removeUIDUser(uid: rfidUID) == false {
+                TCSLogWithMark("error removing user")
+            }
+        }
+        if let _ = try uidUser(username: username) {
+            TCSLogWithMark("user already exists, removing")
+            let _ = try removeUIDUser(username: username)
+        }
+        secretKeeperSecrets = try secrets()
+        secretKeeperSecrets.rfidUIDUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID)
+        try secretKeeper.saveSecrets(secretKeeperSecrets)
     }
 
     public func setUIDUsers(_ users:RFIDUsers) throws {
         let secrets = try secrets()
         secrets.rfidUIDUsers=users
-        try secretKeeper.addSecrets(secrets)
+        try secretKeeper.saveSecrets(secrets)
     }
 
-//    public func uidUser(uid:Data) throws -> SecretKeeperUser?{
-//        let secrets = try secrets()
-//        let hashedUID=Data(SHA256.hash(data: uid))
-//
-//        let uidUsers = secrets.uidUsers
-//        return uidUsers.userDict?[hashedUID]
-//    }
+    public func uidUser(uid:Data) throws -> SecretKeeperUser?{
+        let secrets = try secrets()
+
+        let (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: uid, salt: secrets.rfidUIDUsers.salt)
+
+        let userDict = secrets.rfidUIDUsers.userDict
+
+//        for (k,v) in userDict! {
+//            print(k.hexEncodedString())
+//            print(v)
+//        }
+        if let existingUser = userDict?[hashedUID]  {
+            return existingUser
+        }
+        return nil
+
+    }
+    public func uidUser(username:String) throws -> SecretKeeperUser?{
+        let secrets = try secrets()
+
+        let userDict = secrets.rfidUIDUsers.userDict
+
+        for (_,v) in userDict! {
+            if v.username.lowercased() == username.lowercased() {
+                return v
+
+            }
+        }
+
+        return nil
+
+    }
 
     public func clearUIDUsers() throws {
         let secrets = try secrets()
         secrets.rfidUIDUsers.userDict = [:]
-        try secretKeeper.addSecrets(secrets)
+        try secretKeeper.saveSecrets(secrets)
     }
+    public func removeUIDUser(uid:Data) throws -> Bool {
+        let secrets = try secrets()
 
+        let (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: uid, salt: secrets.rfidUIDUsers.salt)
+
+        if let _ = try uidUser(uid: uid)  {
+            secrets.rfidUIDUsers.userDict?.removeValue(forKey: hashedUID)
+            try secretKeeper.saveSecrets(secrets)
+            return true
+        }
+        TCSLogWithMark("No user found with UID \(uid.hexEncodedString())")
+
+        return false
+    }
+    public func removeUIDUser(username:String) throws -> Bool {
+        let secrets = try secrets()
+        var removedUser = false
+        if let user = secrets.rfidUIDUsers.userDict?.first(where: { (key: Data, value: SecretKeeperUser) in
+            value.username.lowercased() == username.lowercased()
+        }) {
+            secrets.rfidUIDUsers.userDict?.removeValue(forKey: user.key)
+            removedUser=true
+
+        }
+        if removedUser==true {
+            try secretKeeper.saveSecrets(secrets)
+        }
+        return removedUser
+    }
     public func uidUsers() throws-> RFIDUsers {
         let secrets = try secrets()
         return secrets.rfidUIDUsers

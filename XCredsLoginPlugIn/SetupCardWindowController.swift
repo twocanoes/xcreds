@@ -32,9 +32,7 @@ class SetupCardWindowController: NSWindowController {
             }
 
             if slotNames.contains(readerName) == false {
-
                 TCSLogWithMark("reader \(readerName) not found")
-
             }
             let slot = TKSmartCardSlotManager.default?.slotNamed(readerName)
             guard let tkSmartCard = slot?.makeSmartCard() else {
@@ -49,7 +47,6 @@ class SetupCardWindowController: NSWindowController {
             TCSLogWithMark()
             if let returnData=returnData, returnData.count>2{
                 DispatchQueue.main.async {
-                    TCSLogWithMark()
                     TCSLogWithMark()
                     let hex=returnData[0...returnData.count-3].hexEncodedString()
                     TCSLogWithMark(hex)

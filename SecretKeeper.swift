@@ -477,7 +477,7 @@ public class SecretKeeper {
 }
 
 extension SecretKeeper {
-    func addSecrets(_ secrets:Secrets) throws {
+    func saveSecrets(_ secrets:Secrets) throws {
 
 
         let data = try NSKeyedArchiver.archivedData(withRootObject:secrets,requiringSecureCoding: true)
@@ -508,9 +508,6 @@ extension SecretKeeper {
             TCSLog("Error unarchiving")
             throw SecretKeeperError.otherError("Error unarchiving")
         }
-
-
-
         return secrets
         }
 

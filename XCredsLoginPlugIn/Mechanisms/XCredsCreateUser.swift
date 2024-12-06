@@ -299,10 +299,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
                 }
 
-                if let username = xcredsUser, let password = xcredsPass, let username = xcredsUser{
+                if let username = xcredsUser, let password = xcredsPass{
                     let fullname = fullname ?? ""
 
-                    try userManager.updateUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password:password, uid: NSNumber(value: -1))
+                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password:password, uid: NSNumber(value: -1))
 
                 }
 
