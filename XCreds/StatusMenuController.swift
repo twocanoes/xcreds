@@ -22,6 +22,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case SharesMenuItem=10
         case QuitMenuItem=11
         case Additional=12
+        case SetupCardMenuItem=13
 
     }
     enum MenuElements:String {
@@ -49,6 +50,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     @IBOutlet var credentialStatusMenuItem:NSMenuItem!
     @IBOutlet var statusMenu:NSMenu!
     @IBOutlet var sharesMenuItem:NSMenuItem!
+    var setupCardWindowController:SetupCardWindowController?
     override func awakeFromNib() {
 
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
@@ -91,6 +93,14 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
         }
     }
+    
+    @IBAction func setupCardMenuItemSelected(_ sender: NSMenuItem) {
+        if setupCardWindowController == nil {
+            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+        }
+        setupCardWindowController?.window!.makeKeyAndOrderFront(self)
+
+    }
     @objc func additionalMenuItemSelected(_ sender:NSMenuItem){
         guard let menuItemInfo = sender.representedObject as? StatusMenuItem else  {
             return
@@ -115,13 +125,17 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         let mainController = appDelegate?.mainController
         
         let tag = menuItem.tag
-        
+
+        TCSLogWithMark("tag: \(tag)")
         guard let menuType = StatusMenuItemType(rawValue: tag) else {
             return false
         }
         
         switch menuType {
-            
+
+        case .SetupCardMenuItem:
+            return true
+
         case .AboutMenuItem:
             
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowAboutMenu.rawValue) == false {

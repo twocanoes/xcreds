@@ -40,6 +40,7 @@ enum HintType: String {
     case allADAttributes
     case rfidUsers
     case localAdmin
+    case rfidUid
 
 
 }

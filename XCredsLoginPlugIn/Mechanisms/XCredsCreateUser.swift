@@ -100,6 +100,12 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
 
         }
+        var fullname:String?
+
+        if let fullnameHint = getHint(type: .fullName) as? String, fullnameHint.isEmpty == false {
+            fullname=fullnameHint
+        }
+
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
             
             var secureTokenCreds:SecureTokenCredential? = nil
@@ -140,11 +146,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 uid = firstAvailableUid
             }
             TCSLog("Checking for createLocalAdmin key")
-            var fullname:String?
-
-            if let fullnameHint = getHint(type: .fullName) as? String, fullnameHint.isEmpty == false {
-                fullname=fullnameHint
-            }
 
 
             var customAttributes = [String: String]()
@@ -285,6 +286,31 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
 
 
+        if let rfidUID = getHint(type: .rfidUid) as? String  {
+            TCSLogWithMark("got RFIDuid: \(rfidUID)")
+
+            do {
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                guard let rfidUIDData = Data(fromHexEncodedString: rfidUID) else {
+                    print("invalid rfid. Must be hex with no 0x in front")
+                    return
+
+                }
+
+                if let username = xcredsUser, let password = xcredsPass, let username = xcredsUser{
+                    let fullname = fullname ?? ""
+
+                    try userManager.updateUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password:password, uid: NSNumber(value: -1))
+
+                }
+
+            }
+            catch {
+
+            }
+        }
 
 
         os_log("Allowing login", log: createUserLog, type: .debug)

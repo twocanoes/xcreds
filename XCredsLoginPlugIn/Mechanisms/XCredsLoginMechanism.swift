@@ -359,8 +359,6 @@ import Network
                 TCSLogWithMark("no localAdmin found in hints")
             }
 
-
-
             mainLoginWindowController?.addCenterView(signInViewController.view)
 
             TCSLogWithMark()

@@ -49,6 +49,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     var isInUserSpace = false
     var watcher:TKTokenWatcher?
 
+    var shouldIgnoreInsertion=false
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
         return true
@@ -61,11 +62,15 @@ protocol UpdateCredentialsFeedbackProtocol {
     @IBOutlet var alertTextField:NSTextField!
     @IBOutlet var tapLoginLabel:NSTextField!
 
+    @IBOutlet weak var loginCardSetupButton: NSButton!
+    @IBOutlet weak var loginCardSetupView: NSView!
+
     @IBOutlet weak var stackView: NSStackView!
 
 //    @IBOutlet weak var domain: NSPopUpButton!
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
+    var setupCardWindowController:SetupCardWindowController?
 
     var mechanismDelegate:XCredsMechanismProtocol?
 
@@ -176,6 +181,9 @@ protocol UpdateCredentialsFeedbackProtocol {
                         TCSLogWithMark("card removed")
                     }, forTokenID: tokenID)
 
+                    if self.shouldIgnoreInsertion == true {
+                        return
+                    }
                     let slotNames = TKSmartCardSlotManager.default?.slotNames
 
                     guard let slotNames = slotNames, slotNames.count>0 else {
@@ -457,6 +465,26 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
     }
 
+    func setupLoginCard(completion:(_ result:Bool, _ uid:String?)->Void) {
+
+        if setupCardWindowController == nil {
+            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+        }
+        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
+
+        if let setupCardWindow = setupCardWindowController?.window {
+            let res = NSApp.runModal(for: setupCardWindow)
+            if res == .OK {
+                if let uid = setupCardWindowController?.uid {
+                    completion(true, uid)
+                }
+            }
+            else {
+                completion(false,nil)
+
+            }
+        }
+    }
 
     /// When the sign in button is clicked we check a few things.
     ///
@@ -503,7 +531,30 @@ protocol UpdateCredentialsFeedbackProtocol {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
-                completeLogin(authResult:.allow)
+                if loginCardSetupButton.state == .on {
+                    shouldIgnoreInsertion=true
+                    setupLoginCard { result,uid  in
+                        if result==true{
+                            if let uid = uid {
+                                TCSLogWithMark("setting rfid uid: \(uid)")
+                                mechanismDelegate?.setHint(type: .rfidUid, hint: uid as NSSecureCoding)
+                            }
+                            shouldIgnoreInsertion=false
+                            completeLogin(authResult:.allow)
+                        }
+                        else {
+                            shouldIgnoreInsertion=false
+                            TCSLogWithMark("failed to setup Login card")
+                            authFail("Login Card Setup Failed")
+
+                        }
+
+                    }
+                }
+                else {
+
+                    completeLogin(authResult:.allow)
+                }
 
             }
             else {

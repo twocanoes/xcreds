@@ -11,6 +11,8 @@
                 <outlet property="alertTextField" destination="e5W-zw-UxS" id="JTQ-VN-A08"/>
                 <outlet property="localOnlyCheckBox" destination="kwO-Pt-tOG" id="w4U-23-hqX"/>
                 <outlet property="localOnlyView" destination="awi-FJ-4Sf" id="wBk-nn-xbG"/>
+                <outlet property="loginCardSetupButton" destination="iwC-yg-Wc5" id="e8t-4D-JiT"/>
+                <outlet property="loginCardSetupView" destination="awi-FJ-4Sf" id="6of-b3-jTl"/>
                 <outlet property="passwordTextField" destination="UJh-bj-CPX" id="YZl-II-FDB"/>
                 <outlet property="signIn" destination="XnO-81-SH2" id="VQg-nQ-slV"/>
                 <outlet property="stackView" destination="eRJ-Lo-UdT" id="b9W-ja-J8M"/>
@@ -26,10 +28,10 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="11" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRJ-Lo-UdT" userLabel="login stack">
-                    <rect key="frame" x="27" y="26" width="283" height="173"/>
+                    <rect key="frame" x="27" y="8" width="283" height="209"/>
                     <subviews>
-                        <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
-                            <rect key="frame" x="0.0" y="143" width="250" height="30"/>
+                        <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
+                            <rect key="frame" x="0.0" y="179" width="250" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="PcC-1B-yi1"/>
                                 <constraint firstAttribute="height" constant="30" id="ecj-Kv-Zev"/>
@@ -45,9 +47,9 @@
                             </connections>
                         </textField>
                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZJ-ht-zuy">
-                            <rect key="frame" x="0.0" y="102" width="283" height="30"/>
+                            <rect key="frame" x="0.0" y="138" width="283" height="30"/>
                             <subviews>
-                                <secureTextField verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
+                                <secureTextField focusRingType="none" verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="37q-P0-BRW"/>
@@ -95,16 +97,16 @@ DQ
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
-                            <rect key="frame" x="-2" y="63" width="189" height="28"/>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
+                            <rect key="frame" x="-2" y="99" width="189" height="28"/>
                             <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Login" id="67B-K8-Q2B">
                                 <font key="font" metaFont="system" size="24"/>
                                 <color key="textColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
-                            <rect key="frame" x="-2" y="36" width="254" height="16"/>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
+                            <rect key="frame" x="-2" y="72" width="254" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="f1h-xK-zpp"/>
                             </constraints>
@@ -115,7 +117,7 @@ DQ
                             </textFieldCell>
                         </textField>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="awi-FJ-4Sf">
-                            <rect key="frame" x="0.0" y="0.0" width="176" height="25"/>
+                            <rect key="frame" x="0.0" y="36" width="176" height="25"/>
                             <subviews>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kwO-Pt-tOG">
                                     <rect key="frame" x="-3" y="2" width="22" height="22"/>
@@ -126,10 +128,10 @@ DQ
                                     </buttonCell>
                                     <color key="contentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <connections>
-                                        <outlet property="nextKeyView" destination="XnO-81-SH2" id="QRA-ps-KSC"/>
+                                        <outlet property="nextKeyView" destination="iwC-yg-Wc5" id="BYA-wD-gzn"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5fp-gV-bSn">
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5fp-gV-bSn">
                                     <rect key="frame" x="22" y="5" width="136" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" title="Offline Authentication" id="6YI-la-oeR">
@@ -141,6 +143,35 @@ DQ
                             </subviews>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="QTw-d6-SwZ"/>
+                            </constraints>
+                        </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="fzf-du-W7s">
+                            <rect key="frame" x="0.0" y="0.0" width="176" height="25"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iwC-yg-Wc5">
+                                    <rect key="frame" x="-3" y="2" width="22" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" controlSize="large" inset="2" id="bXa-ud-i6Y">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <color key="contentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <connections>
+                                        <outlet property="nextKeyView" destination="XnO-81-SH2" id="u2u-sO-vgs"/>
+                                    </connections>
+                                </button>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UQF-b4-oED">
+                                    <rect key="frame" x="22" y="5" width="109" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" title="Setup Login Card" id="lcm-Yv-GyZ">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="Nbl-YZ-Thm"/>
                             </constraints>
                         </customView>
                     </subviews>
@@ -156,8 +187,10 @@ DQ
                         <integer value="1000"/>
                         <integer value="1000"/>
                         <integer value="1000"/>
+                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>

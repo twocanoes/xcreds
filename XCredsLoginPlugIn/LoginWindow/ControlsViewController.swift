@@ -30,6 +30,8 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 //    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
+    var setupCardWindowController:SetupCardWindowController?
+
     var refreshTimer:Timer?
     var commandKeyDown = false
     var optionKeyDown = false
@@ -405,6 +407,16 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         TCSLogWithMark("calling allowLogin")
 
         delegate.allowLogin()
+    }
+    @IBAction func setupCardButtonPressed(_ sender: Any) {
+
+        if setupCardWindowController == nil {
+            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+        }
+        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
+        setupCardWindowController?.window?.makeKeyAndOrderFront(self)
+
+
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
         var shouldSwitch = true

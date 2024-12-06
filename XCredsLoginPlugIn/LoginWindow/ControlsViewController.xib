@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -41,7 +42,7 @@
                     <rect key="frame" x="0.0" y="14" width="1002" height="88"/>
                     <subviews>
                         <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="Of1-FL-rgU">
-                            <rect key="frame" x="187" y="10" width="628" height="48"/>
+                            <rect key="frame" x="111" y="10" width="781" height="48"/>
                             <rows>
                                 <gridRow id="Ax5-pH-aQS"/>
                             </rows>
@@ -49,8 +50,9 @@
                                 <gridColumn width="116" trailingPadding="6" id="vWr-UA-21l"/>
                                 <gridColumn width="116" trailingPadding="6" id="vSV-Ol-eHY"/>
                                 <gridColumn width="116" trailingPadding="6" id="AiZ-fa-C1D"/>
-                                <gridColumn width="116" trailingPadding="6" id="Qgw-6x-QRs"/>
+                                <gridColumn width="161" trailingPadding="6" id="Qgw-6x-QRs"/>
                                 <gridColumn width="116" id="8Cw-21-fob"/>
+                                <gridColumn id="7Vs-59-aam"/>
                             </columns>
                             <gridCells>
                                 <gridCell row="Ax5-pH-aQS" column="vWr-UA-21l" xPlacement="center" id="kmk-C1-8Ed">
@@ -68,7 +70,7 @@
                                 </gridCell>
                                 <gridCell row="Ax5-pH-aQS" column="vSV-Ol-eHY" xPlacement="center" id="KaX-Pf-Drv">
                                     <button key="contentView" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="geo-E2-Yej">
-                                        <rect key="frame" x="154" y="0.0" width="65" height="48"/>
+                                        <rect key="frame" x="153" y="0.0" width="65" height="48"/>
                                         <buttonCell key="cell" type="bevel" title="Shutdown" bezelStyle="rounded" image="ShutdownX" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="8x0-LE-puN">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -94,11 +96,9 @@
                                 </gridCell>
                                 <gridCell row="Ax5-pH-aQS" column="Qgw-6x-QRs" xPlacement="center" id="nYW-QR-FyA">
                                     <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="gBX-qs-ZzX">
-                                        <rect key="frame" x="397" y="0.0" width="90" height="48"/>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="loginwindow" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="7Kj-Zs-PRx">
+                                        <rect key="frame" x="397" y="0.0" width="134" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Switch Login Window" bezelStyle="rounded" image="loginwindow" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="7Kj-Zs-PRx">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <string key="title">Switch
-Login Window</string>
                                             <font key="font" metaFont="system"/>
                                             <string key="keyEquivalent" base64-UTF8="YES">
 DQ
@@ -113,7 +113,7 @@ DQ
                                 </gridCell>
                                 <gridCell row="Ax5-pH-aQS" column="8Cw-21-fob" xPlacement="center" id="iyn-s8-GFy">
                                     <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="0pJ-At-M5q">
-                                        <rect key="frame" x="512" y="0.0" width="116" height="48"/>
+                                        <rect key="frame" x="557" y="0.0" width="116" height="48"/>
                                         <buttonCell key="cell" type="bevel" title="Refresh" bezelStyle="rounded" image="refresh symbol" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="QAx-lk-PcT">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -121,6 +121,20 @@ DQ
                                         <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="refreshButtonPressed:" target="-2" id="9up-7e-1lF"/>
+                                        </connections>
+                                    </button>
+                                </gridCell>
+                                <gridCell row="Ax5-pH-aQS" column="7Vs-59-aam" id="5Xo-oJ-BIR">
+                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="l2R-hl-qyp">
+                                        <rect key="frame" x="679" y="0.0" width="102" height="48"/>
+                                        <buttonCell key="cell" type="bevel" title="Tap Login Setup" bezelStyle="regularSquare" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="ISy-Q0-bnx">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                            <imageReference key="image" image="NSAdvanced" symbolScale="large"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="setupCardButtonPressed:" target="-2" id="zuK-s5-wYm"/>
                                         </connections>
                                     </button>
                                 </gridCell>
@@ -192,6 +206,7 @@ DQ
         </customView>
     </objects>
     <resources>
+        <image name="NSAdvanced" width="32" height="32"/>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
         <image name="loginwindow" width="41" height="31.5"/>
