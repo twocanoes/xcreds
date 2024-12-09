@@ -426,7 +426,15 @@ import OpenDirectory
             return
         }
     }
-    
+    func setHintData(type: HintType, data: Data) {
+        var value = AuthorizationValue(length: data.count, data: UnsafeMutableRawPointer(mutating: (data as NSData).bytes.bindMemory(to: Void.self, capacity: data.count)))
+
+        let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
+        guard err == errSecSuccess else {
+            TCSLogWithMark("XCred Login Set hint failed with: %{public}@")
+            return
+        }
+    }
     var groups: [String]? {
         get {
             guard let userGroups = getHint(type: .groups) as? [String] else {
@@ -443,15 +451,15 @@ import OpenDirectory
         var err: OSStatus = noErr
         err = mechCallbacks.GetHintValue((mech?.fEngine)!, type.rawValue, &value)
         if err != errSecSuccess {
-            TCSLogWithMark("No hint retrieved for: \(type.rawValue)")
+//            TCSLogWithMark("No hint retrieved for: \(type.rawValue)")
             return nil
         }
 
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
-        
+
+        TCSLogWithMark("Hint: \(type.rawValue):\(outputdata.hexEncodedString())")
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
-            TCSLogErrorWithMark("Couldn't unpack hint value: %{public}@")
                 return nil
         }
 

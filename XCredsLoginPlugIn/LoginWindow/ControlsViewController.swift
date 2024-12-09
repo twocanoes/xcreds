@@ -30,7 +30,6 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 //    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
-    var setupCardWindowController:SetupCardWindowController?
 
     var refreshTimer:Timer?
     var commandKeyDown = false
@@ -38,15 +37,6 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     var controlKeyDown = false
     var allowPopoverClose:Bool = false
     var keyCodesPressed:[UInt16:Bool]=[:]
-//    func dismiss() {
-////        if let resolutionObserver = resolutionObserver {
-////            NotificationCenter.default.removeObserver(resolutionObserver)
-////        }
-////        self.window?.close()
-//    }
-//    @objc override var windowNibName: NSNib.Name {
-//        return NSNib.Name("ControlsViewController")
-//    }
 
     static func initFromPlugin() -> ControlsViewController?{
 
@@ -407,16 +397,6 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         TCSLogWithMark("calling allowLogin")
 
         delegate.allowLogin()
-    }
-    @IBAction func setupCardButtonPressed(_ sender: Any) {
-
-        if setupCardWindowController == nil {
-            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
-        }
-        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
-        setupCardWindowController?.window?.makeKeyAndOrderFront(self)
-
-
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
         var shouldSwitch = true

@@ -56,7 +56,7 @@ public struct PasswordCryptor{
     //the mac serial number is appended to it and and SHA256
     //is taken to get exactly 16 bytes for the symmetric key
 
-    func keyForAES(rfidUID:Data, salt:Data?) throws -> (key:SymmetricKey,salt:Data?) {
+    func keyForAES(rfidUID:Data, salt:Data?, pin:String?) throws -> (key:SymmetricKey,salt:Data?) {
         var keyBuffer = Data()
         
         keyBuffer.append(rfidUID)
@@ -68,6 +68,10 @@ public struct PasswordCryptor{
         }
         let serialNumber = getSerial().data(using: .utf8)
 
+        if let pin = pin, let pinData = pin.data(using: .utf8) {
+            keyBuffer.append(pinData)
+        }
+
         guard let serialNumber = serialNumber else {
             TCSLogWithMark("serial number error")
             throw SecretKeeper.SecretKeeperError.aesEncryptionError
@@ -77,13 +81,12 @@ public struct PasswordCryptor{
         keyBuffer.append(serialNumber)
 
         let (hashedData, salt) = try hashSecretWithKeyStretchingAndSalt(secret: keyBuffer, salt: salt)
-//        let hashedBuffer = SHA256.hash(data: keyBuffer)
 
         let symmetricKey = SymmetricKey(data: hashedData)
 
         return (symmetricKey,salt)
     }
-    func passwordDecrypt(encryptedDataWithSalt:Data, rfidUID:Data) throws -> Data{
+    func passwordDecrypt(encryptedDataWithSalt:Data, rfidUID:Data, pin:String?) throws -> Data{
         if encryptedDataWithSalt.count < 16 {
 
             throw PasswordCryptorError.badInputDataLength
@@ -93,15 +96,15 @@ public struct PasswordCryptor{
         let data = encryptedDataWithSalt[16...]
 
         let sealedBox = try AES.GCM.SealedBox(combined: data)
-        let (key, _) = try keyForAES(rfidUID:rfidUID, salt: salt)
+        let (key, _) = try keyForAES(rfidUID:rfidUID, salt: salt, pin:pin)
         let clearTextData = try AES.GCM.open(sealedBox, using:key )
 
         return clearTextData
 
     }
-    func passwordEncrypt(clearTextData:Data, rfidUID:Data) throws -> Data{
+    func passwordEncrypt(clearTextData:Data, rfidUID:Data, pin:String?) throws -> Data{
 
-        let (key, salt) = try keyForAES(rfidUID:rfidUID, salt:nil)
+        let (key, salt) = try keyForAES(rfidUID:rfidUID, salt:nil, pin:pin)
         guard let salt = salt else {
             throw PasswordCryptorError.badSalt
         }
@@ -159,6 +162,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
     public var username:String
     public var password:Data
     public var userUID:NSNumber
+    public var requiresPIN:Bool
 
     public func encode(with coder: NSCoder) {
 
@@ -166,6 +170,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         coder.encode(username,forKey:"username")
         coder.encode(password,forKey:"password")
         coder.encode(userUID,forKey:"uid")
+        coder.encode(requiresPIN, forKey:"requiresPIN")
     }
 
     public required init?(coder: NSCoder) {
@@ -174,13 +179,16 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         username = coder.decodeObject(forKey: "username") as? String ?? ""
         password = coder.decodeObject(forKey: "password") as? Data ?? Data()
         userUID = coder.decodeObject(forKey: "uid") as? NSNumber ?? -1
+        requiresPIN = coder.decodeBool(forKey: "requiresPIN")
+
     }
 
-    init(fullName: String, username: String, password: String, uid:NSNumber, rfidUID:Data)  throws {
+    init(fullName: String, username: String, password: String, uid:NSNumber, rfidUID:Data, pin:String?)  throws {
 
 
         self.fullName = fullName
         self.username = username
+        self.requiresPIN = pin != nil
         guard let passwordData = password.data(using: .utf8) else {
             throw SecretKeeper.SecretKeeperError.otherError("error converting password")
         }
@@ -189,7 +197,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
 //        guard let salt = salt else {
 //            throw SecretKeeperUserError.errorCreatingSalt
 //        }
-        let encryptedPassword = try PasswordCryptor().passwordEncrypt(clearTextData: passwordData, rfidUID: rfidUID)
+        let encryptedPassword = try PasswordCryptor().passwordEncrypt(clearTextData: passwordData, rfidUID: rfidUID, pin: pin)
         self.password = encryptedPassword
 
         self.userUID = uid
@@ -228,7 +236,7 @@ public class Secrets:NSObject, NSSecureCoding {
     public required init?(coder: NSCoder) {
 
         do{
-            localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data())
+            localAdmin = try coder.decodeObject(forKey: "localAdmin") as? SecretKeeperUser ?? SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data(),pin:nil)
             rfidUIDUsers = coder.decodeObject(of: RFIDUsers.self, forKey: "rfidUIDUsers") ?? RFIDUsers(rfidUsers: [:])
 
             salt = coder.decodeObject(forKey: "salt") as? Data ?? Data()
@@ -496,7 +504,7 @@ extension SecretKeeper {
     func secrets() throws -> Secrets {
 
         if FileManager.default.fileExists(atPath: secretsFileURL.path()) == false {
-            return try Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0, rfidUID: Data()), uidUsers:RFIDUsers(rfidUsers: [:]))
+            return try Secrets(localAdmin: SecretKeeperUser(fullName: "", username: "", password: "", uid: 0, rfidUID: Data(), pin: nil), uidUsers:RFIDUsers(rfidUsers: [:]))
         }
         
         let secretData = try Data(contentsOf: secretsFileURL)

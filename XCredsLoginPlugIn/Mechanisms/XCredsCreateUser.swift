@@ -288,7 +288,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         if let rfidUID = getHint(type: .rfidUid) as? String  {
             TCSLogWithMark("got RFIDuid: \(rfidUID)")
-
+            let rfidPIN = getHint(type: .rfidPIN) as? String
             do {
                 let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
 
@@ -302,13 +302,15 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 if let username = xcredsUser, let password = xcredsPass{
                     let fullname = fullname ?? ""
 
-                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password:password, uid: NSNumber(value: -1))
+                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password:password, uid: NSNumber(value: -1), pin: rfidPIN)
 
                 }
 
             }
             catch {
 
+                TCSLogWithMark("Error: \(error.localizedDescription)")
+                denyLogin(message:error.localizedDescription )
             }
         }
 

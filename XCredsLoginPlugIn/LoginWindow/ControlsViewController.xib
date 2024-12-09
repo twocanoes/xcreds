@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,7 +41,7 @@
                     <rect key="frame" x="0.0" y="14" width="1002" height="88"/>
                     <subviews>
                         <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="Of1-FL-rgU">
-                            <rect key="frame" x="111" y="10" width="781" height="48"/>
+                            <rect key="frame" x="165" y="10" width="673" height="48"/>
                             <rows>
                                 <gridRow id="Ax5-pH-aQS"/>
                             </rows>
@@ -52,7 +51,6 @@
                                 <gridColumn width="116" trailingPadding="6" id="AiZ-fa-C1D"/>
                                 <gridColumn width="161" trailingPadding="6" id="Qgw-6x-QRs"/>
                                 <gridColumn width="116" id="8Cw-21-fob"/>
-                                <gridColumn id="7Vs-59-aam"/>
                             </columns>
                             <gridCells>
                                 <gridCell row="Ax5-pH-aQS" column="vWr-UA-21l" xPlacement="center" id="kmk-C1-8Ed">
@@ -124,20 +122,6 @@ DQ
                                         </connections>
                                     </button>
                                 </gridCell>
-                                <gridCell row="Ax5-pH-aQS" column="7Vs-59-aam" id="5Xo-oJ-BIR">
-                                    <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="l2R-hl-qyp">
-                                        <rect key="frame" x="679" y="0.0" width="102" height="48"/>
-                                        <buttonCell key="cell" type="bevel" title="Tap Login Setup" bezelStyle="regularSquare" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="ISy-Q0-bnx">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                            <imageReference key="image" image="NSAdvanced" symbolScale="large"/>
-                                        </buttonCell>
-                                        <color key="contentTintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="setupCardButtonPressed:" target="-2" id="zuK-s5-wYm"/>
-                                        </connections>
-                                    </button>
-                                </gridCell>
                             </gridCells>
                         </gridView>
                     </subviews>
@@ -206,7 +190,6 @@ DQ
         </customView>
     </objects>
     <resources>
-        <image name="NSAdvanced" width="32" height="32"/>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
         <image name="loginwindow" width="41" height="31.5"/>

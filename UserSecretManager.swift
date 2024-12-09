@@ -39,7 +39,7 @@ public struct UserSecretManager {
         return secrets.localAdmin
 
     }
-    public func setUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber) throws {
+    public func setUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber, pin:String?) throws {
 
         //passsword is rfid uid, which is typically max 7 bytes.
         //using key stretching:
@@ -65,7 +65,7 @@ public struct UserSecretManager {
             let _ = try removeUIDUser(username: username)
         }
         secretKeeperSecrets = try secrets()
-        secretKeeperSecrets.rfidUIDUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID)
+        secretKeeperSecrets.rfidUIDUsers.userDict?[hashedUID] = try SecretKeeperUser(fullName: fullName, username: username, password: password, uid:uid, rfidUID: rfidUID, pin: pin)
         try secretKeeper.saveSecrets(secretKeeperSecrets)
     }
 
@@ -75,12 +75,20 @@ public struct UserSecretManager {
         try secretKeeper.saveSecrets(secrets)
     }
 
-    public func uidUser(uid:Data) throws -> SecretKeeperUser?{
-        let secrets = try secrets()
+    public func uidUser(uid:Data, rfidUsers:RFIDUsers?=nil) throws -> SecretKeeperUser?{
 
-        let (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: uid, salt: secrets.rfidUIDUsers.salt)
+        var rfidUsersLocal:RFIDUsers
+        if let rfidUsers = rfidUsers {
+            rfidUsersLocal = rfidUsers
+        }
+        else {
+            let secrets = try secrets()
+            rfidUsersLocal = secrets.rfidUIDUsers
+        }
 
-        let userDict = secrets.rfidUIDUsers.userDict
+        let (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: uid, salt: rfidUsersLocal.salt)
+
+        let userDict = rfidUsersLocal.userDict
 
 //        for (k,v) in userDict! {
 //            print(k.hexEncodedString())

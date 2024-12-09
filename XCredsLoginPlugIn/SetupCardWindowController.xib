@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SetupCardWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
+                <outlet property="setPINCheckbox" destination="CHo-cJ-ng1" id="Y9C-Z7-NSw"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -53,12 +54,20 @@ Gw
                             <action selector="cancelButtonPressed:" target="-2" id="HO6-bl-VGM"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CHo-cJ-ng1">
+                        <rect key="frame" x="204" y="180" width="71" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Set PIN" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Hvj-xI-Fuy">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="-224" y="-115"/>
+            <point key="canvasLocation" x="-238" y="-18"/>
         </window>
     </objects>
 </document>

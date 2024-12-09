@@ -149,21 +149,6 @@ protocol UpdateCredentialsFeedbackProtocol {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-//        let uidString = "001231231231001231231231"
-//        let uidInt = Int64(uidString)
-//
-//        var data = withUnsafeBytes(of: uidInt, { ptr  in
-//            print(ptr.count)
-//            return Data(ptr).base64EncodedString()
-//        })
-//        let sampleVar = 5
-//
-//        let p = withUnsafePointer(to: sampleVar) { p in
-//            print("Memory address of sampleVar: \(p)")
-//            memcpy(nil, p, 1)
-//        }
-//        print(data)
-//
         alertTextField.isHidden=true
         TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
@@ -219,18 +204,45 @@ protocol UpdateCredentialsFeedbackProtocol {
                         TCSLogWithMark()
                         print(returnData[0...returnData.count-3].hexEncodedString())
                         DispatchQueue.main.async {
-                            TCSLogWithMark()
-                            let hex=returnData[0...returnData.count-3].hexEncodedString()
-                            self.cardLogin(uid: hex)
+                    TCSLogWithMark()
+
+                    var pin:String?
+                    let hex=returnData[0...returnData.count-3].hexEncodedString()
+                    do {
+                        let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                        let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                        if let uidData = Data(fromHexEncodedString: hex) {
+                            TCSLogWithMark("got UID Data")
+                            if let user = try userManager.uidUser(uid: uidData, rfidUsers: self.rfidUsers){
+                                TCSLogWithMark("Found user. looking if pin required")
+                                if user.requiresPIN == true {
+                                    let pinPromptWindowController = PinPromptWindowController(windowNibName: "PinPromptWindowController")
+                                    let res = NSApp.runModal(for: pinPromptWindowController.window!)
+                                    pinPromptWindowController.window?.close()
+
+                                    if res == .OK {
+                                        pin = pinPromptWindowController.pin
+                                    }
+
+                                }
+
+                            }
                         }
+                        self.cardLogin(uid: hex, pin:pin)
                     }
+                    catch {
+                        TCSLogWithMark("error: "+error.localizedDescription)
 
-                })
-
+                    }
+                }
+            }
+        })
 
     }
 
-    func cardLogin(uid:String) {
+    func cardLogin(uid:String, pin:String?) {
+        var hashedUID:Data
+
         TCSLogWithMark("RFID UID \"\(uid)\" detected")
         guard let rfidUsers = rfidUsers else {
             TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
@@ -244,12 +256,11 @@ protocol UpdateCredentialsFeedbackProtocol {
             return
         }
 
-        var hashedUID:Data
         do {
             (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData, salt: rfidUsers.salt)
         }
         catch {
-            TCSLogWithMark("error hashing key")
+            TCSLogWithMark("error hashing key: \(error.localizedDescription)")
             return
         }
         guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[hashedUID]  else {
@@ -269,7 +280,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         }
 
-        guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata) else {
+        guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata, pin:pin) else {
             TCSLogWithMark("error decrypted password")
             passwordTextField.shake(self)
             return
@@ -286,45 +297,29 @@ protocol UpdateCredentialsFeedbackProtocol {
             return
         }
         if (userExists==true){
-            //local user exists. try password
-            TCSLogWithMark("local user exists. trying password")
-            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-                TCSLogWithMark("local user valid. logging in")
-
-                setRequiredHintsAndContext()
-
-                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
-                completeLogin(authResult:.allow)
-            }
-            else {
-                passwordTextField.shake(self)
-
-                TCSLogWithMark("invalid password for user \(shortName)")
-                authFail()
-            }
+            processLogin(inShortname: shortName, inPassword: passString)
+            return
         }
-        else {
-            TCSLogWithMark("New user. Creating...")
-            //new user, so we create the account and move along
-            setRequiredHintsAndContext()
-            if let fullName = fullName {
-                TCSLogWithMark("Setting fullName to \(fullName)")
+        //user is defined in rfid user file but never logged in. so new user,
+        // so we populate the needed values for the account and move along
+        setRequiredHintsAndContext()
+        if let fullName = fullName {
+            TCSLogWithMark("Setting fullName to \(fullName)")
 
-                mechanismDelegate?.setHint(type: .fullName, hint: fullName as NSSecureCoding)
+            mechanismDelegate?.setHint(type: .fullName, hint: fullName as NSSecureCoding)
 
-            }
-            if useruid.intValue>499 {
-                TCSLogWithMark("Setting uid to \(useruid.stringValue)")
-                mechanismDelegate?.setHint(type: .uid, hint: useruid.stringValue as NSSecureCoding)
-            }
-
-            else if useruid.intValue != -1 {
-                TCSLogWithMark("invalid uid. selecting available UID.")
-
-            }
-
-            completeLogin(authResult:.allow)
         }
+        if useruid.intValue>499 {
+            TCSLogWithMark("Setting uid to \(useruid.stringValue)")
+            mechanismDelegate?.setHint(type: .uid, hint: useruid.stringValue as NSSecureCoding)
+        }
+
+        else if useruid.intValue != -1 {
+            TCSLogWithMark("invalid uid. selecting next available UID.")
+
+        }
+
+        completeLogin(authResult:.allow)
 
     }
     func setupLoginAppearance() {
@@ -465,7 +460,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
     }
 
-    func setupLoginCard(completion:(_ result:Bool, _ uid:String?)->Void) {
+    func setupLoginCard(completion:(_ result:Bool, _ uid:String?, _ pin:String?)->Void) {
 
         if setupCardWindowController == nil {
             setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
@@ -476,11 +471,11 @@ protocol UpdateCredentialsFeedbackProtocol {
             let res = NSApp.runModal(for: setupCardWindow)
             if res == .OK {
                 if let uid = setupCardWindowController?.uid {
-                    completion(true, uid)
+                    completion(true, uid, setupCardWindowController?.pin)
                 }
             }
             else {
-                completion(false,nil)
+                completion(false,nil, nil)
 
             }
         }
@@ -510,6 +505,12 @@ protocol UpdateCredentialsFeedbackProtocol {
             return
         }
 
+        processLogin(inShortname: shortName, inPassword: passString)
+
+    }
+
+    func processLogin(inShortname:String, inPassword:String)  {
+
         TCSLogWithMark()
         updateLoginWindowInfo()
         TCSLogWithMark()
@@ -533,11 +534,15 @@ protocol UpdateCredentialsFeedbackProtocol {
 
                 if loginCardSetupButton.state == .on {
                     shouldIgnoreInsertion=true
-                    setupLoginCard { result,uid  in
+                    setupLoginCard { result,uid,pin  in
                         if result==true{
                             if let uid = uid {
                                 TCSLogWithMark("setting rfid uid: \(uid)")
                                 mechanismDelegate?.setHint(type: .rfidUid, hint: uid as NSSecureCoding)
+                            }
+                            if let pin = pin {
+                                TCSLogWithMark("setting pin")
+                                mechanismDelegate?.setHint(type: .rfidPIN, hint: pin as NSSecureCoding)
                             }
                             shouldIgnoreInsertion=false
                             completeLogin(authResult:.allow)
@@ -566,8 +571,8 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             tokenManager.feedbackDelegate=self
 
-            shortName = strippedUsername
-            tokenManager.oidc().requestTokenWithROPG(username: strippedUsername, password: passString)
+            shortName = inShortname
+            tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword)
             return
 
 
@@ -576,9 +581,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("network auth.")
             networkAuth()
         }
-
     }
-
     fileprivate func networkAuth() {
         nomadSession = NoMADSession.init(domain: domainName, user: shortName)
         TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")

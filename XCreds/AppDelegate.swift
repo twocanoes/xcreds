@@ -279,7 +279,7 @@ extension xcreds {
             }
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data()))
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data(), pin: nil))
 
         }
     }
@@ -302,7 +302,7 @@ extension xcreds {
 
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data()))
+            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data(), pin: nil))
         }
 
     }
@@ -326,6 +326,10 @@ extension xcreds {
         @Option(help: "Update RFID-uid")
         var rfiduid:String
 
+        @Option(help: "PIN")
+        var pin:String?
+
+
         func run() throws {
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
@@ -347,7 +351,7 @@ extension xcreds {
                     }
 
 
-                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1))
+                    try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1), pin: pin)
 
                 }
             }
@@ -363,7 +367,6 @@ extension xcreds {
     struct ShowUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show RFID users.")
 
-
         func run() throws {
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
@@ -371,22 +374,18 @@ extension xcreds {
 
             }
             do {
-
                 let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
                 let userManager = UserSecretManager(secretKeeper: secretKeeper)
                 let users = try userManager.uidUsers()
 
-
-
-                print("Full Name:Username:UserID")
+                print("Full Name:Username:UserID:Requires PIN")
 
                 guard let rfidUsers = users.userDict else {
                     return
-
                 }
                 for currKey in rfidUsers.keys{
                     if let user = rfidUsers[currKey], let fullname = user.fullName,let _ = rfidUsers[currKey]?.password {
-                        print("\(fullname):\(user.username):\(user.userUID)")
+                        print("\(fullname):\(user.username):\(user.userUID):\(user.requiresPIN==true ? "Y":"N")")
 
                     }
                 }
@@ -407,6 +406,8 @@ extension xcreds {
         @Option(help: "RFID-uid in hex with no 0x in front.")
         var rfidUID:String
 
+        @Option(help: "PIN")
+        var pin:String?
 
         func run() throws {
             if geteuid() != 0  {
@@ -428,15 +429,24 @@ extension xcreds {
                     print("user not found")
                     return
                 }
-                let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: user.password, rfidUID: rfidUidData)
+
+                if user.requiresPIN == true && pin == nil {
+
+                    print("you must enter a PIN for this user")
+                    return
+                }
+                let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: user.password, rfidUID: rfidUidData, pin:pin)
 
                 if password.count>0 {
-                    print("password set")
+                    print("password set)")
+                }
+                else {
+                    print("no password")
                 }
 
             }
             catch {
-                print(error.localizedDescription)
+                print("failed to find user, valid PIN, or both")
             }
 
 
@@ -498,6 +508,8 @@ extension xcreds {
     struct ImportUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,UID,RFID-UID. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
 
+        @Option(help: "PIN")
+        var pin:String = ""
 
         @Option(help: "infilepath")
         var infilepath:String
@@ -545,7 +557,7 @@ extension xcreds {
                         let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData,salt: nil)
 
 
-                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData)
+                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData, pin: pin)
                     }
 
                     try userManager.setUIDUsers(rfidUsers)

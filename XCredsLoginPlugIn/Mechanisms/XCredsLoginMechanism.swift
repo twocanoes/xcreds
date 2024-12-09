@@ -42,7 +42,7 @@ import Network
     }
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
-        self.mainLoginWindowController?.window?.orderOut(self)
+//        self.mainLoginWindowController?.window?.orderOut(self)
     }
 
     override func reload() {
@@ -344,9 +344,9 @@ import Network
             }
             TCSLogWithMark()
 
-            if let rfidUser = getHint(type: .rfidUsers) as? RFIDUsers {
-                signInViewController.rfidUsers = rfidUser
-                TCSLogWithMark("rfidUsers! \(rfidUser.userDict?.count ?? 0)")
+            if let rfidUsers = getHint(type: .rfidUsers) as? RFIDUsers {
+                signInViewController.rfidUsers = rfidUsers
+                TCSLogWithMark("rfidUsers! \(rfidUsers.userDict?.count ?? 0)")
             }
             else {
                 TCSLogWithMark("no rfidUsers in hints")

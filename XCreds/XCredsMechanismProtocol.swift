@@ -18,6 +18,8 @@ protocol XCredsMechanismProtocol {
     func setContextString(type: String, value: String)
     func setStickyContextString(type: String, value: String)
     func setHint(type: HintType, hint: NSSecureCoding)
+    func setHintData(type: HintType, data: Data)
+
     func reload()
     func run()
     func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult

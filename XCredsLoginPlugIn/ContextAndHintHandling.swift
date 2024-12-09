@@ -6,7 +6,56 @@
 //  Copyright © 2017 NoMAD. All rights reserved.
 //
 
-enum HintType: String {
+enum HintType: String,CaseIterable {
+    case uid
+    case gid
+    case longname
+    case shell
+    case authorizeright = "authorize-right"
+    case authorize_rule = "authorize-rule"
+    case client_path = "client-path"
+    case client_pid =  "client-pid"
+    case client_type = "client-type"
+    case client_uid = "client-uid"
+    case tries
+    case suggested_user = "suggested-user"
+    case require_user_in_group = "require-user-in-group"
+    case reason
+    case token_name = "token-name"
+    case afp_dir
+    case kerberos_principal = "kerberos-principal"
+    case mountpoint
+    case new_password
+    case show_add_to_keychain = "show-add-to-keychain"
+    case add_to_keuychain = "add-to-keuychain"
+    case Home_Dir_Mount_Result
+    case homeDirType
+    case noMADUser
+    case noMADFirst
+    case noMADLast
+    case noMADFull
+    case username
+    case ap_pam_service_name = "ap-pam-service-name"
+    case ctk
+    case ap_user_name = "ap-user-name"
+    case password
+    case authenticated_token_id = "authenticated-token-id"
+    case ap_token
+    case hsh
+    case uti
+    case uth
+    case apsso_kcp = "apsso-kcp"
+    case apsso_up = "apsso-up"
+    case userSecretTriesLeft
+    case adminUsername
+    case adminPassword
+    case noMADDomain
+    case tokens
+    case passwordOverwrite // stomp on the password
+    case ntName
+    case aliasName
+    case claimsToAddToLocalUserAccount
+    case adUserAttributesToAddToLocalUserAccount
     case guestUser
     case existingLocalUserPassword
     case existingLocalUserName
@@ -19,28 +68,12 @@ enum HintType: String {
     case lastName
     case fullName
     case groups
-    case uid
-    case gid
-    case kerberos_principal
-    case passwordOverwrite // stomp on the password
-    case ntName
-    case tokens
-//    case noMADUser
-    case noMADDomain
-//    case noMADPass
-//    case noMADFirst
-//    case noMADLast
-//    case noMADFull
-    case aliasName
-    case claimsToAddToLocalUserAccount
-    case adUserAttributesToAddToLocalUserAccount
-    case adminUsername
-    case adminPassword
-    case localLogin
-    case allADAttributes
     case rfidUsers
     case localAdmin
     case rfidUid
+    case localLogin
+    case allADAttributes
+    case rfidPIN
 
 
 }

@@ -10,7 +10,9 @@ import CryptoTokenKit
 
 class SetupCardWindowController: NSWindowController {
 
+    @IBOutlet weak var setPINCheckbox: NSButton!
     var uid:String?
+    var pin:String?
     override func windowDidLoad() {
         super.windowDidLoad()
         guard let readerName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
@@ -49,11 +51,23 @@ class SetupCardWindowController: NSWindowController {
                 DispatchQueue.main.async {
                     TCSLogWithMark()
                     let hex=returnData[0...returnData.count-3].hexEncodedString()
-                    TCSLogWithMark(hex)
+
+                    if self.setPINCheckbox.state == .on{
+                        let pinPromptWindowController = PinPromptWindowController(windowNibName: "PinPromptWindowController")
+
+                        if NSApp.runModal(for: pinPromptWindowController.window!) == .cancel {
+                            pinPromptWindowController.window?.close()
+                            return
+                        }
+                        self.pin = pinPromptWindowController.pin
+                        pinPromptWindowController.window?.close()
+
+                    }
                     self.uid = hex
+                    TCSLogWithMark()
                     self.window?.close()
                     NSApp.stopModal(withCode: NSApplication.ModalResponse.OK)
-                    TCSLogWithMark()
+
                 }
             }
 

@@ -50,7 +50,6 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     @IBOutlet var credentialStatusMenuItem:NSMenuItem!
     @IBOutlet var statusMenu:NSMenu!
     @IBOutlet var sharesMenuItem:NSMenuItem!
-    var setupCardWindowController:SetupCardWindowController?
     override func awakeFromNib() {
 
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
@@ -94,13 +93,6 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         }
     }
     
-    @IBAction func setupCardMenuItemSelected(_ sender: NSMenuItem) {
-        if setupCardWindowController == nil {
-            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
-        }
-        setupCardWindowController?.window!.makeKeyAndOrderFront(self)
-
-    }
     @objc func additionalMenuItemSelected(_ sender:NSMenuItem){
         guard let menuItemInfo = sender.representedObject as? StatusMenuItem else  {
             return
