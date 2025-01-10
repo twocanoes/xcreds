@@ -124,7 +124,7 @@ extension xcreds {
 }
 extension xcreds {
     struct ListReaders:ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Listen and print the RFID of scanned cards.")
+        static var configuration = CommandConfiguration(abstract: "List currently plugged in RFID readers.")
 
         func run() throws {
             let slotNames = TKSmartCardSlotManager.default?.slotNames
