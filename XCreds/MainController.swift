@@ -173,7 +173,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                         y = y - signInViewController.view.frame.size.height/2
                         let lowerLeftCorner = NSPoint(x: x, y: y)
                         signInViewController.localOnlyCheckBox.isHidden = true
-                        signInViewController.localOnlyView.isHidden = true
+                        signInViewController.localOnlyCheckBox.isHidden = true
 
                         signInViewController.view.setFrameOrigin(lowerLeftCorner)
                     }

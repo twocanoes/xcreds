@@ -58,12 +58,12 @@ protocol UpdateCredentialsFeedbackProtocol {
     @IBOutlet weak var usernameTextField: NSTextField!
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var localOnlyCheckBox: NSButton!
-    @IBOutlet weak var localOnlyView: NSView!
+//    @IBOutlet weak var localOnlyView: NSView!
     @IBOutlet var alertTextField:NSTextField!
     @IBOutlet var tapLoginLabel:NSTextField!
 
     @IBOutlet weak var loginCardSetupButton: NSButton!
-    @IBOutlet weak var loginCardSetupView: NSView!
+//    @IBOutlet weak var loginCardSetupView: NSView!
 
     @IBOutlet weak var stackView: NSStackView!
 
@@ -329,6 +329,11 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         if let _ = rfidUsers {
             tapLoginLabel.isHidden=false
+            loginCardSetupButton.isHidden=false
+
+        }
+        else {
+            loginCardSetupButton.isHidden=true
         }
         alertTextField.isHidden=true
 
@@ -341,7 +346,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true
-        localOnlyView.isHidden=false
+        localOnlyCheckBox.isHidden=false
         // make things look better
         TCSLogWithMark("Tweaking appearance")
 
@@ -364,14 +369,14 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("hiding local only")
 
             self.localOnlyCheckBox.isHidden = true
-            self.localOnlyView.isHidden = true
+            self.localOnlyCheckBox.isHidden = true
         }
         else {
             //show based on if there is an AD domain or not
 
             let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
-            self.localOnlyView.isHidden = isLocalOnly
+            self.localOnlyCheckBox.isHidden = isLocalOnly
 
         }
 
@@ -532,7 +537,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
-                if loginCardSetupButton.state == .on {
+                if let _ = rfidUsers, loginCardSetupButton.state == .on {
                     shouldIgnoreInsertion=true
                     setupLoginCard { result,uid,pin  in
                         if result==true{
