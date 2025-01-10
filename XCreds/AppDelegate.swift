@@ -250,6 +250,41 @@ extension xcreds {
     }
 }
 extension xcreds {
+    struct ClearUser:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Clear rfid user.")
+
+        @Option(help: "Username to remove")
+        var username:String
+
+        func run() throws {
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+
+            do {
+                let res = try userManager.removeUIDUser(username: username)
+
+                if res == true {
+                    print("RFID user removed.")
+
+                }
+                else {
+                    print("RFID User could not be removed. Please check the username and try again")
+                }
+
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+extension xcreds {
     struct ClearAllUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear all users. Does not clear the admin user.")
 
@@ -309,7 +344,7 @@ extension xcreds {
 }
 extension xcreds {
     struct SetUser:ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Import an RFID user.")
+        static var configuration = CommandConfiguration(abstract: "Add an RFID user.")
 
         @Option(help: "Update Fullname")
         var fullname:String
