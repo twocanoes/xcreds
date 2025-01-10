@@ -702,6 +702,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_default</key>
 			<false/>
+			<key>pfm_app_min</key>
+			<string>5.2</string>
 			<key>pfm_description</key>
 			<string>Do not prompt for local password.</string>
 			<key>pfm_documentation_url</key>
@@ -1367,6 +1369,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<string>array of additional AD domains to accept</string>
 			<key>pfm_name</key>
 			<string>AdditionalADDomains</string>
+			<key>pfm_app_min</key>
+			<string>5.2</string>
 			<key>pfm_subkeys</key>
 			<array>
 				<dict>
@@ -1384,6 +1388,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_description</key>
 			<string>Name of slot for CCID reader for reading RFID cards</string>
+			<key>pfm_app_min</key>
+			<string>5.2</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1563,6 +1569,8 @@ changing “passwordID” to the correct element ID. If the value you typed into
 		<dict>
 			<key>pfm_description</key>
 			<string>In some Active Directory environments, users do not use username@domain to login; they use a UPN suffix to make the username easier to use. This settings maps the UPN suffix to the correct AD domain name. For example, if you have an AD domain of foo.com but want users to sign in as user@bar.com, a UPN suffix of foo.com is created in AD and the user account is set to user@foo.com. This setting then would map foo.com to bar.com by setting the key upn to foo.com and the domain key to bar.com.</string>
+			<key>pfm_app_min</key>
+			<string>5.2</string>
 			<key>pfm_name</key>
 			<string>upnSuffixToDomainMappings</string>
 			<key>pfm_subkeys</key>
