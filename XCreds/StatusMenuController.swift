@@ -100,7 +100,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
         let pathString = menuItemInfo.path
 
-        if pathString.hasPrefix("http"), let url = URL(string: pathString){
+        if pathString.hasPrefix("http") || pathString.hasPrefix("mailto"), let url = URL(string: pathString){
 
             NSWorkspace.shared.open(url)
 
