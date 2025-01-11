@@ -159,6 +159,8 @@ extension xcreds {
 
             let watcher = TKTokenWatcher()
             watcher.setInsertionHandler({ tokenID in
+                print("card inserted")
+
                 watcher.addRemovalHandler({ tokenID in
                     print("card removed")
                 }, forTokenID: tokenID)
@@ -182,7 +184,6 @@ extension xcreds {
                 guard let tkSmartCard = slot?.makeSmartCard() else {
                     return
                 }
-                print("card inserted")
 
                 let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
                 let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
@@ -387,7 +388,7 @@ extension xcreds {
 
 
                     try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1), pin: pin)
-
+                    print("user set. If this Mac system is at the XCreds login window, please restart (or login and logout) to use the new user.")
                 }
             }
             catch {
@@ -473,7 +474,7 @@ extension xcreds {
                 let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: user.password, rfidUID: rfidUidData, pin:pin)
 
                 if password.count>0 {
-                    print("password set)")
+                    print("password set")
                 }
                 else {
                     print("no password")
@@ -513,7 +514,7 @@ extension xcreds {
 
                 let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
                 let userManager = UserSecretManager(secretKeeper: secretKeeper)
-                guard let user = try userManager.uidUser(uid: rfidUidData) else {
+                guard let _ = try userManager.uidUser(uid: rfidUidData) else {
                     print("user not found")
                     return
                 }
@@ -521,7 +522,8 @@ extension xcreds {
                     print("user could not be removed")
                 }
                 else {
-                    print("user removed")
+                    print("user removed. If this Mac system is at the XCreds login window, please restart (or login and logout) to prevent the user from logging in.")
+
 
                 }
 
@@ -596,7 +598,7 @@ extension xcreds {
                     }
 
                     try userManager.setUIDUsers(rfidUsers)
-
+                    print("users set. If this Mac system is at the XCreds login window, please restart (or login and logout) to use the new users.")
                 }
                 catch {
                     print("\(infilepath) cannot be read. \(error)")
