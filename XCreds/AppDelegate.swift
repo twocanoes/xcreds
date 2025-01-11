@@ -182,6 +182,7 @@ extension xcreds {
 
                 let slot = TKSmartCardSlotManager.default?.slotNamed(readerName)
                 guard let tkSmartCard = slot?.makeSmartCard() else {
+                    print("error finding smartcard in reader \(readerName). Make sure the card was inserted into this reader.")
                     return
                 }
 
