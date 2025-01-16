@@ -82,7 +82,6 @@
 		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
 		764297AB2D015AB800678928 /* SetupCardWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764297AA2D015AB800678928 /* SetupCardWindowController.xib */; };
-		764297AC2D015AB800678928 /* SetupCardWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764297A92D015AB800678928 /* SetupCardWindowController.swift */; };
 		764297AD2D015AB800678928 /* SetupCardWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764297A92D015AB800678928 /* SetupCardWindowController.swift */; };
 		764297AE2D015AB800678928 /* SetupCardWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764297AA2D015AB800678928 /* SetupCardWindowController.xib */; };
 		764446FD2CF80CD800E6289E /* StateFileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764446FC2CF80CD800E6289E /* StateFileHelper.swift */; };
@@ -224,10 +223,14 @@
 		76C4BAB72B353AFD007B2C57 /* Kerberos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C4BAB52B353AF7007B2C57 /* Kerberos.framework */; };
 		76C4BABC2B3544C6007B2C57 /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
 		76C63A322A22872700810C53 /* History.md in Resources */ = {isa = PBXBuildFile; fileRef = 76C63A312A22872700810C53 /* History.md */; };
-		76C840882D03BFF400E41802 /* PinPromptWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinPromptWindowController.xib */; };
-		76C840892D03BFF400E41802 /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinPromptWindowController.swift */; };
-		76C8408A2D03BFF400E41802 /* PinPromptWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinPromptWindowController.xib */; };
-		76C8408B2D03BFF400E41802 /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinPromptWindowController.swift */; };
+		76C661D82D3974910005F2CD /* PinPromptWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C661D72D3974910005F2CD /* PinPromptWindowController.xib */; };
+		76C661D92D3974910005F2CD /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C661D62D3974910005F2CD /* PinPromptWindowController.swift */; };
+		76C661DA2D3974F30005F2CD /* SetupCardWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764297A92D015AB800678928 /* SetupCardWindowController.swift */; };
+		76C661DB2D3975010005F2CD /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C661D62D3974910005F2CD /* PinPromptWindowController.swift */; };
+		76C840882D03BFF400E41802 /* PinSetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinSetWindowController.xib */; };
+		76C840892D03BFF400E41802 /* PinSetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinSetWindowController.swift */; };
+		76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinSetWindowController.xib */; };
+		76C8408B2D03BFF400E41802 /* PinSetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinSetWindowController.swift */; };
 		76CA72BA2D0794D800C209A1 /* tapgo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76A247532C22747400859E0A /* tapgo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
 		76CB9078287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
@@ -580,8 +583,10 @@
 		76C4BAB52B353AF7007B2C57 /* Kerberos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kerberos.framework; path = System/Library/Frameworks/Kerberos.framework; sourceTree = SDKROOT; };
 		76C4BABA2B353B4B007B2C57 /* KerbUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KerbUtil.m; sourceTree = "<group>"; };
 		76C63A312A22872700810C53 /* History.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = History.md; sourceTree = "<group>"; };
-		76C840862D03BFF400E41802 /* PinPromptWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPromptWindowController.swift; sourceTree = "<group>"; };
-		76C840872D03BFF400E41802 /* PinPromptWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinPromptWindowController.xib; sourceTree = "<group>"; };
+		76C661D62D3974910005F2CD /* PinPromptWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPromptWindowController.swift; sourceTree = "<group>"; };
+		76C661D72D3974910005F2CD /* PinPromptWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinPromptWindowController.xib; sourceTree = "<group>"; };
+		76C840862D03BFF400E41802 /* PinSetWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinSetWindowController.swift; sourceTree = "<group>"; };
+		76C840872D03BFF400E41802 /* PinSetWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PinSetWindowController.xib; sourceTree = "<group>"; };
 		76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helper+URLDecode.swift"; sourceTree = "<group>"; };
 		76CB907C288112AF00C70D0C /* xcreds_login.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = xcreds_login.sh; sourceTree = "<group>"; };
 		76CCF5422B12E478003F85E9 /* SelectLocalAccountWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocalAccountWindowController.swift; sourceTree = "<group>"; };
@@ -805,8 +810,10 @@
 				766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */,
 				76BEF7F028724E520013E2A1 /* LoginWindow */,
 				76BEF7EF28724E280013E2A1 /* Mechanisms */,
-				76C840862D03BFF400E41802 /* PinPromptWindowController.swift */,
-				76C840872D03BFF400E41802 /* PinPromptWindowController.xib */,
+				76C840862D03BFF400E41802 /* PinSetWindowController.swift */,
+				76C840872D03BFF400E41802 /* PinSetWindowController.xib */,
+				76C661D62D3974910005F2CD /* PinPromptWindowController.swift */,
+				76C661D72D3974910005F2CD /* PinPromptWindowController.xib */,
 			);
 			name = XCredsLogin;
 			path = XCredsLoginPlugIn;
@@ -1339,7 +1346,8 @@
 				766355D12870EBAD002E3867 /* VerifyOIDCPassword.xib in Resources */,
 				76EECCFC2873E6E200483C66 /* VerifyLocalPasswordWindowController.xib in Resources */,
 				76BEF7E8287202AF0013E2A1 /* ShutdownX.png in Resources */,
-				76C840882D03BFF400E41802 /* PinPromptWindowController.xib in Resources */,
+				76C840882D03BFF400E41802 /* PinSetWindowController.xib in Resources */,
+				76C661D82D3974910005F2CD /* PinPromptWindowController.xib in Resources */,
 				76FDC5D72B22D47A0035D61E /* MainLoginWindowController.xib in Resources */,
 				76E466672B1A4C16006529B6 /* UpdatePasswordWindowController.xib in Resources */,
 				76C0840B2A9A311E008039FA /* ControlsViewController.xib in Resources */,
@@ -1385,7 +1393,7 @@
 				76D175742B23C57500E64A62 /* LocalUsersViewController.xib in Resources */,
 				76EE06B627FD1E79009E0F3A /* PreferencesWindow.xib in Resources */,
 				76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */,
-				76C8408A2D03BFF400E41802 /* PinPromptWindowController.xib in Resources */,
+				76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */,
 				764D812F284C06AB00B3EE54 /* defaults.plist in Resources */,
 				764297AB2D015AB800678928 /* SetupCardWindowController.xib in Resources */,
 				764D8133284D14A500B3EE54 /* Credits.txt in Resources */,
@@ -1484,6 +1492,7 @@
 				760418D72A1332660051411B /* DSQueryable.swift in Sources */,
 				76DF1D5B2A2AD42C00770690 /* LocalCheckAndMigrate.swift in Sources */,
 				761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */,
+				76C661D92D3974910005F2CD /* PinPromptWindowController.swift in Sources */,
 				7657DEC72B3505EB003A23DB /* Extensions.swift in Sources */,
 				764297AD2D015AB800678928 /* SetupCardWindowController.swift in Sources */,
 				76BEF7F328724F120013E2A1 /* XCredsPowerControlMechanism.swift in Sources */,
@@ -1523,7 +1532,7 @@
 				76BEF7FA28726C700013E2A1 /* AuthorizationDBManager.swift in Sources */,
 				76BEF7E12871F74D0013E2A1 /* ControlsViewController.swift in Sources */,
 				76EECD012875135900483C66 /* LoggerHelper.swift in Sources */,
-				76C840892D03BFF400E41802 /* PinPromptWindowController.swift in Sources */,
+				76C840892D03BFF400E41802 /* PinSetWindowController.swift in Sources */,
 				7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */,
 				7639B9BA2C2281F30073F05A /* CCIDCardReader.swift in Sources */,
 				7657DEBD2B35055F003A23DB /* Logger.swift in Sources */,
@@ -1617,7 +1626,8 @@
 				7657DEB32B350476003A23DB /* NoMADSession.swift in Sources */,
 				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
 				764447152CF825D500E6289E /* AuthRightsHelper.swift in Sources */,
-				76C8408B2D03BFF400E41802 /* PinPromptWindowController.swift in Sources */,
+				76C661DA2D3974F30005F2CD /* SetupCardWindowController.swift in Sources */,
+				76C8408B2D03BFF400E41802 /* PinSetWindowController.swift in Sources */,
 				764446FE2CF80CD800E6289E /* StateFileHelper.swift in Sources */,
 				76319373287E18BF00D36BF7 /* DataExtension.swift in Sources */,
 				76E74DD12B390327004C6429 /* ContextAndHintHandling.swift in Sources */,
@@ -1645,7 +1655,6 @@
 				768633D92AFC4908004065E5 /* WifiManager.swift in Sources */,
 				7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */,
 				76E74DCF2B3902F0004C6429 /* XCredsMechanismProtocol.swift in Sources */,
-				764297AC2D015AB800678928 /* SetupCardWindowController.swift in Sources */,
 				76EE06C227FD1F50009E0F3A /* StatusMenuController.swift in Sources */,
 				76EE06B027FD1DD8009E0F3A /* Window+ForceToFront.swift in Sources */,
 				76D4726D2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m in Sources */,
@@ -1656,6 +1665,7 @@
 				766FD60D2A1B06AC00C8F244 /* DefaultsOverride.swift in Sources */,
 				767116AC284AB4C000CCD6FF /* PasswordUtils.swift in Sources */,
 				76B882AA29CCFD7A00BB8186 /* TCSKeychain.m in Sources */,
+				76C661DB2D3975010005F2CD /* PinPromptWindowController.swift in Sources */,
 				766355E5287148C1002E3867 /* Tokens.swift in Sources */,
 				7657DEC32B3505CB003A23DB /* ADLDAPPing.swift in Sources */,
 				76EE06AC27FD1D92009E0F3A /* TokenManager.swift in Sources */,
@@ -1756,7 +1766,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1798,7 +1808,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1832,7 +1842,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1871,7 +1881,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1902,7 +1912,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1921,7 +1931,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1942,7 +1952,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1980,7 +1990,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2017,7 +2027,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2033,7 +2043,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2052,7 +2062,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2087,7 +2097,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2121,7 +2131,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2158,7 +2168,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2309,7 +2319,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2354,7 +2364,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8110;
+				CURRENT_PROJECT_VERSION = 8123;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

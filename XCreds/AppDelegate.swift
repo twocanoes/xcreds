@@ -576,7 +576,7 @@ extension xcreds {
 
                         let userInfo = line.components(separatedBy: ",")
                         if userInfo.count != 5 {
-                            print("invalid line. skippinng. \(line)")
+                            print("invalid line. skipping. \(line)")
 
                         }
                         let fullname = userInfo[0].trimmingCharacters(in: .whitespacesAndNewlines)

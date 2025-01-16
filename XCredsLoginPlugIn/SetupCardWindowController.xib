@@ -8,7 +8,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SetupCardWindowController" customModule="XCreds" customModuleProvider="target">
             <connections>
-                <outlet property="setPINCheckbox" destination="CHo-cJ-ng1" id="Y9C-Z7-NSw"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -17,29 +16,11 @@
         <window title="Setup Login Card" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="632" y="409" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1055"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ewb-Z1-1fU">
-                        <rect key="frame" x="156" y="224" width="169" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Setup Login Card" id="j4V-EG-Ir2">
-                            <font key="font" textStyle="title1" name=".SFNS-Regular"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bB7-mV-lKo">
-                        <rect key="frame" x="196" y="127" width="89" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Tap Card Now" id="nTy-cp-73P">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQs-Af-OwT">
                         <rect key="frame" x="392" y="13" width="76" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -54,14 +35,25 @@ Gw
                             <action selector="cancelButtonPressed:" target="-2" id="HO6-bl-VGM"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CHo-cJ-ng1">
-                        <rect key="frame" x="204" y="180" width="71" height="18"/>
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lpS-XI-Yvh">
+                        <rect key="frame" x="17" y="154" width="445" height="96"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Set PIN" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Hvj-xI-Fuy">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                    </button>
+                        <textFieldCell key="cell" selectable="YES" id="Hj7-wW-UNQ">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <string key="title">To pair an RFID card  to your user account, tap the card to the reader now. The card can then be used instead of entering your password when logging in to this Mac. You will be prompted to optionally set a PIN that will be required when tapping to log in. Using a PIN helps secure your password and prevents someone who has your card but does not know your PIN from logging in.</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mZ7-4C-UaT">
+                        <rect key="frame" x="142" y="95" width="195" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Log In" id="eed-Fj-ywd">
+                            <font key="font" metaFont="system" size="24"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <connections>

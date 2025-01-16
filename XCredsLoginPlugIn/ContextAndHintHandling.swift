@@ -69,6 +69,7 @@ enum HintType: String,CaseIterable {
     case fullName
     case groups
     case rfidUsers
+    case rfidEnabled
     case localAdmin
     case rfidUid
     case localLogin

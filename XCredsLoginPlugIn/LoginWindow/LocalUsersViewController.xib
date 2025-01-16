@@ -28,7 +28,7 @@
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="11" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRJ-Lo-UdT" userLabel="login stack">
                     <rect key="frame" x="27" y="17" width="283" height="191"/>
                     <subviews>
-                        <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
+                        <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
                             <rect key="frame" x="0.0" y="161" width="250" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="PcC-1B-yi1"/>
@@ -47,7 +47,7 @@
                         <stackView distribution="equalCentering" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZJ-ht-zuy">
                             <rect key="frame" x="0.0" y="120" width="283" height="30"/>
                             <subviews>
-                                <secureTextField focusRingType="none" verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
+                                <secureTextField verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="37q-P0-BRW"/>
@@ -95,15 +95,15 @@ DQ
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
-                            <rect key="frame" x="-2" y="81" width="189" height="28"/>
-                            <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Login" id="67B-K8-Q2B">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
+                            <rect key="frame" x="-2" y="81" width="195" height="28"/>
+                            <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Log In" id="67B-K8-Q2B">
                                 <font key="font" metaFont="system" size="24"/>
                                 <color key="textColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
                             <rect key="frame" x="-2" y="54" width="254" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="f1h-xK-zpp"/>

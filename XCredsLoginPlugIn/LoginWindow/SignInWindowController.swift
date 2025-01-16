@@ -42,7 +42,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
-
+    var cardLoginFailedAttempts = 0
     var localAdmin:SecretKeeperUser?
     var rfidUsers:RFIDUsers?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
@@ -169,6 +169,13 @@ protocol UpdateCredentialsFeedbackProtocol {
                     if self.shouldIgnoreInsertion == true {
                         return
                     }
+                    if self.cardLoginFailedAttempts>2 {
+                        DispatchQueue.main.async {
+                            self.alertTextField.stringValue = "Tap Login Disabled"
+                            self.alertTextField.isHidden = false
+                        }
+                        return
+                    }
                     let slotNames = TKSmartCardSlotManager.default?.slotNames
 
                     guard let slotNames = slotNames, slotNames.count>0 else {
@@ -222,6 +229,9 @@ protocol UpdateCredentialsFeedbackProtocol {
 
                                     if res == .OK {
                                         pin = pinPromptWindowController.pin
+                                    }
+                                    else if res == .cancel {
+                                        return
                                     }
 
                                 }
@@ -282,9 +292,11 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata, pin:pin) else {
             TCSLogWithMark("error decrypted password")
+            cardLoginFailedAttempts += 1
             passwordTextField.shake(self)
             return
         }
+        cardLoginFailedAttempts = 0
         passString = String(decoding: passwordData, as: UTF8.self)
         let fullName = rfidUser.fullName
         let useruid = rfidUser.userUID
@@ -325,16 +337,32 @@ protocol UpdateCredentialsFeedbackProtocol {
     func setupLoginAppearance() {
         TCSLogWithMark()
 
+        let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue)
+
+        let shouldHideLoginCardSetupButton = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideLoginCardSetupButton.rawValue)
+
         tapLoginLabel.isHidden=true
+        loginCardSetupButton.isHidden=true
 
-        if let _ = rfidUsers {
-            tapLoginLabel.isHidden=false
-            loginCardSetupButton.isHidden=false
+        if let _ = ccidSlotName {
+            if let _ = rfidUsers {
+                //we have users so show text
+                tapLoginLabel.isHidden=false
+            }
+            else {
+                tapLoginLabel.isHidden=true
+            }
 
+            if shouldHideLoginCardSetupButton == true {
+                loginCardSetupButton.isHidden = true
+            }
+            else {
+                loginCardSetupButton.isHidden = false
+                tapLoginLabel.isHidden=false
+
+            }
         }
-        else {
-            loginCardSetupButton.isHidden=true
-        }
+
         alertTextField.isHidden=true
 
         self.usernameTextField.stringValue=""
@@ -509,15 +537,13 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-
+        updateLoginWindowInfo()
         processLogin(inShortname: shortName, inPassword: passString)
 
     }
 
     func processLogin(inShortname:String, inPassword:String)  {
 
-        TCSLogWithMark()
-        updateLoginWindowInfo()
         TCSLogWithMark()
 
         setLoginWindowState(enabled: false)
@@ -537,7 +563,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
-                if let _ = rfidUsers, loginCardSetupButton.state == .on {
+                if loginCardSetupButton.state == .on {
                     shouldIgnoreInsertion=true
                     setupLoginCard { result,uid,pin  in
                         if result==true{
@@ -629,7 +655,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         TCSLogWithMark("Format user and domain strings")
         TCSLogWithMark()
-//        var providedDomainName:String?
 
         domainName = ""
         let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
@@ -674,7 +699,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 
 
-        if allDomainsFromPrefs.contains(domainName.uppercased())==false {
+        if domainName != "", allDomainsFromPrefs.contains(domainName.uppercased())==false {
             TCSLogWithMark("domain \(domainName) is not the adDomain or in additionalADDomainList.")
             domainName = ""
         }
