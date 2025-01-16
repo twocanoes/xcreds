@@ -389,7 +389,7 @@ extension xcreds {
 
 
                     try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUIDData, username: username, password: password, uid: NSNumber(value: Int(uid) ?? -1), pin: pin)
-                    print("user set. If this Mac system is at the XCreds login window, please restart (or login and logout) to use the new user.")
+                    print("user set. If this Mac system is at the XCreds login window, please restart (or log in and log out) to use the new user.")
                 }
             }
             catch {
@@ -523,7 +523,7 @@ extension xcreds {
                     print("user could not be removed")
                 }
                 else {
-                    print("user removed. If this Mac system is at the XCreds login window, please restart (or login and logout) to prevent the user from logging in.")
+                    print("user removed. If this Mac system is at the XCreds login window, please restart (or log in and log out) to prevent the user from logging in.")
 
 
                 }
@@ -599,7 +599,7 @@ extension xcreds {
                     }
 
                     try userManager.setUIDUsers(rfidUsers)
-                    print("users set. If this Mac system is at the XCreds login window, please restart (or login and logout) to use the new users.")
+                    print("users set. If this Mac system is at the XCreds login window, please restart (or log in and log out) to use the new users.")
                 }
                 catch {
                     print("\(infilepath) cannot be read. \(error)")
