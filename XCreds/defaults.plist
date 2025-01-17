@@ -107,7 +107,7 @@
 	<false/>
 	<key>shouldUseKillWhenLoginWindowSwitching</key>
 	<false/>
-	<key>shouldHideLoginCardSetupButton</key>
-	<false/>
+	<key>shouldAllowLoginCardSetup</key>
+	<true/>
 </dict>
 </plist>

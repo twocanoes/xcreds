@@ -64,13 +64,13 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     @IBOutlet weak var loginCardSetupButton: NSButton!
 //    @IBOutlet weak var loginCardSetupView: NSView!
-
+    var unprovisionedRfidUid:String?
     @IBOutlet weak var stackView: NSStackView!
 
 //    @IBOutlet weak var domain: NSPopUpButton!
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
-    var setupCardWindowController:SetupCardWindowController?
+//    var setupCardWindowController:SetupCardWindowController?
 
     var mechanismDelegate:XCredsMechanismProtocol?
 
@@ -144,73 +144,90 @@ protocol UpdateCredentialsFeedbackProtocol {
     var migrateUserRecord : ODRecord?
     var didUpdateFail = false
     var setupDone=false
+    var cardInserted = false
     //MARK: - UI Methods
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        alertTextField.isHidden=true
-        TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
-        if setupDone == false {
-            setupDone=true
-            if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
-                domainName = prefDomainName
-            }
-            setupLoginAppearance()
+        if setupDone==true {
+            return
         }
+        setupDone=true
+
+        TCSLogWithMark()
+        alertTextField.isHidden=true
+
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+            domainName = prefDomainName
+        }
+        setupLoginAppearance()
+
         TCSLogWithMark("setting up smart card listener")
-                watcher = TKTokenWatcher()
-                watcher?.setInsertionHandler({ tokenID in
-                    self.watcher?.addRemovalHandler({ tokenID in
-                        TCSLogWithMark("card removed")
-                    }, forTokenID: tokenID)
+        watcher = TKTokenWatcher()
+        watcher?.setInsertionHandler({ tokenID in
+            TCSLogWithMark("card inserted")
+            //sometimes we get multiple events, so track and skip
 
-                    if self.shouldIgnoreInsertion == true {
-                        return
-                    }
-                    if self.cardLoginFailedAttempts>2 {
-                        DispatchQueue.main.async {
-                            self.alertTextField.stringValue = "Tap Login Disabled"
-                            self.alertTextField.isHidden = false
-                        }
-                        return
-                    }
-                    let slotNames = TKSmartCardSlotManager.default?.slotNames
+            self.watcher?.addRemovalHandler({ tokenID in
+                self.loginCardSetupButton.isHidden=true
+                self.loginCardSetupButton.state = .off
+                self.unprovisionedRfidUid=nil
+                self.cardInserted=false
 
-                    guard let slotNames = slotNames, slotNames.count>0 else {
-                        TCSLogWithMark("No rfid readers")
-                        return
-                    }
-                    guard let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
-                        TCSLogWithMark("No slotname defined in prefs. Slot names found: \(slotNames)")
+                TCSLogWithMark("card removed")
+            }, forTokenID: tokenID)
+            if self.cardInserted == true {
+                return
+            }
+            self.cardInserted=true
+            
+            if self.shouldIgnoreInsertion == true {
+                return
+            }
+            if self.cardLoginFailedAttempts>2 {
+                DispatchQueue.main.async {
+                    self.alertTextField.stringValue = "Tap Login Disabled"
+                    self.alertTextField.isHidden = false
+                }
+                return
+            }
+            let slotNames = TKSmartCardSlotManager.default?.slotNames
 
-                        return
-                    }
-                    let slotName=slotNames.first { currString in
-                        currString == ccidSlotName
-                    }
+            guard let slotNames = slotNames, slotNames.count>0 else {
+                TCSLogWithMark("No rfid readers")
+                return
+            }
+            guard let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
+                TCSLogWithMark("No slotname defined in prefs. Slot names found: \(slotNames)")
 
-                    guard let slotName = slotName else {
-                        TCSLogWithMark("no matches found for slotname \(ccidSlotName)")
-                        return
-                    }
-                    TCSLogWithMark()
-                    let slot = TKSmartCardSlotManager.default?.slotNamed(slotName)
-                    TCSLogWithMark()
-                    guard let tkSmartCard = slot?.makeSmartCard() else {
-                        TCSLogWithMark("Could not setup reader")
-                        return
-                    }
-                    TCSLogWithMark()
-                    let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
-                    TCSLogWithMark()
-                    let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
-                    TCSLogWithMark()
-                    if let returnData=returnData, returnData.count>2{
-                        TCSLogWithMark()
-                        print(returnData[0...returnData.count-3].hexEncodedString())
-                        DispatchQueue.main.async {
+                return
+            }
+            let slotName=slotNames.first { currString in
+                currString == ccidSlotName
+            }
+
+            guard let slotName = slotName else {
+                TCSLogWithMark("no matches found for slotname \(ccidSlotName)")
+                return
+            }
+            TCSLogWithMark()
+            let slot = TKSmartCardSlotManager.default?.slotNamed(slotName)
+            TCSLogWithMark()
+            guard let tkSmartCard = slot?.makeSmartCard() else {
+                TCSLogWithMark("Could not setup reader")
+                self.cardInserted=false
+                return
+            }
+            TCSLogWithMark()
+            let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
+            TCSLogWithMark()
+            let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
+            TCSLogWithMark()
+            if let returnData=returnData, returnData.count>2{
+                TCSLogWithMark()
+                print(returnData[0...returnData.count-3].hexEncodedString())
+                DispatchQueue.main.async {
                     TCSLogWithMark()
 
                     var pin:String?
@@ -252,12 +269,22 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     func cardLogin(uid:String, pin:String?) {
         var hashedUID:Data
+        let shouldAllowLoginCardSetup = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowLoginCardSetup.rawValue)
 
         TCSLogWithMark("RFID UID \"\(uid)\" detected")
         guard let rfidUsers = rfidUsers else {
-            TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
-            passwordTextField.shake(self)
+            if shouldAllowLoginCardSetup == true {
+                loginCardSetupButton.isHidden=false
+                self.loginCardSetupButton.state = .on
 
+                unprovisionedRfidUid=uid
+            }
+            else {
+                TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
+
+                passwordTextField.shake(self)
+
+            }
             return
         }
 
@@ -275,7 +302,18 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
         guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[hashedUID]  else {
             TCSLogWithMark("No RFID user with uid: \(uid)")
-            passwordTextField.shake(self)
+
+
+            if shouldAllowLoginCardSetup==true {
+                loginCardSetupButton.isHidden=false
+                self.loginCardSetupButton.state = .on
+
+                unprovisionedRfidUid=uid
+
+            }
+            else {
+                passwordTextField.shake(self)
+            }
             return
         }
 
@@ -291,7 +329,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
 
         guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata, pin:pin) else {
-            TCSLogWithMark("error decrypted password")
+            TCSLogWithMark("error decrypting password")
             cardLoginFailedAttempts += 1
             passwordTextField.shake(self)
             return
@@ -309,6 +347,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             return
         }
         if (userExists==true){
+            TCSLogWithMark()
             processLogin(inShortname: shortName, inPassword: passString)
             return
         }
@@ -339,10 +378,11 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue)
 
-        let shouldHideLoginCardSetupButton = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideLoginCardSetupButton.rawValue)
+        let shouldAllowLoginCardSetup = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowLoginCardSetup.rawValue)
 
         tapLoginLabel.isHidden=true
         loginCardSetupButton.isHidden=true
+        self.loginCardSetupButton.state = .off
 
         if let _ = ccidSlotName {
             if let _ = rfidUsers {
@@ -353,14 +393,11 @@ protocol UpdateCredentialsFeedbackProtocol {
                 tapLoginLabel.isHidden=true
             }
 
-            if shouldHideLoginCardSetupButton == true {
-                loginCardSetupButton.isHidden = true
-            }
-            else {
-                loginCardSetupButton.isHidden = false
+            if shouldAllowLoginCardSetup == true {
                 tapLoginLabel.isHidden=false
 
             }
+
         }
 
         alertTextField.isHidden=true
@@ -493,25 +530,45 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
     }
 
-    func setupLoginCard(completion:(_ result:Bool, _ uid:String?, _ pin:String?)->Void) {
+    func setupLoginCard(completion:(_ result:Bool, _ pin:String?)->Void) {
 
-        if setupCardWindowController == nil {
-            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+        let pinSetWindowController = PinSetWindowController(windowNibName: "PinSetWindowController")
+        let res = NSApp.runModal(for: pinSetWindowController.window!)
+
+        if res == .cancel {
+           pinSetWindowController.window?.close()
+           completion(false,nil)
+           return
+       }
+
+        else {
+            completion(true,pinSetWindowController.pin)
         }
-        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
 
-        if let setupCardWindow = setupCardWindowController?.window {
-            let res = NSApp.runModal(for: setupCardWindow)
-            if res == .OK {
-                if let uid = setupCardWindowController?.uid {
-                    completion(true, uid, setupCardWindowController?.pin)
-                }
-            }
-            else {
-                completion(false,nil, nil)
 
-            }
-        }
+
+//        if setupCardWindowController == nil {
+//            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+//        }
+//        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
+
+//        if let setupCardWindow = setupCardWindowController?.window {
+//            let res = NSApp.runModal(for: setupCardWindow)
+//            if res == .OK {
+//                if let uid = setupCardWindowController?.uid {
+//                    completion(true, uid, setupCardWindowController?.pin)
+//                }
+//                else {
+//                    TCSLogWithMark("no uid")
+//                }
+//            }
+//            else {
+//                TCSLogWithMark("result is not ok")
+//                setupCardWindowController=nil
+//                completion(false,nil, nil)
+//
+//            }
+//        }
     }
 
     /// When the sign in button is clicked we check a few things.
@@ -563,14 +620,14 @@ protocol UpdateCredentialsFeedbackProtocol {
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
-                if loginCardSetupButton.state == .on {
+                if loginCardSetupButton.state == .on, let uid = unprovisionedRfidUid {
                     shouldIgnoreInsertion=true
-                    setupLoginCard { result,uid,pin  in
+                    setupLoginCard { result,pin  in
                         if result==true{
-                            if let uid = uid {
-                                TCSLogWithMark("setting rfid uid: \(uid)")
-                                mechanismDelegate?.setHint(type: .rfidUid, hint: uid as NSSecureCoding)
-                            }
+
+                            TCSLogWithMark("setting rfid uid: \(uid)")
+                            mechanismDelegate?.setHint(type: .rfidUid, hint: uid as NSSecureCoding)
+
                             if let pin = pin {
                                 TCSLogWithMark("setting pin")
                                 mechanismDelegate?.setHint(type: .rfidPIN, hint: pin as NSSecureCoding)

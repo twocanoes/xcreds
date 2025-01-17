@@ -19,6 +19,7 @@ class PinSetWindowController: NSWindowController {
     }
     
     @IBAction func skipPINButtonPressed(_ sender: NSButton) {
+        pin=nil
         NSApp.stopModal(withCode: .alertThirdButtonReturn)
 
     }
