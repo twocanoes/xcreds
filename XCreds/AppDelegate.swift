@@ -347,6 +347,8 @@ extension xcreds {
 extension xcreds {
     struct SetUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Add an RFID user.")
+        @Argument(parsing: .allUnrecognized)
+        var other: [String] = []
 
         @Option(help: "Update Fullname")
         var fullname:String
@@ -546,6 +548,10 @@ extension xcreds {
     struct ImportUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,UID,RFID-UID. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
 
+        @Argument(parsing: .allUnrecognized)
+        var other: [String] = []
+
+
         @Option(help: "PIN")
         var pin:String = ""
 
@@ -571,15 +577,21 @@ extension xcreds {
                     let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
 
                     let userManager = UserSecretManager(secretKeeper: secretKeeper)
-
+                    var count = 0
                     for line in lineArray {
-
+                        if line.count==0 {
+                            continue
+                        }
                         let userInfo = line.components(separatedBy: ",")
                         if userInfo.count != 5 {
-                            print("invalid line. skipping. \(line)")
-
+                            print("invalid line. skipping. Line:\"\(line)\"")
+                            continue
                         }
                         let fullname = userInfo[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                        if fullname == "Full Name" {
+                            print("skipping header")
+                            continue
+                        }
                         let username = userInfo[1].trimmingCharacters(in: .whitespacesAndNewlines)
                         let password = userInfo[2].trimmingCharacters(in: .whitespacesAndNewlines)
                         let uid = Int(userInfo[3].trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1
@@ -596,10 +608,11 @@ extension xcreds {
 
 
                         rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData, pin: pin)
+                        count += 1
                     }
 
                     try userManager.setUIDUsers(rfidUsers)
-                    print("users set. If this Mac system is at the XCreds login window, please restart (or log in and log out) to use the new users.")
+                    print("\(count) users imported. If this Mac system is at the XCreds login window, please restart (or log in and log out) to use the new users.")
                 }
                 catch {
                     print("\(infilepath) cannot be read. \(error)")
