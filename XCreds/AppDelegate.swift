@@ -135,8 +135,9 @@ extension xcreds {
             do {
                 let users = try PasswordUtils().getAllNonSystemUsers()
                 var userDetailsInfo = [String:String]()
-                print("----- OIDC User Info -----")
-
+                if !json {
+                    print("----- OIDC User Info -----")
+                }
                 for user in users {
                     let userDetails = try? user.recordDetails(forAttributes: nil)
                     if let userDetails = userDetails {
