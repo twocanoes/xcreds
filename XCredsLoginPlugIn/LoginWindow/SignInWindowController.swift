@@ -637,7 +637,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                         }
                         else {
                             shouldIgnoreInsertion=false
-                            TCSLogWithMark("failed to setup Login card")
+                            TCSLogWithMark("failed to set up Login card")
                             authFail("Login Card Setup Failed")
 
                         }
