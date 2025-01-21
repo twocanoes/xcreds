@@ -142,6 +142,8 @@
 		76673CD229D3CFF900452848 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
 		76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
 		76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
+		766C602D2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
+		766C602E2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
 		766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
 		766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
@@ -516,6 +518,7 @@
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
 		76673CD429D3D5F500452848 /* LicenseChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseChecker.swift; sourceTree = "<group>"; };
+		766C602C2D3F409D0033E274 /* XCredsAudit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XCredsAudit.swift; path = Shared/XCredsAudit.swift; sourceTree = "<group>"; };
 		766CC42129D3A320009BC526 /* Paddle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Paddle.framework; path = Carthage/Build/Mac/Paddle.framework; sourceTree = "<group>"; };
 		766CC42229D3A321009BC526 /* ProductLicense.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ProductLicense.framework; path = Carthage/Build/Mac/ProductLicense.framework; sourceTree = "<group>"; };
 		766CC43729D3AED2009BC526 /* errorpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = errorpage.html; sourceTree = "<group>"; };
@@ -970,6 +973,7 @@
 				7644C9C72C76E38700178884 /* TCTaskHelper.m */,
 				76EAAFD82CEFED3800A5FEE3 /* SecretKeeper.swift */,
 				76EAAFD92CEFED3800A5FEE3 /* UserSecretManager.swift */,
+				766C602C2D3F409D0033E274 /* XCredsAudit.swift */,
 				7639B9B92C2281F30073F05A /* CCIDCardReader.swift */,
 				76D4726B2B43B8FA0064380C /* TCTaskWrapperWithBlocks.h */,
 				76D4726C2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m */,
@@ -1501,6 +1505,7 @@
 				7632909D2876674100CF8857 /* DataExtension.swift in Sources */,
 				7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */,
 				761B486A28A34CC900C6A02B /* LoginProgressWindowController.swift in Sources */,
+				766C602E2D3F409D0033E274 /* XCredsAudit.swift in Sources */,
 				7677908628908E40004E7085 /* WifiWindowController.swift in Sources */,
 				76E466662B1A4C16006529B6 /* UpdatePasswordWindowController.swift in Sources */,
 				76EECCFD2873E9ED00483C66 /* VerifyLocalPasswordWindowController.swift in Sources */,
@@ -1626,6 +1631,7 @@
 				7657DEB32B350476003A23DB /* NoMADSession.swift in Sources */,
 				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
 				764447152CF825D500E6289E /* AuthRightsHelper.swift in Sources */,
+				766C602D2D3F409D0033E274 /* XCredsAudit.swift in Sources */,
 				76C661DA2D3974F30005F2CD /* SetupCardWindowController.swift in Sources */,
 				76C8408B2D03BFF400E41802 /* PinSetWindowController.swift in Sources */,
 				764446FE2CF80CD800E6289E /* StateFileHelper.swift in Sources */,
@@ -1766,7 +1772,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1808,7 +1814,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1842,7 +1848,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1881,7 +1887,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1912,7 +1918,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1931,7 +1937,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1952,7 +1958,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1990,7 +1996,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2027,7 +2033,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2043,7 +2049,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2062,7 +2068,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2097,7 +2103,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2131,7 +2137,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2168,7 +2174,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2319,7 +2325,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2364,7 +2370,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8146;
+				CURRENT_PROJECT_VERSION = 8186;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (

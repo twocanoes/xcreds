@@ -53,14 +53,14 @@ public struct UserSecretManager {
             throw UserSecretManagerError.saltLengthError
         }
         if let existingUser = try uidUser(uid: rfidUID)  {
-            TCSLogWithMark("user \(existingUser.username) with rfid already found. removing")
+            TCSLog("user \(existingUser.username) with rfid already found. replacing.")
 
             if try removeUIDUser(uid: rfidUID) == false {
                 TCSLogWithMark("error removing user")
             }
         }
         if let _ = try uidUser(username: username) {
-            TCSLogWithMark("user already exists, removing")
+            TCSLog("user already exists, removing")
             let _ = try removeUIDUser(username: username)
         }
         secretKeeperSecrets = try secrets()
@@ -89,10 +89,6 @@ public struct UserSecretManager {
 
         let userDict = rfidUsersLocal.userDict
 
-//        for (k,v) in userDict! {
-//            print(k.hexEncodedString())
-//            print(v)
-//        }
         if let existingUser = userDict?[hashedUID]  {
             return existingUser
         }

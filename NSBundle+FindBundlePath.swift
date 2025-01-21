@@ -12,7 +12,6 @@ extension Bundle {
     static func findBundleWithName(name: String) -> Bundle? {
         let allBundles = self.allBundles
         for currentBundle in allBundles {
-            TCSLogWithMark(currentBundle.bundlePath)
             if currentBundle.bundlePath.contains(name) {
 
                 let bundle = Bundle(path: currentBundle.bundlePath)
@@ -20,7 +19,7 @@ extension Bundle {
 
             }
         }
-        TCSLogWithMark("No bundle found for \(name)")
+
         return nil
     }
 

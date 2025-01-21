@@ -15,7 +15,7 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [Status.self,ImportUsers.self, SetUser.self, ShowUser.self,ShowUsers.self, RemoveUser.self,UpdateAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearAllUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
+        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -34,6 +34,44 @@ extension xcreds {
                 var consoleRights:[String]?
                 var userInfo:[String:Dictionary<String,String>]?
                 var oidcUsers:[[String:String]]?
+                var xcredsVersion:String=""
+                var xcredsBuild:String=""
+
+                var xcredLicenseStatus:String=""
+                var xcredsLicenseDaysRemaining:String=""
+                init() {
+                    let bundle = Bundle.findBundleWithName(name: "XCreds")
+                    if let bundle = bundle {
+                        let infoPlist = bundle.infoDictionary
+                        if let infoPlist = infoPlist, let buildFromInfoPlist = infoPlist["CFBundleVersion"] as? String, let versionFromInfoPlist = infoPlist["CFBundleShortVersionString"] as? String {
+                            xcredsBuild = buildFromInfoPlist
+                            xcredsVersion = versionFromInfoPlist
+                        }
+                    }
+
+                    let licenseState = LicenseChecker().currentLicenseState()
+
+                    switch licenseState {
+
+                    case .valid(let secRemaining):
+                        let daysRemaining = Int(secRemaining/(24*60*60))
+
+                        xcredLicenseStatus="Valid"
+                        xcredsLicenseDaysRemaining=String(format:"%i",daysRemaining)
+                    case .invalid:
+                        xcredLicenseStatus="Invalid"
+
+                    case .trial(_):
+                        xcredLicenseStatus="Trial"
+
+                    case .trialExpired:
+                        xcredLicenseStatus="trialExpired"
+
+                    case .expired:
+                        xcredLicenseStatus="expired"
+
+                    }
+                }
 
             }
             enum UserKeys:String {
@@ -52,13 +90,40 @@ extension xcreds {
                 NSApplication.shared.terminate(self)
 
             }
+
             var info = XCredsInfo()
 
             let rightsInfo =  AuthorizationDBManager().consoleRights()
             var oidcUsers = [[String:String]]()
             var usersResult=[String:Dictionary<String, String>]()
+
+
+
             info.consoleRights = rightsInfo
+
             if !json{
+
+
+                print("----- XCreds Info -----")
+                print("     " + "XCreds Version:" + info.xcredsVersion)
+                print("     " + "XCreds Build number:" + info.xcredsBuild)
+                print("     " + "License Status:" + info.xcredLicenseStatus)
+                if info.xcredLicenseStatus.isEmpty==false {
+                    print("     " + "Days Remaining:" + info.xcredsLicenseDaysRemaining)
+
+                }
+                print("----- Last User Info -----")
+
+                if let loginWindowAuditRecord = XCredsAudit().auditRecord(path: "/var/db/securityagent/.xcredsaudit") {
+
+                    let auditDict = XCredsAudit().auditRecordDictionary(loginWindowAuditRecord)
+                    for (k,v) in auditDict{
+                        if !json {
+                            print("     " + k +  ": " + v)
+                        }
+                    }
+
+                }
 
 
                 print("----- CONSOLE RIGHTS -----")
@@ -75,8 +140,26 @@ extension xcreds {
                 for user in users {
                     let userDetails = try? user.recordDetails(forAttributes: nil)
                     if let userDetails = userDetails {
+                        if let homeDirArray = userDetails["dsAttrTypeStandard:NFSHomeDirectory"] as? Array<String>, homeDirArray.count>0{
+                            let homeDir = homeDirArray[0]
+                            if let auditRecord = XCredsAudit().auditRecord(path: homeDir+"/.xcredsaudit") {
+
+                                let auditDict = XCredsAudit().auditRecordDictionary(auditRecord)
+                                for (k,v) in auditDict{
+                                    userDetailsInfo[k] = v
+                                    if !json {
+                                        print("          " + k +  ": " + v)
+
+
+                                    }
+                                }
+
+                            }
+
+                        }
 
                         for userDetail in userDetails {
+
                             if let key = userDetail.key as? String,let _ = UserKeys(rawValue: key), let values = userDetail.value as? [String]
 
                                 {
@@ -105,11 +188,6 @@ extension xcreds {
                 if json {
                     print(String(data: jsonOutput, encoding: .utf8)!)
                 }
-
-
-
-
-
             }
             catch {
                 print(error)
@@ -252,7 +330,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct ClearUser:ParsableCommand {
+    struct ClearRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear rfid user.")
 
         @Option(help: "Username to remove")
@@ -287,7 +365,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct ClearAllUsers:ParsableCommand {
+    struct ClearRFIDUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear all users. Does not clear the admin user.")
 
         func run() throws {
@@ -322,7 +400,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct UpdateAdminUser:ParsableCommand {
+    struct SetAdminUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Set the current admin user used for resetting keychain.")
 
         @Option(help: "Update Admin username")
@@ -345,7 +423,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct SetUser:ParsableCommand {
+    struct SetRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Add an RFID user.")
         @Argument(parsing: .allUnrecognized)
         var other: [String] = []
@@ -384,7 +462,7 @@ extension xcreds {
 
                     let userManager = UserSecretManager(secretKeeper: secretKeeper)
                     guard let rfidUIDData = Data(fromHexEncodedString: rfiduid) else {
-                        print("invalid rfid. Must be hex with no 0x in front")
+                        print("invalid rfid. Must be hex with no 0x prefix")
                         return
 
                     }
@@ -403,7 +481,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct ShowUsers:ParsableCommand {
+    struct ShowRFIDUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show RFID users.")
 
         func run() throws {
@@ -438,7 +516,7 @@ extension xcreds {
 
 
 extension xcreds {
-    struct ShowUser:ParsableCommand {
+    struct ShowRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show RFID user.")
 
 
@@ -477,10 +555,11 @@ extension xcreds {
                 let password = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: user.password, rfidUID: rfidUidData, pin:pin)
 
                 if password.count>0 {
-                    print("password set")
+
+                    print("Fullname: \(user.fullName ?? "No full name"), Username:\(user.username), UID:\(user.userUID)")
                 }
                 else {
-                    print("no password")
+                    print("no password set for user \(user.username)")
                 }
 
             }
@@ -493,7 +572,7 @@ extension xcreds {
     }
 }
 extension xcreds {
-    struct RemoveUser:ParsableCommand {
+    struct RemoveRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Remove RFID user by rfid-uid.")
 
 
@@ -545,31 +624,21 @@ extension xcreds {
 
 
 extension xcreds {
-    struct ImportUsers:ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,UID,RFID-UID. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
-
-        @Argument(parsing: .allUnrecognized)
-        var other: [String] = []
+    struct ImportRFIDUsers:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,RFID-UID,PIN,UID. PIN and UID can be left blank. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
 
 
-        @Option(help: "PIN")
-        var pin:String = ""
-
-        @Option(help: "infilepath")
-        var infilepath:String
+        @Option(help: "file")
+        var file:String
 
         func run() throws {
 
-            if !infilepath.isEmpty {
-
-                if FileManager.default.fileExists(atPath: infilepath)==false {
-
-                    print("\(infilepath) does not exist.")
-
+            if !file.isEmpty {
+                if FileManager.default.fileExists(atPath: file)==false {
+                    print("\(file) does not exist.")
                 }
-
                 do {
-                    let contentsOfFile = try String(contentsOfFile: infilepath, encoding: .windowsCP1250)
+                    let contentsOfFile = try String(contentsOfFile: file, encoding: .windowsCP1250)
 
                     let rfidUsers=RFIDUsers(rfidUsers: [:])
                     let lineArray = contentsOfFile.components(separatedBy:"\n")
@@ -583,7 +652,7 @@ extension xcreds {
                             continue
                         }
                         let userInfo = line.components(separatedBy: ",")
-                        if userInfo.count != 5 {
+                        if userInfo.count != 6 {
                             print("invalid line. skipping. Line:\"\(line)\"")
                             continue
                         }
@@ -592,10 +661,20 @@ extension xcreds {
                             print("skipping header")
                             continue
                         }
+                        var pin:String?
                         let username = userInfo[1].trimmingCharacters(in: .whitespacesAndNewlines)
                         let password = userInfo[2].trimmingCharacters(in: .whitespacesAndNewlines)
-                        let uid = Int(userInfo[3].trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1
-                        let rfidUid = userInfo[4].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let rfidUid = userInfo[3].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let pinString = userInfo[4].trimmingCharacters(in: .whitespacesAndNewlines)
+
+                        if pinString.isEmpty {
+                            pin=nil
+                        }
+                        else {
+                            pin = pinString
+                        }
+
+                        let uid = Int(userInfo[5].trimmingCharacters(in: .whitespacesAndNewlines)) ?? -1
                         print("importing \(rfidUid):\(fullname):\(username):\(uid)")
 
 
@@ -604,18 +683,23 @@ extension xcreds {
                             print("invalid uid")
                             return
                         }
-                        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData,salt: nil)
+                        try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUidData, username: username, password: password, uid: NSNumber(value: Int(uid)), pin: pin)
 
-
-                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData, pin: pin)
+//                        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData,salt: nil)
+//
+//                        print(rfidUidData.hexEncodedString()) 
+//                        print(hashedUID.hexEncodedString())
+//                        print(salt.hexEncodedString())
+//                        
+//                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData, pin: pin)
                         count += 1
                     }
 
-                    try userManager.setUIDUsers(rfidUsers)
+//                    try userManager.setUIDUsers(rfidUsers)
                     print("\(count) users imported. If this Mac system is at the XCreds login window, please restart (or log in and log out) to use the new users.")
                 }
                 catch {
-                    print("\(infilepath) cannot be read. \(error)")
+                    print("\(file) cannot be read. \(error)")
 
                 }
             }
@@ -623,6 +707,20 @@ extension xcreds {
         }
 
     }
+    struct ShowTemplate:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Template for importing RFID users. The header row is optional. PIN and UID can be left blank but must contain commas with empty values as show below. John Doe has all values, Sam Doe does not have a PIN, and Jane Doe does not have a PIN or a UID (UID will be automatically selected when the user account is created)")
+
+        func run() throws {
+            print("Full Name,Username,Password,RFID-UID,PIN,UID")
+            print("John Doe,jdoe,password%1!,00124565,000000,601")
+            print("Sam Doe,sam,password@3^,DEADBEEF,,602")
+            print("Jane Doe,jane,password@2^,08091A1B1C1D1E,,")
+
+
+        }
+
+    }
+
 }
 
 
@@ -639,8 +737,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     var shareMenu:NSMenu?
     var statusBarItem:NSStatusItem?
     var watcher: TKTokenWatcher?
-
-
 
     func updateShareMenu(adUser:ADUserRecord){
         shareMounterMenu?.shareMounter?.adUserRecord = adUser

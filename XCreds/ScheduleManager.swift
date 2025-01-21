@@ -17,6 +17,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     func tokenError(_ err: String) {
         TCSLogErrorWithMark("authFailure: \(err)")
         feedbackDelegate?.credentialsCheckFailed()
+        XCredsAudit().auditError(err)
 //        //        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
 //        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 //

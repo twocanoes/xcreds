@@ -82,6 +82,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     func tokenError(_ err:String){
         updateCredentialsFeedbackDelegate?.credentialsCheckFailed()
         TCSLogWithMark("Token error: \(err)")
+        XCredsAudit().auditError(err)
         authFail()
     }
 
@@ -501,6 +502,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
     fileprivate func authFail(_ message: String?=nil) {
+        XCredsAudit().auditError(message ?? "Empty")
         TCSLogWithMark(message ?? "")
         nomadSession = nil
         passwordTextField.stringValue = ""
@@ -790,7 +792,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
 
-    /// Complete the NoLo process and either continue to the next Authorization Plugin or reset the NoLo window.
+    /// Complete the login process and either continue to the next Authorization Plugin or reset the NoLo window.
     ///
     /// - Parameter authResult:`Authorizationresult` enum value that indicates if login should proceed.
     fileprivate func completeLogin(authResult: AuthorizationResult) {
@@ -799,6 +801,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
+            XCredsAudit().loginWindowLogin(user:shortName)
             mechanismDelegate?.allowLogin()
 
         case .deny:

@@ -255,6 +255,8 @@ import OpenDirectory
 
             setHint(type: .tokens, hint: [credentials.idToken ?? "",credentials.refreshToken ?? "",credentials.accessToken ?? ""] as NSSecureCoding)
             TCSLogWithMark("calling allowLogin")
+            XCredsAudit().loginWindowLogin(user:username)
+
             allowLogin()
             return .success
         }
