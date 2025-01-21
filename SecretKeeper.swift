@@ -116,9 +116,6 @@ public struct PasswordCryptor{
             throw SecretKeeper.SecretKeeperError.aesEncryptionError
         }
 
-//        print(encryptedData.hexEncodedString())
-
-
         return salt+encryptedData
     }
     public func hashSecretWithKeyStretchingAndSalt(secret:Data, salt inSalt:Data?) throws -> (hashedValue:Data,salt:Data)  {
@@ -134,7 +131,6 @@ public struct PasswordCryptor{
 
             if status != errSecSuccess { // Always test the status.
                 throw PasswordCryptorError.randomNumberGeneratingError
-                // Prints something different every time you run.
             }
             let newSalt = Data(bytes: newSaltBytes, count: 16)
             salt = newSalt
@@ -192,11 +188,6 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         guard let passwordData = password.data(using: .utf8) else {
             throw SecretKeeper.SecretKeeperError.otherError("error converting password")
         }
-//        let (key,salt) = try PasswordCryptor().keyForAES(rfidUID: rfidUID, salt: nil)
-//
-//        guard let salt = salt else {
-//            throw SecretKeeperUserError.errorCreatingSalt
-//        }
         let encryptedPassword = try PasswordCryptor().passwordEncrypt(clearTextData: passwordData, rfidUID: rfidUID, pin: pin)
         self.password = encryptedPassword
 
@@ -217,7 +208,6 @@ public class Secrets:NSObject, NSSecureCoding {
     var salt:Data
 
     init(localAdmin:SecretKeeperUser, uidUsers:RFIDUsers){
-
         self.localAdmin = localAdmin
         self.rfidUIDUsers = uidUsers
         var salt = [Int8](repeating: 0, count: 16)

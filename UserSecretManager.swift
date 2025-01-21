@@ -52,7 +52,6 @@ public struct UserSecretManager {
         if salt.count<16 {
             throw UserSecretManagerError.saltLengthError
         }
-//        secretKeeperSecrets.rfidUIDUsers.salt = salt
         if let existingUser = try uidUser(uid: rfidUID)  {
             TCSLogWithMark("user \(existingUser.username) with rfid already found. removing")
 
