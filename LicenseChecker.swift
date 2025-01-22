@@ -21,7 +21,6 @@ class LicenseChecker: NSObject {
         let trialDays = 14
 
         if UserDefaults.standard.value(forKey: "tts") == nil {
-            TCSLogErrorWithMark("setting trial date")
             UserDefaults.standard.setValue(Date(), forKey: "tts")
         }
         let firstLaunchDate = UserDefaults.standard.value(forKey: "tts") as? Date

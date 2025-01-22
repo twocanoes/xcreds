@@ -626,7 +626,7 @@ extension xcreds {
 
 extension xcreds {
     struct ImportRFIDUsers:ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,RFID-UID,PIN,UID. PIN and UID can be left blank. All imported user data is encrypted with a ECC stored in the system keychain and the encrypted data is stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
+        static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,RFID-UID,PIN,UID. PIN and UID can be left blank. All imported user data is encrypted and stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
 
 
         @Option(help: "file")
