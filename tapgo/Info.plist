@@ -7,7 +7,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>com.apple.ctk.class-id</key>
-			<string>com.twocanoes.xcreds.tapgo</string>
+			<string>com.twocanoes.xcreds.tap</string>
 			<key>com.apple.ctk.driver-class</key>
 			<string>$(PRODUCT_MODULE_NAME).TokenDriver</string>
 			<key>com.apple.ctk.token-type</key>

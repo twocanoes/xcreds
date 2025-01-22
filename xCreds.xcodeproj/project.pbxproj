@@ -233,7 +233,7 @@
 		76C840892D03BFF400E41802 /* PinSetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinSetWindowController.swift */; };
 		76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinSetWindowController.xib */; };
 		76C8408B2D03BFF400E41802 /* PinSetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinSetWindowController.swift */; };
-		76CA72BA2D0794D800C209A1 /* tapgo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76A247532C22747400859E0A /* tapgo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		76CA72BA2D0794D800C209A1 /* xcredstap.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76A247532C22747400859E0A /* xcredstap.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		76CB9077287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
 		76CB9078287FBEEA00C70D0C /* Helper+URLDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CB9076287FBEEA00C70D0C /* Helper+URLDecode.swift */; };
 		76CB907B2880E41E00C70D0C /* LogShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632E3A02873497C00E37923 /* LogShim.swift */; };
@@ -433,7 +433,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				76CA72BA2D0794D800C209A1 /* tapgo.appex in Embed Foundation Extensions */,
+				76CA72BA2D0794D800C209A1 /* xcredstap.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -549,7 +549,7 @@
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsHelper.swift; path = XCreds/DefaultsHelper.swift; sourceTree = "<group>"; };
-		76A247532C22747400859E0A /* tapgo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = tapgo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		76A247532C22747400859E0A /* xcredstap.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = xcredstap.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A247542C22747400859E0A /* CryptoTokenKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoTokenKit.framework; path = System/Library/Frameworks/CryptoTokenKit.framework; sourceTree = SDKROOT; };
 		76A247572C22747400859E0A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		76A247592C22747400859E0A /* TokenDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDriver.swift; sourceTree = "<group>"; };
@@ -1022,7 +1022,7 @@
 				76786F532A27C36A00AA8DB9 /* auth_mech_fixup */,
 				760291E02C116E450075FBD8 /* XCreds Login Autofill.app */,
 				760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */,
-				76A247532C22747400859E0A /* tapgo.appex */,
+				76A247532C22747400859E0A /* xcredstap.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1180,9 +1180,9 @@
 			productReference = 76786F532A27C36A00AA8DB9 /* auth_mech_fixup */;
 			productType = "com.apple.product-type.tool";
 		};
-		76A247522C22747400859E0A /* tapgo */ = {
+		76A247522C22747400859E0A /* xcredstap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "tapgo" */;
+			buildConfigurationList = 76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "xcredstap" */;
 			buildPhases = (
 				76A2474F2C22747400859E0A /* Sources */,
 				76A247502C22747400859E0A /* Frameworks */,
@@ -1192,9 +1192,9 @@
 			);
 			dependencies = (
 			);
-			name = tapgo;
+			name = xcredstap;
 			productName = tapgo;
-			productReference = 76A247532C22747400859E0A /* tapgo.appex */;
+			productReference = 76A247532C22747400859E0A /* xcredstap.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		76DC0A6428836EB1007C42B2 /* XCreds Login Overlay */ = {
@@ -1307,7 +1307,7 @@
 				76786F522A27C36A00AA8DB9 /* auth_mech_fixup */,
 				760291DF2C116E450075FBD8 /* XCreds Login Autofill */,
 				760291F32C116EDB0075FBD8 /* XCreds Login Password */,
-				76A247522C22747400859E0A /* tapgo */,
+				76A247522C22747400859E0A /* xcredstap */,
 			);
 		};
 /* End PBXProject section */
@@ -1716,7 +1716,7 @@
 		};
 		76A247602C22747400859E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 76A247522C22747400859E0A /* tapgo */;
+			target = 76A247522C22747400859E0A /* xcredstap */;
 			targetProxy = 76A2475F2C22747400859E0A /* PBXContainerItemProxy */;
 		};
 		76DC0A7B28837152007C42B2 /* PBXTargetDependency */ = {
@@ -1772,7 +1772,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1814,7 +1814,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1848,7 +1848,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1887,7 +1887,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1918,7 +1918,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1937,7 +1937,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -1958,7 +1958,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1996,7 +1996,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2033,7 +2033,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2049,7 +2049,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
@@ -2068,7 +2068,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2103,7 +2103,7 @@
 				CODE_SIGN_ENTITLEMENTS = tapgo/tapgo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2137,7 +2137,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2174,7 +2174,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2325,7 +2325,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2370,7 +2370,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8188;
+				CURRENT_PROJECT_VERSION = 8189;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2454,7 +2454,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "tapgo" */ = {
+		76A247652C22747400859E0A /* Build configuration list for PBXNativeTarget "xcredstap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76A247632C22747400859E0A /* Debug */,
