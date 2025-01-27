@@ -16,10 +16,10 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var centerView:NSView?
     var mechanism:XCredsMechanismProtocol?
     var timer:Timer?
+    var windowArray:Array<NSWindow>=[]
     override func windowDidLoad() {
         TCSLogWithMark()
         super.windowDidLoad()
-
         window?.canBecomeVisibleWithoutLogin=true
         let screenRect = NSScreen.screens[0].frame
         window?.setFrame(screenRect, display: true, animate: false)
@@ -70,6 +70,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         TCSLogWithMark()
         DispatchQueue.main.async{
             if self.window?.isVisible ?? true {
+                self.updateBackground()
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width
                 let screenHeight = screenRect.height
@@ -94,6 +95,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         self.window?.isMovable = false
         self.window?.canBecomeVisibleWithoutLogin = true
+        self.window?.level = .normal
 
         let screenRect = NSScreen.screens[0].frame
 
@@ -102,9 +104,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         self.controlsViewController?.view.frame=rect
 
-        let backgroundImage = DefaultsHelper.backgroundImage()
         TCSLogWithMark()
-        self.window?.level = .normal
 
         if self.controlsViewController==nil {
             self.controlsViewController = ControlsViewController.initFromPlugin()
@@ -127,7 +127,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         }
         TCSLogWithMark("create background windows")
-        self.createBackground()
+        self.updateBackground()
 
         TCSLogWithMark()
         controlsViewController.showPopoverIfNeeded()
@@ -184,37 +184,74 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     }
 
-    fileprivate func createBackground() {
+    fileprivate func updateBackground() {
         TCSLogWithMark()
+        windowArray.removeAll()
+        if let window = window {
+            windowArray.append(window)
+        }
 
-        let backgroundImage = DefaultsHelper.backgroundImage()
-        let screenRect = NSScreen.screens[0].frame
-        var newHeight = screenRect.height
-        var newWidth = screenRect.width
+        var i=0
+        var currWindow:NSWindow
+        for screen in NSScreen.screens{
+            if i>0{
+                let newWindow = NSWindow(contentRect: .init(origin: .zero,
+                                                            size: .init(width: screen.frame.width,
+                                                                        height: screen.frame.height)),
+                                         styleMask: [],
+                                         backing: .buffered,
+                                         defer: false,
+                                         screen: screen)
+                newWindow.backgroundColor = NSColor.black
+                newWindow.titlebarAppearsTransparent = true
 
-        if let backgroundImage = backgroundImage {
+                newWindow.isMovable = false
+                newWindow.canBecomeVisibleWithoutLogin = true
+                newWindow.level = .normal
 
-            if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
-                let ratio = backgroundImage.size.width/backgroundImage.size.height
-                newHeight = screenRect.size.height
-                newWidth = screenRect.size.height * ratio
+                windowArray.append(newWindow)
+            }
 
-                if newWidth > screenRect.size.width {
-                    newWidth = screenRect.size.width
-                    newHeight = screenRect.size.width / ratio
+            currWindow = windowArray[i]
+            let backgroundImage = DefaultsHelper.backgroundImage()
+            let screenRect = screen.frame
+            var newHeight = screenRect.height
+            var newWidth = screenRect.width
+
+            if let backgroundImage = backgroundImage {
+
+                if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
+                    let ratio = backgroundImage.size.width/backgroundImage.size.height
+                    newHeight = screenRect.size.height
+                    newWidth = screenRect.size.height * ratio
+
+                    if newWidth > screenRect.size.width {
+                        newWidth = screenRect.size.width
+                        newHeight = screenRect.size.width / ratio
+                    }
+
+                }
+
+                backgroundImage.size.height = newHeight
+                backgroundImage.size.width = newWidth
+                if i==0{
+                    backgroundImageView.image=backgroundImage
+
+                    backgroundImageView.imageScaling = .scaleAxesIndependently
+                    backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                }
+                else {
+                    let newBackgroundImageView = NSImageView()
+                    newBackgroundImageView.image=backgroundImage
+
+                    newBackgroundImageView.imageScaling = .scaleAxesIndependently
+                    newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
+                    currWindow.contentView=newBackgroundImageView
+                    currWindow.makeKeyAndOrderFront(self)
                 }
 
             }
-
-
-
-            backgroundImage.size.height = newHeight
-            backgroundImage.size.width = newWidth
-            backgroundImageView.image=backgroundImage
-
-            backgroundImageView.imageScaling = .scaleAxesIndependently
-            backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
-
+            i += 1
         }
 
     }

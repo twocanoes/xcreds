@@ -7,7 +7,7 @@
 
 import Foundation
 import Cocoa
-import WebKit
+@preconcurrency import WebKit
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {

@@ -105,6 +105,8 @@
 	<string>interaction_required</string>
 	<key>shouldSuppressLocalPasswordPrompt</key>
 	<false/>
+	<key>overlayDelaySecs</key>
+	<integer>10</integer>
 	<key>shouldUseKillWhenLoginWindowSwitching</key>
 	<false/>
 	<key>shouldAllowLoginCardSetup</key>

@@ -11,16 +11,13 @@ import AppKit
 @main
 class App {
     static func main() {
-        if StateFileHelper().fileExists(.delayType){
-            TCSLogWithMark("Delaying startup of overlay to give login window a chance to start")
-            sleep(3)
-            do {
-                try StateFileHelper().removeFile(.delayType)
+        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds") {
+            var delay = ud.integer(forKey: "overlayDelaySecs")
+            if delay<10 {
+                delay = 10
             }
-            catch{
-
-                TCSLogWithMark("Error removing delay file")
-            }
+            TCSLogWithMark("delaying overlay by \(delay) secs");
+            sleep(UInt32(delay))
         }
         _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     }
@@ -193,6 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
+            TCSLogWithMark("moving to front")
             NSApp.activate(ignoringOtherApps: true)
             self.setupWindow()
             NSApp.activate(ignoringOtherApps: true)

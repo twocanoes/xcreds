@@ -1,6 +1,5 @@
 //
 //  TokenSession.swift
-//  tapgo
 //
 //  Created by Timothy Perfitt on 6/18/24.
 //
