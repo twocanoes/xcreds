@@ -59,6 +59,8 @@ void TCSLogError(NSString *string);
 @property (strong, readwrite) NSURL *logFileURL;
 @property (strong, readwrite) NSString *logFolderName;
 @property (strong, readwrite) NSString *logFileName;
+@property bool suppressDebug;
+
 - (void)logString:(NSString *)inStr level:(LogLevel)level;
 
 @end

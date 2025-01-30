@@ -115,7 +115,10 @@ void TCSLogError(NSString *string)
 {
 
     if (level==LOGLEVELDEBUG && [[NSUserDefaults standardUserDefaults] boolForKey:@"showDebug"]==NO){
+        return;
+    }
 
+    if (level==LOGLEVELDEBUG && self.suppressDebug == true) {
         return;
     }
     NSProcessInfo *processInfo = [NSProcessInfo processInfo];

@@ -1080,22 +1080,6 @@ extension SignInViewController: NoMADUserSessionDelegate {
         updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
         TCSLogWithMark("AuthenticationFailed: \(description)")
-//        alertTextField.isHidden=false
-//        alertTextField.stringValue = description
-//        if passChanged {
-//            os_log("Password change failed.", log: uiLog, type: .default)
-//            os_log("Password change failure description: %{public}@", log: uiLog, type: .error, description)
-//            oldPassword.isEnabled = true
-//            newPassword.isEnabled = true
-//            newPasswordConfirmation.isEnabled = true
-//
-//            newPassword.stringValue = ""
-//            newPasswordConfirmation.stringValue = ""
-//
-////            alertText.stringValue = "Password change failed"
-//            return
-//        }
-        
         switch error {
         case .PasswordExpired:
             TCSLogErrorWithMark("Password is expired or requires change.")

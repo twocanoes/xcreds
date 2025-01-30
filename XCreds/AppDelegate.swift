@@ -21,7 +21,6 @@ struct xcreds:ParsableCommand {
 }
 extension xcreds {
     struct Status:ParsableCommand {
-
         @Flag(help:"JSON output") var json:Bool = false
         static var configuration = CommandConfiguration(abstract: "Get status of XCreds")
         @Argument(parsing: .allUnrecognized)
@@ -30,6 +29,8 @@ extension xcreds {
         var other: [String] = []
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             struct XCredsInfo:Codable {
                 var consoleRights:[String]?
                 var userInfo:[String:Dictionary<String,String>]?
@@ -74,6 +75,7 @@ extension xcreds {
                 }
 
             }
+
             enum UserKeys:String {
                 case realName="dsAttrTypeStandard:RealName"
                 case homeDirectory="dsAttrTypeStandard:NFSHomeDirectory"
@@ -206,6 +208,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "List currently plugged in RFID readers.")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             let slotNames = TKSmartCardSlotManager.default?.slotNames
 
             guard let slotNames = slotNames, slotNames.count>0 else {
@@ -234,6 +238,8 @@ extension xcreds {
         var readerName:String
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             print("press control-c to exit")
 
             let watcher = TKTokenWatcher()
@@ -289,6 +295,8 @@ extension xcreds {
             var other: [String] = []
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
 
             //used to register ccid reader as root. no idea why
             //this is needed.
@@ -313,6 +321,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Show currently set admin user. Used for resetting keychain.")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -339,6 +349,8 @@ extension xcreds {
         var username:String
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -371,6 +383,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Clear all users. Does not clear the admin user.")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -389,6 +403,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Clear the current admin user used for resetting keychain.")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -412,6 +428,7 @@ extension xcreds {
         var adminpassword:String
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -450,6 +467,8 @@ extension xcreds {
 
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -487,6 +506,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Show RFID users.")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -529,6 +550,8 @@ extension xcreds {
         var pin:String?
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -583,6 +606,7 @@ extension xcreds {
 
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
             if geteuid() != 0  {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
@@ -634,6 +658,8 @@ extension xcreds {
         var file:String
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
 
             if !file.isEmpty {
                 if FileManager.default.fileExists(atPath: file)==false {
@@ -713,6 +739,8 @@ extension xcreds {
         static var configuration = CommandConfiguration(abstract: "Template for importing RFID users. The header row is optional. PIN and UID can be left blank but must contain commas with empty values as show below. John Doe has all values, Sam Doe does not have a PIN, and Jane Doe does not have a PIN or a UID (UID will be automatically selected when the user account is created)")
 
         func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
             print("Full Name,Username,Password,RFID-UID,PIN,UID")
             print("John Doe,jdoe,password%1!,00124565,000000,601")
             print("Sam Doe,sam,password@3^,DEADBEEF,,602")

@@ -87,7 +87,9 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         return key
     }
     @IBAction func showSystemInfoButtonPressed(_ sender: NSButton) {
+        TCSLogWithMark("showSystemInfoButtonPressed")
         if systemInfoPopover.isShown==true {
+            TCSLogWithMark("closing")
             systemInfoPopover.performClose(self)
             return
         }
@@ -190,6 +192,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     }
     func popoverShouldClose(_ popover: NSPopover) -> Bool {
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true && allowPopoverClose==false{
+            TCSLogWithMark("preventing popover from closing")
             return false
         }
         return true
