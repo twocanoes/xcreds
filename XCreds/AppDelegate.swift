@@ -320,8 +320,9 @@ extension xcreds {
             }
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            if let adminUser = try userManager.localAdminCredentials(), !adminUser.username.isEmpty {
+            if let adminUser = try userManager.adminCredentials(), !adminUser.username.isEmpty {
                 print("\(adminUser.username)")
+
             }
             else {
                 print("admin user not set")

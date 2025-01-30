@@ -107,11 +107,6 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
 
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
-            
-            var secureTokenCreds:SecureTokenCredential? = nil
-            if let creds = PasswordUtils.GetSecureTokenCreds() {
-                secureTokenCreds = creds
-            }
 
             var uid:String?
             if let hintUID = getHint(type: .uid) as? String{
@@ -178,8 +173,8 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                                gid: "20",
                                canChangePass: true,
                                isAdmin: isAdmin,
-                               customAttributes: customAttributes,
-                               secureTokenCreds: secureTokenCreds)
+                               customAttributes: customAttributes
+                )
             }
 
             catch CreateUserError.userPasswordSetError(let mesg){
@@ -196,24 +191,22 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
             
         } else {
-
+            TCSLogWithMark("Checking to see if we are doing a silent overwrite")
             // Checking to see if we are doing a silent overwrite
+            if getHint(type: .passwordOverwrite) as? Bool ?? false {
+
+                TCSLogWithMark("passwordOverwrite not set")
+            }
             if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
                 TCSLogWithMark("trying to getting admin user and password")
 
-                if let adminUsername = getHint(type: .adminUsername) as? String,
-                   let adminPassword = getHint(type: .adminPassword) as? String{
-                    TCSLogWithMark("resetting password with admin username and password that was prompted before")
+                if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
+                    TCSLogWithMark("resetting password with admin username and password")
 
-                    resetUserPassword(adminUserName: adminUsername, adminPassword: adminPassword)
+                    resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
 
-                }
-                else if let creds =  PasswordUtils.GetSecureTokenCreds(){
-                    TCSLogWithMark("resetting password with admin username and password from override script")
-
-                    resetUserPassword(adminUserName: creds.username, adminPassword: creds.password)
                 }
                 else {
 
@@ -321,16 +314,17 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     }
     func resetUserPassword(adminUserName:String, adminPassword:String) {
         do {
-            TCSLogWithMark("secure token admin user and password obtained")
+            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword) obtained")
 
             let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
+            TCSLogWithMark()
             let user = try node.record(withRecordType: kODRecordTypeUsers, name: xcredsUser!, attributes: kODAttributeTypeRecordName)
-
+            TCSLogWithMark()
             try user.setNodeCredentials(adminUserName, password: adminPassword)
-
+            TCSLogWithMark()
             TCSLogWithMark("changing password with secure token admin")
             try user.changePassword(nil, toPassword: xcredsPass!)
-
+            TCSLogWithMark()
         }
         catch {
             TCSLogErrorWithMark("error: \(error.localizedDescription)")
@@ -517,7 +511,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
     }
     // mark utility functions
-    func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String], secureTokenCreds: SecureTokenCredential?) throws {
+    func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String]) throws {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
 
@@ -660,54 +654,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
             }
         }
-        
-        //        // Doing Secure Token Operations
-        //        os_log("Starting SecureToken Operations", log: createUserLog, type: .debug)
-        //        if #available(OSX 10.13.4, *), getManagedPreference(key: .ManageSecureTokens) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
-        //
-        //            // Checking to make sure secureToken credentials are accessible.
-        //            if secureTokenCreds["username"] != "" {
-        //
-        //                if !(getManagedPreference(key: .SecureTokenManagementEnableOnlyAdminUsers) as? Bool ?? false && !isAdmin) {
-        //                    os_log("Manage SecureTokens is Enabled, Giving the user a token", log: createUserLog, type: .debug)
-        //                    addSecureToken(shortName, pass, secureTokenCreds["username"] ?? "", secureTokenCreds["password"] ?? "")
-        //
-        //                    if getManagedPreference(key: .SecureTokenManagementOnlyEnableFirstUser) as? Bool ?? false {
-        //                        // Now that the user is given a token we need to remove the service account
-        //                        os_log("Enable Only First user Enabled, deleting the service account", log: createUserLog, type: .debug)
-        //
-        //                        // Nuking the account in unrecoverable fashion. If the secure token operation were to fail above the following deletion command will also fail and leave us in a recoverable state
-        //                        let launchPath = "/usr/sbin/sysadminctl"
-        //                        let args = [
-        //                            "-deleteUser",
-        //                            "\(String(describing: secureTokenCreds["username"]))",
-        //                            "-secure"
-        //                        ]
-        //                        _ = cliTask(launchPath, arguments: args, waitForTermination: true)
-        //                    } else {
-        //                        os_log("Rotating the service account password", log: createUserLog, type: .debug)
-        //
-        //                        // Rotating the Secure Token passphrase
-        //                        let secureTokenManagementPasswordLocation = getManagedPreference(key: .SecureTokenManagementPasswordLocation) as? String ?? "/var/db/.nomadLoginSecureTokenPassword"
-        //                        _ = CreateSecureTokenManagementUser(String(describing: secureTokenCreds["username"]!), secureTokenManagementPasswordLocation)
-        //                    }
-        //                }
-        //
-        //            // This else if is to maintain historic functionality that the first user logging in with EnableFDE enabled will be given a Secure Token
-        //            } else if getManagedPreference(key: .EnableFDE) as? Bool ?? false {
-        //                os_log("Historic EnableFDE function enabled, Assigning the user a token then deleting the service account", log: createUserLog, type: .debug)
-        //                addSecureToken(shortName, pass, secureTokenCreds["username"] ?? "", secureTokenCreds["password"] ?? "")
-        //                let launchPath = "/usr/sbin/sysadminctl"
-        //                let args = [
-        //                    "-deleteUser",
-        //                    "\(String(describing: secureTokenCreds["username"]))",
-        //                    "-secure"
-        //                ]
-        //                _ = cliTask(launchPath, arguments: args, waitForTermination: true)
-        //            }
-        //        } else {
-        //            os_log("SecureToken Credentials inaccessible, failing silently", log: createUserLog, type: .error)
-        //        }
+
         
         os_log("Checking for aliases to add...", log: createUserLog, type: .debug)
         

@@ -80,8 +80,8 @@ import Network
             TCSLogWithMark("no username found")
 
         }
-       if let password = getContextString(type: "fvpassword") {
-           TCSLogWithMark("got password ")
+       if let _ = getContextString(type: "fvpassword") {
+           TCSLogWithMark("got fvpassword ")
        }
         else {
             TCSLogWithMark("no password found")
@@ -352,7 +352,7 @@ import Network
                 TCSLogWithMark("no rfidUsers in hints")
             }
 
-            if let localAdmin = getHint(type: .localAdmin) as? SecretKeeperUser {
+            if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
                 signInViewController.localAdmin = localAdmin
             }
             else {

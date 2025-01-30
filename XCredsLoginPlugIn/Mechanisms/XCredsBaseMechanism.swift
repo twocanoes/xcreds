@@ -184,21 +184,24 @@ import OpenDirectory
 
                 TCSLogWithMark("Sync password called.")
 
-                if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
-                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false, getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false {
+                let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials
 
-
-                    setHint(type: .adminUsername, hint:aUsername as NSSecureCoding  )
-                    setHint(type: .adminPassword, hint: aPassword as NSSecureCoding )
+                if getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false,
+                   let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false{
+                    TCSLogWithMark("setting passwordOverwrite")
                     setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
-
                 }
                 else {
+
                     let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
                     promptPasswordWindowController.showResetText=true
                     promptPasswordWindowController.showResetButton=true
+                    if let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false {
+                        promptPasswordWindowController.adminUsername = localAdmin.username
+                        promptPasswordWindowController.adminPassword = localAdmin.password
 
+                    }
 
                     switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
 
@@ -206,22 +209,19 @@ import OpenDirectory
                     case .success(let enteredUsernamePassword):
                         TCSLogWithMark("setting original password to use to unlock keychain later")
 
-                        if let enteredUsernamePassword = enteredUsernamePassword, let password = enteredUsernamePassword.password {
+                        if let enteredUsernamePassword = enteredUsernamePassword, !enteredUsernamePassword.password.isEmpty {
                             setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
                         }
 
-                    case .resetKeychainRequested(let usernamePasswordCredentials):
+                    case .resetKeychainRequested:
+                        TCSLogWithMark("resetKeychainRequested")
 
-                        if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                            setHint(type: .adminUsername, hint:adminUsername as NSSecureCoding)
-                            setHint(type: .adminPassword, hint: adminPassword as NSSecureCoding)
-                            setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
-
-                        }
+                        TCSLogWithMark("setting passwordOverwrite hint")
+                        setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
 
                     case .userCancelled:
-                        return .failure("user cancelled")
+                        return .userCancelled
                     case .error(let errMsg):
                         TCSLogWithMark("Error prompting: \(errMsg)")
                         return .failure(errMsg)
@@ -410,16 +410,12 @@ import OpenDirectory
         }
     }
     func setHint(type: HintType, hint: NSSecureCoding) {
-//        guard (hint is String || hint is [String] || hint is Bool || hint is [String:String]) else {
-//            TCSLogErrorWithMark("Login Set hint failed: data type of hint is not supported")
-//            return
-//        }
+
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: hint, requiringSecureCoding: true) else {
             TCSLogErrorWithMark("Login Set hint failed: cant archive data to a data object")
             return
         }
 
-//        let data = NSKeyedArchiver.archivedData(withRootObject: hint)
         var value = AuthorizationValue(length: data.count, data: UnsafeMutableRawPointer(mutating: (data as NSData).bytes.bindMemory(to: Void.self, capacity: data.count)))
 
         let err = mechCallbacks.SetHintValue((mech?.fEngine)!, type.rawValue, &value)
@@ -459,7 +455,6 @@ import OpenDirectory
 
         let outputdata = Data.init(bytes: value!.pointee.data!, count: value!.pointee.length)
 
-        TCSLogWithMark("Hint: \(type.rawValue):\(outputdata.hexEncodedString())")
         guard let result = NSKeyedUnarchiver.unarchiveObject(with: outputdata)
             else {
                 return nil

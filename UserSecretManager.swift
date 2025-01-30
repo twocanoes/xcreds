@@ -34,9 +34,27 @@ public struct UserSecretManager {
         secrets.localAdmin=user
         try secretKeeper.saveSecrets(secrets)
     }
-    public func localAdminCredentials() throws -> SecretKeeperUser?{
+    func adminCredentials() throws -> LocalAdminCredentials?{
+        TCSLogWithMark("Getting local admin credentials")
         let secrets = try secrets()
-        return secrets.localAdmin
+        if !secrets.localAdmin.username.isEmpty {
+            TCSLogWithMark("admin username: \(secrets.localAdmin.username)")
+
+        }
+        else {
+            TCSLogWithMark("admin username is empty")
+            return nil
+        }
+        let passwordData = secrets.localAdmin.password
+
+        let decryptedPassword = try PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: passwordData, rfidUID: Data(), pin: nil)
+
+        guard let passwordString = String(data:decryptedPassword, encoding: .utf8) else{
+            TCSLogWithMark("Error decrypting password")
+            return nil
+        }
+
+        return LocalAdminCredentials(username:secrets.localAdmin.username, password: passwordString)
 
     }
     public func setUIDUser(fullName:String, rfidUID:Data, username:String, password:String, uid:NSNumber, pin:String?) throws {

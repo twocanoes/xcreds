@@ -43,7 +43,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
     var cardLoginFailedAttempts = 0
-    var localAdmin:SecretKeeperUser?
+    var localAdmin:LocalAdminCredentials?
     var rfidUsers:RFIDUsers?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
     var isInUserSpace = false
@@ -91,8 +91,8 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
         if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
             switch res {
-
-            case .success:
+                
+            case .success, .userCancelled:
                 break
             case .failure(let msg):
                 TCSLogWithMark(msg)
@@ -100,19 +100,19 @@ protocol UpdateCredentialsFeedbackProtocol {
                 let alert = NSAlert()
                 alert.addButton(withTitle: "OK")
                 alert.messageText=msg
-
+                
                 alert.window.canBecomeVisibleWithoutLogin=true
-
+                
                 let bundle = Bundle.findBundleWithName(name: "XCreds")
-
+                
                 if let bundle = bundle {
                     TCSLogWithMark("Found bundle")
-
+                    
                     alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
-
+                    
                 }
                 alert.runModal()
-
+                
             }
 
         }
@@ -123,10 +123,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     }
 
-    struct UsernamePasswordCredentials {
-        var username:String?
-        var password:String?
-    }
 
 
 
@@ -731,7 +727,6 @@ protocol UpdateCredentialsFeedbackProtocol {
             currVal.uppercased()
         }
 
-
         if strippedUsername.range(of:"@") != nil {
             shortName = (strippedUsername.components(separatedBy: "@").first)!
 
@@ -740,7 +735,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             }
         }
-
 
         if let upnMappings = DefaultsOverride.standardOverride.array(forKey: PrefKeys.upnSuffixToDomainMappings.rawValue)  as? [[String:String]]{
             for upnMapping in upnMappings {
@@ -1254,8 +1248,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
                     TCSLogWithMark("setting original password to use to unlock keychain later")
 
-                    if let enteredUsernamePassword = enteredUsernamePassword {
-                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as! NSSecureCoding  )
+                    if let enteredUsernamePassword = enteredUsernamePassword{
+                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as NSSecureCoding  )
                     }
 
                     completeLogin(authResult: .allow)
@@ -1263,23 +1257,21 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 case .resetKeychainRequested(let usernamePasswordCredentials):
                     TCSLogWithMark("resetKeychainRequested")
 
-                    if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                        TCSLogWithMark("Setting local admin from settings")
+                    if let adminUsername = usernamePasswordCredentials?.username,
+                       let adminPassword = usernamePasswordCredentials?.password,
+                       let localAdmin = try? SecretKeeperUser(fullName: "", username: adminUsername, password: adminPassword, uid: -1, rfidUID: Data(), pin: nil){
 
-                        mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername as NSSecureCoding )
-                        mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword as NSSecureCoding)
+                        TCSLogWithMark("Setting local admin from settings")
+                        mechanismDelegate?.setHint(type: .localAdmin, hint:localAdmin as NSSecureCoding )
                         mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
+                        completeLogin(authResult: .allow)
 
                     }
                     else {
-                        if let localAdmin = localAdmin, localAdmin.username.isEmpty == false, localAdmin.password.isEmpty==false {
-                            TCSLogWithMark("Setting local admin from secure users")
-                            mechanismDelegate?.setHint(type: .adminUsername, hint:localAdmin.username as NSSecureCoding )
-                            mechanismDelegate?.setHint(type: .adminPassword, hint: localAdmin.password as NSSecureCoding)
-                            mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
-                        }
+                        completeLogin(authResult: .deny)
+
                     }
-                    completeLogin(authResult: .allow)
+
 
 
                 case .userCancelled:

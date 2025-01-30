@@ -79,14 +79,17 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
 
         guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
-                let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
-              let kerbPrinc = kerbPrincArray.first else
+              let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+              var kerbPrinc = kerbPrincArray.first else
         {
             return
         }
+        if kerbPrinc.contains("@") == false, let adDomainFromPrefs = adDomainFromPrefs {
+            kerbPrinc = kerbPrinc + "@" + adDomainFromPrefs.stripped
+        }
 
         if allDomainsFromPrefs.count>0,
-            let shortName = kerbPrinc.components(separatedBy: "@").first,
+           let shortName = kerbPrinc.components(separatedBy: "@").first,
             let specifiedDomain = kerbPrinc.components(separatedBy: "@").last,
             specifiedDomain.isEmpty==false,
             shortName.isEmpty==false,

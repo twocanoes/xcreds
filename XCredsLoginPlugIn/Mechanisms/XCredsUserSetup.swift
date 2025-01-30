@@ -41,11 +41,19 @@ class XCredsUserSetup: XCredsBaseMechanism {
                 self.setHint(type: .rfidUsers, hint: users as NSSecureCoding)
             }
 
-            if let adminUser = try userManager.localAdminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
+            if let adminUser = try userManager.adminCredentials(){
 
-                TCSLogWithMark("Setting Admin User for keychain reset")
-                self.setHint(type: .localAdmin, hint: adminUser as NSSecureCoding)
+                TCSLogWithMark("Setting Admin User from secure file for keychain reset")
+                self.setHint(type: .localAdmin, hint: adminUser )
+            }
 
+            else if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+                DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
+
+                TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
+
+                let localAdmin = try SecretKeeperUser(fullName: "", username: aUsername, password: aPassword, uid: -1, rfidUID: Data(), pin: nil)
+                self.setHint(type: .localAdmin, hint: localAdmin as NSSecureCoding)
             }
 
         }

@@ -47,8 +47,6 @@ enum HintType: String,CaseIterable {
     case apsso_kcp = "apsso-kcp"
     case apsso_up = "apsso-up"
     case userSecretTriesLeft
-    case adminUsername
-    case adminPassword
     case noMADDomain
     case tokens
     case passwordOverwrite // stomp on the password

@@ -116,6 +116,11 @@ class LoginWebViewController: WebViewController, DSQueryable {
                 self.updateView()
 
 
+            case .userCancelled:
+                TCSLogWithMark("user cancelled")
+
+                self.updateView()
+
             }
         }
 

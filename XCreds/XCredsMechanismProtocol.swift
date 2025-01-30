@@ -8,6 +8,7 @@
 enum SetupHintsResult {
     case success
     case failure(String)
+    case userCancelled
 }
 
 protocol XCredsMechanismProtocol {
