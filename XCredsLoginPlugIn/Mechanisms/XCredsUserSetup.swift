@@ -40,7 +40,7 @@ class XCredsUserSetup: XCredsBaseMechanism {
                 TCSLogWithMark("setting up tap users");
                 self.setHint(type: .rfidUsers, hint: users as NSSecureCoding)
             }
-
+            TCSLogWithMark("checking to see if we should set admin credentials")
             if let adminUser = try userManager.adminCredentials(){
 
                 TCSLogWithMark("Setting Admin User from secure file for keychain reset")
@@ -52,8 +52,30 @@ class XCredsUserSetup: XCredsBaseMechanism {
 
                 TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
 
-                let localAdmin = try SecretKeeperUser(fullName: "", username: aUsername, password: aPassword, uid: -1, rfidUID: Data(), pin: nil)
-                self.setHint(type: .localAdmin, hint: localAdmin as NSSecureCoding)
+                let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
+                self.setHint(type: .localAdmin, hint: localAdmin)
+            }
+
+            if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
+                TCSLogWithMark("local admin set in hints")
+            }
+            else {
+                TCSLogWithMark("local admin not set in hints")
+
+            }
+            if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue){
+                TCSLogWithMark("username set: \(aUsername)")
+            }
+            else {
+                TCSLogWithMark("username not set")
+            }
+            if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
+                TCSLogWithMark("password set")
+
+            }
+            else {
+                TCSLogWithMark("password not set")
+
             }
 
         }

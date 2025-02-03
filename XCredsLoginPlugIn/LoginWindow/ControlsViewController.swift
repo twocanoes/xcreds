@@ -27,7 +27,6 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet weak var systemInfoTextField: NSTextField?
 
     var loadPageURL:URL?
-//    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
 

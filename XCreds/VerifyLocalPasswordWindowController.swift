@@ -147,15 +147,20 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     @IBAction func removeKeychainButtonPressed(_ sender: Any) {
 
+        TCSLogWithMark()
         //override or prefs has admin username / password so don't prompt
         if let adminUsername = adminUsername, let adminPassword = adminPassword{
+            TCSLogWithMark()
             if self.window?.isModalPanel==true {
+                TCSLogWithMark()
                 resetKeychain=true
                 NSApp.stopModal(withCode: .OK)
             }
+            TCSLogWithMark()
 
         }
         else { //prompt
+            TCSLogWithMark()
             self.adminCredentialsWindow?.canBecomeVisibleWithoutLogin = true
 
             self.window?.beginSheet(adminCredentialsWindow) { res in

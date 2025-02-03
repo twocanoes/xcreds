@@ -186,6 +186,10 @@ import OpenDirectory
 
                 let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials
 
+                if let localAdmin = localAdmin {
+
+                    TCSLogWithMark("local admin set")
+                }
                 if getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false,
                    let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false{
                     TCSLogWithMark("setting passwordOverwrite")
@@ -193,11 +197,13 @@ import OpenDirectory
                 }
                 else {
 
+                    TCSLogWithMark()
                     let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
                     promptPasswordWindowController.showResetText=true
                     promptPasswordWindowController.showResetButton=true
                     if let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false {
+                        TCSLogWithMark("setting local admin and password")
                         promptPasswordWindowController.adminUsername = localAdmin.username
                         promptPasswordWindowController.adminPassword = localAdmin.password
 

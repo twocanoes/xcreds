@@ -1242,9 +1242,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     TCSLogWithMark("resetKeychainRequested")
 
                     if let adminUsername = usernamePasswordCredentials?.username,
-                       let adminPassword = usernamePasswordCredentials?.password,
-                       let localAdmin = try? SecretKeeperUser(fullName: "", username: adminUsername, password: adminPassword, uid: -1, rfidUID: Data(), pin: nil){
-
+                       let adminPassword = usernamePasswordCredentials?.password {
+                        let localAdmin = LocalAdminCredentials(username: adminUsername, password: adminPassword)
                         TCSLogWithMark("Setting local admin from settings")
                         mechanismDelegate?.setHint(type: .localAdmin, hint:localAdmin as NSSecureCoding )
                         mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
