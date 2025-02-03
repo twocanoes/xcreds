@@ -43,7 +43,7 @@ class SystemInfoHelper {
         info.append("Computer Name: \(Host.current().localizedName!)")
         info.append("Hostname: \(ProcessInfo.processInfo.hostName)")
 
-        if let ssid = WifiManager().getCurrentSSID(){
+        if let ssid = NetworkManager().getCurrentSSID(){
             info.append("SSID: \(ssid)")
         }
 

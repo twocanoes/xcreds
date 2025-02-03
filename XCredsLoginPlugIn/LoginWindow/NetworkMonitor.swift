@@ -39,7 +39,7 @@ final class NetworkMonitor {
 
     func startMonitoring() {
         monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
+            if path.status == .satisfied,NetworkManager().isConnectedToNetwork() == true {
                 self.isConnected=true
             } else {
                 self.isConnected=false

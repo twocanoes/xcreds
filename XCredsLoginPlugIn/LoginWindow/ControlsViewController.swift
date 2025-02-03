@@ -178,7 +178,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
 
         case ".ssid":
-            systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
+            systemInfoButton.title="SSID: " + (NetworkManager().getCurrentSSID() ?? "no SSID")
 
         default:
             if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {

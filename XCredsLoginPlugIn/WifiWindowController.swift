@@ -6,7 +6,7 @@ import CoreWLAN
 class OKTabPopUpButton: NSPopUpButton {
   override var canBecomeKeyView: Bool {return true} //
 }
-class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDelegate {
+class WifiWindowController: NSWindowController, NetworkManagerDelegate, NSMenuDelegate {
 //    @IBOutlet weak var backgroundView: NonBleedingView!
 //    @IBOutlet weak var mainView: NonBleedingView!
     @IBOutlet weak var certificateLabel: NSTextField!
@@ -43,7 +43,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     private var defaultFadeDuration: TimeInterval = 0.1
     private var completionHandler: (() -> Void)?
     var delegate: XCredsMechanismProtocol?
-    let wifiManager = WifiManager()
+    let networkManager = NetworkManager()
 
     @IBAction func wifiCredentialCancelButtonPressed(_ sender: NSButton) {
         NSApp.stopModal()
@@ -64,10 +64,10 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
         certificatePopupButton.removeAllItems()
         certificatePopupButton.addItem(withTitle: "None")
         TCSLogWithMark("adding wifi networks")
-        certificatePopupButton.addItems(withTitles: WifiManager().identityCommonNames())
+        certificatePopupButton.addItems(withTitles: NetworkManager().identityCommonNames())
 
 
-        wifiManager.wifiState() { state in
+        networkManager.wifiState() { state in
             switch state {
             case .off:
                 self.wifiSwitch.state = .off
@@ -81,7 +81,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
     @IBAction func menuItemSelected(_ popupButton: NSPopUpButton) {
 
-        if popupButton.titleOfSelectedItem == wifiManager.getCurrentSSID() {
+        if popupButton.titleOfSelectedItem == networkManager.getCurrentSSID() {
             print("selected current");
         }
         else {
@@ -108,7 +108,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
             }
 
-            if let availableNetworks = self.wifiManager.findNetworks() {
+            if let availableNetworks = self.networkManager.findNetworks() {
                 self.networks=availableNetworks
             }
             DispatchQueue.main.async {
@@ -137,14 +137,14 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
             }
         }
 
-        self.networkWifiPopup?.selectItem(withTitle: wifiManager.getCurrentSSID() ?? "")
+        self.networkWifiPopup?.selectItem(withTitle: networkManager.getCurrentSSID() ?? "")
 
         configCurrentNetwork()
 
     }
     func configCurrentNetwork() {
         TCSLogWithMark()
-        if let currentNetworkName = wifiManager.getCurrentSSID() {
+        if let currentNetworkName = networkManager.getCurrentSSID() {
              self.networkstatusLabel?.stringValue = "Connected to: \(currentNetworkName)"
         } else {
              self.networkstatusLabel?.stringValue = "Connected via Ethernet"
@@ -190,7 +190,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
                 TCSLogWithMark("identity: \(identity.debugDescription)")
             }
             TCSLogWithMark("connectWiFi")
-            let connected = wifiManager.connectWifi(with: selectedNetwork, password: userPassword, username: username, identity: identity)
+            let connected = networkManager.connectWifi(with: selectedNetwork, password: userPassword, username: username, identity: identity)
             TCSLogWithMark("done connectWifi")
 
             if connected {
@@ -198,8 +198,8 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
                 NSApp.stopModal()
                 credentialsWindow.orderOut(self)
 
-                wifiManager.delegate = self
-                wifiManager.internetConnected()
+                networkManager.delegate = self
+                networkManager.internetConnected()
                 return
             } else {
                 TCSLogWithMark("not connected")
@@ -212,7 +212,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBAction func wifiButtonPressed(_ sender: NSSwitch) {
 
         if sender.state == .off {
-            wifiManager.setWiFiState(.off) {
+            networkManager.setWiFiState(.off) {
                 self.updateAvailableNetworks()
 
 
@@ -220,7 +220,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
             }
         }
         else {
-            wifiManager.setWiFiState(.on) {
+            networkManager.setWiFiState(.on) {
                 self.networkWifiPopup?.isEnabled=false
                 self.networkConnectionSpinner?.startAnimation(true)
                 self.networkConnectionSpinner?.isHidden=false
@@ -237,7 +237,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     func configureUIForSelectedNetwork(network: CWNetwork) {
         self.networkUsername?.stringValue = ""
         self.networkPassword?.stringValue = ""
-        let securityType = wifiManager.networkSecurityType(network)
+        let securityType = networkManager.networkSecurityType(network)
 
         switch securityType {
         case .none:
@@ -290,7 +290,7 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
     @IBAction func addSSIDButton(_ sender: Any){
         
         // Searching for a WiFi of that name
-        let results = wifiManager.findNetworkWithSSID(ssid: addSSIDText?.stringValue ?? "Unknown SSID" ) ?? []
+        let results = networkManager.findNetworkWithSSID(ssid: addSSIDText?.stringValue ?? "Unknown SSID" ) ?? []
         
         // Adding the SSID to the network list
         for network in results {
@@ -316,14 +316,14 @@ class WifiWindowController: NSWindowController, WifiManagerDelegate, NSMenuDeleg
 
 
 
-    // MARK: - WifiManager Delegates
-    func wifiManagerFullyFinishedInternetConnectionTimer() {
+    // MARK: - NetworkManager Delegates
+    func networkManagerFullyFinishedInternetConnectionTimer() {
 //        self.enableUI()
         self.networkUsername?.stringValue = ""
         self.networkPassword?.stringValue = ""
     }
 
-    func wifiManagerConnectedToNetwork() {
+    func networkManagerConnectedToNetwork() {
         TCSLogWithMark("WiFi successfully connected leaving manager")
         self.dismissButton(self)
     }
