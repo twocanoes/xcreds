@@ -152,11 +152,14 @@ import Network
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
            let _ = discoveryURL { // oidc is configured
+            TCSLogWithMark("discovery url set and prefer local login is false, so seeing if we need to check network")
             if shouldDetectNetwork == true,
-               NetworkMonitor.shared.isConnected==true {
+               NetworkMonitor.shared.isConnected==false {
+                TCSLogWithMark("network not detected so showing username password login window")
                 showLoginWindowType(loginWindowType: .usernamePassword)
             }
             else if useROPG == true {
+                TCSLogWithMark("using ROPG so showing username/password")
                 showLoginWindowType(loginWindowType: .usernamePassword)
 
             }
@@ -194,7 +197,7 @@ import Network
             
             sleep(UInt32(showLoginWindowDelaySeconds))
         }
-        
+        NetworkMonitor.shared.startMonitoring()
         selectAndShowLoginWindow()
         
         TCSLogWithMark("Verifying if we should show cloud login.")
@@ -326,7 +329,7 @@ import Network
         case .usernamePassword:
             self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=true
 
-            NetworkMonitor.shared.stopMonitoring()
+//            NetworkMonitor.shared.stopMonitoring()
             self.loginWindowType = .usernamePassword
 
 
