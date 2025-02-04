@@ -34,7 +34,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     var commandKeyDown = false
     var optionKeyDown = false
     var controlKeyDown = false
-    var allowPopoverClose:Bool = false
+    var allowPopoverClose:Bool = true
     var keyCodesPressed:[UInt16:Bool]=[:]
 
     static func initFromPlugin() -> ControlsViewController?{
