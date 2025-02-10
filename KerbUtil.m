@@ -13,6 +13,7 @@
 #import <Security/Security.h>
 #import <DirectoryService/DirectoryService.h>
 #import <OpenDirectory/OpenDirectory.h>
+#import "TCTaskHelper.h"
 
 @interface KerbUtil ()
 

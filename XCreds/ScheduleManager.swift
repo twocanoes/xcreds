@@ -186,8 +186,14 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
     func NoMADAuthenticationSucceded() {
         TCSLogWithMark()
+        if let userPrinc = session?.userPrincipal {
+            TCTaskHelper.shared().runCommand("/usr/bin/kswitch", withOptions: ["-p", userPrinc])
+//            let _ = cliTask("/usr/bin/kswitch -p " +  userPrinc)
+        }
         feedbackDelegate?.kerberosTicketUpdated()
         session?.userInfo()
+
+
 
     }
 
