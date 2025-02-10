@@ -12,7 +12,7 @@ extension Notification.Name {
     static let connectivityStatus = Notification.Name(rawValue: "connectivityStatusChanged")
 }
 
-extension NWInterface.InterfaceType: CaseIterable {
+extension NWInterface.InterfaceType: @retroactive CaseIterable {
     public static var allCases: [NWInterface.InterfaceType] = [
         .other,
         .wifi,
@@ -43,7 +43,7 @@ final class NetworkMonitor {
             self?.isConnected = path.status == .satisfied
             self?.isExpensive = path.isExpensive
             self?.currentConnectionType = NWInterface.InterfaceType.allCases.filter { path.usesInterfaceType($0) }.first
-            if WifiManager().isConnectedToNetwork() == true {
+            if NetworkManager().isConnectedToNetwork() == true {
                 TCSLogWithMark("Network monitor: connected to network")
                 if let lastNotification = self?.lastNotification {
                     if abs(lastNotification.timeIntervalSinceNow) > 5 {
@@ -60,6 +60,7 @@ final class NetworkMonitor {
                 }
             } else {
                 TCSLogWithMark("Not connected to network, no notfication posted")
+                self?.isConnected=false
             }
         }
         monitor.start(queue: queue)

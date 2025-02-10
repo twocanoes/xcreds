@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -689,6 +689,22 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Uvh-o1-mcs"/>
+                <menuItem title="Login Card" hidden="YES" id="e5b-09-LAv">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Login Card" id="Wza-vh-pGi">
+                        <items>
+                            <menuItem title="Setup Card..." tag="13" id="RFc-oy-99Z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="setupCardMenuItemSelected:" target="1OV-ou-Ss5" id="Ivh-GL-n7I"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                        <connections>
+                            <outlet property="delegate" destination="1OV-ou-Ss5" id="Hhe-3N-M29"/>
+                        </connections>
+                    </menu>
+                </menuItem>
                 <menuItem title="OIDC Usernaem" tag="2" enabled="NO" id="7wW-bt-MeR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -756,7 +772,7 @@
             <connections>
                 <outlet property="delegate" destination="1OV-ou-Ss5" id="eEG-jn-a2m"/>
             </connections>
-            <point key="canvasLocation" x="-89" y="-133"/>
+            <point key="canvasLocation" x="-284.5" y="-157.5"/>
         </menu>
         <customObject id="1OV-ou-Ss5" customClass="StatusMenuController" customModule="XCreds" customModuleProvider="target">
             <connections>

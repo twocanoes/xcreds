@@ -7,13 +7,19 @@
 
 
 import Foundation
-func TCSLogWithMark(_ message: String = "",
+public func TCSLogWithMark(_ message: String = "",
              file: String = #file, line: Int = #line, function: String = #function ) {
 
 
     let comp = file.components(separatedBy: "/")
     if let lastPart = comp.last{
-        TCSLog("\(lastPart):\(line) \(function) \(message)")
+        if message.isEmpty{
+            TCSLog("\(lastPart):\(line) \(function) \(message)")
+
+        }
+        else {
+            TCSLog("      \(lastPart):\(line) \(function) \(message)")
+        }
 
     }
 
@@ -24,7 +30,13 @@ func TCSLogInfoWithMark(_ message: String = "",
 
     let comp = file.components(separatedBy: "/")
     if let lastPart = comp.last{
-        TCSLogInfo("\(lastPart):\(line) \(function) \(message)")
+        if message.isEmpty{
+            TCSLogInfo("\(lastPart):\(line) \(function) \(message)")
+
+        }
+        else {
+            TCSLogInfo("      \(lastPart):\(line) \(function) \(message)")
+        }
 
     }
 
@@ -35,7 +47,13 @@ func TCSLogErrorWithMark(_ message: String = "",
 
     let comp = file.components(separatedBy: "/")
     if let lastPart = comp.last{
-        TCSLogError("\(lastPart):\(line) \(function) \(message)")
+        if message.isEmpty{
+            TCSLogError("\(lastPart):\(line) \(function) \(message)")
+
+        }
+        else {
+            TCSLogError("      \(lastPart):\(line) \(function) \(message)")
+        }
 
     }
 

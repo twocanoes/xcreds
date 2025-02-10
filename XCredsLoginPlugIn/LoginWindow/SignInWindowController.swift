@@ -11,6 +11,8 @@ import Security.AuthorizationPlugin
 import os.log
 import OpenDirectory
 import OIDCLite
+import CryptoTokenKit
+import CryptoKit
 let uiLog = OSLog(subsystem: "menu.nomad.login.ad", category: "UI")
 let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech")
 
@@ -27,61 +29,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
-    
-
-    override var nibName: NSNib.Name{
-
-        return "LocalUsersViewController"
-    }
-
-    func tokenError(_ err:String){
-        updateCredentialsFeedbackDelegate?.credentialsCheckFailed()
-        TCSLogWithMark("Token error: \(err)")
-        authFail()
-    }
-
-    func credentialsUpdated(_ credentials:Creds){
-        TCSLogWithMark()
-        updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
-        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
-            switch res {
-
-            case .success:
-                break
-            case .failure(let msg):
-                TCSLogWithMark(msg)
-                TCSLogWithMark("error setting up hints, reloading page:\(msg)")
-                let alert = NSAlert()
-                alert.addButton(withTitle: "OK")
-                alert.messageText=msg
-
-                alert.window.canBecomeVisibleWithoutLogin=true
-
-                let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-                if let bundle = bundle {
-                    TCSLogWithMark("Found bundle")
-
-                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
-
-                }
-                alert.runModal()
-
-            }
-
-        }
-
-        var credWithPass = credentials
-        credWithPass.password = self.passString
-        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass])
-
-    }
-
-    struct UsernamePasswordCredentials {
-        var username:String?
-        var password:String?
-    }
-
     //MARK: - setup properties
     var mech: MechanismRecord?
     var nomadSession: NoMADSession?
@@ -95,9 +42,14 @@ protocol UpdateCredentialsFeedbackProtocol {
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
-
+    var cardLoginFailedAttempts = 0
+    var localAdmin:LocalAdminCredentials?
+    var rfidUsers:RFIDUsers?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
     var isInUserSpace = false
+    var watcher:TKTokenWatcher?
+
+    var shouldIgnoreInsertion=false
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
         return true
@@ -106,16 +58,73 @@ protocol UpdateCredentialsFeedbackProtocol {
     @IBOutlet weak var usernameTextField: NSTextField!
     @IBOutlet weak var passwordTextField: NSSecureTextField!
     @IBOutlet weak var localOnlyCheckBox: NSButton!
-    @IBOutlet weak var localOnlyView: NSView!
+//    @IBOutlet weak var localOnlyView: NSView!
     @IBOutlet var alertTextField:NSTextField!
+    @IBOutlet var tapLoginLabel:NSTextField!
 
+    @IBOutlet weak var loginCardSetupButton: NSButton!
+//    @IBOutlet weak var loginCardSetupView: NSView!
+    var unprovisionedRfidUid:String?
     @IBOutlet weak var stackView: NSStackView!
 
 //    @IBOutlet weak var domain: NSPopUpButton!
     @IBOutlet weak var signIn: NSButton!
     @IBOutlet weak var imageView: NSImageView!
+//    var setupCardWindowController:SetupCardWindowController?
 
     var mechanismDelegate:XCredsMechanismProtocol?
+
+    override var nibName: NSNib.Name{
+
+        return "LocalUsersViewController"
+    }
+
+    func tokenError(_ err:String){
+        updateCredentialsFeedbackDelegate?.credentialsCheckFailed()
+        TCSLogWithMark("Token error: \(err)")
+        XCredsAudit().auditError(err)
+        authFail()
+    }
+
+    func credentialsUpdated(_ credentials:Creds){
+        TCSLogWithMark()
+        updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
+        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
+            switch res {
+                
+            case .success, .userCancelled:
+                break
+            case .failure(let msg):
+                TCSLogWithMark(msg)
+                TCSLogWithMark("error setting up hints, reloading page:\(msg)")
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText=msg
+                
+                alert.window.canBecomeVisibleWithoutLogin=true
+                
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+                
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+                    
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+                    
+                }
+                alert.runModal()
+                
+            }
+
+        }
+
+        var credWithPass = credentials
+        credWithPass.password = self.passString
+        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass])
+
+    }
+
+
+
 
 //    var mechanism:XCredsMechanismProtocol? {
 //        set {
@@ -132,26 +141,262 @@ protocol UpdateCredentialsFeedbackProtocol {
     var migrateUserRecord : ODRecord?
     var didUpdateFail = false
     var setupDone=false
+    var cardInserted = false
     //MARK: - UI Methods
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        alertTextField.isHidden=true
-        TCSLogWithMark()
         //awakeFromNib gets called multiple times. guard against that.
-        if setupDone == false {
-            setupDone=true
-            if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
-                domainName = prefDomainName
-            }
-            setupLoginAppearance()
+        if setupDone==true {
+            return
         }
-         
+        setupDone=true
+
+        TCSLogWithMark()
+        alertTextField.isHidden=true
+
+        if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+            domainName = prefDomainName
+        }
+        setupLoginAppearance()
+
+        TCSLogWithMark("setting up smart card listener")
+        watcher = TKTokenWatcher()
+        watcher?.setInsertionHandler({ tokenID in
+            TCSLogWithMark("card inserted")
+            //sometimes we get multiple events, so track and skip
+
+            self.watcher?.addRemovalHandler({ tokenID in
+                self.loginCardSetupButton.isHidden=true
+                self.loginCardSetupButton.state = .off
+                self.unprovisionedRfidUid=nil
+                self.cardInserted=false
+
+                TCSLogWithMark("card removed")
+            }, forTokenID: tokenID)
+            if self.cardInserted == true {
+                return
+            }
+            self.cardInserted=true
+            
+            if self.shouldIgnoreInsertion == true {
+                return
+            }
+            if self.cardLoginFailedAttempts>2 {
+                DispatchQueue.main.async {
+                    self.alertTextField.stringValue = "Tap Login Disabled"
+                    self.alertTextField.isHidden = false
+                }
+                return
+            }
+            let slotNames = TKSmartCardSlotManager.default?.slotNames
+
+            guard let slotNames = slotNames, slotNames.count>0 else {
+                TCSLogWithMark("No rfid readers")
+                return
+            }
+            guard let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue) else {
+                TCSLogWithMark("No slotname defined in prefs. Slot names found: \(slotNames)")
+
+                return
+            }
+            let slotName=slotNames.first { currString in
+                currString == ccidSlotName
+            }
+
+            guard let slotName = slotName else {
+                TCSLogWithMark("no matches found for slotname \(ccidSlotName)")
+                return
+            }
+            TCSLogWithMark()
+            let slot = TKSmartCardSlotManager.default?.slotNamed(slotName)
+            TCSLogWithMark()
+            guard let tkSmartCard = slot?.makeSmartCard() else {
+                TCSLogWithMark("Could not setup reader")
+                self.cardInserted=false
+                return
+            }
+            TCSLogWithMark()
+            let builtInReader = CCIDCardReader(tkSmartCard: tkSmartCard)
+            TCSLogWithMark()
+            let returnData = builtInReader.sendAPDU(cla: 0xFF, ins: 0xCA, p1: 0, p2: 0, data: nil)
+            TCSLogWithMark()
+            if let returnData=returnData, returnData.count>2{
+                TCSLogWithMark()
+                print(returnData[0...returnData.count-3].hexEncodedString())
+                DispatchQueue.main.async {
+                    TCSLogWithMark()
+
+                    var pin:String?
+                    let hex=returnData[0...returnData.count-3].hexEncodedString()
+                    do {
+                        let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                        let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                        if let uidData = Data(fromHexEncodedString: hex) {
+                            TCSLogWithMark("got UID Data")
+                            if let user = try userManager.uidUser(uid: uidData, rfidUsers: self.rfidUsers){
+                                TCSLogWithMark("Found user. looking if pin required")
+                                if user.requiresPIN == true {
+                                    let pinPromptWindowController = PinPromptWindowController(windowNibName: "PinPromptWindowController")
+                                    let res = NSApp.runModal(for: pinPromptWindowController.window!)
+                                    pinPromptWindowController.window?.close()
+
+                                    if res == .OK {
+                                        pin = pinPromptWindowController.pin
+                                    }
+                                    else if res == .cancel {
+                                        return
+                                    }
+
+                                }
+
+                            }
+                        }
+                        self.cardLogin(uid: hex, pin:pin)
+                    }
+                    catch {
+                        TCSLogWithMark("error: "+error.localizedDescription)
+
+                    }
+                }
+            }
+        })
+
     }
 
+    func cardLogin(uid:String, pin:String?) {
+        var hashedUID:Data
+        let shouldAllowLoginCardSetup = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowLoginCardSetup.rawValue)
+
+        TCSLogWithMark("RFID UID \"\(uid)\" detected")
+        guard let rfidUsers = rfidUsers else {
+            if shouldAllowLoginCardSetup == true {
+                loginCardSetupButton.isHidden=false
+                self.loginCardSetupButton.state = .on
+
+                unprovisionedRfidUid=uid
+            }
+            else {
+                TCSLogWithMark("No RFID Users defined. run /Applications/XCreds.app/Contents/MacOS/XCreds -h for help on adding users.")
+
+                passwordTextField.shake(self)
+
+            }
+            return
+        }
+
+        guard let rfidUidData = Data(fromHexEncodedString: uid) else {
+            TCSLogWithMark("error in RFID UID")
+            return
+        }
+
+        do {
+            (hashedUID,_) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData, salt: rfidUsers.salt)
+        }
+        catch {
+            TCSLogWithMark("error hashing key: \(error.localizedDescription)")
+            return
+        }
+        guard let rfidUserDict = rfidUsers.userDict, let rfidUser = rfidUserDict[hashedUID]  else {
+            TCSLogWithMark("No RFID user with uid: \(uid)")
+
+
+            if shouldAllowLoginCardSetup==true {
+                loginCardSetupButton.isHidden=false
+                self.loginCardSetupButton.state = .on
+
+                unprovisionedRfidUid=uid
+
+            }
+            else {
+                passwordTextField.shake(self)
+            }
+            return
+        }
+
+        shortName = rfidUser.username
+        let encryptedPasswordData = rfidUser.password
+
+
+        guard let rfidUIDdata = Data(fromHexEncodedString: uid) else {
+            TCSLogWithMark("invalid UID Data")
+            passwordTextField.shake(self)
+            return
+
+        }
+
+        guard let passwordData = try? PasswordCryptor().passwordDecrypt(encryptedDataWithSalt: encryptedPasswordData, rfidUID: rfidUIDdata, pin:pin) else {
+            TCSLogWithMark("error decrypting password")
+            cardLoginFailedAttempts += 1
+            passwordTextField.shake(self)
+            return
+        }
+        cardLoginFailedAttempts = 0
+        passString = String(decoding: passwordData, as: UTF8.self)
+        let fullName = rfidUser.fullName
+        let useruid = rfidUser.userUID
+
+        TCSLogWithMark("UserID: \(useruid.stringValue)")
+        let userExists = try? PasswordUtils.isUserLocal(shortName)
+        guard let userExists = userExists else {
+            TCSLogWithMark("DS error")
+            passwordTextField.shake(self)
+            return
+        }
+        if (userExists==true){
+            TCSLogWithMark()
+            processLogin(inShortname: shortName, inPassword: passString)
+            return
+        }
+        //user is defined in rfid user file but never logged in. so new user,
+        // so we populate the needed values for the account and move along
+        setRequiredHintsAndContext()
+        if let fullName = fullName {
+            TCSLogWithMark("Setting fullName to \(fullName)")
+
+            mechanismDelegate?.setHint(type: .fullName, hint: fullName as NSSecureCoding)
+
+        }
+        if useruid.intValue>499 {
+            TCSLogWithMark("Setting uid to \(useruid.stringValue)")
+            mechanismDelegate?.setHint(type: .uid, hint: useruid.stringValue as NSSecureCoding)
+        }
+
+        else if useruid.intValue != -1 {
+            TCSLogWithMark("invalid uid. selecting next available UID.")
+
+        }
+
+        completeLogin(authResult:.allow)
+
+    }
     func setupLoginAppearance() {
         TCSLogWithMark()
-        
+
+        let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue)
+
+        let shouldAllowLoginCardSetup = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowLoginCardSetup.rawValue)
+
+        tapLoginLabel.isHidden=true
+        loginCardSetupButton.isHidden=true
+        self.loginCardSetupButton.state = .off
+
+        if let _ = ccidSlotName {
+            if let _ = rfidUsers {
+                //we have users so show text
+                tapLoginLabel.isHidden=false
+            }
+            else {
+                tapLoginLabel.isHidden=true
+            }
+
+            if shouldAllowLoginCardSetup == true {
+                tapLoginLabel.isHidden=false
+
+            }
+
+        }
+
         alertTextField.isHidden=true
 
         self.usernameTextField.stringValue=""
@@ -163,9 +408,9 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.view.wantsLayer=true
         self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
         localOnlyCheckBox.isEnabled=true
-        localOnlyView.isHidden=false
+        localOnlyCheckBox.isHidden=false
         // make things look better
-        TCSLog("Tweaking appearance")
+        TCSLogWithMark("Tweaking appearance")
 
         if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
             TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
@@ -186,14 +431,14 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("hiding local only")
 
             self.localOnlyCheckBox.isHidden = true
-            self.localOnlyView.isHidden = true
+            self.localOnlyCheckBox.isHidden = true
         }
         else {
             //show based on if there is an AD domain or not
 
             let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
-            self.localOnlyView.isHidden = isLocalOnly
+            self.localOnlyCheckBox.isHidden = isLocalOnly
 
         }
 
@@ -253,6 +498,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
     fileprivate func authFail(_ message: String?=nil) {
+        XCredsAudit().auditError(message ?? "Empty")
         TCSLogWithMark(message ?? "")
         nomadSession = nil
         passwordTextField.stringValue = ""
@@ -282,6 +528,46 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
     }
 
+    func setupLoginCard(completion:(_ result:Bool, _ pin:String?)->Void) {
+
+        let pinSetWindowController = PinSetWindowController(windowNibName: "PinSetWindowController")
+        let res = NSApp.runModal(for: pinSetWindowController.window!)
+
+        if res == .cancel {
+           pinSetWindowController.window?.close()
+           completion(false,nil)
+           return
+       }
+
+        else {
+            completion(true,pinSetWindowController.pin)
+        }
+
+
+
+//        if setupCardWindowController == nil {
+//            setupCardWindowController = SetupCardWindowController(windowNibName:"SetupCardWindowController")
+//        }
+//        setupCardWindowController?.window?.canBecomeVisibleWithoutLogin=true
+
+//        if let setupCardWindow = setupCardWindowController?.window {
+//            let res = NSApp.runModal(for: setupCardWindow)
+//            if res == .OK {
+//                if let uid = setupCardWindowController?.uid {
+//                    completion(true, uid, setupCardWindowController?.pin)
+//                }
+//                else {
+//                    TCSLogWithMark("no uid")
+//                }
+//            }
+//            else {
+//                TCSLogWithMark("result is not ok")
+//                setupCardWindowController=nil
+//                completion(false,nil, nil)
+//
+//            }
+//        }
+    }
 
     /// When the sign in button is clicked we check a few things.
     ///
@@ -306,9 +592,13 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-
-        TCSLogWithMark()
         updateLoginWindowInfo()
+        processLogin(inShortname: shortName, inPassword: passString)
+
+    }
+
+    func processLogin(inShortname:String, inPassword:String)  {
+
         TCSLogWithMark()
 
         setLoginWindowState(enabled: false)
@@ -326,9 +616,36 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
                 setRequiredHintsAndContext()
-                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
-                completeLogin(authResult:.allow)
+                if loginCardSetupButton.state == .on, let uid = unprovisionedRfidUid {
+                    shouldIgnoreInsertion=true
+                    setupLoginCard { result,pin  in
+                        if result==true{
+
+                            TCSLogWithMark("setting rfid uid: \(uid)")
+                            mechanismDelegate?.setHint(type: .rfidUid, hint: uid as NSSecureCoding)
+
+                            if let pin = pin {
+                                TCSLogWithMark("setting pin")
+                                mechanismDelegate?.setHint(type: .rfidPIN, hint: pin as NSSecureCoding)
+                            }
+                            shouldIgnoreInsertion=false
+                            completeLogin(authResult:.allow)
+                        }
+                        else {
+                            shouldIgnoreInsertion=false
+                            TCSLogWithMark("failed to set up Login card")
+                            authFail("Login Card Setup Failed")
+
+                        }
+
+                    }
+                }
+                else {
+
+                    completeLogin(authResult:.allow)
+                }
 
             }
             else {
@@ -340,8 +657,8 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             tokenManager.feedbackDelegate=self
 
-            shortName = strippedUsername
-            tokenManager.oidc().requestTokenWithROPG(username: strippedUsername, password: passString)
+            shortName = inShortname
+            tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword)
             return
 
 
@@ -350,9 +667,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("network auth.")
             networkAuth()
         }
-
     }
-
     fileprivate func networkAuth() {
         nomadSession = NoMADSession.init(domain: domainName, user: shortName)
         TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
@@ -395,28 +710,59 @@ protocol UpdateCredentialsFeedbackProtocol {
 
         TCSLogWithMark("Format user and domain strings")
         TCSLogWithMark()
-        var providedDomainName = ""
 
+        domainName = ""
         let strippedUsername = usernameTextField.stringValue.trimmingCharacters(in:  CharacterSet.whitespaces)
         shortName = strippedUsername
 
 
         TCSLogWithMark()
-        if strippedUsername.range(of:"@") != nil && getManagedPreference(key: .ADDomain) != nil {
+        let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+        var allDomainsFromPrefs = DefaultsOverride.standardOverride.array(forKey: PrefKeys.additionalADDomainList.rawValue)  as? [String] ?? []
+
+        if let adDomainFromPrefs=adDomainFromPrefs  {
+            allDomainsFromPrefs.append(adDomainFromPrefs)
+        }
+        allDomainsFromPrefs = allDomainsFromPrefs.map { currVal in
+            currVal.uppercased()
+        }
+
+        if strippedUsername.range(of:"@") != nil {
             shortName = (strippedUsername.components(separatedBy: "@").first)!
 
-            providedDomainName = strippedUsername.components(separatedBy: "@").last!.uppercased()
-            TCSLogWithMark(providedDomainName)
-        }
-        TCSLogWithMark()
+            if let providedDomainName = (strippedUsername.components(separatedBy: "@").last)?.uppercased(){
+                domainName = providedDomainName
 
-        if providedDomainName == "",
+            }
+        }
+
+        if let upnMappings = DefaultsOverride.standardOverride.array(forKey: PrefKeys.upnSuffixToDomainMappings.rawValue)  as? [[String:String]]{
+            for upnMapping in upnMappings {
+                if let upn = upnMapping["upn"]?.uppercased(),
+                    let mappedDomain = upnMapping["domain"]?.uppercased(),
+                    upn == domainName.uppercased()
+                {
+                    TCSLogWithMark("changing domain from \(domainName) to \(mappedDomain)")
+                    domainName = mappedDomain
+                    break
+                }
+
+            }
+        }
+
+
+
+        if domainName != "", allDomainsFromPrefs.contains(domainName.uppercased())==false {
+            TCSLogWithMark("domain \(domainName) is not the adDomain or in additionalADDomainList.")
+            domainName = ""
+        }
+        if  domainName == "",
             let managedDomain = getManagedPreference(key: .ADDomain) as? String {
             TCSLogWithMark("Defaulting to managed domain as there is nothing else")
             domainName = managedDomain
-        }
+            TCSLogWithMark("Using domain from managed domain")
 
-        TCSLogWithMark("Using domain from managed domain")
+        }
         return
     }
 
@@ -429,8 +775,8 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark("Setting hints for user: \(shortName)")
         TCSLogWithMark("Setting user to \(shortName)")
 
-        mechanismDelegate?.setHint(type: .user, hint: shortName)
-        mechanismDelegate?.setHint(type: .pass, hint: passString)
+        mechanismDelegate?.setHint(type: .user, hint: shortName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .pass, hint: passString as NSSecureCoding)
         TCSLogWithMark()
         os_log("Setting context values for user: %{public}@", log: uiLog, type: .debug, shortName)
         mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: shortName)
@@ -440,7 +786,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
 
-    /// Complete the NoLo process and either continue to the next Authorization Plugin or reset the NoLo window.
+    /// Complete the login process and either continue to the next Authorization Plugin or reset the NoLo window.
     ///
     /// - Parameter authResult:`Authorizationresult` enum value that indicates if login should proceed.
     fileprivate func completeLogin(authResult: AuthorizationResult) {
@@ -449,6 +795,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         switch authResult {
         case .allow:
             TCSLogWithMark("Complete login process with allow")
+            XCredsAudit().loginWindowLogin(user:shortName)
             mechanismDelegate?.allowLogin()
 
         case .deny:
@@ -733,22 +1080,6 @@ extension SignInViewController: NoMADUserSessionDelegate {
         updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
         TCSLogWithMark("AuthenticationFailed: \(description)")
-//        alertTextField.isHidden=false
-//        alertTextField.stringValue = description
-//        if passChanged {
-//            os_log("Password change failed.", log: uiLog, type: .default)
-//            os_log("Password change failure description: %{public}@", log: uiLog, type: .error, description)
-//            oldPassword.isEnabled = true
-//            newPassword.isEnabled = true
-//            newPasswordConfirmation.isEnabled = true
-//
-//            newPassword.stringValue = ""
-//            newPasswordConfirmation.stringValue = ""
-//
-////            alertText.stringValue = "Password change failed"
-//            return
-//        }
-        
         switch error {
         case .PasswordExpired:
             TCSLogErrorWithMark("Password is expired or requires change.")
@@ -769,7 +1100,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             TCSLogErrorWithMark("\(error)")
 
             if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
-                mechanismDelegate?.setHint(type: .localLogin, hint: true)
+                mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)
             } else {
@@ -852,12 +1183,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
         let mapUID = DefaultsOverride.standardOverride.string(forKey: PrefKeys.mapUID.rawValue)
 
         if let mapUID = mapUID, let rawAttributes = user.rawAttributes, let uidString = rawAttributes[mapUID]  {
-            mechanismDelegate?.setHint(type: .uid, hint: uidString)
+            mechanismDelegate?.setHint(type: .uid, hint: uidString as NSSecureCoding)
 
         }
         if let ntName = user.customAttributes?["msDS-PrincipalName"] as? String {
             TCSLogWithMark("Found NT User Name: \(ntName)")
-            mechanismDelegate?.setHint(type: .ntName, hint: ntName)
+            mechanismDelegate?.setHint(type: .ntName, hint: ntName as NSSecureCoding)
         }
         
         if allowedLogin {
@@ -901,8 +1232,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
                     TCSLogWithMark("setting original password to use to unlock keychain later")
 
-                    if let enteredUsernamePassword = enteredUsernamePassword {
-                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as Any  )
+                    if let enteredUsernamePassword = enteredUsernamePassword{
+                        mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword.password as NSSecureCoding  )
                     }
 
                     completeLogin(authResult: .allow)
@@ -910,13 +1241,20 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 case .resetKeychainRequested(let usernamePasswordCredentials):
                     TCSLogWithMark("resetKeychainRequested")
 
-                    if let adminUsername = usernamePasswordCredentials?.username, let adminPassword = usernamePasswordCredentials?.password {
-                        mechanismDelegate?.setHint(type: .adminUsername, hint:adminUsername )
-                        mechanismDelegate?.setHint(type: .adminPassword, hint: adminPassword)
-                        mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true)
+                    if let adminUsername = usernamePasswordCredentials?.username,
+                       let adminPassword = usernamePasswordCredentials?.password {
+                        let localAdmin = LocalAdminCredentials(username: adminUsername, password: adminPassword)
+                        TCSLogWithMark("Setting local admin from settings")
+                        mechanismDelegate?.setHint(type: .localAdmin, hint:localAdmin as NSSecureCoding )
+                        mechanismDelegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
+                        completeLogin(authResult: .allow)
 
                     }
-                    completeLogin(authResult: .allow)
+                    else {
+                        completeLogin(authResult: .deny)
+
+                    }
+
 
 
                 case .userCancelled:
@@ -953,26 +1291,26 @@ extension SignInViewController: NoMADUserSessionDelegate {
         TCSLogWithMark()
         TCSLogWithMark("NoMAD Login Looking up info");
         setRequiredHintsAndContext()
-        mechanismDelegate?.setHint(type: .firstName, hint: user.firstName)
-        mechanismDelegate?.setHint(type: .lastName, hint: user.lastName)
+        mechanismDelegate?.setHint(type: .firstName, hint: user.firstName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .lastName, hint: user.lastName as NSSecureCoding)
         TCSLogWithMark("Setting user to \(user.shortName)")
-        mechanismDelegate?.setHint(type: .user, hint: user.shortName)
+        mechanismDelegate?.setHint(type: .user, hint: user.shortName as NSSecureCoding)
         mechanismDelegate?.setContextString(type: kAuthorizationEnvironmentUsername, value: user.shortName)
 
-        mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName)
-        mechanismDelegate?.setHint(type: .groups, hint: user.groups)
-        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName)
+        mechanismDelegate?.setHint(type: .noMADDomain, hint: domainName as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .groups, hint: user.groups as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .fullName, hint: user.fullName as NSSecureCoding)
         TCSLogWithMark("setting kerberos principal to \(user.userPrincipal)")
 
-        mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal)
-        mechanismDelegate?.setHint(type: .ntName, hint: user.ntName)
+        mechanismDelegate?.setHint(type: .kerberos_principal, hint: user.userPrincipal as NSSecureCoding)
+        mechanismDelegate?.setHint(type: .ntName, hint: user.ntName as NSSecureCoding)
 
         // set the network auth time to be added to the user record
-        mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description))
+        mechanismDelegate?.setHint(type: .networkSignIn, hint: String(describing: Date.init().description) as NSSecureCoding)
 
         if let userAttributes = user.rawAttributes{
             TCSLogWithMark("Setting AD user attributes")
-            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes )
+            mechanismDelegate?.setHint(type: .allADAttributes, hint:userAttributes as NSSecureCoding )
 
         }
 

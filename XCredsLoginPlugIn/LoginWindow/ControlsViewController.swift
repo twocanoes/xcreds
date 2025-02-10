@@ -27,24 +27,15 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet weak var systemInfoTextField: NSTextField?
 
     var loadPageURL:URL?
-//    var resolutionObserver:Any?
     var wifiWindowController:WifiWindowController?
     @IBOutlet weak var trialVersionStatusTextField: NSTextField!
+
     var refreshTimer:Timer?
     var commandKeyDown = false
     var optionKeyDown = false
     var controlKeyDown = false
-    var allowPopoverClose:Bool = false
+    var allowPopoverClose:Bool = true
     var keyCodesPressed:[UInt16:Bool]=[:]
-//    func dismiss() {
-////        if let resolutionObserver = resolutionObserver {
-////            NotificationCenter.default.removeObserver(resolutionObserver)
-////        }
-////        self.window?.close()
-//    }
-//    @objc override var windowNibName: NSNib.Name {
-//        return NSNib.Name("ControlsViewController")
-//    }
 
     static func initFromPlugin() -> ControlsViewController?{
 
@@ -95,7 +86,9 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         return key
     }
     @IBAction func showSystemInfoButtonPressed(_ sender: NSButton) {
+        TCSLogWithMark("showSystemInfoButtonPressed")
         if systemInfoPopover.isShown==true {
+            TCSLogWithMark("closing")
             systemInfoPopover.performClose(self)
             return
         }
@@ -185,7 +178,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             systemInfoButton.title = "Computer Name:" +  (Host.current().localizedName ?? "unknown computername")
 
         case ".ssid":
-            systemInfoButton.title="SSID: " + (WifiManager().getCurrentSSID() ?? "no SSID")
+            systemInfoButton.title="SSID: " + (NetworkManager().getCurrentSSID() ?? "no SSID")
 
         default:
             if let systemInfoButtonTitle = systemInfoButtonTitle, systemInfoButtonTitle.count<21 {
@@ -198,6 +191,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     }
     func popoverShouldClose(_ popover: NSPopover) -> Bool {
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true && allowPopoverClose==false{
+            TCSLogWithMark("preventing popover from closing")
             return false
         }
         return true
@@ -407,6 +401,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         delegate.allowLogin()
     }
     @IBAction func resetToStandardLoginWindow(_ sender: Any) {
+        var shouldSwitch = true
         TCSLogWithMark("switch login window")
         if commandKeyDown == false {
 
@@ -414,13 +409,37 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             return
         }
 
-        guard let delegate = delegate else {
-            TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
-            return
-        }
-        delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+        if UserDefaults.standard.bool(forKey:PrefKeys.shouldUseKillWhenLoginWindowSwitching.rawValue)==false{
 
-        delegate.allowLogin()
+            let alert = NSAlert()
+            alert.addButton(withTitle: "Restart")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText="Switching login windows requires a restart. Do you want to restart now?"
+
+            alert.window.canBecomeVisibleWithoutLogin=true
+
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                TCSLogWithMark("Found bundle")
+
+                alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+
+            }
+            if alert.runModal() == .alertSecondButtonReturn {
+                shouldSwitch=false
+            }
+        }
+
+        if shouldSwitch == true {
+            guard let delegate = delegate else {
+                TCSLogErrorWithMark("No delegate set for resetToStandardLoginWindow")
+                return
+            }
+            delegate.setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
+
+            delegate.allowLogin()
+        }
     }
 
 

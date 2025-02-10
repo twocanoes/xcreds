@@ -6,10 +6,10 @@
 //
 
 import Foundation
-
+import OSLog
 enum PrefKeys: String {
     case clientID, clientSecret, ropgResponseValue, resource, password="xcreds local password",discoveryURL, redirectURI, scopes, accessToken, idToken, refreshToken, tokenEndpoint, expirationDate, invalidToken, refreshRateHours,refreshRateMinutes, showDebug, verifyPassword, shouldShowQuitMenu, shouldShowPreferencesOnStart, shouldSetGoogleAccessTypeToOffline, passwordChangeURL, shouldShowAboutMenu, username, idpHostName, passwordElementID, shouldFindPasswordElement, shouldShowSupportStatus,shouldShowConfigureWifiButton,shouldShowMacLoginButton, loginWindowBackgroundImageURL, shouldShowCloudLoginByDefault, shouldPreferLocalLoginInsteadOfCloudLogin, idpHostNames,autoRefreshLoginTimer, loginWindowWidth, loginWindowHeight, shouldShowRefreshBanner, shouldSwitchToLoginWindowWhenLocked,accounts = "Accounts",
-         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow, showLoginWindowDelaySeconds, shouldPromptForMigration, shouldAllowKeyComboForMacLoginWindow, aliasName,claimsToAddToLocalUserAccount, loadPageTitle, loadPageInfo,shouldPromptForADPasswordChange, hideIfPathExists, allowedUsersArray, allowUsersClaim, mapKerberosPrincipalName, mapFirstName = "map_firstname",mapFullName = "map_fullname", mapUserName = "map_username", mapLastName = "map_lastname",menuItemWindowBackgroundImageURL, menuItems, shareMenuItemName, shouldShowSignInMenuItem, shouldLoginWindowBackgroundImageFillScreen,resetPasswordDialogTitle, systemInfoButtonTitle, shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton, shouldShowMenuBarSignInWithoutLoginWindowSignin, refreshBannerText,adUserAttributesToAddToLocalUserAccount, mapUID = "map_uid", allowLoginIfMemberOfGroup, keyCodeForLoginWindowChange, mapPasswordExpiry = "map_password_expiry", menuItemIconData, menuItemIconCheckedData, mapFullUserName = "map_fullusername"
+         windowSignIn = "WindowSignIn", settingsOverrideScriptPath, localAdminUserName, localAdminPassword, usernamePlaceholder, passwordPlaceholder, shouldShowLocalOnlyCheckbox, shouldShowTokenUpdateStatus, shouldDetectNetworkToDetermineLoginWindow, showLoginWindowDelaySeconds, shouldPromptForMigration, shouldAllowKeyComboForMacLoginWindow, aliasName,claimsToAddToLocalUserAccount, loadPageTitle, loadPageInfo,shouldPromptForADPasswordChange, hideIfPathExists, allowedUsersArray, allowUsersClaim, mapKerberosPrincipalName, mapFirstName = "map_firstname",mapFullName = "map_fullname", mapUserName = "map_username", mapLastName = "map_lastname",menuItemWindowBackgroundImageURL, menuItems, shareMenuItemName, shouldShowSignInMenuItem, shouldLoginWindowBackgroundImageFillScreen,resetPasswordDialogTitle, systemInfoButtonTitle, shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton, shouldShowMenuBarSignInWithoutLoginWindowSignin, refreshBannerText,adUserAttributesToAddToLocalUserAccount, mapUID = "map_uid", allowLoginIfMemberOfGroup, keyCodeForLoginWindowChange, mapPasswordExpiry = "map_password_expiry", menuItemIconData, menuItemIconCheckedData, mapFullUserName = "map_fullusername", ccidSlotName, shouldSuppressLocalPasswordPrompt,shouldUseKillWhenLoginWindowSwitching, upnSuffixToDomainMappings,shouldAllowLoginCardSetup
     case shouldUseROPGForPasswordChangeChecking
     case shouldUseROPGForMenuLogin
     case shouldUseROPGForLoginWindowLogin
@@ -18,6 +18,7 @@ enum PrefKeys: String {
     case systemInfoAdditionsArray
     case aDDomain = "ADDomain"
     case aDSite = "ADSite"
+    case additionalADDomainList = "AdditionalADDomains"
     case aDDomainController = "ADDomainController"
     case allowEAPOL = "AllowEAPOL"
     case allUserInformation = "AllUserInformation"

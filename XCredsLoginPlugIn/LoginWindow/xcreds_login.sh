@@ -21,6 +21,7 @@ f_remove=0
 f_restore=0
 
 remove_rights () {
+    "${authrights_path}" -d  "XCredsLoginPlugin:UserSetup,privileged"
     "${authrights_path}" -r  "XCredsLoginPlugin:LoginWindow" "loginwindow:login" > /dev/null
     "${authrights_path}" -d  "XCredsLoginPlugin:PowerControl,privileged"
     "${authrights_path}" -d  "XCredsLoginPlugin:KeychainAdd,privileged"
@@ -83,6 +84,8 @@ if [ $f_install -eq 1 ]; then
 	fi
 	if [ -e ${authrights_path} ]; then
          remove_rights
+
+        "${authrights_path}" -b "loginwindow:login" "XCredsLoginPlugin:UserSetup,privileged"
         "${authrights_path}" -r "loginwindow:login" "XCredsLoginPlugin:LoginWindow"
         "${authrights_path}" -a  "XCredsLoginPlugin:LoginWindow" "XCredsLoginPlugin:PowerControl,privileged"
         "${authrights_path}" -a  "loginwindow:done" "XCredsLoginPlugin:KeychainAdd,privileged"

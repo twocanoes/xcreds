@@ -100,8 +100,16 @@
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
 	<false/>
 	<key>shouldActivateSystemInfoButton</key>
-	<false/>
+	<true/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
+	<key>shouldSuppressLocalPasswordPrompt</key>
+	<false/>
+	<key>overlayDelaySecs</key>
+	<integer>10</integer>
+	<key>shouldUseKillWhenLoginWindowSwitching</key>
+	<false/>
+	<key>shouldAllowLoginCardSetup</key>
+	<true/>
 </dict>
 </plist>

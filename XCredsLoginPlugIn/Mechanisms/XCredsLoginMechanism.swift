@@ -1,4 +1,5 @@
 import Cocoa
+import CryptoTokenKit
 import Network
 
 
@@ -17,9 +18,9 @@ import Network
     var loginWindowType = LoginWindowType.cloud
     var mainLoginWindowController:MainLoginWindowController?
     override init(mechanism: UnsafePointer<MechanismRecord>) {
-
-
         super.init(mechanism: mechanism)
+
+//        SwitchLoginWindow
         TCSLogWithMark("Setting up notification for switch")
         NotificationCenter.default.addObserver(forName: Notification.Name("SwitchLoginWindow"), object: nil, queue: nil) { notification in
 
@@ -35,36 +36,15 @@ import Network
             }
         }
 
-        let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-        if let bundle = bundle {
-            let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
-                TCSLogInfoWithMark("------------------------------------------------------------------")
-                TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
-                if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
-                    TCSLogInfoWithMark("Log showing only basic info and errors.")
-                    TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
-                    TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
-                }
-                else {
-                    TCSLogInfoWithMark("To disable verbose logging:")
-                    TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
-
-                }
-
-                TCSLogInfoWithMark("------------------------------------------------------------------")
-            }
-
-
-        }
+      
 
 
     }
     @objc func tearDown() {
-            TCSLogWithMark("Got teardown request")
-            self.mainLoginWindowController?.window?.orderOut(self)
-        }
+        TCSLogWithMark("Got teardown request")
+//        self.mainLoginWindowController?.window?.orderOut(self)
+    }
+
     override func reload() {
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")
@@ -84,7 +64,7 @@ import Network
             return false
         }
 
-        os_log("Checking for autologin.", log: checkADLog, type: .default)
+        TCSLogWithMark("Checking for autologin.")
         if FileManager.default.fileExists(atPath: "/tmp/xcredsrun") {
             os_log("XCreds has run once already. Load regular window as this isn't a reboot", log: checkADLog, type: .debug)
             return false
@@ -100,8 +80,8 @@ import Network
             TCSLogWithMark("no username found")
 
         }
-       if let password = getContextString(type: "fvpassword") {
-           TCSLogWithMark("got password ")
+       if let _ = getContextString(type: "fvpassword") {
+           TCSLogWithMark("got fvpassword ")
        }
         else {
             TCSLogWithMark("no password found")
@@ -158,7 +138,7 @@ import Network
             window.orderFrontRegardless()
         }
         else {
-            TCSLogWithMark("NO WINDOW")
+            TCSLogWithMark("NO MAIN WINDOW FOUND")
         }
 
         let discoveryURL=DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue)
@@ -172,11 +152,14 @@ import Network
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
            let _ = discoveryURL { // oidc is configured
+            TCSLogWithMark("discovery url set and prefer local login is false, so seeing if we need to check network")
             if shouldDetectNetwork == true,
-               WifiManager().isConnectedToNetwork()==false {
+               NetworkMonitor.shared.isConnected==false {
+                TCSLogWithMark("network not detected so showing username password login window")
                 showLoginWindowType(loginWindowType: .usernamePassword)
             }
             else if useROPG == true {
+                TCSLogWithMark("using ROPG so showing username/password")
                 showLoginWindowType(loginWindowType: .usernamePassword)
 
             }
@@ -191,42 +174,70 @@ import Network
         }
     }
     @objc override func run() {
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
+        
         loginWebViewController=nil
         signInViewController=nil
-        TCSLogWithMark("XCredsLoginMechanism mech starting")
-
+        
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
-            os_log("Check autologin complete", log: checkADLog, type: .debug)
             super.allowLogin()
             return
         }
+        
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
         mainLoginWindowController?.mechanism=self
-
+        
         let showLoginWindowDelaySeconds = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.showLoginWindowDelaySeconds.rawValue)
-
+        
         if showLoginWindowDelaySeconds > 0 {
             TCSLogWithMark("Delaying showing window by \(showLoginWindowDelaySeconds) seconds")
-
+            
             sleep(UInt32(showLoginWindowDelaySeconds))
         }
-
+        NetworkMonitor.shared.startMonitoring()
         selectAndShowLoginWindow()
-
-        let isReturning = FileManager.default.fileExists(atPath: "/tmp/xcreds_return")
+        
         TCSLogWithMark("Verifying if we should show cloud login.")
-
-        if isReturning == false,
+        
+        if (StateFileHelper().fileExists(.returnType)==true){
+            TCSLogWithMark("xcreds_return exists")
+        }
+        else {
+            TCSLogWithMark("xcreds_return does NOT exist")
+        }
+        if StateFileHelper().fileExists(.returnType) == false,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
 
+            do {
+                try StateFileHelper().createFile(.returnType)
+            }
+            catch {
+                TCSLogWithMark("error creating return file")
+
+            }
             allowLogin()
             return
         }
+
+        if StateFileHelper().fileExists(.returnType)==true{
+            TCSLogWithMark("xcreds_return exists, removing")
+            do {
+
+                try StateFileHelper().removeFile(.returnType)
+            }
+            catch {
+
+                TCSLogWithMark("Could not remove /usr/local/var/xcreds_return")
+
+            }
+
+        }
+
         TCSLogWithMark("Showing XCreds Login Window")
 
         //for some reason, software update activates and gets in the way. so we delay for 3 seconds before coming back to front
@@ -318,7 +329,7 @@ import Network
         case .usernamePassword:
             self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=true
 
-            NetworkMonitor.shared.stopMonitoring()
+//            NetworkMonitor.shared.stopMonitoring()
             self.loginWindowType = .usernamePassword
 
 
@@ -335,6 +346,21 @@ import Network
                 return
             }
             TCSLogWithMark()
+
+            if let rfidUsers = getHint(type: .rfidUsers) as? RFIDUsers {
+                signInViewController.rfidUsers = rfidUsers
+                TCSLogWithMark("rfidUsers! \(rfidUsers.userDict?.count ?? 0)")
+            }
+            else {
+                TCSLogWithMark("no rfidUsers in hints")
+            }
+
+            if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
+                signInViewController.localAdmin = localAdmin
+            }
+            else {
+                TCSLogWithMark("no localAdmin found in hints")
+            }
 
             mainLoginWindowController?.addCenterView(signInViewController.view)
 
@@ -355,7 +381,6 @@ import Network
             if signInViewController.localOnlyCheckBox != nil {
                 signInViewController.localOnlyCheckBox.isEnabled = true
             }
-            TCSLogWithMark("forcing front")
             mainLoginWindowController?.window?.forceToFrontAndFocus(self)
             mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
 

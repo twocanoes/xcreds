@@ -194,16 +194,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
         }
     }
-    func tokenInfo(fromCredentials credentials:Creds) throws -> Dictionary<String, Any>? {
-        //if we have tokens, that means that authentication was successful.
-
-
-        guard let idToken = credentials.idToken else {
-            TCSLogErrorWithMark("invalid idToken")
-            throw ProcessTokenResult.error("invalid idToken")
-        }
-
-        let array = idToken.components(separatedBy: ".")
+    func idTokenData(jwtString:String) throws -> Data {
+        let array = jwtString.components(separatedBy: ".")
 
         if array.count != 3 {
             TCSLogErrorWithMark("idToken is invalid")
@@ -215,14 +207,24 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         guard let data = base64UrlDecode(value:body ) else {
             TCSLogErrorWithMark("error decoding id token base64")
             throw ProcessTokenResult.error("The identity token could not be decoded from base64.")
-
-            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from base64.")
-            //            return
         }
+        return data
+
+    }
+    func tokenInfo(fromCredentials credentials:Creds) throws -> Dictionary<String, Any>? {
+        //if we have tokens, that means that authentication was successful.
+
+
+        guard let idToken = credentials.idToken else {
+            TCSLogErrorWithMark("invalid idToken")
+            throw ProcessTokenResult.error("invalid idToken")
+        }
+
+        let data = try idTokenData(jwtString: idToken)
         if let decodedTokenString = String(data: data, encoding: .utf8) {
             TCSLogWithMark("IDToken:\(decodedTokenString)")
-
         }
+
         let decoder = JSONDecoder()
         var idTokenObject:IDToken
         do {
@@ -231,7 +233,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
         catch {
             TCSLogErrorWithMark("error decoding idtoken::")
-            TCSLogErrorWithMark("Token:\(body)")
+            TCSLogErrorWithMark("Token:\(data)")
             throw ProcessTokenResult.error("The identity token could not be decoded from json")
 //
 //            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from json.")
@@ -444,6 +446,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
 extension TokenManager {
     func authFailure(message: String) {
+        XCredsAudit().auditError(message)
         TCSLogWithMark("authFailure: \(message)")
         feedbackDelegate?.tokenError(message)
     }
@@ -479,15 +482,20 @@ extension TokenManager {
             }
 
             if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
+                XCredsAudit().refreshTokenUpdated(true)
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
                 TCSLogWithMark("ropgResponseValue matched to \(error)")
+                XCredsAudit().refreshTokenUpdated(true)
 
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
             else {
-                self.feedbackDelegate?.tokenError("error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))")
+                let err = "error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))"
+
+                XCredsAudit().auditError(err)
+                self.feedbackDelegate?.tokenError(err)
             }
 
         }

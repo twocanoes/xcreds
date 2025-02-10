@@ -21,7 +21,6 @@ class LicenseChecker: NSObject {
         let trialDays = 14
 
         if UserDefaults.standard.value(forKey: "tts") == nil {
-            TCSLogErrorWithMark("setting trial date")
             UserDefaults.standard.setValue(Date(), forKey: "tts")
         }
         let firstLaunchDate = UserDefaults.standard.value(forKey: "tts") as? Date
@@ -30,7 +29,6 @@ class LicenseChecker: NSObject {
         if let firstLaunchDate = firstLaunchDate {
             let secondsPassed = Date().timeIntervalSince(firstLaunchDate)
             let trialDaysLeft=trialDays-(Int(secondsPassed)/(24*60*60));
-            TCSLogWithMark("trial days: \(secondsPassed)")
 
             if secondsPassed<Double(24*60*60*trialDays) {
                 trialState = .trial(trialDaysLeft)
@@ -48,7 +46,6 @@ class LicenseChecker: NSObject {
         switch status {
 
         case .valid:
-            TCSLogWithMark("valid license")
             if let dateExpiredString = check.license.dateExpired,let dateExpires = dateFormatter.date(from:dateExpiredString ){
 
                 return .valid(Int(dateExpires.timeIntervalSinceNow))
@@ -56,17 +53,13 @@ class LicenseChecker: NSObject {
 
             return .valid(0)
         case .expired:
-            TCSLogErrorWithMark("expired license")
             return trialState
 
         case .invalid:
-            TCSLogErrorWithMark("license invalid")
             return LicenseState.invalid
         case .unset:
-            TCSLogErrorWithMark("No License")
             return trialState
         default:
-            TCSLogErrorWithMark("invalid license")
             return trialState
         }
 

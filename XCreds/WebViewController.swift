@@ -7,7 +7,7 @@
 
 import Foundation
 import Cocoa
-import WebKit
+@preconcurrency import WebKit
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
@@ -163,6 +163,8 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     }
     func tokenError(_ err: String) {
         TCSLogErrorWithMark("authFailure: \(err)")
+        XCredsAudit().auditError(err)
+
         //TODO: need to post this?
         NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["error":err])
 

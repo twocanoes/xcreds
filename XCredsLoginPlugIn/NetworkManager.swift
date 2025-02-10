@@ -1,9 +1,5 @@
 //
-//  WifiManager.swift
-//  JamfConnectLogin
-//
-//  Created by Adrian Kubisztal on 16/07/2019.
-//  Copyright © 2019 Jamf. All rights reserved.
+//  NetworkManager.swift
 //
 
 import Foundation
@@ -22,17 +18,17 @@ enum WiFiPowerState:String {
     case off = "off"
     case on = "on"
 }
-@objc protocol WifiManagerDelegate: AnyObject {
-    func wifiManagerFullyFinishedInternetConnectionTimer()
-    @objc optional func wifiManagerConnectedToNetwork()
+@objc protocol NetworkManagerDelegate: AnyObject {
+    func networkManagerFullyFinishedInternetConnectionTimer()
+    @objc optional func networkManagerConnectedToNetwork()
 }
 
-class WifiManager: CWEventDelegate {
+class NetworkManager: CWEventDelegate {
     private var error: Error?
     private var currentInterface: CWInterface?
 
     var timer: Timer?
-    weak var delegate: WifiManagerDelegate?
+    weak var delegate: NetworkManagerDelegate?
     var monitor:NWPathMonitor?
     var task:TCTaskWrapperWithBlocks?
     init() {
@@ -270,10 +266,11 @@ class WifiManager: CWEventDelegate {
     }
     
     func isConnectedToNetwork() -> Bool {
+        TCSLogWithMark()
         var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
-
+        TCSLogWithMark()
         guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                 SCNetworkReachabilityCreateWithAddress(nil, $0)
@@ -284,11 +281,19 @@ class WifiManager: CWEventDelegate {
 
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
         if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == false {
+            TCSLogWithMark()
+
             return false
         }
 
         let isReachable = flags == .reachable
         let needsConnection = flags == .connectionRequired
+        if isReachable {
+            TCSLogWithMark("is reachable true")
+        }
+        if needsConnection {
+            TCSLogWithMark("needs connection true")
+        }
         return isReachable && !needsConnection
     }
 
@@ -320,7 +325,7 @@ class WifiManager: CWEventDelegate {
                 self.timer?.invalidate()
 
                 self.monitor?.cancel()
-                self.delegate?.wifiManagerConnectedToNetwork?()
+                self.delegate?.networkManagerConnectedToNetwork?()
             }
             else if path.usesInterfaceType(.wiredEthernet) {
                 TCSLogWithMark("Ethernet")

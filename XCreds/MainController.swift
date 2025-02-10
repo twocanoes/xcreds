@@ -112,7 +112,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 forceUsernamePassword = true
             }
         }
-        if forceUsernamePassword == false && (DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil && DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false)  {
+        if forceUsernamePassword == false,
+           DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) != nil,
+            DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
             windowController.window!.makeKeyAndOrderFront(self)
 
@@ -170,7 +173,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                         y = y - signInViewController.view.frame.size.height/2
                         let lowerLeftCorner = NSPoint(x: x, y: y)
                         signInViewController.localOnlyCheckBox.isHidden = true
-                        signInViewController.localOnlyView.isHidden = true
+                        signInViewController.localOnlyCheckBox.isHidden = true
 
                         signInViewController.view.setFrameOrigin(lowerLeftCorner)
                     }
@@ -243,7 +246,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
         if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
-            showSignInWindow(forceLoginWindowType: .cloud)
+            showSignInWindow(force:true,forceLoginWindowType: .cloud)
         }
 
 
@@ -251,6 +254,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
     func localAccountAndPassword() -> (String?,String?) {
+
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
+            return (nil,nil)
+
+        }
+
         let keychainUtil = KeychainUtil()
         var accountName=""
         let accountInfo = try? keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
@@ -295,7 +304,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func passwordExpiryUpdate(_ passwordExpire: Date) {
-
         let dateFormatter = DateFormatter()
 
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -303,7 +311,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         dateFormatter.timeStyle = .short
         let dateString = dateFormatter.string(from: passwordExpire)
 
-        self.adPasswordExpires=dateString
+
+        if passwordExpire.timeIntervalSinceNow>10*365*24*60*60{
+            self.adPasswordExpires="Never"
+        }
+        else {
+            self.adPasswordExpires=dateString
+
+        }
+
+
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuExpiration(passwordExpire)
 
@@ -414,7 +431,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
         appDelegate?.updateStatusMenuIcon(showDot:false)
-        if WifiManager().isConnectedToNetwork()==true {
+        if NetworkMonitor.shared.isConnected==true {
             showSignInWindow(forceLoginWindowType: .cloud)
         }
     }
@@ -441,7 +458,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
-            if WifiManager().isConnectedToNetwork()==true {
+            if NetworkMonitor.shared.isConnected==true {
                 showSignInWindow(forceLoginWindowType: .usernamePassword)
             }
         }

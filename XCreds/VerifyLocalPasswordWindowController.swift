@@ -6,18 +6,11 @@
 //
 
 import Cocoa
-
 class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
-    struct UsernamePasswordCredentials {
-        var username:String?
-        var password:String?
-    }
-    
-
     enum LocalUsernamePasswordResult {
-        case success(UsernamePasswordCredentials?)
-        case resetKeychainRequested(UsernamePasswordCredentials?)
+        case success(LocalAdminCredentials?)
+        case resetKeychainRequested(LocalAdminCredentials?)
         case userCancelled
         case error(String)
     }
@@ -87,8 +80,11 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
             if resetKeychain == true { //user clicked reset
                 isDone=true
 
-                return .resetKeychainRequested(UsernamePasswordCredentials(username: adminUsername, password: adminPassword))
-
+                if let adminUsername = adminUsername,
+                   let adminPassword = adminPassword {
+                    return .resetKeychainRequested(LocalAdminCredentials(username: adminUsername, password: adminPassword))
+                }
+                return .error("no admin username or password set")
             }
             else {
                 TCSLogWithMark("user gave old password. checking...")
@@ -112,7 +108,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
                     if shouldUpdatePassword==false {
                         TCSLogWithMark("shouldUpdatePassword set to false")
-                        return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
+                        return .success(LocalAdminCredentials(username:username,password: passwordEntered))
                     }
                     TCSLogWithMark()
                     guard let newPassword = newPassword else {
@@ -133,7 +129,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
                     isDone=true
                     window?.close()
                     TCSLogWithMark("returning success with local password")
-                    return .success(UsernamePasswordCredentials(username:nil,password: passwordEntered))
+                    return .success(LocalAdminCredentials(username:username,password: passwordEntered))
                 default:
                     window?.shake(self)
 
@@ -151,21 +147,20 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     @IBAction func removeKeychainButtonPressed(_ sender: Any) {
 
-
+        TCSLogWithMark()
         //override or prefs has admin username / password so don't prompt
-        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
-            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false {
-            adminUsername = aUsername
-            adminPassword = aPassword
+        if let adminUsername = adminUsername, let adminPassword = adminPassword{
+            TCSLogWithMark()
             if self.window?.isModalPanel==true {
+                TCSLogWithMark()
                 resetKeychain=true
-                
                 NSApp.stopModal(withCode: .OK)
-
             }
+            TCSLogWithMark()
 
         }
         else { //prompt
+            TCSLogWithMark()
             self.adminCredentialsWindow?.canBecomeVisibleWithoutLogin = true
 
             self.window?.beginSheet(adminCredentialsWindow) { res in

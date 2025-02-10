@@ -30,9 +30,9 @@ extension NSImage {
             TCSLogWithMark("PathURL: \(pathURL)")
             //create cache folder if needed
 
-            let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .localDomainMask, true)
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .localDomainMask, true)
 
-            let cacheDir = applicationSupportPath[0] as NSString
+            let cacheDir = cachePath[0] as NSString
             TCSLogWithMark("cachedir: \(cacheDir)")
 
             let imageName = pathURL.lastPathComponent

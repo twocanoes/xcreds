@@ -33,7 +33,7 @@ class LoginWebViewController: WebViewController, DSQueryable {
     }
     
     override func viewDidLayout() {
-TCSLogWithMark()
+        TCSLogWithMark()
     }
 
     override func viewWillLayout() {
@@ -82,7 +82,6 @@ TCSLogWithMark()
 
 
     override func showErrorMessageAndDeny(_ message:String){
-
             mechanismDelegate?.denyLogin(message:message)
             return
         }
@@ -116,6 +115,11 @@ TCSLogWithMark()
 
                 self.updateView()
 
+
+            case .userCancelled:
+                TCSLogWithMark("user cancelled")
+
+                self.updateView()
 
             }
         }

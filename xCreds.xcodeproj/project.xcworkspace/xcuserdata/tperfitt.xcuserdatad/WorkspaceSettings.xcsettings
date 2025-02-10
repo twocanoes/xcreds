@@ -6,8 +6,10 @@
 	<string>UseAppPreferences</string>
 	<key>CustomBuildLocationType</key>
 	<string>RelativeToDerivedData</string>
+	<key>DerivedDataCustomLocation</key>
+	<string>/Applications/Build</string>
 	<key>DerivedDataLocationStyle</key>
-	<string>Default</string>
+	<string>AbsolutePath</string>
 	<key>IssueFilterStyle</key>
 	<string>ShowActiveSchemeOnly</string>
 	<key>LiveSourceIssuesEnabled</key>

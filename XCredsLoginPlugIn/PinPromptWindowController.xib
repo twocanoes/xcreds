@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PinPromptWindowController" customModule="XCredsLoginPlugin" customModuleProvider="target">
+            <connections>
+                <outlet property="pinTextField" destination="W0Z-gI-6XW" id="szP-Sh-d8T"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <rect key="contentRect" x="1364" y="527" width="337" height="124"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1440"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="337" height="124"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W0Z-gI-6XW">
+                        <rect key="frame" x="20" y="65" width="297" height="36"/>
+                        <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="FkN-cM-zrd">
+                            <font key="font" textStyle="largeTitle" name=".SFNS-Regular"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <allowedInputSourceLocales>
+                                <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                            </allowedInputSourceLocales>
+                        </secureTextFieldCell>
+                        <connections>
+                            <action selector="pinTextField:" target="-2" id="oGt-sd-H3i"/>
+                        </connections>
+                    </secureTextField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bfq-Nd-CDN">
+                        <rect key="frame" x="250" y="13" width="74" height="32"/>
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KHP-VB-ljb">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="Htk-M8-0b7"/>
+                        </constraints>
+                        <connections>
+                            <action selector="okButtonPressed:" target="-2" id="Gjg-q5-YeC"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a3M-C0-4jk">
+                        <rect key="frame" x="176" y="13" width="76" height="32"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ltr-oU-xgW">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelButtonPressed:" target="-2" id="cNj-9z-EyE"/>
+                        </connections>
+                    </button>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oOf-if-sef">
+                        <rect key="frame" x="146" y="109" width="45" height="31"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="PIN" id="Yhs-JC-HcV">
+                            <font key="font" textStyle="largeTitle" name=".SFNS-Regular"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="W0Z-gI-6XW" secondAttribute="trailing" constant="20" symbolic="YES" id="1ah-FN-wEc"/>
+                    <constraint firstItem="W0Z-gI-6XW" firstAttribute="top" secondItem="oOf-if-sef" secondAttribute="bottom" constant="8" symbolic="YES" id="9Pu-aB-GIg"/>
+                    <constraint firstItem="Bfq-Nd-CDN" firstAttribute="leading" secondItem="a3M-C0-4jk" secondAttribute="trailing" constant="12" symbolic="YES" id="JWO-3A-I7p"/>
+                    <constraint firstAttribute="bottom" secondItem="Bfq-Nd-CDN" secondAttribute="bottom" constant="20" symbolic="YES" id="Kva-Ru-T9i"/>
+                    <constraint firstItem="Bfq-Nd-CDN" firstAttribute="top" secondItem="W0Z-gI-6XW" secondAttribute="bottom" constant="25" id="MnP-zU-TSp"/>
+                    <constraint firstAttribute="trailing" secondItem="Bfq-Nd-CDN" secondAttribute="trailing" constant="20" symbolic="YES" id="NiB-QW-fcn"/>
+                    <constraint firstItem="W0Z-gI-6XW" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" symbolic="YES" id="o2c-J6-VBT"/>
+                    <constraint firstAttribute="bottom" secondItem="a3M-C0-4jk" secondAttribute="bottom" constant="20" symbolic="YES" id="xeS-j4-kLx"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="157.5" y="-107"/>
+        </window>
+    </objects>
+</document>

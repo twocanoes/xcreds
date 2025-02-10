@@ -17,6 +17,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     func tokenError(_ err: String) {
         TCSLogErrorWithMark("authFailure: \(err)")
         feedbackDelegate?.credentialsCheckFailed()
+        XCredsAudit().auditError(err)
 //        //        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:[:])
 //        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.showDebug.rawValue) == true {
 //
@@ -64,18 +65,38 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     }
     func checkADPasswordExpire(password:String) {
         TCSLogWithMark()
-        let domainName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+
+
+        let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+        var allDomainsFromPrefs = DefaultsOverride.standardOverride.array(forKey: PrefKeys.additionalADDomainList.rawValue)  as? [String] ?? []
+
+        if let adDomainFromPrefs=adDomainFromPrefs  {
+            allDomainsFromPrefs.append(adDomainFromPrefs)
+        }
+        allDomainsFromPrefs = allDomainsFromPrefs.map { currVal in
+            currVal.uppercased()
+        }
+
 
         guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
-                let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
-              let kerbPrinc = kerbPrincArray.first else
+              let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+              var kerbPrinc = kerbPrincArray.first else
         {
             return
         }
+        if kerbPrinc.contains("@") == false, let adDomainFromPrefs = adDomainFromPrefs {
+            kerbPrinc = kerbPrinc + "@" + adDomainFromPrefs.stripped
+        }
 
-        if let domainName = domainName, let shortName = kerbPrinc.components(separatedBy: "@").first, domainName.isEmpty==false, shortName.isEmpty==false{
-            session = NoMADSession.init(domain: domainName, user: shortName)
-            TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
+        if allDomainsFromPrefs.count>0,
+           let shortName = kerbPrinc.components(separatedBy: "@").first,
+            let specifiedDomain = kerbPrinc.components(separatedBy: "@").last,
+            specifiedDomain.isEmpty==false,
+            shortName.isEmpty==false,
+           allDomainsFromPrefs.contains(specifiedDomain.uppercased())==true
+        {
+            session = NoMADSession.init(domain: specifiedDomain, user: shortName)
+            TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(specifiedDomain)")
             guard let session = session else {
                 TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
                 return

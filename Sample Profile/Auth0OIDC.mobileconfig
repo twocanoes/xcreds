@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.erikberglund.ProfileCreator.86350731-1130-4F85-AAA8-A99BBBD55F8E.com.twocanoes.xcreds.07C53DE9-CA33-4E52-A008-F5EA5068D819</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>07C53DE9-CA33-4E52-A008-F5EA5068D819</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>clientID</key>
+			<string>R150TTFcwSNIhEg7j9v44DZpISe40R7C</string>
+			<key>clientSecret</key>
+			<string>NoQ1usaOzVMDvPKfTGfW1EF3vdiA-1_xcsBHPJ8IH17jNXraljLsOLJ__5_RNbpM</string>
+			<key>discoveryURL</key>
+			<string>https://dev-4vea1756mp0xnss6.us.auth0.com/.well-known/openid-configuration</string>
+			<key>idpHostName</key>
+			<string>dev-4vea1756mp0xnss6.us.auth0.com</string>
+			<key>redirectURI</key>
+			<string>https://127.0.0.1/xcreds</string>
+			<key>scopes</key>
+			<string>profile openid offline_access xcreds</string>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>Auth0 OIDC</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.erikberglund.ProfileCreator.86350731-1130-4F85-AAA8-A99BBBD55F8E</string>
+	<key>PayloadOrganization</key>
+	<string>Twocanoes Software, Inc</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>86350731-1130-4F85-AAA8-A99BBBD55F8E</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

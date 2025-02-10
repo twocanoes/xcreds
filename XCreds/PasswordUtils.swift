@@ -93,57 +93,7 @@ class PasswordUtils: NSObject {
         return secureTokenUsers
     }
 
-    class func GetSecureTokenCreds() -> SecureTokenCredential? {
-
-        TCSLogWithMark("Starting SecureToken Credential acquisition process")
-        // Initializing the return variables
-//        var secureTokenManagementUsername = ""
-//        var secureTokenManagementPassword = ""
-
-        // Getting the list of secure token enabled users
-//        let secureTokenUsers = GetSecureTokenUserList()
-
-
-        if let username = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let password = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-            return SecureTokenCredential(username: username, password: password)
-
-        }
-//        if let scriptPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminCredentialScriptPath.rawValue){
-//            TCSLogWithMark("running script \(scriptPath)")
-//            let json = cliTask(scriptPath)
-//            if let data = json.data(using: .utf8) {
-//                let jsonResultDict = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
-//
-//                if let jsonResultDict=jsonResultDict, let username = jsonResultDict["username"] as? String, let password = jsonResultDict["password"] as? String{
-//                    let secureTokenCreds = SecureTokenCredential()
-//                    secureTokenCreds.username=username
-//                    secureTokenCreds.password=password
-//                    return secureTokenCreds
-//                }
-//
-//            }
-//
-//        }
-        return nil
-//        TCSLog("secureTokenManagementUsername is \(secureTokenManagementUsername)")
-////
-//        TCSLog("secureTokenUsers is \(secureTokenUsers.description)")
-//        if secureTokenUsers.contains(secureTokenManagementUsername) {
-//            // The Secure Token management account has a token
-//
-//            // Assigning the username to the return variable
-//            secureTokenCreds.username = secureTokenManagementUsername
-//            secureTokenCreds.password = secureTokenManagementPassword
-//            return secureTokenCreds
-//
-//
-//        } else {
-//            // The Secure Token management account does not have a token, but there are tokens already given
-//            TCSLogWithMark("Secure Token management unable to get credentials")
-//            return nil
-//        }
-    }
-
+    
     class func verifyUser(name: String, auth: String) -> Bool {
         os_log("Finding user record", log: noLoMechlog, type: .debug)
         TCSLogWithMark("searching for user \(name) and password with count \(auth.count)")
@@ -250,7 +200,6 @@ class PasswordUtils: NSObject {
     /// `ODNode` to DSLocal for queries and account manipulation.
     public class var localNode: ODNode? {
         do {
-            TCSLogWithMark("Finding the DSLocal node")
             return try ODNode.init(session: ODSession.default(), type: ODNodeType(kODNodeTypeLocalNodes))
         } catch {
             TCSLogWithMark("ODError creating local node.")

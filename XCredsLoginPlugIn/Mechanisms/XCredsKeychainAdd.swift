@@ -19,7 +19,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
     let kItemName = "xcreds"
     
     @objc override func run() {
-        TCSLogWithMark("XCredsKeychainAdd mech starting")
+        TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsKeychainAdd mech starting starting mech starting ~~~~~~~~~~~~~~~~~~~")
 
         // get username and password
         // get reference to user's keychain
@@ -29,8 +29,6 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         var userKeychain: SecKeychain?
         username = usernameContext ?? ""
         userpass = passwordContext ?? ""
-
-
 
         TCSLogWithMark("Getting Home Dir")
 
@@ -146,14 +144,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         if let tokenArray = tokenArray, tokenArray.count>2 {
             TCSLogWithMark("We have tokens, so cloud login")
-//            let tokenArray = getHint(type: .tokens) as? Array<String>
-
-//            guard let tokenArray = tokenArray, tokenArray.count>2 else {
-//                TCSLogWithMark("no tokens but allowing login")
-//                allowLogin()
-//                return
-//            }
-
+            XCredsAudit().tokensUpdated(idToken:tokenArray[0])
             let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
             TCSLogWithMark("saving tokens to keychain")
             if TokenManager.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
@@ -170,193 +161,6 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
             }
             allowLogin()
-
-
-
-//            //        if getManagedPreference(key: .KeychainAddNoMAD) as? Bool == true {
-//
-//            // keychain unlock worked, now to get the real one
-//
-////            TCSLogWithMark("Getting Keychain reference.")
-////
-////            err = SecKeychainOpen(userKeychainPath, &userKeychain)
-////
-////            TCSLogWithMark("Unlocking Keychain.")
-////
-////            err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
-//
-//            var keychainItem: SecKeychainItem? = nil
-//
-//            var kItemAccount = usernameContext ?? ""
-//
-//            if let domain = getManagedPreference(key: .ADDomain) as? String {
-//                kItemAccount += "@" + domain.uppercased()
-//            }
-//
-//            let kItemPass = passwordContext
-//
-//            // set up an item dictionary
-//
-//            var itemAttrs = [ String : AnyObject ]()
-//
-//            // get app paths
-//
-//            //var access : SecAccess? = nil
-//
-//            var nomadTrust : SecTrustedApplication? = nil
-//            //var nomadProTrust : SecTrustedApplication? = nil
-//
-//            var secApps = [ SecTrustedApplication ]()
-//
-//            //var accountName = ""
-//            //var serviceName = ""
-//
-//            if fm.fileExists(atPath: "/Applications/NoMAD.app", isDirectory: nil) {
-//                err = SecTrustedApplicationCreateFromPath("/Applications/NoMAD.app", &nomadTrust)
-//                if err == 0 {
-//                    secApps.append(nomadTrust!)
-//                }
-//            } else if let customNoMADLocation = getManagedPreference(key: .CustomNoMADLocation) as? String {
-//                err = SecTrustedApplicationCreateFromPath(customNoMADLocation, &nomadTrust)
-//                if err == 0 {
-//                    secApps.append(nomadTrust!)
-//                }
-//            } else {
-//                TCSLogWithMark("Checking for NoMAD anywhere on the device.")
-//                let ws = NSWorkspace.shared
-//                if let customPath = ws.absolutePathForApplication(withBundleIdentifier: "com.trusourcelabs.NoMAD")  {
-//                    err = SecTrustedApplicationCreateFromPath(customPath, &nomadTrust)
-//                    if err == 0 {
-//                        secApps.append(nomadTrust!)
-//                    }
-//                } else {
-//                    TCSLogWithMark("Unable to get custom NoMAD")
-//
-//                }
-//            }
-//
-//            itemAttrs[kSecAttrType as String] = "genp" as AnyObject
-//            //itemAttrs[kSecValueRef as String ] = kItemPass as AnyObject
-//            itemAttrs[kSecAttrLabel as String] = "NoMAD" as AnyObject
-//            itemAttrs[kSecAttrService as String] = "NoMAD" as AnyObject
-//            itemAttrs[kSecAttrAccount as String] = kItemAccount as AnyObject
-//
-//            // set up the base search dictionary
-//
-//            var itemSearch: [String:AnyObject] = [
-//                kSecClass as String: kSecClassGenericPassword as AnyObject,
-//                kSecMatchLimit as String : kSecMatchLimitAll as AnyObject,
-//                kSecReturnAttributes as String: true as AnyObject,
-//                kSecReturnRef as String : true as AnyObject,
-//                ]
-//
-//            itemSearch[kSecAttrService as String] = kItemName as AnyObject
-//            itemSearch[kSecAttrAccount as String] = kItemAccount as AnyObject
-//
-//
-//            // now to create
-//
-//            err = SecKeychainAddGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, UInt32((kItemPass?.count)!), kItemPass!, &keychainItem)
-//
-//            if err != 0 {
-//                TCSLogWithMark("Unable to create item")
-//
-//                // this is most likely because an item is already there, so lets delete then recreate
-//
-//                err = SecKeychainFindGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, nil, nil, &keychainItem)
-//
-//                err = SecKeychainItemDelete(keychainItem!)
-//
-//                // now to create
-//
-//                TCSLogWithMark("Creating new keychain item.")
-//
-//                err = SecKeychainAddGenericPassword(userKeychain, UInt32(kItemName.count), kItemName, UInt32((kItemAccount.count)), kItemAccount, UInt32((kItemPass?.count)!), kItemPass!, &keychainItem)
-//
-//                if err != 0 {
-//                    TCSLogWithMark("Unable to create new keychain item.")
-//
-//                    allowLogin()
-//                    return
-//                }
-//            }
-//
-//            // now to set all the ACLs
-//
-//            // Decode ACL
-//
-//            var myACLs : CFArray? = nil
-//            var itemAccess: SecAccess? = nil
-//
-//            err = SecKeychainItemCopyAccess(keychainItem!, &itemAccess)
-//
-//            SecAccessCopyACLList(itemAccess!, &myACLs)
-//
-//            var appList: CFArray? = nil
-//            var desc: CFString? = nil
-//
-//            var prompt = SecKeychainPromptSelector()
-//
-//            for acl in myACLs as! Array<SecACL> {
-//                SecACLCopyContents(acl, &appList, &desc, &prompt)
-//                let authArray = SecACLCopyAuthorizations(acl)
-//
-//                if (authArray as! [String]).contains("ACLAuthorizationDecrypt") {
-//
-//                    TCSLogWithMark("Found AUTHORIZATION_CHANGE_ACL.")
-//
-//                    SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
-//                    continue
-//                }
-//
-//                if !(authArray as! [String]).contains("ACLAuthorizationPartitionID") {
-//                    continue
-//                }
-//
-//                TCSLogWithMark("Found ACLAuthorizationPartitionID.")
-//
-//                // pull in the description that's really a functional plist <sigh>
-//
-//                let rawData = Data.init(fromHexEncodedString: desc! as String)
-//                var format: PropertyListSerialization.PropertyListFormat = .xml
-//
-//                var propertyListObject = [ String: [String]]()
-//
-//                do {
-//                    propertyListObject = try PropertyListSerialization.propertyList(from: rawData!, options: [], format: &format) as! [ String: [String]]
-//                } catch {
-//                    TCSLogWithMark("No teamid in ACLAuthorizationPartitionID.")
-//                }
-//
-//                let teamIds = [ "teamid:AAPZK3CB24", "teamid:VRPY9KHGX6" ]
-//
-//                propertyListObject["Partitions"] = teamIds
-//
-//                // now serialize it back into a plist
-//
-//                let xmlObject = try? PropertyListSerialization.data(fromPropertyList: propertyListObject as Any, format: format, options: 0)
-//
-//                // now that all ACLs has been adjusted, we can update the item
-//
-//                err = SecACLSetContents(acl, appList, xmlObject!.hexEncodedString() as CFString, prompt)
-//
-//                // smack it again to set the ACL
-//
-//                err = SecKeychainItemSetAccessWithPassword(keychainItem!, itemAccess!, UInt32((kItemPass?.count)!), kItemPass)
-//            }
-//
-//            guard let nomadDefaults = UserDefaults.init(suiteName: "com.trusourcelabs.NoMAD") else {
-//                TCSLogWithMark("Could not get NoMAD Pref suite.")
-//                allowLogin()
-//                return
-//            }
-//
-//            TCSLogWithMark("Setting LastUser pref to \(kItemAccount)")
-//            nomadDefaults.set(usernameContext, forKey: "LastUser")
-
-//            if err != 0 {
-//                TCSLogWithMark("Error setting up keychain item.")
-//            }
         }
         else {
             TCSLogWithMark("Local login so passing through")
