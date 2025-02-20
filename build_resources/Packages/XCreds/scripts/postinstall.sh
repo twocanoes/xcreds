@@ -50,12 +50,12 @@ while [[ ! -f "/var/db/.AppleSetupDone" ]]; do
  echo "Waiting for Setup Assistant to complete"
 done
 
-if [ -e "${target_volume}"/Applications/XCreds.app/Contents/MacOS/XCreds ]; then
-
-	echo "briefly starting up XCreds app to register CCID extension"
-	"${target_volume}"/Applications/XCreds.app/Contents/MacOS/XCreds -r
-
-fi
+#if [ -e "${target_volume}"/Applications/XCreds.app/Contents/MacOS/XCreds ]; then
+#
+#	echo "briefly starting up XCreds app to register CCID extension"
+#	"${target_volume}"/Applications/XCreds.app/Contents/MacOS/XCreds -r
+#
+#fi
 
 # if Finder is not loaded and override file doesn't exist, reload the loginwindow
 if  /usr/bin/pgrep -q "Finder"  || [ -f /Users/Shared/.xcredsPreventLoginWindowKill ]; then
