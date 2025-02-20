@@ -34,6 +34,7 @@ enum PasswordVerificationResult {
     case success
     case incorrectPassword
     case accountDoesNotExist
+    case accountLocked
     case other(String)
 }
 
@@ -296,12 +297,12 @@ class PasswordUtils: NSObject {
                 TCSLogWithMark("No local account for user: \(userName) is not valid.")
                 return .accountDoesNotExist
             case Int(kODErrorCredentialsAccountLocked.rawValue):
-                TCSLogWithMark("No Account for user: \(userName) is not valid.")
-                return .other("Local account is locked")
+                TCSLogWithMark("No Account for user: \(userName) is not locked.")
+                return .accountLocked
 
             case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):
                 TCSLogWithMark("No local account for user: \(userName) is not valid. Local account temporarily locked. Please wait a bit and try again.")
-                return .other("Local account temporarily locked. Please wait a bit and try again.")
+                return .accountLocked
 
 
             case Int(kODErrorCredentialsMethodNotSupported.rawValue):

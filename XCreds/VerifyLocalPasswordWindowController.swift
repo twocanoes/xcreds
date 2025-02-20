@@ -34,11 +34,19 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     var adminPassword:String?
     var currentUsername:String?
 
+    var isAccountLocked:Bool=false
+
+
     override var windowNibName: NSNib.Name {
 
         return "VerifyLocalPasswordWindowController"
     }
     override func awakeFromNib() {
+        if isAccountLocked {
+            resetText.stringValue="Unlock Account"
+            resetTitle.stringValue="The user account is locked.  You can wait for the account to unlock or reset the password by clicking the 'Reset' button below."
+        }
+
         resetButton.isHidden = !showResetButton
         resetText.isHidden = !showResetText
         if let currentUsername = currentUsername {

@@ -87,7 +87,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
 
     func credentialsUpdated(_ credentials:Creds){
-        TCSLogWithMark()
+
         updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
         if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
             switch res {

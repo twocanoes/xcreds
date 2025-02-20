@@ -176,17 +176,23 @@ import OpenDirectory
             TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
 
             let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)
+            var accountLocked = false
 
             switch passwordCheckStatus {
             case .success:
                 TCSLogWithMark("Local password matches cloud password ")
+
+
+            case .accountLocked:
+                accountLocked=true
+                fallthrough
             case .incorrectPassword:
 
                 TCSLogWithMark("Sync password called.")
 
                 let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials
 
-                if let localAdmin = localAdmin {
+                if let _ = localAdmin {
 
                     TCSLogWithMark("local admin set")
                 }
@@ -197,8 +203,13 @@ import OpenDirectory
                 }
                 else {
 
+
+
                     TCSLogWithMark()
                     let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+
+                    promptPasswordWindowController.isAccountLocked=accountLocked
+
 
                     promptPasswordWindowController.showResetText=true
                     promptPasswordWindowController.showResetButton=true
@@ -219,10 +230,16 @@ import OpenDirectory
                             setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
                         }
 
-                    case .resetKeychainRequested:
+                    case .resetKeychainRequested(let localAdminCredentials):
                         TCSLogWithMark("resetKeychainRequested")
 
+                        if let localAdminCredentials = localAdminCredentials {
+                            TCSLogWithMark("setting localAdminCredentials hint")
+
+                            setHint(type: .localAdmin, hint:localAdminCredentials)
+                        }
                         TCSLogWithMark("setting passwordOverwrite hint")
+
                         setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
 
 
@@ -243,6 +260,7 @@ import OpenDirectory
 
                 denyLogin(message:nil)
                 return .failure(mesg)
+
             }
             TCSLogWithMark("passing username:\(username), password, and tokens")
             TCSLogWithMark("setting kAuthorizationEnvironmentUsername")
