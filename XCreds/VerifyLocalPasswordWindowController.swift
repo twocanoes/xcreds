@@ -43,8 +43,16 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     }
     override func awakeFromNib() {
         if isAccountLocked {
-            resetText.stringValue="Unlock Account"
-            resetTitle.stringValue="The user account is locked.  You can wait for the account to unlock or reset the password by clicking the 'Reset' button below."
+            resetTitle.stringValue="Unlock Account"
+            resetText.stringValue="The user account is locked.  You can wait for the account to unlock or reset the password by clicking the Reset button below."
+
+            if let accountLockedPasswordDialogTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.accountLockedPasswordDialogTitle.rawValue),accountLockedPasswordDialogTitle.count>0{
+                resetTitle.stringValue=accountLockedPasswordDialogTitle
+            }
+            if let accountLockedPasswordDialogText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.accountLockedPasswordDialogText.rawValue),accountLockedPasswordDialogText.count>0{
+                resetText.stringValue=accountLockedPasswordDialogText
+            }
+
         }
 
         resetButton.isHidden = !showResetButton
