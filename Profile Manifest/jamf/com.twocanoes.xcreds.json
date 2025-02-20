@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8284) OAuth Settings",
+    "description": "XCreds 5.3 (8285) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -940,6 +940,32 @@
             ],
             "property_order": 375
         },
+        "accountLockedPasswordDialogTitle": {
+            "type": "string",
+            "title": "Account Locked Password Dialog Title",
+            "default": "Unlock Account",
+            "description": "Title of dialog prompting user to enter in their prior local password when account is locked,",
+            "links": [
+                {
+                    "rel": "More information",
+                    "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
+                }
+            ],
+            "property_order": 380
+        },
+        "accountLockedPasswordDialogText": {
+            "type": "string",
+            "title": "Account Locked Password Dialog Text",
+            "default": "The user account is locked.  You can wait for the account to unlock or reset the password by clicking the Reset button below.",
+            "description": "Text of dialog prompting user to enter in their prior local password when account is locked,",
+            "links": [
+                {
+                    "rel": "More information",
+                    "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
+                }
+            ],
+            "property_order": 385
+        },
         "resetPasswordDialogTitle": {
             "type": "string",
             "title": "Reset Password Dialog Title",
@@ -951,7 +977,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 380
+            "property_order": 390
         },
         "systemInfoButtonTitle": {
             "type": "string",
@@ -964,7 +990,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 385
+            "property_order": 395
         },
         "verifyPassword": {
             "type": "boolean",
@@ -977,7 +1003,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 390
+            "property_order": 400
         },
         "shouldDetectNetworkToDetermineLoginWindow": {
             "type": "boolean",
@@ -990,7 +1016,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 395
+            "property_order": 405
         },
         "idpHostName": {
             "type": "string",
@@ -1002,7 +1028,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 400
+            "property_order": 410
         },
         "idpHostNames": {
             "type": "array",
@@ -1011,7 +1037,7 @@
             },
             "title": "IDP Host Names",
             "description": "array of hostnames of the page that has the password field.",
-            "property_order": 405
+            "property_order": 415
         },
         "AdditionalADDomains": {
             "type": "array",
@@ -1020,7 +1046,7 @@
             },
             "title": "Additional AD Domains",
             "description": "array of additional AD domains to accept",
-            "property_order": 410
+            "property_order": 420
         },
         "ccidSlotName": {
             "type": "string",
@@ -1032,7 +1058,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 415
+            "property_order": 425
         },
         "shouldAllowLoginCardSetup": {
             "type": "boolean",
@@ -1045,7 +1071,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 420
+            "property_order": 430
         },
         "adUserAttributesToAddToLocalUserAccount": {
             "type": "array",
@@ -1054,7 +1080,7 @@
             },
             "title": "AD User Attributes To Add To Local User Account",
             "description": "array of AD user attributes to add to local directory user account",
-            "property_order": 425
+            "property_order": 435
         },
         "passwordElementID": {
             "type": "string",
@@ -1066,7 +1092,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 430
+            "property_order": 440
         },
         "map_firstname": {
             "type": "string",
@@ -1079,7 +1105,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 435
+            "property_order": 445
         },
         "map_lastname": {
             "type": "string",
@@ -1092,7 +1118,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 440
+            "property_order": 450
         },
         "map_fullname": {
             "type": "string",
@@ -1105,7 +1131,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 445
+            "property_order": 455
         },
         "map_username": {
             "type": "string",
@@ -1118,7 +1144,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 450
+            "property_order": 460
         },
         "map_fullusername": {
             "type": "string",
@@ -1131,7 +1157,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 455
+            "property_order": 465
         },
         "map_uid": {
             "type": "string",
@@ -1143,7 +1169,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 460
+            "property_order": 470
         },
         "map_password_expiry": {
             "type": "string",
@@ -1156,7 +1182,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 465
+            "property_order": 475
         },
         "settingsOverrideScriptPath": {
             "type": "string",
@@ -1169,7 +1195,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 470
+            "property_order": 480
         },
         "upnSuffixToDomainMappings": {
             "type": "array",
@@ -1190,7 +1216,7 @@
             },
             "title": "UPN Suffix To Domain Mappings",
             "description": "In some Active Directory environments, users do not use username@domain to login; they use a UPN suffix to make the username easier to use. This setting maps the UPN suffix to the correct AD domain name. For example, if you have an AD domain of foo.com but want users to sign in as user@bar.com, a UPN suffix of foo.com is created in AD and the user account is set to user@foo.com. This setting then would map foo.com to bar.com by setting the key upn to foo.com and the domain key to bar.com.",
-            "property_order": 475
+            "property_order": 485
         },
         "menuItems": {
             "type": "array",
@@ -1225,7 +1251,7 @@
             },
             "title": "Menu Items",
             "description": "Menu Items",
-            "property_order": 480
+            "property_order": 490
         },
         "Shares": {
             "type": "array",
@@ -1261,19 +1287,19 @@
             },
             "title": "Shares",
             "description": "Add menu item and mount/automount shares",
-            "property_order": 485
+            "property_order": 495
         },
         "HomeMountEnabled": {
             "type": "boolean",
             "title": "Home Mount Enabled",
             "description": "Show and mount home directory from AD profile if defined.",
-            "property_order": 490
+            "property_order": 500
         },
         "HomeAppendDomain": {
             "type": "boolean",
             "title": "Home Append Domain",
             "description": "Append the domain name to the share defined in the profile.",
-            "property_order": 495
+            "property_order": 505
         },
         "shareMenuItemName": {
             "type": "string",
@@ -1285,7 +1311,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 500
+            "property_order": 510
         }
     }
 }
