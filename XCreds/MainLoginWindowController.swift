@@ -70,7 +70,6 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         TCSLogWithMark()
         DispatchQueue.main.async{
             if self.window?.isVisible ?? true {
-                self.updateBackground()
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width
                 let screenHeight = screenRect.height
@@ -83,6 +82,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                     self.controlsViewController?.view.frame=rect
                 }
                 self.recenterCenterView()
+                self.updateBackground()
+
             }
         }
     }
@@ -186,6 +187,13 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     fileprivate func updateBackground() {
         TCSLogWithMark()
+        if windowArray.count>1{
+            for i in 1..<windowArray.count{
+
+                windowArray[i].contentView?.removeFromSuperview()
+
+            }
+        }
         windowArray.removeAll()
         if let window = window {
             windowArray.append(window)

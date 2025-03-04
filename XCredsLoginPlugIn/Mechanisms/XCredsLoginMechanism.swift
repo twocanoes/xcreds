@@ -7,8 +7,6 @@ import Network
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
     var loginWebViewController: LoginWebViewController?
     @objc var signInViewController: SignInViewController?
-
-
     enum LoginWindowType {
         case cloud
         case usernamePassword
@@ -42,7 +40,9 @@ import Network
     }
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
-//        self.mainLoginWindowController?.window?.orderOut(self)
+        for window in self.mainLoginWindowController!.windowArray{
+            window.close()
+        }
     }
 
     override func reload() {
@@ -278,6 +278,7 @@ import Network
 
         if loginWebViewController != nil || signInViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
+
             mainLoginWindowController?.loginTransition {
                 super.allowLogin()
             }
