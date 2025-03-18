@@ -220,7 +220,11 @@ extension WebViewController: WKNavigationDelegate {
                         TCSLogWithMark("========= password set===========")
                         self.password=passwords[2]
                     }
-
+                    else if passwords.count==2, passwords[0]==passwords[1] {
+                        TCSLogWithMark("found 2 password fields. so it is a reset password situation")
+                        TCSLogWithMark("========= password set===========")
+                        self.password=passwords[1]
+                    }
                     else if let passwordElementID = passwordElementID{
                         TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
 
