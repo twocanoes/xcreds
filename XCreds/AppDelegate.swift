@@ -295,7 +295,6 @@ extension xcreds {
             var other: [String] = []
 
         func run() throws {
-            TCSUnifiedLogger.shared().suppressDebug=true
 
 
             //used to register ccid reader as root. no idea why

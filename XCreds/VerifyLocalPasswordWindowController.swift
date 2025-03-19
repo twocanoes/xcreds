@@ -165,7 +165,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
         TCSLogWithMark()
         //override or prefs has admin username / password so don't prompt
-        if let adminUsername = adminUsername, let adminPassword = adminPassword{
+        if let _ = adminUsername, let _ = adminPassword{
             TCSLogWithMark()
             if self.window?.isModalPanel==true {
                 TCSLogWithMark()

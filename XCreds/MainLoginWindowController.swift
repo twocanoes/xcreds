@@ -222,40 +222,75 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
             currWindow = windowArray[i]
             let backgroundImage = DefaultsHelper.backgroundImage()
+
             let screenRect = screen.frame
             var newHeight = screenRect.height
             var newWidth = screenRect.width
 
-            if let backgroundImage = backgroundImage {
-
-                if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
-                    let ratio = backgroundImage.size.width/backgroundImage.size.height
-                    newHeight = screenRect.size.height
-                    newWidth = screenRect.size.height * ratio
-
-                    if newWidth > screenRect.size.width {
-                        newWidth = screenRect.size.width
-                        newHeight = screenRect.size.width / ratio
-                    }
-
-                }
-
-                backgroundImage.size.height = newHeight
-                backgroundImage.size.width = newWidth
+            if let backgroundImage = backgroundImage{
                 if i==0{
+
+
+                    if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
+
+                        let ratio = backgroundImage.size.width/backgroundImage.size.height
+                        newHeight = screenRect.size.height
+                        newWidth = screenRect.size.height * ratio
+
+                        if newWidth > screenRect.size.width {
+                            newWidth = screenRect.size.width
+                            newHeight = screenRect.size.width / ratio
+                        }
+
+                    }
+                    else {
+
+                        backgroundImage.size.height = newHeight
+                        backgroundImage.size.width = newWidth
+                        backgroundImageView.imageScaling = .scaleAxesIndependently
+
+                        backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+
+                    }
+                    //main screen
+                    backgroundImageView.imageScaling = .scaleAxesIndependently
+                    backgroundImage.size.height = newHeight
+                    backgroundImage.size.width = newWidth
+
+                    backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, newWidth, newHeight-100)
                     backgroundImageView.image=backgroundImage
 
-                    backgroundImageView.imageScaling = .scaleAxesIndependently
-                    backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
                 }
                 else {
-                    let newBackgroundImageView = NSImageView()
-                    newBackgroundImageView.image=backgroundImage
 
-                    newBackgroundImageView.imageScaling = .scaleAxesIndependently
-                    newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
-                    currWindow.contentView=newBackgroundImageView
-                    currWindow.makeKeyAndOrderFront(self)
+                    if let secondardBackgroundImage = DefaultsHelper.secondaryBackgroundImage(){
+
+
+                        if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen.rawValue) == false {
+                            let ratio = secondardBackgroundImage.size.width/secondardBackgroundImage.size.height
+                            newHeight = screenRect.size.height
+                            newWidth = screenRect.size.height * ratio
+
+                            if newWidth > screenRect.size.width {
+                                newWidth = screenRect.size.width
+                                newHeight = screenRect.size.width / ratio
+                            }
+
+                        }
+
+                        secondardBackgroundImage.size.height = newHeight
+                        secondardBackgroundImage.size.width = newWidth
+
+                        //secondary screens
+                        let newBackgroundImageView = NSImageView()
+                        newBackgroundImageView.image=secondardBackgroundImage
+
+                        newBackgroundImageView.imageScaling = .scaleAxesIndependently
+                        newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
+                        currWindow.contentView=newBackgroundImageView
+                        currWindow.makeKeyAndOrderFront(self)
+
+                    }
                 }
 
             }

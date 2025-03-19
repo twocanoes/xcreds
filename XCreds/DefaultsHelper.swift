@@ -50,6 +50,16 @@ class DefaultsHelper: NSObject {
         return nil
     }
 
+    static func secondaryBackgroundImage(includeDefault:Bool=true) -> NSImage? {
+        TCSLogWithMark()
+
+        if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowSecondaryMonitorsBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
+            return image
+        }
+        return backgroundImage(includeDefault: includeDefault)
+
+    }
+
     static func desktopPasswordWindowBackgroundImage(includeDefault:Bool=true) -> NSImage? {
         TCSLogWithMark()
         if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.menuItemWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){

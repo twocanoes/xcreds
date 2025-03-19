@@ -15,4 +15,10 @@ class XCredsLoginDone: XCredsBaseMechanism {
         NotificationCenter.default.post(name: NSNotification.Name("hideProgress"), object: nil)
         allowLogin()
 
-    }}
+    }
+    @objc func tearDown() {
+        TCSLogWithMark("Got teardown request in XCredsLoginDone")
+
+    }
+
+}
