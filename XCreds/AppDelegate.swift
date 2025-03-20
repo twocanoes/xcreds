@@ -847,13 +847,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+
+
         NetworkMonitor.shared.startMonitoring()
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
 
-        
+
+
         if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
             image.size=NSMakeSize(16, 16)
 
@@ -868,7 +871,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         shareMounterMenu?.shareMounter = shareMounter
         shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
-
+//
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
 
         if let defaultsPath = defaultsPath {

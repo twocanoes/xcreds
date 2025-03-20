@@ -26,6 +26,9 @@ class DesktopLoginWindowController: NSWindowController {
             backgroundImageView.image=backgroundImage
             backgroundImageView.imageScaling = .scaleNone
         }
+
+        
+
     }
 
 }

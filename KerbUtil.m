@@ -90,6 +90,7 @@ extern OSStatus SecKeychainResetLogin(UInt32 passwordLength, const void* passwor
     gss_name_t gname = GSS_C_NO_NAME;
     CFErrorRef error = NULL;
 
+    
     gname = GSSCreateName((__bridge CFTypeRef _Nonnull)(userPrincipal), GSS_C_NT_USER_NAME, NULL);
     if (gname == NULL) {
         callback(@"error: failed to create GSS name");

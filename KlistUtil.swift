@@ -38,9 +38,38 @@ public class KlistUtil {
     public var defaultExpires: Date?
 
     public init() {
+
+        if let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue){
+
+            createBasicKerbPrefs(realm: adDomainFromPrefs.uppercased())
+        }
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
     }
+    // Create a minimal com.apple.Kerberos file so we don't barf on password change
 
+    fileprivate func createBasicKerbPrefs(realm: String?) {
+
+
+
+        // get the defaults for com.apple.Kerberos
+
+        let kerbPrefs = UserDefaults.init(suiteName: "com.apple.Kerberos")
+
+        // get the list defaults, or create an empty dictionary if there are none
+
+        let kerbDefaults = kerbPrefs?.dictionary(forKey: "libdefaults") ?? [String:AnyObject]()
+
+        // test to see if the domain_defaults key already exists, if not build it
+
+        if kerbDefaults["default_realm"] != nil {
+            TCSLogWithMark("Existing default realm. Skipping adding default realm to Kerberos prefs.")
+        } else {
+            // build a dictionary and add the KDC into it then write it back to defaults
+            let libDefaults = NSMutableDictionary()
+            libDefaults.setValue(realm, forKey: "default_realm")
+            kerbPrefs?.set(libDefaults, forKey: "libdefaults")
+        }
+    }
     public func returnTickets() -> [Ticket] {
 
         // update the tickets

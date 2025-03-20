@@ -149,6 +149,7 @@ public class NoMADSession: NSObject {
             self.kerberosRealm = domain.uppercased()
             self.userPrincipal = user + "@\(self.kerberosRealm)"
         }
+
     }
 
     // MARK: conv functions
@@ -1081,31 +1082,7 @@ public class NoMADSession: NSObject {
         }
     }
 
-    // Create a minimal com.apple.Kerberos file so we don't barf on password change
 
-    fileprivate func createBasicKerbPrefs(realm: String?) {
-
-        let realm = realm ?? kerberosRealm
-
-        // get the defaults for com.apple.Kerberos
-
-        let kerbPrefs = UserDefaults.init(suiteName: "com.apple.Kerberos")
-
-        // get the list defaults, or create an empty dictionary if there are none
-
-        let kerbDefaults = kerbPrefs?.dictionary(forKey: "libdefaults") ?? [String:AnyObject]()
-
-        // test to see if the domain_defaults key already exists, if not build it
-
-        if kerbDefaults["default_realm"] != nil {
-            TCSLogWithMark("Existing default realm. Skipping adding default realm to Kerberos prefs.")
-        } else {
-            // build a dictionary and add the KDC into it then write it back to defaults
-            let libDefaults = NSMutableDictionary()
-            libDefaults.setValue(realm, forKey: "default_realm")
-            kerbPrefs?.set(libDefaults, forKey: "libdefaults")
-        }
-    }
 }
 
 extension NoMADSession: NoMADUserSession {
@@ -1270,13 +1247,14 @@ extension NoMADSession: NoMADUserSession {
         // change user's password
         // check kerb prefs - otherwise we can get an error here if not set
         TCSLogWithMark("Checking kpassword server.")
+
         _ = checkKpasswdServer()
 
         // set up the KerbUtil
         TCSLogWithMark("Init KerbUtil.")
 
         let kerbUtil = KerbUtil()
-        TCSLogWithMark("Change password.")
+        TCSLogWithMark("Change password for userPrincipal: \(userPrincipal)")
 
         kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal) { errorString in
 //            let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)

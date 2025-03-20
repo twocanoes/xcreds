@@ -444,7 +444,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     }
 
-    fileprivate func showResetUI() -> Bool {
+    func showResetUI() -> Bool {
         TCSLogWithMark()
 
         let changePasswordWindowController = UpdatePasswordWindowController.init(windowNibName: NSNib.Name("UpdatePasswordWindowController"))

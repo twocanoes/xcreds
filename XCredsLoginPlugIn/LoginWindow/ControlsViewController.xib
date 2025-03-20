@@ -192,7 +192,7 @@ DQ
     <resources>
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
-        <image name="loginwindow" width="41" height="31.5"/>
+        <image name="loginwindow" width="41" height="32"/>
         <image name="refresh symbol" width="989" height="989"/>
         <image name="wifi" width="32" height="32"/>
     </resources>
