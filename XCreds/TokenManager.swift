@@ -22,6 +22,8 @@ struct IDToken:Codable {
 protocol TokenManagerFeedbackDelegate {
     func tokenError(_ err:String)
     func credentialsUpdated(_ credentials:Creds)
+    func invalidCredentials()
+
 
 }
 class TokenManager: OIDCLiteDelegate,DSQueryable {
@@ -139,6 +141,9 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 
 
 
+    func endpointsAvailable() -> Bool {
+        return oidc().getEndpointsWithResult()
+    }
     func tokenEndpoint() -> String? {
 
         let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
@@ -491,10 +496,15 @@ extension TokenManager {
 
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
+            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == "invalid_grant" {
+                TCSLogWithMark("invalid grant, so password wrong: \(error)")
+                XCredsAudit().auditError(error)
+
+                self.feedbackDelegate?.invalidCredentials()
+            }
             else {
                 let err = "error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))"
 
-                XCredsAudit().auditError(err)
                 self.feedbackDelegate?.tokenError(err)
             }
 

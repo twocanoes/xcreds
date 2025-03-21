@@ -11,6 +11,10 @@ import Cocoa
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+    func invalidCredentials() {
+        
+    }
+    
     func authenticationSuccessful() {
         
     }
@@ -121,9 +125,8 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     @objc func connectivityStatusHandler(notification: Notification) {
         TCSLogWithMark("Network monitor: handling connectivity status update")
-        if NetworkMonitor.shared.isConnected {
+        if tokenManager.endpointsAvailable()==true {
             TCSLogWithMark("Refresh webview login")
-
             self.loadPage()
         }
     }

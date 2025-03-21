@@ -147,21 +147,18 @@ import Network
 
         let useROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin
 .rawValue)
-
-
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
            let _ = discoveryURL { // oidc is configured
             TCSLogWithMark("discovery url set and prefer local login is false, so seeing if we need to check network")
             if shouldDetectNetwork == true,
-               NetworkMonitor.shared.isConnected==false {
-                TCSLogWithMark("network not detected so showing username password login window")
+               TokenManager().endpointsAvailable()==false {
+                TCSLogWithMark("endpoints not available so showing username password login window")
                 showLoginWindowType(loginWindowType: .usernamePassword)
             }
             else if useROPG == true {
                 TCSLogWithMark("using ROPG so showing username/password")
                 showLoginWindowType(loginWindowType: .usernamePassword)
-
             }
             else {
                 TCSLogWithMark("network available, showing cloud")

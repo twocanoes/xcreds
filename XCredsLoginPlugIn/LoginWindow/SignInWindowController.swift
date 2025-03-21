@@ -21,6 +21,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     func passwordExpiryUpdate(_ passwordExpires:Date)
     func credentialsUpdated(_ credentials:Creds)
     func credentialsCheckFailed()
+    func invalidCredentials()
     func kerberosTicketUpdated()
     func kerberosTicketCheckFailed(_ error:NoMADSessionError)
     func adUserUpdated(_ adUser:ADUserRecord)
@@ -28,6 +29,8 @@ protocol UpdateCredentialsFeedbackProtocol {
 }
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
+
+    
 
     //MARK: - setup properties
     var mech: MechanismRecord?
@@ -77,6 +80,13 @@ protocol UpdateCredentialsFeedbackProtocol {
     override var nibName: NSNib.Name{
 
         return "LocalUsersViewController"
+    }
+    func invalidCredentials() {
+        updateCredentialsFeedbackDelegate?.invalidCredentials()
+        TCSLogWithMark("Token error: Invalid credentials")
+        XCredsAudit().auditError("Token error: Invalid credentials")
+        authFail()
+
     }
 
     func tokenError(_ err:String){

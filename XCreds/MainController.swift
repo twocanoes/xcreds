@@ -9,6 +9,8 @@ import Cocoa
 import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
+    
+
     enum LoginWindowType {
         case cloud
         case usernamePassword
@@ -27,8 +29,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
 
-            let dateString = dateFormatter.string(from: scheduleManager.nextCheckTime)
-            return dateString
+        //TODO Setup for AD as well
+        let dateString = dateFormatter.string(from: scheduleManager.nextTokenCheckTime)
+        return dateString
 
     }
     var credentialStatus:String?
@@ -101,7 +104,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark()
             webViewController.webView.isHidden=true
         }
-        scheduleManager.setNextCheckTime()
+
+        //put the timers off some we don't get mutiple other prompts when user is putting in credentials
+        scheduleManager.setNextCheckTime(timer: .ADTimer )
+        scheduleManager.setNextCheckTime(timer: .TokenTimer)
 
         var forceUsernamePassword = false
 
@@ -117,7 +123,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
-            windowController.window!.makeKeyAndOrderFront(self)
+            let tokenManager = TokenManager()
+            if tokenManager.endpointsAvailable() == false {
+                return
+            }
+            guard  let window = windowController.window else            {
+                return
+
+            }
+
+            window.makeKeyAndOrderFront(self)
 
             if  let webViewController = windowController.webViewController{
                 webViewController.webView.isHidden=false
@@ -424,16 +439,27 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
-
-    func credentialsCheckFailed() {
+    func invalidCredentials() {
         TCSLogWithMark()
         hasCredential=false
         credentialStatus="Invalid Credentials"
         let appDelegate = NSApp.delegate as? AppDelegate
+
         appDelegate?.updateStatusMenuIcon(showDot:false)
-        if NetworkMonitor.shared.isConnected==true {
+
+        showSignInWindow(forceLoginWindowType: .cloud)
+
+
+
+    }
+    func credentialsCheckFailed() {
+        TCSLogWithMark()
+        hasCredential=false
+        credentialStatus="Credentials Check Failed"
+        let appDelegate = NSApp.delegate as? AppDelegate
+        appDelegate?.updateStatusMenuIcon(showDot:false)
             showSignInWindow(forceLoginWindowType: .cloud)
-        }
+
     }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
@@ -458,9 +484,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
-            if NetworkMonitor.shared.isConnected==true {
-                showSignInWindow(forceLoginWindowType: .usernamePassword)
-            }
+            showSignInWindow(forceLoginWindowType: .usernamePassword)
+
         }
     }
     func adUserUpdated(_ adUser: ADUserRecord) {

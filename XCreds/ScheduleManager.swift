@@ -9,6 +9,11 @@ import Cocoa
 
 class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
+    func invalidCredentials() {
+        feedbackDelegate?.invalidCredentials()
+
+    }
+
     func credentialsUpdated(_ credentials: Creds) {
         feedbackDelegate?.credentialsUpdated(credentials)
     }
@@ -35,11 +40,18 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     var feedbackDelegate:UpdateCredentialsFeedbackProtocol?
 //    static let shared=ScheduleManager()
     var tokenManager=TokenManager()
-    var nextCheckTime = Date()
+    var nextADCheckTime = Date()
+    var nextTokenCheckTime = Date()
+
     var timer:Timer?
     var kerberosPassword:String?
+
+    enum CheckTimer {
+        case ADTimer
+        case TokenTimer
+    }
 //    var feedbackDelegate:TokenManagerFeedbackDelegate?
-    func setNextCheckTime() {
+    func setNextCheckTime(timer:CheckTimer) {
         var rate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateHours.rawValue)
         var minutesRate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateMinutes.rawValue)
 
@@ -60,12 +72,19 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
             rate=3
         }
-        nextCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+        switch timer {
+
+        case .ADTimer:
+            nextADCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+
+        case .TokenTimer:
+            nextTokenCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+
+        }
 
     }
     func checkADPasswordExpire(password:String) {
         TCSLogWithMark()
-
 
         let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
         var allDomainsFromPrefs = DefaultsOverride.standardOverride.array(forKey: PrefKeys.additionalADDomainList.rawValue)  as? [String] ?? []
@@ -101,6 +120,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
                 TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
                 return
             }
+
             session.useSSL = getManagedPreference(key: .LDAPOverSSL) as? Bool ?? false
             session.userPass = password
             session.delegate = self
@@ -130,8 +150,10 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
             return
         }
 
-        nextCheckTime=Date()
-        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 5 minutes
+        nextADCheckTime=Date()
+        nextTokenCheckTime=Date()
+
+        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 30 seconds
             self.checkToken()
         })
         self.checkToken()
@@ -156,29 +178,42 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
     }
     func checkToken()  {
-        TCSLogWithMark("checking token")
-        if nextCheckTime>Date() {
-            TCSLogWithMark("Token will be checked at \(nextCheckTime)")
+        TCSLogWithMark("checking token if needed")
+        if nextADCheckTime>Date()  && nextTokenCheckTime > Date() {
+            TCSLogWithMark("Not time to check yet. AD Token will be checked at \(nextADCheckTime) and OIDC token will be checked at \(nextTokenCheckTime)")
 
-            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
+//            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
             return
         }
-        setNextCheckTime()
-        checkKerberosTicket()
+        if nextADCheckTime<Date(){
+            setNextCheckTime(timer:.ADTimer)
+            checkKerberosTicket()
+        }
 
-        TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
-        tokenManager.feedbackDelegate=self
+        if  nextTokenCheckTime<Date(){
+            setNextCheckTime(timer:.TokenTimer)
 
-        let keychainUtil = KeychainUtil()
+            TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
+            tokenManager.feedbackDelegate=self
 
-        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
+            let keychainUtil = KeychainUtil()
 
-        if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
-            let refreshAccountAndToken = refreshAccountAndToken,
-            let refreshToken = refreshAccountAndToken.1,
+            let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
+
+            if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
+                let refreshAccountAndToken = refreshAccountAndToken,
+                let refreshToken = refreshAccountAndToken.1,
                 refreshToken != ""  {
-            TCSLogWithMark("requesting new access token")
-            tokenManager.getNewAccessToken()
+                if tokenManager.endpointsAvailable() == false {
+                    TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet")
+                    nextTokenCheckTime=Date.distantPast
+
+                }
+                else {
+                    TCSLogWithMark("requesting new access token")
+                    tokenManager.getNewAccessToken()
+                }
+            }
         }
 
 
@@ -199,6 +234,13 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogErrorWithMark("AuthenticationFailed:\(description)")
+        switch error {
+
+        case .OffDomain:
+            nextADCheckTime=Date.distantPast
+        default:
+            break
+        }
         feedbackDelegate?.kerberosTicketCheckFailed(error)
     }
 
