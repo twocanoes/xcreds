@@ -13,6 +13,7 @@ enum PrefKeys: String {
     shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen,resetPasswordDialogTitle, systemInfoButtonTitle, shouldShowShutdownButton, shouldShowRestartButton, shouldShowSystemInfoButton, shouldShowMenuBarSignInWithoutLoginWindowSignin, refreshBannerText,adUserAttributesToAddToLocalUserAccount, mapUID = "map_uid", allowLoginIfMemberOfGroup, keyCodeForLoginWindowChange, mapPasswordExpiry = "map_password_expiry", menuItemIconData, menuItemIconCheckedData, mapFullUserName = "map_fullusername", ccidSlotName, shouldSuppressLocalPasswordPrompt,shouldUseKillWhenLoginWindowSwitching, upnSuffixToDomainMappings,shouldAllowLoginCardSetup,accountLockedPasswordDialogTitle,accountLockedPasswordDialogText
     case shouldUseROPGForPasswordChangeChecking
     case shouldUseROPGForMenuLogin
+    case shouldUseBasicAuthWithROPG
     case shouldUseROPGForLoginWindowLogin
     case shouldActivateSystemInfoButton
     case actionItemOnly = "ActionItemOnly"

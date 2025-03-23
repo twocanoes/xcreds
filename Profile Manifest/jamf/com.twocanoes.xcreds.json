@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8370) OAuth Settings",
+    "description": "XCreds 5.3 (8371) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -533,6 +533,19 @@
                 }
             ],
             "property_order": 215
+        },
+        "shouldUseROPGForLoginWindowLogin": {
+            "type": "boolean",
+            "title": "Use Basic Auth when using ROPG",
+            "default": false,
+            "description": "Use Basic Auth when using ROPG",
+            "links": [
+                {
+                    "rel": "More information",
+                    "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
+                }
+            ],
+            "property_order": 216
         },
         "shouldUseROPGForMenuLogin": {
             "type": "boolean",

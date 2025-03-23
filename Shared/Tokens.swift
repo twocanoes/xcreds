@@ -23,12 +23,12 @@ struct Creds {
         self.jsonDict=tokens.jsonDict
 
    }
-    init(accessToken:String?, idToken:String?,refreshToken:String?, password:String?,jsonDict:Dictionary <String,Any>,pass:String) {
+    init(accessToken:String?, idToken:String?,refreshToken:String?, password:String?,jsonDict:Dictionary <String,Any>) {
 
         self.accessToken=accessToken
         self.idToken=idToken
         self.refreshToken=refreshToken
-        self.password=pass
+        self.password=password
         self.jsonDict=jsonDict
 
    }

@@ -22,24 +22,49 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     let scheduleManager = ScheduleManager()
     var adPasswordExpires:String?
     var cloudPasswordExpires:String?
-    var nextPasswordCheck:String {
-        let dateFormatter = DateFormatter()
+    var nextPasswordTokenCheck:String {
+        var dateString:String = ""
+        if scheduleManager.nextTokenCheckTime < Date () {
+            dateString = "When Available"
+        }
+        else {
 
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
+            let dateFormatter = DateFormatter()
 
-        //TODO Setup for AD as well
-        let dateString = dateFormatter.string(from: scheduleManager.nextTokenCheckTime)
+            dateFormatter.locale = Locale(identifier: "en_US")
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+
+            dateString = dateFormatter.string(from: scheduleManager.nextTokenCheckTime)
+        }
         return dateString
 
     }
+
+    var nextPasswordADCheck:String {
+
+        var dateString:String = ""
+        if scheduleManager.nextADCheckTime < Date () {
+            dateString = "When Available"
+        }
+        else {
+            let dateFormatter = DateFormatter()
+
+            dateFormatter.locale = Locale(identifier: "en_US")
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+
+            dateString = dateFormatter.string(from: scheduleManager.nextADCheckTime)
+        }
+        return dateString
+
+    }
+
     var credentialStatus:String?
     var hasCredential:Bool?
     var hasKerberosTicket:Bool?
     let windowController =  DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
     var signInViewController:SignInViewController?
-
 
     init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
         self.passwordCheckTimer = passwordCheckTimer
@@ -65,8 +90,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     }
-
-
 
     func isLocalOnlyAccount() -> Bool {
 
@@ -105,7 +128,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             webViewController.webView.isHidden=true
         }
 
-        //put the timers off some we don't get mutiple other prompts when user is putting in credentials
+        //put the timers off some we don't get multiple other prompts when user is putting in credentials
         scheduleManager.setNextCheckTime(timer: .ADTimer )
         scheduleManager.setNextCheckTime(timer: .TokenTimer)
 
@@ -123,24 +146,27 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
-            let tokenManager = TokenManager()
-            if tokenManager.endpointsAvailable() == false {
-                return
-            }
-            guard  let window = windowController.window else            {
-                return
+
+            Task{ @MainActor in
+                do{
+                    let tokenManager = TokenManager()
+                    try await tokenManager.oidc().getEndpoints()
+                    guard  let window = windowController.window else {
+                        return
+                    }
+                    window.makeKeyAndOrderFront(self)
+
+                    if  let webViewController = windowController.webViewController{
+                        webViewController.webView.isHidden=false
+                        TCSLogWithMark()
+                        windowController.webViewController.updateCredentialsFeedbackDelegate=self
+                        windowController.webViewController?.loadPage()
+                    }
+                    NSApp.activate(ignoringOtherApps: true)
+                }
 
             }
 
-            window.makeKeyAndOrderFront(self)
-
-            if  let webViewController = windowController.webViewController{
-                webViewController.webView.isHidden=false
-                TCSLogWithMark()
-                windowController.webViewController.updateCredentialsFeedbackDelegate=self
-                windowController.webViewController?.loadPage()
-            }
-            NSApp.activate(ignoringOtherApps: true)
 
         }
 
@@ -376,6 +402,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             let localAccountAndPassword = self.localAccountAndPassword()
             if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
+                    TCSLogWithMark("localPassword and credentials.password do not match")
+
                     var updatePassword = true
                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
                         let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))

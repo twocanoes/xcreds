@@ -37,7 +37,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
 
     func loadPage() {
-        DispatchQueue.main.async {
+        Task{ @MainActor in
             TCSLogWithMark("Clearing cookies")
             self.webView.cleanAllCookies()
             TCSLogWithMark()
@@ -52,11 +52,11 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
             }
 
-            
+
 
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self
-//            TokenManager.shared.oidc().delegate = self
+            //            TokenManager.shared.oidc().delegate = self
             self.clearCookies()
             TCSLogWithMark()
             switch licenseState {
@@ -93,7 +93,8 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
                 TCSLogWithMark("Network monitor: adding connectivity status change observer")
             }
 
-            if discoveryURL != nil, let url = self.getOidcLoginURL(){
+            if discoveryURL != nil,
+               let url = try await self.getOidcLoginURL(){
                 self.webView.load(URLRequest(url: url))
                 NetworkMonitor.shared.stopMonitoring()
 
@@ -112,10 +113,10 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
                 let loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)
 
                 if let loadPageTitle = loadPageTitle?.stripped,
-                       let loadPageInfo = loadPageInfo?.stripped {
-                           let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+                   let loadPageInfo = loadPageInfo?.stripped {
+                    let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
 
-                           self.webView.loadHTMLString(html, baseURL: nil)
+                    self.webView.loadHTMLString(html, baseURL: nil)
 
 
                 }
@@ -125,21 +126,19 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     @objc func connectivityStatusHandler(notification: Notification) {
         TCSLogWithMark("Network monitor: handling connectivity status update")
-        if tokenManager.endpointsAvailable()==true {
+
+        Task {
+            try? await tokenManager.oidc().getEndpoints()
             TCSLogWithMark("Refresh webview login")
-            self.loadPage()
         }
     }
 
-    private func getOidcLoginURL() -> URL? {
-        for _ in 1...5 {
-            if let url = tokenManager.oidc().createLoginURL() {
-                return url
-            }
-            TCSLogWithMark("Trying to get login url again")
-            Thread.sleep(forTimeInterval: 1)
+
+
+    private func getOidcLoginURL() async throws -> URL? {
+        if let url = try await tokenManager.oidc().createLoginURL() {
+            return url
         }
-        TCSLogWithMark()
         return nil
     }
 
@@ -322,15 +321,21 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("Redirect error. if the error is \"Could not connect to the server.\", it is probably safe to ignore. If the error is \"unsupported URL\", please check your redirectURL in prefs matches the one defined in your OIDC app. Error: \(error.localizedDescription)")
     }
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
+        Task{
+            guard let url = webView.url else {
+                return
+            }
+            TCSLogWithMark("WebDel:: Did Receive Redirect for: \(url.absoluteString)")
 
-         let redirectURI = tokenManager.oidc().redirectURI
+            TCSLogWithMark("URL: \(url.absoluteString)")
+            let redirectURI = try await tokenManager.oidc().redirectURI
+            TCSLogWithMark("URL: \(url.absoluteString)")
             TCSLogWithMark("redirectURI: \(redirectURI)")
-            TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
-            if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+
+            if (url.absoluteString.starts(with: (redirectURI))) {
                 TCSLogWithMark("got redirect URI match. separating URL")
                 var code = ""
-                let fullCommand = webView.url?.absoluteString ?? ""
+                let fullCommand = url.absoluteString
                 let pathParts = fullCommand.components(separatedBy: "&")
                 for part in pathParts {
                     if part.contains("code=") {
@@ -339,12 +344,15 @@ extension WebViewController: WKNavigationDelegate {
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
                         TCSLogWithMark("getting tokens")
 
-                        tokenManager.oidc().getToken(code: code)
+                        let tokenResponse = try await tokenManager.oidc().getToken(code: code)
+                        TCSLogWithMark("got token: \(tokenResponse)")
+
+                        tokenManager.tokenResponse(tokens: tokenResponse)
                         return
                     }
                 }
             }
-        
+        }
 
     }
 

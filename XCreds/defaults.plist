@@ -91,6 +91,8 @@
 	<string>upn</string>
 	<key>shareMenuItemName</key>
 	<string>Shares</string>
+	<key>shouldUseBasicAuthWithROPG</key>
+	<false/>
 	<key>map_password_expiry</key>
 	<string>pwd_exp</string>
 	<key>map_fullusername</key>

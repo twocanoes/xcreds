@@ -13,16 +13,18 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case AboutMenuItem=1
         case OIDCUsername=2
         case KerberosUsername=3
-        case NextPasswordCheckMenuItem=4
-        case CredentialStatusMenuItem=5
-        case CloudPasswordExpires=6
-        case ADPasswordExpires=7
-        case SignInMenuItem=8
-        case ChangePasswordMenuItem=9
-        case SharesMenuItem=10
-        case QuitMenuItem=11
-        case Additional=12
-        case SetupCardMenuItem=13
+        case NextADPasswordCheckMenuItem=4
+        case NextTokenPasswordCheckMenuItem=5
+        case ADCredentialStatusMenuItem=6
+        case CloudPasswordExpires=7
+        case ADPasswordExpires=8
+        case SignInMenuItem=9
+        case ChangePasswordMenuItem=10
+        case SharesMenuItem=11
+        case QuitMenuItem=12
+        case Additional=13
+        case SetupCardMenuItem=14
+        case OIDCCredentialStatusMenuItem=15
 
     }
     enum MenuElements:String {
@@ -112,7 +114,24 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
     }
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        
+
+        var adSetup = false
+        var oidcSetup = false
+
+        if let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue){
+
+            if adDomainFromPrefs.isEmpty==false, adDomainFromPrefs.count>0 {
+                adSetup=true
+
+            }
+        }
+        if let oidcDiscoveryFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue){
+
+            if oidcDiscoveryFromPrefs.isEmpty==false, oidcDiscoveryFromPrefs.count>0 {
+                oidcSetup=true
+
+            }
+        }
         let appDelegate = NSApp.delegate as? AppDelegate
         let mainController = appDelegate?.mainController
         
@@ -146,19 +165,60 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 
             }
             
-        case .NextPasswordCheckMenuItem:
-            print("NextPasswordCheckMenuItem")
-            if let nextPassCheck = mainController?.nextPasswordCheck {
-                menuItem.title="Next check: \(nextPassCheck)"
+        case .NextADPasswordCheckMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+            if let nextADPassCheck = mainController?.nextPasswordADCheck {
+                menuItem.title="Next AD Check: \(nextADPassCheck)"
+            }
+
+            
+            return false
+
+        case .NextTokenPasswordCheckMenuItem:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+            if let nextTokenPassCheck = mainController?.nextPasswordTokenCheck {
+                menuItem.title="Next OIDC Check: \(nextTokenPassCheck)"
             }
             return false
-        case .CredentialStatusMenuItem:
-            print("CredentialStatusMenuItem")
+
+        case .ADCredentialStatusMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             if let status = mainController?.credentialStatus {
                 menuItem.title="Credentials Status: \(status)"
             }
             return false
-            
+
+
+        case .OIDCCredentialStatusMenuItem:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
+
+            if let status = mainController?.credentialStatus {
+                menuItem.title="Credentials Status: \(status)"
+            }
+            return false
+
         case .SignInMenuItem:
             print("SignInMenuItem")
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSignInMenuItem.rawValue) == false {
@@ -197,7 +257,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             
         case .CloudPasswordExpires:
-            
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             if let passwordExpires = mainController?.cloudPasswordExpires {
                 menuItem.isHidden=false
                 menuItem.title="OIDC Password Expires: \(passwordExpires)"
@@ -208,11 +274,15 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             return false
             
         case .ADPasswordExpires:
-            //hideExpiration
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
 
+            }
 
             if let passwordExpires = mainController?.adPasswordExpires, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.hideExpiration.rawValue)==false {
-                TCSLogWithMark("Unhidng password expires")
+                TCSLogWithMark("Unhiding password expires")
                 menuItem.isHidden=false
                 menuItem.title="AD Password Expires: \(passwordExpires)"
             }
@@ -222,6 +292,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             return false
         case .SharesMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             if let shareMenuItemTitle = DefaultsOverride.standardOverride.value(forKey: PrefKeys.shareMenuItemName.rawValue) as? String {
                 menuItem.title = shareMenuItemTitle
             }
@@ -229,23 +306,45 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case .Additional:
             return true
         case .OIDCUsername:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             var userName = "None"
             if oidcUsername.isEmpty == false {
-                
+                menuItem.isHidden=false
                 userName = oidcUsername
+                menuItem.title = "OIDC Username: \(userName) "
+
             }
-            menuItem.title = "OIDC Username: \(userName) "
-            
+            else {
+                menuItem.isHidden=true
+            }
+
             return false
 
         case .KerberosUsername:
-            
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             var userName = "None"
             if kerberosPrincipalName.isEmpty == false {
-                
+                menuItem.isHidden=false
                 userName = kerberosPrincipalName
+                menuItem.title = "Active Directory Username: \(userName) "
+
             }
-            menuItem.title = "Active Directory Username: \(userName) "
+            else {
+                menuItem.isHidden=true
+            }
+            //grayed out
             return false
         }
 

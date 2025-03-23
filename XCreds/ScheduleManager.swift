@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
+class ScheduleManager:NoMADUserSessionDelegate {
 
     func invalidCredentials() {
         feedbackDelegate?.invalidCredentials()
@@ -181,8 +181,6 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         TCSLogWithMark("checking token if needed")
         if nextADCheckTime>Date()  && nextTokenCheckTime > Date() {
             TCSLogWithMark("Not time to check yet. AD Token will be checked at \(nextADCheckTime) and OIDC token will be checked at \(nextTokenCheckTime)")
-
-//            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
             return
         }
         if nextADCheckTime<Date(){
@@ -194,7 +192,6 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
             setNextCheckTime(timer:.TokenTimer)
 
             TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
-            tokenManager.feedbackDelegate=self
 
             let keychainUtil = KeychainUtil()
 
@@ -204,14 +201,23 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
                 let refreshAccountAndToken = refreshAccountAndToken,
                 let refreshToken = refreshAccountAndToken.1,
                 refreshToken != ""  {
-                if tokenManager.endpointsAvailable() == false {
-                    TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet")
-                    nextTokenCheckTime=Date.distantPast
+                Task{
+                    do{
+                        try await tokenManager.oidc().getEndpoints()
+                        TCSLogWithMark("requesting new access token")
+                        let tokenResponse = try await tokenManager.getNewAccessToken()
+                        TCSLogWithMark("success. Setting new token.")
 
-                }
-                else {
-                    TCSLogWithMark("requesting new access token")
-                    tokenManager.getNewAccessToken()
+                        let creds = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+                        if let localPassword = creds?.1 {
+                            feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
+                        }
+
+                    }
+                    catch {
+                        TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet")
+                        nextTokenCheckTime=Date.distantPast
+                    }
                 }
             }
         }
