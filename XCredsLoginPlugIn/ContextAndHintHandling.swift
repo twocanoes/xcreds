@@ -73,6 +73,7 @@ enum HintType: String,CaseIterable {
     case localLogin
     case allADAttributes
     case rfidPIN
+    case oidcLastLoginTimestamp
 
 
 }

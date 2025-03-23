@@ -382,6 +382,14 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             TCSLogWithMark("setting fullUserName")
             try? records.first?.setValue(fullUserName, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
         }
+
+        //oidcLastLoginTimestamp
+
+        if let oidcLastLoginTimestampString = getHint(type: .oidcLastLoginTimestamp) as? String{
+            try? records.first?.setValue(oidcLastLoginTimestampString, forAttribute: "dsAttrTypeNative:_xcreds_oidc_lastLoginTimestamp")
+        }
+
+
         TCSLogWithMark("checking for alias to add as a username for rogp")
         let alias = getHint(type: .aliasName) as? String
 

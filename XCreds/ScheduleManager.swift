@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import OIDCLite
 
 class ScheduleManager:NoMADUserSessionDelegate {
 
@@ -190,13 +191,13 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
         if  nextTokenCheckTime<Date(){
             setNextCheckTime(timer:.TokenTimer)
-
+            
             TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
-
+            
             let keychainUtil = KeychainUtil()
-
+            
             let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
-
+            
             if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
                 let refreshAccountAndToken = refreshAccountAndToken,
                 let refreshToken = refreshAccountAndToken.1,
@@ -207,22 +208,31 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         TCSLogWithMark("requesting new access token")
                         let tokenResponse = try await tokenManager.getNewAccessToken()
                         TCSLogWithMark("success. Setting new token.")
-
+                        
                         let creds = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
                         if let localPassword = creds?.1 {
                             feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
                         }
-
+                        
                     }
-                    catch {
-                        TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet")
-                        nextTokenCheckTime=Date.distantPast
+                    catch let error  {
+                        
+                        TCSLogWithMark("Error")
+                        switch error {
+                            
+                        case OIDCLiteError.authFailure(_):
+                            TCSLogWithMark("invalid credentials")
+                            feedbackDelegate?.invalidCredentials()
+                            
+                        default:
+                            TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
+                            nextTokenCheckTime=Date.distantPast
+                            
+                        }
                     }
                 }
             }
         }
-
-
     }
 
     func NoMADAuthenticationSucceded() {

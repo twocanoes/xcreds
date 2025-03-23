@@ -44,8 +44,8 @@ class TokenManager:DSQueryable {
         case error(String)
     }
     enum ProcessTokenResult:Error {
-        case success
         case error(String)
+        case invalidCredentials
     }
     enum CalculateUserAccountInfoResult {
         case success(UserAccountInfo)
@@ -195,7 +195,7 @@ class TokenManager:DSQueryable {
             TCSLogWithMark("Checking credentials using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first else {
-                throw OIDCLiteError.tokenError("no username for oidc config")
+                throw ProcessTokenResult.error("no username for oidc config")
             }
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
 

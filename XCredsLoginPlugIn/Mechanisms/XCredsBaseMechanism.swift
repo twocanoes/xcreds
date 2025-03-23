@@ -58,7 +58,9 @@ import OpenDirectory
                 denyLogin(message: nil)
                 return .failure("invalid idtoken")
             }
+            let currentDate = ISO8601DateFormatter().string(from: Date())
 
+            setHint(type: .oidcLastLoginTimestamp, hint: currentDate as NSSecureCoding)
             let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
 
             var userInfo:TokenManager.UserAccountInfo
