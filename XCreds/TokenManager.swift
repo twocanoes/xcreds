@@ -400,6 +400,20 @@ class TokenManager:DSQueryable {
             userAccountInfo.kerberosPrincipalName = mapValue
         }
 
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUpdateKerberosUserPrincipalADDomain.rawValue) == true,
+           let adDomain = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue) {
+
+            if userAccountInfo.kerberosPrincipalName?.uppercased().hasSuffix(adDomain.uppercased())==false{
+                TCSLogWithMark("kerberosPrincipalName name does not end with \(adDomain). Updating...")
+
+                let principalNameWithoutDomain = userAccountInfo.kerberosPrincipalName?.split(separator: "@").first ?? ""
+                userAccountInfo.kerberosPrincipalName = principalNameWithoutDomain + "@" + adDomain
+
+                TCSLogWithMark("kerberosPrincipalName name is now \(userAccountInfo.kerberosPrincipalName ?? "")")
+
+            }   
+        }
+
         //full name
         TCSLogWithMark("checking map_fullname")
 
