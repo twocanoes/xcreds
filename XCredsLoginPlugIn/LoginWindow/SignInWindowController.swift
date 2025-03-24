@@ -75,6 +75,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     @IBOutlet weak var imageView: NSImageView!
 //    var setupCardWindowController:SetupCardWindowController?
 
+    @IBOutlet weak var logoImageView: NSImageView!
     var mechanismDelegate:XCredsMechanismProtocol?
 
     override var nibName: NSNib.Name{
@@ -162,6 +163,11 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
         setupDone=true
 
+        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue) ,
+           let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
+            logoImageView.image=image
+
+        }
         TCSLogWithMark()
         alertTextField.isHidden=true
 
@@ -416,7 +422,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.usernameTextField.wantsLayer=true
         self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
-        self.view.layer?.backgroundColor = CGColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.4)
+        self.view.layer?.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
         localOnlyCheckBox.isEnabled=true
         localOnlyCheckBox.isHidden=false
         // make things look better

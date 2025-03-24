@@ -23,7 +23,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         window?.canBecomeVisibleWithoutLogin=true
         let screenRect = NSScreen.screens[0].frame
         window?.setFrame(screenRect, display: true, animate: false)
-        window?.alphaValue=0.9
+        window?.alphaValue=0.95
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
             //added this because https://github.com/twocanoes/xcreds/issues/272
@@ -91,7 +91,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark("setting up window...")
 
-        self.window?.backgroundColor = NSColor.white
+        self.window?.backgroundColor = NSColor.black
         self.window?.titlebarAppearsTransparent = true
 
         self.window?.isMovable = false
@@ -210,7 +210,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                                          backing: .buffered,
                                          defer: false,
                                          screen: screen)
-                newWindow.backgroundColor = NSColor.white
+                newWindow.backgroundColor = NSColor.black
                 newWindow.titlebarAppearsTransparent = true
 
                 newWindow.isMovable = false
