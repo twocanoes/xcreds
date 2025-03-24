@@ -668,13 +668,14 @@ protocol UpdateCredentialsFeedbackProtocol {
             tokenManager.feedbackDelegate=self
 
             shortName = inShortname
-//            shouldUseBasicAuthWithROPG
 
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
 
+            let overrideErrors = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedROPGAuthErrorStringsToIgnore.rawValue) as? [String]
+
             Task{
 
-                try await tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: nil)
+                try await tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrideErrors)
             }
 
 

@@ -22,7 +22,7 @@ class DesktopLoginWindowController: NSWindowController {
 
         if let backgroundImage = backgroundImage   {
             backgroundImageView.image = backgroundImage
-
+            backgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.menuItemWindowBackgroundImageAlpha.rawValue))
             backgroundImageView.image=backgroundImage
             backgroundImageView.imageScaling = .scaleNone
         }

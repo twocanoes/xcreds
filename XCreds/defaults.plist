@@ -105,6 +105,12 @@
 	<false/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
+	<key>menuItemWindowBackgroundImageAlpha</key>
+	<integer>1</integer>
+	<key>loginWindowBackgroundImageAlpha</key>
+	<integer>1</integer>
+	<key>loginWindowSecondaryMonitorsBackgroundAlpha</key>
+	<integer>1</integer>
 	<key>shouldSuppressLocalPasswordPrompt</key>
 	<false/>
 	<key>overlayDelaySecs</key>

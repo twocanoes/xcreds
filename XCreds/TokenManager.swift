@@ -199,7 +199,10 @@ class TokenManager:DSQueryable {
             }
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
 
-           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: nil)
+            let overrideErrors = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedROPGAuthErrorStringsToIgnore.rawValue) as? [String]
+
+
+           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrideErrors)
 
             TCSLogWithMark("ROPG successful. Returning credentials for tokenInfo")
 

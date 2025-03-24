@@ -247,6 +247,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                         backgroundImage.size.height = newHeight
                         backgroundImage.size.width = newWidth
+                        
                         backgroundImageView.imageScaling = .scaleAxesIndependently
 
                         backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
@@ -259,6 +260,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                     backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, newWidth, newHeight-100)
                     backgroundImageView.image=backgroundImage
+                    backgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowBackgroundImageAlpha.rawValue))
 
                 }
                 else {
@@ -284,6 +286,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                         //secondary screens
                         let newBackgroundImageView = NSImageView()
                         newBackgroundImageView.image=secondardBackgroundImage
+                        newBackgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowSecondaryMonitorsBackgroundAlpha.rawValue))
 
                         newBackgroundImageView.imageScaling = .scaleAxesIndependently
                         newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
