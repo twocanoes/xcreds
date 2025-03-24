@@ -191,43 +191,79 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
         if  nextTokenCheckTime<Date(){
             setNextCheckTime(timer:.TokenTimer)
-            
+
             TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
-            
+
             let keychainUtil = KeychainUtil()
-            
+
             let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
-            
+            var hasValidRefreshToken = false
+
             if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
                 let refreshAccountAndToken = refreshAccountAndToken,
                 let refreshToken = refreshAccountAndToken.1,
                 refreshToken != ""  {
+                hasValidRefreshToken = true
+            }
+            if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) {
+
+                //check to make sure we are not in an error state
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.formatOptions = [.withFractionalSeconds, .withFullDate]
+
+
+                var isLoginInFailedState = false
+                let ud = UserDefaults.standard
+                //
+                if let _ = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue){
+                    isLoginInFailedState=true
+                }
+                if let lastOIDCLoginFailTimestampString = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue),
+                    let lastOIDCLoginFailTimestampDate = dateFormatter.date(from:lastOIDCLoginFailTimestampString ) {
+                        //last login failed. We can proceed only if there was a successful login at the login window.
+                        if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
+                           let oidcLastLoginTimestampStringFromDSArray = user.value(forKey: "dsAttrTypeNative:_xcreds_oidc_lastLoginTimestamp") as? [String],
+                           let oidcLastLoginTimestampStringFromDS = oidcLastLoginTimestampStringFromDSArray.first,
+                           let oidcLastLoginTimestameDateFromLoginWindow = dateFormatter.date(from:oidcLastLoginTimestampStringFromDS),
+                           oidcLastLoginTimestameDateFromLoginWindow > lastOIDCLoginFailTimestampDate {
+
+                            isLoginInFailedState=false
+
+                        }
+                    }
+                    if isLoginInFailedState==true {
+                        feedbackDelegate?.invalidCredentials()
+                        return
+                    }
+
                 Task{
                     do{
                         try await tokenManager.oidc().getEndpoints()
                         TCSLogWithMark("requesting new access token")
                         let tokenResponse = try await tokenManager.getNewAccessToken()
                         TCSLogWithMark("success. Setting new token.")
-                        
+                        ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+
                         let creds = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
                         if let localPassword = creds?.1 {
                             feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
                         }
-                        
+
                     }
                     catch let error  {
-                        
+
                         TCSLogWithMark("Error")
                         switch error {
-                            
+
                         case OIDCLiteError.authFailure(_):
                             TCSLogWithMark("invalid credentials")
+                            ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
                             feedbackDelegate?.invalidCredentials()
-                            
+
                         default:
                             TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
                             nextTokenCheckTime=Date.distantPast
-                            
+
                         }
                     }
                 }

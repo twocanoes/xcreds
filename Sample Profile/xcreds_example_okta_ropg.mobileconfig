@@ -29,9 +29,7 @@
 			<string>preferred_username</string>
 			<key>scopes</key>
 			<string>profile openid email offline_access</string>
-            <key>shouldUseROPGForOIDCLogin</key>
-            <true/>
-            <key>shouldVerifyPasswordWithRopg</key>
+            <key>shouldUseROPGForPasswordChangeChecking</key>
             <true/>
 <key>shouldShowMacLoginButton</key>
 <false/>

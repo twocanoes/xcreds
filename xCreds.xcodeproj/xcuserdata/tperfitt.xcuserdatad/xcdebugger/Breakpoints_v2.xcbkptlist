@@ -7,48 +7,330 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BF74470E-CECB-400C-85B4-2F565AEEDF19"
+            uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - db4a23334546b0e4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "259"
+                  endingLineNumber = "259">
+               </Location>
+               <Location
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - ece3348dc8d12ee5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "259"
+                  endingLineNumber = "259">
+               </Location>
+               <Location
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - b0381e664c2dcce6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "259"
+                  endingLineNumber = "259">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - db4a23334546b060"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "255"
+                  endingLineNumber = "255">
+               </Location>
+               <Location
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - ece3348dc8d12e61"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "255"
+                  endingLineNumber = "255">
+               </Location>
+               <Location
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - b0381e664c2dcc62"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "255"
+                  endingLineNumber = "255">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - db4a23334546b32e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "265"
+                  endingLineNumber = "265">
+               </Location>
+               <Location
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - ece3348dc8d12d2f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "265"
+                  endingLineNumber = "265">
+               </Location>
+               <Location
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - b0381e664c2dcf2c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "265"
+                  endingLineNumber = "265">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BDA60D4-C872-49D3-BB12-9C5B7935EECE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E441AFA5-AE18-411D-9463-B0988309DD53"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 1540ab2a28c8fa4c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - fd3688e10a95b401"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 593021cfef80060e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) await resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - be476f37b703d04b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - db4a23334546b656"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+               <Location
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - ece3348dc8d12857"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7782A0E4-A8C9-4A2B-8E7B-67C555E87E70"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A73898AE-37C8-45A0-AACE-1B0ED85C34C2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCreds/MainController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "nextPasswordADCheck"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CDC728D7-705B-4861-BC48-A0AB5671A8B9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
-            landmarkName = "OIDCLite"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3730B4C3-50FF-4149-AED2-D1A760FA8CD5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
-            landmarkName = "processLogin(inShortname:inPassword:)"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "credentialsUpdated(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

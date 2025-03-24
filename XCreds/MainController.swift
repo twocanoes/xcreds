@@ -370,6 +370,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     func credentialsUpdated(_ credentials:Creds) {
+        UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+
         hasCredential=true
         credentialStatus="Valid Tokens"
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
