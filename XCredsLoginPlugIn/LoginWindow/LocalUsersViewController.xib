@@ -34,7 +34,7 @@
                                 <constraint firstAttribute="width" constant="250" id="PcC-1B-yi1"/>
                                 <constraint firstAttribute="height" constant="30" id="ecj-Kv-Zev"/>
                             </constraints>
-                            <textFieldCell key="cell" controlSize="large" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="Username" drawsBackground="YES" usesSingleLineMode="YES" id="arZ-bA-4ND">
+                            <textFieldCell key="cell" controlSize="large" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="Username" usesSingleLineMode="YES" bezelStyle="round" id="arZ-bA-4ND">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -53,7 +53,7 @@
                                         <constraint firstAttribute="width" constant="250" id="37q-P0-BRW"/>
                                         <constraint firstAttribute="height" constant="30" id="rOy-Aj-MvO"/>
                                     </constraints>
-                                    <secureTextFieldCell key="cell" controlSize="large" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="eUo-wa-I7w">
+                                    <secureTextFieldCell key="cell" controlSize="large" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="eUo-wa-I7w">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

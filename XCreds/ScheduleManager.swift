@@ -207,9 +207,11 @@ class ScheduleManager:NoMADUserSessionDelegate {
             }
             if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) {
 
+                TCSLogWithMark("We have a refresh token or are using ROPG for menu login.")
+
                 //check to make sure we are not in an error state
                 let dateFormatter = ISO8601DateFormatter()
-                dateFormatter.formatOptions = [.withFractionalSeconds, .withFullDate]
+                dateFormatter.formatOptions = [.withFullDate,.withFullTime]
 
 
                 var isLoginInFailedState = false
@@ -217,21 +219,32 @@ class ScheduleManager:NoMADUserSessionDelegate {
                 //
                 if let _ = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue){
                     isLoginInFailedState=true
+                    TCSLogWithMark("We have a prior failed login attempt.")
+
                 }
+                TCSLogWithMark("Checking to see if the login window was successful after the last failed attempt. If so, we can go ahead and try to authenticate.")
+
                 if let lastOIDCLoginFailTimestampString = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue),
-                    let lastOIDCLoginFailTimestampDate = dateFormatter.date(from:lastOIDCLoginFailTimestampString ) {
+                   let lastOIDCLoginFailTimestampDate = try? Date.ISO8601FormatStyle().parseStrategy.parse(lastOIDCLoginFailTimestampString ) {
+
+
                         //last login failed. We can proceed only if there was a successful login at the login window.
                         if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
                            let oidcLastLoginTimestampStringFromDSArray = user.value(forKey: "dsAttrTypeNative:_xcreds_oidc_lastLoginTimestamp") as? [String],
                            let oidcLastLoginTimestampStringFromDS = oidcLastLoginTimestampStringFromDSArray.first,
-                           let oidcLastLoginTimestameDateFromLoginWindow = dateFormatter.date(from:oidcLastLoginTimestampStringFromDS),
+                           let oidcLastLoginTimestameDateFromLoginWindow = try? Date.ISO8601FormatStyle().parseStrategy.parse(oidcLastLoginTimestampStringFromDS),
                            oidcLastLoginTimestameDateFromLoginWindow > lastOIDCLoginFailTimestampDate {
+
+                            TCSLogWithMark("Login success at login window so we can go ahead and try to authenticate.")
+
 
                             isLoginInFailedState=false
 
                         }
                     }
                     if isLoginInFailedState==true {
+                        TCSLogWithMark("***** Invalid credentials from prior attempts. Prompting user ******")
+
                         feedbackDelegate?.invalidCredentials()
                         return
                     }
@@ -257,6 +270,8 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
                         case OIDCLiteError.authFailure(_):
                             TCSLogWithMark("invalid credentials")
+                            TCSLogWithMark("Setting last failed login timestamp to now.")
+
                             ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
                             feedbackDelegate?.invalidCredentials()
 

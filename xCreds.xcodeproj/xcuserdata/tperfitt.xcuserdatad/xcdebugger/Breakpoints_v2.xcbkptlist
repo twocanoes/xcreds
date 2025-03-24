@@ -14,13 +14,13 @@
             filePath = "XCreds/ScheduleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "checkToken()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - db4a23334546b0e4"
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - db4a23334546ad78"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -30,11 +30,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "259"
-                  endingLineNumber = "259">
+                  startingLineNumber = "279"
+                  endingLineNumber = "279">
                </Location>
                <Location
-                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - ece3348dc8d12ee5"
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - ece3348dc8d13379"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -44,11 +44,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "259"
-                  endingLineNumber = "259">
+                  startingLineNumber = "279"
+                  endingLineNumber = "279">
                </Location>
                <Location
-                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - b0381e664c2dcce6"
+                  uuid = "F84EDC8C-74B6-42FA-91CB-1A842BF1FCCB - b0381e664c2dd17a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -58,8 +58,8 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "259"
-                  endingLineNumber = "259">
+                  startingLineNumber = "279"
+                  endingLineNumber = "279">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -74,13 +74,13 @@
             filePath = "XCreds/ScheduleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
             landmarkName = "checkToken()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - db4a23334546b060"
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - db4a23334546b2f4"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -90,11 +90,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "255"
-                  endingLineNumber = "255">
+                  startingLineNumber = "275"
+                  endingLineNumber = "275">
                </Location>
                <Location
-                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - ece3348dc8d12e61"
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - ece3348dc8d12cf5"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -104,11 +104,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "255"
-                  endingLineNumber = "255">
+                  startingLineNumber = "275"
+                  endingLineNumber = "275">
                </Location>
                <Location
-                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - b0381e664c2dcc62"
+                  uuid = "C676F238-7959-4462-96A1-C2C04DE5CDB3 - b0381e664c2dcef6"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -118,8 +118,8 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "255"
-                  endingLineNumber = "255">
+                  startingLineNumber = "275"
+                  endingLineNumber = "275">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -134,13 +134,13 @@
             filePath = "XCreds/ScheduleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
             landmarkName = "checkToken()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - db4a23334546b32e"
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - db4a23334546ac40"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -150,11 +150,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "265"
-                  endingLineNumber = "265">
+                  startingLineNumber = "287"
+                  endingLineNumber = "287">
                </Location>
                <Location
-                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - ece3348dc8d12d2f"
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - ece3348dc8d13241"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -164,11 +164,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "265"
-                  endingLineNumber = "265">
+                  startingLineNumber = "287"
+                  endingLineNumber = "287">
                </Location>
                <Location
-                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - b0381e664c2dcf2c"
+                  uuid = "EA43B22E-AD8F-45DD-8927-5B5746420F07 - b0381e664c2dd042"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -178,8 +178,8 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "265"
-                  endingLineNumber = "265">
+                  startingLineNumber = "287"
+                  endingLineNumber = "287">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -194,8 +194,8 @@
             filePath = "XCreds/ScheduleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "checkToken()"
             landmarkType = "7">
          </BreakpointContent>
@@ -210,13 +210,13 @@
             filePath = "XCreds/ScheduleManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "checkToken()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 1540ab2a28c8fa4c"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 1540ab2a28c8fcb0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -226,11 +226,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - fd3688e10a95b401"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - fd3688e10a95b2fd"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -240,11 +240,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 593021cfef80060e"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - 593021cfef8000f2"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -254,11 +254,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - be476f37b703d04b"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - be476f37b703d6b7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -268,11 +268,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - db4a23334546b656"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - db4a23334546b0aa"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -282,11 +282,11 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
                <Location
-                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - ece3348dc8d12857"
+                  uuid = "E441AFA5-AE18-411D-9463-B0988309DD53 - ece3348dc8d12eab"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -296,26 +296,10 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241">
+                  startingLineNumber = "261"
+                  endingLineNumber = "261">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7782A0E4-A8C9-4A2B-8E7B-67C555E87E70"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/ScheduleManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
-            landmarkName = "checkToken()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
