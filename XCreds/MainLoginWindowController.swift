@@ -91,7 +91,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
         TCSLogWithMark("setting up window...")
 
-        self.window?.backgroundColor = NSColor.black
+        self.window?.backgroundColor = NSColor.white
         self.window?.titlebarAppearsTransparent = true
 
         self.window?.isMovable = false
@@ -210,7 +210,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                                          backing: .buffered,
                                          defer: false,
                                          screen: screen)
-                newWindow.backgroundColor = NSColor.black
+                newWindow.backgroundColor = NSColor.white
                 newWindow.titlebarAppearsTransparent = true
 
                 newWindow.isMovable = false
