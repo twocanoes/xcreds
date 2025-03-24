@@ -95,6 +95,9 @@ DQ
                                     </connections>
                                 </button>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="283" id="HfF-6x-wp4"/>
+                            </constraints>
                             <visibilityPriorities>
                                 <integer value="1000"/>
                                 <integer value="1000"/>
@@ -161,6 +164,7 @@ DQ
                     </shadow>
                     <constraints>
                         <constraint firstItem="cm4-KP-f9k" firstAttribute="centerX" secondItem="eRJ-Lo-UdT" secondAttribute="centerX" id="8Xo-fA-4Ps"/>
+                        <constraint firstAttribute="width" constant="283" id="QnM-r6-bbR"/>
                         <constraint firstItem="e5W-zw-UxS" firstAttribute="leading" secondItem="eRJ-Lo-UdT" secondAttribute="leading" id="RL2-Rw-W1b"/>
                     </constraints>
                     <visibilityPriorities>
