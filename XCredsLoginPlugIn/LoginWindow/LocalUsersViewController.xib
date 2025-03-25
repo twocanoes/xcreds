@@ -195,7 +195,7 @@ DQ
         </view>
     </objects>
     <resources>
-        <image name="NSFollowLinkFreestandingTemplate" width="19" height="19"/>
+        <image name="NSFollowLinkFreestandingTemplate" width="20" height="20"/>
         <image name="icon_128x128" width="128" height="128"/>
     </resources>
 </document>
