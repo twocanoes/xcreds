@@ -24,18 +24,19 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <view wantsLayer="YES" id="Vpj-iV-5Db">
-            <rect key="frame" x="0.0" y="0.0" width="336" height="289"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="390"/>
             <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="11" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRJ-Lo-UdT" userLabel="login stack">
-                    <rect key="frame" x="27" y="14" width="283" height="266"/>
+                    <rect key="frame" x="27" y="32" width="283" height="330"/>
                     <subviews>
                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cm4-KP-f9k">
-                            <rect key="frame" x="0.0" y="202" width="283" height="64"/>
+                            <rect key="frame" x="13" y="202" width="256" height="128"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="64" id="h34-Yj-iGG"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="128" id="JmN-RK-K6v"/>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="256" id="PQ0-9d-m1K"/>
                             </constraints>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon_128x128" id="As7-x6-zzU"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="As7-x6-zzU"/>
                         </imageView>
                         <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
                             <rect key="frame" x="0.0" y="161" width="250" height="30"/>
@@ -191,11 +192,10 @@ DQ
                 <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerX" secondItem="Vpj-iV-5Db" secondAttribute="centerX" id="VoM-t2-bfE"/>
                 <constraint firstItem="eRJ-Lo-UdT" firstAttribute="centerY" secondItem="Vpj-iV-5Db" secondAttribute="centerY" constant="-2" id="iAg-d7-QS6"/>
             </constraints>
-            <point key="canvasLocation" x="-365" y="-225.5"/>
+            <point key="canvasLocation" x="-365" y="-276"/>
         </view>
     </objects>
     <resources>
         <image name="NSFollowLinkFreestandingTemplate" width="20" height="20"/>
-        <image name="icon_128x128" width="128" height="128"/>
     </resources>
 </document>

@@ -163,11 +163,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
         setupDone=true
 
-        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue) ,
-           let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
-            logoImageView.image=image
 
-        }
         TCSLogWithMark()
         alertTextField.isHidden=true
 
@@ -418,10 +414,14 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.usernameTextField.stringValue=""
         self.passwordTextField.stringValue=""
 
-
+        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue) ,
+           let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
+            logoImageView.image=image
+        }
         self.usernameTextField.wantsLayer=true
         self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
+        self.view.frame=CGRectInset(self.view.frame, 0,32+128-logoImageView.frame.height)
         self.view.layer?.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
         localOnlyCheckBox.isEnabled=true
         localOnlyCheckBox.isHidden=false
