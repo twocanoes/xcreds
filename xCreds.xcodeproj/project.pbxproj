@@ -177,6 +177,7 @@
 		76786F6B2A27C79100AA8DB9 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		767B939C2A28279E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
+		767C349D2D930FC1000D62A5 /* VersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C349C2D930FC1000D62A5 /* VersionCheck.swift */; };
 		767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */; };
 		767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */; };
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
@@ -548,6 +549,7 @@
 		76786F552A27C36A00AA8DB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76786F6A2A27C72900AA8DB9 /* auth_mech_fixup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "auth_mech_fixup-Bridging-Header.h"; path = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		767B939B2A28279E0038935E /* View+Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
+		767C349C2D930FC1000D62A5 /* VersionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionCheck.swift; sourceTree = "<group>"; };
 		767CB2CC2B13B8EB006CA2AC /* libinfo.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libinfo.tbd; path = usr/lib/libinfo.tbd; sourceTree = SDKROOT; };
 		767CB2CE2B13B913006CA2AC /* libsystem_info.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsystem_info.tbd; path = usr/lib/system/libsystem_info.tbd; sourceTree = SDKROOT; };
 		767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenDirectory.framework; path = System/Library/Frameworks/OpenDirectory.framework; sourceTree = SDKROOT; };
@@ -976,6 +978,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				767C349C2D930FC1000D62A5 /* VersionCheck.swift */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
 				7649CD2A2D4B03FD00D6BEE2 /* UsernamePassword.swift */,
 				766F1E552D495BBF00AA5637 /* com.twocanoes.xcreds.json */,
@@ -1624,6 +1627,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				760148AA2B2365F100E119A2 /* NSBundle+FindBundlePath.swift in Sources */,
+				767C349D2D930FC1000D62A5 /* VersionCheck.swift in Sources */,
 				76E74DD32B390358004C6429 /* LoginWebViewController.swift in Sources */,
 				089B22F22AFAED810006B6BC /* NetworkMonitor.swift in Sources */,
 				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
@@ -2198,7 +2202,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8479;
+				CURRENT_PROJECT_VERSION = 8480;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2262,7 +2266,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8479;
+				CURRENT_PROJECT_VERSION = 8480;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

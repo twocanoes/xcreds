@@ -60,12 +60,16 @@
 	<false/>
 	<key>shouldUseROPGForPasswordChangeChecking</key>
 	<false/>
+	<key>checkForUpdates</key>
+	<true/>
 	<key>shouldUseROPGForMenuLogin</key>
 	<false/>
 	<key>shouldUseROPGForLoginWindowLogin</key>
 	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
+	<key>versionCheckURL</key>
+	<string>https://paypro.twocanoes.com/api/version_info</string>
 	<key>refreshBannerText</key>
 	<string>Your local account password needs to be changed to match your online password. Please authenticate now.</string>
 	<key>shouldPromptForMigration</key>
