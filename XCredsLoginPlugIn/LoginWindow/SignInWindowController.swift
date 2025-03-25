@@ -530,6 +530,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             alertTextField.stringValue = message ?? "Authentication Failed"
         }
         setLoginWindowState(enabled: true)
+        view.window?.makeFirstResponder(passwordTextField)
     }
 
     /// Simple toggle to change the state of the NoLo window UI between active and inactive.
