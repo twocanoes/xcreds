@@ -124,10 +124,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
 
-        if  let webViewController = windowController.webViewController{
-            TCSLogWithMark()
-            webViewController.webView.isHidden=true
-        }
+
 
         //put the timers off some we don't get multiple other prompts when user is putting in credentials
         scheduleManager.setNextCheckTime(timer: .ADTimer )
@@ -373,37 +370,38 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     func credentialsUpdated(_ credentials:Creds) {
-        UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+        DispatchQueue.main.async {
+            UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-        hasCredential=true
-        credentialStatus="Valid Tokens"
-        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
-        let tokenManager = TokenManager()
+            self.hasCredential=true
+            self.credentialStatus="Valid Tokens"
+            (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+            let tokenManager = TokenManager()
 
-        if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
-            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+            if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+                let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
 
-            switch userInfoResult {
+                switch userInfoResult {
 
-            case .success(let retUserAccountInfo):
-                let userInfo = retUserAccountInfo
-                if let username = userInfo.username {
-                    UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                case .success(let retUserAccountInfo):
+                    let userInfo = retUserAccountInfo
+                    if let username = userInfo.username {
+                        UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                    }
+                    if let fullUsername = userInfo.fullUsername {
+                        UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
+                    }
+                    if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                        UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                    }
+                case .error(let message):
+                    TCSLogWithMark("Error getting infoResult: \(message)")
                 }
-                if let fullUsername = userInfo.fullUsername {
-                    UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
-                }
-                if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
-                    UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
-                }
-            case .error(let message):
-                TCSLogWithMark("Error getting infoResult: \(message)")
+
             }
 
-        }
-        DispatchQueue.main.async {
             self.windowController.window?.close()
-
+            
             let localAccountAndPassword = self.localAccountAndPassword()
             if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
@@ -476,22 +474,29 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
         hasCredential=false
         credentialStatus="Invalid Credentials"
-        let appDelegate = NSApp.delegate as? AppDelegate
+        DispatchQueue.main.async {
 
-        appDelegate?.updateStatusMenuIcon(showDot:false)
 
-        showSignInWindow(forceLoginWindowType: .cloud)
+            let appDelegate = NSApp.delegate as? AppDelegate
+
+            appDelegate?.updateStatusMenuIcon(showDot:false)
+
+            self.showSignInWindow(forceLoginWindowType: .cloud)
+        }
 
 
 
     }
     func credentialsCheckFailed() {
-        TCSLogWithMark()
-        hasCredential=false
-        credentialStatus="Credentials Check Failed"
-        let appDelegate = NSApp.delegate as? AppDelegate
-        appDelegate?.updateStatusMenuIcon(showDot:false)
-            showSignInWindow(forceLoginWindowType: .cloud)
+        DispatchQueue.main.async {
+
+            TCSLogWithMark()
+            self.hasCredential=false
+            self.credentialStatus="Credentials Check Failed"
+            let appDelegate = NSApp.delegate as? AppDelegate
+            appDelegate?.updateStatusMenuIcon(showDot:false)
+            self.showSignInWindow(forceLoginWindowType: .cloud)
+        }
 
     }
     func kerberosTicketUpdated() {

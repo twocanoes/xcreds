@@ -180,7 +180,6 @@ class TokenManager:DSQueryable {
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
-        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
@@ -214,7 +213,7 @@ class TokenManager:DSQueryable {
 
 
         } //use the refresh token
-        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
+        else if let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue), let refreshToken = refreshAccountAndToken.1 {
 
             TCSLogWithMark("Using refresh token")
             let tokenInfo = try await oidc().refreshTokens(refreshToken)
@@ -231,9 +230,9 @@ class TokenManager:DSQueryable {
 
             throw ProcessTokenResult.error("no discovery URL defined")
 
-            }
+         }
         else {
-            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
+            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty")")
             throw ProcessTokenResult.error("no refresh token")
 
         }

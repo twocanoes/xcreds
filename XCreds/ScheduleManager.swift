@@ -202,10 +202,11 @@ class ScheduleManager:NoMADUserSessionDelegate {
             if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
                 let refreshAccountAndToken = refreshAccountAndToken,
                 let refreshToken = refreshAccountAndToken.1,
-                refreshToken != ""  {
+
+                    refreshToken != ""  {
                 hasValidRefreshToken = true
             }
-            if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) {
+            if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) {
 
                 TCSLogWithMark("We have a refresh token or are using ROPG for menu login.")
 
