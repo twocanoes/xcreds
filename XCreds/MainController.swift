@@ -115,6 +115,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
     func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+
         TCSLogWithMark()
 
         if isLocalOnlyAccount()==true && force==false{
@@ -177,51 +178,53 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark()
             }
 
-            if let window = windowController.window{
-                let bundle = Bundle.findBundleWithName(name: "XCreds")
-                if let bundle = bundle{
-                    TCSLogWithMark("Creating signInViewController")
-                    if signInViewController == nil {
-                        signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
-                    }
-                    TCSLogWithMark()
-                    signInViewController?.isInUserSpace = true
-                    signInViewController?.updateCredentialsFeedbackDelegate=self
-                    guard let signInViewController = signInViewController else {
-                        return
-                    }
-
-                    if let contentView = window.contentView {
+            DispatchQueue.main.async {
+                if let window = self.windowController.window{
+                    let bundle = Bundle.findBundleWithName(name: "XCreds")
+                    if let bundle = bundle{
+                        TCSLogWithMark("Creating signInViewController")
+                        if self.signInViewController == nil {
+                            self.signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+                        }
                         TCSLogWithMark()
-                        windowController.webViewController.webView.isHidden=true
-                        signInViewController.view.wantsLayer=true
+                        self.signInViewController?.isInUserSpace = true
+                        self.signInViewController?.updateCredentialsFeedbackDelegate=self
+                        guard let signInViewController = self.signInViewController else {
+                            return
+                        }
 
-                        if let contentView = window.contentView{
-                            if contentView.subviews.contains(signInViewController.view)==false {
+                        if let contentView = window.contentView {
+                            TCSLogWithMark()
+                            self.windowController.webViewController.webView.isHidden=true
+                            signInViewController.view.wantsLayer=true
 
-                                window.contentView?.addSubview(signInViewController.view)
+                            if let contentView = window.contentView{
+                                if contentView.subviews.contains(signInViewController.view)==false {
+
+                                    window.contentView?.addSubview(signInViewController.view)
+
+                                }
+
 
                             }
+                            signInViewController.setupLoginAppearance()
 
+                            var x = NSMidX(contentView.frame)
+                            var y = NSMidY(contentView.frame)
 
+                            x = x - signInViewController.view.frame.size.width/2
+                            y = y - signInViewController.view.frame.size.height/2
+                            let lowerLeftCorner = NSPoint(x: x, y: y)
+                            signInViewController.localOnlyCheckBox.isHidden = true
+                            signInViewController.localOnlyCheckBox.isHidden = true
+
+                            signInViewController.view.setFrameOrigin(lowerLeftCorner)
                         }
-                        signInViewController.setupLoginAppearance()
 
-                        var x = NSMidX(contentView.frame)
-                        var y = NSMidY(contentView.frame)
+                        window.makeKeyAndOrderFront(self)
+                        NSApp.activate(ignoringOtherApps: true)
 
-                        x = x - signInViewController.view.frame.size.width/2
-                        y = y - signInViewController.view.frame.size.height/2
-                        let lowerLeftCorner = NSPoint(x: x, y: y)
-                        signInViewController.localOnlyCheckBox.isHidden = true
-                        signInViewController.localOnlyCheckBox.isHidden = true
-
-                        signInViewController.view.setFrameOrigin(lowerLeftCorner)
                     }
-
-                    window.makeKeyAndOrderFront(self)
-                    NSApp.activate(ignoringOtherApps: true)
-
                 }
             }
         }
