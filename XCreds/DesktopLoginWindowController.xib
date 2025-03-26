@@ -46,8 +46,9 @@
                             <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="628" id="zPs-Yp-tRg"/>
                         </constraints>
-                        <textFieldCell key="cell" alignment="center" title="Your local account password needs to be changed to match your online password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
+                        <textFieldCell key="cell" alignment="center" drawsBackground="YES" id="DzZ-yz-JFo">
                             <font key="font" metaFont="system" size="21"/>
+                            <string key="title">Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <color key="backgroundColor" white="0.0062473695290000001" alpha="0.30882734634551495" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </textFieldCell>

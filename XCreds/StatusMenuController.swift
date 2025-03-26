@@ -199,8 +199,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
             }
 
-            if let status = mainController?.credentialStatus {
-                menuItem.title="Credentials Status: \(status)"
+            if let status = mainController?.kerberosCredentialStatus {
+                menuItem.title="Active Directory Credentials Status: \(status)"
             }
             return false
 
@@ -214,7 +214,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
 
 
-            if let status = mainController?.credentialStatus {
+            if let status = mainController?.tokenCredentialStatus {
                 menuItem.title="Credentials Status: \(status)"
             }
             return false

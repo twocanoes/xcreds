@@ -730,6 +730,7 @@
                         <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="k5b-Z3-3WJ"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="Ura-vC-UQe"/>
                 <menuItem title="Active Directory Credential Status: None" tag="6" enabled="NO" id="YLv-mh-piZ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -742,6 +743,7 @@
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="lTc-PJ-7R2"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="H0r-h6-WLk"/>
                 <menuItem title="OIDC Password Expires: " tag="7" enabled="NO" id="vin-yR-IbW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -755,7 +757,7 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="mwR-f8-XvQ"/>
-                <menuItem title="Sign In" tag="9" id="FH2-NT-oeX">
+                <menuItem title="Show Sign In Window" tag="9" id="FH2-NT-oeX">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="signInMenuItemSelected:" target="1OV-ou-Ss5" id="Mra-OX-Nqy"/>
@@ -769,9 +771,6 @@
                 </menuItem>
                 <menuItem title="Shares" tag="11" hidden="YES" id="qRq-yn-8sT">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="mhw-jg-LgC"/>
-                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="op6-Hq-2li"/>
                 <menuItem title="Quit" tag="12" id="OM5-mb-fFV">

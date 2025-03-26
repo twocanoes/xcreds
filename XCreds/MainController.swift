@@ -60,7 +60,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     }
 
-    var credentialStatus:String?
+    var tokenCredentialStatus:String?
+    var kerberosCredentialStatus:String?
     var hasCredential:Bool?
     var hasKerberosTicket:Bool?
     let windowController =  DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
@@ -72,7 +73,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         self.adPasswordExpires = adPasswordExpires
         self.cloudPasswordExpires = cloudPasswordExpires
 
-        self.credentialStatus = credentialStatus
+        self.tokenCredentialStatus = credentialStatus
         self.hasCredential = hasCredential
         self.signInViewController = signInViewController
         super.init()
@@ -374,7 +375,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
             self.hasCredential=true
-            self.credentialStatus="Valid Tokens"
+            self.tokenCredentialStatus="Valid Tokens"
             (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
             let tokenManager = TokenManager()
 
@@ -473,7 +474,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func invalidCredentials() {
         TCSLogWithMark()
         hasCredential=false
-        credentialStatus="Invalid Credentials"
+        tokenCredentialStatus="Invalid Token Credentials"
         DispatchQueue.main.async {
 
 
@@ -492,7 +493,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
             TCSLogWithMark()
             self.hasCredential=false
-            self.credentialStatus="Credentials Check Failed"
+            self.tokenCredentialStatus="Credentials Check Failed"
+
             let appDelegate = NSApp.delegate as? AppDelegate
             appDelegate?.updateStatusMenuIcon(showDot:false)
             self.showSignInWindow(forceLoginWindowType: .cloud)
@@ -504,7 +506,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasKerberosTicket=true
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
 
-        credentialStatus="Valid kerberos tickets"
+        kerberosCredentialStatus="Valid kerberos tickets"
     }
     func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
 
@@ -512,7 +514,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasKerberosTicket=false
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:false)
 
-        credentialStatus="Kerberos Tickets Failed"
+        kerberosCredentialStatus="Kerberos Tickets Failed"
         switch error{
 
         case .OffDomain:
