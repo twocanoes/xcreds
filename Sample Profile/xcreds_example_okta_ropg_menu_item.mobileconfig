@@ -29,18 +29,18 @@
 			<string>preferred_username</string>
 			<key>scopes</key>
 			<string>profile openid email offline_access</string>
-            <key>shouldUseROPGForOIDCLogin</key>
-            <true/>
-            <key>shouldVerifyPasswordWithRopg</key>
-            <true/>
-			<key>shouldUseROPGForMenuLogin</key>
+			<key>shouldUseBasicAuthWithROPG</key>
 			<true/>
-<key>shouldShowMacLoginButton</key>
-<false/>
-<key>shouldAllowKeyComboForMacLoginWindow</key>
-<true/>
-<key>shouldPromptForMigration</key>
-<true/>
+			<key>shouldUseROPGForPasswordChangeChecking</key>
+			<true/>
+			<key>ropgResponseValue</key>
+			<string>{"error":"invalid_grant","error_description":"Resource owner password credentials cannot be used with MFA enabled."}</string>
+			<key>shouldShowMacLoginButton</key>
+			<false/>
+			<key>shouldAllowKeyComboForMacLoginWindow</key>
+			<true/>
+			<key>shouldPromptForMigration</key>
+			<true/>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>

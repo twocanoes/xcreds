@@ -198,10 +198,17 @@ class TokenManager:DSQueryable {
             }
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
 
-            let overrideErrors = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedROPGAuthErrorStringsToIgnore.rawValue) as? [String]
+            var overrrideErrorArray = [String]()
+            let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
 
+            if let ropgResponseValue = ropgResponseValue {
+                overrrideErrorArray.append(ropgResponseValue)
+            }
+            else if let ropgResponseValueArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.ropgResponseValue.rawValue) as? [String] {
+                overrrideErrorArray.append(contentsOf: ropgResponseValueArray)
+            }
 
-           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrideErrors)
+           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
 
             TCSLogWithMark("ROPG successful. Returning credentials for tokenInfo")
 
@@ -518,7 +525,6 @@ extension TokenManager {
 
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
 
-        let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
 
 
         TCSLogWithMark("======== tokenResponse =========")
@@ -549,12 +555,12 @@ extension TokenManager {
                 XCredsAudit().refreshTokenUpdated(true)
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
-            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
-                TCSLogWithMark("ropgResponseValue matched to \(error)")
-                XCredsAudit().refreshTokenUpdated(true)
-
-                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
-            }
+//            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
+//                TCSLogWithMark("ropgResponseValue matched to \(error)")
+//                XCredsAudit().refreshTokenUpdated(true)
+//
+//                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+//            }
             else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == "invalid_grant" {
                 TCSLogWithMark("invalid grant, so password wrong: \(error)")
                 XCredsAudit().auditError(error)

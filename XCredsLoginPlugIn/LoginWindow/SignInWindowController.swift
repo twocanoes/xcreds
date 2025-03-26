@@ -670,7 +670,8 @@ protocol UpdateCredentialsFeedbackProtocol {
                 authFail()
             }
             return
-        } else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
+        }
+        else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
 
             tokenManager.feedbackDelegate=self
 
@@ -678,14 +679,39 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
 
-            let overrideErrors = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedROPGAuthErrorStringsToIgnore.rawValue) as? [String]
+            var overrrideErrorArray = [String]()
+            let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
+
+            if let ropgResponseValue = ropgResponseValue {
+                overrrideErrorArray.append(ropgResponseValue)
+            }
 
             Task{
 
-                try await tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrideErrors)
+                //Try with ROPG. We cannot override errors because otherwise we don't get a token back so that is bad.
+                //so that means no MFA, but that is fine since we are interactive login and if you wanted MFA, you can
+                //use a different OIDC flow with a web view.
+
+                do{
+                    let tokenResponse = try await tokenManager.oidc().requestTokenWithROPG(username: inShortname, password: inPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: nil)
+
+                    //
+                    if tokenResponse==nil {
+                        tokenError("ROPG failed. No token returned.")
+                        return
+                    }
+
+                    if let tokenResponse = tokenResponse {
+                        let creds = Creds(password: inPassword, tokens: tokenResponse)
+                        completeLogin(authResult:.allow)
+
+                    }
+                }
+                catch {
+                    authFail("ROPG failed: \(error.localizedDescription)")
+
+                }
             }
-
-
         }
         else { // AD. So auth
             TCSLogWithMark("network auth.")

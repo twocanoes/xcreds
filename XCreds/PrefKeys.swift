@@ -14,7 +14,6 @@ enum PrefKeys: String {
     case shouldUseROPGForPasswordChangeChecking
     case shouldUseROPGForMenuLogin
     case shouldUseBasicAuthWithROPG
-    case allowedROPGAuthErrorStringsToIgnore
     case shouldUseROPGForLoginWindowLogin
     case shouldActivateSystemInfoButton
     case actionItemOnly = "ActionItemOnly"

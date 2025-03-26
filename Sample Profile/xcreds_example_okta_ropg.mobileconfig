@@ -31,6 +31,7 @@
 			<string>profile openid email offline_access</string>
             <key>shouldUseROPGForPasswordChangeChecking</key>
             <true/>
+			
 <key>shouldShowMacLoginButton</key>
 <false/>
 <key>shouldAllowKeyComboForMacLoginWindow</key>

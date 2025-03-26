@@ -269,8 +269,8 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         TCSLogWithMark("Error")
                         switch error {
 
-                        case OIDCLiteError.authFailure(_):
-                            TCSLogWithMark("invalid credentials")
+                        case OIDCLiteError.authFailure(let mesg):
+                            TCSLogWithMark("invalid credentials: \(mesg)")
                             TCSLogWithMark("Setting last failed login timestamp to now.")
 
                             ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
