@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8484) OAuth Settings",
+    "description": "XCreds 5.3 (8485) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -751,7 +751,7 @@
         "refreshBannerText": {
             "type": "string",
             "title": "Refresh Banner Text",
-            "default": "Your local account password needs to be changed to match your online password. Please authenticate now.",
+            "default": "Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.",
             "description": "Text at top of window shown in user session when prompting for password.",
             "links": [
                 {
