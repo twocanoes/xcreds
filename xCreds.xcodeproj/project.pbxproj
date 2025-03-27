@@ -63,7 +63,6 @@
 		7623384C2B53029D00F2D714 /* ShareMounterMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */; };
 		7623384D2B53029D00F2D714 /* ShareMounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */; };
 		762761602B294A7C0067D1D4 /* icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7614D03B2B181A5D006EAF36 /* icon_128x128.png */; };
-		763082C92D959A48003FFEA3 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 763082C82D959A48003FFEA3 /* icon_64x64.png */; };
 		76319360287D22C700D36BF7 /* authrights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7631935F287D22C700D36BF7 /* authrights.swift */; };
 		76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319365287D24E100D36BF7 /* ArgumentParser */; };
 		76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76319368287D24F600D36BF7 /* ArgumentParser */; };
@@ -315,6 +314,7 @@
 		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
 		76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
+		76EF14862D95B4ED0028C7C9 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 763082C82D959A48003FFEA3 /* icon_64x64.png */; };
 		76F0B6E02B421FC8008F7D71 /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
 		76FDC5D62B22D47A0035D61E /* MainLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */; };
 		76FDC5D72B22D47A0035D61E /* MainLoginWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */; };
@@ -1359,6 +1359,7 @@
 				7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */,
 				761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */,
 				766CC43829D3AED2009BC526 /* errorpage.html in Resources */,
+				76EF14862D95B4ED0028C7C9 /* icon_64x64.png in Resources */,
 				7614D03C2B181A5D006EAF36 /* icon_128x128.png in Resources */,
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
 				76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */,
@@ -1418,7 +1419,6 @@
 				76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */,
 				764D812F284C06AB00B3EE54 /* defaults.plist in Resources */,
 				764297AB2D015AB800678928 /* SetupCardWindowController.xib in Resources */,
-				763082C92D959A48003FFEA3 /* icon_64x64.png in Resources */,
 				764D8133284D14A500B3EE54 /* Credits.txt in Resources */,
 				7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */,
 				76673CD229D3CFF900452848 /* errorpage.html in Resources */,
@@ -2206,7 +2206,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8490;
+				CURRENT_PROJECT_VERSION = 8492;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2270,7 +2270,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8490;
+				CURRENT_PROJECT_VERSION = 8492;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
