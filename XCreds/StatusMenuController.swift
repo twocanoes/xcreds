@@ -66,7 +66,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
 
         if let menuItems = DefaultsOverride.standardOverride.value(forKey: PrefKeys.menuItems.rawValue) as? Array<Dictionary<String,Any?>> {
-            let insertPos = StatusMenuItemType.SignInMenuItem.rawValue+1
+            let insertPos = StatusMenuItemType.OIDCCredentialStatusMenuItem.rawValue+1
             var index = 0
             for item in menuItems {
                 if let name = item[MenuElements.menuItemName.rawValue] as? String,
