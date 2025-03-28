@@ -81,6 +81,7 @@
 		76342E5A2B282653007D4F29 /* DesktopLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76342E592B282653007D4F29 /* DesktopLoginWindowController.swift */; };
 		7639B9BA2C2281F30073F05A /* CCIDCardReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7639B9B92C2281F30073F05A /* CCIDCardReader.swift */; };
 		763AEFDF2C156E1E0059A83D /* WhitePopoverBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AEFDE2C156E1E0059A83D /* WhitePopoverBackgroundView.swift */; };
+		763C039A2D965607000C061F /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 76833EF12D95D4B500375CA4 /* icon_64x64.png */; };
 		763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 763DDF192B4F1DD4000D48CC /* GSS.framework */; };
 		764297AB2D015AB800678928 /* SetupCardWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 764297AA2D015AB800678928 /* SetupCardWindowController.xib */; };
 		764297AD2D015AB800678928 /* SetupCardWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764297A92D015AB800678928 /* SetupCardWindowController.swift */; };
@@ -1419,6 +1420,7 @@
 				76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */,
 				764D812F284C06AB00B3EE54 /* defaults.plist in Resources */,
 				764297AB2D015AB800678928 /* SetupCardWindowController.xib in Resources */,
+				763C039A2D965607000C061F /* icon_64x64.png in Resources */,
 				764D8133284D14A500B3EE54 /* Credits.txt in Resources */,
 				7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */,
 				76673CD229D3CFF900452848 /* errorpage.html in Resources */,
@@ -2206,7 +2208,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8533;
+				CURRENT_PROJECT_VERSION = 8534;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2270,7 +2272,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8533;
+				CURRENT_PROJECT_VERSION = 8534;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
