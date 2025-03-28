@@ -229,7 +229,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
         // Set the xcreds attributes to stamp this account as the mapped one
         setTimestampFor(xcredsUser ?? "")
-        let _ = updateOIDCInfo(user: xcredsUser ?? "")
+        let _ = updateOIDCInfo(user: xcredsUser ?? "", localOnly: localLogin)
 
         TCSLogWithMark("seeing if we have an alias")
         if let alias = alias, let xcredsUser = xcredsUser {
@@ -331,7 +331,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
     }
 
-    func updateOIDCInfo(user: String) -> Bool {
+    func updateOIDCInfo(user: String, localOnly: Bool) -> Bool {
         TCSLogWithMark("Checking for local username")
         var records = [ODRecord]()
         let odsession = ODSession.default()
@@ -396,7 +396,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         if let alias = alias {
             TCSLogWithMark("saving alias to DS as a username for ropg as needed")
             try? records.first?.setValue(alias, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
-        } else {
+        } else if localOnly==false {
             TCSLogWithMark("Fallback,saving account name to DS as username for ropg as needed")
             try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
         }

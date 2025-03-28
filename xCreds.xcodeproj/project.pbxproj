@@ -183,6 +183,7 @@
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
 		7681FEC72A4C8BC800F91CD1 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */; };
 		7681FEC92A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */; };
+		76833EF22D95D4B500375CA4 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 76833EF12D95D4B500375CA4 /* icon_64x64.png */; };
 		7683973129A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		7683973229A854EC003D9B9F /* NSImage+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7683973029A854EC003D9B9F /* NSImage+String.swift */; };
 		768633D92AFC4908004065E5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7677908428908E40004E7085 /* NetworkManager.swift */; };
@@ -314,7 +315,6 @@
 		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		76EECD0428753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
 		76EECD0528753C7F00483C66 /* String+Base64URLEncoded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EECD0328753C7F00483C66 /* String+Base64URLEncoded.swift */; };
-		76EF14862D95B4ED0028C7C9 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 763082C82D959A48003FFEA3 /* icon_64x64.png */; };
 		76F0B6E02B421FC8008F7D71 /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
 		76FDC5D62B22D47A0035D61E /* MainLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */; };
 		76FDC5D72B22D47A0035D61E /* MainLoginWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */; };
@@ -476,7 +476,6 @@
 		761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginProgressWindowController.xib; path = XCredsLoginPlugIn/LoginProgressWindowController.xib; sourceTree = SOURCE_ROOT; };
 		761B486828A34CC900C6A02B /* LoginProgressWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginProgressWindowController.swift; path = XCredsLoginPlugIn/LoginProgressWindowController.swift; sourceTree = SOURCE_ROOT; };
 		761B486B28A3575000C6A02B /* XCredsLoginDone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsLoginDone.swift; sourceTree = "<group>"; };
-		763082C82D959A48003FFEA3 /* icon_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_64x64.png; path = XCreds/Assets.xcassets/AppIcon.appiconset/icon_64x64.png; sourceTree = "<group>"; };
 		7631935D287D22C700D36BF7 /* authrights */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = authrights; sourceTree = BUILT_PRODUCTS_DIR; };
 		7631935F287D22C700D36BF7 /* authrights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authrights.swift; sourceTree = "<group>"; };
 		7632909B2876673500CF8857 /* DataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
@@ -558,6 +557,7 @@
 		7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		7681FEC62A4C8BC800F91CD1 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindow.xib; sourceTree = "<group>"; };
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
+		76833EF12D95D4B500375CA4 /* icon_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64x64.png; sourceTree = "<group>"; };
 		7683973029A854EC003D9B9F /* NSImage+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+String.swift"; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsHelper.swift; path = XCreds/DefaultsHelper.swift; sourceTree = "<group>"; };
 		76A247532C22747400859E0A /* xcredstap.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = xcredstap.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -993,11 +993,11 @@
 				76D4726B2B43B8FA0064380C /* TCTaskWrapperWithBlocks.h */,
 				76D4726C2B43B8FB0064380C /* TCTaskWrapperWithBlocks.m */,
 				763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */,
-				763082C82D959A48003FFEA3 /* icon_64x64.png */,
 				76C4ACBE2B3D0F8D003B3605 /* ShareMounter.swift */,
 				760148A82B23639D00E119A2 /* NSBundle+FindBundlePath.swift */,
 				76C4BAB92B353B3F007B2C57 /* NoMAD */,
 				7614D03B2B181A5D006EAF36 /* icon_128x128.png */,
+				76833EF12D95D4B500375CA4 /* icon_64x64.png */,
 				7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */,
 				76C63A312A22872700810C53 /* History.md */,
 				760418CC2A1331710051411B /* NomadLogin */,
@@ -1359,7 +1359,7 @@
 				7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */,
 				761B486928A34CC900C6A02B /* LoginProgressWindowController.xib in Resources */,
 				766CC43829D3AED2009BC526 /* errorpage.html in Resources */,
-				76EF14862D95B4ED0028C7C9 /* icon_64x64.png in Resources */,
+				76833EF22D95D4B500375CA4 /* icon_64x64.png in Resources */,
 				7614D03C2B181A5D006EAF36 /* icon_128x128.png in Resources */,
 				76BEF7E4287202090013E2A1 /* RestartX.png in Resources */,
 				76D925D32894ADB4005C3245 /* Assets.xcassets in Resources */,
@@ -2206,7 +2206,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8492;
+				CURRENT_PROJECT_VERSION = 8531;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2270,7 +2270,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8492;
+				CURRENT_PROJECT_VERSION = 8531;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

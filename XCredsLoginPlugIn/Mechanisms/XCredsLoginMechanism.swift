@@ -291,6 +291,7 @@ import Network
         }
 
     }
+   
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
 
@@ -316,10 +317,7 @@ import Network
     func showLoginWindowType(loginWindowType:LoginWindowType)  {
         TCSLogWithMark()
 
-
         switch loginWindowType {
-
-
         case .cloud:
             self.loginWindowType = LoginWindowType.cloud
             self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=false
@@ -406,6 +404,5 @@ import Network
             signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
 
         }
-
     }
 }
