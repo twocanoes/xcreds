@@ -386,7 +386,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
     override func viewDidLayout() {
 
-        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height + 32 + 32)
+        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height + 64 + 64)
     }
 
     @objc func setupLoginAppearance() {
