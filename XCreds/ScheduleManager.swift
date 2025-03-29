@@ -318,7 +318,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
         let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {

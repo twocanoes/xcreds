@@ -31,7 +31,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
             let dateFormatter = DateFormatter()
 
-            dateFormatter.locale = Locale(identifier: "en_US")
+            dateFormatter.locale = Locale.current
             dateFormatter.dateStyle = .medium
             dateFormatter.timeStyle = .short
 
@@ -50,7 +50,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         else {
             let dateFormatter = DateFormatter()
 
-            dateFormatter.locale = Locale(identifier: "en_US")
+            dateFormatter.locale = Locale.current
             dateFormatter.dateStyle = .medium
             dateFormatter.timeStyle = .short
 
@@ -348,7 +348,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func passwordExpiryUpdate(_ passwordExpire: Date) {
         let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         let dateString = dateFormatter.string(from: passwordExpire)
