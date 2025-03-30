@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8551) OAuth Settings",
+    "description": "XCreds 5.3 (8557) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -30,7 +30,7 @@
             "type": "boolean",
             "title": "Should Update Kerberos User Principal ADDomain",
             "default": false,
-            "description": "If the user principal has a domain name in the OpenID token does not match the ADDomain name, replace it with the ADDomain name. For example: bob@sub.example.com -> bob@example.com if ADDomain was domain.com.",
+            "description": "If the user principal has a domain name and the OpenID token does not match the ADDomain name, replace it with the ADDomain name. For example: bob@sub.example.com -> bob@example.com if ADDomain was example.com.",
             "links": [
                 {
                     "rel": "More information",
@@ -316,7 +316,7 @@
         },
         "loginWindowBackgroundImageAlpha": {
             "type": "number",
-            "title": "LoginWindow Background Image Alpha",
+            "title": "Login Window Background Image Alpha",
             "default": "1",
             "description": "Alpha value of loginWindowBackgroundImage. Default value: 1",
             "links": [
@@ -395,7 +395,7 @@
         },
         "loginWindowSecondaryMonitorsBackgroundAlpha": {
             "type": "number",
-            "title": "LoginWindow Secondary Monitor Background Image Alpha",
+            "title": "Login Window Secondary Monitors Background Image Alpha",
             "default": "1",
             "description": "Alpha value of loginWindowSecondaryMonitorsBackground. Default value: 1",
             "links": [
@@ -1049,7 +1049,7 @@
             "type": "string",
             "title": "Account Locked Password Dialog Title",
             "default": "Unlock Account",
-            "description": "Title of dialog prompting user to enter in their prior local password when account is locked,",
+            "description": "Title of dialog prompting user to enter in their prior local password when account is locked.",
             "links": [
                 {
                     "rel": "More information",
@@ -1062,7 +1062,7 @@
             "type": "string",
             "title": "Account Locked Password Dialog Text",
             "default": "The user account is locked.  You can wait for the account to unlock or reset the password by clicking the Reset button below.",
-            "description": "Text of dialog prompting user to enter in their prior local password when account is locked,",
+            "description": "Text of dialog prompting user to enter in their prior local password when account is locked.",
             "links": [
                 {
                     "rel": "More information",
