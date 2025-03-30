@@ -21,7 +21,7 @@
 	<key>shouldShowAboutMenu</key>
 	<true/>
 	<key>shouldShowQuitMenu</key>
-	<true/>
+	<false/>
 	<key>shouldFindPasswordElement</key>
 	<true/>
 	<key>shouldShowSupportStatus</key>
