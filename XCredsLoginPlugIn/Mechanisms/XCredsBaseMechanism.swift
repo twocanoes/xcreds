@@ -202,21 +202,20 @@ import OpenDirectory
                     setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
                 }
                 else {
-                    if let localAdmin = localAdmin {
 
-                        TCSLogWithMark("local admin set")
-                        switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: localAdmin){
+                    TCSLogWithMark("local admin set")
+                    switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: localAdmin){
 
-                        case .success:
-                            break
-                        case .failure( let mesg):
-                            return .failure(mesg)
+                    case .success:
+                        break
+                    case .failure( let mesg):
+                        return .failure(mesg)
 
-                        case .userCancelled:
-                            return .userCancelled
+                    case .userCancelled:
+                        return .userCancelled
 
-                        }
                     }
+
                 }
 
             case .accountDoesNotExist:
@@ -293,8 +292,8 @@ import OpenDirectory
             }
             return .success
 
-        case .resetKeychainRequested(let localAdminCredentials):
-            TCSLogWithMark("resetKeychainRequested")
+        case .accountResetRequested(let localAdminCredentials):
+            TCSLogWithMark("accountResetRequested")
 
             if let localAdminCredentials = localAdminCredentials {
                 TCSLogWithMark("setting localAdminCredentials hint")

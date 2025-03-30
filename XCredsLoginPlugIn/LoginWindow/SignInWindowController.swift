@@ -86,7 +86,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateCredentialsFeedbackDelegate?.invalidCredentials()
         TCSLogWithMark("Token error: Invalid credentials")
         XCredsAudit().auditError("Token error: Invalid credentials")
-        authFail()
+        shakeWindowAndShowError()
 
     }
 
@@ -94,7 +94,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateCredentialsFeedbackDelegate?.credentialsCheckFailed()
         TCSLogWithMark("Token error: \(err)")
         XCredsAudit().auditError(err)
-        authFail()
+        shakeWindowAndShowError()
     }
 
     func credentialsUpdated(_ credentials:Creds){
@@ -517,7 +517,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     }
 
-    fileprivate func authFail(_ message: String?=nil) {
+    fileprivate func shakeWindowAndShowError(_ message: String?=nil) {
         XCredsAudit().auditError(message ?? "Empty")
         TCSLogWithMark(message ?? "")
         nomadSession = nil
@@ -630,12 +630,10 @@ protocol UpdateCredentialsFeedbackProtocol {
                 usernameTextField.shake(self)
                 passwordTextField.shake(self)
                 TCSLogWithMark("No user found for user \(shortName)")
-                authFail()
+                shakeWindowAndShowError()
                 return
             }
             shortName = resolvedName
-
-            //            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
 
             switch PasswordUtils.isLocalPasswordValid(userName: shortName, userPass: passString) {
 
@@ -661,54 +659,61 @@ protocol UpdateCredentialsFeedbackProtocol {
                         else {
                             shouldIgnoreInsertion=false
                             TCSLogWithMark("failed to set up Login card")
-                            authFail("Login Card Setup Failed")
+                            shakeWindowAndShowError("Login Card Setup Failed")
+                            return
 
                         }
 
                     }
                 }
                 else {
-
                     completeLogin(authResult:.allow)
+                    return
+
                 }
 
             case .incorrectPassword:
                 TCSLogWithMark("incorrectPassword")
-                authFail()
+                shakeWindowAndShowError()
+                return
 
             case .accountDoesNotExist:
                 TCSLogWithMark("accountDoesNotExist")
-                authFail()
+                shakeWindowAndShowError()
+                return
 
             case .accountLocked:
                 TCSLogWithMark("accountLocked so we prompt")
                 if let mech = mechanismDelegate {
+                    
                     let localAdmin = mech.getHint(type: .localAdmin) as? LocalAdminCredentials
                     self.localAdmin = localAdmin
-                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: false, localAdmin: localAdmin){
+                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: true, localAdmin: localAdmin){
 
                     case .success:
+                        setRequiredHintsAndContext()
+                        mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
                         completeLogin(authResult:.allow)
                         break
                     case .failure(_):
-                        authFail("account locked auth failure")
+                        shakeWindowAndShowError("account locked auth failure")
                         return
 
                     case .userCancelled:
-                        authFail("Account locked, user cancelled")
+                        shakeWindowAndShowError("Account locked, user cancelled")
                         return
 
                     }
                 }
                 else {
                     TCSLogWithMark("the mechanism delegate is nil")
-                    authFail()
+                    shakeWindowAndShowError()
                     return
                 }
 
             case .other(let mesg ):
                 TCSLogWithMark("message: \(mesg)")
-                authFail()
+                shakeWindowAndShowError()
                 return
             }
         }
@@ -749,7 +754,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     }
                 }
                 catch {
-                    authFail("ROPG failed: \(error.localizedDescription)")
+                    shakeWindowAndShowError("ROPG failed: \(error.localizedDescription)")
 
                 }
             }
@@ -1176,7 +1181,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             TCSLogErrorWithMark("Password is expired or requires change.")
             if DefaultsOverride().bool(forKey: PrefKeys.shouldPromptForADPasswordChange.rawValue) == false {
 
-                authFail("Password is expired or requires change.")
+                shakeWindowAndShowError("Password is expired or requires change.")
                 return
 
             }
@@ -1197,16 +1202,16 @@ extension SignInViewController: NoMADUserSessionDelegate {
             } else {
                 if error == .OffDomain {
                     TCSLogErrorWithMark("AD authentication failed, off domain.")
-                    authFail("Cannot reach domain controller")
+                    shakeWindowAndShowError("Cannot reach domain controller")
 
                 }
                 else if error == .UnknownPrincipal {
                     TCSLogErrorWithMark("AD authentication failed, Unknown AD User.")
-                    authFail("Unknown AD User")
+                    shakeWindowAndShowError("Unknown AD User")
                 }
                 else {
                     TCSLogErrorWithMark("Unknown Error")
-                    authFail("Unknown Error")
+                    shakeWindowAndShowError("Unknown Error")
 
                 }
 
@@ -1214,7 +1219,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description):\(error.rawValue)")
 //            loginStartedUI()
-                authFail(description)
+                shakeWindowAndShowError(description)
 //
             return
         }
@@ -1329,7 +1334,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
                     completeLogin(authResult: .allow)
 
-                case .resetKeychainRequested(let usernamePasswordCredentials):
+                case .accountResetRequested(let usernamePasswordCredentials):
                     TCSLogWithMark("resetKeychainRequested")
 
                     if let adminUsername = usernamePasswordCredentials?.username,
@@ -1371,7 +1376,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 //                completeLogin(authResult: .allow)
             }
         } else {
-            authFail()
+            shakeWindowAndShowError()
             TCSLogWithMark("auth fail")
 //            alertText.stringValue = "Not authorized to login."
 //            showResetUI()

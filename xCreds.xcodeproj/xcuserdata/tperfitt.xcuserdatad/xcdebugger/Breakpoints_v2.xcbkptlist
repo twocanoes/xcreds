@@ -74,8 +74,8 @@
             filePath = "XCreds/StatusMenuController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "validateMenuItem(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -92,7 +92,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "534"
             endingLineNumber = "534"
-            landmarkName = "authFail(_:)"
+            landmarkName = "shakeWindowAndShowError(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D67167FB-4700-40F4-A766-B89CE501F503"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "637"
+            endingLineNumber = "637"
+            landmarkName = "processLogin(inShortname:inPassword:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

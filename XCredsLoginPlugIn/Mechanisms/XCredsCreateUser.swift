@@ -191,13 +191,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
             
         } else {
-            TCSLogWithMark("Checking to see if we are doing a silent overwrite")
-            // Checking to see if we are doing a silent overwrite
-            if getHint(type: .passwordOverwrite) as? Bool ?? false {
+            TCSLogWithMark("Checking to see if we are doing a password overwrite")
+            // Checking to see if we are doing a overwrite
 
-                TCSLogWithMark("passwordOverwrite not set")
-            }
-            if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
+            if getHint(type: .passwordOverwrite) as? Bool == true {
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
                 TCSLogWithMark("trying to getting admin user and password")
@@ -314,7 +311,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     }
     func resetUserPassword(adminUserName:String, adminPassword:String) {
         do {
-            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword) obtained")
+            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword.count) obtained")
 
             let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
             TCSLogWithMark()

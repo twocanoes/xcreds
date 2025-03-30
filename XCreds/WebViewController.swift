@@ -130,6 +130,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
         Task {
             try? await tokenManager.oidc().getEndpoints()
             TCSLogWithMark("Refresh webview login")
+            loadPage()
         }
     }
 

@@ -136,8 +136,6 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         let mainController = appDelegate?.mainController
         
         let tag = menuItem.tag
-
-        TCSLogWithMark("tag: \(tag)")
         guard let menuType = StatusMenuItemType(rawValue: tag) else {
             return false
         }

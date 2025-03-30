@@ -310,7 +310,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if let accountInfo=accountInfo, let account=accountInfo.0, let password = accountInfo.1 {
             accountName = account
 
-            if case .success = PasswordUtils.isLocalPasswordValid(userName: accountName, userPass: password){
+            if case .success = PasswordUtils.isLocalPasswordValid(userName: PasswordUtils.currentConsoleUserName, userPass: password){
                 return (account,password)
             }
         }
@@ -334,7 +334,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
             return (accountName,localPassword)
 
-        case .resetKeychainRequested(_):
+        case .accountResetRequested(_):
             return (nil,nil)
 
         case .userCancelled:

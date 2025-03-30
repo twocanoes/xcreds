@@ -10,7 +10,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     enum LocalUsernamePasswordResult {
         case success(LocalAdminCredentials?)
-        case resetKeychainRequested(LocalAdminCredentials?)
+        case accountResetRequested(LocalAdminCredentials?)
         case userCancelled
         case error(String)
     }
@@ -98,7 +98,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
                 if let adminUsername = adminUsername,
                    let adminPassword = adminPassword {
-                    return .resetKeychainRequested(LocalAdminCredentials(username: adminUsername, password: adminPassword))
+                    return .accountResetRequested(LocalAdminCredentials(username: adminUsername, password: adminPassword))
                 }
                 return .error("no admin username or password set")
             }
