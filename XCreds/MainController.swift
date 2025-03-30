@@ -310,7 +310,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if let accountInfo=accountInfo, let account=accountInfo.0, let password = accountInfo.1 {
             accountName = account
 
-            if PasswordUtils.verifyCurrentUserPassword(password: password) == true {
+            if case .success = PasswordUtils.isLocalPasswordValid(userName: accountName, userPass: password){
                 return (account,password)
             }
         }

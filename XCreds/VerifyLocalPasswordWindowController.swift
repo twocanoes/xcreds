@@ -245,17 +245,19 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
             adminUsernameTextField.shake(self)
             return
         }
-        if PasswordUtils.verifyUser(name: adminUserName, auth: adminPassword)==false {
-            adminPasswordTextField.shake(self)
-            return
-        }
-        else { //password is valid
 
+        let res = PasswordUtils.isLocalPasswordValid(userName: adminUserName, userPass: adminPassword)
+        switch res {
+
+        case .success:
             self.adminUsername=adminUserName
             self.adminPassword=adminPassword
-
-
             window?.endSheet(adminCredentialsWindow, returnCode: .OK)
+            
+        default:
+            adminPasswordTextField.shake(self)
+
+
         }
     }
 

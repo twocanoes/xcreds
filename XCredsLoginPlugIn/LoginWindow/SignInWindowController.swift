@@ -118,12 +118,9 @@ protocol UpdateCredentialsFeedbackProtocol {
                 
                 if let bundle = bundle {
                     TCSLogWithMark("Found bundle")
-                    
                     alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
-                    
                 }
                 alert.runModal()
-                
             }
 
         }
@@ -638,7 +635,11 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
             shortName = resolvedName
 
-            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+            //            if PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+
+            switch PasswordUtils.isLocalPasswordValid(userName: shortName, userPass: passString) {
+
+            case .success:
                 setRequiredHintsAndContext()
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding )
 
@@ -671,12 +672,45 @@ protocol UpdateCredentialsFeedbackProtocol {
                     completeLogin(authResult:.allow)
                 }
 
-            }
-            else {
-                TCSLogWithMark("password check failed")
+            case .incorrectPassword:
+                TCSLogWithMark("incorrectPassword")
                 authFail()
+
+            case .accountDoesNotExist:
+                TCSLogWithMark("accountDoesNotExist")
+                authFail()
+
+            case .accountLocked:
+                TCSLogWithMark("accountLocked so we prompt")
+                if let mech = mechanismDelegate {
+                    let localAdmin = mech.getHint(type: .localAdmin) as? LocalAdminCredentials
+                    self.localAdmin = localAdmin
+                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: false, localAdmin: localAdmin){
+
+                    case .success:
+                        completeLogin(authResult:.allow)
+                        break
+                    case .failure(_):
+                        authFail("account locked auth failure")
+                        return
+
+                    case .userCancelled:
+                        authFail("Account locked, user cancelled")
+                        return
+
+                    }
+                }
+                else {
+                    TCSLogWithMark("the mechanism delegate is nil")
+                    authFail()
+                    return
+                }
+
+            case .other(let mesg ):
+                TCSLogWithMark("message: \(mesg)")
+                authFail()
+                return
             }
-            return
         }
         else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
 
@@ -1156,7 +1190,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         case .OffDomain, .UnknownPrincipal:
             TCSLogErrorWithMark("\(error)")
 
-            if getManagedPreference(key: .LocalFallback) as? Bool ?? false && PasswordUtils.verifyUser(name: shortName, auth: passString)  {
+            if getManagedPreference(key: .LocalFallback) as? Bool ?? false, case .success = PasswordUtils.isLocalPasswordValid(userName: shortName, userPass: passString) {
                 mechanismDelegate?.setHint(type: .localLogin, hint: true as NSSecureCoding)
                 setRequiredHintsAndContext()
                 completeLogin(authResult: .allow)

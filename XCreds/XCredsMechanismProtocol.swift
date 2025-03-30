@@ -5,7 +5,7 @@
 //  Created by Timothy Perfitt on 12/24/23.
 //
 
-enum SetupHintsResult {
+enum ErrorResult {
     case success
     case failure(String)
     case userCancelled
@@ -21,7 +21,10 @@ protocol XCredsMechanismProtocol {
     func setHint(type: HintType, hint: NSSecureCoding)
     func setHintData(type: HintType, data: Data)
 
+    func getHint(type: HintType) -> Any?
+
     func reload()
     func run()
-    func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult
+    func setupHints(fromCredentials credentials:Creds, password:String) -> ErrorResult
+    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?) ->ErrorResult 
 }

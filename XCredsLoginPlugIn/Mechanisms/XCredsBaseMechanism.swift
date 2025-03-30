@@ -2,6 +2,8 @@ import Cocoa
 import OpenDirectory
 
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
+
+    
     func reload() {
         fatalError()
     }
@@ -23,7 +25,7 @@ import OpenDirectory
     func run(){
         fatalError("superclass must implement")
     }
-    func setupHints(fromCredentials credentials:Creds, password:String) -> SetupHintsResult {
+    func setupHints(fromCredentials credentials:Creds, password:String) -> ErrorResult {
 
         TCSLogWithMark("Checking for allow login preference")
         let tokenManager = TokenManager()
@@ -194,62 +196,26 @@ import OpenDirectory
 
                 let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials
 
-                if let _ = localAdmin {
-
-                    TCSLogWithMark("local admin set")
-                }
                 if getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false,
                    let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false{
                     TCSLogWithMark("setting passwordOverwrite")
                     setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
                 }
                 else {
+                    if let localAdmin = localAdmin {
 
+                        TCSLogWithMark("local admin set")
+                        switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: localAdmin){
 
+                        case .success:
+                            break
+                        case .failure( let mesg):
+                            return .failure(mesg)
 
-                    TCSLogWithMark()
-                    let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+                        case .userCancelled:
+                            return .userCancelled
 
-                    promptPasswordWindowController.isAccountLocked=accountLocked
-
-
-                    promptPasswordWindowController.showResetText=true
-                    promptPasswordWindowController.showResetButton=true
-                    if let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false {
-                        TCSLogWithMark("setting local admin and password")
-                        promptPasswordWindowController.adminUsername = localAdmin.username
-                        promptPasswordWindowController.adminPassword = localAdmin.password
-
-                    }
-
-                    switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
-
-
-                    case .success(let enteredUsernamePassword):
-                        TCSLogWithMark("setting original password to use to unlock keychain later")
-
-                        if let enteredUsernamePassword = enteredUsernamePassword, !enteredUsernamePassword.password.isEmpty {
-                            setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
                         }
-
-                    case .resetKeychainRequested(let localAdminCredentials):
-                        TCSLogWithMark("resetKeychainRequested")
-
-                        if let localAdminCredentials = localAdminCredentials {
-                            TCSLogWithMark("setting localAdminCredentials hint")
-
-                            setHint(type: .localAdmin, hint:localAdminCredentials)
-                        }
-                        TCSLogWithMark("setting passwordOverwrite hint")
-
-                        setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
-
-
-                    case .userCancelled:
-                        return .userCancelled
-                    case .error(let errMsg):
-                        TCSLogWithMark("Error prompting: \(errMsg)")
-                        return .failure(errMsg)
                     }
                 }
 
@@ -299,6 +265,52 @@ import OpenDirectory
             denyLogin(message:nil)
             return .failure("credentialsUpdated error")
 
+        }
+    }
+    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?) ->ErrorResult {
+        TCSLogWithMark()
+        let promptPasswordWindowController = VerifyLocalPasswordWindowController()
+
+        promptPasswordWindowController.isAccountLocked=accountLocked
+
+        promptPasswordWindowController.showResetText=true
+        promptPasswordWindowController.showResetButton=true
+        if let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false {
+            TCSLogWithMark("setting local admin and password")
+            promptPasswordWindowController.adminUsername = localAdmin.username
+            promptPasswordWindowController.adminPassword = localAdmin.password
+
+        }
+
+        switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+
+
+        case .success(let enteredUsernamePassword):
+            TCSLogWithMark("setting original password to use to unlock keychain later")
+
+            if let enteredUsernamePassword = enteredUsernamePassword, !enteredUsernamePassword.password.isEmpty {
+                setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
+            }
+            return .success
+
+        case .resetKeychainRequested(let localAdminCredentials):
+            TCSLogWithMark("resetKeychainRequested")
+
+            if let localAdminCredentials = localAdminCredentials {
+                TCSLogWithMark("setting localAdminCredentials hint")
+
+                setHint(type: .localAdmin, hint:localAdminCredentials)
+            }
+            TCSLogWithMark("setting passwordOverwrite hint")
+
+            setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
+            return .success
+
+        case .userCancelled:
+            return .userCancelled
+        case .error(let errMsg):
+            TCSLogWithMark("Error prompting: \(errMsg)")
+            return .failure(errMsg)
         }
     }
     func setupPrefs(){
