@@ -3,7 +3,7 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
-UserInterfaceState.xcuserstate
+*UserInterfaceState.xcuserstate
 Carthage/
 auth.db
 build/
