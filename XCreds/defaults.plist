@@ -123,5 +123,7 @@
 	<false/>
 	<key>shouldAllowLoginCardSetup</key>
 	<true/>
+	<key>shouldDisableMenuItemAutoLaunch</key>
+	<false/>
 </dict>
 </plist>

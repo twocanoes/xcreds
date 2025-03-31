@@ -31,6 +31,20 @@ class XCredsUserSetup: XCredsBaseMechanism {
 
 
         }
+        TCSLogWithMark("checking to see if launchagent should be removed...")
+        let fm = FileManager.default
+        let launchAgentPath = "/Library/LaunchAgents/com.twocanoes.xcreds-launchagent.plist"
+        let launchAgentExists = fm.fileExists(atPath: launchAgentPath)
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldRemoveMenuItemAutoLaunch.rawValue)==true, launchAgentExists == true {
+            do {
+                TCSLogWithMark("removing launch agent...")
+                try fm.removeItem(atPath: launchAgentPath)
+            }
+            catch {
+                TCSLogWithMark("error removing launch agent: \(error)")
+            }
+        }
+
         do {
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
@@ -56,7 +70,7 @@ class XCredsUserSetup: XCredsBaseMechanism {
                 self.setHint(type: .localAdmin, hint: localAdmin)
             }
 
-            if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
+            if let _ = getHint(type: .localAdmin) as? LocalAdminCredentials {
                 TCSLogWithMark("local admin set in hints")
             }
             else {
@@ -69,7 +83,7 @@ class XCredsUserSetup: XCredsBaseMechanism {
             else {
                 TCSLogWithMark("username not set")
             }
-            if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
+            if let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
                 TCSLogWithMark("password set")
 
             }
