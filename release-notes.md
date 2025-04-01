@@ -1,3 +1,10 @@
+## tag-5.3(8559) (2025-03-31)
+
+*  added shouldRemoveMenuItemAutoLaunch to remove menu item autolaunch launchagent [View](https://github.com/twocanoes/xcreds/commit/e3469a6ef003fc3e69f3ed9dc106dbb9b79af9b2)
+*  update gitignore [View](https://github.com/twocanoes/xcreds/commit/2dd18baaa183a44b1d01101552e10cc0228d6038)
+*  update gitignore [View](https://github.com/twocanoes/xcreds/commit/581146a9b4dca00102756e36f16fc1ad610ce4fc)
+
+
 ## tag-5.3(8558) (2025-03-30)
 
 *  added new pref to update kerberos principal if principal domain is not the same as the addomain. shouldUpdateKerberosUserPrincipalADDomain. [View](https://github.com/twocanoes/xcreds/commit/2d0d90f2f2e155bfd5288ce99cec8582e16e972d)
