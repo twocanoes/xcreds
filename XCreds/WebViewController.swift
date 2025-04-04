@@ -36,21 +36,24 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     var password:String?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
 
+    override func viewWillAppear() {
+        if let refreshTitleTextField = self.refreshTitleTextField {
+            refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+
+
+            if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
+                self.refreshTitleTextField?.stringValue = refreshBannerText
+            }
+
+        }
+
+    }
     func loadPage() {
         Task{ @MainActor in
             TCSLogWithMark("Clearing cookies")
             self.webView.cleanAllCookies()
             TCSLogWithMark()
             let licenseState = LicenseChecker().currentLicenseState()
-            if let refreshTitleTextField = self.refreshTitleTextField {
-                refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
-
-
-                if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
-                    self.refreshTitleTextField?.stringValue = refreshBannerText
-                }
-
-            }
 
 
 

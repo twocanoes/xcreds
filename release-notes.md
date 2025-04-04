@@ -1,3 +1,8 @@
+## tag-5.3(8576) (2025-04-03)
+
+*  fixed password setting in keychain when AD password changed [View](https://github.com/twocanoes/xcreds/commit/f9abe96208420aa1cdaffb13fed9da4ced408500)
+
+
 ## tag-5.3(8566) (2025-04-03)
 
 *  fixed extra prompt when changing password and not updating local passowrd; slight change of order of menu items [View](https://github.com/twocanoes/xcreds/commit/ecfb9d05245b7c1a2ebbb291cd68d2d435455373)
