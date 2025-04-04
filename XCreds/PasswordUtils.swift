@@ -184,7 +184,7 @@ class PasswordUtils: NSObject {
         do {
             try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword)
         } catch  {
-            throw PasswordError.unknownError("error changing password")
+            throw PasswordError.unknownError("error changing password: \(error)")
 
         }
 

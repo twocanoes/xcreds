@@ -1269,7 +1269,23 @@ extension NoMADSession: NoMADUserSession {
                 do{
                     TCSLogWithMark("Updating the local user password and keychain.")
 
-                    try PasswordUtils.changeLocalUserAndKeychainPassword(self.oldPass, newPassword: self.newPass)
+                    let accountInfo = try? KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+
+                    TCSLogWithMark("Getting account info.")
+
+                    guard let accountInfo=accountInfo, let password = accountInfo.1 else {
+                        TCSLogWithMark("no password in keychain.")
+                        throw PasswordError.invalidResult("no password in keychain")
+
+                    }
+
+                    //change password on keychain and local account
+                    TCSLogWithMark("change password on keychain and local account.")
+
+                    try PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword: self.newPass)
+
+                    //change entry in keychain to match new password
+                    TCSLogWithMark("change entry in keychain to match new password")
 
                     if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:self.newPass, shouldUpdateACL: true, keychainPassword: self.newPass) == false {
                         throw PasswordError.invalidResult("Error updating password in keychain")

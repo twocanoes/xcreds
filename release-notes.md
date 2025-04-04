@@ -1,3 +1,8 @@
+## tag-5.3(8578) (2025-04-04)
+
+*  fixed issue with admin override in AD login [View](https://github.com/twocanoes/xcreds/commit/839fdbc1f165a7a33bd9c6c3eab45799c1e205e4)
+
+
 ## tag-5.3(8577) (2025-04-04)
 
 *  fixed issue with WebViewController not showing text from defaults for refreshTitleTextField [View](https://github.com/twocanoes/xcreds/commit/41c48f016e2e6c6eeff7604fd11407fefbc0bdaa)
