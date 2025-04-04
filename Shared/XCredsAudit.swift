@@ -111,27 +111,27 @@ class XCredsAudit {
         var returnDict:[String:String] = [:]
 
         if let lastSuccessfulLoginDate = auditRecord.lastSuccessfulLoginDate {
-            returnDict["lastSuccessfulLoginDate"] = auditRecord.lastSuccessfulLoginDate?.description
+            returnDict["lastSuccessfulLoginDate"] = lastSuccessfulLoginDate.description
         }
 
         if let lastSuccessfulLoginUser = auditRecord.lastSuccessfulLoginUser {
-            returnDict["lastSuccessfulLoginUser"] = auditRecord.lastSuccessfulLoginUser
+            returnDict["lastSuccessfulLoginUser"] = lastSuccessfulLoginUser
         }
 
         if let username = auditRecord.username {
-            returnDict["username"] = auditRecord.username
+            returnDict["username"] = username
         }
 
         if let identityToken = auditRecord.identityToken {
-            returnDict["identityToken"] = auditRecord.identityToken
+            returnDict["identityToken"] = identityToken
         }
 
         if let identityTokenUpdateDate = auditRecord.identityTokenUpdateDate {
-            returnDict["identityTokenUpdateDate"] = auditRecord.identityTokenUpdateDate?.description
+            returnDict["identityTokenUpdateDate"] = identityTokenUpdateDate.description
         }
 
         if let refreshTokenUpdateDate = auditRecord.refreshTokenUpdateDate {
-            returnDict["refreshTokenUpdateDate"] = auditRecord.refreshTokenUpdateDate?.description
+            returnDict["refreshTokenUpdateDate"] = refreshTokenUpdateDate.description
         }
 
         if let refreshTokenUpdateSuccess = auditRecord.refreshTokenUpdateSuccess {
@@ -139,15 +139,15 @@ class XCredsAudit {
         }
 
         if let tokenLastUpdatedDate = auditRecord.tokenLastUpdatedDate {
-            returnDict["tokenLastUpdatedDate"] = auditRecord.tokenLastUpdatedDate?.description
+            returnDict["tokenLastUpdatedDate"] = tokenLastUpdatedDate.description
         }
 
         if let lastError = auditRecord.lastError {
-            returnDict["lastError"] = auditRecord.lastError
+            returnDict["lastError"] = lastError
         }
 
         if let lastErrorDate = auditRecord.lastErrorDate {
-            returnDict["lastErrorDate"] = auditRecord.lastErrorDate?.description
+            returnDict["lastErrorDate"] = lastErrorDate.description
         }
 
 

@@ -97,7 +97,6 @@ class ScheduleManager:NoMADUserSessionDelegate {
             currVal.uppercased()
         }
 
-
         guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
               let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
               var kerbPrinc = kerbPrincArray.first else

@@ -115,6 +115,7 @@ public class KlistUtil {
         // use krb5 API to get default tickets and all tickets, including expired ones
 
         var context: krb5_context? = nil
+        
         krb5_init_secure_context(&context)
 
         var oCache : krb5_ccache? = nil

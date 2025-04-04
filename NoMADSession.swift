@@ -1257,7 +1257,6 @@ extension NoMADSession: NoMADUserSession {
         TCSLogWithMark("Change password for userPrincipal: \(userPrincipal)")
 
         kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal) { errorString in
-//            let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)
 
             if let errorString = errorString {
                 // error
@@ -1265,6 +1264,20 @@ extension NoMADSession: NoMADUserSession {
                 self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: errorString)
             } else {
                 // If the password change worked then we are online. Reauthenticate with new password.
+                //should update keychain here if we are in userspace
+                do{
+                    TCSLogWithMark("Updating the local user password and keychain.")
+
+                    try PasswordUtils.changeLocalUserAndKeychainPassword(self.oldPass, newPassword: self.newPass)
+
+                }
+
+                catch {
+
+                    TCSLogWithMark("Error changing local user password: \(error)")
+                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.AuthenticationFailure, description: "Error changing local user password: \(error)")
+
+                }
                 self.userPass = self.newPass
                 self.authenticate(authTestOnly: false)
             }

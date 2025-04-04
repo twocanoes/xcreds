@@ -1,3 +1,8 @@
+## tag-5.3(8562) (2025-04-01)
+
+*  fixed pixelated refresh button [View](https://github.com/twocanoes/xcreds/commit/d6d53aee3e3e9073bfd6e906b4baed14c57b48da)
+
+
 ## tag-5.3(8559) (2025-03-31)
 
 *  added shouldRemoveMenuItemAutoLaunch to remove menu item autolaunch launchagent [View](https://github.com/twocanoes/xcreds/commit/e3469a6ef003fc3e69f3ed9dc106dbb9b79af9b2)
