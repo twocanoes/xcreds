@@ -1320,6 +1320,14 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     let consoleUser = getConsoleUser()
                     currUser=consoleUser
                 }
+                else {
+                    if let localAdmin = mechanismDelegate?.getHint(type: .localAdmin) as? LocalAdminCredentials, localAdmin.username.isEmpty==false {
+
+                        promptPasswordWindowController.adminUsername=localAdmin.username
+
+                        promptPasswordWindowController.adminPassword=localAdmin.password
+                    }
+                }
 
 
                 switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: currUser, newPassword: passString, shouldUpdatePassword: true) {

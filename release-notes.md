@@ -1,3 +1,8 @@
+## tag-5.3(8577) (2025-04-04)
+
+*  fixed issue with WebViewController not showing text from defaults for refreshTitleTextField [View](https://github.com/twocanoes/xcreds/commit/41c48f016e2e6c6eeff7604fd11407fefbc0bdaa)
+
+
 ## tag-5.3(8576) (2025-04-03)
 
 *  fixed password setting in keychain when AD password changed [View](https://github.com/twocanoes/xcreds/commit/f9abe96208420aa1cdaffb13fed9da4ced408500)
