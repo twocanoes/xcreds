@@ -524,7 +524,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
-            showSignInWindow(forceLoginWindowType: .usernamePassword)
+            if signInViewController?.view.window?.isVisible==true {
+                TCSLogWithMark("Already showing sign in window")
+            }
+            else{
+                showSignInWindow(forceLoginWindowType: .usernamePassword)
+            }
 
         }
     }

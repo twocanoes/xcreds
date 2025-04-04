@@ -1260,6 +1260,7 @@ extension NoMADSession: NoMADUserSession {
 
             if let errorString = errorString {
                 // error
+                TCSLogWithMark("change password error: \(errorString)")
                 self.state = .kerbError
                 self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: errorString)
             } else {
@@ -1270,12 +1271,19 @@ extension NoMADSession: NoMADUserSession {
 
                     try PasswordUtils.changeLocalUserAndKeychainPassword(self.oldPass, newPassword: self.newPass)
 
+                    if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:self.newPass, shouldUpdateACL: true, keychainPassword: self.newPass) == false {
+                        throw PasswordError.invalidResult("Error updating password in keychain")
+
+                    }
+
+
                 }
 
                 catch {
 
                     TCSLogWithMark("Error changing local user password: \(error)")
                     self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.AuthenticationFailure, description: "Error changing local user password: \(error)")
+                    return
 
                 }
                 self.userPass = self.newPass

@@ -160,6 +160,7 @@ class PasswordUtils: NSObject {
     static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
 
 
+        TCSLogWithMark()
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
         var err: OSStatus

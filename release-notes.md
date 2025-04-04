@@ -1,3 +1,8 @@
+## tag-5.3(8566) (2025-04-03)
+
+*  fixed extra prompt when changing password and not updating local passowrd; slight change of order of menu items [View](https://github.com/twocanoes/xcreds/commit/ecfb9d05245b7c1a2ebbb291cd68d2d435455373)
+
+
 ## tag-5.3(8562) (2025-04-01)
 
 *  fixed pixelated refresh button [View](https://github.com/twocanoes/xcreds/commit/d6d53aee3e3e9073bfd6e906b4baed14c57b48da)

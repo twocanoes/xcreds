@@ -383,7 +383,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     }
     override func viewDidLayout() {
 
-        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height + 64 + 64)
+        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height +  64)
     }
 
     @objc func setupLoginAppearance() {
@@ -534,7 +534,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             alertTextField.stringValue = message ?? "Authentication Failed"
         }
         setLoginWindowState(enabled: true)
-        view.window?.makeFirstResponder(passwordTextField)
+        view.window?.makeFirstResponder(usernameTextField)
     }
 
     /// Simple toggle to change the state of the NoLo window UI between active and inactive.
