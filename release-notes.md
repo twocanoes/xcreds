@@ -1,3 +1,8 @@
+## tag-5.3(8579) (2025-04-04)
+
+*  fixed password reset in AD when account is requiring password reset [View](https://github.com/twocanoes/xcreds/commit/42ac2733731c7e5a47e3a1c7237b40b345fed3be)
+
+
 ## tag-5.3(8578) (2025-04-04)
 
 *  fixed issue with admin override in AD login [View](https://github.com/twocanoes/xcreds/commit/839fdbc1f165a7a33bd9c6c3eab45799c1e205e4)

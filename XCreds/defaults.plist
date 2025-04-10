@@ -86,9 +86,9 @@
 		<string>dn</string>
 	</array>
 	<key>loadPageTitle</key>
-	<string>Please Wait....</string>
+	<string>Error Connecting</string>
 	<key>loadPageInfo</key>
-	<string>(or try connecting to network or check preferences)</string>
+	<string>There was an error connecting to the log in page </string>
 	<key>shouldPromptForADPasswordChange</key>
 	<true/>
 	<key>allowUsersClaim</key>

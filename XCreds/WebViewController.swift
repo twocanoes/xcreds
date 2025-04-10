@@ -11,6 +11,12 @@ import Cocoa
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+
+    struct WebViewControllerError:Error {
+
+        var errorDescription: String
+
+    }
     func invalidCredentials() {
         
     }
@@ -55,8 +61,6 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             TCSLogWithMark()
             let licenseState = LicenseChecker().currentLicenseState()
 
-
-
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self
             //            TokenManager.shared.oidc().delegate = self
@@ -91,38 +95,37 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
             let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
 
-            if discoveryURL != nil {
-                NetworkMonitor.shared.startMonitoring()
-                TCSLogWithMark("Network monitor: adding connectivity status change observer")
-            }
+            NetworkMonitor.shared.startMonitoring()
+            TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
-            if discoveryURL != nil,
-               let url = try await self.getOidcLoginURL(){
+            do {
+                guard let discoveryURL = discoveryURL else {
+                    TCSLogWithMark("discoveryURL not defined");
+
+                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
+                }
+                TCSLogWithMark("getOidcLoginURL");
+
+                let url = try await self.getOidcLoginURL()
+                TCSLogWithMark("load");
+
                 self.webView.load(URLRequest(url: url))
                 NetworkMonitor.shared.stopMonitoring()
-
             }
-            else {
-                if discoveryURL == nil {
-                    TCSLogWithMark("no discovery URL")
-                }
-                else {
-                    TCSLogWithMark("no discovery URL")
+            catch {
+                TCSLogWithMark("error: \(error)");
 
-                }
+                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)?.stripped ?? "loadPageTitle"
 
-                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)
-
-                let loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)
-
-                if let loadPageTitle = loadPageTitle?.stripped,
-                   let loadPageInfo = loadPageInfo?.stripped {
-                    let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
-
-                    self.webView.loadHTMLString(html, baseURL: nil)
+                var loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)?.stripped ?? "loadPageInfo"
 
 
-                }
+                loadPageInfo = loadPageInfo + "<br><br>" + (error as? WebViewControllerError ?? WebViewControllerError(errorDescription: error.localizedDescription)).errorDescription
+
+                let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+
+                self.webView.loadHTMLString(html, baseURL: nil)
+
             }
         }
     }
@@ -139,11 +142,11 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
 
 
-    private func getOidcLoginURL() async throws -> URL? {
+    private func getOidcLoginURL() async throws -> URL {
         if let url = try await tokenManager.oidc().createLoginURL() {
             return url
         }
-        return nil
+        throw WebViewControllerError(errorDescription: "Error getting OIDC URL")
     }
 
 
