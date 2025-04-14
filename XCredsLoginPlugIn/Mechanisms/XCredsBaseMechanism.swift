@@ -288,7 +288,7 @@ import OpenDirectory
             TCSLogWithMark("setting original password to use to unlock keychain later")
 
             if let enteredUsernamePassword = enteredUsernamePassword, !enteredUsernamePassword.password.isEmpty {
-                setHint(type: .existingLocalUserPassword, hint:password as NSSecureCoding  )
+                setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword as NSSecureCoding  )
             }
             return .success
 

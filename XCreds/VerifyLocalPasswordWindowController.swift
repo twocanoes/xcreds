@@ -135,6 +135,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
                     TCSLogWithMark()
                     do {
                         TCSLogWithMark("attempting to change password")
+
                         try localUser.changePassword(passwordEntered, toPassword: newPassword)
                     }
                     catch {
