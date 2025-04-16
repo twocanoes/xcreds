@@ -1,3 +1,10 @@
+## tag-5.3(8604) (2025-04-13)
+
+*  fixed issue with error message when no network connection [View](https://github.com/twocanoes/xcreds/commit/18dc4493671746723ff49f47383c3904ccbc33f2)
+*  fixed User is asked twice for local password after a reset #319 [View](https://github.com/twocanoes/xcreds/commit/648601535ebcfacb6712a1f2bf5f000bf4ddd88e)
+*  fixed Update manifest default for shouldShowQuitMenu #315 [View](https://github.com/twocanoes/xcreds/commit/292b7a5286bfd5a8926345a73ef4bcde87d5a5d1)
+
+
 ## tag-5.3(8579) (2025-04-04)
 
 *  fixed password reset in AD when account is requiring password reset [View](https://github.com/twocanoes/xcreds/commit/42ac2733731c7e5a47e3a1c7237b40b345fed3be)

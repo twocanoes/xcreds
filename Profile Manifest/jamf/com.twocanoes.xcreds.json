@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8579) OAuth Settings",
+    "description": "XCreds 5.3 (8604) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -947,7 +947,7 @@
         "shouldShowQuitMenu": {
             "type": "boolean",
             "title": "Show Quit Menu Item",
-            "default": true,
+            "default": false,
             "description": "Show Quit in the menu item menu. Default value: true",
             "links": [
                 {

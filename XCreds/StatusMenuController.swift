@@ -233,7 +233,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             
             print("ChangePasswordMenuItem")
             
-            if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let _ = URL(string: passwordChangeURLString) {
+            if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
                 
                 menuItem.isHidden=false
                 return true
@@ -350,47 +350,39 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         return true
     }
     
-    // windows
-    
-    //    var webViewController: WebViewController?
-    //    var prefsWindow: PreferencesWindowController?
-    //    var signInMenuItem:SignInMenuItem
-    //    override init() {
-    ////        mainMenu = NSMenu()
-    ////        signInMenuItem = SignInMenuItem()
-    //
-    //        super.init()
-    ////        buildMenu()
-    //        windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-    ////        self.statusBarItem.menu = mainMenu
-    ////        self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
-    ////        mainMenu.delegate = self
-    ////        NotificationCenter.default.addObserver(forName: Notification.Name("CheckTokenStatus"), object: nil, queue: nil) { notification in
-    ////            if let userInfo=notification.userInfo, let nextUpdate = userInfo["NextCheckTime"] as? Date{
-    ////                let dateFormatter = DateFormatter()
-    ////                dateFormatter.timeStyle = .short
-    ////                let updateDateString = dateFormatter.string(from: nextUpdate)
-    //////                self.updateStatus="Next password check: \(updateDateString)"
-    ////            }
-    ////        }
-    //    }
-    
     @IBAction func aboutMenuItemSelected(_ sender:Any?){
         if aboutWindowController == nil {
             aboutWindowController = AboutWindowController()
         }
         aboutWindowController?.window!.forceToFrontAndFocus(nil)
         NSApp.activate(ignoringOtherApps: true)
-        
-        
-        
+
     }
     
     @IBAction func changePasswordMenuItemSelected(_ sender:Any?)  {
-        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let url = URL(string: passwordChangeURLString) {
-            
-            
-            NSWorkspace.shared.open(url)
+        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+
+            if passwordChangeURLString == "ADNative"{
+                let appDelegate = NSApp.delegate as? AppDelegate
+
+                if let mainController = appDelegate?.mainController,
+                let signInViewController = mainController.signInViewController{
+
+                    do {
+                        try signInViewController.showResetUI()
+                        TCSLogWithMark("reset password")
+                    }
+                    catch SignInViewController.SignInViewControllerResetPasswordError.cancelled  {
+                        TCSLogWithMark("user cancelled")
+                    }
+                    catch {
+                        NSAlert.showAlert(title: "Error resetting password", message: "There was an error resetting your password. \(error)")
+                    }
+                }
+            }
+            else if let url = URL(string: passwordChangeURLString) {
+                NSWorkspace.shared.open(url)
+            }
         }
     }
     @IBAction func quitMenuItemSelected(_ sender:Any?)  {

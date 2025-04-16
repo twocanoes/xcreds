@@ -64,8 +64,17 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     var kerberosCredentialStatus:String?
     var hasCredential:Bool?
     var hasKerberosTicket:Bool?
+    
     let windowController =  DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-    var signInViewController:SignInViewController?
+    lazy var signInViewController:SignInViewController? = {
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+        if let bundle = bundle{
+            TCSLogWithMark("Creating signInViewController")
+            return SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+
+        }
+        return nil
+    }()
 
     init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
         self.passwordCheckTimer = passwordCheckTimer
@@ -75,7 +84,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         self.tokenCredentialStatus = credentialStatus
         self.hasCredential = hasCredential
-        self.signInViewController = signInViewController
         super.init()
         scheduleManager.feedbackDelegate=self
 
@@ -123,9 +131,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark()
             return
         }
-
-
-
 
         //put the timers off some we don't get multiple other prompts when user is putting in credentials
         scheduleManager.setNextCheckTime(timer: .ADTimer )
@@ -175,55 +180,46 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 webView.isHidden=true
                 TCSLogWithMark()
             }
+            guard let window = self.windowController.window,
+                  let signInViewController = self.signInViewController else {
+                TCSLogWithMark("No window or signInViewController")
+                return
+            }
 
             DispatchQueue.main.async {
-                if let window = self.windowController.window{
-                    let bundle = Bundle.findBundleWithName(name: "XCreds")
-                    if let bundle = bundle{
-                        TCSLogWithMark("Creating signInViewController")
-                        if self.signInViewController == nil {
-                            self.signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+                TCSLogWithMark("Creating signInViewController")
+
+                TCSLogWithMark()
+                signInViewController.isInUserSpace = true
+                signInViewController.updateCredentialsFeedbackDelegate=self
+
+                if let contentView = window.contentView {
+                    TCSLogWithMark()
+                    self.windowController.webViewController.webView.isHidden=true
+                    signInViewController.view.wantsLayer=true
+
+                    if let contentView = window.contentView{
+                        if contentView.subviews.contains(signInViewController.view)==false {
+
+                            contentView.addSubview(signInViewController.view)
                         }
-                        TCSLogWithMark()
-                        self.signInViewController?.isInUserSpace = true
-                        self.signInViewController?.updateCredentialsFeedbackDelegate=self
-                        guard let signInViewController = self.signInViewController else {
-                            return
-                        }
-
-                        if let contentView = window.contentView {
-                            TCSLogWithMark()
-                            self.windowController.webViewController.webView.isHidden=true
-                            signInViewController.view.wantsLayer=true
-
-                            if let contentView = window.contentView{
-                                if contentView.subviews.contains(signInViewController.view)==false {
-
-                                    window.contentView?.addSubview(signInViewController.view)
-
-                                }
-
-
-                            }
-                            signInViewController.setupLoginAppearance()
-
-                            var x = NSMidX(contentView.frame)
-                            var y = NSMidY(contentView.frame)
-
-                            x = x - signInViewController.view.frame.size.width/2
-                            y = y - signInViewController.view.frame.size.height/2
-                            let lowerLeftCorner = NSPoint(x: x, y: y)
-                            signInViewController.localOnlyCheckBox.isHidden = true
-                            signInViewController.localOnlyCheckBox.isHidden = true
-
-                            signInViewController.view.setFrameOrigin(lowerLeftCorner)
-                        }
-
-                        window.makeKeyAndOrderFront(self)
-                        NSApp.activate(ignoringOtherApps: true)
-
                     }
+                    signInViewController.setupLoginAppearance()
+
+                    var x = NSMidX(contentView.frame)
+                    var y = NSMidY(contentView.frame)
+
+                    x = x - signInViewController.view.frame.size.width/2
+                    y = y - signInViewController.view.frame.size.height/2
+                    let lowerLeftCorner = NSPoint(x: x, y: y)
+                    signInViewController.localOnlyCheckBox.isHidden = true
+                    signInViewController.localOnlyCheckBox.isHidden = true
+
+                    signInViewController.view.setFrameOrigin(lowerLeftCorner)
                 }
+
+                window.makeKeyAndOrderFront(self)
+                NSApp.activate(ignoringOtherApps: true)
             }
         }
 

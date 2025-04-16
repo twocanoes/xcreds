@@ -48,6 +48,9 @@
 		760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D82A1332770051411B /* SystemInfoHelper.swift */; };
 		760418E02A133A370051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
 		760769C12D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist in Resources */ = {isa = PBXBuildFile; fileRef = 760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */; };
+		760CA4CA2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */; };
+		760CA4CB2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */; };
+		760CA4CC2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */; };
 		761121B62B3D24FE005F7D02 /* SignInWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418CF2A1332210051411B /* SignInWindowController.swift */; };
 		761121B72B3D26EE005F7D02 /* SystemInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D82A1332770051411B /* SystemInfoHelper.swift */; };
 		761121B82B3D26F5005F7D02 /* LocalCheckAndMigrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */; };
@@ -470,6 +473,7 @@
 		760418DC2A1334210051411B /* NoLoMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoLoMechanism.swift; sourceTree = "<group>"; };
 		760418DE2A1334D00051411B /* CheckAD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckAD.swift; sourceTree = "<group>"; };
 		760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "com.twocanoes.xcreds-launchagent.plist"; sourceTree = "<group>"; };
+		760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAlert+showAlert.swift"; sourceTree = "<group>"; };
 		7611CEBF288B75140063A644 /* XCredsCreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsCreateUser.swift; sourceTree = "<group>"; };
 		7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsEnableFDE.swift; sourceTree = "<group>"; };
 		7613FDF6289E114F00340CCD /* loadpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = loadpage.html; sourceTree = "<group>"; };
@@ -983,6 +987,7 @@
 			children = (
 				767C349C2D930FC1000D62A5 /* VersionCheck.swift */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
+				760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */,
 				7649CD2A2D4B03FD00D6BEE2 /* UsernamePassword.swift */,
 				766F1E552D495BBF00AA5637 /* com.twocanoes.xcreds.json */,
 				7644C9C82C76E38700178884 /* TCTaskHelper.h */,
@@ -1546,6 +1551,7 @@
 				76EAAFDA2CEFED3800A5FEE3 /* SecretKeeper.swift in Sources */,
 				76EAAFDB2CEFED3800A5FEE3 /* UserSecretManager.swift in Sources */,
 				760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */,
+				760CA4CA2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */,
 				76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */,
 				767B939D2A28289E0038935E /* View+Shake.swift in Sources */,
 				760418D22A1332210051411B /* SignInWindowController.swift in Sources */,
@@ -1620,6 +1626,7 @@
 				76DC0A8628838656007C42B2 /* TCSUnifiedLogger.m in Sources */,
 				76DC0A7E288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift in Sources */,
 				767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */,
+				760CA4CC2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */,
 				76DC0A87288386FA007C42B2 /* NSTaskWrapper.swift in Sources */,
 				764447212CF8307200E6289E /* StateFileHelper.swift in Sources */,
 				764447222CF830A700E6289E /* PrefKeys.swift in Sources */,
@@ -1650,6 +1657,7 @@
 				7657DEC92B350606003A23DB /* KlistUtil.swift in Sources */,
 				764D812C284BCC7400B3EE54 /* VerifyOIDCPasswordWindowController.swift in Sources */,
 				76E74DD42B39037A004C6429 /* LoginProgressWindowController.swift in Sources */,
+				760CA4CB2DAF38DC00066F31 /* NSAlert+showAlert.swift in Sources */,
 				7623384D2B53029D00F2D714 /* ShareMounter.swift in Sources */,
 				7657DEB32B350476003A23DB /* NoMADSession.swift in Sources */,
 				760418E02A133A370051411B /* DSQueryable.swift in Sources */,
@@ -2208,7 +2216,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8603;
+				CURRENT_PROJECT_VERSION = 8604;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2230,7 +2238,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 5.3;
+				MARKETING_VERSION = 5.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2273,7 +2281,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8603;
+				CURRENT_PROJECT_VERSION = 8604;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2289,7 +2297,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 5.3;
+				MARKETING_VERSION = 5.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;

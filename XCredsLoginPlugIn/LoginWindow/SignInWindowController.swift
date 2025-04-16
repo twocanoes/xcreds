@@ -30,7 +30,12 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
-    
+
+    enum SignInViewControllerResetPasswordError:Error {
+        case failedToResetPassword(String)
+        case cancelled
+
+    }
 
     //MARK: - setup properties
     var mech: MechanismRecord?
@@ -147,7 +152,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     //MARK: - Migrate Box IB outlets
     var migrate = false
     var migrateUserRecord : ODRecord?
-    var didUpdateFail = false
+//    var didUpdateFail = false
     var setupDone=false
     var cardInserted = false
     //MARK: - UI Methods
@@ -464,11 +469,10 @@ protocol UpdateCredentialsFeedbackProtocol {
 
     }
 
-    func showResetUI() -> Bool {
+    func showResetUI() throws  {
         TCSLogWithMark()
 
         let changePasswordWindowController = UpdatePasswordWindowController.init(windowNibName: NSNib.Name("UpdatePasswordWindowController"))
-
 
         changePasswordWindowController.window?.canBecomeVisibleWithoutLogin=true
         changePasswordWindowController.window?.isMovable = true
@@ -476,41 +480,37 @@ protocol UpdateCredentialsFeedbackProtocol {
         changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
         var isDone = false
         while (!isDone){
-            DispatchQueue.main.async{
-                TCSLogWithMark("resetting level")
-                changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
-            }
+            TCSLogWithMark("resetting level")
+            changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
 
+            changePasswordWindowController.window?.forceToFrontAndFocus(self)
             let response = NSApp.runModal(for: changePasswordWindowController.window!)
             changePasswordWindowController.window?.close()
             TCSLogWithMark("response: \(response.rawValue)")
 
             if response == .cancel {
                 isDone = true
-                return false
+                throw SignInViewControllerResetPasswordError.cancelled
             }
 
             if let pass = changePasswordWindowController.password {
                 newPassword = pass
             }
             guard let session = nomadSession else {
-
                 TCSLogWithMark("invalid session")
-                return false
+                throw SignInViewControllerResetPasswordError.failedToResetPassword("invalid session")
             }
             session.oldPass = passString
             session.newPass = newPassword
             os_log("Attempting password change for %{public}@", log: uiLog, type: .debug, shortName)
+
             TCSLogWithMark("Attempting password change")
             passChanged = true
 
-            session.changePassword()
+            try session.changePassword()
 
-            didUpdateFail = false
             isDone = true
-//            delegate?.setHint(type: .migratePass, hint: migrateUIPass)
-//            completeLogin(authResult: .allow)
-            return true
+            return
 
         }
 
@@ -1183,15 +1183,15 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
                 shakeWindowAndShowError("Password is expired or requires change.")
                 return
-
             }
-            let res = showResetUI()
-
-            if res == false { //user cancelled so enable UI
+            do {
+                try showResetUI()
+            }
+            catch {
+                TCSLogWithMark("\(error)")
                 setLoginWindowState(enabled: true)
 
             }
-            return
         case .OffDomain, .UnknownPrincipal:
             TCSLogErrorWithMark("\(error)")
 

@@ -13,7 +13,7 @@ public protocol NoMADUserSession {
     func getKerberosTicket(principal: String?, completion: @escaping (KerberosTicketResult) -> Void)
     func authenticate(authTestOnly: Bool)
     func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void)
-    func changePassword()
+    func changePassword() throws
     func userInfo()
     var delegate: NoMADUserSessionDelegate? { get set }
     var state: NoMADSessionState { get }
@@ -1243,7 +1243,8 @@ extension NoMADSession: NoMADUserSession {
     }
 
     /// Change the password for the current user session via delegate.
-    public func changePassword() {
+    ///
+    public func changePassword() throws {
         // change user's password
         // check kerb prefs - otherwise we can get an error here if not set
         TCSLogWithMark("Checking kpassword server.")
