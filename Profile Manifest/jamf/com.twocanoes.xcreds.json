@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.3 (8604) OAuth Settings",
+    "description": "XCreds 5.4 (8605) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -422,8 +422,7 @@
         "passwordChangeURL": {
             "type": "string",
             "title": "Password Change URL for Menu",
-            "description": "Add a menu item for changing the password that will open this URL when the menu item is selected.",
-            "pattern": "https?://.*",
+            "description": "Add a menu item for changing the password that will open this URL when the menu item is selected. If value \"ADNative\" is specified, the user will be prompted with standard controls to reset the user's Active Directory password.",
             "links": [
                 {
                     "rel": "More information",

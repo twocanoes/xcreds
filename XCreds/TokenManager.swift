@@ -7,8 +7,9 @@
 import Foundation
 import OIDCLite
 
-struct IDToken:Codable {
-    let iss,sub,aud:String
+struct IDToken:Decodable {
+    let iss,sub:String
+    let aud:StringOrArray
     let iat, exp:Int
     let email:String?
     let unique_name, given_name,family_name,name:String?
@@ -19,6 +20,23 @@ struct IDToken:Codable {
     }
 }
 
+enum StringOrArray:Decodable{
+    case string(String)
+    case array([String])
+
+    init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let x = try? container.decode(String.self) {
+                self = .string(x)
+                return
+            }
+            if let x = try? container.decode([String].self) {
+                self = .array(x)
+                return
+            }
+            throw DecodingError.typeMismatch(StringOrArray.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Names"))
+        }
+}
 protocol TokenManagerFeedbackDelegate {
     func tokenError(_ err:String)
     func credentialsUpdated(_ credentials:Creds)
@@ -154,7 +172,8 @@ class TokenManager:DSQueryable {
     func getNewAccessToken()   {
         Task{
             do {
-                let creds = try await getNewAccessToken()
+                //just care if we throw
+                let _ = try await getNewAccessToken()
 
             }
             catch let error as OIDCLiteError {
@@ -285,10 +304,6 @@ class TokenManager:DSQueryable {
             TCSLogErrorWithMark("error decoding idtoken::")
             TCSLogErrorWithMark("Token:\(data)")
             throw ProcessTokenResult.error("The identity token could not be decoded from json")
-//
-//            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from json.")
-//            //            return
-//
         }
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping

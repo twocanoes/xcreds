@@ -1,3 +1,8 @@
+## tag-5.4(8605) (2025-04-15)
+
+*  Add "Reset Password" option to menu for AD password reset #320 [View](https://github.com/twocanoes/xcreds/commit/cc0096ac31389f7d786e9e1abc8592f80d4064a2)
+
+
 ## tag-5.3(8604) (2025-04-13)
 
 *  fixed issue with error message when no network connection [View](https://github.com/twocanoes/xcreds/commit/18dc4493671746723ff49f47383c3904ccbc33f2)

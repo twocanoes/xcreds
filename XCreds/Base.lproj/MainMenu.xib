@@ -689,23 +689,7 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Uvh-o1-mcs"/>
-                <menuItem title="Login Card" hidden="YES" id="e5b-09-LAv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Login Card" id="Wza-vh-pGi">
-                        <items>
-                            <menuItem title="Setup Card..." tag="14" id="RFc-oy-99Z">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="setupCardMenuItemSelected:" target="1OV-ou-Ss5" id="Ivh-GL-n7I"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                        <connections>
-                            <outlet property="delegate" destination="1OV-ou-Ss5" id="Hhe-3N-M29"/>
-                        </connections>
-                    </menu>
-                </menuItem>
-                <menuItem title="OIDC Usernaem" tag="2" enabled="NO" id="7wW-bt-MeR">
+                <menuItem title="OIDC Username" tag="2" enabled="NO" id="7wW-bt-MeR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="Gny-X3-1ZT"/>

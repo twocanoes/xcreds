@@ -64,16 +64,16 @@ class PasswordUtils: NSObject {
 
         // We may have gotten multiple ODRecords that match username,
         // So make sure it also matches the UID.
-        if ( records != nil ) {
-            for case let record in records {
-                let attribute = "dsAttrTypeStandard:UniqueID"
-                if let odUid = try? String(describing: record.values(forAttribute: attribute)[0]) {
-                    if ( odUid == uid) {
-                        return record
-                    }
+
+        for case let record in records {
+            let attribute = "dsAttrTypeStandard:UniqueID"
+            if let odUid = try? String(describing: record.values(forAttribute: attribute)[0]) {
+                if ( odUid == uid) {
+                    return record
                 }
             }
         }
+
         return nil
     }
     class func GetSecureTokenUserList() -> [String] {
