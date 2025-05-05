@@ -1,3 +1,8 @@
+## tag-5.4(8607) (2025-04-30)
+
+*  added support for array of aud in json [View](https://github.com/twocanoes/xcreds/commit/986c1f79196684f6b4e0dda1ca0c0db5e0caf8c8)
+
+
 ## tag-5.4(8605) (2025-04-15)
 
 *  Add "Reset Password" option to menu for AD password reset #320 [View](https://github.com/twocanoes/xcreds/commit/cc0096ac31389f7d786e9e1abc8592f80d4064a2)

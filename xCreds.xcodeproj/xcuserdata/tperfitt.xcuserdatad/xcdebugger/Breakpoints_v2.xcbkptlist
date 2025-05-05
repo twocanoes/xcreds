@@ -7,20 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "635EB16B-E98D-45CD-9579-F2DBABA5D520"
+            uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "438"
-            endingLineNumber = "438"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
             landmarkName = "requestTokenWithROPG(username:password:basicAuth:overrideErrors:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "635EB16B-E98D-45CD-9579-F2DBABA5D520 - c96ef3f6acd397a2"
+                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - e5f15da0d6fb5d2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "395"
+                  endingLineNumber = "395">
+               </Location>
+               <Location
+                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - e5f15da0d6fb5d2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "395"
+                  endingLineNumber = "395">
+               </Location>
+               <Location
+                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - c96ef3f6acd3992f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -30,36 +58,68 @@
                   urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "438"
-                  endingLineNumber = "438">
+                  startingLineNumber = "395"
+                  endingLineNumber = "395">
                </Location>
                <Location
-                  uuid = "635EB16B-E98D-45CD-9579-F2DBABA5D520 - 2cda093cba8acbbc"
+                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - 820072198f9d6330"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(5) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
+                  symbolName = "(6) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
                   moduleName = "XCreds.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "438"
-                  endingLineNumber = "438">
+                  startingLineNumber = "395"
+                  endingLineNumber = "395">
                </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/TokenManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "getNewAccessToken()"
+            landmarkType = "7">
+            <Locations>
                <Location
-                  uuid = "635EB16B-E98D-45CD-9579-F2DBABA5D520 - 70365f4290610fbe"
+                  uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73 - 73d2d2ff63a9cecb"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(7) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
+                  symbolName = "XCreds.TokenManager.getNewAccessToken() -&gt; ()"
                   moduleName = "XCreds.debug.dylib"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "438"
-                  endingLineNumber = "438">
+                  startingLineNumber = "173"
+                  endingLineNumber = "173">
+               </Location>
+               <Location
+                  uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73 - c4e98362f04dc380"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () async throws -&gt; () in XCreds.TokenManager.getNewAccessToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "176"
+                  endingLineNumber = "176">
                </Location>
             </Locations>
          </BreakpointContent>
