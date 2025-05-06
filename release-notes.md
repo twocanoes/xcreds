@@ -1,3 +1,14 @@
+## tag-5.4(8628) (2025-05-05)
+
+*  fixed password reset for AD [View](https://github.com/twocanoes/xcreds/commit/39c84e7e42b29a7a06cf419f2a6b1780659d372a)
+*  fixed password reset for AD [View](https://github.com/twocanoes/xcreds/commit/5fd09a6bfdba319c30f6cce5b6418d90e107f058)
+
+
+## tag-5.4(8608) (2025-05-04)
+
+*  fixed encoding issue in ropg in oidclite [View](https://github.com/twocanoes/xcreds/commit/31fd85a5da8edf2cf19ef446d6104bf1ef58d863)
+
+
 ## tag-5.4(8607) (2025-04-30)
 
 *  added support for array of aud in json [View](https://github.com/twocanoes/xcreds/commit/986c1f79196684f6b4e0dda1ca0c0db5e0caf8c8)

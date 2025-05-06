@@ -1349,6 +1349,8 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
             }
             alert.runModal()
+
+            setLoginWindowState(enabled: true)
         }
     }
 //callback from ADAuth framework when userInfo returns
