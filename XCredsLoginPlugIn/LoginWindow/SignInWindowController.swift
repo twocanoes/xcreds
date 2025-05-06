@@ -46,7 +46,6 @@ protocol UpdateCredentialsFeedbackProtocol {
     var newPassword = ""
     var isDomainManaged = false
     var isSSLRequired = false
-    var passChanged = false
     let sysInfo = SystemInfoHelper().info()
     var sysInfoIndex = 0
     let tokenManager = TokenManager()
@@ -56,7 +55,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
     var isInUserSpace = false
     var watcher:TKTokenWatcher?
-
+    var isResetPasswordInProgress = false
     var shouldIgnoreInsertion=false
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
@@ -478,43 +477,29 @@ protocol UpdateCredentialsFeedbackProtocol {
         changePasswordWindowController.window?.isMovable = true
         changePasswordWindowController.window?.canBecomeVisibleWithoutLogin = true
         changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
-        var isDone = false
-        while (!isDone){
-            TCSLogWithMark("resetting level")
-            changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
+        TCSLogWithMark("resetting level")
+        changePasswordWindowController.window?.level = NSWindow.Level(rawValue: NSWindow.Level.floating.rawValue)
 
-            changePasswordWindowController.window?.forceToFrontAndFocus(self)
-            let response = NSApp.runModal(for: changePasswordWindowController.window!)
-            changePasswordWindowController.window?.close()
-            TCSLogWithMark("response: \(response.rawValue)")
+        changePasswordWindowController.window?.forceToFrontAndFocus(self)
+        let response = NSApp.runModal(for: changePasswordWindowController.window!)
+        changePasswordWindowController.window?.close()
+        TCSLogWithMark("response: \(response.rawValue)")
 
-            if response == .cancel {
-                isDone = true
-                throw SignInViewControllerResetPasswordError.cancelled
-            }
-
-            if let pass = changePasswordWindowController.password {
-                newPassword = pass
-            }
-            guard let session = nomadSession else {
-                TCSLogWithMark("invalid session")
-                throw SignInViewControllerResetPasswordError.failedToResetPassword("invalid session")
-            }
-            session.oldPass = passString
-            session.newPass = newPassword
-            os_log("Attempting password change for %{public}@", log: uiLog, type: .debug, shortName)
-
-            TCSLogWithMark("Attempting password change")
-            passChanged = true
-
-            try session.changePassword()
-
-            isDone = true
-            return
-
+        if response == .cancel {
+            throw SignInViewControllerResetPasswordError.cancelled
         }
 
+        if let pass = changePasswordWindowController.password {
+            newPassword = pass
+        }
+        if let currPassword = changePasswordWindowController.currentPassword {
+            passString=currPassword
+        }
 
+        isResetPasswordInProgress=true
+
+
+        networkAuth()
     }
 
     fileprivate func shakeWindowAndShowError(_ message: String?=nil) {
@@ -765,10 +750,24 @@ protocol UpdateCredentialsFeedbackProtocol {
         }
     }
     fileprivate func networkAuth() {
+
+        if shortName.isEmpty {
+            if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
+                  let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
+                  var kerbPrinc = kerbPrincArray.first
+            {
+                shortName=kerbPrinc
+            }
+        }
+
+
+        if domainName.isEmpty, let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
+            domainName = prefDomainName
+        }
         nomadSession = NoMADSession.init(domain: domainName, user: shortName)
         TCSLogWithMark("NoMAD Login User: \(shortName), Domain: \(domainName)")
         guard let session = nomadSession else {
-            TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
+            TCSLogErrorWithMark("Could not create NoMADSession")
             return
         }
         session.useSSL = isSSLRequired
@@ -1175,6 +1174,17 @@ extension SignInViewController: NoMADUserSessionDelegate {
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
+        if isResetPasswordInProgress==true {
+
+            isResetPasswordInProgress=false
+
+            if error == .PasswordExpired {
+                TCSLogWithMark("Password expired so go ahead and changing it")
+                changePassword()
+                return
+
+            }
+        }
         TCSLogWithMark("AuthenticationFailed: \(description)")
         switch error {
         case .PasswordExpired:
@@ -1218,7 +1228,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             }
         default:
             TCSLogErrorWithMark("NoMAD Login Authentication failed with: \(description):\(error.rawValue)")
-//            loginStartedUI()
+
                 shakeWindowAndShowError(description)
 //
             return
@@ -1226,18 +1236,21 @@ extension SignInViewController: NoMADUserSessionDelegate {
     }
 
 
-    func NoMADAuthenticationSucceded() {
+    func NoMADAuthenticationSucceeded() {
         updateCredentialsFeedbackDelegate?.kerberosTicketUpdated()
 
         if getManagedPreference(key: .RecursiveGroupLookup) as? Bool ?? false {
             nomadSession?.recursiveGroupLookup = true
         }
         
-        if passChanged {
-            // need to ensure the right password is stashed
-            passString = newPassword
-            passChanged = false
+        if isResetPasswordInProgress==true {
+            TCSLogWithMark("changing password and then returning")
+            isResetPasswordInProgress = false
+            changePassword()
+            return
         }
+            // need to ensure the right password is stashed
+
         
         if isInUserSpace==true {
             self.view.window?.close()
@@ -1246,6 +1259,98 @@ extension SignInViewController: NoMADUserSessionDelegate {
         nomadSession?.userInfo()
     }
 
+    func changePassword()  {
+        TCSLogWithMark("Changing password")
+        guard let session = nomadSession else {
+            TCSLogWithMark("invalid session")
+            return
+        }
+        session.oldPass = passString
+        session.newPass = newPassword
+        os_log("Attempting password change for %{public}@", log: uiLog, type: .debug, shortName)
+
+        TCSLogWithMark("Attempting password change")
+
+        do {
+            try session.changeKerberosPassword()
+
+            if isInUserSpace==true {
+                let accountInfo = try? KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+
+                TCSLogWithMark("Getting account info.")
+
+                guard let accountInfo=accountInfo, let password = accountInfo.1 else {
+                    TCSLogWithMark("no password in keychain.")
+                    throw PasswordError.invalidResult("no password in keychain")
+
+                }
+
+                //change password on keychain and local account
+                TCSLogWithMark("change password on keychain and local account.")
+
+                try PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword: newPassword)
+
+                //change entry in keychain to match new password
+                TCSLogWithMark("change entry in keychain to match new password")
+
+                if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:newPassword, shouldUpdateACL: true, keychainPassword: newPassword) == false {
+                    throw PasswordError.invalidResult("Error updating password in keychain")
+
+                }
+                
+                passString = newPassword
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText="Password changed successfully."
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+                }
+                alert.runModal()
+                session.userPass = newPassword
+                session.authenticate(authTestOnly: false)
+
+            }
+            else {
+                TCSLogWithMark("Setting current password to change later and authenticating with new password")
+                let localUser = try getLocalRecord(shortName)
+
+                //try to change the password, but if the admin changed it out of band, we don't
+                //fail here and prompt later
+                try? localUser.changePassword(passString, toPassword: newPassword)
+
+                mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint: passString as NSSecureCoding)
+                passString = newPassword
+                session.userPass = newPassword
+                session.authenticate(authTestOnly: false)
+
+            }
+
+
+
+        }
+        catch {
+            TCSLogWithMark("Error changing password: \(error)")
+            let alert = NSAlert()
+            alert.addButton(withTitle: "OK")
+            alert.messageText="Error changing password"
+
+            alert.window.canBecomeVisibleWithoutLogin=true
+
+            let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+            if let bundle = bundle {
+                TCSLogWithMark("Found bundle")
+                alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+            }
+            alert.runModal()
+        }
+    }
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
 

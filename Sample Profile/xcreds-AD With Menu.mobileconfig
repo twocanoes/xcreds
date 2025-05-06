@@ -12,6 +12,8 @@
 				<string>93392af1-8e10-4691-9702-a4d5e7f7c781</string>
 				<string>47b36644-8477-4194-b42d-9e519e9193e7</string>
 			</array>
+			<key>passwordChangeURL</key>
+			<string>ADNative</string>
 			<key>PasswordOverwriteSilent</key>
 			<true/>
 			<key>PayloadDescription</key>

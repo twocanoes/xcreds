@@ -13,7 +13,7 @@ public protocol NoMADUserSession {
     func getKerberosTicket(principal: String?, completion: @escaping (KerberosTicketResult) -> Void)
     func authenticate(authTestOnly: Bool)
     func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void)
-    func changePassword() throws
+    func changeKerberosPassword() throws
     func userInfo()
     var delegate: NoMADUserSessionDelegate? { get set }
     var state: NoMADSessionState { get }
@@ -22,7 +22,7 @@ public protocol NoMADUserSession {
 public typealias KerberosTicketResult = Result<ADUserRecord, NoMADSessionError>
 
 public protocol NoMADUserSessionDelegate: AnyObject {
-    func NoMADAuthenticationSucceded()
+    func NoMADAuthenticationSucceeded()
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String)
     func NoMADUserInformation(user: ADUserRecord)
 }
@@ -1224,7 +1224,7 @@ extension NoMADSession: NoMADUserSession {
                 if authTestOnly {
                     klistUtil.kdestroy(princ: self.userPrincipal)
                 }
-                self.delegate?.NoMADAuthenticationSucceded()
+                self.delegate?.NoMADAuthenticationSucceeded()
             }
         }
 
@@ -1244,7 +1244,7 @@ extension NoMADSession: NoMADUserSession {
 
     /// Change the password for the current user session via delegate.
     ///
-    public func changePassword() throws {
+    public func changeKerberosPassword() throws {
         // change user's password
         // check kerb prefs - otherwise we can get an error here if not set
         TCSLogWithMark("Checking kpassword server.")
@@ -1257,65 +1257,21 @@ extension NoMADSession: NoMADUserSession {
         let kerbUtil = KerbUtil()
         TCSLogWithMark("Change password for userPrincipal: \(userPrincipal)")
 
-        kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal) { errorString in
-
-            if let errorString = errorString {
-                // error
-                TCSLogWithMark("change password error: \(errorString)")
-                self.state = .kerbError
-                self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: errorString)
-            } else {
-                // If the password change worked then we are online. Reauthenticate with new password.
-                //should update keychain here if we are in userspace
-                do{
-                    TCSLogWithMark("Updating the local user password and keychain.")
-
-                    let accountInfo = try? KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
-
-                    TCSLogWithMark("Getting account info.")
-
-                    guard let accountInfo=accountInfo, let password = accountInfo.1 else {
-                        TCSLogWithMark("no password in keychain.")
-                        throw PasswordError.invalidResult("no password in keychain")
-
-                    }
-
-                    //change password on keychain and local account
-                    TCSLogWithMark("change password on keychain and local account.")
-
-                    try PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword: self.newPass)
-
-                    //change entry in keychain to match new password
-                    TCSLogWithMark("change entry in keychain to match new password")
-
-                    if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:self.newPass, shouldUpdateACL: true, keychainPassword: self.newPass) == false {
-                        throw PasswordError.invalidResult("Error updating password in keychain")
-
-                    }
+        try kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal)
 
 
-                }
+        // If the password change worked then we are online. Reauthenticate with new password.
+        //should update keychain here if we are in userspace
 
-                catch {
+        self.oldPass = ""
+        self.newPass = ""
 
-                    TCSLogWithMark("Error changing local user password: \(error)")
-                    self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.AuthenticationFailure, description: "Error changing local user password: \(error)")
-                    return
 
-                }
-                self.userPass = self.newPass
-                self.authenticate(authTestOnly: false)
-            }
-
-            // scrub the passwords
-            self.oldPass = ""
-            self.newPass = ""
-
-            // clean the kerb prefs so we don't reuse the KDCs
-            self.cleanKerbPrefs()
-        }
-
+        // clean the kerb prefs so we don't reuse the KDCs
+        self.cleanKerbPrefs()
     }
+
+
 
     public func userInfo() {
         // set state to offDomain on start

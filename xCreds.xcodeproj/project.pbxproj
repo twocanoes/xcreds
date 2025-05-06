@@ -99,6 +99,8 @@
 		7644C9C92C76E38700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
 		7644C9CA2C76E38700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
 		7644C9CB2C76E45700178884 /* TCTaskHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7644C9C72C76E38700178884 /* TCTaskHelper.m */; };
+		76456CE12DC99BFA00AEA261 /* NSError+EasyError.m in Sources */ = {isa = PBXBuildFile; fileRef = 76456CE02DC99BFA00AEA261 /* NSError+EasyError.m */; };
+		76456CE22DC99BFA00AEA261 /* NSError+EasyError.m in Sources */ = {isa = PBXBuildFile; fileRef = 76456CE02DC99BFA00AEA261 /* NSError+EasyError.m */; };
 		76477E042C626B5D00F01D56 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76477E032C626B5D00F01D56 /* OIDCLite */; };
 		764859F22B2FA2E800507C16 /* Window+ForceToFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE06AF27FD1DD8009E0F3A /* Window+ForceToFront.swift */; };
 		7649056F2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */; };
@@ -496,6 +498,8 @@
 		764446FC2CF80CD800E6289E /* StateFileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateFileHelper.swift; sourceTree = SOURCE_ROOT; };
 		7644C9C72C76E38700178884 /* TCTaskHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCTaskHelper.m; sourceTree = "<group>"; };
 		7644C9C82C76E38700178884 /* TCTaskHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCTaskHelper.h; sourceTree = "<group>"; };
+		76456CDF2DC99BFA00AEA261 /* NSError+EasyError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+EasyError.h"; sourceTree = "<group>"; };
+		76456CE02DC99BFA00AEA261 /* NSError+EasyError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+EasyError.m"; sourceTree = "<group>"; };
 		7649056E2B6CADA9008B552F /* xcredsmenuItemWindowBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xcredsmenuItemWindowBackgroundImage.png; sourceTree = "<group>"; };
 		7649CD2A2D4B03FD00D6BEE2 /* UsernamePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernamePassword.swift; path = XCreds/UsernamePassword.swift; sourceTree = "<group>"; };
 		764D8124284BC1C300B3EE54 /* VerifyLocalPasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyLocalPasswordWindowController.swift; sourceTree = "<group>"; };
@@ -985,6 +989,8 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				76456CDF2DC99BFA00AEA261 /* NSError+EasyError.h */,
+				76456CE02DC99BFA00AEA261 /* NSError+EasyError.m */,
 				767C349C2D930FC1000D62A5 /* VersionCheck.swift */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
 				760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */,
@@ -1510,6 +1516,7 @@
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
 				76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */,
 				7657DEB02B3503BF003A23DB /* SessionManager.swift in Sources */,
+				76456CE12DC99BFA00AEA261 /* NSError+EasyError.m in Sources */,
 				7657DEB72B3504A6003A23DB /* UserRecord.swift in Sources */,
 				7632E3A12873497C00E37923 /* LogShim.swift in Sources */,
 				760418D52A1332520051411B /* DS+AD.swift in Sources */,
@@ -1681,6 +1688,7 @@
 				76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */,
 				7678327D2C23E14800E31295 /* CCIDCardReader.swift in Sources */,
 				76EAAFDC2CEFED3800A5FEE3 /* SecretKeeper.swift in Sources */,
+				76456CE22DC99BFA00AEA261 /* NSError+EasyError.m in Sources */,
 				76EAAFDD2CEFED3800A5FEE3 /* UserSecretManager.swift in Sources */,
 				76D7ADFB284EB15100332EBC /* TCSUnifiedLogger.m in Sources */,
 				7657DEBC2B35055F003A23DB /* Logger.swift in Sources */,
@@ -2216,7 +2224,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8607;
+				CURRENT_PROJECT_VERSION = 8627;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2281,7 +2289,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8607;
+				CURRENT_PROJECT_VERSION = 8627;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

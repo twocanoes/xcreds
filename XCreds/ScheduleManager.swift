@@ -286,7 +286,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
         }
     }
 
-    func NoMADAuthenticationSucceded() {
+    func NoMADAuthenticationSucceeded() {
         TCSLogWithMark()
         if let userPrinc = session?.userPrincipal {
             TCTaskHelper.shared().runCommand("/usr/bin/kswitch", withOptions: ["-p", userPrinc])
