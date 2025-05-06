@@ -519,19 +519,22 @@ protocol UpdateCredentialsFeedbackProtocol {
             alertTextField.stringValue = message ?? "Authentication Failed"
         }
         setLoginWindowState(enabled: true)
-        view.window?.makeFirstResponder(usernameTextField)
+        view.window?.makeFirstResponder(passwordTextField)
     }
 
     /// Simple toggle to change the state of the NoLo window UI between active and inactive.
     fileprivate func setLoginWindowState(enabled:Bool) {
         TCSLogWithMark()
-        signIn.isEnabled = enabled
-        TCSLogWithMark()
-        usernameTextField.isEnabled = enabled
-        passwordTextField.isEnabled = enabled
-        localOnlyCheckBox.isEnabled = enabled
 
-        TCSLogWithMark()
+        if signIn != nil && usernameTextField != nil && passwordTextField != nil && localOnlyCheckBox != nil {
+            signIn.isEnabled = enabled
+            TCSLogWithMark()
+            usernameTextField.isEnabled = enabled
+            passwordTextField.isEnabled = enabled
+            localOnlyCheckBox.isEnabled = enabled
+
+            TCSLogWithMark()
+        }
     }
 
     func setupLoginCard(completion:(_ result:Bool, _ pin:String?)->Void) {
@@ -1172,7 +1175,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
-        updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
 
         if isResetPasswordInProgress==true {
 
@@ -1184,7 +1186,27 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 return
 
             }
+            else {
+
+                let alert = NSAlert()
+                alert.addButton(withTitle: "OK")
+                alert.messageText="Your current password is invalid. Please try again."
+
+                alert.window.canBecomeVisibleWithoutLogin=true
+
+                let bundle = Bundle.findBundleWithName(name: "XCreds")
+
+                if let bundle = bundle {
+                    TCSLogWithMark("Found bundle")
+                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+                }
+                alert.runModal()
+
+                return
+            }
         }
+        updateCredentialsFeedbackDelegate?.kerberosTicketCheckFailed(error)
+
         TCSLogWithMark("AuthenticationFailed: \(description)")
         switch error {
         case .PasswordExpired:

@@ -70,8 +70,13 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         let bundle = Bundle.findBundleWithName(name: "XCreds")
         if let bundle = bundle{
             TCSLogWithMark("Creating signInViewController")
-            return SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+            let controller = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+            controller.isInUserSpace = true
+            controller.updateCredentialsFeedbackDelegate=self
 
+
+
+            return controller;
         }
         return nil
     }()
@@ -190,8 +195,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark("Creating signInViewController")
 
                 TCSLogWithMark()
-                signInViewController.isInUserSpace = true
-                signInViewController.updateCredentialsFeedbackDelegate=self
 
                 if let contentView = window.contentView {
                     TCSLogWithMark()

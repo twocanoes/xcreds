@@ -1,3 +1,8 @@
+## tag-5.4(8631) (2025-05-05)
+
+*  fixed small issue where error caused ui to not reset [View](https://github.com/twocanoes/xcreds/commit/36d45a2a989067ab65e40681b2eee829cf5140b5)
+
+
 ## tag-5.4(8628) (2025-05-05)
 
 *  fixed password reset for AD [View](https://github.com/twocanoes/xcreds/commit/39c84e7e42b29a7a06cf419f2a6b1780659d372a)
