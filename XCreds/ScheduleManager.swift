@@ -146,6 +146,17 @@ class ScheduleManager:NoMADUserSessionDelegate {
     func startCredentialCheck()  {
         TCSLogWithMark()
 
+        //                NotificationCenter.default.post(name: NSNotification.Name("KerberosPasswordChanged"), object: ["updatedPassword":newPassword])
+
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("KerberosPasswordChanged"), object: nil, queue: .main, using: { notification in
+            if let newPassword = notification.object as? [String:String],
+                let newPassword = newPassword["updatedPassword"] {
+                TCSLogWithMark("new kerb password received:")
+                self.kerberosPassword=newPassword
+            }
+        })
+
         if let timer = timer, timer.isValid==true {
             return
         }

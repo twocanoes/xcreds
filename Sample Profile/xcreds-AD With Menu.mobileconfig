@@ -50,6 +50,10 @@
 			<true/>
             <key>settingsOverrideScriptPath</key>
             <string>/usr/local/xcreds/override.sh</string>
+			<key>refreshRateHours</key>
+			<integer>0</integer>
+			<key>refreshRateMinutes</key>
+			<integer>5</integer>
 			<key>menuItems</key>
 			<array>
 				<dict>

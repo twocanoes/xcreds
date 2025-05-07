@@ -1,3 +1,8 @@
+## tag-5.4(8638) (2025-05-06)
+
+*  fixed crash when changing AD password; made focus on password; fixed main window opening when password changing password fails [View](https://github.com/twocanoes/xcreds/commit/b6dd18a996bb585c5ff22827629fae51b950504e)
+
+
 ## tag-5.4(8631) (2025-05-05)
 
 *  fixed small issue where error caused ui to not reset [View](https://github.com/twocanoes/xcreds/commit/36d45a2a989067ab65e40681b2eee829cf5140b5)

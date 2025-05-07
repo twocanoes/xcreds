@@ -1321,6 +1321,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
                 }
                 
                 passString = newPassword
+                NotificationCenter.default.post(name: NSNotification.Name("KerberosPasswordChanged"), object: ["updatedPassword":newPassword])
                 let alert = NSAlert()
                 alert.addButton(withTitle: "OK")
                 alert.messageText="Password changed successfully."
