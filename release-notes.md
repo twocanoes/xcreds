@@ -1,3 +1,8 @@
+## tag-5.4(8640) (2025-05-06)
+
+*  fixed schedule issue where change in kerberos password prompted for local password at next check [View](https://github.com/twocanoes/xcreds/commit/fdb717d1b9a046bd9972c0986c15343bcf84d01b)
+
+
 ## tag-5.4(8638) (2025-05-06)
 
 *  fixed crash when changing AD password; made focus on password; fixed main window opening when password changing password fails [View](https://github.com/twocanoes/xcreds/commit/b6dd18a996bb585c5ff22827629fae51b950504e)

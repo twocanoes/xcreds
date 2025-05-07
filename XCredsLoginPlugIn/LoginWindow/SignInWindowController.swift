@@ -422,9 +422,14 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.usernameTextField.stringValue=""
         self.passwordTextField.stringValue=""
 
-        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue) ,
-           let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
-            logoImageView.image=image
+        logoImageView.isHidden=false
+        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue){
+            if loginWindowLogoPath.isEmpty {
+                logoImageView.isHidden=true
+            }
+            else if let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
+                logoImageView.image=image
+            }
         }
         self.usernameTextField.wantsLayer=true
         self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
