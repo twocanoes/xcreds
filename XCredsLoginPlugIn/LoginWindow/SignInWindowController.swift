@@ -57,6 +57,8 @@ protocol UpdateCredentialsFeedbackProtocol {
     var watcher:TKTokenWatcher?
     var isResetPasswordInProgress = false
     var shouldIgnoreInsertion=false
+    var hadPasswordFailure:Bool=false
+
     @objc var visible = true
     override var acceptsFirstResponder: Bool {
         return true
@@ -1280,6 +1282,12 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         
         if isInUserSpace==true {
+            if hadPasswordFailure==true {
+                TCSLogWithMark("had password failure, updating keychain with new password")
+                hadPasswordFailure = false
+                try? updateCurrentUserKeychain(updatedPassword: passString)
+            }
+
             self.view.window?.close()
         }
         TCSLogWithMark("Authentication succeeded, requesting user info")
@@ -1302,29 +1310,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             try session.changeKerberosPassword()
 
             if isInUserSpace==true {
-                let accountInfo = try? KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
-
-                TCSLogWithMark("Getting account info.")
-
-                guard let accountInfo=accountInfo, let password = accountInfo.1 else {
-                    TCSLogWithMark("no password in keychain.")
-                    throw PasswordError.invalidResult("no password in keychain")
-
-                }
-
-                //change password on keychain and local account
-                TCSLogWithMark("change password on keychain and local account.")
-
-                try PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword: newPassword)
-
-                //change entry in keychain to match new password
-                TCSLogWithMark("change entry in keychain to match new password")
-
-                if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:newPassword, shouldUpdateACL: true, keychainPassword: newPassword) == false {
-                    throw PasswordError.invalidResult("Error updating password in keychain")
-
-                }
-                
+                try updateCurrentUserKeychain(updatedPassword: newPassword)
                 passString = newPassword
                 NotificationCenter.default.post(name: NSNotification.Name("KerberosPasswordChanged"), object: ["updatedPassword":newPassword])
                 let alert = NSAlert()
@@ -1379,6 +1365,30 @@ extension SignInViewController: NoMADUserSessionDelegate {
             alert.runModal()
 
             setLoginWindowState(enabled: true)
+        }
+    }
+    func updateCurrentUserKeychain(updatedPassword:String) throws  {
+        let accountInfo = try KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+
+        TCSLogWithMark("Getting account info.")
+
+        guard let password = accountInfo.1 else {
+            TCSLogWithMark("no password in keychain.")
+            throw PasswordError.invalidResult("no password in keychain")
+
+        }
+
+        //change password on keychain and local account
+        TCSLogWithMark("change password on keychain and local account.")
+
+        try PasswordUtils.changeLocalUserAndKeychainPassword(password, newPassword: updatedPassword)
+
+        //change entry in keychain to match new password
+        TCSLogWithMark("change entry in keychain to match new password")
+
+        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, shouldUpdateACL: true, keychainPassword: updatedPassword) == false {
+            throw PasswordError.invalidResult("Error updating password in keychain")
+
         }
     }
 //callback from ADAuth framework when userInfo returns

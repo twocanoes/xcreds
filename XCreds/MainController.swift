@@ -18,7 +18,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
-
     let scheduleManager = ScheduleManager()
     var adPasswordExpires:String?
     var cloudPasswordExpires:String?
@@ -128,7 +127,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         return false
 
     }
-    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil, hadPasswordFailure:Bool=false )  {
 
         TCSLogWithMark()
 
@@ -191,6 +190,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 return
             }
 
+            signInViewController.hadPasswordFailure = hadPasswordFailure
             DispatchQueue.main.async {
                 TCSLogWithMark("Creating signInViewController")
 
@@ -527,7 +527,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark("Already showing sign in window")
             }
             else{
-                showSignInWindow(forceLoginWindowType: .usernamePassword)
+                showSignInWindow(forceLoginWindowType: .usernamePassword, hadPasswordFailure: true)
             }
 
         }

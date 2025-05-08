@@ -1,3 +1,9 @@
+## tag-5.4(8642) (2025-05-06)
+
+*  if logo is blank string, then remove logo [View](https://github.com/twocanoes/xcreds/commit/1f27e8a33be254c787f4a23548a80e99d8d0762f)
+*  if logo is blank string, then remove logo. loginWindowLogoPath, that is [View](https://github.com/twocanoes/xcreds/commit/ede08957505033d433d9e1990f6343fc1076b654)
+
+
 ## tag-5.4(8640) (2025-05-06)
 
 *  fixed schedule issue where change in kerberos password prompted for local password at next check [View](https://github.com/twocanoes/xcreds/commit/fdb717d1b9a046bd9972c0986c15343bcf84d01b)
