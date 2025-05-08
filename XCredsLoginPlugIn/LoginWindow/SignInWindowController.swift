@@ -425,11 +425,12 @@ protocol UpdateCredentialsFeedbackProtocol {
         self.passwordTextField.stringValue=""
 
         logoImageView.isHidden=false
-        if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue){
-            if loginWindowLogoPath.isEmpty {
-                logoImageView.isHidden=true
-            }
-            else if let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideLoginWindowLogo.rawValue) == true {
+            logoImageView.isHidden=true
+
+        }
+        else if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue){
+            if let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
                 logoImageView.image=image
             }
         }

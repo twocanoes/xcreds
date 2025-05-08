@@ -127,5 +127,7 @@
 	<false/>
 	<key>shouldUseADNativePasswordChangeMenuItem</key>
 	<false/>
+	<key>shouldHideLoginWindowLogo</key>
+	<false/>
 </dict>
 </plist>
