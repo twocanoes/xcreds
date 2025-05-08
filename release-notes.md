@@ -1,3 +1,15 @@
+## tag-5.4(8653) (2025-05-07)
+
+*  AD user is prompted by menubar app for prior local password #321 [View](https://github.com/twocanoes/xcreds/commit/a6e841536eda9b83057dfaeac58bc94f6f76767a)
+*  passwordChangeURL has error when http not present in url #331 [View](https://github.com/twocanoes/xcreds/commit/6db87c2c5a7b5b486464334e0ed4e251617552a4)
+*  Local Login Window Logo #329 [View](https://github.com/twocanoes/xcreds/commit/68cbec0df62fa9175cfdc41c0a2c473549bdc694)
+*  Update manifest pfm_version #330 [View](https://github.com/twocanoes/xcreds/commit/2b95ecd9959cc39985d4a58ff7cd62032cf55f68)
+*  system info button does not stay open #322 [View](https://github.com/twocanoes/xcreds/commit/8db4c9ad197a9e5924fca2522cfbfce6755338ec)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/b2590373800701f77458ecb55a34d0d4c73176c7)
+*  Alias is not used at UNPW login screen #325 [View](https://github.com/twocanoes/xcreds/commit/eda83890c62d0b5ecf05829513b40934fac1bf3f)
+*  fixed typo [View](https://github.com/twocanoes/xcreds/commit/d984e5bfadd5a6874f10d69e9c3cb110bbd6c17d)
+
+
 ## tag-5.4(8642) (2025-05-06)
 
 *  if logo is blank string, then remove logo [View](https://github.com/twocanoes/xcreds/commit/1f27e8a33be254c787f4a23548a80e99d8d0762f)
