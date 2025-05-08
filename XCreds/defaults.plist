@@ -125,5 +125,7 @@
 	<true/>
 	<key>shouldDisableMenuItemAutoLaunch</key>
 	<false/>
+	<key>shouldUseADNativePasswordChangeMenuItem</key>
+	<false/>
 </dict>
 </plist>

@@ -238,6 +238,11 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 menuItem.isHidden=false
                 return true
             }
+            else if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseADNativePasswordChangeMenuItem.rawValue) == true {
+                menuItem.isHidden=false
+                return true
+
+            }
             else  {
                 menuItem.isHidden=true
                 return false
@@ -360,27 +365,27 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     }
     
     @IBAction func changePasswordMenuItemSelected(_ sender:Any?)  {
-        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+        if  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseADNativePasswordChangeMenuItem.rawValue)==true {
+            let appDelegate = NSApp.delegate as? AppDelegate
 
-            if passwordChangeURLString == "ADNative"{
-                let appDelegate = NSApp.delegate as? AppDelegate
+            if let mainController = appDelegate?.mainController,
+            let signInViewController = mainController.signInViewController{
 
-                if let mainController = appDelegate?.mainController,
-                let signInViewController = mainController.signInViewController{
-
-                    do {
-                        try signInViewController.showResetUI()
-                        TCSLogWithMark("reset password")
-                    }
-                    catch SignInViewController.SignInViewControllerResetPasswordError.cancelled  {
-                        TCSLogWithMark("user cancelled")
-                    }
-                    catch {
-                        NSAlert.showAlert(title: "Error resetting password", message: "There was an error resetting your password. \(error)")
-                    }
+                do {
+                    try signInViewController.showResetUI()
+                    TCSLogWithMark("reset password")
+                }
+                catch SignInViewController.SignInViewControllerResetPasswordError.cancelled  {
+                    TCSLogWithMark("user cancelled")
+                }
+                catch {
+                    NSAlert.showAlert(title: "Error resetting password", message: "There was an error resetting your password. \(error)")
                 }
             }
-            else if let url = URL(string: passwordChangeURLString) {
+        }
+        else if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+
+            if let url = URL(string: passwordChangeURLString) {
                 NSWorkspace.shared.open(url)
             }
         }
