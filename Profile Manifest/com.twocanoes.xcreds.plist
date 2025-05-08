@@ -739,6 +739,8 @@ A profile can consist of payloads with different version numbers. For example, c
 			<string>Password Change URL for Menu</string>
 			<key>pfm_type</key>
 			<string>string</string>
+            <key>pfm_format</key>
+            <string>https?://.*</string>
 		</dict>
 		<dict>
 			<key>pfm_default</key>
