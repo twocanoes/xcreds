@@ -609,7 +609,13 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-        updateLoginWindowInfo()
+        if (self.localOnlyCheckBox.state == .off)  {
+            updateLoginWindowInfo()
+        }
+        else {
+
+            shortName = strippedUsername
+        }
         processLogin(inShortname: shortName, inPassword: passString)
 
     }
@@ -713,7 +719,9 @@ protocol UpdateCredentialsFeedbackProtocol {
                 return
             }
         }
-        else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true { TCSLogWithMark("Checking credentials using ROPG")
+        else if UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == true {
+
+            TCSLogWithMark("Checking credentials using ROPG")
 
             tokenManager.feedbackDelegate=self
 

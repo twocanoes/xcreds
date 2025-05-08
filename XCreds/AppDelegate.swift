@@ -848,7 +848,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-
         NetworkMonitor.shared.startMonitoring()
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
