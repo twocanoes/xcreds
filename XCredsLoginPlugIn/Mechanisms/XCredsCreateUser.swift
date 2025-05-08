@@ -367,7 +367,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         let kerberosPrincipal = getHint(type: .kerberos_principal) as? String
 
         if let kerberosPrincipal = kerberosPrincipal {
-            TCSLogWithMark("saving kerberos pricipal to user DS record")
+            TCSLogWithMark("saving kerberos principal to user DS record")
             try? records.first?.setValue(kerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
 
         }
