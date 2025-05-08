@@ -106,7 +106,7 @@
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
 	<false/>
 	<key>shouldActivateSystemInfoButton</key>
-	<false/>
+	<true/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
 	<key>menuItemWindowBackgroundImageAlpha</key>

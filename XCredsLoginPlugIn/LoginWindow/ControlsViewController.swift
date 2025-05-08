@@ -305,7 +305,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 
     func showPopoverIfNeeded(){
         if self.systemInfoButton?.isHidden == false,  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldActivateSystemInfoButton.rawValue)==true{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
 
                 self.showSystemInfoButtonPressed(self.systemInfoButton)
             }
