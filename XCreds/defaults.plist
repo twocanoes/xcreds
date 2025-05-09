@@ -104,7 +104,9 @@
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
-	<false/>
+	<true/>
+	<key>shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen</key>
+	<true/>
 	<key>shouldActivateSystemInfoButton</key>
 	<true/>
 	<key>ropgResponseValue</key>

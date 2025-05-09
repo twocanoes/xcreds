@@ -17,22 +17,17 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="MainLoginWindow" customModule="XCredsLoginPlugin">
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NWg-Yb-kPu" userLabel="Background Image">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NWg-Yb-kPu" userLabel="Background Image">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="MV3-cI-8IS"/>
                     </imageView>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="bottom" secondItem="NWg-Yb-kPu" secondAttribute="bottom" id="RhV-ai-gwL"/>
-                    <constraint firstAttribute="trailing" secondItem="NWg-Yb-kPu" secondAttribute="trailing" id="cUc-Zl-2su"/>
-                    <constraint firstItem="NWg-Yb-kPu" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="iSE-EY-RBd"/>
-                    <constraint firstItem="NWg-Yb-kPu" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" id="lDJ-2j-SPs"/>
-                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>

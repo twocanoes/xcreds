@@ -229,10 +229,10 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             var newWidth = screenRect.width
 
             if let backgroundImage = backgroundImage{
-                if i==0{
-
+                if i == 0 {
 
                     if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
+                        TCSLogWithMark("MainLoginWindowController: Not resizing background image to fill screen")
 
                         let ratio = backgroundImage.size.width/backgroundImage.size.height
                         newHeight = screenRect.size.height
@@ -242,13 +242,13 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                             newWidth = screenRect.size.width
                             newHeight = screenRect.size.width / ratio
                         }
-
                     }
                     else {
+                        TCSLogWithMark("MainLoginWindowController: resizing background image to fill screen")
 
                         backgroundImage.size.height = newHeight
                         backgroundImage.size.width = newWidth
-                        
+
                         backgroundImageView.imageScaling = .scaleAxesIndependently
 
                         backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
@@ -258,8 +258,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                     backgroundImageView.imageScaling = .scaleAxesIndependently
                     backgroundImage.size.height = newHeight
                     backgroundImage.size.width = newWidth
-
-                    backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, newWidth, newHeight-100)
+                    TCSLogWithMark("Setting background size to width:\(newWidth) height:\(newHeight)")
+                    backgroundImageView.frame=NSMakeRect((screenRect.size.width-newWidth)/2, (screenRect.size.height-newHeight)/2, newWidth, newHeight)
                     backgroundImageView.image=backgroundImage
                     backgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowBackgroundImageAlpha.rawValue))
 
@@ -269,8 +269,9 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                     if let secondardBackgroundImage = DefaultsHelper.secondaryBackgroundImage(){
 
-
                         if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen.rawValue) == false {
+                            TCSLogWithMark("MainLoginWindowController: Not resizing secondary background image to fill screen")
+
                             let ratio = secondardBackgroundImage.size.width/secondardBackgroundImage.size.height
                             newHeight = screenRect.size.height
                             newWidth = screenRect.size.height * ratio
@@ -282,6 +283,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                         }
                         else {
+                            TCSLogWithMark("MainLoginWindowController: resizing secondary background image to fill screen")
+
                             secondardBackgroundImage.size.height = newHeight
                             secondardBackgroundImage.size.width = newWidth
 
@@ -297,7 +300,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                         newBackgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowSecondaryMonitorsBackgroundAlpha.rawValue))
 
                         newBackgroundImageView.imageScaling = .scaleAxesIndependently
-                        newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
+                        newBackgroundImageView.frame=NSMakeRect((screenRect.size.width-newWidth)/2, (screenRect.size.height-newHeight)/2, newWidth, newHeight)
+
                         currWindow.contentView=newBackgroundImageView
                         currWindow.makeKeyAndOrderFront(self)
 
