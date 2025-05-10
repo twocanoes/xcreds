@@ -270,7 +270,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                     if let secondardBackgroundImage = DefaultsHelper.secondaryBackgroundImage(){
 
                         if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen.rawValue) == false {
-                            TCSLogWithMark("MainLoginWindowController: Not resizing secondary background image to fill screen")
+                            TCSLogWithMark("secondaryBackgroundImage: Not resizing secondary background image to fill screen")
 
                             let ratio = secondardBackgroundImage.size.width/secondardBackgroundImage.size.height
                             newHeight = screenRect.size.height
@@ -283,7 +283,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                         }
                         else {
-                            TCSLogWithMark("MainLoginWindowController: resizing secondary background image to fill screen")
+                            TCSLogWithMark("secondaryBackgroundImage: resizing secondary background image to fill screen")
 
                             secondardBackgroundImage.size.height = newHeight
                             secondardBackgroundImage.size.width = newWidth
@@ -302,7 +302,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                         newBackgroundImageView.imageScaling = .scaleAxesIndependently
                         newBackgroundImageView.frame=NSMakeRect((screenRect.size.width-newWidth)/2, (screenRect.size.height-newHeight)/2, newWidth, newHeight)
 
-                        currWindow.contentView=newBackgroundImageView
+                        currWindow.contentView?.addSubview(newBackgroundImageView)
                         currWindow.makeKeyAndOrderFront(self)
 
                     }

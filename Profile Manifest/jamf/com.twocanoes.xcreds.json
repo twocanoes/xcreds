@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.4 (8653) OAuth Settings",
+    "description": "XCreds 5.4 (8681) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -316,7 +316,7 @@
         "loginWindowBackgroundImageURL": {
             "type": "string",
             "title": "Login Window Background Image URL",
-            "default": "file:///System/Library/Desktop Pictures/Monterey Graphic.heic",
+            "default": "file:///System/Library/CoreServices/DefaultDesktop.heic",
             "description": "URL to an image to show in the background while logging in. Default value: file:///System/Library/Desktop Pictures/Monterey Graphic.heic.",
             "pattern": "(https?://|file:///).*",
             "links": [
@@ -343,7 +343,7 @@
         "loginWindowSecondaryMonitorsBackgroundImageURL": {
             "type": "string",
             "title": "Login Window Secondary Monitors Background Image URL",
-            "default": "file:///System/Library/Desktop Pictures/Monterey Graphic.heic",
+            "default": "file:///System/Library/CoreServices/DefaultDesktop.heic",
             "description": "URL to an image to show in the background on secondary display while logging in. Default value: file:///System/Library/Desktop Pictures/Monterey Graphic.heic.",
             "pattern": "(https?://|file:///).*",
             "links": [
@@ -397,7 +397,7 @@
             "type": "boolean",
             "title": "Login Window Secondary Monitors Background Image Fill Screen",
             "default": false,
-            "description": "Set the seconary monitors background image to Fill Screen rather than Fit to Screen",
+            "description": "Set the secondary monitor(s) background image to Fill Screen rather than Fit to Screen",
             "links": [
                 {
                     "rel": "More information",
@@ -449,6 +449,7 @@
             "type": "string",
             "title": "Password Change URL for Menu",
             "description": "Add a menu item for changing the password that will open this URL when the menu item is selected. If shouldUseADNativePasswordChangeMenuItem is set to true, this value is not used.",
+            "pattern": "https?://.*",
             "links": [
                 {
                     "rel": "More information",

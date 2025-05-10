@@ -1,3 +1,12 @@
+## tag-5.4(8681) (2025-05-09)
+
+*  Clarify AD native password change textbox label #333 [View](https://github.com/twocanoes/xcreds/commit/b73ec3183ff1da878d9c86ab2de308dfe3de6106)
+*  Restore manifest format requirement for passwordChangeURL #332 [View](https://github.com/twocanoes/xcreds/commit/ee516abdcfb2095fa8b391964d6ef9b6253abba1)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/8488385fa8b6b82df19835182e3cefb84f8fb0a7)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3847c54fa3ec2b0ebbdd5f00751308a935dd28f6)
+*  Update default background image urls #335 [View](https://github.com/twocanoes/xcreds/commit/7d80f4f8ce31f6683750b864ec16cd7b104bfbfc)
+
+
 ## tag-5.4(8653) (2025-05-07)
 
 *  AD user is prompted by menubar app for prior local password #321 [View](https://github.com/twocanoes/xcreds/commit/a6e841536eda9b83057dfaeac58bc94f6f76767a)
