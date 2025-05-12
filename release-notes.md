@@ -1,3 +1,8 @@
+## tag-5.4(8683) (2025-05-09)
+
+*  fixed secondary fill [View](https://github.com/twocanoes/xcreds/commit/6dcb759f10fd66407c670d8ad2b579d4a8680ae0)
+
+
 ## tag-5.4(8681) (2025-05-09)
 
 *  Clarify AD native password change textbox label #333 [View](https://github.com/twocanoes/xcreds/commit/b73ec3183ff1da878d9c86ab2de308dfe3de6106)
