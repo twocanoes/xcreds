@@ -145,7 +145,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         if let tokenArray = tokenArray, tokenArray.count>2 {
             TCSLogWithMark("We have tokens, so cloud login")
             XCredsAudit().tokensUpdated(idToken:tokenArray[0])
-            let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary(), pass: userpass)
+            let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary())
             TCSLogWithMark("saving tokens to keychain")
             if TokenManager.saveTokensToKeychain(creds: xcredsCreds, setACL: true, password:userpass )==false {
                 TCSLogErrorWithMark("Error saving tokens to keychain")

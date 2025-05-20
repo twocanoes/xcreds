@@ -13,7 +13,8 @@
 #import <Security/Security.h>
 #import <DirectoryService/DirectoryService.h>
 #import <OpenDirectory/OpenDirectory.h>
-
+#import "TCTaskHelper.h"
+#import "NSError+EasyError.h"
 @interface KerbUtil ()
 
 //@property (nonatomic, assign, readwrite) BOOL				finished;
@@ -84,30 +85,32 @@ extern OSStatus SecKeychainResetLogin(UInt32 passwordLength, const void* passwor
 
 }
 
-- (void)changeKerberosPassword:(NSString *)oldPassword :(NSString *)newPassword :(NSString *)userPrincipal completion:(void(^)(NSString *))callback {
+- (BOOL)changeKerberosPassword:(NSString *)oldPassword :(NSString *)newPassword :(NSString *)userPrincipal error:(NSError **)error{
     OM_uint32 maj_stat;
     gss_name_t gname = GSS_C_NO_NAME;
-    CFErrorRef error = NULL;
+    CFErrorRef cferror = NULL;
 
+    
     gname = GSSCreateName((__bridge CFTypeRef _Nonnull)(userPrincipal), GSS_C_NT_USER_NAME, NULL);
     if (gname == NULL) {
-        callback(@"error: failed to create GSS name");
-        return;
+        *error=[NSError easyErrorWithTitle:@"GSSCreateName Error" body:@"error: failed to create GSS name" line:__LINE__ file:@__FILE__];
+        return NO;
     }
     NSDictionary *attrs = @{ (id)kGSSChangePasswordOldPassword: oldPassword,
                              (id)kGSSChangePasswordNewPassword: newPassword };
 
-    maj_stat = gss_aapl_change_password(gname, GSS_KRB5_MECHANISM, (__bridge CFDictionaryRef)attrs, &error);
+    maj_stat = gss_aapl_change_password(gname, GSS_KRB5_MECHANISM, (__bridge CFDictionaryRef)attrs, &cferror);
 
     CFRelease(gname);
     if (maj_stat) {
-        NSLog(@"error: %d %@", (int)maj_stat, error);
-        NSDictionary *errorDict = CFBridgingRelease(CFErrorCopyUserInfo(error));
+        NSLog(@"error: %d %@", (int)maj_stat, cferror);
+        NSDictionary *errorDict = CFBridgingRelease(CFErrorCopyUserInfo(cferror));
         NSString *errorMessage = [errorDict valueForKey:(@"NSDescription")];
-        callback(errorMessage);
-        return;
+        *error=[NSError easyErrorWithTitle:@"Change Kerberos Password Error" body:errorMessage line:__LINE__ file:@__FILE__];
+        return NO;
     }
-    callback(nil);
+    return YES;
+
 }
 
 - (NSString *)changeKerbPassword:(NSString *)oldPassword :(NSString *)newPassword :(NSString *)userPrincipal {

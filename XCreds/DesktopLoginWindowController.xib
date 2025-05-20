@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,11 +16,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="XCreds Password Update" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
+        <window title="XCreds Password Update" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="KxT-zM-Vnn" customClass="LoginWindow" customModule="XCreds" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="453" y="250" width="628" height="613"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1728" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1415"/>
             <view key="contentView" wantsLayer="YES" id="2LH-tE-efn">
                 <rect key="frame" x="0.0" y="0.0" width="628" height="613"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -46,8 +46,9 @@
                             <constraint firstAttribute="height" constant="50" id="JzN-tR-KJo"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="628" id="zPs-Yp-tRg"/>
                         </constraints>
-                        <textFieldCell key="cell" alignment="center" title="Your local account password needs to be changed to match your online password. Please authenticate now." drawsBackground="YES" id="DzZ-yz-JFo">
+                        <textFieldCell key="cell" alignment="center" drawsBackground="YES" id="DzZ-yz-JFo">
                             <font key="font" metaFont="system" size="21"/>
+                            <string key="title">Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <color key="backgroundColor" white="0.0062473695290000001" alpha="0.30882734634551495" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </textFieldCell>

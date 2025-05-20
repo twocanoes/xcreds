@@ -6,8 +6,14 @@
 //
 
 import Cocoa
+import OIDCLite
 
-class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
+class ScheduleManager:NoMADUserSessionDelegate {
+
+    func invalidCredentials() {
+        feedbackDelegate?.invalidCredentials()
+
+    }
 
     func credentialsUpdated(_ credentials: Creds) {
         feedbackDelegate?.credentialsUpdated(credentials)
@@ -35,11 +41,18 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     var feedbackDelegate:UpdateCredentialsFeedbackProtocol?
 //    static let shared=ScheduleManager()
     var tokenManager=TokenManager()
-    var nextCheckTime = Date()
+    var nextADCheckTime = Date()
+    var nextTokenCheckTime = Date()
+
     var timer:Timer?
     var kerberosPassword:String?
+
+    enum CheckTimer {
+        case ADTimer
+        case TokenTimer
+    }
 //    var feedbackDelegate:TokenManagerFeedbackDelegate?
-    func setNextCheckTime() {
+    func setNextCheckTime(timer:CheckTimer) {
         var rate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateHours.rawValue)
         var minutesRate = DefaultsOverride.standardOverride.double(forKey: PrefKeys.refreshRateMinutes.rawValue)
 
@@ -60,12 +73,19 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
             rate=3
         }
-        nextCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+        switch timer {
+
+        case .ADTimer:
+            nextADCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+
+        case .TokenTimer:
+            nextTokenCheckTime = Date(timeIntervalSinceNow: (rate*60+minutesRate)*60)
+
+        }
 
     }
     func checkADPasswordExpire(password:String) {
         TCSLogWithMark()
-
 
         let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
         var allDomainsFromPrefs = DefaultsOverride.standardOverride.array(forKey: PrefKeys.additionalADDomainList.rawValue)  as? [String] ?? []
@@ -76,7 +96,6 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
         allDomainsFromPrefs = allDomainsFromPrefs.map { currVal in
             currVal.uppercased()
         }
-
 
         guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
               let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
@@ -101,6 +120,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
                 TCSLogErrorWithMark("Could not create NoMADSession from SignIn window")
                 return
             }
+
             session.useSSL = getManagedPreference(key: .LDAPOverSSL) as? Bool ?? false
             session.userPass = password
             session.delegate = self
@@ -126,12 +146,25 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
     func startCredentialCheck()  {
         TCSLogWithMark()
 
+        //                NotificationCenter.default.post(name: NSNotification.Name("KerberosPasswordChanged"), object: ["updatedPassword":newPassword])
+
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("KerberosPasswordChanged"), object: nil, queue: .main, using: { notification in
+            if let newPassword = notification.object as? [String:String],
+                let newPassword = newPassword["updatedPassword"] {
+                TCSLogWithMark("new kerb password received:")
+                self.kerberosPassword=newPassword
+            }
+        })
+
         if let timer = timer, timer.isValid==true {
             return
         }
 
-        nextCheckTime=Date()
-        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 5 minutes
+        nextADCheckTime=Date()
+        nextTokenCheckTime=Date()
+
+        timer=Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { timer in //check every 30 seconds
             self.checkToken()
         })
         self.checkToken()
@@ -156,43 +189,136 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
     }
     func checkToken()  {
-        TCSLogWithMark("checking token")
-        if nextCheckTime>Date() {
-            TCSLogWithMark("Token will be checked at \(nextCheckTime)")
-
-            NotificationCenter.default.post(name: NSNotification.Name("CheckTokenStatus"), object: self, userInfo:["NextCheckTime":nextCheckTime])
+        TCSLogWithMark("checking token if needed")
+        if nextADCheckTime>Date()  && nextTokenCheckTime > Date() {
+            TCSLogWithMark("Not time to check yet. AD Token will be checked at \(nextADCheckTime) and OIDC token will be checked at \(nextTokenCheckTime)")
             return
         }
-        setNextCheckTime()
-        checkKerberosTicket()
-
-        TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
-        tokenManager.feedbackDelegate=self
-
-        let keychainUtil = KeychainUtil()
-
-        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
-
-        if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
-            let refreshAccountAndToken = refreshAccountAndToken,
-            let refreshToken = refreshAccountAndToken.1,
-                refreshToken != ""  {
-            TCSLogWithMark("requesting new access token")
-            tokenManager.getNewAccessToken()
+        if nextADCheckTime<Date(){
+            setNextCheckTime(timer:.ADTimer)
+            checkKerberosTicket()
         }
 
+        if  nextTokenCheckTime<Date(){
+            setNextCheckTime(timer:.TokenTimer)
 
+            TCSLogWithMark("checking for oidc tokens if we have a refresh token and oidc is configured.")
+
+            let keychainUtil = KeychainUtil()
+
+            let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
+            var hasValidRefreshToken = false
+
+            if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
+                let refreshAccountAndToken = refreshAccountAndToken,
+                let refreshToken = refreshAccountAndToken.1,
+
+                    refreshToken != ""  {
+                hasValidRefreshToken = true
+            }
+            if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) {
+
+                TCSLogWithMark("We have a refresh token or are using ROPG for menu login.")
+
+                //check to make sure we are not in an error state
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.formatOptions = [.withFullDate,.withFullTime]
+
+
+                var isLoginInFailedState = false
+                let ud = UserDefaults.standard
+                //
+                if let _ = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue){
+                    isLoginInFailedState=true
+                    TCSLogWithMark("We have a prior failed login attempt.")
+
+                }
+                TCSLogWithMark("Checking to see if the login window was successful after the last failed attempt. If so, we can go ahead and try to authenticate.")
+
+                if let lastOIDCLoginFailTimestampString = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue),
+                   let lastOIDCLoginFailTimestampDate = try? Date.ISO8601FormatStyle().parseStrategy.parse(lastOIDCLoginFailTimestampString ) {
+
+
+                        //last login failed. We can proceed only if there was a successful login at the login window.
+                        if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
+                           let oidcLastLoginTimestampStringFromDSArray = user.value(forKey: "dsAttrTypeNative:_xcreds_oidc_lastLoginTimestamp") as? [String],
+                           let oidcLastLoginTimestampStringFromDS = oidcLastLoginTimestampStringFromDSArray.first,
+                           let oidcLastLoginTimestameDateFromLoginWindow = try? Date.ISO8601FormatStyle().parseStrategy.parse(oidcLastLoginTimestampStringFromDS),
+                           oidcLastLoginTimestameDateFromLoginWindow > lastOIDCLoginFailTimestampDate {
+
+                            TCSLogWithMark("Login success at login window so we can go ahead and try to authenticate.")
+
+
+                            isLoginInFailedState=false
+
+                        }
+                    }
+                    if isLoginInFailedState==true {
+                        TCSLogWithMark("***** Invalid credentials from prior attempts. Prompting user ******")
+
+                        feedbackDelegate?.invalidCredentials()
+                        return
+                    }
+
+                Task{
+                    do{
+                        try await tokenManager.oidc().getEndpoints()
+                        TCSLogWithMark("requesting new access token")
+                        let tokenResponse = try await tokenManager.getNewAccessToken()
+                        TCSLogWithMark("success. Setting new token.")
+                        ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+
+                        let creds = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+                        if let localPassword = creds?.1 {
+                            feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
+                        }
+
+                    }
+                    catch let error  {
+
+                        TCSLogWithMark("Error")
+                        switch error {
+
+                        case OIDCLiteError.authFailure(let mesg):
+                            TCSLogWithMark("invalid credentials: \(mesg)")
+                            TCSLogWithMark("Setting last failed login timestamp to now.")
+
+                            ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+                            feedbackDelegate?.invalidCredentials()
+
+                        default:
+                            TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
+                            nextTokenCheckTime=Date.distantPast
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    func NoMADAuthenticationSucceded() {
+    func NoMADAuthenticationSucceeded() {
         TCSLogWithMark()
+        if let userPrinc = session?.userPrincipal {
+            TCTaskHelper.shared().runCommand("/usr/bin/kswitch", withOptions: ["-p", userPrinc])
+//            let _ = cliTask("/usr/bin/kswitch -p " +  userPrinc)
+        }
         feedbackDelegate?.kerberosTicketUpdated()
         session?.userInfo()
+
+
 
     }
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
         TCSLogErrorWithMark("AuthenticationFailed:\(description)")
+        switch error {
+
+        case .OffDomain:
+            nextADCheckTime=Date.distantPast
+        default:
+            break
+        }
         feedbackDelegate?.kerberosTicketCheckFailed(error)
     }
 
@@ -202,7 +328,7 @@ class ScheduleManager:TokenManagerFeedbackDelegate, NoMADUserSessionDelegate {
 
         let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         if let passExpired = user.passwordExpire {

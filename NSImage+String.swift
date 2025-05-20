@@ -11,11 +11,9 @@ extension NSImage {
 
     static func imageFromPathOrURL(pathURLString:String) -> NSImage? {
 
-        var isFileURL = false
         //if a local path, remove prefix and make a path URL out of it.
         var pathURL:URL?
         if pathURLString.hasPrefix("file://") == true {
-            isFileURL = true
             let pathOnly = pathURLString.dropFirst(7)
             pathURL = URL(fileURLWithPath: String(pathOnly))
         }

@@ -10,7 +10,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
     enum LocalUsernamePasswordResult {
         case success(LocalAdminCredentials?)
-        case resetKeychainRequested(LocalAdminCredentials?)
+        case accountResetRequested(LocalAdminCredentials?)
         case userCancelled
         case error(String)
     }
@@ -34,11 +34,27 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
     var adminPassword:String?
     var currentUsername:String?
 
+    var isAccountLocked:Bool=false
+
+
     override var windowNibName: NSNib.Name {
 
         return "VerifyLocalPasswordWindowController"
     }
     override func awakeFromNib() {
+        if isAccountLocked {
+            resetTitle.stringValue="Unlock Account"
+            resetText.stringValue="The user account is locked.  You can wait for the account to unlock or reset the password by clicking the Reset button below."
+
+            if let accountLockedPasswordDialogTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.accountLockedPasswordDialogTitle.rawValue),accountLockedPasswordDialogTitle.count>0{
+                resetTitle.stringValue=accountLockedPasswordDialogTitle
+            }
+            if let accountLockedPasswordDialogText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.accountLockedPasswordDialogText.rawValue),accountLockedPasswordDialogText.count>0{
+                resetText.stringValue=accountLockedPasswordDialogText
+            }
+
+        }
+
         resetButton.isHidden = !showResetButton
         resetText.isHidden = !showResetText
         if let currentUsername = currentUsername {
@@ -82,7 +98,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
                 if let adminUsername = adminUsername,
                    let adminPassword = adminPassword {
-                    return .resetKeychainRequested(LocalAdminCredentials(username: adminUsername, password: adminPassword))
+                    return .accountResetRequested(LocalAdminCredentials(username: adminUsername, password: adminPassword))
                 }
                 return .error("no admin username or password set")
             }
@@ -119,6 +135,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
                     TCSLogWithMark()
                     do {
                         TCSLogWithMark("attempting to change password")
+
                         try localUser.changePassword(passwordEntered, toPassword: newPassword)
                     }
                     catch {
@@ -149,7 +166,7 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
 
         TCSLogWithMark()
         //override or prefs has admin username / password so don't prompt
-        if let adminUsername = adminUsername, let adminPassword = adminPassword{
+        if let _ = adminUsername, let _ = adminPassword{
             TCSLogWithMark()
             if self.window?.isModalPanel==true {
                 TCSLogWithMark()
@@ -229,17 +246,19 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
             adminUsernameTextField.shake(self)
             return
         }
-        if PasswordUtils.verifyUser(name: adminUserName, auth: adminPassword)==false {
-            adminPasswordTextField.shake(self)
-            return
-        }
-        else { //password is valid
 
+        let res = PasswordUtils.isLocalPasswordValid(userName: adminUserName, userPass: adminPassword)
+        switch res {
+
+        case .success:
             self.adminUsername=adminUserName
             self.adminPassword=adminPassword
-
-
             window?.endSheet(adminCredentialsWindow, returnCode: .OK)
+            
+        default:
+            adminPasswordTextField.shake(self)
+
+
         }
     }
 

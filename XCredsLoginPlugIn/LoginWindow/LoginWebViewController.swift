@@ -41,6 +41,8 @@ class LoginWebViewController: WebViewController, DSQueryable {
         updateView()
     }
     func updateView(){
+        self.view.layer?.cornerRadius=15
+
         let screenRect = NSScreen.screens[0].frame
 
         let screenWidth = screenRect.width

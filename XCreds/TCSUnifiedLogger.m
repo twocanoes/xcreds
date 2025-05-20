@@ -45,16 +45,32 @@ void TCSLogError(NSString *string)
 {
     static TCSUnifiedLogger *sharedLogger;
 
-
     if (sharedLogger !=nil){
         return sharedLogger;
     }
 
- 
+
+    if (sharedLogger == nil) {
+        sharedLogger = [[TCSUnifiedLogger alloc] init];
+    }
+
+    [sharedLogger updateLogPath];
+
+    sharedLogger.lastLoggedDate = [NSDate distantPast];
+
+    return sharedLogger;
+}
+//os_log("Unable to get home directory path.", log: "", type: .error)
+//- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
+//
+//}
+
+
+-(void)updateLogPath{
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *logFolderPath = [[[NSUserDefaults standardUserDefaults] objectForKey:@"LogFolderPath"] stringByExpandingTildeInPath];
     NSURL *logFolderURL;
-//log file not defined.
+    //log file not defined.
     if (!logFolderPath || logFolderPath.length == 0 || [fm fileExistsAtPath:logFolderPath] == NO) {
         //root
         if (getuid() == 0 || getuid() == 92) { //root or security agent
@@ -62,7 +78,7 @@ void TCSLogError(NSString *string)
             logFolderURL = [NSURL fileURLWithPath:@"/tmp/xcreds"];
 
 
-        //not root
+            //not root
         } else {
             NSString *homePath = [[NSFileManager defaultManager] realHomeFolder];
             logFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Logs", homePath]];
@@ -77,7 +93,7 @@ void TCSLogError(NSString *string)
             }
         }
     }
-//define based on prefs.
+    //define based on prefs.
     else {
         logFolderURL = [NSURL fileURLWithPath:[logFolderPath stringByExpandingTildeInPath]];
     }
@@ -92,25 +108,13 @@ void TCSLogError(NSString *string)
         }
     }
 
-
-    if (sharedLogger == nil) {
-        sharedLogger = [[TCSUnifiedLogger alloc] init];
-    }
-    sharedLogger.lastLoggedDate = [NSDate distantPast];
-
-    sharedLogger.logFileURL = [logFolderURL URLByAppendingPathComponent:logFileName];
-    if (![fm fileExistsAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent]]) {
-        if ([fm createDirectoryAtPath:[sharedLogger.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:@{@"NSFilePosixPermissions":[NSNumber numberWithUnsignedLong:0770U],NSFileOwnerAccountID:[NSNumber numberWithUnsignedLong:92]} error:nil] == NO) {
+    self.logFileURL = [logFolderURL URLByAppendingPathComponent:logFileName];
+    if (![fm fileExistsAtPath:[self.logFileURL.path stringByDeletingLastPathComponent]]) {
+        if ([fm createDirectoryAtPath:[self.logFileURL.path stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:@{@"NSFilePosixPermissions":[NSNumber numberWithUnsignedLong:0770U],NSFileOwnerAccountID:[NSNumber numberWithUnsignedLong:92]} error:nil] == NO) {
         }
     }
-    return sharedLogger;
+
 }
-//os_log("Unable to get home directory path.", log: "", type: .error)
-//- (void)os_log:(NSString *)inStr log:(NSString *)level type:(id)type{
-//
-//}
-
-
 - (void)logString:(NSString *)inStr level:(LogLevel)level
 {
 
@@ -135,6 +139,11 @@ void TCSLogError(NSString *string)
             [[NSFileManager defaultManager] createFileAtPath:self.logFileURL.path contents:nil attributes:@{NSFilePosixPermissions:[NSNumber numberWithUnsignedLong:0660U], NSFileOwnerAccountID:[NSNumber numberWithUnsignedLong:92]}];
         }
 
+
+        if ([fm isWritableFileAtPath:self.logFileURL.path]==false){
+            [self updateLogPath];
+            TCSLog(@"Updated log file path");
+        }
 
         NSFileHandle *fh = [NSFileHandle fileHandleForWritingAtPath:self.logFileURL.path];
         [fh seekToEndOfFile];

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -111,7 +111,7 @@ DQ
                                 </gridCell>
                                 <gridCell row="Ax5-pH-aQS" column="8Cw-21-fob" xPlacement="center" id="iyn-s8-GFy">
                                     <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="0pJ-At-M5q">
-                                        <rect key="frame" x="557" y="0.0" width="116" height="48"/>
+                                        <rect key="frame" x="589" y="0.0" width="51" height="48"/>
                                         <buttonCell key="cell" type="bevel" title="Refresh" bezelStyle="rounded" image="refresh symbol" imagePosition="above" alignment="center" imageScaling="proportionallyDown" inset="2" id="QAx-lk-PcT">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -193,7 +193,7 @@ DQ
         <image name="RestartX" width="32" height="32"/>
         <image name="ShutdownX" width="32" height="32"/>
         <image name="loginwindow" width="41" height="31.5"/>
-        <image name="refresh symbol" width="989" height="989"/>
+        <image name="refresh symbol" width="41" height="41"/>
         <image name="wifi" width="32" height="32"/>
     </resources>
 </document>

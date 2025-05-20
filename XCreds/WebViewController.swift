@@ -11,6 +11,16 @@ import Cocoa
 import OIDCLite
 
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
+
+    struct WebViewControllerError:Error {
+
+        var errorDescription: String
+
+    }
+    func invalidCredentials() {
+        
+    }
+    
     func authenticationSuccessful() {
         
     }
@@ -32,27 +42,28 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     var password:String?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
 
+    override func viewWillAppear() {
+        if let refreshTitleTextField = self.refreshTitleTextField {
+            refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
+
+
+            if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
+                self.refreshTitleTextField?.stringValue = refreshBannerText
+            }
+
+        }
+
+    }
     func loadPage() {
-        DispatchQueue.main.async {
+        Task{ @MainActor in
             TCSLogWithMark("Clearing cookies")
             self.webView.cleanAllCookies()
             TCSLogWithMark()
             let licenseState = LicenseChecker().currentLicenseState()
-            if let refreshTitleTextField = self.refreshTitleTextField {
-                refreshTitleTextField.isHidden = !DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowRefreshBanner.rawValue)
-
-
-                if let refreshBannerText = DefaultsOverride.standardOverride.string(forKey: PrefKeys.refreshBannerText.rawValue) {
-                    self.refreshTitleTextField?.stringValue = refreshBannerText
-                }
-
-            }
-
-            
 
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self
-//            TokenManager.shared.oidc().delegate = self
+            //            TokenManager.shared.oidc().delegate = self
             self.clearCookies()
             TCSLogWithMark()
             switch licenseState {
@@ -84,60 +95,58 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
             let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
 
-            if discoveryURL != nil {
-                NetworkMonitor.shared.startMonitoring()
-                TCSLogWithMark("Network monitor: adding connectivity status change observer")
-            }
+            NetworkMonitor.shared.startMonitoring()
+            TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
-            if discoveryURL != nil, let url = self.getOidcLoginURL(){
+            do {
+                guard let discoveryURL = discoveryURL else {
+                    TCSLogWithMark("discoveryURL not defined");
+
+                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
+                }
+                TCSLogWithMark("getOidcLoginURL");
+
+                let url = try await self.getOidcLoginURL()
+                TCSLogWithMark("load");
+
                 self.webView.load(URLRequest(url: url))
                 NetworkMonitor.shared.stopMonitoring()
-
             }
-            else {
-                if discoveryURL == nil {
-                    TCSLogWithMark("no discovery URL")
-                }
-                else {
-                    TCSLogWithMark("no discovery URL")
+            catch {
+                TCSLogWithMark("error: \(error)");
 
-                }
+                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)?.stripped ?? "loadPageTitle"
 
-                let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)
-
-                let loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)
-
-                if let loadPageTitle = loadPageTitle?.stripped,
-                       let loadPageInfo = loadPageInfo?.stripped {
-                           let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
-
-                           self.webView.loadHTMLString(html, baseURL: nil)
+                var loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)?.stripped ?? "loadPageInfo"
 
 
-                }
+                loadPageInfo = loadPageInfo + "<br><br>" + (error as? WebViewControllerError ?? WebViewControllerError(errorDescription: error.localizedDescription)).errorDescription
+
+                let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+
+                self.webView.loadHTMLString(html, baseURL: nil)
+
             }
         }
     }
 
     @objc func connectivityStatusHandler(notification: Notification) {
         TCSLogWithMark("Network monitor: handling connectivity status update")
-        if NetworkMonitor.shared.isConnected {
-            TCSLogWithMark("Refresh webview login")
 
-            self.loadPage()
+        Task {
+            try? await tokenManager.oidc().getEndpoints()
+            TCSLogWithMark("Refresh webview login")
+            loadPage()
         }
     }
 
-    private func getOidcLoginURL() -> URL? {
-        for _ in 1...5 {
-            if let url = tokenManager.oidc().createLoginURL() {
-                return url
-            }
-            TCSLogWithMark("Trying to get login url again")
-            Thread.sleep(forTimeInterval: 1)
+
+
+    private func getOidcLoginURL() async throws -> URL {
+        if let url = try await tokenManager.oidc().createLoginURL() {
+            return url
         }
-        TCSLogWithMark()
-        return nil
+        throw WebViewControllerError(errorDescription: "Error getting OIDC URL")
     }
 
 
@@ -220,7 +229,11 @@ extension WebViewController: WKNavigationDelegate {
                         TCSLogWithMark("========= password set===========")
                         self.password=passwords[2]
                     }
-
+                    else if passwords.count==2, passwords[0]==passwords[1] {
+                        TCSLogWithMark("found 2 password fields. so it is a reset password situation")
+                        TCSLogWithMark("========= password set===========")
+                        self.password=passwords[1]
+                    }
                     else if let passwordElementID = passwordElementID{
                         TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
 
@@ -315,15 +328,21 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("Redirect error. if the error is \"Could not connect to the server.\", it is probably safe to ignore. If the error is \"unsupported URL\", please check your redirectURL in prefs matches the one defined in your OIDC app. Error: \(error.localizedDescription)")
     }
     func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        TCSLogWithMark("WebDel:: Did Receive Redirect for: \(webView.url?.absoluteString ?? "None")")
+        Task{
+            guard let url = webView.url else {
+                return
+            }
+            TCSLogWithMark("WebDel:: Did Receive Redirect for: \(url.absoluteString)")
 
-         let redirectURI = tokenManager.oidc().redirectURI
+            TCSLogWithMark("URL: \(url.absoluteString)")
+            let redirectURI = try await tokenManager.oidc().redirectURI
+            TCSLogWithMark("URL: \(url.absoluteString)")
             TCSLogWithMark("redirectURI: \(redirectURI)")
-            TCSLogWithMark("URL: \(webView.url?.absoluteString ?? "NONE")")
-            if (webView.url?.absoluteString.starts(with: (redirectURI))) ?? false {
+
+            if (url.absoluteString.starts(with: (redirectURI))) {
                 TCSLogWithMark("got redirect URI match. separating URL")
                 var code = ""
-                let fullCommand = webView.url?.absoluteString ?? ""
+                let fullCommand = url.absoluteString
                 let pathParts = fullCommand.components(separatedBy: "&")
                 for part in pathParts {
                     if part.contains("code=") {
@@ -332,12 +351,15 @@ extension WebViewController: WKNavigationDelegate {
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
                         TCSLogWithMark("getting tokens")
 
-                        tokenManager.oidc().getToken(code: code)
+                        let tokenResponse = try await tokenManager.oidc().getToken(code: code)
+                        TCSLogWithMark("got token: \(tokenResponse)")
+
+                        tokenManager.tokenResponse(tokens: tokenResponse)
                         return
                     }
                 }
             }
-        
+        }
 
     }
 

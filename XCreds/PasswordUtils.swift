@@ -34,6 +34,7 @@ enum PasswordVerificationResult {
     case success
     case incorrectPassword
     case accountDoesNotExist
+    case accountLocked
     case other(String)
 }
 
@@ -63,16 +64,16 @@ class PasswordUtils: NSObject {
 
         // We may have gotten multiple ODRecords that match username,
         // So make sure it also matches the UID.
-        if ( records != nil ) {
-            for case let record in records {
-                let attribute = "dsAttrTypeStandard:UniqueID"
-                if let odUid = try? String(describing: record.values(forAttribute: attribute)[0]) {
-                    if ( odUid == uid) {
-                        return record
-                    }
+
+        for case let record in records {
+            let attribute = "dsAttrTypeStandard:UniqueID"
+            if let odUid = try? String(describing: record.values(forAttribute: attribute)[0]) {
+                if ( odUid == uid) {
+                    return record
                 }
             }
         }
+
         return nil
     }
     class func GetSecureTokenUserList() -> [String] {
@@ -94,48 +95,49 @@ class PasswordUtils: NSObject {
     }
 
     
-    class func verifyUser(name: String, auth: String) -> Bool {
-        os_log("Finding user record", log: noLoMechlog, type: .debug)
-        TCSLogWithMark("searching for user \(name) and password with count \(auth.count)")
-        var records = [ODRecord]()
-        let odsession = ODSession.default()
-        var isValid = false
-        do {
-            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
-            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
-            records = try query.resultsAllowingPartial(false) as! [ODRecord]
-            isValid = ((try records.first?.verifyPassword(auth)) != nil)
-        } catch {
-            let errorText = error.localizedDescription
-            TCSLogErrorWithMark("ODError while trying to check for local user: \(errorText)")
-            return false
-        }
-        return isValid
-    }
+//    class func verifyUser(name: String, auth: String) -> Bool {
+//        os_log("Finding user record", log: noLoMechlog, type: .debug)
+//        TCSLogWithMark("searching for user \(name) and password with count \(auth.count)")
+//        var records = [ODRecord]()
+//        let odsession = ODSession.default()
+//        var isValid = false
+//        do {
+//            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+//            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeAllAttributes, maximumResults: 0)
+//            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+//            let result = isLocalPasswordValid(userName: name, userPass: auth)
+//            isValid = ((try records.first?.verifyPassword(auth)) != nil)
+//        } catch {
+//            let errorText = error.localizedDescription
+//            TCSLogErrorWithMark("ODError while trying to check for local user: \(errorText)")
+//            return false
+//        }
+//        return isValid
+//    }
 
-    class func verifyPassword(password:String) -> Bool {
-        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-        do {
-            try currentUser?.verifyPassword(password)
-        }
-        catch {
-            return false
-
-        }
-        return true
-    }
-
-    class func verifyCurrentUserPassword(password:String) -> Bool {
-        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-        do {
-            try currentUser?.verifyPassword(password)
-        }
-        catch {
-            return false
-
-        }
-        return true
-    }
+//    class func verifyPassword(password:String) -> Bool {
+//        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+//        do {
+//            try currentUser?.verifyPassword(password)
+//        }
+//        catch {
+//            return false
+//
+//        }
+//        return true
+//    }
+//
+//    class func verifyCurrentUserPassword(password:String) -> Bool {
+//        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+//        do {
+//            try currentUser?.verifyPassword(password)
+//        }
+//        catch {
+//            return false
+//
+//        }
+//        return true
+//    }
 
     class func verifyKeychainPassword(password: String) throws -> Bool  {
         var getDefaultKeychain: OSStatus
@@ -158,6 +160,7 @@ class PasswordUtils: NSObject {
     static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
 
 
+        TCSLogWithMark()
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
         var err: OSStatus
@@ -181,7 +184,7 @@ class PasswordUtils: NSObject {
         do {
             try getCurrentConsoleUserRecord()?.changePassword(oldPassword, toPassword: newPassword)
         } catch  {
-            throw PasswordError.unknownError("error changing password")
+            throw PasswordError.unknownError("error changing password: \(error)")
 
         }
 
@@ -296,12 +299,16 @@ class PasswordUtils: NSObject {
                 TCSLogWithMark("No local account for user: \(userName) is not valid.")
                 return .accountDoesNotExist
             case Int(kODErrorCredentialsAccountLocked.rawValue):
-                TCSLogWithMark("No Account for user: \(userName) is not valid.")
-                return .other("Local account is locked")
+                TCSLogWithMark("No Account for user: \(userName) is not locked.")
+                return .accountLocked
 
             case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):
                 TCSLogWithMark("No local account for user: \(userName) is not valid. Local account temporarily locked. Please wait a bit and try again.")
-                return .other("Local account temporarily locked. Please wait a bit and try again.")
+                return .accountLocked
+
+            case Int(kODErrorCredentialsAccountDisabled.rawValue):
+                TCSLogWithMark("No local account for user: \(userName) is not valid. Local account disabled. Please wait a bit and try again.")
+                return .accountLocked
 
 
             case Int(kODErrorCredentialsMethodNotSupported.rawValue):

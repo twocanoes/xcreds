@@ -191,13 +191,10 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
             
         } else {
-            TCSLogWithMark("Checking to see if we are doing a silent overwrite")
-            // Checking to see if we are doing a silent overwrite
-            if getHint(type: .passwordOverwrite) as? Bool ?? false {
+            TCSLogWithMark("Checking to see if we are doing a password overwrite")
+            // Checking to see if we are doing a overwrite
 
-                TCSLogWithMark("passwordOverwrite not set")
-            }
-            if getHint(type: .passwordOverwrite) as? Bool ?? false && !(getManagedPreference(key: .GuestUserAccounts) as? [String] ?? ["Guest", "guest"]).contains(xcredsUser!){
+            if getHint(type: .passwordOverwrite) as? Bool == true {
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
                 TCSLogWithMark("trying to getting admin user and password")
@@ -229,7 +226,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
         // Set the xcreds attributes to stamp this account as the mapped one
         setTimestampFor(xcredsUser ?? "")
-        let _ = updateOIDCInfo(user: xcredsUser ?? "")
+        let _ = updateOIDCInfo(user: xcredsUser ?? "", localOnly: localLogin)
 
         TCSLogWithMark("seeing if we have an alias")
         if let alias = alias, let xcredsUser = xcredsUser {
@@ -314,7 +311,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     }
     func resetUserPassword(adminUserName:String, adminPassword:String) {
         do {
-            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword) obtained")
+            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword.count) obtained")
 
             let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
             TCSLogWithMark()
@@ -331,7 +328,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
         }
     }
 
-    func updateOIDCInfo(user: String) -> Bool {
+    func updateOIDCInfo(user: String, localOnly: Bool) -> Bool {
         TCSLogWithMark("Checking for local username")
         var records = [ODRecord]()
         let odsession = ODSession.default()
@@ -382,13 +379,21 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             TCSLogWithMark("setting fullUserName")
             try? records.first?.setValue(fullUserName, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
         }
+
+        //oidcLastLoginTimestamp
+
+        if let oidcLastLoginTimestampString = getHint(type: .oidcLastLoginTimestamp) as? String{
+            try? records.first?.setValue(oidcLastLoginTimestampString, forAttribute: "dsAttrTypeNative:_xcreds_oidc_lastLoginTimestamp")
+        }
+
+
         TCSLogWithMark("checking for alias to add as a username for rogp")
         let alias = getHint(type: .aliasName) as? String
 
         if let alias = alias {
             TCSLogWithMark("saving alias to DS as a username for ropg as needed")
             try? records.first?.setValue(alias, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
-        } else {
+        } else if localOnly==false {
             TCSLogWithMark("Fallback,saving account name to DS as username for ropg as needed")
             try? records.first?.setValue(user, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
         }

@@ -10,8 +10,10 @@ overlay_resources_path="${overlay_path}"/Contents/Resources
 auth_backup_folder=/Library/"Application Support"/xcreds
 rights_backup_path="${auth_backup_folder}"/rights.bak
 launch_agent_config_name="com.twocanoes.xcreds-overlay.plist"
+app_launch_agent_config_name="com.twocanoes.xcreds-launchagent.plist"
 launch_agent_destination_path="/Library/LaunchAgents/"
 launch_agent_source_path="${overlay_resources_path}"/"${launch_agent_config_name}"
+app_launch_agent_source_path="${script_folder}"/"${app_launch_agent_config_name}"
 
 autofill_path="${target_path}/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex"
 
@@ -77,11 +79,20 @@ if [ $f_install -eq 1 ]; then
 		cp -R "${plugin_path}" "${target_volume}"/Library/Security/SecurityAgentPlugins/
 		chown -R root:wheel "${target_volume}"/Library/Security/SecurityAgentPlugins/XCredsLoginPlugin.bundle
 	fi
-	
+	#app_launch_agent_source_path
+
+
+    if [ ! -e "${launch_agent_destination_path}"/"${app_launch_agent_config_name}" ]; then
+
+        cp "${app_launch_agent_source_path}" "${launch_agent_destination_path}"
+    fi
+
+
 	if [ ! -e "${launch_agent_destination_path}"/"${launch_agent_config_name}" ]; then
 	
 		cp "${launch_agent_source_path}" "${launch_agent_destination_path}"
 	fi
+
 	if [ -e ${authrights_path} ]; then
          remove_rights
 
@@ -109,11 +120,14 @@ elif [ $f_remove -eq 1 ]; then
 	fi
 	
 	if [ -e "${launch_agent_destination_path}"/"${launch_agent_config_name}" ]; then
-#		/bin/launchctl unload "${launch_agent_destination_path}"/"${launch_agent_config_name}" 
 		rm "${launch_agent_destination_path}"/"${launch_agent_config_name}"
 	fi
-	
-	
+
+     if [ -e "${launch_agent_destination_path}"/"${app_launch_agent_config_name}" ]; then
+        rm "${launch_agent_destination_path}"/"${app_launch_agent_config_name}"
+    fi
+
+
 elif [ $f_restore -eq 1 ]; then
     if [ -e "${rights_backup_path}" ]; then
         security authorizationdb write system.login.console < "${rights_backup_path}"

@@ -28,10 +28,8 @@ final class NetworkMonitor {
     private let queue = DispatchQueue(label: "NetworkConnectivityMonitor")
     private let monitor: NWPathMonitor
 
-    private(set) var isConnected = false
-    private(set) var isExpensive = false
-    private(set) var lastNotification: Date?
-    private(set) var currentConnectionType: NWInterface.InterfaceType?
+
+    private(set) var lastNotification = Date.distantPast
 
     private init() {
         monitor = NWPathMonitor(prohibitedInterfaceTypes: [.cellular, .loopback])
@@ -40,30 +38,27 @@ final class NetworkMonitor {
     func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             TCSLogWithMark("Network monitor: path updated")
-            self?.isConnected = path.status == .satisfied
-            self?.isExpensive = path.isExpensive
-            self?.currentConnectionType = NWInterface.InterfaceType.allCases.filter { path.usesInterfaceType($0) }.first
-            if NetworkManager().isConnectedToNetwork() == true {
+            let currentConnectionType = NWInterface.InterfaceType.allCases.filter { path.usesInterfaceType($0) }.first
+            TCSLogWithMark("Network monitor: connectivity status \"\(path.status)\" for \(String(describing: currentConnectionType))")
+            if path.status == .satisfied {
                 TCSLogWithMark("Network monitor: connected to network")
-                if let lastNotification = self?.lastNotification {
-                    if abs(lastNotification.timeIntervalSinceNow) > 5 {
-                        TCSLogWithMark("Network monitor: posting connectivity status to NC: \(path.status) for \(String(describing: self?.currentConnectionType))")
-                        self?.lastNotification = Date()
-                        NotificationCenter.default.post(name: .connectivityStatus, object: nil)
-                    } else {
-                        TCSLogWithMark("Network monitor: debouncing connectivity status to NC")
-                    }
-                } else {
-                    TCSLogWithMark("Network monitor: posting connectivity status to NC: \(path.status) for \(String(describing: self?.currentConnectionType))")
+                if let lastNotification = self?.lastNotification, abs(lastNotification.timeIntervalSinceNow) > 5 {
                     self?.lastNotification = Date()
                     NotificationCenter.default.post(name: .connectivityStatus, object: nil)
                 }
-            } else {
-                TCSLogWithMark("Not connected to network, no notfication posted")
-                self?.isConnected=false
+                else {
+                    TCSLogWithMark("Network monitor: skipping connectivity status notification since less than 5 seconds since last notification")
+                }
+
             }
+            else {
+                TCSLogWithMark("Not connected to network, not posting any notifications")
+
+            }
+
         }
-        monitor.start(queue: queue)
+        self.monitor.start(queue: queue)
+
     }
 
     func stopMonitoring() {

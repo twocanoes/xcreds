@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh 
 set -e
 #export SKIP_NOTARY=1
 PRODUCT_NAME="XCreds"
@@ -17,7 +17,32 @@ if [ -e /Applications/DropDMG.app ]; then
 fi
 
 pushd ../..
+
+
+if [ "${1}" == "--force" ] ; then
+	echo skipping clean check
+else
+	
+	if output="$(git status --porcelain)" && [ -z "$output" ]; then
+		echo "'git status --porcelain' had no errors AND the working directory" \
+		"is clean."
+	else 
+		echo "Working directory has UNCOMMITTED CHANGES."
+		exit -1
+	fi
+fi
+
+
 agvtool next-version -all
+
+#buildNumber=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${PRODUCT_SETTINGS_PATH}")
+buildNumber=$(agvtool what-version -terse)
+version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING_VERSION =')
+git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
+git push --tags
+./release_notes.sh  > release-notes.md
+
+
 
 buildNumber=$(agvtool what-version -terse)
 popd

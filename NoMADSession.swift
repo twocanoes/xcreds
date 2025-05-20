@@ -13,7 +13,7 @@ public protocol NoMADUserSession {
     func getKerberosTicket(principal: String?, completion: @escaping (KerberosTicketResult) -> Void)
     func authenticate(authTestOnly: Bool)
     func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void)
-    func changePassword()
+    func changeKerberosPassword() throws
     func userInfo()
     var delegate: NoMADUserSessionDelegate? { get set }
     var state: NoMADSessionState { get }
@@ -22,7 +22,7 @@ public protocol NoMADUserSession {
 public typealias KerberosTicketResult = Result<ADUserRecord, NoMADSessionError>
 
 public protocol NoMADUserSessionDelegate: AnyObject {
-    func NoMADAuthenticationSucceded()
+    func NoMADAuthenticationSucceeded()
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String)
     func NoMADUserInformation(user: ADUserRecord)
 }
@@ -149,6 +149,7 @@ public class NoMADSession: NSObject {
             self.kerberosRealm = domain.uppercased()
             self.userPrincipal = user + "@\(self.kerberosRealm)"
         }
+
     }
 
     // MARK: conv functions
@@ -1081,31 +1082,7 @@ public class NoMADSession: NSObject {
         }
     }
 
-    // Create a minimal com.apple.Kerberos file so we don't barf on password change
 
-    fileprivate func createBasicKerbPrefs(realm: String?) {
-
-        let realm = realm ?? kerberosRealm
-
-        // get the defaults for com.apple.Kerberos
-
-        let kerbPrefs = UserDefaults.init(suiteName: "com.apple.Kerberos")
-
-        // get the list defaults, or create an empty dictionary if there are none
-
-        let kerbDefaults = kerbPrefs?.dictionary(forKey: "libdefaults") ?? [String:AnyObject]()
-
-        // test to see if the domain_defaults key already exists, if not build it
-
-        if kerbDefaults["default_realm"] != nil {
-            TCSLogWithMark("Existing default realm. Skipping adding default realm to Kerberos prefs.")
-        } else {
-            // build a dictionary and add the KDC into it then write it back to defaults
-            let libDefaults = NSMutableDictionary()
-            libDefaults.setValue(realm, forKey: "default_realm")
-            kerbPrefs?.set(libDefaults, forKey: "libdefaults")
-        }
-    }
 }
 
 extension NoMADSession: NoMADUserSession {
@@ -1247,7 +1224,7 @@ extension NoMADSession: NoMADUserSession {
                 if authTestOnly {
                     klistUtil.kdestroy(princ: self.userPrincipal)
                 }
-                self.delegate?.NoMADAuthenticationSucceded()
+                self.delegate?.NoMADAuthenticationSucceeded()
             }
         }
 
@@ -1266,40 +1243,35 @@ extension NoMADSession: NoMADUserSession {
     }
 
     /// Change the password for the current user session via delegate.
-    public func changePassword() {
+    ///
+    public func changeKerberosPassword() throws {
         // change user's password
         // check kerb prefs - otherwise we can get an error here if not set
         TCSLogWithMark("Checking kpassword server.")
+
         _ = checkKpasswdServer()
 
         // set up the KerbUtil
         TCSLogWithMark("Init KerbUtil.")
 
         let kerbUtil = KerbUtil()
-        TCSLogWithMark("Change password.")
+        TCSLogWithMark("Change password for userPrincipal: \(userPrincipal)")
 
-        kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal) { errorString in
-//            let error = kerbUtil.changeKerbPassword(oldPass, newPass, userPrincipal)
+        try kerbUtil.changeKerberosPassword(oldPass, newPass, userPrincipal)
 
-            if let errorString = errorString {
-                // error
-                self.state = .kerbError
-                self.delegate?.NoMADAuthenticationFailed(error: NoMADSessionError.KerbError, description: errorString)
-            } else {
-                // If the password change worked then we are online. Reauthenticate with new password.
-                self.userPass = self.newPass
-                self.authenticate(authTestOnly: false)
-            }
 
-            // scrub the passwords
-            self.oldPass = ""
-            self.newPass = ""
+        // If the password change worked then we are online. Reauthenticate with new password.
+        //should update keychain here if we are in userspace
 
-            // clean the kerb prefs so we don't reuse the KDCs
-            self.cleanKerbPrefs()
-        }
+        self.oldPass = ""
+        self.newPass = ""
 
+
+        // clean the kerb prefs so we don't reuse the KDCs
+        self.cleanKerbPrefs()
     }
+
+
 
     public func userInfo() {
         // set state to offDomain on start

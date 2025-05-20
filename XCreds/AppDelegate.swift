@@ -295,7 +295,6 @@ extension xcreds {
             var other: [String] = []
 
         func run() throws {
-            TCSUnifiedLogger.shared().suppressDebug=true
 
 
             //used to register ccid reader as root. no idea why
@@ -848,13 +847,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+
         NetworkMonitor.shared.startMonitoring()
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
 
-        
+
+
         if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
             image.size=NSMakeSize(16, 16)
 
@@ -869,7 +870,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         shareMounterMenu?.shareMounter = shareMounter
         shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
-
+//
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
 
         if let defaultsPath = defaultsPath {
@@ -905,11 +906,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
                 }
             }
         }
+        if UserDefaults.standard.bool(forKey: "checkForUpdates")==true{
+            checkForUpdates()
+        }
         mainController = MainController()
         mainController?.setup()
 
     }
+    func checkForUpdates() {
+        let thisAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let thisAppBundleID = Bundle.main.bundleIdentifier
 
+        if let thisAppVersion = thisAppVersion, let thisAppBundleID = thisAppBundleID,
+           let thisAppVersionFloat = Float(thisAppVersion){
+
+            VersionCheck.versionForIdentifier(identifier: thisAppBundleID, version: thisAppVersion) { isSuccess, version in
+
+                if let versionFloat = Float(version),!thisAppVersion.isEmpty, !version.isEmpty, thisAppVersionFloat < versionFloat {
+                    TCSLogErrorWithMark("New version available: \(thisAppVersion) < \(version)")
+                }
+            }
+        }
+    }
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }

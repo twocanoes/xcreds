@@ -1,3 +1,250 @@
+## tag-5.4(8684) (2025-05-12)
+
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3965c4080826b61207746990832eac3219cac04f)
+
+
+## tag-5.4(8683) (2025-05-09)
+
+*  fixed secondary fill [View](https://github.com/twocanoes/xcreds/commit/6dcb759f10fd66407c670d8ad2b579d4a8680ae0)
+
+
+## tag-5.4(8681) (2025-05-09)
+
+*  Clarify AD native password change textbox label #333 [View](https://github.com/twocanoes/xcreds/commit/b73ec3183ff1da878d9c86ab2de308dfe3de6106)
+*  Restore manifest format requirement for passwordChangeURL #332 [View](https://github.com/twocanoes/xcreds/commit/ee516abdcfb2095fa8b391964d6ef9b6253abba1)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/8488385fa8b6b82df19835182e3cefb84f8fb0a7)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3847c54fa3ec2b0ebbdd5f00751308a935dd28f6)
+*  Update default background image urls #335 [View](https://github.com/twocanoes/xcreds/commit/7d80f4f8ce31f6683750b864ec16cd7b104bfbfc)
+
+
+## tag-5.4(8653) (2025-05-07)
+
+*  AD user is prompted by menubar app for prior local password #321 [View](https://github.com/twocanoes/xcreds/commit/a6e841536eda9b83057dfaeac58bc94f6f76767a)
+*  passwordChangeURL has error when http not present in url #331 [View](https://github.com/twocanoes/xcreds/commit/6db87c2c5a7b5b486464334e0ed4e251617552a4)
+*  Local Login Window Logo #329 [View](https://github.com/twocanoes/xcreds/commit/68cbec0df62fa9175cfdc41c0a2c473549bdc694)
+*  Update manifest pfm_version #330 [View](https://github.com/twocanoes/xcreds/commit/2b95ecd9959cc39985d4a58ff7cd62032cf55f68)
+*  system info button does not stay open #322 [View](https://github.com/twocanoes/xcreds/commit/8db4c9ad197a9e5924fca2522cfbfce6755338ec)
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/b2590373800701f77458ecb55a34d0d4c73176c7)
+*  Alias is not used at UNPW login screen #325 [View](https://github.com/twocanoes/xcreds/commit/eda83890c62d0b5ecf05829513b40934fac1bf3f)
+*  fixed typo [View](https://github.com/twocanoes/xcreds/commit/d984e5bfadd5a6874f10d69e9c3cb110bbd6c17d)
+
+
+## tag-5.4(8642) (2025-05-06)
+
+*  if logo is blank string, then remove logo [View](https://github.com/twocanoes/xcreds/commit/1f27e8a33be254c787f4a23548a80e99d8d0762f)
+*  if logo is blank string, then remove logo. loginWindowLogoPath, that is [View](https://github.com/twocanoes/xcreds/commit/ede08957505033d433d9e1990f6343fc1076b654)
+
+
+## tag-5.4(8640) (2025-05-06)
+
+*  fixed schedule issue where change in kerberos password prompted for local password at next check [View](https://github.com/twocanoes/xcreds/commit/fdb717d1b9a046bd9972c0986c15343bcf84d01b)
+
+
+## tag-5.4(8638) (2025-05-06)
+
+*  fixed crash when changing AD password; made focus on password; fixed main window opening when password changing password fails [View](https://github.com/twocanoes/xcreds/commit/b6dd18a996bb585c5ff22827629fae51b950504e)
+
+
+## tag-5.4(8631) (2025-05-05)
+
+*  fixed small issue where error caused ui to not reset [View](https://github.com/twocanoes/xcreds/commit/36d45a2a989067ab65e40681b2eee829cf5140b5)
+
+
+## tag-5.4(8628) (2025-05-05)
+
+*  fixed password reset for AD [View](https://github.com/twocanoes/xcreds/commit/39c84e7e42b29a7a06cf419f2a6b1780659d372a)
+*  fixed password reset for AD [View](https://github.com/twocanoes/xcreds/commit/5fd09a6bfdba319c30f6cce5b6418d90e107f058)
+
+
+## tag-5.4(8608) (2025-05-04)
+
+*  fixed encoding issue in ropg in oidclite [View](https://github.com/twocanoes/xcreds/commit/31fd85a5da8edf2cf19ef446d6104bf1ef58d863)
+
+
+## tag-5.4(8607) (2025-04-30)
+
+*  added support for array of aud in json [View](https://github.com/twocanoes/xcreds/commit/986c1f79196684f6b4e0dda1ca0c0db5e0caf8c8)
+
+
+## tag-5.4(8605) (2025-04-15)
+
+*  Add "Reset Password" option to menu for AD password reset #320 [View](https://github.com/twocanoes/xcreds/commit/cc0096ac31389f7d786e9e1abc8592f80d4064a2)
+
+
+## tag-5.3(8604) (2025-04-13)
+
+*  fixed issue with error message when no network connection [View](https://github.com/twocanoes/xcreds/commit/18dc4493671746723ff49f47383c3904ccbc33f2)
+*  fixed User is asked twice for local password after a reset #319 [View](https://github.com/twocanoes/xcreds/commit/648601535ebcfacb6712a1f2bf5f000bf4ddd88e)
+*  fixed Update manifest default for shouldShowQuitMenu #315 [View](https://github.com/twocanoes/xcreds/commit/292b7a5286bfd5a8926345a73ef4bcde87d5a5d1)
+
+
+## tag-5.3(8579) (2025-04-04)
+
+*  fixed password reset in AD when account is requiring password reset [View](https://github.com/twocanoes/xcreds/commit/42ac2733731c7e5a47e3a1c7237b40b345fed3be)
+
+
+## tag-5.3(8578) (2025-04-04)
+
+*  fixed issue with admin override in AD login [View](https://github.com/twocanoes/xcreds/commit/839fdbc1f165a7a33bd9c6c3eab45799c1e205e4)
+
+
+## tag-5.3(8577) (2025-04-04)
+
+*  fixed issue with WebViewController not showing text from defaults for refreshTitleTextField [View](https://github.com/twocanoes/xcreds/commit/41c48f016e2e6c6eeff7604fd11407fefbc0bdaa)
+
+
+## tag-5.3(8576) (2025-04-03)
+
+*  fixed password setting in keychain when AD password changed [View](https://github.com/twocanoes/xcreds/commit/f9abe96208420aa1cdaffb13fed9da4ced408500)
+
+
+## tag-5.3(8566) (2025-04-03)
+
+*  fixed extra prompt when changing password and not updating local passowrd; slight change of order of menu items [View](https://github.com/twocanoes/xcreds/commit/ecfb9d05245b7c1a2ebbb291cd68d2d435455373)
+
+
+## tag-5.3(8562) (2025-04-01)
+
+*  fixed pixelated refresh button [View](https://github.com/twocanoes/xcreds/commit/d6d53aee3e3e9073bfd6e906b4baed14c57b48da)
+
+
+## tag-5.3(8559) (2025-03-31)
+
+*  added shouldRemoveMenuItemAutoLaunch to remove menu item autolaunch launchagent [View](https://github.com/twocanoes/xcreds/commit/e3469a6ef003fc3e69f3ed9dc106dbb9b79af9b2)
+*  update gitignore [View](https://github.com/twocanoes/xcreds/commit/2dd18baaa183a44b1d01101552e10cc0228d6038)
+*  update gitignore [View](https://github.com/twocanoes/xcreds/commit/581146a9b4dca00102756e36f16fc1ad610ce4fc)
+
+
+## tag-5.3(8558) (2025-03-30)
+
+*  added new pref to update kerberos principal if principal domain is not the same as the addomain. shouldUpdateKerberosUserPrincipalADDomain. [View](https://github.com/twocanoes/xcreds/commit/2d0d90f2f2e155bfd5288ce99cec8582e16e972d)
+*  fixed centering of logo [View](https://github.com/twocanoes/xcreds/commit/3696dca7aedda26bf2f947c5a80b6433b3255a81)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/53739ef047c22cd765aeb242cefa53c12a14f5b2)
+*  logo resizing. now default 128x256 [View](https://github.com/twocanoes/xcreds/commit/9b16f2ad29089c56e768d7e720440f3ffbdafcb5)
+*  made password have focus for local username / password when incorrect password [View](https://github.com/twocanoes/xcreds/commit/0de7ba06169a555f5ff4fbd1bf6cf40655897201)
+*  added version check [View](https://github.com/twocanoes/xcreds/commit/f92ea603c537ac3b14011254c51c51005e35de6f)
+*  fixed crashing issue due to timer show window not on main thread [View](https://github.com/twocanoes/xcreds/commit/f4abf8dcbfbe0d2b6cda9f0ed1e698731fece383)
+*  fixed crash due to main run loop and UI [View](https://github.com/twocanoes/xcreds/commit/94da4dab380e96b056f5a70af53e0b8d445a2311)
+*  added shouldUpdateKerberosUserPrincipalADDomain to manifest [View](https://github.com/twocanoes/xcreds/commit/b19d703db188700e6ec18518f2759520631cc00a)
+*  fixed kerberos message in menu; updated Sign In to open sign in window [View](https://github.com/twocanoes/xcreds/commit/44e8df7f82fd817e0b132796cf06386b87ae1baa)
+*  added sample profile for cloud + AD [View](https://github.com/twocanoes/xcreds/commit/4bba49ebf5f70841b0f0dfec3ab069b8db019809)
+*  updated ropgResponseValue [View](https://github.com/twocanoes/xcreds/commit/e100d0dfe3270e4ce90b60cd9faf5a94e0a41029)
+*  fixed placement of additional menu items and added app icon as default icon in UN/PW window [View](https://github.com/twocanoes/xcreds/commit/4a85b8b805a8c0cd70104294db9ced0851f94cdb)
+*  added sample icon for un/pw to target show it actually shows [View](https://github.com/twocanoes/xcreds/commit/6b61b2e72eccd5353ead43a66213f383ad6a440b)
+*  better updating of screen after refresh and rounded corners [View](https://github.com/twocanoes/xcreds/commit/549dfbd1ba9612cb275225907e99c04b4f17c0a4)
+*  added a bit more spacing to the UN/PW top and bottom [View](https://github.com/twocanoes/xcreds/commit/1a0eb33ae5c262fba3d4df8199d54847132ceadf)
+*  added icon for UN/PW to menu native control login [View](https://github.com/twocanoes/xcreds/commit/31335f46b6521bc65154e606744012187f84ecb6)
+*  localized dates [View](https://github.com/twocanoes/xcreds/commit/fd6ed325fd0405b71eedfa53d11b826a44e077ce)
+*  checkpoint [View](https://github.com/twocanoes/xcreds/commit/a19a9cb3875f5206eda42866db775e8e6f8d9d95)
+*  refactored locked out account code [View](https://github.com/twocanoes/xcreds/commit/2d1877dafd9b853a31e4037afb406e734769cc9e)
+*  Fix manifest description for shouldUpdateKerberosUserPrincipalADDomain #312 [View](https://github.com/twocanoes/xcreds/commit/c1acde6209f01aba15b95c7fc704150b89298198)
+*  Change default for shouldShowQuitMenu #311 [View](https://github.com/twocanoes/xcreds/commit/684dcae78476d8d99f866eaae7117773c39ae353)
+*  Manifest fixes #310 [View](https://github.com/twocanoes/xcreds/commit/2d4cc560c969738febfda6eec12ba0ae581d93db)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/c743752a30a01a97de3c1c418c2ccb21e01a7f81)
+
+
+## 5.3.8427 (2025-03-24)
+
+*  added kswitch after getting kerb credentials [View](https://github.com/twocanoes/xcreds/commit/4a7b39fdabdbc7132fd80b9dfe98e899beef1367)
+*  moved settings to project level [View](https://github.com/twocanoes/xcreds/commit/feb35883a9bad95300809732e9051913bf2b848e)
+*  added ability to recover from locked account [View](https://github.com/twocanoes/xcreds/commit/f63acb2717da18937ef02f9b417d5e730b4991db)
+*  removed password prompt as root when installing [View](https://github.com/twocanoes/xcreds/commit/60348cec0aac6c9271a9a82a426335205c809451)
+*  Customize Dialog #306 [View](https://github.com/twocanoes/xcreds/commit/7c7c181a2adec01e6512abec5a67aade11685658)
+*  updated manifest [View](https://github.com/twocanoes/xcreds/commit/93299970d0fcb4174eda069fcb57fdb212830aef)
+*  fixed up manifest for standard descriptions [View](https://github.com/twocanoes/xcreds/commit/9188605c012b0d357b85d3045a3c496b828a17e6)
+*  fixed shadow and login artifacts from background [View](https://github.com/twocanoes/xcreds/commit/94e86beb32ff999629e06eabbb3b276c23c007c1)
+*  Okta sometimes uses only two passwords fields [View](https://github.com/twocanoes/xcreds/commit/ab9bd57c45191b192316fedbf0bbb0eb7d7c5886)
+*  add loginWindowSecondaryMonitorsBackgroundImageURL and friends [View](https://github.com/twocanoes/xcreds/commit/35992456f6d4af37ab55e616ffd8b02d03fb5bec)
+*  fixing updating kerberos password [View](https://github.com/twocanoes/xcreds/commit/a678fa4162b6635ade60fe9b7087d02ece87e836)
+*  redid timers and network check [View](https://github.com/twocanoes/xcreds/commit/3c1f7957edfc6c7add7926c936716932ba9204a0)
+*  integraetd updated OIDC package [View](https://github.com/twocanoes/xcreds/commit/64087a69ca4dc8c2621e5ae03a6f4784d1168c09)
+*  set timestamp for last oidc user in DS to use as reference to not prompt on menu item launch [View](https://github.com/twocanoes/xcreds/commit/dcc7decc8f415b0cbd85e8fef2f615b4db9200b9)
+*  added test to prevent lockout if invalid password [View](https://github.com/twocanoes/xcreds/commit/d06eaa20e3fdcd575ec4183d524b9c3046a647cd)
+*  fixed date parsing because OMG dates [View](https://github.com/twocanoes/xcreds/commit/a8e851e886f87d859154680249afbff0d10c7297)
+*  updated manifest [View](https://github.com/twocanoes/xcreds/commit/0bdb0985ee3815cbf5f5e7bec78266c4db4a05bd)
+*  changed background color to white from black to make alpha look better [View](https://github.com/twocanoes/xcreds/commit/c798feb61aff207c5db5669f2b2567c32e266a58)
+*  adjusted colors; added autolaunching and keepalive [View](https://github.com/twocanoes/xcreds/commit/8265203df1d5c865dc9e27cf6cafa3eeadf5fd69)
+
+
+## 5.2.8270 (2025-02-04)
+
+*  fixed issue with admin username / password in prefs/override script [View](https://github.com/twocanoes/xcreds/commit/b682714b27b2ab602b9fe463b10398e9551e113f)
+*  fixed issue with detecting network is up [View](https://github.com/twocanoes/xcreds/commit/5a4ce888550faf503b92031f915adb99efd8e3d0)
+*  fixed issue with shouldDetectNetworkToDetermineLoginWindow [View](https://github.com/twocanoes/xcreds/commit/b1d0997d2505f0ea12509e71eafe591191097317)
+*  put files under scm [View](https://github.com/twocanoes/xcreds/commit/0127a523a7b93963b3e63e595d857632d7d851a0)
+*  fixed issue where popover cant be closed [View](https://github.com/twocanoes/xcreds/commit/2f723e87357ccf7e058af698bf4fed636d36b0c7)
+
+
+## 5.2.8251 (2025-01-29)
+
+*  fixed issue with mapping kerberos domain; fixed local admin override in local secure store [View](https://github.com/twocanoes/xcreds/commit/1c14b7732cca9ba73479de78608e5d15cec28815)
+*  show popover on start [View](https://github.com/twocanoes/xcreds/commit/2be2614507b02ceac516b5f5b10c9218f8abe214)
+
+
+## 5.2.8214 (2025-01-27)
+
+*  added rfid [View](https://github.com/twocanoes/xcreds/commit/3dc09cf436901e019c793809827114649882688d)
+*  added rfid [View](https://github.com/twocanoes/xcreds/commit/def4a61c03e67427efc7505fdf4ca6d8927b582f)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/1baa7e0b06e99ddf39bde1729463fdbd9252e95c)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/176bbc4fd7a39a68ce667c9ceb7f9c17d5c245b6)
+*  added user db [View](https://github.com/twocanoes/xcreds/commit/e6d522e58ed381ce6fbf0733058ab283a0810816)
+*  added new mech to read from user db [View](https://github.com/twocanoes/xcreds/commit/d056914e22ba304ce046a0a7f77653c3c224b49f)
+*  cleanup [View](https://github.com/twocanoes/xcreds/commit/150b38b370203e6f80d9009b93a4b1ae6956c4f2)
+*  fixed issue with nsarchive class names [View](https://github.com/twocanoes/xcreds/commit/87720b18808bc8e0b3e14073236d7db859838be5)
+*  implemented rfid user and local admin hints [View](https://github.com/twocanoes/xcreds/commit/f4e487d646c17d1de13d829028869ee4f3342558)
+*  added login with rfid and local admin keychain overide with secure users [View](https://github.com/twocanoes/xcreds/commit/c435e58909f9c40152762a2f82011fd9665d95e9)
+*  added uid and full name to RFID login [View](https://github.com/twocanoes/xcreds/commit/75c495e5826426d5968e1c695e437eb014e4a5d5)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/1749e419ce6fd94d7a68d1ee09b64b1a1e676024)
+*  bumped to 5.2 [View](https://github.com/twocanoes/xcreds/commit/a679ab589677317ac59656d92ac86ca3d4001e16)
+*  added -r to allow registering of CTK extension as root [View](https://github.com/twocanoes/xcreds/commit/90c16ec1e82f2ecae8ff00de72967ce3dc8b1e3b)
+*  updated rfid user passwords and updated network up test code [View](https://github.com/twocanoes/xcreds/commit/5d9cc6ace5e3a049d33614b0f2d00414af289c07)
+*  cleaned up login window switching (mac native to xcreds) [View](https://github.com/twocanoes/xcreds/commit/d2d899cb44c6f2b5ff6bc4feceda89fc4e8b2bd1)
+*  added command line rfid tools [View](https://github.com/twocanoes/xcreds/commit/3fa642be5765ff604c37233ccfde586a1fdc9ba5)
+*  removed debug output [View](https://github.com/twocanoes/xcreds/commit/4a2c2bf0546129edf184c8b190d6d85d2a7cc2bd)
+*  added command line status output [View](https://github.com/twocanoes/xcreds/commit/f1bc9cda39860ac47553b229ce0c99bdd34246aa)
+*  WIP [View](https://github.com/twocanoes/xcreds/commit/d9412e052ac9010da4a41a057d3ab472ccdfacb7)
+*  added subdomain support [View](https://github.com/twocanoes/xcreds/commit/35c207ac1e5f245588748bfa8819e387537e887e)
+*  added sample profile [View](https://github.com/twocanoes/xcreds/commit/5d9ffcf8ac94e72aa00310b6897c6a5400d8c8fd)
+*  cleaned up sample profile [View](https://github.com/twocanoes/xcreds/commit/624c3aa4cd94d6b86be588e1a7cd0ebaff60fc48)
+*  updated build number [View](https://github.com/twocanoes/xcreds/commit/ae1cfbb2e84c104d62b241d556b6248d9d7bd82b)
+*  fixed kerberos ticket for subdomain [View](https://github.com/twocanoes/xcreds/commit/6fd54132170b81e1d9557695e01b8c85757c861f)
+*  added upn mapping and sample profile [View](https://github.com/twocanoes/xcreds/commit/1815d083d6527ac1bc18feaaa819dcd4114afa3b)
+*  added ability to setup card login [View](https://github.com/twocanoes/xcreds/commit/a61f68db298bc99fffff94b1d283d9610d18c1a0)
+*  card login [View](https://github.com/twocanoes/xcreds/commit/0f0dc00cac287bda240890028c9d63f51fdc2f88)
+*  local admin in new security db [View](https://github.com/twocanoes/xcreds/commit/1488e41441e034407735c83ddf96e4febfdb9a08)
+*  issue #287 Add AdditionalADDomains to manifest and issue #290 Checkbox for Offline Authentication needs association with label [View](https://github.com/twocanoes/xcreds/commit/08b0b9c5beb977272fa2851f16c536ca71902f21)
+*  Typo in CLI help description #283 [View](https://github.com/twocanoes/xcreds/commit/4dd27c3366230827fd3665876cc697d7814edf19)
+*  Update manifest with min version info for new keys #284 [View](https://github.com/twocanoes/xcreds/commit/1cd63e4d2a6d782482f609ac7682591758d7c65d)
+*  Add command line option for clear single user #286 [View](https://github.com/twocanoes/xcreds/commit/43c395c11529399fd23d19a2b3623da121d997fd)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/36c851d3b49ffbef432cb5961519fc9bfb6a177d)
+*  Resolve issue with secrets.bin file #285 [View](https://github.com/twocanoes/xcreds/commit/9b8d90b0135f0d0fa2c0966cb74e5a6e9aa73988)
+*  mailto: links in XCreds menu #282 [View](https://github.com/twocanoes/xcreds/commit/934aacf3cdad58882e056bbd777626f1be3603af)
+*  added error message when inserting to wrong reader [View](https://github.com/twocanoes/xcreds/commit/8a13f936c4eda738f689a462b1d5d16e614a4144)
+*  added setting pin fix for rfid card [View](https://github.com/twocanoes/xcreds/commit/e69995fdeb71d0a7ac0f0b3f037c9540f72de31b)
+*  added Auth0 sample profile [View](https://github.com/twocanoes/xcreds/commit/2b3a57ea2140b4720fe3d5de512109e7d95c6eda)
+*  typo fixed [View](https://github.com/twocanoes/xcreds/commit/c793b18f39c86be28cf495856f6718e036def96e)
+*  made provisioning login card dynamic [View](https://github.com/twocanoes/xcreds/commit/603093cf2883a1bc22ab072885213bbaa103a4e4)
+*  Typo in manifest for shouldAllowLoginCardSetup #296 [View](https://github.com/twocanoes/xcreds/commit/23622455bcbd76c5a3d72cc5421f8d5ec62c8d9a)
+*  Typo in description for upnSuffixToDomainMappings #295 [View](https://github.com/twocanoes/xcreds/commit/4341b339eabfa7e93cc4eb0df4a23d25092cfbd2)
+*  Error parsing some csv files for cli user import #293 [View](https://github.com/twocanoes/xcreds/commit/2b6b4aff0d035d62400b0cc5e0461ce26a93ac35)
+*  Typo in description for upnSuffixToDomainMappings #295 [View](https://github.com/twocanoes/xcreds/commit/802c67f68db7a493e072138a9c211f9d640f956a)
+*  Show/hide "Setup Login Card" checkbox #292 [View](https://github.com/twocanoes/xcreds/commit/0ff9d544a9915fb96ef4309dcfd562a15b6c2d9e)
+*  added more command line options; added more status update options [View](https://github.com/twocanoes/xcreds/commit/6e8ed3fd474230bd1663144b2bb3332c5220b263)
+*  cleaned up cli output [View](https://github.com/twocanoes/xcreds/commit/1b222e4b36e7000bb2ba0b6f4c4fc89b74ef9b0a)
+*  changed target name [View](https://github.com/twocanoes/xcreds/commit/9280d9e1a3a9d66b68f6a3ad19e0a7c4c5b6f16c)
+*  Fixes for command line output #298 [View](https://github.com/twocanoes/xcreds/commit/49f90c20690a6204bd05e4b427b35cbadc412702)
+*  fixed issue with blank screen with multiple monitors; added background to multiple display setup [View](https://github.com/twocanoes/xcreds/commit/e7995c6b7905e0557106842527d290fea61cee9d)
+
+
+## release-5.1 (2024-10-27)
+
+*  Manifest default for ropgResponseValue needs change #279 [View](https://github.com/twocanoes/xcreds/commit/150d63efb8b8159c41182d1c7278676b0432f39d)
+*  fixed linking issue; fixed artifacts showing during FV passthrough [View](https://github.com/twocanoes/xcreds/commit/7f8d8594c658602f40bd954c142288952f816515)
+*  fixed issue with productlicense framework [View](https://github.com/twocanoes/xcreds/commit/ff69ec573dad335dbd3604bb51e270ab26e49e64)
+*  changed shouldActivateSystemInfoButton to no by default [View](https://github.com/twocanoes/xcreds/commit/d975c6347451108185beac2dfb530cdbbafad3fe)
+*  bumped version [View](https://github.com/twocanoes/xcreds/commit/193e6b033aed7d4067190359acc5f6a01acad9b6)
+
+
 ## 5.1.7250 (2024-10-22)
 
 *  updated readme [View](https://github.com/twocanoes/xcreds/commit/4f27ddcd3d2a3a8e47f51a40a7631a7bf3343d88)

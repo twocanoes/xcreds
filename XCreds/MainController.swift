@@ -9,6 +9,8 @@ import Cocoa
 import OIDCLite
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
+    
+
     enum LoginWindowType {
         case cloud
         case usernamePassword
@@ -16,27 +18,67 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
-
     let scheduleManager = ScheduleManager()
     var adPasswordExpires:String?
     var cloudPasswordExpires:String?
-    var nextPasswordCheck:String {
-        let dateFormatter = DateFormatter()
+    var nextPasswordTokenCheck:String {
+        var dateString:String = ""
+        if scheduleManager.nextTokenCheckTime < Date () {
+            dateString = "When Available"
+        }
+        else {
 
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
+            let dateFormatter = DateFormatter()
 
-            let dateString = dateFormatter.string(from: scheduleManager.nextCheckTime)
-            return dateString
+            dateFormatter.locale = Locale.current
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+
+            dateString = dateFormatter.string(from: scheduleManager.nextTokenCheckTime)
+        }
+        return dateString
 
     }
-    var credentialStatus:String?
+
+    var nextPasswordADCheck:String {
+
+        var dateString:String = ""
+        if scheduleManager.nextADCheckTime < Date () {
+            dateString = "When Available"
+        }
+        else {
+            let dateFormatter = DateFormatter()
+
+            dateFormatter.locale = Locale.current
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+
+            dateString = dateFormatter.string(from: scheduleManager.nextADCheckTime)
+        }
+        return dateString
+
+    }
+
+    var tokenCredentialStatus:String?
+    var kerberosCredentialStatus:String?
     var hasCredential:Bool?
     var hasKerberosTicket:Bool?
+    
     let windowController =  DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-    var signInViewController:SignInViewController?
+    lazy var signInViewController:SignInViewController? = {
+        let bundle = Bundle.findBundleWithName(name: "XCreds")
+        if let bundle = bundle{
+            TCSLogWithMark("Creating signInViewController")
+            let controller = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
+            controller.isInUserSpace = true
+            controller.updateCredentialsFeedbackDelegate=self
 
+
+
+            return controller;
+        }
+        return nil
+    }()
 
     init(passwordCheckTimer: Timer? = nil, feedbackDelegate: TokenManagerFeedbackDelegate? = nil, cloudPasswordExpires: String? = nil, adPasswordExpires: String? = nil,nextPasswordCheck: String? = nil, credentialStatus: String? = nil, hasCredential: Bool? = nil, signInViewController: SignInViewController? = nil) {
         self.passwordCheckTimer = passwordCheckTimer
@@ -44,9 +86,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         self.adPasswordExpires = adPasswordExpires
         self.cloudPasswordExpires = cloudPasswordExpires
 
-        self.credentialStatus = credentialStatus
+        self.tokenCredentialStatus = credentialStatus
         self.hasCredential = hasCredential
-        self.signInViewController = signInViewController
         super.init()
         scheduleManager.feedbackDelegate=self
 
@@ -62,8 +103,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     }
-
-
 
     func isLocalOnlyAccount() -> Bool {
 
@@ -88,7 +127,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         return false
 
     }
-    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil )  {
+    func showSignInWindow(force:Bool=false, forceLoginWindowType:LoginWindowType?=nil, hadPasswordFailure:Bool=false )  {
+
         TCSLogWithMark()
 
         if isLocalOnlyAccount()==true && force==false{
@@ -96,12 +136,9 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             return
         }
 
-
-        if  let webViewController = windowController.webViewController{
-            TCSLogWithMark()
-            webViewController.webView.isHidden=true
-        }
-        scheduleManager.setNextCheckTime()
+        //put the timers off some we don't get multiple other prompts when user is putting in credentials
+        scheduleManager.setNextCheckTime(timer: .ADTimer )
+        scheduleManager.setNextCheckTime(timer: .TokenTimer)
 
         var forceUsernamePassword = false
 
@@ -117,15 +154,27 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
-            windowController.window!.makeKeyAndOrderFront(self)
 
-            if  let webViewController = windowController.webViewController{
-                webViewController.webView.isHidden=false
-                TCSLogWithMark()
-                windowController.webViewController.updateCredentialsFeedbackDelegate=self
-                windowController.webViewController?.loadPage()
+            Task{ @MainActor in
+                do{
+                    let tokenManager = TokenManager()
+                    try await tokenManager.oidc().getEndpoints()
+                    guard  let window = windowController.window else {
+                        return
+                    }
+                    window.makeKeyAndOrderFront(self)
+
+                    if  let webViewController = windowController.webViewController{
+                        webViewController.webView.isHidden=false
+                        TCSLogWithMark()
+                        windowController.webViewController.updateCredentialsFeedbackDelegate=self
+                        windowController.webViewController?.loadPage()
+                    }
+                    NSApp.activate(ignoringOtherApps: true)
+                }
+
             }
-            NSApp.activate(ignoringOtherApps: true)
+
 
         }
 
@@ -135,53 +184,45 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 webView.isHidden=true
                 TCSLogWithMark()
             }
+            guard let window = self.windowController.window,
+                  let signInViewController = self.signInViewController else {
+                TCSLogWithMark("No window or signInViewController")
+                return
+            }
 
-            if let window = windowController.window{
-                let bundle = Bundle.findBundleWithName(name: "XCreds")
-                if let bundle = bundle{
-                    TCSLogWithMark("Creating signInViewController")
-                    if signInViewController == nil {
-                        signInViewController = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
-                    }
+            signInViewController.hadPasswordFailure = hadPasswordFailure
+            DispatchQueue.main.async {
+                TCSLogWithMark("Creating signInViewController")
+
+                TCSLogWithMark()
+
+                if let contentView = window.contentView {
                     TCSLogWithMark()
-                    signInViewController?.isInUserSpace = true
-                    signInViewController?.updateCredentialsFeedbackDelegate=self
-                    guard let signInViewController = signInViewController else {
-                        return
-                    }
+                    self.windowController.webViewController.webView.isHidden=true
+                    signInViewController.view.wantsLayer=true
 
-                    if let contentView = window.contentView {
-                        TCSLogWithMark()
-                        windowController.webViewController.webView.isHidden=true
-                        signInViewController.view.wantsLayer=true
+                    if let contentView = window.contentView{
+                        if contentView.subviews.contains(signInViewController.view)==false {
 
-                        if let contentView = window.contentView{
-                            if contentView.subviews.contains(signInViewController.view)==false {
-
-                                window.contentView?.addSubview(signInViewController.view)
-
-                            }
-
-
+                            contentView.addSubview(signInViewController.view)
                         }
-                        signInViewController.setupLoginAppearance()
-
-                        var x = NSMidX(contentView.frame)
-                        var y = NSMidY(contentView.frame)
-
-                        x = x - signInViewController.view.frame.size.width/2
-                        y = y - signInViewController.view.frame.size.height/2
-                        let lowerLeftCorner = NSPoint(x: x, y: y)
-                        signInViewController.localOnlyCheckBox.isHidden = true
-                        signInViewController.localOnlyCheckBox.isHidden = true
-
-                        signInViewController.view.setFrameOrigin(lowerLeftCorner)
                     }
+                    signInViewController.setupLoginAppearance()
 
-                    window.makeKeyAndOrderFront(self)
-                    NSApp.activate(ignoringOtherApps: true)
+                    var x = NSMidX(contentView.frame)
+                    var y = NSMidY(contentView.frame)
 
+                    x = x - signInViewController.view.frame.size.width/2
+                    y = y - signInViewController.view.frame.size.height/2
+                    let lowerLeftCorner = NSPoint(x: x, y: y)
+                    signInViewController.localOnlyCheckBox.isHidden = true
+                    signInViewController.localOnlyCheckBox.isHidden = true
+
+                    signInViewController.view.setFrameOrigin(lowerLeftCorner)
                 }
+
+                window.makeKeyAndOrderFront(self)
+                NSApp.activate(ignoringOtherApps: true)
             }
         }
 
@@ -268,7 +309,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         if let accountInfo=accountInfo, let account=accountInfo.0, let password = accountInfo.1 {
             accountName = account
 
-            if PasswordUtils.verifyCurrentUserPassword(password: password) == true {
+            if case .success = PasswordUtils.isLocalPasswordValid(userName: PasswordUtils.currentConsoleUserName, userPass: password){
                 return (account,password)
             }
         }
@@ -292,7 +333,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
             return (accountName,localPassword)
 
-        case .resetKeychainRequested(_):
+        case .accountResetRequested(_):
             return (nil,nil)
 
         case .userCancelled:
@@ -306,7 +347,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func passwordExpiryUpdate(_ passwordExpire: Date) {
         let dateFormatter = DateFormatter()
 
-        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         let dateString = dateFormatter.string(from: passwordExpire)
@@ -329,38 +370,43 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     func credentialsUpdated(_ credentials:Creds) {
-        hasCredential=true
-        credentialStatus="Valid Tokens"
-        (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
-        let tokenManager = TokenManager()
+        DispatchQueue.main.async {
+            UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-        if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
-            let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
+            self.hasCredential=true
+            self.tokenCredentialStatus="Valid Tokens"
+            (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+            let tokenManager = TokenManager()
 
-            switch userInfoResult {
+            if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+                let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
 
-            case .success(let retUserAccountInfo):
-                let userInfo = retUserAccountInfo
-                if let username = userInfo.username {
-                    UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                switch userInfoResult {
+
+                case .success(let retUserAccountInfo):
+                    let userInfo = retUserAccountInfo
+                    if let username = userInfo.username {
+                        UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
+                    }
+                    if let fullUsername = userInfo.fullUsername {
+                        UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
+                    }
+                    if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                        UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                    }
+                case .error(let message):
+                    TCSLogWithMark("Error getting infoResult: \(message)")
                 }
-                if let fullUsername = userInfo.fullUsername {
-                    UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
-                }
-                if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
-                    UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
-                }
-            case .error(let message):
-                TCSLogWithMark("Error getting infoResult: \(message)")
+
             }
 
-        }
-        DispatchQueue.main.async {
             self.windowController.window?.close()
-
+            
             let localAccountAndPassword = self.localAccountAndPassword()
             if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
+                    TCSLogWithMark("localPassword and credentials.password do not match")
+
                     var updatePassword = true
                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
                         let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
@@ -424,23 +470,42 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
-
-    func credentialsCheckFailed() {
+    func invalidCredentials() {
         TCSLogWithMark()
         hasCredential=false
-        credentialStatus="Invalid Credentials"
-        let appDelegate = NSApp.delegate as? AppDelegate
-        appDelegate?.updateStatusMenuIcon(showDot:false)
-        if NetworkMonitor.shared.isConnected==true {
-            showSignInWindow(forceLoginWindowType: .cloud)
+        tokenCredentialStatus="Invalid Token Credentials"
+        DispatchQueue.main.async {
+
+
+            let appDelegate = NSApp.delegate as? AppDelegate
+
+            appDelegate?.updateStatusMenuIcon(showDot:false)
+
+            self.showSignInWindow(forceLoginWindowType: .cloud)
         }
+
+
+
+    }
+    func credentialsCheckFailed() {
+        DispatchQueue.main.async {
+
+            TCSLogWithMark()
+            self.hasCredential=false
+            self.tokenCredentialStatus="Credentials Check Failed"
+
+            let appDelegate = NSApp.delegate as? AppDelegate
+            appDelegate?.updateStatusMenuIcon(showDot:false)
+            self.showSignInWindow(forceLoginWindowType: .cloud)
+        }
+
     }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
         hasKerberosTicket=true
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
 
-        credentialStatus="Valid kerberos tickets"
+        kerberosCredentialStatus="Valid kerberos tickets"
     }
     func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
 
@@ -448,7 +513,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         hasKerberosTicket=false
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:false)
 
-        credentialStatus="Kerberos Tickets Failed"
+        kerberosCredentialStatus="Kerberos Tickets Failed"
         switch error{
 
         case .OffDomain:
@@ -458,9 +523,13 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("UnknownPrincipal so not prompting")
 
         default:
-            if NetworkMonitor.shared.isConnected==true {
-                showSignInWindow(forceLoginWindowType: .usernamePassword)
+            if signInViewController?.view.window?.isVisible==true {
+                TCSLogWithMark("Already showing sign in window")
             }
+            else{
+                showSignInWindow(forceLoginWindowType: .usernamePassword, hadPasswordFailure: true)
+            }
+
         }
     }
     func adUserUpdated(_ adUser: ADUserRecord) {

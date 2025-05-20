@@ -61,23 +61,19 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                 case .success:
                     isDone = true
                    let localUser = try? PasswordUtils.getLocalRecord(localUsername)
-                    guard let localUser = localUser else {
+                    guard let _ = localUser else {
 
                         isDone = true
                         TCSLogErrorWithMark("localUser is not set")
                         return .error("local user not set")
 
                     }
-                    do {
-                        TCSLogWithMark("Changing password")
-                         return .successful(localUsername)
+                    TCSLogWithMark("Changing password")
+                    return .successful(localUsername)
 
-                    }
-                    catch {
-                        TCSLogErrorWithMark("Error setting local password to cloud password")
-                        return .error("Error setting local password to cloud password")
-                    }
 
+                case .accountLocked:
+                    TCSLogErrorWithMark("Account Locked")
                 case .incorrectPassword: //don't return b/c we just loop and ask again
                     TCSLogErrorWithMark("Incorrect Password")
 
@@ -88,6 +84,7 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                     isDone = true
                     TCSLogErrorWithMark("Other err: \(err)")
                     return .error(err)
+
 
                 }
             }

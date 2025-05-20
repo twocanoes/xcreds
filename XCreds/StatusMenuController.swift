@@ -13,16 +13,18 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case AboutMenuItem=1
         case OIDCUsername=2
         case KerberosUsername=3
-        case NextPasswordCheckMenuItem=4
-        case CredentialStatusMenuItem=5
-        case CloudPasswordExpires=6
-        case ADPasswordExpires=7
-        case SignInMenuItem=8
-        case ChangePasswordMenuItem=9
-        case SharesMenuItem=10
-        case QuitMenuItem=11
-        case Additional=12
-        case SetupCardMenuItem=13
+        case NextADPasswordCheckMenuItem=4
+        case NextTokenPasswordCheckMenuItem=5
+        case ADCredentialStatusMenuItem=6
+        case CloudPasswordExpires=7
+        case ADPasswordExpires=8
+        case SignInMenuItem=9
+        case ChangePasswordMenuItem=10
+        case SharesMenuItem=11
+        case QuitMenuItem=12
+        case Additional=13
+        case SetupCardMenuItem=14
+        case OIDCCredentialStatusMenuItem=15
 
     }
     enum MenuElements:String {
@@ -64,7 +66,7 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
 
         if let menuItems = DefaultsOverride.standardOverride.value(forKey: PrefKeys.menuItems.rawValue) as? Array<Dictionary<String,Any?>> {
-            let insertPos = StatusMenuItemType.SignInMenuItem.rawValue+1
+            let insertPos = StatusMenuItemType.OIDCCredentialStatusMenuItem.rawValue+1
             var index = 0
             for item in menuItems {
                 if let name = item[MenuElements.menuItemName.rawValue] as? String,
@@ -112,13 +114,28 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
     }
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        
+
+        var adSetup = false
+        var oidcSetup = false
+
+        if let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue){
+
+            if adDomainFromPrefs.isEmpty==false, adDomainFromPrefs.count>0 {
+                adSetup=true
+
+            }
+        }
+        if let oidcDiscoveryFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue){
+
+            if oidcDiscoveryFromPrefs.isEmpty==false, oidcDiscoveryFromPrefs.count>0 {
+                oidcSetup=true
+
+            }
+        }
         let appDelegate = NSApp.delegate as? AppDelegate
         let mainController = appDelegate?.mainController
         
         let tag = menuItem.tag
-
-        TCSLogWithMark("tag: \(tag)")
         guard let menuType = StatusMenuItemType(rawValue: tag) else {
             return false
         }
@@ -146,19 +163,60 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
                 
             }
             
-        case .NextPasswordCheckMenuItem:
-            print("NextPasswordCheckMenuItem")
-            if let nextPassCheck = mainController?.nextPasswordCheck {
-                menuItem.title="Next check: \(nextPassCheck)"
+        case .NextADPasswordCheckMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+            if let nextADPassCheck = mainController?.nextPasswordADCheck {
+                menuItem.title="Next AD Check: \(nextADPassCheck)"
+            }
+
+            
+            return false
+
+        case .NextTokenPasswordCheckMenuItem:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+            if let nextTokenPassCheck = mainController?.nextPasswordTokenCheck {
+                menuItem.title="Next OIDC Check: \(nextTokenPassCheck)"
             }
             return false
-        case .CredentialStatusMenuItem:
-            print("CredentialStatusMenuItem")
-            if let status = mainController?.credentialStatus {
+
+        case .ADCredentialStatusMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
+            if let status = mainController?.kerberosCredentialStatus {
+                menuItem.title="Active Directory Credentials Status: \(status)"
+            }
+            return false
+
+
+        case .OIDCCredentialStatusMenuItem:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
+
+            if let status = mainController?.tokenCredentialStatus {
                 menuItem.title="Credentials Status: \(status)"
             }
             return false
-            
+
         case .SignInMenuItem:
             print("SignInMenuItem")
             if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowSignInMenuItem.rawValue) == false {
@@ -175,10 +233,15 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             
             print("ChangePasswordMenuItem")
             
-            if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let _ = URL(string: passwordChangeURLString) {
+            if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
                 
                 menuItem.isHidden=false
                 return true
+            }
+            else if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseADNativePasswordChangeMenuItem.rawValue) == true {
+                menuItem.isHidden=false
+                return true
+
             }
             else  {
                 menuItem.isHidden=true
@@ -197,7 +260,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             
         case .CloudPasswordExpires:
-            
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             if let passwordExpires = mainController?.cloudPasswordExpires {
                 menuItem.isHidden=false
                 menuItem.title="OIDC Password Expires: \(passwordExpires)"
@@ -208,11 +277,15 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             return false
             
         case .ADPasswordExpires:
-            //hideExpiration
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
 
+            }
 
             if let passwordExpires = mainController?.adPasswordExpires, DefaultsOverride.standardOverride.bool(forKey: PrefKeys.hideExpiration.rawValue)==false {
-                TCSLogWithMark("Unhidng password expires")
+                TCSLogWithMark("Unhiding password expires")
                 menuItem.isHidden=false
                 menuItem.title="AD Password Expires: \(passwordExpires)"
             }
@@ -222,6 +295,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             return false
         case .SharesMenuItem:
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             if let shareMenuItemTitle = DefaultsOverride.standardOverride.value(forKey: PrefKeys.shareMenuItemName.rawValue) as? String {
                 menuItem.title = shareMenuItemTitle
             }
@@ -229,23 +309,45 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case .Additional:
             return true
         case .OIDCUsername:
+            menuItem.isHidden=false
+            if oidcSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             var userName = "None"
             if oidcUsername.isEmpty == false {
-                
+                menuItem.isHidden=false
                 userName = oidcUsername
+                menuItem.title = "OIDC Username: \(userName) "
+
             }
-            menuItem.title = "OIDC Username: \(userName) "
-            
+            else {
+                menuItem.isHidden=true
+            }
+
             return false
 
         case .KerberosUsername:
-            
+            menuItem.isHidden=false
+            if adSetup==false {
+                menuItem.isHidden=true
+                return false
+
+            }
+
             var userName = "None"
             if kerberosPrincipalName.isEmpty == false {
-                
+                menuItem.isHidden=false
                 userName = kerberosPrincipalName
+                menuItem.title = "Active Directory Username: \(userName) "
+
             }
-            menuItem.title = "Active Directory Username: \(userName) "
+            else {
+                menuItem.isHidden=true
+            }
+            //grayed out
             return false
         }
 
@@ -253,47 +355,39 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         return true
     }
     
-    // windows
-    
-    //    var webViewController: WebViewController?
-    //    var prefsWindow: PreferencesWindowController?
-    //    var signInMenuItem:SignInMenuItem
-    //    override init() {
-    ////        mainMenu = NSMenu()
-    ////        signInMenuItem = SignInMenuItem()
-    //
-    //        super.init()
-    ////        buildMenu()
-    //        windowController = DesktopLoginWindowController(windowNibName: "DesktopLoginWindowController")
-    ////        self.statusBarItem.menu = mainMenu
-    ////        self.statusBarItem.button?.image=NSImage(named: "xcreds menu icon")
-    ////        mainMenu.delegate = self
-    ////        NotificationCenter.default.addObserver(forName: Notification.Name("CheckTokenStatus"), object: nil, queue: nil) { notification in
-    ////            if let userInfo=notification.userInfo, let nextUpdate = userInfo["NextCheckTime"] as? Date{
-    ////                let dateFormatter = DateFormatter()
-    ////                dateFormatter.timeStyle = .short
-    ////                let updateDateString = dateFormatter.string(from: nextUpdate)
-    //////                self.updateStatus="Next password check: \(updateDateString)"
-    ////            }
-    ////        }
-    //    }
-    
     @IBAction func aboutMenuItemSelected(_ sender:Any?){
         if aboutWindowController == nil {
             aboutWindowController = AboutWindowController()
         }
         aboutWindowController?.window!.forceToFrontAndFocus(nil)
         NSApp.activate(ignoringOtherApps: true)
-        
-        
-        
+
     }
     
     @IBAction func changePasswordMenuItemSelected(_ sender:Any?)  {
-        if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0, let url = URL(string: passwordChangeURLString) {
-            
-            
-            NSWorkspace.shared.open(url)
+        if  DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseADNativePasswordChangeMenuItem.rawValue)==true {
+            let appDelegate = NSApp.delegate as? AppDelegate
+
+            if let mainController = appDelegate?.mainController,
+            let signInViewController = mainController.signInViewController{
+
+                do {
+                    try signInViewController.showResetUI()
+                    TCSLogWithMark("reset password")
+                }
+                catch SignInViewController.SignInViewControllerResetPasswordError.cancelled  {
+                    TCSLogWithMark("user cancelled")
+                }
+                catch {
+                    NSAlert.showAlert(title: "Error resetting password", message: "There was an error resetting your password. \(error)")
+                }
+            }
+        }
+        else if let passwordChangeURLString = DefaultsOverride.standardOverride.value(forKey: PrefKeys.passwordChangeURL.rawValue) as? String, passwordChangeURLString.count>0 {
+
+            if let url = URL(string: passwordChangeURLString) {
+                NSWorkspace.shared.open(url)
+            }
         }
     }
     @IBAction func quitMenuItemSelected(_ sender:Any?)  {

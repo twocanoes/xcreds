@@ -21,6 +21,7 @@
 			<integer>1</integer>
 			<key>clientID</key>
 			<string>0oae3u4ktuUuqSAcJ5d7</string>
+			<string>0oae3u4ktuUuqSAcJ5d7</string>
 			<key>discoveryURL</key>
 			<string>https://twocanoes.okta.com/.well-known/openid-configuration</string>
 			<key>redirectURI</key>

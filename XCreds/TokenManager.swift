@@ -7,8 +7,9 @@
 import Foundation
 import OIDCLite
 
-struct IDToken:Codable {
-    let iss,sub,aud:String
+struct IDToken:Decodable {
+    let iss,sub:String
+    let aud:StringOrArray
     let iat, exp:Int
     let email:String?
     let unique_name, given_name,family_name,name:String?
@@ -19,14 +20,33 @@ struct IDToken:Codable {
     }
 }
 
+enum StringOrArray:Decodable{
+    case string(String)
+    case array([String])
+
+    init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let x = try? container.decode(String.self) {
+                self = .string(x)
+                return
+            }
+            if let x = try? container.decode([String].self) {
+                self = .array(x)
+                return
+            }
+            throw DecodingError.typeMismatch(StringOrArray.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Names"))
+        }
+}
 protocol TokenManagerFeedbackDelegate {
     func tokenError(_ err:String)
     func credentialsUpdated(_ credentials:Creds)
+    func invalidCredentials()
+
 
 }
-class TokenManager: OIDCLiteDelegate,DSQueryable {
+class TokenManager:DSQueryable {
 
-    
+
     struct UserAccountInfo {
         var fullName:String?
         var firstName:String?
@@ -42,8 +62,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         case error(String)
     }
     enum ProcessTokenResult:Error {
-        case success
         case error(String)
+        case invalidCredentials
     }
     enum CalculateUserAccountInfoResult {
         case success(UserAccountInfo)
@@ -53,12 +73,12 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let defaults = DefaultsOverride.standard
     private var oidcLocal:OIDCLite?
-    func oidc() -> OIDCLite {
+    func oidc() async throws -> OIDCLite {
         var scopes: [String]?
         var additionalParameters:[String:String]? = nil
 
         if let oidcPrivate = oidcLocal {
-            oidcPrivate.getEndpoints()
+           try await oidcPrivate.getEndpoints()
 
             return oidcPrivate
         }
@@ -82,9 +102,8 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
         
         let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters, resource: resource)
-        oidcLite.getEndpoints()
+        try await oidcLite.getEndpoints()
         oidcLocal = oidcLite
-        oidcLite.delegate=self
         return oidcLite
 
 
@@ -137,9 +156,7 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         return true
     }
 
-
-
-    func tokenEndpoint() -> String? {
+    func tokenEndpoint() async throws -> String? {
 
         let prefTokenEndpoint = DefaultsOverride.standardOverride.string(forKey: PrefKeys.tokenEndpoint.rawValue)
         if  prefTokenEndpoint != nil {
@@ -147,18 +164,41 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
         }
 
 
-        if let tokenEndpoint = oidc().OIDCTokenEndpoint {
+        if let tokenEndpoint = try await oidc().OIDCTokenEndpoint {
             return tokenEndpoint
         }
         return nil
     }
+    func getNewAccessToken()   {
+        Task{
+            do {
+                //just care if we throw
+                let _ = try await getNewAccessToken()
 
-    func getNewAccessToken() -> Void {
+            }
+            catch let error as OIDCLiteError {
+                switch error {
+                case .unableToFindCode:
+                    break
+                case .unableToLoadEndpoint:
+                    break
+                case .unableToParseEndpoint:
+                    break
+                case .tokenError(_):
+                    break
+                case .authFailure(_):
+                    break
+                }
+
+            }
+        }
+    }
+    func getNewAccessToken() async throws -> Creds? {
+
         TCSLogWithMark()
 
         let keychainUtil = KeychainUtil()
         TCSLogWithMark()
-        let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
         let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
@@ -173,24 +213,53 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogWithMark("Checking credentials using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first else {
-                feedbackDelegate?.tokenError("no username for oidc config")
-                return
+                throw ProcessTokenResult.error("no username for oidc config")
             }
-            // not return because we get a callback and then call the closure
-            oidc().requestTokenWithROPG(username: username, password: keychainPassword)
+            let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
+
+            var overrrideErrorArray = [String]()
+            let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
+
+            if let ropgResponseValue = ropgResponseValue {
+                overrrideErrorArray.append(ropgResponseValue)
+            }
+            else if let ropgResponseValueArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.ropgResponseValue.rawValue) as? [String] {
+                overrrideErrorArray.append(contentsOf: ropgResponseValueArray)
+            }
+
+           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
+
+            TCSLogWithMark("ROPG successful. Returning credentials for tokenInfo")
+
+            if let tokenResponse = tokenResponse {
+                return Creds(password: keychainPassword, tokens:tokenResponse )
+            }
+            return nil
+
+
 
         } //use the refresh token
-        else if let refreshAccountAndToken = refreshAccountAndToken, let refreshToken = refreshAccountAndToken.1 {
+        else if let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue), let refreshToken = refreshAccountAndToken.1 {
 
-            oidc().refreshTokens(refreshToken)
+            TCSLogWithMark("Using refresh token")
+            let tokenInfo = try await oidc().refreshTokens(refreshToken)
+            TCSLogWithMark("Got tokens")
+
+            if let keychainPassword = keychainAccountAndPassword?.1 {
+                return Creds(password: keychainPassword, tokens: tokenInfo)
+            }
+            TCSLogWithMark("No passwork in keychain")
+
+            return nil
         } // nothing. let delegate know
         else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) == nil {
 
-            TCSLogWithMark("no discovery URL defined. returning silently.")
-            }
+            throw ProcessTokenResult.error("no discovery URL defined")
+
+         }
         else {
-            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty") refreshtoken:\(refreshAccountAndToken?.1 ?? "empty")")
-            feedbackDelegate?.tokenError("no refresh token")
+            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty")")
+            throw ProcessTokenResult.error("no refresh token")
 
         }
     }
@@ -235,10 +304,6 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             TCSLogErrorWithMark("error decoding idtoken::")
             TCSLogErrorWithMark("Token:\(data)")
             throw ProcessTokenResult.error("The identity token could not be decoded from json")
-//
-//            //            mechanismDelegate.denyLogin(message:"The identity token could not be decoded from json.")
-//            //            return
-//
         }
 
         let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
@@ -356,6 +421,20 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
             userAccountInfo.kerberosPrincipalName = mapValue
         }
 
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUpdateKerberosUserPrincipalADDomain.rawValue) == true,
+           let adDomain = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue) {
+
+            if userAccountInfo.kerberosPrincipalName?.uppercased().hasSuffix(adDomain.uppercased())==false{
+                TCSLogWithMark("kerberosPrincipalName name does not end with \(adDomain). Updating...")
+
+                let principalNameWithoutDomain = userAccountInfo.kerberosPrincipalName?.split(separator: "@").first ?? ""
+                userAccountInfo.kerberosPrincipalName = principalNameWithoutDomain + "@" + adDomain
+
+                TCSLogWithMark("kerberosPrincipalName name is now \(userAccountInfo.kerberosPrincipalName ?? "")")
+
+            }   
+        }
+
         //full name
         TCSLogWithMark("checking map_fullname")
 
@@ -445,16 +524,22 @@ class TokenManager: OIDCLiteDelegate,DSQueryable {
 // MARK: OIDC Lite Delegate Functions
 
 extension TokenManager {
+
+    func ropgSuccess(errorMessage: String) {
+        TCSLogWithMark("ropgSuccess: \(errorMessage)")
+        feedbackDelegate?.tokenError(errorMessage)
+
+    }
+
+
     func authFailure(message: String) {
         XCredsAudit().auditError(message)
         TCSLogWithMark("authFailure: \(message)")
         feedbackDelegate?.tokenError(message)
     }
 
-
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
 
-        let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
 
 
         TCSLogWithMark("======== tokenResponse =========")
@@ -485,16 +570,21 @@ extension TokenManager {
                 XCredsAudit().refreshTokenUpdated(true)
                 self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
-            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
-                TCSLogWithMark("ropgResponseValue matched to \(error)")
-                XCredsAudit().refreshTokenUpdated(true)
+//            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
+//                TCSLogWithMark("ropgResponseValue matched to \(error)")
+//                XCredsAudit().refreshTokenUpdated(true)
+//
+//                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+//            }
+            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == "invalid_grant" {
+                TCSLogWithMark("invalid grant, so password wrong: \(error)")
+                XCredsAudit().auditError(error)
 
-                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+                self.feedbackDelegate?.invalidCredentials()
             }
             else {
                 let err = "error gettings tokens: jsonDict:\(String(describing: tokens.jsonDict?.debugDescription))"
 
-                XCredsAudit().auditError(err)
                 self.feedbackDelegate?.tokenError(err)
             }
 

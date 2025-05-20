@@ -47,30 +47,9 @@ let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", a
             return NSMenu()
 
         }
-//        if sharePrefs.integer(forKey: "Version") != 1 {
-//            return NSMenu.init()
-//        }
-        
-        // check for an actual ticket
         
         klistUtil.klist()
-        
-//        if !klistUtil.state {
-//            TCSLogWithMark("No valid ticket, not attempting to mount shares.")
-//            
-////            NotificationQueue.default.enqueue(updateNotification, postingStyle: .now)
-//
-//            return NSMenu.init()
-//        }
-//        guard let user = try? PasswordUtils.getLocalRecord(getConsoleUser()) else {
-//
-//            return NSMenu()
-//        }
-//        if defaults.object(forKey: PrefKeys.userShortName.rawValue) == nil {
-//            TCSLogWithMark("No user name, not attempting to mount shares.")
-//            return NSMenu.init()
-//        }
-        
+
         if shareMounter.all_shares.count > 0 {
             // Menu Items and Menu
             

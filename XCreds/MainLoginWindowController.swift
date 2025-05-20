@@ -23,7 +23,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         window?.canBecomeVisibleWithoutLogin=true
         let screenRect = NSScreen.screens[0].frame
         window?.setFrame(screenRect, display: true, animate: false)
-        window?.alphaValue=0.9
+        window?.alphaValue=0.95
 
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
             //added this because https://github.com/twocanoes/xcreds/issues/272
@@ -68,13 +68,13 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     }
     @objc fileprivate func updateWindow() {
         TCSLogWithMark()
-        DispatchQueue.main.async{
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
             if self.window?.isVisible ?? true {
-                self.updateBackground()
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width
                 let screenHeight = screenRect.height
 
+                TCSLogWithMark("screenRect: \(screenRect)")
                 self.window?.setFrame(NSMakeRect(0,0 , screenWidth, screenHeight), display: true)
 
                 if let height = self.controlsViewController?.view.frame.size.height {
@@ -83,6 +83,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                     self.controlsViewController?.view.frame=rect
                 }
                 self.recenterCenterView()
+                self.updateBackground()
+
             }
         }
     }
@@ -186,6 +188,13 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
     fileprivate func updateBackground() {
         TCSLogWithMark()
+        if windowArray.count>1{
+            for i in 1..<windowArray.count{
+
+                windowArray[i].contentView?.removeFromSuperview()
+
+            }
+        }
         windowArray.removeAll()
         if let window = window {
             windowArray.append(window)
@@ -214,40 +223,89 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
             currWindow = windowArray[i]
             let backgroundImage = DefaultsHelper.backgroundImage()
+
             let screenRect = screen.frame
             var newHeight = screenRect.height
             var newWidth = screenRect.width
 
-            if let backgroundImage = backgroundImage {
+            if let backgroundImage = backgroundImage{
+                if i == 0 {
 
-                if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
-                    let ratio = backgroundImage.size.width/backgroundImage.size.height
-                    newHeight = screenRect.size.height
-                    newWidth = screenRect.size.height * ratio
+                    if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowBackgroundImageFillScreen.rawValue) == false {
+                        TCSLogWithMark("MainLoginWindowController: Not resizing background image to fill screen")
 
-                    if newWidth > screenRect.size.width {
-                        newWidth = screenRect.size.width
-                        newHeight = screenRect.size.width / ratio
+                        let ratio = backgroundImage.size.width/backgroundImage.size.height
+                        newHeight = screenRect.size.height
+                        newWidth = screenRect.size.height * ratio
+
+                        if newWidth > screenRect.size.width {
+                            newWidth = screenRect.size.width
+                            newHeight = screenRect.size.width / ratio
+                        }
                     }
+                    else {
+                        TCSLogWithMark("MainLoginWindowController: resizing background image to fill screen")
 
-                }
+                        backgroundImage.size.height = newHeight
+                        backgroundImage.size.width = newWidth
 
-                backgroundImage.size.height = newHeight
-                backgroundImage.size.width = newWidth
-                if i==0{
-                    backgroundImageView.image=backgroundImage
+                        backgroundImageView.imageScaling = .scaleAxesIndependently
 
+                        backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+
+                    }
+                    //main screen
                     backgroundImageView.imageScaling = .scaleAxesIndependently
-                    backgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+                    backgroundImage.size.height = newHeight
+                    backgroundImage.size.width = newWidth
+                    TCSLogWithMark("Setting background size to width:\(newWidth) height:\(newHeight)")
+                    backgroundImageView.frame=NSMakeRect((screenRect.size.width-newWidth)/2, (screenRect.size.height-newHeight)/2, newWidth, newHeight)
+                    backgroundImageView.image=backgroundImage
+                    backgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowBackgroundImageAlpha.rawValue))
+
                 }
                 else {
                     let newBackgroundImageView = NSImageView()
-                    newBackgroundImageView.image=backgroundImage
 
-                    newBackgroundImageView.imageScaling = .scaleAxesIndependently
-                    newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height)
-                    currWindow.contentView=newBackgroundImageView
-                    currWindow.makeKeyAndOrderFront(self)
+                    if let secondardBackgroundImage = DefaultsHelper.secondaryBackgroundImage(){
+
+                        if UserDefaults.standard.bool(forKey: PrefKeys.shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen.rawValue) == false {
+                            TCSLogWithMark("secondaryBackgroundImage: Not resizing secondary background image to fill screen")
+
+                            let ratio = secondardBackgroundImage.size.width/secondardBackgroundImage.size.height
+                            newHeight = screenRect.size.height
+                            newWidth = screenRect.size.height * ratio
+
+                            if newWidth > screenRect.size.width {
+                                newWidth = screenRect.size.width
+                                newHeight = screenRect.size.width / ratio
+                            }
+
+                        }
+                        else {
+                            TCSLogWithMark("secondaryBackgroundImage: resizing secondary background image to fill screen")
+
+                            secondardBackgroundImage.size.height = newHeight
+                            secondardBackgroundImage.size.width = newWidth
+
+                            newBackgroundImageView.frame=NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height-100)
+
+                        }
+                        newBackgroundImageView.imageScaling = .scaleAxesIndependently
+                        secondardBackgroundImage.size.height = newHeight
+                        secondardBackgroundImage.size.width = newWidth
+
+                        //secondary screens
+                        newBackgroundImageView.image=secondardBackgroundImage
+                        newBackgroundImageView.alphaValue = CGFloat(DefaultsOverride.standardOverride.float(forKey: PrefKeys.loginWindowSecondaryMonitorsBackgroundAlpha.rawValue))
+
+                        newBackgroundImageView.imageScaling = .scaleAxesIndependently
+                        newBackgroundImageView.frame=NSMakeRect((screenRect.size.width-newWidth)/2, (screenRect.size.height-newHeight)/2, newWidth, newHeight)
+
+                        currWindow.contentView?.addSubview(newBackgroundImageView)
+                        currWindow.makeKeyAndOrderFront(self)
+
+                    }
                 }
 
             }

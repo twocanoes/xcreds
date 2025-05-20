@@ -21,7 +21,7 @@
 	<key>shouldShowAboutMenu</key>
 	<true/>
 	<key>shouldShowQuitMenu</key>
-	<true/>
+	<false/>
 	<key>shouldFindPasswordElement</key>
 	<true/>
 	<key>shouldShowSupportStatus</key>
@@ -60,14 +60,18 @@
 	<false/>
 	<key>shouldUseROPGForPasswordChangeChecking</key>
 	<false/>
+	<key>checkForUpdates</key>
+	<true/>
 	<key>shouldUseROPGForMenuLogin</key>
 	<false/>
 	<key>shouldUseROPGForLoginWindowLogin</key>
 	<false/>
 	<key>passwordPlaceholder</key>
 	<string>Password</string>
+	<key>versionCheckURL</key>
+	<string>https://paypro.twocanoes.com/api/version_info</string>
 	<key>refreshBannerText</key>
-	<string>Your local account password needs to be changed to match your online password. Please authenticate now.</string>
+	<string>Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.</string>
 	<key>shouldPromptForMigration</key>
 	<false/>
 	<key>shouldAllowKeyComboForMacLoginWindow</key>
@@ -82,15 +86,17 @@
 		<string>dn</string>
 	</array>
 	<key>loadPageTitle</key>
-	<string>Please Wait....</string>
+	<string>Error Connecting</string>
 	<key>loadPageInfo</key>
-	<string>(or try connecting to network or check preferences)</string>
+	<string>There was an error connecting to the log in page </string>
 	<key>shouldPromptForADPasswordChange</key>
 	<true/>
 	<key>allowUsersClaim</key>
 	<string>upn</string>
 	<key>shareMenuItemName</key>
 	<string>Shares</string>
+	<key>shouldUseBasicAuthWithROPG</key>
+	<false/>
 	<key>map_password_expiry</key>
 	<string>pwd_exp</string>
 	<key>map_fullusername</key>
@@ -98,11 +104,19 @@
 	<key>shouldShowSignInMenuItem</key>
 	<true/>
 	<key>shouldLoginWindowBackgroundImageFillScreen</key>
-	<false/>
+	<true/>
+	<key>shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen</key>
+	<true/>
 	<key>shouldActivateSystemInfoButton</key>
 	<true/>
 	<key>ropgResponseValue</key>
 	<string>interaction_required</string>
+	<key>menuItemWindowBackgroundImageAlpha</key>
+	<integer>1</integer>
+	<key>loginWindowBackgroundImageAlpha</key>
+	<integer>1</integer>
+	<key>loginWindowSecondaryMonitorsBackgroundAlpha</key>
+	<integer>1</integer>
 	<key>shouldSuppressLocalPasswordPrompt</key>
 	<false/>
 	<key>overlayDelaySecs</key>
@@ -111,5 +125,11 @@
 	<false/>
 	<key>shouldAllowLoginCardSetup</key>
 	<true/>
+	<key>shouldDisableMenuItemAutoLaunch</key>
+	<false/>
+	<key>shouldUseADNativePasswordChangeMenuItem</key>
+	<false/>
+	<key>shouldHideLoginWindowLogo</key>
+	<false/>
 </dict>
 </plist>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -689,23 +689,7 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Uvh-o1-mcs"/>
-                <menuItem title="Login Card" hidden="YES" id="e5b-09-LAv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Login Card" id="Wza-vh-pGi">
-                        <items>
-                            <menuItem title="Setup Card..." tag="13" id="RFc-oy-99Z">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="setupCardMenuItemSelected:" target="1OV-ou-Ss5" id="Ivh-GL-n7I"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                        <connections>
-                            <outlet property="delegate" destination="1OV-ou-Ss5" id="Hhe-3N-M29"/>
-                        </connections>
-                    </menu>
-                </menuItem>
-                <menuItem title="OIDC Usernaem" tag="2" enabled="NO" id="7wW-bt-MeR">
+                <menuItem title="OIDC Username" tag="2" enabled="NO" id="7wW-bt-MeR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="Gny-X3-1ZT"/>
@@ -718,51 +702,62 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="ftq-kh-g8g"/>
-                <menuItem title="Next Password Check: Time" tag="4" enabled="NO" id="fDN-bq-7LZ">
+                <menuItem title="Next OIDC Password Check: Time" tag="5" enabled="NO" id="kLW-ig-l4v">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="k5b-Z3-3WJ"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Next AD Password Check: Time" tag="4" enabled="NO" id="fDN-bq-7LZ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="nextPasswordCheckTimeMenuItemSelected:" target="1OV-ou-Ss5" id="NMe-oq-fDO"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Credential Status: None" tag="5" enabled="NO" id="YLv-mh-piZ">
+                <menuItem isSeparatorItem="YES" id="Ura-vC-UQe"/>
+                <menuItem title="OIDC Credential Status: None" tag="15" enabled="NO" id="nNc-GI-Rm2">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="lTc-PJ-7R2"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Active Directory Credential Status: None" tag="6" enabled="NO" id="YLv-mh-piZ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="VVt-Zd-Ui7"/>
                     </connections>
                 </menuItem>
-                <menuItem title="OIDC Password Expires: " tag="6" enabled="NO" id="vin-yR-IbW">
+                <menuItem isSeparatorItem="YES" id="H0r-h6-WLk"/>
+                <menuItem title="OIDC Password Expires: " tag="7" enabled="NO" id="vin-yR-IbW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="l6Y-88-b28"/>
                     </connections>
                 </menuItem>
-                <menuItem title="AD Password Expires: " tag="7" enabled="NO" id="pb3-CP-R5l">
+                <menuItem title="AD Password Expires: " tag="8" enabled="NO" id="pb3-CP-R5l">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="credentialStatusMenuItemSelected:" target="1OV-ou-Ss5" id="n1c-gu-1iO"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="mwR-f8-XvQ"/>
-                <menuItem title="Sign In" tag="8" id="FH2-NT-oeX">
+                <menuItem title="Show Sign In Window" tag="9" id="FH2-NT-oeX">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="signInMenuItemSelected:" target="1OV-ou-Ss5" id="Mra-OX-Nqy"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Change Password" tag="9" id="F1e-WL-4b2">
+                <menuItem title="Change Password" tag="10" id="F1e-WL-4b2">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="dfP-8J-fS8"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Shares" tag="10" hidden="YES" id="qRq-yn-8sT">
+                <menuItem title="Shares" tag="11" hidden="YES" id="qRq-yn-8sT">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="changePasswordMenuItemSelected:" target="1OV-ou-Ss5" id="mhw-jg-LgC"/>
-                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="op6-Hq-2li"/>
-                <menuItem title="Quit" tag="11" id="OM5-mb-fFV">
+                <menuItem title="Quit" tag="12" id="OM5-mb-fFV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="quitMenuItemSelected:" target="1OV-ou-Ss5" id="yL8-dQ-nRK"/>

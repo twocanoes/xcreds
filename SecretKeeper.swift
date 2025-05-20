@@ -383,12 +383,16 @@ public class SecretKeeper {
 
         var trust : SecTrustedApplication? = nil
         if FileManager.default.fileExists(atPath: "/Applications/XCreds.app", isDirectory: nil) {
+            @available(macOS, deprecated: 10.10)
             let err = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app", &trust)
+
             if err == 0 {
                 secApps.append(trust!)
             }
         }
         if FileManager.default.fileExists(atPath: "/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", isDirectory: nil) {
+
+            @available(macOS, deprecated: 10.10)
             let err = SecTrustedApplicationCreateFromPath("/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", &trust)
             if err == 0 {
                 secApps.append(trust!)

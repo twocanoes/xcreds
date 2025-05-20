@@ -12,6 +12,8 @@ XCredsLoginPlugin *authorizationPlugin = nil;
 
 //os_log_t pluginLog = nil;
 XCredsLoginMechanism *loginWindowMechanism = nil;
+XCredsLoginDone *loginDone = nil;
+
 
 
 
@@ -169,7 +171,7 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
 
     }
     else if (mechanism->fLoginDone){
-        XCredsLoginDone *loginDone = [[XCredsLoginDone alloc] initWithMechanism:mechanism];
+        loginDone = [[XCredsLoginDone alloc] initWithMechanism:mechanism];
         [loginDone run];
 
     }
@@ -193,9 +195,9 @@ extern OSStatus AuthorizationPluginCreate(const AuthorizationCallbacks *callback
     MechanismRecord *mechanism = (MechanismRecord *)inMechanism;
     if (mechanism->fLoginWindow) {
         [loginWindowMechanism tearDown];
-//        if (loginWindowMechanism.signIn.visible == true) {
-//            [loginWindowMechanism tearDown];
-//        }
+    }
+    if (mechanism->fLoginDone) {
+        [loginDone tearDown];
     }
     free(mechanism);
     return noErr;

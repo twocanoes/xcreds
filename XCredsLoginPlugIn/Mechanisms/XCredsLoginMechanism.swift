@@ -7,8 +7,6 @@ import Network
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
     var loginWebViewController: LoginWebViewController?
     @objc var signInViewController: SignInViewController?
-
-
     enum LoginWindowType {
         case cloud
         case usernamePassword
@@ -42,7 +40,9 @@ import Network
     }
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
-//        self.mainLoginWindowController?.window?.orderOut(self)
+        for window in self.mainLoginWindowController!.windowArray{
+            window.close()
+        }
     }
 
     override func reload() {
@@ -147,26 +147,44 @@ import Network
 
         let useROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin
 .rawValue)
-
-
         TCSLogWithMark("checking if local login")
         if preferLocalLogin == false,
            let _ = discoveryURL { // oidc is configured
             TCSLogWithMark("discovery url set and prefer local login is false, so seeing if we need to check network")
-            if shouldDetectNetwork == true,
-               NetworkMonitor.shared.isConnected==false {
-                TCSLogWithMark("network not detected so showing username password login window")
-                showLoginWindowType(loginWindowType: .usernamePassword)
-            }
-            else if useROPG == true {
+
+            //
+            //ROPG: show username password
+            //
+            if useROPG == true {
                 TCSLogWithMark("using ROPG so showing username/password")
                 showLoginWindowType(loginWindowType: .usernamePassword)
-
             }
             else {
-                TCSLogWithMark("network available, showing cloud")
-                showLoginWindowType(loginWindowType: .cloud)
+                Task{ @MainActor in
+                    do {
+                        try await TokenManager().oidc().getEndpoints()
+                        //have network
+                        TCSLogWithMark("network available, showing cloud")
+                        showLoginWindowType(loginWindowType: .cloud)
+
+                    }
+                    catch{
+                        //no network
+                        if shouldDetectNetwork == true {
+                            TCSLogWithMark("endpoints not available so showing username password login window")
+                            showLoginWindowType(loginWindowType: .usernamePassword)
+
+                        }
+                        else {
+                            TCSLogWithMark("no network and not checking so showing cloud")
+                            showLoginWindowType(loginWindowType: .cloud)
+
+                        }
+
+                    }
+                }
             }
+
         }
         else {
             TCSLogWithMark("preferring showing local")
@@ -273,11 +291,13 @@ import Network
         }
 
     }
+   
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
 
         if loginWebViewController != nil || signInViewController != nil {
             TCSLogWithMark("Dismissing loginWindowWindowController")
+
             mainLoginWindowController?.loginTransition {
                 super.allowLogin()
             }
@@ -297,10 +317,7 @@ import Network
     func showLoginWindowType(loginWindowType:LoginWindowType)  {
         TCSLogWithMark()
 
-
         switch loginWindowType {
-
-
         case .cloud:
             self.loginWindowType = LoginWindowType.cloud
             self.mainLoginWindowController?.controlsViewController?.refreshGridColumn?.isHidden=false
@@ -387,6 +404,5 @@ import Network
             signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
 
         }
-
     }
 }

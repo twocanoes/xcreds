@@ -125,7 +125,7 @@ public class SessionManager: NoMADUserSessionDelegate {
     
     // PRAGMA: Auth callbacks
     
-    public func NoMADAuthenticationSucceded() {
+    public func NoMADAuthenticationSucceeded() {
         // we'll never auth here
     }
     
