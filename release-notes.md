@@ -1,3 +1,8 @@
+## tag-5.4(8684) (2025-05-12)
+
+*  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3965c4080826b61207746990832eac3219cac04f)
+
+
 ## tag-5.4(8683) (2025-05-09)
 
 *  fixed secondary fill [View](https://github.com/twocanoes/xcreds/commit/6dcb759f10fd66407c670d8ad2b579d4a8680ae0)

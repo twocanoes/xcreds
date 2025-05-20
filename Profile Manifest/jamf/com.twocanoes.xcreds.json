@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.4 (8683) OAuth Settings",
+    "description": "XCreds 5.4 (8684) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -383,7 +383,7 @@
         "shouldLoginWindowBackgroundImageFillScreen": {
             "type": "boolean",
             "title": "Login Window Background Image Fill Screen",
-            "default": false,
+            "default": true,
             "description": "Set the background image to Fill Screen rather than Fit to Screen",
             "links": [
                 {
@@ -396,7 +396,7 @@
         "shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen": {
             "type": "boolean",
             "title": "Login Window Secondary Monitors Background Image Fill Screen",
-            "default": false,
+            "default": true,
             "description": "Set the secondary monitor(s) background image to Fill Screen rather than Fit to Screen",
             "links": [
                 {
