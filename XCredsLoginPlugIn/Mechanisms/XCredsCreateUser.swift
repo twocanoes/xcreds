@@ -165,12 +165,15 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 return
             }
             do {
+                let primaryGroupID = (DefaultsOverride.standardOverride.string(forKey: PrefKeys.primaryGroupID.rawValue) ?? "20")
+
+
                 try createUser(shortName: xcredsUser,
                                first: xcredsFirst ,
                                last: xcredsLast, fullName: fullname,
                                pass: xcredsPass,
                                uid: uid,
-                               gid: "20",
+                               gid: primaryGroupID,
                                canChangePass: true,
                                isAdmin: isAdmin,
                                customAttributes: customAttributes
