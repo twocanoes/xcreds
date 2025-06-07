@@ -14,8 +14,8 @@
             filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "395"
-            endingLineNumber = "395"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "requestTokenWithROPG(username:password:basicAuth:overrideErrors:)"
             landmarkType = "7">
             <Locations>

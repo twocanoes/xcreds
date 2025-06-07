@@ -231,7 +231,6 @@ class ScheduleManager:NoMADUserSessionDelegate {
                 if let _ = ud.string(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue){
                     isLoginInFailedState=true
                     TCSLogWithMark("We have a prior failed login attempt.")
-
                 }
                 TCSLogWithMark("Checking to see if the login window was successful after the last failed attempt. If so, we can go ahead and try to authenticate.")
 

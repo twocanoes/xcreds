@@ -1,3 +1,8 @@
+## tag-5.5(8686) (2025-06-07)
+
+*  updated to use oidc_username from prefs if not in DS when checking for token refresh [View](https://github.com/twocanoes/xcreds/commit/f2b7843941f1c7e32dc704a4a7129e50a7e67591)
+
+
 ## tag-5.5(8685) (2025-05-27)
 
 *  release notes updated [View](https://github.com/twocanoes/xcreds/commit/e6c3fc85dfc308afbddd0e4a321cc936ef6034f9)

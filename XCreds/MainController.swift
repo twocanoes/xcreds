@@ -120,7 +120,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
         if kerbPrinc == nil && oidcUsername == nil && kerbPrincPrefs == nil && oidcUsernamePrefs == nil {
-            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user, so skipping showing window")
+            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user/prefs, so skipping showing window")
             return true
 
         }
