@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.4 (8684) OAuth Settings",
+    "description": "XCreds 5.5 (8685) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -330,7 +330,7 @@
         "loginWindowBackgroundImageAlpha": {
             "type": "number",
             "title": "Login Window Background Image Alpha",
-            "default": "1",
+            "default": 1.0,
             "description": "Alpha value of loginWindowBackgroundImage. Default value: 1",
             "links": [
                 {
@@ -370,7 +370,7 @@
         "menuItemWindowBackgroundImageAlpha": {
             "type": "number",
             "title": "Menu Item Background Image Alpha",
-            "default": "1",
+            "default": 1.0,
             "description": "Alpha value of menuItemWindowBackgroundImageURL. Default value: 1",
             "links": [
                 {
@@ -409,7 +409,7 @@
         "loginWindowSecondaryMonitorsBackgroundAlpha": {
             "type": "number",
             "title": "Login Window Secondary Monitors Background Image Alpha",
-            "default": "1",
+            "default": 1.0,
             "description": "Alpha value of loginWindowSecondaryMonitorsBackground. Default value: 1",
             "links": [
                 {
@@ -1315,6 +1315,19 @@
             ],
             "property_order": 525
         },
+        "primaryGroupID": {
+            "type": "string",
+            "title": "Primary Group ID",
+            "default": "20",
+            "description": "Primary Group ID when creating a new user. Default value 20.",
+            "links": [
+                {
+                    "rel": "More information",
+                    "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
+                }
+            ],
+            "property_order": 530
+        },
         "map_password_expiry": {
             "type": "string",
             "title": "Map OIDC claim to Password Expiry in Seconds",
@@ -1326,7 +1339,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 530
+            "property_order": 535
         },
         "settingsOverrideScriptPath": {
             "type": "string",
@@ -1339,7 +1352,7 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 535
+            "property_order": 540
         },
         "upnSuffixToDomainMappings": {
             "type": "array",
@@ -1360,7 +1373,7 @@
             },
             "title": "UPN Suffix To Domain Mappings",
             "description": "In some Active Directory environments, users do not use username@domain to login; they use a UPN suffix to make the username easier to use. This setting maps the UPN suffix to the correct AD domain name. For example, if you have an AD domain of foo.com but want users to sign in as user@bar.com, a UPN suffix of foo.com is created in AD and the user account is set to user@foo.com. This setting then would map foo.com to bar.com by setting the key upn to foo.com and the domain key to bar.com.",
-            "property_order": 540
+            "property_order": 545
         },
         "menuItems": {
             "type": "array",
@@ -1395,7 +1408,7 @@
             },
             "title": "Menu Items",
             "description": "Menu Items",
-            "property_order": 545
+            "property_order": 550
         },
         "Shares": {
             "type": "array",
@@ -1431,31 +1444,31 @@
             },
             "title": "Shares",
             "description": "Add menu item and mount/automount shares",
-            "property_order": 550
+            "property_order": 555
         },
         "HomeMountEnabled": {
             "type": "boolean",
             "title": "Home Mount Enabled",
             "description": "Show and mount home directory from AD profile if defined.",
-            "property_order": 555
+            "property_order": 560
         },
         "HomeAppendDomain": {
             "type": "boolean",
             "title": "Home Append Domain",
             "description": "Append the domain name to the share defined in the profile.",
-            "property_order": 560
+            "property_order": 565
         },
         "shareMenuItemName": {
             "type": "string",
             "title": "Share Menu Item Name",
-            "description": "Name for Shares menu item. Default: \"Shares\".",
+            "description": "Name for Shares menu item. Default: \"Shares\"`.",
             "links": [
                 {
                     "rel": "More information",
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 565
+            "property_order": 570
         }
     }
 }

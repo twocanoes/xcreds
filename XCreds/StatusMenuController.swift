@@ -59,6 +59,10 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             oidcUsername = username
 
         }
+        else if let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+        {
+            oidcUsername = oidcUsernamePrefs
+        }
         if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String], userNames.count>0, let username = userNames.first {
             kerberosPrincipalName = username
 

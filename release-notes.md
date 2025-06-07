@@ -1,3 +1,11 @@
+## tag-5.5(8685) (2025-05-27)
+
+*  release notes updated [View](https://github.com/twocanoes/xcreds/commit/e6c3fc85dfc308afbddd0e4a321cc936ef6034f9)
+*  fixed default values on new keys [View](https://github.com/twocanoes/xcreds/commit/5862dc8745f45e82dba2b345cdaa60588a5bb0bc)
+*  fixed type in profile [View](https://github.com/twocanoes/xcreds/commit/b579c67d13373fe8cbf69045071e9272d66a4717)
+*  added new pref for primaryGroupID [View](https://github.com/twocanoes/xcreds/commit/af1fffb58e9a3faf18e3b8dd9cb4618ae7fa4bf8)
+
+
 ## tag-5.4(8684) (2025-05-12)
 
 *  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3965c4080826b61207746990832eac3219cac04f)
