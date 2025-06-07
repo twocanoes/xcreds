@@ -286,7 +286,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
+        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true && isLocalOnlyAccount() == true {
             showSignInWindow(force:true,forceLoginWindowType: .cloud)
         }
 

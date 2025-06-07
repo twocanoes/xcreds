@@ -1,3 +1,8 @@
+## tag-5.5(8694) (2025-06-07)
+
+*  fixed issue with oidc username and ropg [View](https://github.com/twocanoes/xcreds/commit/41d6bea7e5db91a90dce3417101e0d47762ba7ca)
+
+
 ## tag-5.5(8686) (2025-06-07)
 
 *  updated to use oidc_username from prefs if not in DS when checking for token refresh [View](https://github.com/twocanoes/xcreds/commit/f2b7843941f1c7e32dc704a4a7129e50a7e67591)
