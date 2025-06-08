@@ -38,7 +38,7 @@
                             </constraints>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="icon_64x64" id="As7-x6-zzU"/>
                         </imageView>
-                        <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
+                        <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-hI-jaw">
                             <rect key="frame" x="0.0" y="161" width="250" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="PcC-1B-yi1"/>
@@ -57,7 +57,7 @@
                         <stackView distribution="equalCentering" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZJ-ht-zuy">
                             <rect key="frame" x="0.0" y="120" width="283" height="30"/>
                             <subviews>
-                                <secureTextField verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
+                                <secureTextField focusRingType="none" verticalHuggingPriority="750" tag="99" translatesAutoresizingMaskIntoConstraints="NO" id="UJh-bj-CPX">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="37q-P0-BRW"/>
@@ -108,7 +108,7 @@ DQ
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-Yr-3LY">
                             <rect key="frame" x="-2" y="81" width="195" height="28"/>
                             <textFieldCell key="cell" controlSize="large" lineBreakMode="clipping" alignment="center" title="Tap Card to Log In" id="67B-K8-Q2B">
                                 <font key="font" metaFont="system" size="24"/>
@@ -116,7 +116,7 @@ DQ
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e5W-zw-UxS">
                             <rect key="frame" x="-2" y="54" width="254" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="f1h-xK-zpp"/>

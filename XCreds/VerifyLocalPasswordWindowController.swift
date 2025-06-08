@@ -67,11 +67,12 @@ class VerifyLocalPasswordWindowController: NSWindowController, DSQueryable {
         }
 
     }
-    func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool) -> LocalUsernamePasswordResult {
+    func promptForLocalAccountAndChangePassword(username:String, newPassword:String?, shouldUpdatePassword:Bool, showResetButton:Bool=true) -> LocalUsernamePasswordResult {
         currentUsername = username
         if newPassword == nil {
          TCSLogWithMark("new password is nil")
         }
+        self.showResetButton = showResetButton
         window?.canBecomeVisibleWithoutLogin=true
         window?.isMovable = true
         window?.canBecomeVisibleWithoutLogin = true

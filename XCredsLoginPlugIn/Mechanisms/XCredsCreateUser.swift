@@ -10,7 +10,7 @@ import OpenDirectory
 
 
 /// Mechanism to create a local user and homefolder.
-class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
+class XCredsCreateUser: XCredsBaseMechanism {
 
     let createUserLog = "createUserLog"
     let uiLog = "uiLog"
@@ -354,8 +354,11 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         // now to update the attribute
         TCSLogWithMark("updating info in DS")
-        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
 
+        TCSLogWithMark("removing _xcreds_oidc_updatedfromlocal from record if needed")
+        try? records.first?.removeValues(forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal")
+
+        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
         TCSLogWithMark("Checking if member of group")
         let userGroups = getHint(type: .groups) as? [String]
 

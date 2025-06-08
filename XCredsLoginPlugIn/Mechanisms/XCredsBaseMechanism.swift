@@ -1,7 +1,7 @@
 import Cocoa
 import OpenDirectory
 
-@objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol {
+@objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol, DSQueryable {
 
     
     func reload() {
@@ -182,6 +182,15 @@ import OpenDirectory
             let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)
             var accountLocked = false
 
+            var isSuspect = false
+            if let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String ,let existingUser = try? getUserRecord(sub: subValue, iss: issuerValue), let _ = try? existingUser.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal") as? [String]  {
+
+                TCSLogWithMark("setting isSuspect to true.")
+                isSuspect=true
+
+            }
+
+
             switch passwordCheckStatus {
             case .success:
                 TCSLogWithMark("Local password matches cloud password ")
@@ -192,19 +201,21 @@ import OpenDirectory
                 fallthrough
             case .incorrectPassword:
 
-                TCSLogWithMark("Sync password called.")
+                TCSLogWithMark("incorrectPassword called.")
 
                 let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials
 
                 if getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false,
-                   let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false{
+                   let localAdmin = localAdmin, localAdmin.hasEmptyValues()==false,isSuspect==false {
                     TCSLogWithMark("setting passwordOverwrite")
                     setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
                 }
                 else {
 
-                    TCSLogWithMark("local admin set")
-                    switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: localAdmin){
+                    TCSLogWithMark("prompting for password")
+                    //if the info in DS was provided from a user account file, we don't want to allow admin override to force the user to prove they know
+                    //the password to the account.
+                    switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: isSuspect==false ? localAdmin : nil,showResetButton: !isSuspect){
 
                     case .success:
                         break
@@ -266,7 +277,7 @@ import OpenDirectory
 
         }
     }
-    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?) ->ErrorResult {
+    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?, showResetButton:Bool=true) ->ErrorResult {
         TCSLogWithMark()
         let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
@@ -281,7 +292,7 @@ import OpenDirectory
 
         }
 
-        switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true) {
+        switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true, showResetButton: showResetButton) {
 
 
         case .success(let enteredUsernamePassword):

@@ -330,6 +330,8 @@ class TokenManager:DSQueryable {
 
         TCSLogWithMark()
         guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
+            TCSLogWithMark("no sub or iss")
+
             return nil
         }
 

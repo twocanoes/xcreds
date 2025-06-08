@@ -690,7 +690,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     
                     let localAdmin = mech.getHint(type: .localAdmin) as? LocalAdminCredentials
                     self.localAdmin = localAdmin
-                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: true, localAdmin: localAdmin){
+                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: true, localAdmin: localAdmin, showResetButton: true){
 
                     case .success:
                         setRequiredHintsAndContext()

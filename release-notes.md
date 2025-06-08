@@ -1,3 +1,8 @@
+## tag-5.5(8696) (2025-06-07)
+
+*  fixed window showing briefly when force showing but valid credentials [View](https://github.com/twocanoes/xcreds/commit/017ae28f66ec765dba3988311d5c9662ad0b9ae7)
+
+
 ## tag-5.5(8694) (2025-06-07)
 
 *  fixed issue with oidc username and ropg [View](https://github.com/twocanoes/xcreds/commit/41d6bea7e5db91a90dce3417101e0d47762ba7ca)
