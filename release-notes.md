@@ -1,3 +1,8 @@
+## tag-5.5(8709) (2025-06-08)
+
+*  refactored local oidc first login [View](https://github.com/twocanoes/xcreds/commit/d284da29d764bcbb1c441764a2d9a7482c8c83d0)
+
+
 ## tag-5.5(8696) (2025-06-07)
 
 *  fixed window showing briefly when force showing but valid credentials [View](https://github.com/twocanoes/xcreds/commit/017ae28f66ec765dba3988311d5c9662ad0b9ae7)

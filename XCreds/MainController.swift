@@ -412,12 +412,15 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                                     try FileManager.default.removeItem(at: URL(filePath: plistPath))
                                 }
                                 if let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String{
-                                    let dictToWrite = ["_xcreds_oidc_username":username,
+                                    var dictToWrite = ["_xcreds_oidc_username":username,
                                                        "_xcreds_oidc_full_username":fullUsername,
                                                        "subValue":subValue,
                                                        "issuerValue":issuerValue,
                                                        "localuser":PasswordUtils.currentConsoleUserName]
 
+                                    if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                                        dictToWrite["_xcreds_activedirectory_kerberosPrincipal"] = kerberosPrincipalName
+                                    }
                                     //write dictToWrite to file as plist
                                     TCSLog("writing plist file: \(plistPath)")
                                     try PropertyListEncoder().encode(dictToWrite).write(to: URL(fileURLWithPath: plistPath))
