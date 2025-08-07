@@ -7,184 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D"
+            uuid = "A7253B58-13A1-4A46-A539-7A82508B4D6F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
+            filePath = "XCreds/VerifyOIDCPasswordWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
-            landmarkName = "requestTokenWithROPG(username:password:basicAuth:overrideErrors:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - e5f15da0d6fb5d4a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "396"
-                  endingLineNumber = "396">
-               </Location>
-               <Location
-                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - e5f15da0d6fb5d4a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "396"
-                  endingLineNumber = "396">
-               </Location>
-               <Location
-                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - c96ef3f6acd39948"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "396"
-                  endingLineNumber = "396">
-               </Location>
-               <Location
-                  uuid = "2A5D7159-82AD-413F-8B9D-67F542EA4F9D - 820072198f9d6357"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(6) suspend resume partial function for OIDCLite.OIDCLite.requestTokenWithROPG(username: Swift.String, password: Swift.String, basicAuth: Swift.Bool, overrideErrors: Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) async throws -&gt; Swift.Optional&lt;OIDCLite.OIDCLite.TokenResponse&gt;"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/OIDCLite/Sources/OIDCLite/OIDCLite.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "396"
-                  endingLineNumber = "396">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "getNewAccessToken()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73 - 73d2d2ff63a9cecb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "XCreds.TokenManager.getNewAccessToken() -&gt; ()"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "173"
-                  endingLineNumber = "173">
-               </Location>
-               <Location
-                  uuid = "39C223E6-FCC5-4084-99BF-F6649F29AF73 - c4e98362f04dc380"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () async throws -&gt; () in XCreds.TokenManager.getNewAccessToken() -&gt; ()"
-                  moduleName = "XCreds.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/TokenManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "176"
-                  endingLineNumber = "176">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B41BF0CF-69A0-4BF2-A25C-9EDF6A85ACB6"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1295"
-            endingLineNumber = "1295"
-            landmarkName = "NoMADAuthenticationSucceeded()"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "updateButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FE61CEDF-799B-43A8-B58B-B341AB09333A"
+            uuid = "AD8B09C8-85A4-44AC-92DB-F183AD66ABE8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCredsLoginPlugIn/Mechanisms/XCredsBaseMechanism.swift"
+            filePath = "XCreds/VerifyLocalPasswordWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "setupHints(fromCredentials:password:)"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
+            landmarkName = "updateButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "608CB5C2-B51C-4712-994F-4971A356399F"
+            uuid = "92789CC1-D2D0-4317-B57B-4FB83CE47D4F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
+            filePath = "XCreds/VerifyLocalPasswordWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "getNewAccessToken()"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "promptForLocalAccountAndChangePassword(username:newPassword:shouldUpdatePassword:showResetButton:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A6613493-BF80-4BF7-8D09-4C8B57EEE20D"
+            uuid = "DAA26E6E-1B0B-4923-8697-59B026FD14DA"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
+            filePath = "XCreds/PasswordUtils.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "438"
-            endingLineNumber = "438"
-            landmarkName = "setupUserAccountInfo(idTokenInfo:)"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "isLocalPasswordValid(userName:userPass:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

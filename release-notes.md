@@ -1,3 +1,8 @@
+## tag-5.5(8710) (2025-06-27)
+
+*  fixed #340: [Feature Request] XCreds should use shouldUpdateKerberosUserPrincipalADDomain "here" [View](https://github.com/twocanoes/xcreds/commit/447ad1aabee7acc143fd6d44433c066a5ced11f4)
+
+
 ## tag-5.5(8709) (2025-06-08)
 
 *  refactored local oidc first login [View](https://github.com/twocanoes/xcreds/commit/d284da29d764bcbb1c441764a2d9a7482c8c83d0)
