@@ -40,8 +40,13 @@ import Network
     }
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
-        for window in self.mainLoginWindowController!.windowArray{
-            window.close()
+
+        if isFirstLogin == false {
+            TCSLogWithMark("Hiding background")
+
+            for window in self.mainLoginWindowController!.windowArray{
+                window.close()
+            }
         }
     }
 

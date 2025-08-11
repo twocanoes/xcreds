@@ -526,6 +526,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
 
+        isFirstLogin=true
         // note for anyone following behind me
         // you need to specify the attribute values in an array
         // regardless of if there's more than one value or not

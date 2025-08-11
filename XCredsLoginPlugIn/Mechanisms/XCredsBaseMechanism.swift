@@ -7,6 +7,7 @@ import OpenDirectory
     func reload() {
         fatalError()
     }
+    var isFirstLogin = false
 
     let mechCallbacks: AuthorizationCallbacks
     let mechEngine: AuthorizationEngineRef
