@@ -1,3 +1,10 @@
+## tag-5.5(8715) (2025-08-11)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/88b2483eb0571564a654da14ec79ecbfc76b81d8)
+*  added dont hide background during first login [View](https://github.com/twocanoes/xcreds/commit/52652451a66afa078d63ce0ca16649b1a347bd29)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/af4fba25331e3b9cc06a1fbcc40762fd68811f3d)
+
+
 ## tag-5.5(8710) (2025-06-27)
 
 *  fixed #340: [Feature Request] XCreds should use shouldUpdateKerberosUserPrincipalADDomain "here" [View](https://github.com/twocanoes/xcreds/commit/447ad1aabee7acc143fd6d44433c066a5ced11f4)
