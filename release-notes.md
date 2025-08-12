@@ -1,3 +1,8 @@
+## tag-5.5(8728) (2025-08-12)
+
+*  more fix for black screen [View](https://github.com/twocanoes/xcreds/commit/fb1da0ac91617eded0e59125fe679a176d6fece9)
+
+
 ## tag-5.5(8722) (2025-08-12)
 
 *  fix for black screen [View](https://github.com/twocanoes/xcreds/commit/953502857ad759c21b7ae87e632a5be7ef351354)
