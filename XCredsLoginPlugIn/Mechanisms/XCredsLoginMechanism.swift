@@ -41,12 +41,17 @@ import Network
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
 
-        if isFirstLogin == false {
+        let isAccountCreationPending = getHint(type: .isAccountCreationPending) as? Bool 
+
+        if isAccountCreationPending == false {
             TCSLogWithMark("Hiding background")
 
             for window in self.mainLoginWindowController!.windowArray{
                 window.close()
             }
+        }
+        else {
+            TCSLogWithMark("Not hiding progress indicator to avoid black screen")
         }
     }
 

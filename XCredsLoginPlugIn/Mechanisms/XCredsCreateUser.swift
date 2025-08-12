@@ -108,6 +108,19 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
 
+            TCSLogWithMark("Setting hint to create new user")
+            setHint(type: .isAccountCreationPending, hint: true as NSSecureCoding)
+
+            let isAccountCreationPending = getHint(type: .isAccountCreationPending) as? Bool
+
+            if isAccountCreationPending==true {
+                TCSLogWithMark("isAccountCreationPending==true")
+
+            }
+            else {
+                TCSLogWithMark("isAccountCreationPending==false")
+
+            }
             var uid:String?
             if let hintUID = getHint(type: .uid) as? String{
                 if let hintUIDInt = Int(hintUID), hintUIDInt>499 {
@@ -526,7 +539,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
 
-        isFirstLogin=true
+
         // note for anyone following behind me
         // you need to specify the attribute values in an array
         // regardless of if there's more than one value or not

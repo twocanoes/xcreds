@@ -74,6 +74,7 @@ enum HintType: String,CaseIterable {
     case allADAttributes
     case rfidPIN
     case oidcLastLoginTimestamp
+    case isAccountCreationPending
 
 
 }
