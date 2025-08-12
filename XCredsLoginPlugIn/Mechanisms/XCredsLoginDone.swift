@@ -2,7 +2,6 @@
 //
 
 
-/// Mechanism to create a local user and homefolder.
 class XCredsLoginDone: XCredsBaseMechanism {
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {
@@ -12,7 +11,24 @@ class XCredsLoginDone: XCredsBaseMechanism {
     @objc override func run() {
         TCSLogWithMark("XCredsLoginDone mech starting")
 
-        NotificationCenter.default.post(name: NSNotification.Name("hideProgress"), object: nil)
+        let isAccountCreationPending = getHint(type: .isAccountCreationPending) as? Bool ?? false
+
+        if isAccountCreationPending==true {
+            TCSLogWithMark("isAccountCreationPending==true")
+        }
+        else {
+            TCSLogWithMark("isAccountCreationPending==false")
+        }
+        if isAccountCreationPending == false {
+            NotificationCenter.default.post(name: NSNotification.Name("hideProgress"), object: nil)
+            TCSLogWithMark("Hiding background")
+            for window in NSApp.windows {
+                window.close()
+            }
+        }
+        else {
+            TCSLogWithMark("Not hiding progress indicator to avoid black screen")
+        }
         allowLogin()
 
     }

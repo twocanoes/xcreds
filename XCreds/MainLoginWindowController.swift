@@ -150,6 +150,9 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
             progressIndicator.style = .spinning
             progressIndicator.startAnimation(self)
+//            progressIndicator.layer?.backgroundColor = NSColor.green.cgColor
+//            progressIndicator.layer?.opacity = 0.9
+//            progressIndicator.appearance = NSAppearance(named: .aqua)
             self.window?.contentView?.addSubview(progressIndicator)
 
             NotificationCenter.default.removeObserver(self)
