@@ -1,3 +1,8 @@
+## tag-5.5(8742) (2025-08-12)
+
+*  made progress indicator a bar at top [View](https://github.com/twocanoes/xcreds/commit/c2a1f0ee45757dbeb9d0597cf6cec7a2f830dbe5)
+
+
 ## tag-5.5(8729) (2025-08-12)
 
 *  wip [View](https://github.com/twocanoes/xcreds/commit/bc286b3a89f014b42dabe36162b8eebc9c9614ed)

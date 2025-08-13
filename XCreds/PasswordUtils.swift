@@ -366,7 +366,7 @@ class PasswordUtils: NSObject {
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogInfoWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")
@@ -400,7 +400,7 @@ class PasswordUtils: NSObject {
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogInfoWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")

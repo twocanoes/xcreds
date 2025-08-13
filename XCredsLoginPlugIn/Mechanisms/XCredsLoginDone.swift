@@ -20,7 +20,6 @@ class XCredsLoginDone: XCredsBaseMechanism {
             TCSLogWithMark("isAccountCreationPending==false")
         }
         if isAccountCreationPending == false {
-            NotificationCenter.default.post(name: NSNotification.Name("hideProgress"), object: nil)
             TCSLogWithMark("Hiding background")
             for window in NSApp.windows {
                 window.close()

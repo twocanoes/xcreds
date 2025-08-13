@@ -17,7 +17,6 @@ class LoginWebViewController: WebViewController, DSQueryable {
 //    var internalDelegate:XCredsMechanismProtocol?
     var mechanismDelegate:XCredsMechanismProtocol?
 //    }
-    var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
 
     override func awakeFromNib() {

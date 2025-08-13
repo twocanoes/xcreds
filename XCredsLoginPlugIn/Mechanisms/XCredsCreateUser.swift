@@ -231,6 +231,20 @@ class XCredsCreateUser: XCredsBaseMechanism {
             }
             else {
                 // no user to create
+                let username = usernameContext ?? ""
+                TCSLogWithMark("Checking if we think this is a first login")
+
+                let (_, home) = checkUIDandHome(name: username)
+
+                if let home = home {
+                    if FileManager.default.fileExists(atPath: home+"/.Trash")==false {
+                        TCSLogWithMark("Looks like a first login, setting pending flag")
+
+                        setHint(type: .isAccountCreationPending, hint: true as NSSecureCoding)
+
+                    }
+                }
+
                 os_log("Skipping local account creation", log: createUserLog, type: .default)
             }
 
