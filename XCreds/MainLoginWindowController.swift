@@ -147,13 +147,17 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             }
             TCSLogWithMark()
             let screenRect = NSScreen.screens[0].frame
-            let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-            progressIndicator.style = .spinning
+
+            let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(0, screenRect.height-3, screenRect.width,3))
+            progressIndicator.style = .bar
+
             progressIndicator.startAnimation(self)
-//            progressIndicator.layer?.backgroundColor = NSColor.green.cgColor
-//            progressIndicator.layer?.opacity = 0.9
-//            progressIndicator.appearance = NSAppearance(named: .aqua)
             self.window?.contentView?.addSubview(progressIndicator)
+
+
+            self.window?.canBecomeVisibleWithoutLogin=true
+
+
 
             NotificationCenter.default.removeObserver(self)
 
