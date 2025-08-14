@@ -1,3 +1,8 @@
+## tag-5.5(8771) (2025-08-13)
+
+*  added new key to skip user setup buddy and code to do just that [View](https://github.com/twocanoes/xcreds/commit/85cc848d248169ed2e98abad34b8cf5380f2d078)
+
+
 ## tag-5.5(8769) (2025-08-13)
 
 *  fixed utf8 password encoding for keychain [View](https://github.com/twocanoes/xcreds/commit/1ebdc5b5015e3d2cf37c4e8c8e3d86969a5c95f6)
