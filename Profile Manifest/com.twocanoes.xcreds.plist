@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 5.5 (8742) OAuth Settings</string>
+	<string>XCreds 5.5 (8769) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -13,7 +13,7 @@
 	<key>pfm_format_version</key>
 	<integer>1</integer>
 	<key>pfm_last_modified</key>
-	<date>2025-08-13T00:07:27Z</date>
+	<date>2025-08-14T02:37:13Z</date>
 	<key>pfm_platforms</key>
 	<array>
 		<string>macOS</string>
@@ -205,6 +205,24 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_type</key>
 			<string>boolean</string>
 		</dict>
+
+
+        <dict>
+            <key>pfm_app_min</key>
+            <string>5.5</string>
+            <key>pfm_default</key>
+            <false/>
+            <key>pfm_description</key>
+            <string>When set to true and a new user home is created, the .skipbuddy file will be created at the top of the home folder to skip user setup screens.</string>
+            <key>pfm_documentation_url</key>
+            <string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
+            <key>pfm_name</key>
+            <string>skipUserSetupBuddy</string>
+            <key>pfm_title</key>
+            <string>Skip User Setup Buddy</string>
+            <key>pfm_type</key>
+            <string>boolean</string>
+        </dict>
 		<dict>
 			<key>pfm_app_min</key>
 			<string>4.0</string>
@@ -2065,6 +2083,6 @@ changing “passwordID” to the correct element ID. If the value you typed into
 	<key>pfm_unique</key>
 	<false/>
 	<key>pfm_version</key>
-	<integer>14</integer>
+	<integer>15</integer>
 </dict>
 </plist>

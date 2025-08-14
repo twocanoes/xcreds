@@ -789,6 +789,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
 
         let res=cliTask("/usr/sbin/createhomedir -c -u \(user)")
 
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.skipUserSetupBuddy.rawValue) == true {
+            
+            if FileManager.default.fileExists(atPath: "/Users/\(user)") {
+                FileManager.default.createFile(atPath: "/Users/\(user)/.skipbuddy", contents: nil)
+            }
+        }
         TCSLogWithMark(res)
 //        os_log("Find system locale...", log: createUserLog, type: .debug)
 //        let currentLanguage = Locale.current.languageCode ?? "Non_localized"

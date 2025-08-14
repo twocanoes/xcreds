@@ -1,3 +1,13 @@
+## tag-5.5(8769) (2025-08-13)
+
+*  fixed utf8 password encoding for keychain [View](https://github.com/twocanoes/xcreds/commit/1ebdc5b5015e3d2cf37c4e8c8e3d86969a5c95f6)
+
+
+## tag-5.5(8757) (2025-08-12)
+
+*  added check for first login for local user [View](https://github.com/twocanoes/xcreds/commit/f22d82c665a42cae6865311bbdb61220b1217813)
+
+
 ## tag-5.5(8742) (2025-08-12)
 
 *  made progress indicator a bar at top [View](https://github.com/twocanoes/xcreds/commit/c2a1f0ee45757dbeb9d0597cf6cec7a2f830dbe5)
