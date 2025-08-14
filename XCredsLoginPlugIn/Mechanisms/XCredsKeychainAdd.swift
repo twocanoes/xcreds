@@ -62,7 +62,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             // if we're not set to create a keychain, move on
             if getManagedPreference(key: .KeychainCreate) as? Bool == true {
                 os_log("No login.keychain-db, creating one", log: "keychainAddLog")
-                SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
+                SecKeychainResetLogin(UInt32(strlen(userpass.cString(using: .utf8) ?? [])), userpass.cString(using: .utf8) ?? [], true)
             } else {
                 os_log("No login.keychain-db, skipping KeychainAdd", log: "keychainAddLog", type: .default)
                 allowLogin()
@@ -82,8 +82,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         TCSLogWithMark("Unlocking Temp Keychain.")
         
-        err = SecKeychainUnlock(userKeychainTemp, UInt32(userpass.count), userpass, true)
-        
+        err = SecKeychainUnlock(userKeychainTemp, UInt32(strlen(userpass.cString(using: .utf8) ?? [] )), userpass.cString(using: .utf8) ?? [] , true)
+
         // remove the link first
         
         unlink(tempPath)
@@ -102,8 +102,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
                 
                 err = SecKeychainOpen(userKeychainPath, &myKeychain)
                 
-                err = SecKeychainChangePassword(myKeychain, UInt32(resetPass.count), resetPass, UInt32(userpass.count), userpass)
-                
+                err = SecKeychainChangePassword(myKeychain, UInt32(resetPass.count), resetPass, UInt32(strlen(userpass.cString(using: .utf8) ?? [] )), userpass.cString(using: .utf8) ?? [] )
+
                 if err != 0 {
                     TCSLogWithMark("Unable to reset keychain with migrated user/pass.")
                     
@@ -130,7 +130,8 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
 
         TCSLogWithMark("Unlocking Keychain.")
 
-        err = SecKeychainUnlock(userKeychain, UInt32(userpass.count), userpass, true)
+        err = SecKeychainUnlock(userKeychain, UInt32(strlen(userpass.cString(using: .utf8) ?? [] )), userpass.cString(using: .utf8) ?? [] , true)
+
 
         if err != noErr {
             TCSLogErrorWithMark("error unlocking keychain!")

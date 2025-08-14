@@ -36,9 +36,6 @@ class KeychainUtil {
 
     var myErr: OSStatus
 //    let serviceName = "xcreds"
-    var passLength: UInt32 = 0
-    var passPtr: UnsafeMutableRawPointer? = nil
-    var password = "********"
 
     var myKeychainItem: SecKeychainItem?
 
@@ -47,14 +44,11 @@ class KeychainUtil {
     }
 
     // find if there is an existing account password and return it or throw
-    func scrub() {
-        // overwrite any variables we need to scrub
-        password = "*********"
-        passPtr?.deallocate()
-        passPtr = nil
-    }
 
     func findPassword(serviceName:String, accountName:String?) throws -> (String?,String?) {
+
+        var passLength: UInt32 = 0
+        var passPtr: UnsafeMutableRawPointer? = nil
 
         TCSLogWithMark("Finding \(serviceName) in keychain")
         myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, 0, nil, &passLength, &passPtr, &myKeychainItem)
@@ -100,7 +94,12 @@ class KeychainUtil {
 
     func setPassword(serviceName:String, accountName: String, pass: String) -> OSStatus {
 
-        myErr = SecKeychainAddGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(accountName.count), accountName, UInt32(pass.count), pass, &myKeychainItem)
+
+
+
+
+        myErr = SecKeychainAddGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(accountName.count), accountName,UInt32(strlen(pass.cString(using: .utf8) ?? [])), pass.cString(using: .utf8) ?? [], &myKeychainItem)
+
 
         return myErr
     }
@@ -247,7 +246,11 @@ class KeychainUtil {
             err = SecACLSetContents(acl, appList, xmlObject!.hexEncodedString() as CFString, prompt)
 
             // smack it again to set the ACL
-            err = SecKeychainItemSetAccessWithPassword(keychainItem, itemAccess, UInt32(password.count), password)
+
+            err = SecKeychainItemSetAccessWithPassword(keychainItem, itemAccess, UInt32(strlen(password.cString(using: .utf8) ?? [])), password.cString(using: .utf8) ?? [] )
+
+
+
         }
     }
 //
