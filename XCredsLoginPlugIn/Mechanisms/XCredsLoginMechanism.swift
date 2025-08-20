@@ -192,7 +192,20 @@ import Network
     }
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
-        
+
+// code to repeatidly log in 
+//        let uuid = UUID().uuidString
+//        self.setHint(type: .user, hint: uuid as NSSecureCoding)
+//        self.setHint(type: .pass, hint: uuid as NSSecureCoding)
+//        TCSLogWithMark()
+//        self.setContextString(type: kAuthorizationEnvironmentUsername, value: uuid)
+//        self.setContextString(type: kAuthorizationEnvironmentPassword, value: uuid)
+//        TCSLogWithMark()
+//
+//        super.allowLogin()
+//        return
+
+
         loginWebViewController=nil
         signInViewController=nil
         
@@ -201,7 +214,8 @@ import Network
             super.allowLogin()
             return
         }
-        
+
+
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }

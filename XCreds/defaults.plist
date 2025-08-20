@@ -70,6 +70,8 @@
 	<string>Password</string>
 	<key>versionCheckURL</key>
 	<string>https://paypro.twocanoes.com/api/version_info</string>
+	<key>licenseActivityURL</key>
+	<string>https://paypro.twocanoes.com/api/license_activity</string>
 	<key>refreshBannerText</key>
 	<string>Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.</string>
 	<key>shouldPromptForMigration</key>

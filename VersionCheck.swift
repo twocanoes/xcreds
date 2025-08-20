@@ -8,11 +8,53 @@
 import Foundation
 
 class VersionCheck{
+    enum Event:String {
+        case checkin
+        case usage
+    }
     struct VersionInfo: Decodable {
 
         let product: String?
         let version: String?
         let release_date: String?
+    }
+    static func reportLicenseUsage(event:Event, usage:Int=1)-> Void {
+
+        let identifier = Bundle.main.bundleIdentifier ?? "Unknown"
+
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "Unknown"
+
+
+        guard let licenseCheckURL = UserDefaults.standard.string(forKey: "licenseActivityURL"), let url = URL(string:licenseCheckURL) else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let check = TCSLicenseCheck()//com.twocanoes.xcreds
+        let _ = check.checkLicenseStatus(identifier, withExtension: "")
+        let key = check.license.licenseKey ?? "Unlicensed"
+        let uniqueID = getSystemUUID() ?? ""
+
+
+        let json: [String: Any] = ["system_id": uniqueID,
+                                   "app_id":identifier,
+                                   "version":version,
+                                   "license_key":key,
+                                   "event":event.rawValue,
+                                   "usage":1]
+
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+
+        request.httpBody=jsonData
+        request.httpMethod = "POST"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
+        }
+        task.resume()
     }
     static func versionForIdentifier(identifier:String, version:String,completion: @escaping (_ isSuccess:Bool, _ version:String) -> Void){
 
@@ -25,24 +67,6 @@ class VersionCheck{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-
-        let check = TCSLicenseCheck()
-        let _ = check.checkLicenseStatus(identifier, withExtension: "")
-        let key = check.license.licenseKey
-        let uniqueID = UserDefaults.standard.string(forKey: "uniqueID") ?? UUID().uuidString
-
-        UserDefaults.standard.set(uniqueID, forKey: "uniqueID")
-
-        request.setValue(uniqueID, forHTTPHeaderField: "TCS-INFO-UNIQUE-ID")
-
-        request.setValue(identifier, forHTTPHeaderField: "TCS-APP-IDENTIFIER")
-
-        request.setValue(version, forHTTPHeaderField: "TCS-APP-VERSION")
-
-        if let key = key {
-            request.setValue(key, forHTTPHeaderField: "TCS-INFO-KEY")
-        }
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 completion(false, "")
@@ -69,6 +93,18 @@ class VersionCheck{
         }
         task.resume()
     }
+    static func getSystemUUID() -> String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+        guard let rawUUID = IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0)
+        else { return nil }
+        let uuid = rawUUID.takeUnretainedValue()
+        if let result = uuid as? String {
+            return result
+        }
+        return nil
+    }
+
 }
 extension Bundle {
 

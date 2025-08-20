@@ -196,72 +196,85 @@ extension WebViewController: WKNavigationDelegate {
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
                 TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                decisionHandler(.allow)
+
             }
             else {
-                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
+                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String> {
 
-                    TCSLogWithMark("found password elements with ids:\(ids)")
+                    if passwords.count>0 {
 
-                    guard let host = navigationAction.request.url?.host else {
+                        TCSLogWithMark("found password elements with ids:\(ids)")
 
-                        return
-                    }
-                    var foundHostname = ""
-                    if  let idpHostNames = idpHostNames as? Array<String?>,
-                        idpHostNames.contains(host) {
-                        foundHostname=host
+                        guard let host = navigationAction.request.url?.host else {
 
-                    }
-                    else if ["login.microsoftonline.com", "login.live.com", "accounts.google.com"].contains(host) || host.contains("okta.com"){
-                        foundHostname=host
+                            return
+                        }
+                        var foundHostname = ""
+                        if  let idpHostNames = idpHostNames as? Array<String?>,
+                            idpHostNames.contains(host) {
+                            foundHostname=host
 
-                    }
-                    else {
-                        TCSLogWithMark("hostname (\(host)) not matched so not looking for password")
-                        return
-                    }
+                        }
+                        else if ["login.microsoftonline.com", "login.live.com", "accounts.google.com"].contains(host) || host.contains("okta.com"){
+                            foundHostname=host
 
-                    TCSLogWithMark("host matches custom idpHostName \(foundHostname)")
-
-
-                    if passwords.count==3, passwords[1]==passwords[2] {
-                        TCSLogWithMark("found 3 password fields. so it is a reset password situation")
-                        TCSLogWithMark("========= password set===========")
-                        self.password=passwords[2]
-                    }
-                    else if passwords.count==2, passwords[0]==passwords[1] {
-                        TCSLogWithMark("found 2 password fields. so it is a reset password situation")
-                        TCSLogWithMark("========= password set===========")
-                        self.password=passwords[1]
-                    }
-                    else if let passwordElementID = passwordElementID{
-                        TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
-
-                    // we have a mapped field defined in prefs so only check this.
-                        if ids.count==1, ids[0]==passwordElementID, passwords.count==1 {
-                            TCSLogWithMark("========= password set===========")
-                            self.password=passwords[0]
                         }
                         else {
-
-                            TCSLogWithMark("did not find a single password field on the page with the specified ID so not setting password")
+                            TCSLogWithMark("hostname (\(host)) not matched so not looking for password")
+                            return
                         }
 
-                    }
-                    //
-                    else if passwords.count==1 {
-                        TCSLogWithMark("found 1 password field on the specified page with the set idpHostName. setting password.")
-                        TCSLogWithMark("========= password set===========")
-                        self.password=passwords[0]
+                        TCSLogWithMark("host matches custom idpHostName \(foundHostname)")
 
+
+                        if passwords.count==3, passwords[1]==passwords[2] {
+                            TCSLogWithMark("found 3 password fields. so it is a reset password situation")
+                            TCSLogWithMark("========= password set===========")
+                            self.password=passwords[2]
+                        }
+                        else if passwords.count==2, passwords[0]==passwords[1] {
+                            TCSLogWithMark("found 2 password fields. so it is a reset password situation")
+                            TCSLogWithMark("========= password set===========")
+                            self.password=passwords[1]
+                        }
+                        else if let passwordElementID = passwordElementID{
+                            TCSLogWithMark("the id is defined in prefs (\(passwordElementID)) so seeing if that field is on the page.")
+
+                            // we have a mapped field defined in prefs so only check this.
+                            if ids.count==1, ids[0]==passwordElementID, passwords.count==1 {
+                                TCSLogWithMark("========= password set===========")
+                                self.password=passwords[0]
+                            }
+                            else {
+
+                                TCSLogWithMark("did not find a single password field on the page with the specified ID so not setting password")
+                            }
+
+                        }
+                        //
+                        else if passwords.count==1 {
+                            TCSLogWithMark("found 1 password field on the specified page with the set idpHostName. setting password.")
+                            TCSLogWithMark("========= password set===========")
+                            self.password=passwords[0]
+
+                        }
+                        else {
+                            TCSLogWithMark("password not set")
+                        }
                     }
                     else {
-                        TCSLogWithMark("password not set")
+                        TCSLogWithMark("password array found but no password populated.")
+
                     }
                 }
+                else {
+                    TCSLogWithMark("password array not found.")
+
+                }
             }
+            decisionHandler(.allow)
         })
-        decisionHandler(.allow)
 
     }
 

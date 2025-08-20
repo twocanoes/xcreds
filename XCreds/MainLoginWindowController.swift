@@ -65,6 +65,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                                            object: nil)
         }
 
+
     }
     @objc fileprivate func updateWindow() {
         TCSLogWithMark()
