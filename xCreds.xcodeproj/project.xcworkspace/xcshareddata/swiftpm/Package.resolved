@@ -1,16 +1,24 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
-        "state": {
-          "branch": null,
-          "revision": "309a47b2b1d9b5e991f36961c983ecec72275be3",
-          "version": "1.6.1"
-        }
+  "originHash" : "d0dea2927abdd153bc3da8427bfbcf3642ad3382c62341155c3bf148d3154315",
+  "pins" : [
+    {
+      "identity" : "oidclite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twocanoes/OIDCLite.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "7a61f8182f314553d1002da21d50873af3c667bb"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "309a47b2b1d9b5e991f36961c983ecec72275be3",
+        "version" : "1.6.1"
+      }
+    }
+  ],
+  "version" : 3
 }

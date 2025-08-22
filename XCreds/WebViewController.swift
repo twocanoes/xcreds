@@ -319,7 +319,12 @@ extension WebViewController: WKNavigationDelegate {
 
         webView.evaluateJavaScript(javascript, completionHandler: { response, error in
             if (error != nil){
-//                TCSLogWithMark(error?.localizedDescription ?? "empty error")
+                
+                TCSLogWithMark(error?.localizedDescription ?? "unknown listener error")
+                if UserDefaults.standard.bool(forKey: "reloadPageOnError")==true {
+                    TCSLogWithMark("reloading page")
+                    self.loadPage()
+                }
             }
             else {
                 TCSLogWithMark("inserted javascript for password setup")
