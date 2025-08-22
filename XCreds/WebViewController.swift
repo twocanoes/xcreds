@@ -196,7 +196,6 @@ extension WebViewController: WKNavigationDelegate {
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
                 TCSLogWithMark(error?.localizedDescription ?? "unknown error")
-                decisionHandler(.allow)
 
             }
             else {
@@ -258,12 +257,17 @@ extension WebViewController: WKNavigationDelegate {
 
                     }
                     else {
-                        TCSLogWithMark("password not set")
+                        TCSLogWithMark("No passwords found on page")
                     }
                 }
+                else {
+                    
+                    TCSLogWithMark("password not set")
+
+                }
             }
-            decisionHandler(.allow)
         })
+        decisionHandler(.allow)
 
     }
 
