@@ -1,3 +1,17 @@
+## tag-5.5(8779) (2025-08-22)
+
+*  put in pref to reload page [View](https://github.com/twocanoes/xcreds/commit/0f3d2574881ff3c3324abc2732cf97cec9cd774f)
+*  added in more logging [View](https://github.com/twocanoes/xcreds/commit/d841927cc8fcc869f70b6061ac97c36ec595be63)
+*  fixed hanging issue [View](https://github.com/twocanoes/xcreds/commit/1e412b6b855c991e23b9dcbb2cd8ef5f1059f8de)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/b6d81607cf0782c5ce5ba3070fce8b06298fc01b)
+
+
+## tag-5.5(8776) (2025-08-20)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/c1efd367be841bfea1d761a34ff7ee4a84925b34)
+*  added license activity and more logging [View](https://github.com/twocanoes/xcreds/commit/81832d95502c09fc3f1e0a90252c8d43640ca7f0)
+
+
 ## tag-5.5(8771) (2025-08-13)
 
 *  added new key to skip user setup buddy and code to do just that [View](https://github.com/twocanoes/xcreds/commit/85cc848d248169ed2e98abad34b8cf5380f2d078)
