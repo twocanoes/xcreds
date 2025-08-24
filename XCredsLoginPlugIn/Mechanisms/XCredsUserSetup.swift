@@ -2,7 +2,7 @@
 //  XCredsUserSetup.swift
 //
 //
-
+@available(macOS, deprecated: 11)
 class XCredsUserSetup: XCredsBaseMechanism{
 
     @objc override func run() {

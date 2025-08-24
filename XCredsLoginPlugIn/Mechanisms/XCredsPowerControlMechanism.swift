@@ -15,7 +15,7 @@ enum SpecialUsers: String {
     case shutdown
     case standardLoginWindow
 }
-
+@available(macOS, deprecated: 11)
 class XCredsPowerControlMechanism: XCredsBaseMechanism {
 
     @objc override func run() {

@@ -389,7 +389,7 @@ public extension DSQueryable {
             let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeNativeOnly, maximumResults: 0)
             records = try query.resultsAllowingPartial(false) as! [ODRecord]
         } catch {
-            let errorText = error.localizedDescription
+            _ = error.localizedDescription
             //            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
             return (nil, nil)
         }

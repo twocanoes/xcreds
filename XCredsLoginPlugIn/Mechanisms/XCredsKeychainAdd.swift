@@ -11,6 +11,7 @@ import Security
 
 import OpenDirectory
 // headless mech to add items to a keychain
+@available(macOS, deprecated: 11)
 class XCredsKeychainAdd : XCredsBaseMechanism {
     
     let fm = FileManager.default

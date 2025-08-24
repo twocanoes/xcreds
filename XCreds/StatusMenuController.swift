@@ -7,7 +7,7 @@
 
 import Foundation
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class StatusMenuController: NSObject, NSMenuItemValidation {
     enum StatusMenuItemType:Int {
         case AboutMenuItem=1

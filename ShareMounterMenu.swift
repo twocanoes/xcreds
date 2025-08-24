@@ -7,12 +7,12 @@
 //
 
 import Foundation
-
+@available(macOS, deprecated: 11)
 let shareMounterMenu = ShareMounterMenu()
 let shareMounterQueue = DispatchQueue(label: "menu.nomad.NoMAD.shareMounting", attributes: [])
 
 // class to build the share mount menu and accept clicks
-
+@available(macOS, deprecated: 11)
 @objc class ShareMounterMenu: NSObject {
 
     let defaults = UserDefaults.standard

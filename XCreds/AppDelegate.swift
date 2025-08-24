@@ -11,6 +11,7 @@ import CryptoKit
 import CryptoTokenKit
 
 @main
+@available(macOS, deprecated: 11)
 struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
@@ -19,6 +20,7 @@ struct xcreds:ParsableCommand {
         defaultSubcommand: RunApp.self)
 
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct Status:ParsableCommand {
         @Flag(help:"JSON output") var json:Bool = false
@@ -203,6 +205,7 @@ extension xcreds {
 
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ListReaders:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "List currently plugged in RFID readers.")
@@ -229,7 +232,7 @@ extension xcreds {
     }
 }
 
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct RFIDListener:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Listen and print the RFID of scanned cards.")
@@ -287,7 +290,7 @@ extension xcreds {
         }
     }
 }
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct RunApp:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Start app normally.")
@@ -314,7 +317,7 @@ extension xcreds {
 
     }
 }
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ShowAdminUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show currently set admin user. Used for resetting keychain.")
@@ -340,6 +343,7 @@ extension xcreds {
         }
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ClearRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear rfid user.")
@@ -377,6 +381,7 @@ extension xcreds {
         }
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ClearRFIDUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear all users. Does not clear the admin user.")
@@ -396,7 +401,7 @@ extension xcreds {
         }
     }
 }
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ClearAdminUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Clear the current admin user used for resetting keychain.")
@@ -416,6 +421,7 @@ extension xcreds {
         }
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct SetAdminUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Set the current admin user used for resetting keychain.")
@@ -440,6 +446,7 @@ extension xcreds {
 
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct SetRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Add an RFID user.")
@@ -500,6 +507,7 @@ extension xcreds {
 
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ShowRFIDUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show RFID users.")
@@ -536,7 +544,7 @@ extension xcreds {
     }
 }
 
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ShowRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Show RFID user.")
@@ -595,6 +603,7 @@ extension xcreds {
         }
     }
 }
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct RemoveRFIDUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Remove RFID user by rfid-uid.")
@@ -647,7 +656,7 @@ extension xcreds {
 
 
 
-
+@available(macOS, deprecated: 11)
 extension xcreds {
     struct ImportRFIDUsers:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Import users from a CSV for RFID login. Format:Full Name,Username,Password,RFID-UID,PIN,UID. PIN and UID can be left blank. All imported user data is encrypted and stored in a file located in /usr/local/var/twocanoes. The file is only readable by root.")
@@ -667,7 +676,7 @@ extension xcreds {
                 do {
                     let contentsOfFile = try String(contentsOfFile: file, encoding: .windowsCP1250)
 
-                    let rfidUsers=RFIDUsers(rfidUsers: [:])
+                    _=RFIDUsers(rfidUsers: [:])
                     let lineArray = contentsOfFile.components(separatedBy:"\n")
 
                     let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
@@ -752,7 +761,7 @@ extension xcreds {
 
 }
 
-
+@available(macOS, deprecated: 11)
 class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     @IBOutlet weak var loginPasswordWindow: NSWindow!

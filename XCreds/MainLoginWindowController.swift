@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var controlsViewController: ControlsViewController?
     var setupDone=false

@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet var systemInfoPopover: NSPopover!
     @IBOutlet var systemInfoPopoverViewController: NSViewController!

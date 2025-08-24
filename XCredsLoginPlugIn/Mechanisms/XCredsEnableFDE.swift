@@ -8,7 +8,7 @@
 
 import Cocoa
 
-
+@available(macOS, deprecated: 11)
 class XCredsEnableFDE : XCredsBaseMechanism {
     let enableFDELog = "enableFDELog"
     // basic mech to enable FileVault

@@ -138,7 +138,7 @@ class PasswordUtils: NSObject {
 //        }
 //        return true
 //    }
-
+    @available(macOS, deprecated: 11)
     class func verifyKeychainPassword(password: String) throws -> Bool  {
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
@@ -156,6 +156,7 @@ class PasswordUtils: NSObject {
         }
         return true
     }
+    @available(macOS, deprecated: 11)
     static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
 
 

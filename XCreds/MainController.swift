@@ -7,6 +7,7 @@
 
 import Cocoa
 import OIDCLite
+@available(macOS, deprecated: 11)
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     

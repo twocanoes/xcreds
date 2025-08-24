@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 @preconcurrency import WebKit
 import OIDCLite
-
+@available(macOS, deprecated: 11)
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     struct WebViewControllerError:Error {
@@ -38,6 +38,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
+    @available(macOS, deprecated: 11)
     var tokenManager=TokenManager()
     var password:String?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
@@ -93,17 +94,17 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
             NotificationCenter.default.addObserver(self, selector: #selector(self.connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
 
-            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+//            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
 
             NetworkMonitor.shared.startMonitoring()
             TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
             do {
-                guard let discoveryURL = discoveryURL else {
-                    TCSLogWithMark("discoveryURL not defined");
-
-                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
-                }
+//                guard let discoveryURL = discoveryURL else {
+//                    TCSLogWithMark("discoveryURL not defined");
+//
+//                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
+//                }
                 TCSLogWithMark("getOidcLoginURL");
 
                 let url = try await self.getOidcLoginURL()
@@ -179,7 +180,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     }
 }
-
+@available(macOS, deprecated: 11)
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

@@ -1,6 +1,6 @@
 import Cocoa
 import OpenDirectory
-
+@available(macOS, deprecated: 11)
 @objc class XCredsBaseMechanism: NSObject, XCredsMechanismProtocol, DSQueryable {
 
     

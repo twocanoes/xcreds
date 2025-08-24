@@ -44,6 +44,7 @@ protocol TokenManagerFeedbackDelegate {
 
 
 }
+@available(macOS, deprecated: 11)
 class TokenManager:DSQueryable {
 
 
@@ -533,7 +534,7 @@ class TokenManager:DSQueryable {
 
 }
 // MARK: OIDC Lite Delegate Functions
-
+@available(macOS, deprecated: 11)
 extension TokenManager {
 
     func ropgSuccess(errorMessage: String) {

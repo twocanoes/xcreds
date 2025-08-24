@@ -7,7 +7,7 @@
 
 import Foundation
 import CryptoKit
-
+@available(macOS, deprecated: 11)
 public struct UserSecretManager {
 
     public enum UserSecretManagerError:Error {
