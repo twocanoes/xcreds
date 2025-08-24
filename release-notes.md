@@ -1,3 +1,8 @@
+## tag-5.5(8788) (2025-08-24)
+
+*  updated license [View](https://github.com/twocanoes/xcreds/commit/fb8480567655e1b1834d958d4c75e7d6a63c1434)
+
+
 ## tag-5.5(8787) (2025-08-24)
 
 *  added SLA to installer [View](https://github.com/twocanoes/xcreds/commit/890be5630564d53485db7b453c0c7c55519716ea)

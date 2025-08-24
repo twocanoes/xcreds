@@ -16,7 +16,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 let build = infoPlist["CFBundleVersion"] as? String,
                 let version = infoPlist["CFBundleShortVersionString"] as? String {
                 
-                VersionCheck.shared.reportLicenseUsage(identifier: "com.twocanoes.xcreds", appVersion:version,buildNumber: build, event: .checkin) { isSuccess in
+                VersionCheck.shared.reportLicenseUsage(identifier: "com.twocanoes.xcreds", appVersion:version,buildNumber: build, event: VersionCheck.Event.checkin) { isSuccess in
                     print(isSuccess)
                 }
 
