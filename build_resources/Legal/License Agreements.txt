@@ -1,11 +1,193 @@
-Copyright 2022 Twocanoes Software, Inc
+XCreds
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+XCreds is Copyright (c) Twocanoes Software, Inc.
 
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+SOFTWARE LICENSE AGREEMENT
 
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+IMPORTANT NOTICE: PLEASE READ THIS SOFTWARE LICENSE AGREEMENT ("LICENSE AGREEMENT" OR "LICENSE")
+CAREFULLY BEFORE INSTALLING AND USING XCREDS. THIS LICENSE AGREEMENT IS A LEGAL AGREEMENT BETWEEN
+YOU AND THE DEVELOPER. IF YOU CLICK THE "ACCEPT" BUTTON AND PROCEED WITH THE DOWNLOAD PROCEDURE,
+INSTALLATION, OR USE OF THE SOFTWARE PRODUCT, (OR AUTHORIZE ANY OTHER PERSON TO DO SO), YOU ACCEPT
+THE TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT. IF YOU DO NOT AGREE WITH THE TERMS AND
+CONDITIONS OF THE LICENSE AGREEMENT, CLICK THE "DO NOT ACCEPT" BUTTON AND YOU WILL NOT BE ABLE TO
+CONTINUE. IMPORTANT NOTE: This License Agreement is a grant of a non-exclusive and non- transferable
+license to use the software. This Software may be used to reproduce and distribute materials. It is
+a license to you, only for the reproduction and distribution of non-copyrighted materials, materials
+in which you own the copyright, or materials you authorize or legally permitted to reproduce and
+distribute. If you are uncertain about your right to copy or distribute any material, you should
+contact your legal counsel.
 
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+1. General. Subject to payment and other terms and conditions of this License Agreement, the software and
+documentation, whether on disk, in read only memory, or any other media or in any other form
+(collectively "XCreds" or "software") are licensed, not sold, to you by Twocanoes Software, Inc, an
+Illinois corporation, ("Twocanoes Software“) for use only wider the terms of this License Agreement,
+and Twocanoes Software reserves all rights not expressly granted to you. The rights granted herein
+are limited to Twocanoes Software's intellectual property rights in XCreds as licensed hereunder and
+do not include any other patents or intellectual property rights. You own the media on which XCreds
+is recorded but Twocanoes Software retains ownership of XCreds itself. The terms of this License
+Agreement will govern any software upgrades provided by Twocanoes Software that replace and/or
+supplement the original XCreds product, unless such upgrade is accompanied by a separate license in
+which case the terms of that license shall govern.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+2. Permitted License Uses and Restrictions.
+
+2.1 Basic License. This License allows you to install and use one copy of XCreds on one Apple-Branded
+computer owned and used by you.
+
+2.2 Additional Licenses. Licenses may be purchased from Twocanoes Software, Inc. to extend use to
+additional Apple-Branded computers.
+
+2.3 Site-Wide License. If you have purchased a site license for XCreds, this License permits use of XCreds
+on any machines within an organization, institution, campus or household.
+
+2.4 Restrictions. Except as and only to the extent permitted by applicable licensing terms governing use
+of the Open-Sourced Components, or by applicable law, you may not attempt in any manner to obtain
+the source code, copy, decompile, alter, reverse engineer, disassemble, modify, or create derivative
+works of XCreds or any part thereof. NOTE: XCREDS IS NOT INTENDED FOR USE IN THE OPERATION OF
+NUCLEAR FACILITIES, AIRCRAFT NAVIGATION OR COMMUNICATION SYSTEMS, AIR TRAFFIC CONTROL SYSTEMS, LIFE
+SUPPORT MACHINES OR OTHER EQUIPMENT IN WHICH THE FAILURE OF XCREDS COULD LEAD TO DEATH, PERSONAL
+INJURY, OR PHYSICAL OR ENVIRONMENTAL DAMAGE.
+
+3. Transfer. You may not rent, lease, lend, redistribute, license or sublicense XCreds.
+
+4. Consent to Use of Data.
+You agree that Twocanoes Software may collect and use technical and related information, including but not
+limited to technical information about your computer, system and application software, and
+peripherals, that is gathered periodically to facilitate the provision of product support and other
+services to you (if any) related to XCreds. Twocanoes Software may use this information, as long as
+it is in a form that does not personally identify you, to improve its products or to provide
+services or technologies to you.
+
+5. Termination.
+This License is effective until terminated. You may terminate this License at any time by destroying the
+Software thereof. Also, your rights under this License shall terminate automatically without notice
+from Twocanoes Software if you fail to comply with any term(s) of this License. Upon the termination
+of this License, you shall immediately cease all use of XCreds and destroy all copies, full or
+partial, and all of its component parts, of XCreds. Upon request of Twocanoes Software, you shall
+execute for delivery to Twocanoes Software an affidavit that you have complied with this paragraph
+and have destroyed XCreds. If you commence or participate in any legal proceedings against TwocanoesSoftware, Twocanoes Software may, in its sole discretion, suspend or terminate all license grants
+and any other rights provided under this License Agreement during the pendency of such legal
+proceedings.
+
+6. Disclaimer of Warranties and Limitation of Liability.
+
+6.1 Inherent Risk.
+The use of XCreds, as with any backup software product, carries inherent risks that can be mitigated by
+careful preparation, use of the software, and manual verification of data on the backup volume.
+These risks include, but are not limited to loss of preexisting data on a backup volume, media
+failure leading to data loss on the source or destination volume and backup failure due to error.
+These risks, and mitigation efforts to avoid them are described in the documentation included with
+XCreds.
+
+6.2 Disclaimer of Warranties.
+YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT USE OF XCREDS IS AT YOUR OWN RISK AND THAT THE ENTIRE RISK AS TO
+SATISFACTORY QUALITY, PERFORMANCE, ACCURACY AND EFFORT IS WITH YOU. TO THE MAXIMUM EXTENT PERMITTED
+BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED "AS IS" WITH ALL FAULTS AND WITHOUT WARRANTY OF ANY
+KIND, AND TWOCANOES SOFTWARE DISCLAIMS, AND YOU EXPRESSLY WAIVE ALL WARRANTIES AND CONDITIONS WITH
+RESPECT TO THE SOFTWARE, EITHER EXPRESS OR IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES AND/OR CONDITIONS OF MERCHANTABILITY, OF SATISFACTORY QUALITY, OF FITNESS FOR A
+PARTICULAR PURPOSE, OF ACCURACY, OF QUIET ENJOYMENT, REASONABLE CARE, WORKMANLIKE EFFORT, RESULTS,
+VIRUSES, TITLE, SYSTEM INTEGRATION, NON-INTERFERENCE AND NON-INFRINGEMENT OF THIRD PARTY RIGHTS.
+TWOCANOES SOFTWARE DOES NOT WARRANT AGAINST INTERFERENCE WITH YOUR ENJOYMENT OF THE SOFTWARE, THAT
+THE FUNCTIONS CONTAINED IN THE SOFTWARE WILL MEET YOUR REQUIREMENTS, THAT THE OPERATION OF THE
+SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT DEFECTS IN THE SOFTWARE WILL BE CORRECTED. NO
+ORAL OR WRITTEN INFORMATION OR ADVICE GIVEN BY TWOCANOES SOFTWARE OR AN AUTHORIZED REPRESENTATIVE OF
+TWOCANOES SOFTWARE SHALL CREATE A WARRANTY. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE
+ENTIRE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. WITHOUT LIMITING THE FOREGOING, YOU
+ARE SOLELY RESPONSIBLE FOR DETERMINING AND VERIFYING THAT THE SOFTWARE THAT YOU OBTAIN AND INSTALL
+IS THE APPROPRIATE VERSION FOR YOUR MODEL OF GRAPHICS CONTROLLER BOARD, OPERATING SYSTEM, AND
+COMPUTER HARDWARE.
+
+6.3 Limitation of Liability.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, TWOCANOES SOFTWARE SHALL HAVE NO LIABILITY, WHATSOEVER, UNDER THIS
+LICENSE AGREEMENT OR OTHERWISE, ARISING OUT OF OR RELATING TO THE SALE OR USE OF ITS SOFTWARE, FOR
+CONSEQUENTIAL, EXEMPLARY, SPECIAL, DIRECT, INDIRECT, INCIDENTAL OR PUNITIVE DAMAGES, INCLUDING
+(WITHOUT LIMITATION) ANY LOST PROFITS, BUSINESS PROFITS, LOST SAVINGS, LOSS OF DATA, BUSINESS
+INTERRUPTION, LOSS OF PERSONAL OR BUSINESS INFORMATION, LOST REVENUES, AND DAMAGE TO YOUR COMPUTER
+(WHETHER RESULTING FROM IMPAIRED OR LOST DATA, SOFTWARE OR COMPUTER FAILURE OR ANY OTHER CAUSE),
+WHETHER OR NOT TWOCANOES SOFTWARE HAS ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGE OR HAS BEEN
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THIS LIMITATION APPLIES TO ALL CAUSES OF ACTION IN THE
+AGGREGATE. THE LIABILITY OF TWOCANOES SOFTWARE FOR ANY REASON AND UPON ANY CAUSE OF ACTION,
+INCLUDING BUT NOT LIMITED TO IN CONTRACT, TORT, BREACH OF WARRANTY, NEGLIGENCE, MISREPRESENTATION OR
+OTHERWISE, SHALL BE LIMITED TO REFUND TO YOU THE AMOUNT PAID BY YOU UNDER THIS LICENSE AGREEMENT.
+THE PARTIES AGREE THAT THE REMEDIES AND LIMITATIONS HEREIN ALLOCATE THE RISK BETWEEN THE PARTIES AND
+THAT THE LICENSE FEE IS SET IN RELIANCE UPON THIS ALLOCATION OF RISK AND THE EXCLUSION OF CERTAIN
+DAMAGES AS SET FORTH IN THIS AGREEMENT. THE FOREGOING LIMITATIONS ARE APPLICABLE NOTWITHSTANDING ANY
+FAILURE OF ESSENTIAL PURPOSE.
+
+7. Export Requirements and Assurances.
+You acknowledge and agree that the software may be subject to U.S. Export Administration Regulations. You
+agree that the software is not being or will not be acquired for, shipped, transferred, or re-
+exported, directly or indirectly, to proscribed or embargoed countries or their nationals, nor will
+it be used for nuclear activities, chemical or biological weapons, or missile projects, unless
+authorized by the U.S government. Prescribed countries are set forth in U.S. Export Administration
+Regulations. You hereby certify that you are not on the U.S. Department of Commerce's Denied Persons
+List. You acknowledge that the software may be licensable under the U.S. Government Export
+Regulations. You must strictly comply with all legal requirements established under these controls,
+or any other controls, and may not export, re-export, divert, transfer or disclose, directly or
+indirectly, the software, its documentation and any related technical information or materials
+without first complying with all U.S. laws and regulations and without the prior approval of the
+U.S. Department of Commerce.
+
+8. Copyright/Ownership.
+This software and its source code are proprietary products of Twocanoes Software and are protected by
+copyright laws and international treaty provisions. All copyright, patent, trade secret and allother intellectual proprietary rights of whatever nature in the software and related documentation,
+including derivative works, are and shall remain the exclusive property of Twocanoes Software and
+any third party suppliers. Accordingly, you are required to treat the software like any other
+copyrighted materials, except as otherwise allowed in this License Agreement.
+
+9. Fees and Payment Terms.
+All fees must be paid in advance.
+
+10. Miscellaneous.
+
+10.1 Choice of Law.
+This License Agreement shall be deemed to have been executed in the United States of America and shall be
+governed by the laws of the State of Illinois, without regard to the conflict of laws provision
+thereof. In no event shall the United Nations Convention on Contracts for the International Sale of
+Goods apply to, or govern, this License Agreement. In the event that either party initiates an
+action in connection with this License agreement, or any other dispute between the parties, the
+exclusive jurisdiction and venue shall be Wheaton, Illinois. Notwithstanding the foregoing, either
+party may enforce a judgment rendered by such court in any court of competent jurisdiction, and
+Twocanoes Software may seek injunctive or other equitable relief in any jurisdiction in order to
+protect its intellectual property rights.
+
+10.2 Waiver.
+No waiver or breach of any term or condition of this License Agreement shall operate as a waiver of any
+other breach or such term or condition, or of any other term or condition, nor shall any failure to
+enforce any provisions hereunder operate as a waiver of such provision or any other provision
+hereunder.
+
+10.3 Severability.
+In case any one or more of the provisions contained in this License Agreement shall for any reason be held
+to be invalid, illegal or unenforceable in any respect, except in those instances where removal or
+elimination of such invalid, illegal, or unenforceable provision or provisions would result in a
+failure of consideration under this License Agreement, such invalidity, illegality or
+unenforceability shall not affect any other provision hereof, and this License Agreement shall be
+construed as if such invalid, illegal or unenforceable provisions had never been contained herein.
+
+10.4 Headings.
+Headings used in this License Agreement are for the purpose of reference only and are not to be construed
+in construction or interpretation of this License Agreement.
+
+10.5 Entire Agreement; Amendment.
+This License Agreement constitutes the entire understanding and agreement between you and Twocanoes
+Software with respect to the software and is the complete agreement between the parties and
+supersedes all prior or contemporaneous understandings and agreements relating to the subject
+matter, whether oral or written. This License Agreement may be amended and modified only in a
+writing executed by both parties.
+
+11. Third Party Acknowledgements.
+swift-argument-parser
+Copyright 2025 Apple Inc.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Last Updated: March 12, 2025

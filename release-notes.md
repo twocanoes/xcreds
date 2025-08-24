@@ -1,3 +1,14 @@
+## tag-5.5(8786) (2025-08-24)
+
+*  cleared up warnings [View](https://github.com/twocanoes/xcreds/commit/26ae43b58002a37e22ae2f2120a0ca2fb835228a)
+*  cleaned up logging a bit [View](https://github.com/twocanoes/xcreds/commit/a4f9377255b15782b625de9ea9b9cf865a9a40ac)
+
+
+## tag-5.5(8780) (2025-08-22)
+
+*  bumped version [View](https://github.com/twocanoes/xcreds/commit/83234752970d91eddc8389e2588efa06ae4b1c16)
+
+
 ## tag-5.5(8779) (2025-08-22)
 
 *  put in pref to reload page [View](https://github.com/twocanoes/xcreds/commit/0f3d2574881ff3c3324abc2732cf97cec9cd774f)
