@@ -1,3 +1,8 @@
+## tag-5.5(8787) (2025-08-24)
+
+*  added SLA to installer [View](https://github.com/twocanoes/xcreds/commit/890be5630564d53485db7b453c0c7c55519716ea)
+
+
 ## tag-5.5(8786) (2025-08-24)
 
 *  cleared up warnings [View](https://github.com/twocanoes/xcreds/commit/26ae43b58002a37e22ae2f2120a0ca2fb835228a)
