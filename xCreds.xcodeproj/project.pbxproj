@@ -132,6 +132,7 @@
 		7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
 		7657DEDA2B351B5B003A23DB /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
 		7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */; };
+		765A4C9F2E5B67200006856E /* TCSHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 765A4C9E2E5B67200006856E /* TCSHelpers */; };
 		766184B82DCE5DB5009D5A8C /* colorline.png in Resources */ = {isa = PBXBuildFile; fileRef = 766184B72DCE5DB5009D5A8C /* colorline.png */; };
 		766184B92DCE5DB5009D5A8C /* colorline.png in Resources */ = {isa = PBXBuildFile; fileRef = 766184B72DCE5DB5009D5A8C /* colorline.png */; };
 		76634F372D05FFA3000A63E8 /* LogOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76634F362D05FFA3000A63E8 /* LogOnly.swift */; };
@@ -153,12 +154,6 @@
 		76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
 		766C602D2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
 		766C602E2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
-		766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
-		766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
-		766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; };
-		766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42129D3A320009BC526 /* Paddle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		766CC43829D3AED2009BC526 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
 		766F1E562D495BBF00AA5637 /* com.twocanoes.xcreds.json in Resources */ = {isa = PBXBuildFile; fileRef = 766F1E552D495BBF00AA5637 /* com.twocanoes.xcreds.json */; };
 		766F4C4B2883AFD90021F548 /* pleaseWaitGraphic.png in Resources */ = {isa = PBXBuildFile; fileRef = 766F4C4A2883AFD90021F548 /* pleaseWaitGraphic.png */; };
@@ -183,7 +178,6 @@
 		76786F6B2A27C79100AA8DB9 /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D7ADFC284EB18600332EBC /* NSFileManager+TCSRealHomeFolder.m */; };
 		767B939C2A28279E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
 		767B939D2A28289E0038935E /* View+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B939B2A28279E0038935E /* View+Shake.swift */; };
-		767C349D2D930FC1000D62A5 /* VersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C349C2D930FC1000D62A5 /* VersionCheck.swift */; };
 		767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76786F4E2A27C31400AA8DB9 /* AuthRightsHelper.swift */; };
 		767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */; };
 		7681FEC52A4C8B9000F91CD1 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681FEC42A4C8B9000F91CD1 /* AboutWindowController.swift */; };
@@ -400,7 +394,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				76EB23E12CC898D7003F82CB /* ProductLicense.framework in Embed Frameworks */,
-				766CC42B29D3A3DC009BC526 /* Paddle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,7 +405,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				76EB23E52CC8A3CB003F82CB /* ProductLicense.framework in Embed Frameworks */,
-				766CC43029D3A3EC009BC526 /* Paddle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,7 +416,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				76EB23E32CC8A232003F82CB /* ProductLicense.framework in Embed Frameworks */,
-				766CC43529D3A3F8009BC526 /* Paddle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,7 +549,6 @@
 		76786F552A27C36A00AA8DB9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		76786F6A2A27C72900AA8DB9 /* auth_mech_fixup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "auth_mech_fixup-Bridging-Header.h"; path = "auth_mech_fixup/auth_mech_fixup-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		767B939B2A28279E0038935E /* View+Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Shake.swift"; sourceTree = "<group>"; };
-		767C349C2D930FC1000D62A5 /* VersionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionCheck.swift; sourceTree = "<group>"; };
 		767CB2CC2B13B8EB006CA2AC /* libinfo.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libinfo.tbd; path = usr/lib/libinfo.tbd; sourceTree = SDKROOT; };
 		767CB2CE2B13B913006CA2AC /* libsystem_info.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsystem_info.tbd; path = usr/lib/system/libsystem_info.tbd; sourceTree = SDKROOT; };
 		767CB2CF2B13B92B006CA2AC /* OpenDirectory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenDirectory.framework; path = System/Library/Frameworks/OpenDirectory.framework; sourceTree = SDKROOT; };
@@ -693,7 +683,6 @@
 				76EB23E42CC8A3CB003F82CB /* ProductLicense.framework in Frameworks */,
 				76C4BAB62B353AF7007B2C57 /* Kerberos.framework in Frameworks */,
 				76C4BAB42B353ADD007B2C57 /* libresolv.tbd in Frameworks */,
-				766CC42F29D3A3EC009BC526 /* Paddle.framework in Frameworks */,
 				766355CE2870E9D3002E3867 /* OIDCLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,7 +707,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				76EB23E22CC8A232003F82CB /* ProductLicense.framework in Frameworks */,
-				766CC43429D3A3F8009BC526 /* Paddle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,12 +719,12 @@
 				762177E62B7144460051B756 /* OIDCLite in Frameworks */,
 				76C4BAB32B353AD7007B2C57 /* libresolv.tbd in Frameworks */,
 				763DDF1A2B4F1DD4000D48CC /* GSS.framework in Frameworks */,
-				766CC42A29D3A3DC009BC526 /* Paddle.framework in Frameworks */,
 				76EB23E02CC898D7003F82CB /* ProductLicense.framework in Frameworks */,
 				767CB2D02B13B92B006CA2AC /* OpenDirectory.framework in Frameworks */,
 				76319369287D24F600D36BF7 /* ArgumentParser in Frameworks */,
 				76319366287D24E100D36BF7 /* ArgumentParser in Frameworks */,
 				76DD6D17285997F300A700ED /* OIDCLite in Frameworks */,
+				765A4C9F2E5B67200006856E /* TCSHelpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,7 +978,6 @@
 				766184B72DCE5DB5009D5A8C /* colorline.png */,
 				76456CDF2DC99BFA00AEA261 /* NSError+EasyError.h */,
 				76456CE02DC99BFA00AEA261 /* NSError+EasyError.m */,
-				767C349C2D930FC1000D62A5 /* VersionCheck.swift */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
 				760CA4C92DAF38DC00066F31 /* NSAlert+showAlert.swift */,
 				7649CD2A2D4B03FD00D6BEE2 /* UsernamePassword.swift */,
@@ -1268,6 +1255,7 @@
 				76319368287D24F600D36BF7 /* ArgumentParser */,
 				762177E52B7144460051B756 /* OIDCLite */,
 				76477E032C626B5D00F01D56 /* OIDCLite */,
+				765A4C9E2E5B67200006856E /* TCSHelpers */,
 			);
 			productName = xCreds;
 			productReference = 76EE069A27FD1D00009E0F3A /* XCreds.app */;
@@ -1322,6 +1310,7 @@
 			packageReferences = (
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
+				765A4C9D2E5B67200006856E /* XCRemoteSwiftPackageReference "tcshelpers" */,
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
@@ -1646,7 +1635,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				760148AA2B2365F100E119A2 /* NSBundle+FindBundlePath.swift in Sources */,
-				767C349D2D930FC1000D62A5 /* VersionCheck.swift in Sources */,
 				76E74DD32B390358004C6429 /* LoginWebViewController.swift in Sources */,
 				089B22F22AFAED810006B6BC /* NetworkMonitor.swift in Sources */,
 				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
@@ -2232,7 +2220,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8779;
+				CURRENT_PROJECT_VERSION = 8785;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2298,7 +2286,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8779;
+				CURRENT_PROJECT_VERSION = 8785;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2509,6 +2497,14 @@
 				kind = branch;
 			};
 		};
+		765A4C9D2E5B67200006856E /* XCRemoteSwiftPackageReference "tcshelpers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@bitbucket.org:twocanoes/tcshelpers";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2530,6 +2526,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */;
 			productName = OIDCLite;
+		};
+		765A4C9E2E5B67200006856E /* TCSHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 765A4C9D2E5B67200006856E /* XCRemoteSwiftPackageReference "tcshelpers" */;
+			productName = TCSHelpers;
 		};
 		766355CD2870E9D3002E3867 /* OIDCLite */ = {
 			isa = XCSwiftPackageProductDependency;

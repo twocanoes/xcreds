@@ -1,5 +1,5 @@
 {
-  "originHash" : "d0dea2927abdd153bc3da8427bfbcf3642ad3382c62341155c3bf148d3154315",
+  "originHash" : "f9dafb3d1c9b1ad1655e9eab6da361c85e93e713c7ad8cf449215cd5cb0ee602",
   "pins" : [
     {
       "identity" : "oidclite",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "309a47b2b1d9b5e991f36961c983ecec72275be3",
         "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "tcshelpers",
+      "kind" : "remoteSourceControl",
+      "location" : "git@bitbucket.org:twocanoes/tcshelpers",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a6b10ef4d6156b421e32384cee7e3808d97b0206"
       }
     }
   ],
