@@ -164,7 +164,7 @@ import Network
                         try await TokenManager().oidc().getEndpoints()
                         //have network
                         TCSLogWithMark("network available, showing cloud")
-                        showLoginWindowType(loginWindowType: .cloud)
+//                        showLoginWindowType(loginWindowType: .cloud)
 
                     }
                     catch{
@@ -176,7 +176,7 @@ import Network
                         }
                         else {
                             TCSLogWithMark("no network and not checking so showing cloud")
-                            showLoginWindowType(loginWindowType: .cloud)
+//                            showLoginWindowType(loginWindowType: .cloud)
 
                         }
 
@@ -192,18 +192,6 @@ import Network
     }
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
-
-// code to repeatidly log in 
-//        let uuid = UUID().uuidString
-//        self.setHint(type: .user, hint: uuid as NSSecureCoding)
-//        self.setHint(type: .pass, hint: uuid as NSSecureCoding)
-//        TCSLogWithMark()
-//        self.setContextString(type: kAuthorizationEnvironmentUsername, value: uuid)
-//        self.setContextString(type: kAuthorizationEnvironmentPassword, value: uuid)
-//        TCSLogWithMark()
-//
-//        super.allowLogin()
-//        return
 
 
         loginWebViewController=nil

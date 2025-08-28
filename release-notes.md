@@ -1,3 +1,8 @@
+## tag-5.5(8780) (2025-08-22)
+
+*  bumped version [View](https://github.com/twocanoes/xcreds/commit/83234752970d91eddc8389e2588efa06ae4b1c16)
+
+
 ## tag-5.5(8779) (2025-08-22)
 
 *  put in pref to reload page [View](https://github.com/twocanoes/xcreds/commit/0f3d2574881ff3c3324abc2732cf97cec9cd774f)

@@ -27,6 +27,11 @@ class LoginWebViewController: WebViewController, DSQueryable {
         TCSLogWithMark()
 
         updateView()
+        
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { not in
+            TCSLogWithMark("Waking from sleep, so refreshing view")
+            self.updateView()
+        }
 
 
     }

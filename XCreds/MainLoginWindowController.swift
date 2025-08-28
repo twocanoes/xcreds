@@ -84,7 +84,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                     self.controlsViewController?.view.frame=rect
                 }
                 self.recenterCenterView()
-                self.updateBackground()
+//                self.updateBackground()
 
             }
         }
