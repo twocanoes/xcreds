@@ -31,7 +31,7 @@ struct certDates {
     var serial : String
     var expireDate : Date
 }
-
+@available(macOS, deprecated: 11)
 class KeychainUtil {
 
     var myErr: OSStatus
@@ -44,7 +44,7 @@ class KeychainUtil {
     }
 
     // find if there is an existing account password and return it or throw
-
+    @available(macOS, deprecated: 11)
     func findPassword(serviceName:String, accountName:String?) throws -> (String?,String?) {
 
         var passLength: UInt32 = 0
@@ -135,17 +135,17 @@ class KeychainUtil {
     }
 
     // delete the password from the keychain
-
+    @available(macOS, deprecated: 11)
     func deletePassword() -> OSStatus {
         myErr = SecKeychainItemDelete(myKeychainItem!)
         return myErr
     }
 
     // convience functions
-
+    @available(macOS, deprecated: 11)
     func findAndDelete(serviceName: String, accountName: String) -> Bool {
         do {
-            try findPassword(serviceName: serviceName, accountName:accountName)
+            let _ = try findPassword(serviceName: serviceName, accountName:accountName)
         } catch{
             return false
         }
@@ -155,6 +155,7 @@ class KeychainUtil {
             return false
         }
     }
+    @available(macOS, deprecated: 11)
     func updateACL(password:String){
         var myACLs : CFArray? = nil
         var itemAccess: SecAccess? = nil

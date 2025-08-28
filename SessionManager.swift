@@ -10,7 +10,7 @@ import Foundation
 //import NoMADPRIVATE
 
 // what we're keeping track of for every user
-
+@available(macOS, deprecated: 11)
 public struct NoMADSessionUserObject {
     var userPrincipal: String
     var session: NoMADSession
@@ -21,7 +21,7 @@ public struct NoMADSessionUserObject {
 }
 
 // class to keep track and manage multiple AD sessions simultaneously
-
+@available(macOS, deprecated: 11)
 public class SessionManager: NoMADUserSessionDelegate {
 
     /// The default instance of `SessionManager` to be used.

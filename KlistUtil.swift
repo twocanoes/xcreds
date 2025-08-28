@@ -24,9 +24,9 @@ public struct Ticket {
 }
 
 // singleton for the class
-
+@available(macOS, deprecated: 11)
 public let klistUtil = KlistUtil()
-
+@available(macOS, deprecated: 11)
 public class KlistUtil {
 
     var dateFormatter = DateFormatter()
@@ -70,6 +70,7 @@ public class KlistUtil {
             kerbPrefs?.set(libDefaults, forKey: "libdefaults")
         }
     }
+    @available(macOS, deprecated: 11)
     public func returnTickets() -> [Ticket] {
 
         // update the tickets
@@ -101,6 +102,7 @@ public class KlistUtil {
     public func returnDefaultExpiration() -> Date? {
         return defaultExpires
     }
+    @available(macOS, deprecated: 11)
 
     public func klist() {
 
@@ -125,15 +127,15 @@ public class KlistUtil {
         let defaultName = String(cString: cname!).replacingOccurrences(of: "API:", with: "")
 
         var cursor: krb5_cccol_cursor? = nil
-        var ret: krb5_error_code? = nil
+//        var ret: krb5_error_code? = nil
         var min_stat = OM_uint32()
 
-        ret = krb5_cccol_cursor_new(context, &cursor)
+        let _ = krb5_cccol_cursor_new(context, &cursor)
 
         while ((krb5_cccol_cursor_next(context, cursor, &oCache) == 0 ) && oCache != nil)  {
             let name = (String(cString: (krb5_cc_get_name(context, oCache))))
             var krb5Principal : krb5_principal? = nil
-            ret = krb5_cc_get_principal(context, oCache, &krb5Principal)
+            _ = krb5_cc_get_principal(context, oCache, &krb5Principal)
             var krb5PrincName : UnsafeMutablePointer<Int8>? = nil
             guard let principal = krb5Principal else {
                 print("Principal is nil, unable to get principal name")
@@ -201,6 +203,7 @@ public class KlistUtil {
         }
         //print(tickets)
     }
+    @available(macOS, deprecated: 11)
     public func hasTickets(principal: String) -> Bool {
         klist()
         return tickets.keys
@@ -209,7 +212,7 @@ public class KlistUtil {
     }
 
     // function to delete a kerb ticket
-
+    @available(macOS, deprecated: 11)
     public func kdestroy(princ: String = "" ) {
 
         var name = ""
@@ -230,7 +233,7 @@ public class KlistUtil {
     }
 
     // function to switch the default cache
-
+    @available(macOS, deprecated: 11)
     public func kswitch(princ: String = "" ) {
 
         var name = ""

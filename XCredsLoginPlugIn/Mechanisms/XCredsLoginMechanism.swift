@@ -3,7 +3,7 @@ import CryptoTokenKit
 import Network
 
 
-
+@available(macOS, deprecated: 11)
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
     var loginWebViewController: LoginWebViewController?
     @objc var signInViewController: SignInViewController?

@@ -1,2 +1,3 @@
-binary "https://bitbucket.org/twocanoes/productlicense-public/downloads/productlicense.json"
-github "PaddleHQ/Mac-Framework-V4"
+#binary "https://bitbucket.org/twocanoes/productlicense-public/downloads/productlicense.json"
+#github "PaddleHQ/Mac-Framework-V4"
+git "git@bitbucket.org:twocanoes/productlicense.git" "nopaddle"

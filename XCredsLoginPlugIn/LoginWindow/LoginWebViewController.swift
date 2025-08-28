@@ -10,7 +10,7 @@ import Cocoa
 import WebKit
 import OIDCLite
 import OpenDirectory
-
+@available(macOS, deprecated: 11)
 class LoginWebViewController: WebViewController, DSQueryable {
 
     let uiLog = "uiLog"

@@ -237,6 +237,8 @@ public func getConsoleUser() -> String {
 /// Finds the serial number of the Mac.
 ///
 /// - Returns: The serial number of the Mac as a `String`.
+
+@available(macOS, deprecated: 11)
 public func getSerial() -> String {
     let platformExpert: io_service_t = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
     let platformSerialNumberKey = kIOPlatformSerialNumberKey

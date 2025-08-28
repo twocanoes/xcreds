@@ -10,6 +10,7 @@ import OpenDirectory
 
 
 /// Mechanism to create a local user and homefolder.
+@available(macOS, deprecated: 11)
 class XCredsCreateUser: XCredsBaseMechanism {
 
     let createUserLog = "createUserLog"

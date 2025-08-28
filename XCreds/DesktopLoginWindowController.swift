@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class DesktopLoginWindowController: NSWindowController {
     @IBOutlet var webViewController: WebViewController!
     @IBOutlet var backgroundImageView:NSImageView!

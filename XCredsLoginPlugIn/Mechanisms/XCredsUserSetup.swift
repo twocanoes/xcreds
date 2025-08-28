@@ -3,18 +3,28 @@
 //
 //
 
+import ProductLicense
+@available(macOS, deprecated: 11)
 class XCredsUserSetup: XCredsBaseMechanism{
 
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsUserSetup mech starting ~~~~~~~~~~~~~~~~~~~")
-
+        
         let bundle = Bundle.findBundleWithName(name: "XCreds")
 
         if let bundle = bundle {
             let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+            if let infoPlist = infoPlist,
+                let build = infoPlist["CFBundleVersion"] as? String,
+                let version = infoPlist["CFBundleShortVersionString"] as? String {
+                
+                VersionCheck.shared.reportLicenseUsage(identifier: "com.twocanoes.xcreds", appVersion:version,buildNumber: build, event: .checkin) { isSuccess in
+                    print(isSuccess)
+                }
+
+                
                 TCSLogInfoWithMark("------------------------------------------------------------------")
-                TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
+                TCSLogInfoWithMark("XCreds Login \(version).\(build)")
                 if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
                     TCSLogInfoWithMark("Log showing only basic info and errors.")
                     TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
@@ -30,8 +40,6 @@ class XCredsUserSetup: XCredsBaseMechanism{
 
                 TCSLogInfoWithMark("------------------------------------------------------------------")
             }
-
-
         }
         TCSLogWithMark("checking to see if launchagent should be removed...")
         let fm = FileManager.default

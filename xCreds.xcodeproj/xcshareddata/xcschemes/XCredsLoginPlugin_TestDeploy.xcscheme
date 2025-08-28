@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1640"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
                      BlueprintIdentifier = "766355BC2870CA6A002E3867"
                      BuildableName = "XCredsLoginPlugin.bundle"
                      BlueprintName = "XCredsLoginPlugin"
-                     ReferencedContainer = "container:XCreds.xcodeproj">
+                     ReferencedContainer = "container:xCreds.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "766355BC2870CA6A002E3867"
                BuildableName = "XCredsLoginPlugin.bundle"
                BlueprintName = "XCredsLoginPlugin"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -71,7 +71,7 @@
             BlueprintIdentifier = "766355BC2870CA6A002E3867"
             BuildableName = "XCredsLoginPlugin.bundle"
             BlueprintName = "XCredsLoginPlugin"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

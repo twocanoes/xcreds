@@ -12,7 +12,7 @@ import Foundation
 public protocol NoMADUserSession {
     func getKerberosTicket(principal: String?, completion: @escaping (KerberosTicketResult) -> Void)
     func authenticate(authTestOnly: Bool)
-    func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void)
+//    func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void)
     func changeKerberosPassword() throws
     func userInfo()
     var delegate: NoMADUserSessionDelegate? { get set }
@@ -83,6 +83,7 @@ public struct NoMADLDAPServer {
 // MARK: Start of public class
 
 /// A general purpose class that is the main entrypoint for interactions with Active Directory.
+@available(macOS, deprecated: 11)
 public class NoMADSession: NSObject {
 
     public var state: NoMADSessionState = .offDomain          // current state of affairs
@@ -1084,7 +1085,7 @@ public class NoMADSession: NSObject {
 
 
 }
-
+@available(macOS, deprecated: 11)
 extension NoMADSession: NoMADUserSession {
 
     public func getKerberosTicket(principal: String? = nil, completion: @escaping (KerberosTicketResult) -> Void) {
@@ -1231,16 +1232,16 @@ extension NoMADSession: NoMADUserSession {
     }
 
     /// Change the password for the current user session via closure
-    public func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void) {
-        TCSLogWithMark("Change Kerberos password")
-        KerbUtil().changeKerberosPassword(oldPassword, newPassword, userPrincipal) {
-            if let errorValue = $0 {
-                completion(errorValue)
-            } else {
-                completion(nil)
-            }
-        }
-    }
+//    public func changePassword(oldPassword: String, newPassword: String, completion: @escaping (String?) -> Void) {
+//        TCSLogWithMark("Change Kerberos password")
+//        KerbUtil().changeKerberosPassword(oldPassword, newPassword, userPrincipal) {
+//            if let errorValue = $0 {
+//                completion(errorValue)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
 
     /// Change the password for the current user session via delegate.
     ///
@@ -1347,7 +1348,7 @@ extension NoMADSession: NoMADUserSession {
         }
     }
 }
-
+@available(macOS, deprecated: 11)
 extension NoMADSession {
     // MARK: - testHosts with completion functionality
 

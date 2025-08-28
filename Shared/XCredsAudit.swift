@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+@available(macOS, deprecated: 11)
 class XCredsAudit {
 
 

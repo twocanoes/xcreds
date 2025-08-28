@@ -1,7 +1,7 @@
 //
 //
 
-
+@available(macOS, deprecated: 11)
 class XCredsLoginDone: XCredsBaseMechanism {
 
     override init(mechanism: UnsafePointer<MechanismRecord>) {

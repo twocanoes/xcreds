@@ -27,7 +27,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     func adUserUpdated(_ adUser:ADUserRecord)
 
 }
-
+@available(macOS, deprecated: 11)
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
 
@@ -752,7 +752,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     }
 
                     if let tokenResponse = tokenResponse {
-                        let creds = Creds(password: inPassword, tokens: tokenResponse)
+                        _ = Creds(password: inPassword, tokens: tokenResponse)
                         completeLogin(authResult:.allow)
 
                     }
@@ -773,7 +773,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         if shortName.isEmpty {
             if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
                   let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
-                  var kerbPrinc = kerbPrincArray.first
+               let kerbPrinc = kerbPrincArray.first
             {
                 shortName=kerbPrinc
             }
@@ -1188,6 +1188,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 
 //MARK: - NoMADUserSessionDelegate
+@available(macOS, deprecated: 11)
 extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
@@ -1578,6 +1579,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 
 //MARK: - NSTextField Delegate
+@available(macOS, deprecated: 11)
 extension SignInViewController: NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
         let passField = obj.object as! NSTextField

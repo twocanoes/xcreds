@@ -22,7 +22,7 @@ enum WiFiPowerState:String {
     func networkManagerFullyFinishedInternetConnectionTimer()
     @objc optional func networkManagerConnectedToNetwork()
 }
-
+@available(macOS, deprecated: 11)
 class NetworkManager: CWEventDelegate {
     private var error: Error?
     private var currentInterface: CWInterface?

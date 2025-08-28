@@ -15,7 +15,7 @@ class PreferencesWindowController: NSWindowController {
     @objc override var windowNibName: NSNib.Name {
         return NSNib.Name("PreferencesWindow")
     }
-
+    @available(macOS, deprecated: 11)
     @IBAction func clearTokensClicked(_ sender: Any) {
         let keychainUtil = KeychainUtil()
         let _ = keychainUtil.findAndDelete(serviceName:"xcreds",accountName:PrefKeys.accessToken.rawValue)

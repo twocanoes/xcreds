@@ -94,9 +94,9 @@
             filePath = "XCreds/KeychainUtil.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "setPassword(serviceName:accountName:pass:)"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "findPassword(serviceName:accountName:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -112,7 +112,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "850"
             endingLineNumber = "850"
-            landmarkName = "applicationDidFinishLaunching(_:)"
+            landmarkName = "updateStatusMenuIcon(showDot:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
