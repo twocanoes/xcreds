@@ -387,9 +387,14 @@ protocol UpdateCredentialsFeedbackProtocol {
         completeLogin(authResult:.allow)
 
     }
+    func updateSize(){
+        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height +  64)
+    
+    }
     override func viewDidLayout() {
 
-        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height +  64)
+        TCSLogWithMark("viewDidLayout")
+        updateSize()
     }
 
     @objc func setupLoginAppearance() {
@@ -435,7 +440,6 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
         }
         self.usernameTextField.wantsLayer=true
-        self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
 //        self.view.frame=CGRectInset(self.view.frame, 0,32+128-logoImageView.frame.height)
         self.view.layer?.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)

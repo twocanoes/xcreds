@@ -67,9 +67,9 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
 
     }
-    @objc fileprivate func updateWindow() {
+    @objc func updateWindow() {
         TCSLogWithMark()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
             if self.window?.isVisible ?? true {
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width

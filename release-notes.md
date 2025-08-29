@@ -1,3 +1,24 @@
+## tag-5.5(8832) (2025-08-28)
+
+*  fixed regression when login window not showing [View](https://github.com/twocanoes/xcreds/commit/7086af2af4ae81ed062a72eb5f3f25e5432e25b6)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/fa11aba4723f64fe302b5f05667d0f45568bfd2b)
+
+
+## tag-5.5(8831) (2025-08-28)
+
+*  updated manfest; added refresh after wake [View](https://github.com/twocanoes/xcreds/commit/6a95b84a0961f805471003c95a56d302eab6df8b)
+*  updated versioncheck to use framework [View](https://github.com/twocanoes/xcreds/commit/b2773d2b276e53a50ff70a104628ed4bae7d8263)
+*  changed manifest version [View](https://github.com/twocanoes/xcreds/commit/607aabcc0d53be3239d956c7665d659b209805d3)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/91c2decb24719eed16904d06ef650bc7aee5658e)
+*  changed build script to check git  earlier [View](https://github.com/twocanoes/xcreds/commit/cf7ef53ec75238ef82ba91d1884285ab63ba3b0c)
+
+
+## tag-5.5(8786) (2025-08-24)
+
+*  cleared up warnings [View](https://github.com/twocanoes/xcreds/commit/26ae43b58002a37e22ae2f2120a0ca2fb835228a)
+*  cleaned up logging a bit [View](https://github.com/twocanoes/xcreds/commit/a4f9377255b15782b625de9ea9b9cf865a9a40ac)
+
+
 ## tag-5.5(8780) (2025-08-22)
 
 *  bumped version [View](https://github.com/twocanoes/xcreds/commit/83234752970d91eddc8389e2588efa06ae4b1c16)

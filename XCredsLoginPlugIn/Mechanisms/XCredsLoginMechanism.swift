@@ -403,6 +403,7 @@ import Network
             mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
 
             signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
+            mainLoginWindowController?.updateWindow()
 
         }
     }

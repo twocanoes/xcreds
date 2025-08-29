@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.5 (8780) OAuth Settings",
+    "description": "XCreds 5.5 (8832) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -1000,7 +1000,7 @@
             "type": "boolean",
             "title": "Show Version and Build Number",
             "default": true,
-            "description": "Show the version number and build number in the lower left corner of XCreds Login.",
+            "description": "(Deprecated in v5.4 and replaced by shouldActivateSystemInfoButton) Show the version number and build number in the lower left corner of XCreds Login.",
             "links": [
                 {
                     "rel": "More information",
