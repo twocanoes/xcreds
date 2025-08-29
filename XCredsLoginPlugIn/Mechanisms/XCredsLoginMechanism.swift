@@ -164,7 +164,7 @@ import Network
                         try await TokenManager().oidc().getEndpoints()
                         //have network
                         TCSLogWithMark("network available, showing cloud")
-//                        showLoginWindowType(loginWindowType: .cloud)
+                        showLoginWindowType(loginWindowType: .cloud)
 
                     }
                     catch{
@@ -176,7 +176,7 @@ import Network
                         }
                         else {
                             TCSLogWithMark("no network and not checking so showing cloud")
-//                            showLoginWindowType(loginWindowType: .cloud)
+                            showLoginWindowType(loginWindowType: .cloud)
 
                         }
 
