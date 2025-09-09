@@ -1,3 +1,8 @@
+## tag-5.5(8888) (2025-08-29)
+
+*  updated login window appearance [View](https://github.com/twocanoes/xcreds/commit/e4fb55901cc7b0603f3ee919a1cccb7c7ee8d3e2)
+
+
 ## tag-5.5(8832) (2025-08-28)
 
 *  fixed regression when login window not showing [View](https://github.com/twocanoes/xcreds/commit/7086af2af4ae81ed062a72eb5f3f25e5432e25b6)

@@ -196,11 +196,18 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
-                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
-
+//                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                TCSLogWithMark("password not found")
             }
             else {
-                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
+                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String> {
+                    
+                    guard passwords.count > 0 else {
+                        TCSLogWithMark("No passwords set")
+                        decisionHandler(.allow)
+                        return
+                        
+                    }
 
                     TCSLogWithMark("found password elements with ids:\(ids)")
 
@@ -310,7 +317,6 @@ extension WebViewController: WKNavigationDelegate {
         guard let javascript = javascript else {
             return
         }
-
         webView.evaluateJavaScript(javascript, completionHandler: { response, error in
             if (error != nil){
                 
