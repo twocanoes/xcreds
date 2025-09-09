@@ -1,3 +1,8 @@
+## tag-5.5(8902) (2025-09-09)
+
+*  fixed image on un/pw window [View](https://github.com/twocanoes/xcreds/commit/b0dda03afe0bfd78aeee2fcba9a3f70d3a5c9b58)
+
+
 ## tag-5.5(8888) (2025-08-29)
 
 *  updated login window appearance [View](https://github.com/twocanoes/xcreds/commit/e4fb55901cc7b0603f3ee919a1cccb7c7ee8d3e2)

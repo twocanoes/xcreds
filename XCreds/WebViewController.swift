@@ -204,7 +204,6 @@ extension WebViewController: WKNavigationDelegate {
                     
                     guard passwords.count > 0 else {
                         TCSLogWithMark("No passwords set")
-                        decisionHandler(.allow)
                         return
                         
                     }
