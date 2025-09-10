@@ -1,3 +1,8 @@
+## tag-5.5(8910) (2025-09-09)
+
+*  reverted un/pw to last release [View](https://github.com/twocanoes/xcreds/commit/287baf8add86a691a5a64a2a2a3abc30d768922d)
+
+
 ## tag-5.5(8902) (2025-09-09)
 
 *  fixed image on un/pw window [View](https://github.com/twocanoes/xcreds/commit/b0dda03afe0bfd78aeee2fcba9a3f70d3a5c9b58)
