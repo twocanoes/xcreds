@@ -1,3 +1,8 @@
+## tag-5.5(8912) (2025-09-09)
+
+*  updated javascript to get password [View](https://github.com/twocanoes/xcreds/commit/330746ca5ba691cf8c3bd843941ea1b264ab876b)
+
+
 ## tag-5.5(8911) (2025-09-09)
 
 *  skipping refresh if typing detected in last 30 seconds [View](https://github.com/twocanoes/xcreds/commit/132b5981ade67143236baadf45310fa50b1ef7a5)
