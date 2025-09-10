@@ -1,3 +1,8 @@
+## tag-5.5(8911) (2025-09-09)
+
+*  skipping refresh if typing detected in last 30 seconds [View](https://github.com/twocanoes/xcreds/commit/132b5981ade67143236baadf45310fa50b1ef7a5)
+
+
 ## tag-5.5(8910) (2025-09-09)
 
 *  reverted un/pw to last release [View](https://github.com/twocanoes/xcreds/commit/287baf8add86a691a5a64a2a2a3abc30d768922d)

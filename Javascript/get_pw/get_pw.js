@@ -1,28 +1,24 @@
-var elementValues = [];
 var elements = new Set();
 var result = {
   "passwords": [],
   "ids": [],
 };
 
+// Collect initial password elements
 var passwordElements = document.querySelectorAll('[type="password"]');
 
-window.addEventListener('input', function(){
-  passwordElements = document.querySelectorAll('[type="password"]');
-  if (passwordElements.length > 0) {
-    elements.add(...passwordElements);
+window.addEventListener('input', function(event){
+  var triggeredElement = event.target;
+  
+  // Check if element is in the initial password elements array
+  var isPasswordField = Array.from(passwordElements).includes(triggeredElement);
+  
+  if (isPasswordField) {
+    elements.add(triggeredElement);
+    
+    result.passwords = Array.from(elements).map(i => i.value);
+    result.ids = Array.from(elements).map(i => i.id);
+    
+    //console.log(result.passwords);
   }
-
-  var elementsArray = Array.from(elements);
-  if (elementsArray.length == 0) {
-    console.log("No input fields found");
-  }
-
-  elements.forEach(function(el){
-    el.addEventListener('input', function(){
-      result.passwords = elementsArray.map(i=>i.value);
-      result.ids = elementsArray.map(i=>i.id);
-    });
-  })
-   //console.log(result["passwords"]);  // uncomment this line for debugging
 });
