@@ -1,3 +1,8 @@
+## tag-5.5(8913) (2025-09-10)
+
+*  reverted password js [View](https://github.com/twocanoes/xcreds/commit/87e876a60d6cc29157db2c303fd73ddcbaab7a0e)
+
+
 ## tag-5.5(8912) (2025-09-09)
 
 *  updated javascript to get password [View](https://github.com/twocanoes/xcreds/commit/330746ca5ba691cf8c3bd843941ea1b264ab876b)
