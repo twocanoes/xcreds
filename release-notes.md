@@ -1,3 +1,8 @@
+## tag-5.5(8914) (2025-09-10)
+
+*  fixed min version [View](https://github.com/twocanoes/xcreds/commit/8a9150af3dc3265b41d054e2cdb63d28fca3ee47)
+
+
 ## tag-5.5(8913) (2025-09-10)
 
 *  reverted password js [View](https://github.com/twocanoes/xcreds/commit/87e876a60d6cc29157db2c303fd73ddcbaab7a0e)
