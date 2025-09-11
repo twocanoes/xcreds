@@ -1,3 +1,20 @@
+## tag-5.5(8916) (2025-09-11)
+
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
+*  fixed keychain password reset moving keychain aside issue [View](https://github.com/twocanoes/xcreds/commit/a4d2d6f0dce8820be0b4926371bd915b1e59f6d0)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/7ea958960354fdf6fc119b39eaf92911f8e18767)
+
+
+## tag-5.5(8915) (2025-09-11)
+
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
+
+
+## tag-5.5(8914) (2025-09-10)
+
+*  fixed min version [View](https://github.com/twocanoes/xcreds/commit/8a9150af3dc3265b41d054e2cdb63d28fca3ee47)
+
+
 ## tag-5.5(8913) (2025-09-10)
 
 *  reverted password js [View](https://github.com/twocanoes/xcreds/commit/87e876a60d6cc29157db2c303fd73ddcbaab7a0e)
