@@ -295,11 +295,11 @@ import OpenDirectory
         switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: username, newPassword: password, shouldUpdatePassword: true, showResetButton: showResetButton) {
 
 
-        case .success(let enteredUsernamePassword):
+        case .success(let enteredCredentials):
             TCSLogWithMark("setting original password to use to unlock keychain later")
 
-            if let enteredUsernamePassword = enteredUsernamePassword, !enteredUsernamePassword.password.isEmpty {
-                setHint(type: .existingLocalUserPassword, hint:enteredUsernamePassword as NSSecureCoding  )
+            if let enteredCredentials = enteredCredentials, !enteredCredentials.password.isEmpty {
+                setHint(type: .existingLocalUserPassword, hint:enteredCredentials.password as NSSecureCoding  )
             }
             return .success
 
