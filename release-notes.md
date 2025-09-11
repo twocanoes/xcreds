@@ -1,3 +1,8 @@
+## tag-5.6(8919) (2025-09-11)
+
+*  only show id token in log [View](https://github.com/twocanoes/xcreds/commit/e8d94102eb8663186e1706acc109ef2656a6b48d)
+
+
 ## tag-5.6(8918) (2025-09-11)
 
 *  fixed issue with select account in AD [View](https://github.com/twocanoes/xcreds/commit/3e378272a36162c0b35838dce0bcdc0fddad5783)
