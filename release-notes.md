@@ -1,3 +1,8 @@
+## tag-5.6(8918) (2025-09-11)
+
+*  fixed issue with select account in AD [View](https://github.com/twocanoes/xcreds/commit/3e378272a36162c0b35838dce0bcdc0fddad5783)
+
+
 ## tag-5.5(8916) (2025-09-11)
 
 *  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
