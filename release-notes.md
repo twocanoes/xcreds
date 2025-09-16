@@ -1,3 +1,8 @@
+## tag-5.6(8920) (2025-09-11)
+
+*  bumped build to 9000 [View](https://github.com/twocanoes/xcreds/commit/6cabaa338c049d6887d23f466e42bca7d4e4850a)
+
+
 ## tag-5.6(8919) (2025-09-11)
 
 *  only show id token in log [View](https://github.com/twocanoes/xcreds/commit/e8d94102eb8663186e1706acc109ef2656a6b48d)
