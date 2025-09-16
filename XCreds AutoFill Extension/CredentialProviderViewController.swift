@@ -7,6 +7,8 @@
 
 import AuthenticationServices
 import LocalAuthentication
+@available(macOS, deprecated: 11)
+
 class CredentialProviderViewController: ASCredentialProviderViewController {
 
     /*

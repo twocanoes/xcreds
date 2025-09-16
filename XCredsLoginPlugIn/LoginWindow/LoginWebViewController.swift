@@ -10,14 +10,13 @@ import Cocoa
 import WebKit
 import OIDCLite
 import OpenDirectory
-
+@available(macOS, deprecated: 11)
 class LoginWebViewController: WebViewController, DSQueryable {
 
     let uiLog = "uiLog"
 //    var internalDelegate:XCredsMechanismProtocol?
     var mechanismDelegate:XCredsMechanismProtocol?
 //    }
-    var loginProgressWindowController:LoginProgressWindowController?
     @IBOutlet weak var backgroundImageView: NSImageView!
 
     override func awakeFromNib() {
@@ -28,6 +27,11 @@ class LoginWebViewController: WebViewController, DSQueryable {
         TCSLogWithMark()
 
         updateView()
+        
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { not in
+            TCSLogWithMark("Waking from sleep, so refreshing view")
+            self.updateView()
+        }
 
 
     }

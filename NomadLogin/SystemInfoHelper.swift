@@ -10,6 +10,8 @@ import Foundation
 
 import NetworkExtension
 import IOKit.ps
+
+@available(macOS, deprecated: 11)
 class SystemInfoHelper {
     enum BatteryError: Error { case error }
 

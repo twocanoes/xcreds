@@ -40,7 +40,7 @@ public class RFIDUsers:NSObject, NSSecureCoding {
 
 }
 
-
+@available(macOS, deprecated: 11)
 public struct PasswordCryptor{
 
     public enum PasswordCryptorError:Error {
@@ -178,7 +178,7 @@ public class SecretKeeperUser:NSObject, NSSecureCoding {
         requiresPIN = coder.decodeBool(forKey: "requiresPIN")
 
     }
-
+    @available(macOS, deprecated: 11)
     init(fullName: String, username: String, password: String, uid:NSNumber, rfidUID:Data, pin:String?)  throws {
 
 
@@ -222,7 +222,7 @@ public class Secrets:NSObject, NSSecureCoding {
         coder.encode(salt, forKey: "salt")
 
     }
-
+    @available(macOS, deprecated: 11)
     public required init?(coder: NSCoder) {
 
         do{
@@ -326,7 +326,7 @@ public class SecretKeeper {
         }
     }
 
-
+    @available(macOS, deprecated: 11)
     func findExistingPrivateKey() throws -> SecKey? {
 
         let keychain = try systemKeychain()
@@ -356,6 +356,7 @@ public class SecretKeeper {
         return (item as! SecKey)
 
     }
+    @available(macOS, deprecated: 11)
     func systemKeychain()  throws -> SecKeychain{
         var keychain:SecKeychain?
         if SecKeychainCopyDomainDefault(SecPreferencesDomain.system, &keychain) != errSecSuccess {
@@ -369,7 +370,7 @@ public class SecretKeeper {
 
 
     }
-
+    @available(macOS, deprecated: 11)
     func privateKey() throws -> SecKey {
 
         if let privateKey = try findExistingPrivateKey() {
@@ -406,7 +407,7 @@ public class SecretKeeper {
         }
 
         var secAccess:SecAccess?
-        let s = SecAccessCreate("XCreds Encryptor" as CFString, secApps as CFArray, &secAccess)
+        let _ = SecAccessCreate("XCreds Encryptor" as CFString, secApps as CFArray, &secAccess)
         let attributes: [String: Any] =
         [kSecAttrKeyType as String:
             kSecAttrKeyTypeECSECPrimeRandom,
@@ -420,7 +421,7 @@ public class SecretKeeper {
              kSecAttrApplicationTag as String: tag],
         ]
         var error: Unmanaged<CFError>?
-        guard let secKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
+        guard let _ = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
             var errorString = ""
             if let err = error?.takeUnretainedValue().localizedDescription{
                 errorString = err
@@ -433,7 +434,7 @@ public class SecretKeeper {
         }
         return privateKey
     }
-
+    @available(macOS, deprecated: 11)
     func publicKey() throws -> SecKey{
 
         let privateKey = try privateKey()
@@ -444,6 +445,7 @@ public class SecretKeeper {
         }
         throw SecretKeeperError.errorRetrievingPublicKey
     }
+    @available(macOS, deprecated: 11)
     func decryptData(_ data:Data) throws -> Data {
         var error: Unmanaged<CFError>?
 
@@ -458,6 +460,7 @@ public class SecretKeeper {
 
 
     }
+    @available(macOS, deprecated: 11)
     func encryptData(_ data:Data) throws -> Data {
 
         let publicKey = try publicKey()
@@ -477,7 +480,7 @@ public class SecretKeeper {
 
 
 }
-
+@available(macOS, deprecated: 11)
 extension SecretKeeper {
     func saveSecrets(_ secrets:Secrets) throws {
 

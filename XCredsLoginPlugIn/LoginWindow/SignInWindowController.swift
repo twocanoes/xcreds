@@ -27,7 +27,7 @@ protocol UpdateCredentialsFeedbackProtocol {
     func adUserUpdated(_ adUser:ADUserRecord)
 
 }
-
+@available(macOS, deprecated: 11)
 @objc class SignInViewController: NSViewController, DSQueryable, TokenManagerFeedbackDelegate {
 
 
@@ -387,9 +387,14 @@ protocol UpdateCredentialsFeedbackProtocol {
         completeLogin(authResult:.allow)
 
     }
+    func updateSize(){
+        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height +  64)
+    
+    }
     override func viewDidLayout() {
 
-        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.stackView.frame.size.height +  64)
+        TCSLogWithMark("viewDidLayout")
+        updateSize()
     }
 
     @objc func setupLoginAppearance() {
@@ -435,7 +440,6 @@ protocol UpdateCredentialsFeedbackProtocol {
             }
         }
         self.usernameTextField.wantsLayer=true
-        self.usernameTextField.layer?.cornerRadius=self.usernameTextField.frame.size.height/2
         self.view.wantsLayer=true
 //        self.view.frame=CGRectInset(self.view.frame, 0,32+128-logoImageView.frame.height)
         self.view.layer?.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
@@ -690,7 +694,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     
                     let localAdmin = mech.getHint(type: .localAdmin) as? LocalAdminCredentials
                     self.localAdmin = localAdmin
-                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: true, localAdmin: localAdmin){
+                    switch mech.unsyncedPasswordPrompt(username: inShortname, password: inPassword, accountLocked: true, localAdmin: localAdmin, showResetButton: true){
 
                     case .success:
                         setRequiredHintsAndContext()
@@ -752,7 +756,7 @@ protocol UpdateCredentialsFeedbackProtocol {
                     }
 
                     if let tokenResponse = tokenResponse {
-                        let creds = Creds(password: inPassword, tokens: tokenResponse)
+                        _ = Creds(password: inPassword, tokens: tokenResponse)
                         completeLogin(authResult:.allow)
 
                     }
@@ -773,7 +777,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         if shortName.isEmpty {
             if let user = try? PasswordUtils.getLocalRecord(getConsoleUser()),
                   let kerbPrincArray = user.value(forKey: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? Array <String>,
-                  var kerbPrinc = kerbPrincArray.first
+               let kerbPrinc = kerbPrincArray.first
             {
                 shortName=kerbPrinc
             }
@@ -1188,6 +1192,7 @@ protocol UpdateCredentialsFeedbackProtocol {
 
 
 //MARK: - NoMADUserSessionDelegate
+@available(macOS, deprecated: 11)
 extension SignInViewController: NoMADUserSessionDelegate {
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
@@ -1578,6 +1583,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
 
 //MARK: - NSTextField Delegate
+@available(macOS, deprecated: 11)
 extension SignInViewController: NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
         let passField = obj.object as! NSTextField

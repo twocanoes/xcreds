@@ -63,7 +63,7 @@ struct mounting_shares_info {
     var reqID: AsyncRequestID?
     var mount_time: Date
 }
-
+@available(macOS, deprecated: 11)
 class ShareMounter {
     
     let defaults = UserDefaults.standard
@@ -481,7 +481,7 @@ class ShareMounter {
         let shareURL = myShare.takeUnretainedValue() as URL
         return URL(string: (shareURL.scheme! + "://" + shareURL.host! + shareURL.path.safeURLPath()!))!
     }
-    
+    @available(macOS, deprecated: 11)
     fileprivate func subVariables(_ url: String) -> String? {
         // TODO: get e-mail address as a variable
         var createdURL = url

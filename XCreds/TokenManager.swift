@@ -44,6 +44,7 @@ protocol TokenManagerFeedbackDelegate {
 
 
 }
+@available(macOS, deprecated: 11)
 class TokenManager:DSQueryable {
 
 
@@ -205,6 +206,7 @@ class TokenManager:DSQueryable {
 
         TCSLogWithMark()
         //ropg
+        var oidcUsername = ""
         if
             let keychainAccountAndPassword = keychainAccountAndPassword,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true,
@@ -212,7 +214,15 @@ class TokenManager:DSQueryable {
                 let keychainPassword = keychainAccountAndPassword.1{
             TCSLogWithMark("Checking credentials using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            guard let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first else {
+            if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first
+            {
+                oidcUsername=username
+            }
+            else if let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_full_username" ), oidcUsernamePrefs.isEmpty == false {
+                oidcUsername=oidcUsernamePrefs
+
+            }
+            else {
                 throw ProcessTokenResult.error("no username for oidc config")
             }
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
@@ -227,7 +237,7 @@ class TokenManager:DSQueryable {
                 overrrideErrorArray.append(contentsOf: ropgResponseValueArray)
             }
 
-           let tokenResponse = try await oidc().requestTokenWithROPG(username: username, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
+           let tokenResponse = try await oidc().requestTokenWithROPG(username: oidcUsername, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
 
             TCSLogWithMark("ROPG successful. Returning credentials for tokenInfo")
 
@@ -321,6 +331,8 @@ class TokenManager:DSQueryable {
 
         TCSLogWithMark()
         guard let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String else {
+            TCSLogWithMark("no sub or iss")
+
             return nil
         }
 
@@ -522,7 +534,7 @@ class TokenManager:DSQueryable {
 
 }
 // MARK: OIDC Lite Delegate Functions
-
+@available(macOS, deprecated: 11)
 extension TokenManager {
 
     func ropgSuccess(errorMessage: String) {

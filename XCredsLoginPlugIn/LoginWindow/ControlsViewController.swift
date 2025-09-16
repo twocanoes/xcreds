@@ -6,7 +6,8 @@
 //
 
 import Cocoa
-
+import CoreGraphics
+@available(macOS, deprecated: 11)
 class ControlsViewController: NSViewController, NSPopoverDelegate {
     @IBOutlet var systemInfoPopover: NSPopover!
     @IBOutlet var systemInfoPopoverViewController: NSViewController!
@@ -267,10 +268,21 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
 
         if refreshTimerSecs > 0 {
             TCSLogWithMark("Setting refresh timer")
-
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshTimerSecs), repeats: true, block: { [self] timer in
-                TCSLogWithMark("refreshing in timer")
-                delegate?.reload()
+            
+            refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshTimerSecs), repeats: true, block: { [self] timer in
+                
+                let idleTime = CGEventSource.secondsSinceLastEventType(CGEventSourceStateID.combinedSessionState, eventType: CGEventType.keyDown)
+                
+                
+                if idleTime>30{
+                    TCSLogWithMark("refreshing in timer")
+                    delegate?.reload()
+                }
+                else {
+                    TCSLogWithMark("skipping refresh because activity detected in last 30 seconds")
+                    
+                    
+                }
             })
         }
     }

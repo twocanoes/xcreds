@@ -3,7 +3,7 @@ import CryptoTokenKit
 import Network
 
 
-
+@available(macOS, deprecated: 11)
 @objc class XCredsLoginMechanism: XCredsBaseMechanism {
     var loginWebViewController: LoginWebViewController?
     @objc var signInViewController: SignInViewController?
@@ -40,9 +40,8 @@ import Network
     }
     @objc func tearDown() {
         TCSLogWithMark("Got teardown request")
-        for window in self.mainLoginWindowController!.windowArray{
-            window.close()
-        }
+
+     
     }
 
     override func reload() {
@@ -193,7 +192,8 @@ import Network
     }
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
-        
+
+
         loginWebViewController=nil
         signInViewController=nil
         
@@ -202,7 +202,8 @@ import Network
             super.allowLogin()
             return
         }
-        
+
+
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
@@ -402,6 +403,7 @@ import Network
             mainLoginWindowController?.window?.makeFirstResponder(signInViewController.usernameTextField)
 
             signInViewController.signIn.nextKeyView=mainLoginWindowController?.controlsViewController?.view
+            mainLoginWindowController?.updateWindow()
 
         }
     }

@@ -7,6 +7,7 @@
 
 import Cocoa
 import OIDCLite
+@available(macOS, deprecated: 11)
 class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
     
@@ -120,7 +121,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
         if kerbPrinc == nil && oidcUsername == nil && kerbPrincPrefs == nil && oidcUsernamePrefs == nil {
-            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user, so skipping showing window")
+            TCSLogWithMark("no kerberos principal and no oidc username in local DS console user/prefs, so skipping showing window")
             return true
 
         }
@@ -286,7 +287,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
-        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true {
+        if shouldShowMenuBarSignInWithoutLoginWindowSignin == true && isLocalOnlyAccount() == true {
             showSignInWindow(force:true,forceLoginWindowType: .cloud)
         }
 
@@ -385,14 +386,55 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
                 case .success(let retUserAccountInfo):
                     let userInfo = retUserAccountInfo
-                    if let username = userInfo.username {
+
+                    if let username = userInfo.username, let fullUsername = userInfo.fullUsername {
                         UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
-                    }
-                    if let fullUsername = userInfo.fullUsername {
                         UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
-                    }
-                    if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
-                        UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+
+                        //if user oidc username doesn't exist in DS, write to a file in ~/L/AS for login window to migrate
+                        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+                        if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
+                            TCSLogWithMark("Found existing username \(username) in DS")
+
+                        }
+                        else {
+                            TCSLogWithMark("No _xcreds_oidc_username found in DS so setting migrate file");
+                            let appSupportFolder = NSHomeDirectory() + "/Library/Application Support/XCreds"
+                            let plistPath = appSupportFolder + "/ds_info.plist"
+
+                            do {
+                                //check to see if appSupportFolder exists and if not, create
+                                if !FileManager.default.fileExists(atPath: appSupportFolder) {
+                                    TCSLogWithMark("Creating appSupport folder")
+                                    try FileManager.default.createDirectory(atPath: appSupportFolder, withIntermediateDirectories: true, attributes: nil)
+                                }
+                                if FileManager.default.fileExists(atPath: plistPath) {
+                                    TCSLogWithMark("plist already exists so remove it so we get the freshes value")
+                                    try FileManager.default.removeItem(at: URL(filePath: plistPath))
+                                }
+                                if let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String{
+                                    var dictToWrite = ["_xcreds_oidc_username":username,
+                                                       "_xcreds_oidc_full_username":fullUsername,
+                                                       "subValue":subValue,
+                                                       "issuerValue":issuerValue,
+                                                       "localuser":PasswordUtils.currentConsoleUserName]
+
+                                    if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                                        dictToWrite["_xcreds_activedirectory_kerberosPrincipal"] = kerberosPrincipalName
+                                    }
+                                    //write dictToWrite to file as plist
+                                    TCSLog("writing plist file: \(plistPath)")
+                                    try PropertyListEncoder().encode(dictToWrite).write(to: URL(fileURLWithPath: plistPath))
+                                }
+                            }
+                            catch {
+                                TCSLogWithMark("Error saving migrate file: \(error)")
+                            }
+
+                        }
+                        if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
+                            UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
+                        }
                     }
                 case .error(let message):
                     TCSLogWithMark("Error getting infoResult: \(message)")

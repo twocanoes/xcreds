@@ -31,11 +31,12 @@ else
 		exit -1
 	fi
 fi
+carthage update
+xcodebuild -resolvePackageDependencies
 
 
 agvtool next-version -all
 
-#buildNumber=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${PRODUCT_SETTINGS_PATH}")
 buildNumber=$(agvtool what-version -terse)
 version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING_VERSION =')
 git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"

@@ -110,7 +110,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
         } catch NoMADQueryErrors.noMigrationCandidates {
             //os_log("No local users to possibly migrate.", log: uiLog, type: .default)
         } catch {
-            let errorText = error.localizedDescription
+            _ = error.localizedDescription
             //os_log("Error while determining migration candidate users: %{public}@", log: uiLog, type: .error, errorText)
         }
     }

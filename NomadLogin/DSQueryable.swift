@@ -378,5 +378,36 @@ public extension DSQueryable {
             }
         return nonSystemAdminUsers
     }
+    // OD utils
+
+    func checkUIDandHome(name: String) -> (uid_t?, String?) {
+        os_log("Checking for local username", log: noLoMechlog, type: .debug)
+        var records = [ODRecord]()
+        let odsession = ODSession.default()
+        do {
+            let node = try ODNode.init(session: odsession, type: ODNodeType(kODNodeTypeLocalNodes))
+            let query = try ODQuery.init(node: node, forRecordTypes: kODRecordTypeUsers, attribute: kODAttributeTypeRecordName, matchType: ODMatchType(kODMatchEqualTo), queryValues: name, returnAttributes: kODAttributeTypeNativeOnly, maximumResults: 0)
+            records = try query.resultsAllowingPartial(false) as! [ODRecord]
+        } catch {
+            _ = error.localizedDescription
+            //            os_log("ODError while trying to check for local user: %{public}@", log: noLoMechlog, type: .error, errorText)
+            return (nil, nil)
+        }
+
+        if records.count > 1 {
+            TCSLogErrorWithMark("More than one record. ")
+        }
+        do {
+            let home = try records.first?.values(forAttribute: kODAttributeTypeNFSHomeDirectory) as? [String] ?? nil
+            let uid = try records.first?.values(forAttribute: kODAttributeTypeUniqueID) as? [String] ?? nil
+
+            let uidt = uid_t.init(Double.init((uid?.first) ?? "0")! )
+            return ( uidt, home?.first ?? nil)
+        } catch {
+            TCSLogErrorWithMark("Unable to get home.")
+            return (nil, nil)
+        }
+    }
+
 
 }

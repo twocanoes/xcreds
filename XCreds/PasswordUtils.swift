@@ -138,7 +138,7 @@ class PasswordUtils: NSObject {
 //        }
 //        return true
 //    }
-
+    @available(macOS, deprecated: 11)
     class func verifyKeychainPassword(password: String) throws -> Bool  {
         var getDefaultKeychain: OSStatus
         var myDefaultKeychain: SecKeychain?
@@ -149,14 +149,14 @@ class PasswordUtils: NSObject {
         if ( getDefaultKeychain == errSecNoDefaultKeychain ) {
             throw PasswordError.itemNotFound("Could not find Default Keychain")
         }
-        var oldPasswordMutable = password
 
-        err = SecKeychainUnlock(myDefaultKeychain, UInt32(oldPasswordMutable.count), &oldPasswordMutable, true)
+        err = SecKeychainUnlock(myDefaultKeychain, UInt32(strlen(password.cString(using: .utf8) ?? [])), password.cString(using: .utf8) ?? [], true)
         if err != noErr {
             return false
         }
         return true
     }
+    @available(macOS, deprecated: 11)
     static func changeLocalUserAndKeychainPassword(_ oldPassword: String, newPassword: String) throws {
 
 
@@ -173,9 +173,8 @@ class PasswordUtils: NSObject {
 
         // Test if the keychain password is correct by trying to unlock it.
 
-        var oldPasswordMutable = oldPassword
 
-        err = SecKeychainUnlock(myDefaultKeychain, UInt32(oldPasswordMutable.count), &oldPasswordMutable, true)
+        err = SecKeychainUnlock(myDefaultKeychain, UInt32(strlen(oldPassword.cString(using: .utf8) ?? [])), oldPassword.cString(using: .utf8) ?? [], true)
 
         if err != noErr {
             throw PasswordError.invalidResult("Error unlocking default keychain.")
@@ -189,7 +188,7 @@ class PasswordUtils: NSObject {
         }
 
 
-        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(oldPassword.count), oldPassword, UInt32(newPassword.count), newPassword)
+        err = SecKeychainChangePassword(myDefaultKeychain, UInt32(strlen(oldPassword.cString(using: .utf8) ?? [] )), oldPassword.cString(using: .utf8) ?? [], UInt32(strlen(newPassword.cString(using: .utf8) ?? [] )), newPassword.cString(using: .utf8) ?? [])
 
         if (err == noErr) {
             return
@@ -366,7 +365,7 @@ class PasswordUtils: NSObject {
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogInfoWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")
@@ -400,7 +399,7 @@ class PasswordUtils: NSObject {
                 throw DSQueryableErrors.multipleUsersFound
             }
             guard let record = records.first else {
-                TCSLogErrorWithMark("No local user found. Passing on demobilizing allow login.")
+                TCSLogInfoWithMark("No local user found. Passing on demobilizing allow login.")
                 throw DSQueryableErrors.notLocalUser
             }
             TCSLogWithMark("Found local user: \(record)")

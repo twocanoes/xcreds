@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 @preconcurrency import WebKit
 import OIDCLite
-
+@available(macOS, deprecated: 11)
 class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     struct WebViewControllerError:Error {
@@ -38,6 +38,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     @IBOutlet weak var refreshTitleTextField: NSTextField?
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var cancelButton: NSButton!
+    @available(macOS, deprecated: 11)
     var tokenManager=TokenManager()
     var password:String?
     var updateCredentialsFeedbackDelegate: UpdateCredentialsFeedbackProtocol?
@@ -93,17 +94,17 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
             NotificationCenter.default.addObserver(self, selector: #selector(self.connectivityStatusHandler(notification:)), name: NSNotification.Name.connectivityStatus, object: nil)
 
-            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
+//            let discoveryURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue)
 
             NetworkMonitor.shared.startMonitoring()
             TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
             do {
-                guard let discoveryURL = discoveryURL else {
-                    TCSLogWithMark("discoveryURL not defined");
-
-                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
-                }
+//                guard let discoveryURL = discoveryURL else {
+//                    TCSLogWithMark("discoveryURL not defined");
+//
+//                    throw WebViewControllerError(errorDescription: "The discovery URL not defined in settings. Verify that settings have been configured and scoped to the system (not user).")
+//                }
                 TCSLogWithMark("getOidcLoginURL");
 
                 let url = try await self.getOidcLoginURL()
@@ -179,7 +180,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
     }
 }
-
+@available(macOS, deprecated: 11)
 extension WebViewController: WKNavigationDelegate {
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -195,10 +196,17 @@ extension WebViewController: WKNavigationDelegate {
         TCSLogWithMark("inserting javascript to get password")
         webView.evaluateJavaScript("result", completionHandler: { response, error in
             if error != nil {
-                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+//                TCSLogWithMark(error?.localizedDescription ?? "unknown error")
+                TCSLogWithMark("password not found")
             }
             else {
-                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String>, passwords.count>0 {
+                if let responseDict = response as? NSDictionary, let ids = responseDict["ids"] as? Array<String>, let passwords = responseDict["passwords"] as? Array<String> {
+                    
+                    guard passwords.count > 0 else {
+                        TCSLogWithMark("No passwords set")
+                        return
+                        
+                    }
 
                     TCSLogWithMark("found password elements with ids:\(ids)")
 
@@ -256,8 +264,13 @@ extension WebViewController: WKNavigationDelegate {
 
                     }
                     else {
-                        TCSLogWithMark("password not set")
+                        TCSLogWithMark("No passwords found on page")
                     }
+                }
+                else {
+                    
+                    TCSLogWithMark("password not set")
+
                 }
             }
         })
@@ -303,10 +316,14 @@ extension WebViewController: WKNavigationDelegate {
         guard let javascript = javascript else {
             return
         }
-
         webView.evaluateJavaScript(javascript, completionHandler: { response, error in
             if (error != nil){
-//                TCSLogWithMark(error?.localizedDescription ?? "empty error")
+                
+                TCSLogWithMark(error?.localizedDescription ?? "unknown listener error")
+                if UserDefaults.standard.bool(forKey: "reloadPageOnError")==true {
+                    TCSLogWithMark("reloading page")
+                    self.loadPage()
+                }
             }
             else {
                 TCSLogWithMark("inserted javascript for password setup")

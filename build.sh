@@ -20,8 +20,6 @@ if [ "${should_update_manifest}" = "y" ]; then
 fi
 
 
-carthage update
-xcodebuild -resolvePackageDependencies
 
 pushd ./build_resources/buildscripts/
 

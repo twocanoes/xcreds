@@ -70,6 +70,8 @@
 	<string>Password</string>
 	<key>versionCheckURL</key>
 	<string>https://paypro.twocanoes.com/api/version_info</string>
+	<key>licenseActivityURL</key>
+	<string>https://paypro.twocanoes.com/api/license_activity</string>
 	<key>refreshBannerText</key>
 	<string>Log in to verify your cloud credentials. After verification, your local user account password will be set to your cloud password.</string>
 	<key>shouldPromptForMigration</key>
@@ -86,9 +88,9 @@
 		<string>dn</string>
 	</array>
 	<key>loadPageTitle</key>
-	<string>Error Connecting</string>
+	<string>Waiting for Network...</string>
 	<key>loadPageInfo</key>
-	<string>There was an error connecting to the log in page </string>
+	<string>If this page does not reload with the login screen in a few seconds, please check the network connection.</string>
 	<key>shouldPromptForADPasswordChange</key>
 	<true/>
 	<key>allowUsersClaim</key>
@@ -131,5 +133,7 @@
 	<false/>
 	<key>shouldHideLoginWindowLogo</key>
 	<false/>
+	<key>primaryGroupID</key>
+	<string>20</string>
 </dict>
 </plist>

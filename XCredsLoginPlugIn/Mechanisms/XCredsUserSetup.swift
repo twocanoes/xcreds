@@ -3,18 +3,28 @@
 //
 //
 
-class XCredsUserSetup: XCredsBaseMechanism {
+import ProductLicense
+@available(macOS, deprecated: 11)
+class XCredsUserSetup: XCredsBaseMechanism{
 
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsUserSetup mech starting ~~~~~~~~~~~~~~~~~~~")
-
+        
         let bundle = Bundle.findBundleWithName(name: "XCreds")
 
         if let bundle = bundle {
             let infoPlist = bundle.infoDictionary
-            if let infoPlist = infoPlist, let build = infoPlist["CFBundleVersion"] {
+            if let infoPlist = infoPlist,
+                let build = infoPlist["CFBundleVersion"] as? String,
+                let version = infoPlist["CFBundleShortVersionString"] as? String {
+                
+                VersionCheck.shared.reportLicenseUsage(identifier: "com.twocanoes.xcreds", appVersion:version,buildNumber: build, event: .checkin) { isSuccess in
+                    print(isSuccess)
+                }
+
+                
                 TCSLogInfoWithMark("------------------------------------------------------------------")
-                TCSLogInfoWithMark("XCreds Login Build Number: \(build)")
+                TCSLogInfoWithMark("XCreds Login \(version).\(build)")
                 if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
                     TCSLogInfoWithMark("Log showing only basic info and errors.")
                     TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
@@ -25,11 +35,11 @@ class XCredsUserSetup: XCredsBaseMechanism {
                     TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
 
                 }
+                TCSLogInfoWithMark("To see all logging options, go to https://twocanoes.com/knowledge-base/capturing-xcreds-logs/")
+
 
                 TCSLogInfoWithMark("------------------------------------------------------------------")
             }
-
-
         }
         TCSLogWithMark("checking to see if launchagent should be removed...")
         let fm = FileManager.default
@@ -96,8 +106,66 @@ class XCredsUserSetup: XCredsBaseMechanism {
         catch {
             TCSLogWithMark(error.localizedDescription)
         }
+
+
         let _ = allowLogin()
+        updateDSRecords()
 
 
     }
+    func updateDSRecords() {
+        guard let nonSystemUsers = try? getAllNonSystemUsers() else{
+            TCSLogWithMark("could not get non system users")
+            return
+        }
+
+        for odRecord in nonSystemUsers {
+            let userDetails = try? odRecord.recordDetails(forAttributes: nil)
+            if let userDetails = userDetails {
+                if let _ = try? odRecord.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String]{
+                    TCSLogWithMark("user already has oidc full username")
+                    continue
+                }
+                TCSLogWithMark("searching for user in user account")
+                if let homeDirArray = userDetails["dsAttrTypeStandard:NFSHomeDirectory"] as? Array<String>, homeDirArray.count>0{
+                    let homeDir = homeDirArray[0]
+                    TCSLogWithMark("looking in \(homeDir) for ds_info.plist")
+                    let appSupportFolder = homeDir + "/Library/Application Support/XCreds"
+                    let plistPath = appSupportFolder + "/ds_info.plist"
+
+                    TCSLogWithMark("looking in path \(plistPath)")
+                    if FileManager.default.fileExists(atPath: plistPath){
+                        TCSLogWithMark("found ds_info.plist")
+                        do {
+                            TCSLogWithMark("reading plist")
+                            let dict = try PropertyListDecoder().decode([String:String].self, from: Data(contentsOf: URL(fileURLWithPath: plistPath)))
+                            if let currOIDCFullUsername = dict["_xcreds_oidc_full_username"],
+                               let oidcUsername = dict["_xcreds_oidc_username"],
+                               let subValue = dict["subValue"],
+                               let issuerValue = dict["issuerValue"]
+                            {
+                                TCSLogWithMark("updating user account info")
+                                try odRecord.setValue("1", forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal")
+
+                                try odRecord.setValue(currOIDCFullUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
+                                try odRecord.setValue(oidcUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
+                                try odRecord.setValue(subValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
+                                try odRecord.setValue(issuerValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
+
+                                TCSLogWithMark("removing file")
+                                try FileManager.default.removeItem(atPath: plistPath)
+
+                            }
+                        }
+                        catch {
+                            TCSLogWithMark("error decoding propertylist: \(error)")
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
+
 }

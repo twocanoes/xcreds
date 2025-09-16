@@ -7,7 +7,7 @@
 
 import Foundation
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class StatusMenuController: NSObject, NSMenuItemValidation {
     enum StatusMenuItemType:Int {
         case AboutMenuItem=1
@@ -58,6 +58,10 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
             oidcUsername = username
 
+        }
+        else if let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+        {
+            oidcUsername = oidcUsernamePrefs
         }
         if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String], userNames.count>0, let username = userNames.first {
             kerberosPrincipalName = username

@@ -1,3 +1,153 @@
+## tag-5.5(8913) (2025-09-10)
+
+*  reverted password js [View](https://github.com/twocanoes/xcreds/commit/87e876a60d6cc29157db2c303fd73ddcbaab7a0e)
+
+
+## tag-5.5(8912) (2025-09-09)
+
+*  updated javascript to get password [View](https://github.com/twocanoes/xcreds/commit/330746ca5ba691cf8c3bd843941ea1b264ab876b)
+
+
+## tag-5.5(8911) (2025-09-09)
+
+*  skipping refresh if typing detected in last 30 seconds [View](https://github.com/twocanoes/xcreds/commit/132b5981ade67143236baadf45310fa50b1ef7a5)
+
+
+## tag-5.5(8910) (2025-09-09)
+
+*  reverted un/pw to last release [View](https://github.com/twocanoes/xcreds/commit/287baf8add86a691a5a64a2a2a3abc30d768922d)
+
+
+## tag-5.5(8902) (2025-09-09)
+
+*  fixed image on un/pw window [View](https://github.com/twocanoes/xcreds/commit/b0dda03afe0bfd78aeee2fcba9a3f70d3a5c9b58)
+
+
+## tag-5.5(8888) (2025-08-29)
+
+*  updated login window appearance [View](https://github.com/twocanoes/xcreds/commit/e4fb55901cc7b0603f3ee919a1cccb7c7ee8d3e2)
+
+
+## tag-5.5(8832) (2025-08-28)
+
+*  fixed regression when login window not showing [View](https://github.com/twocanoes/xcreds/commit/7086af2af4ae81ed062a72eb5f3f25e5432e25b6)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/fa11aba4723f64fe302b5f05667d0f45568bfd2b)
+
+
+## tag-5.5(8831) (2025-08-28)
+
+*  updated manfest; added refresh after wake [View](https://github.com/twocanoes/xcreds/commit/6a95b84a0961f805471003c95a56d302eab6df8b)
+*  updated versioncheck to use framework [View](https://github.com/twocanoes/xcreds/commit/b2773d2b276e53a50ff70a104628ed4bae7d8263)
+*  changed manifest version [View](https://github.com/twocanoes/xcreds/commit/607aabcc0d53be3239d956c7665d659b209805d3)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/91c2decb24719eed16904d06ef650bc7aee5658e)
+*  changed build script to check git  earlier [View](https://github.com/twocanoes/xcreds/commit/cf7ef53ec75238ef82ba91d1884285ab63ba3b0c)
+
+
+## tag-5.5(8786) (2025-08-24)
+
+*  cleared up warnings [View](https://github.com/twocanoes/xcreds/commit/26ae43b58002a37e22ae2f2120a0ca2fb835228a)
+*  cleaned up logging a bit [View](https://github.com/twocanoes/xcreds/commit/a4f9377255b15782b625de9ea9b9cf865a9a40ac)
+
+
+## tag-5.5(8780) (2025-08-22)
+
+*  bumped version [View](https://github.com/twocanoes/xcreds/commit/83234752970d91eddc8389e2588efa06ae4b1c16)
+
+
+## tag-5.5(8779) (2025-08-22)
+
+*  put in pref to reload page [View](https://github.com/twocanoes/xcreds/commit/0f3d2574881ff3c3324abc2732cf97cec9cd774f)
+*  added in more logging [View](https://github.com/twocanoes/xcreds/commit/d841927cc8fcc869f70b6061ac97c36ec595be63)
+*  fixed hanging issue [View](https://github.com/twocanoes/xcreds/commit/1e412b6b855c991e23b9dcbb2cd8ef5f1059f8de)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/b6d81607cf0782c5ce5ba3070fce8b06298fc01b)
+
+
+## tag-5.5(8776) (2025-08-20)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/c1efd367be841bfea1d761a34ff7ee4a84925b34)
+*  added license activity and more logging [View](https://github.com/twocanoes/xcreds/commit/81832d95502c09fc3f1e0a90252c8d43640ca7f0)
+
+
+## tag-5.5(8771) (2025-08-13)
+
+*  added new key to skip user setup buddy and code to do just that [View](https://github.com/twocanoes/xcreds/commit/85cc848d248169ed2e98abad34b8cf5380f2d078)
+
+
+## tag-5.5(8769) (2025-08-13)
+
+*  fixed utf8 password encoding for keychain [View](https://github.com/twocanoes/xcreds/commit/1ebdc5b5015e3d2cf37c4e8c8e3d86969a5c95f6)
+
+
+## tag-5.5(8757) (2025-08-12)
+
+*  added check for first login for local user [View](https://github.com/twocanoes/xcreds/commit/f22d82c665a42cae6865311bbdb61220b1217813)
+
+
+## tag-5.5(8742) (2025-08-12)
+
+*  made progress indicator a bar at top [View](https://github.com/twocanoes/xcreds/commit/c2a1f0ee45757dbeb9d0597cf6cec7a2f830dbe5)
+
+
+## tag-5.5(8729) (2025-08-12)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/bc286b3a89f014b42dabe36162b8eebc9c9614ed)
+
+
+## tag-5.5(8728) (2025-08-12)
+
+*  more fix for black screen [View](https://github.com/twocanoes/xcreds/commit/fb1da0ac91617eded0e59125fe679a176d6fece9)
+
+
+## tag-5.5(8722) (2025-08-12)
+
+*  fix for black screen [View](https://github.com/twocanoes/xcreds/commit/953502857ad759c21b7ae87e632a5be7ef351354)
+
+
+## tag-5.5(8716) (2025-08-11)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/6f843b7e66d95abb7b9289692fa015ce1f330ea3)
+
+
+## tag-5.5(8715) (2025-08-11)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/88b2483eb0571564a654da14ec79ecbfc76b81d8)
+*  added dont hide background during first login [View](https://github.com/twocanoes/xcreds/commit/52652451a66afa078d63ce0ca16649b1a347bd29)
+*  wip [View](https://github.com/twocanoes/xcreds/commit/af4fba25331e3b9cc06a1fbcc40762fd68811f3d)
+
+
+## tag-5.5(8710) (2025-06-27)
+
+*  fixed #340: [Feature Request] XCreds should use shouldUpdateKerberosUserPrincipalADDomain "here" [View](https://github.com/twocanoes/xcreds/commit/447ad1aabee7acc143fd6d44433c066a5ced11f4)
+
+
+## tag-5.5(8709) (2025-06-08)
+
+*  refactored local oidc first login [View](https://github.com/twocanoes/xcreds/commit/d284da29d764bcbb1c441764a2d9a7482c8c83d0)
+
+
+## tag-5.5(8696) (2025-06-07)
+
+*  fixed window showing briefly when force showing but valid credentials [View](https://github.com/twocanoes/xcreds/commit/017ae28f66ec765dba3988311d5c9662ad0b9ae7)
+
+
+## tag-5.5(8694) (2025-06-07)
+
+*  fixed issue with oidc username and ropg [View](https://github.com/twocanoes/xcreds/commit/41d6bea7e5db91a90dce3417101e0d47762ba7ca)
+
+
+## tag-5.5(8686) (2025-06-07)
+
+*  updated to use oidc_username from prefs if not in DS when checking for token refresh [View](https://github.com/twocanoes/xcreds/commit/f2b7843941f1c7e32dc704a4a7129e50a7e67591)
+
+
+## tag-5.5(8685) (2025-05-27)
+
+*  release notes updated [View](https://github.com/twocanoes/xcreds/commit/e6c3fc85dfc308afbddd0e4a321cc936ef6034f9)
+*  fixed default values on new keys [View](https://github.com/twocanoes/xcreds/commit/5862dc8745f45e82dba2b345cdaa60588a5bb0bc)
+*  fixed type in profile [View](https://github.com/twocanoes/xcreds/commit/b579c67d13373fe8cbf69045071e9272d66a4717)
+*  added new pref for primaryGroupID [View](https://github.com/twocanoes/xcreds/commit/af1fffb58e9a3faf18e3b8dd9cb4618ae7fa4bf8)
+
+
 ## tag-5.4(8684) (2025-05-12)
 
 *  shouldLoginWindowSecondaryMonitorsBackgroundImageFillScreen does not change background #323 [View](https://github.com/twocanoes/xcreds/commit/3965c4080826b61207746990832eac3219cac04f)

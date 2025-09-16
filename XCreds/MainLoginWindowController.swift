@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-
+@available(macOS, deprecated: 11)
 class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var controlsViewController: ControlsViewController?
     var setupDone=false
@@ -65,10 +65,11 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
                                            object: nil)
         }
 
+
     }
-    @objc fileprivate func updateWindow() {
+    @objc func updateWindow() {
         TCSLogWithMark()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
             if self.window?.isVisible ?? true {
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width
@@ -147,10 +148,17 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
             }
             TCSLogWithMark()
             let screenRect = NSScreen.screens[0].frame
-            let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(screenRect.width/2-16  , 3*screenRect.height/4-16,32, 32))
-            progressIndicator.style = .spinning
+
+            let progressIndicator=NSProgressIndicator.init(frame: NSMakeRect(0, screenRect.height-3, screenRect.width,3))
+            progressIndicator.style = .bar
+
             progressIndicator.startAnimation(self)
             self.window?.contentView?.addSubview(progressIndicator)
+
+
+            self.window?.canBecomeVisibleWithoutLogin=true
+
+
 
             NotificationCenter.default.removeObserver(self)
 

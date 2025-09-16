@@ -1,2 +1,1 @@
-binary "https://bitbucket.org/twocanoes/productlicense-public/downloads/productlicense.json" "1.3"
-github "PaddleHQ/Mac-Framework-V4" "v4.4.3"
+git "git@bitbucket.org:twocanoes/productlicense.git" "0cd749d7fcc04499ade650844cf0085b34081647"

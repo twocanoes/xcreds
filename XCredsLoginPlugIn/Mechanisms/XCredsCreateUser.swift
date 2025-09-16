@@ -10,7 +10,8 @@ import OpenDirectory
 
 
 /// Mechanism to create a local user and homefolder.
-class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
+@available(macOS, deprecated: 11)
+class XCredsCreateUser: XCredsBaseMechanism {
 
     let createUserLog = "createUserLog"
     let uiLog = "uiLog"
@@ -108,6 +109,19 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         if let xcredsPass=xcredsPass,let xcredsUser = xcredsUser, XCredsCreateUser.checkForLocalUser(name: xcredsUser)==false{
 
+            TCSLogWithMark("Setting hint to create new user")
+            setHint(type: .isAccountCreationPending, hint: true as NSSecureCoding)
+
+            let isAccountCreationPending = getHint(type: .isAccountCreationPending) as? Bool
+
+            if isAccountCreationPending==true {
+                TCSLogWithMark("isAccountCreationPending==true")
+
+            }
+            else {
+                TCSLogWithMark("isAccountCreationPending==false")
+
+            }
             var uid:String?
             if let hintUID = getHint(type: .uid) as? String{
                 if let hintUIDInt = Int(hintUID), hintUIDInt>499 {
@@ -165,12 +179,15 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
                 return
             }
             do {
+                let primaryGroupID = (DefaultsOverride.standardOverride.string(forKey: PrefKeys.primaryGroupID.rawValue) ?? "20")
+
+
                 try createUser(shortName: xcredsUser,
                                first: xcredsFirst ,
                                last: xcredsLast, fullName: fullname,
                                pass: xcredsPass,
                                uid: uid,
-                               gid: "20",
+                               gid: primaryGroupID,
                                canChangePass: true,
                                isAdmin: isAdmin,
                                customAttributes: customAttributes
@@ -215,6 +232,20 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
             }
             else {
                 // no user to create
+                let username = usernameContext ?? ""
+                TCSLogWithMark("Checking if we think this is a first login")
+
+                let (_, home) = checkUIDandHome(name: username)
+
+                if let home = home {
+                    if FileManager.default.fileExists(atPath: home+"/.Trash")==false {
+                        TCSLogWithMark("Looks like a first login, setting pending flag")
+
+                        setHint(type: .isAccountCreationPending, hint: true as NSSecureCoding)
+
+                    }
+                }
+
                 os_log("Skipping local account creation", log: createUserLog, type: .default)
             }
 
@@ -351,8 +382,11 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         // now to update the attribute
         TCSLogWithMark("updating info in DS")
-        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
 
+        TCSLogWithMark("removing _xcreds_oidc_updatedfromlocal from record if needed")
+        try? records.first?.removeValues(forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal")
+
+        let claimsToDSArray = (DefaultsOverride.standardOverride.array(forKey: PrefKeys.claimsToAddToLocalUserAccount.rawValue) ?? []) as? [String]
         TCSLogWithMark("Checking if member of group")
         let userGroups = getHint(type: .groups) as? [String]
 
@@ -519,6 +553,7 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
     func createUser(shortName: String, first: String, last: String, fullName:String?, pass: String?, uid: String, gid: String, canChangePass: Bool, isAdmin: Bool, customAttributes: [String:String]) throws {
         var newRecord: ODRecord?
         os_log("Creating new local account for: %{public}@", log: createUserLog, type: .default, shortName)
+
 
         // note for anyone following behind me
         // you need to specify the attribute values in an array
@@ -755,6 +790,12 @@ class XCredsCreateUser: XCredsBaseMechanism, DSQueryable {
 
         let res=cliTask("/usr/sbin/createhomedir -c -u \(user)")
 
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.skipUserSetupBuddy.rawValue) == true {
+            
+            if FileManager.default.fileExists(atPath: "/Users/\(user)") {
+                FileManager.default.createFile(atPath: "/Users/\(user)/.skipbuddy", contents: nil)
+            }
+        }
         TCSLogWithMark(res)
 //        os_log("Find system locale...", log: createUserLog, type: .debug)
 //        let currentLanguage = Locale.current.languageCode ?? "Non_localized"

@@ -26,5 +26,5 @@ protocol XCredsMechanismProtocol {
     func reload()
     func run()
     func setupHints(fromCredentials credentials:Creds, password:String) -> ErrorResult
-    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?) ->ErrorResult 
+    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?, showResetButton:Bool) ->ErrorResult 
 }

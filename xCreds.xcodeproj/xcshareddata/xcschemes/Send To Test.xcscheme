@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -26,7 +26,7 @@
                BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
                BuildableName = "XCreds.app"
                BlueprintName = "XCreds"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -40,7 +40,7 @@
                BlueprintIdentifier = "766F4C4C2883B88F0021F548"
                BuildableName = "Send To Test"
                BlueprintName = "Send To Test"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -80,7 +80,7 @@
             BlueprintIdentifier = "766F4C4C2883B88F0021F548"
             BuildableName = "Send To Test"
             BlueprintName = "Send To Test"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
