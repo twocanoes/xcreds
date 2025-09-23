@@ -1400,7 +1400,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         //change entry in keychain to match new password
         TCSLogWithMark("change entry in keychain to match new password")
 
-        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, shouldUpdateACL: true, keychainPassword: updatedPassword) == false {
+        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, keychainPassword: updatedPassword) == false {
             throw PasswordError.invalidResult("Error updating password in keychain")
 
         }

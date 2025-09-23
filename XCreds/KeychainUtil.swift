@@ -190,13 +190,6 @@ class KeychainUtil {
             let authArray = SecACLCopyAuthorizations(acl)
             
             
-            if (authArray as! [String]).contains("ACLAuthorizationChangeACL") {
-                
-                TCSLogWithMark("Found ACLAuthorizationChangeACL.")
-                
-                SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
-                continue
-            }
             if (authArray as! [String]).contains("ACLAuthorizationDecrypt") {
                 
                 TCSLogWithMark("Found ACLAuthorizationDecrypt.")
@@ -204,20 +197,9 @@ class KeychainUtil {
                 SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
                 continue
             }
-            
-//            if !(authArray as! [String]).contains("ACLAuthorizationPartitionID") {
-//                TCSLogWithMark("Found ACLAuthorizationPartitionID.")
-//                continue
-//            }
-            
-            
-            
         }
         
-        
-        
-//        var secACL:SecACL?
-//        let res3 = SecACLCreateWithSimpleContents(secAccess, secApps as CFArray, "XCreds prompt" as CFString, prompt, &secACL)
+
 
         SecAccessCopyACLList(secAccess, &myACLs)
 
@@ -258,30 +240,6 @@ class KeychainUtil {
             print(authArray)
             if (authArray as! [String]).contains("ACLAuthorizationPartitionID") {
                 TCSLogWithMark("Found ACLAuthorizationPartitionID.")
-//                var secACL:SecACL?
-//
-////                let res3 = SecACLCreateWithSimpleContents(secAccess, nil, "XCreds prompt" as CFString, prompt, &secACL)
-//                
-//                
-//                let propertyListObject = ["Partitions":["teamid:UXP6YEHSPW","apple:"]]
-//
-//                let format: PropertyListSerialization.PropertyListFormat = .xml
-//
-//                // now serialize it back into a plist
-//
-//                let xmlObject = try? PropertyListSerialization.data(fromPropertyList: propertyListObject as Any, format: format, options: 0)
-//
-//                // now that all ACLs has been adjusted, we can update the item
-//
-//                let err = SecACLSetContents(acl, appList, xmlObject!.hexEncodedString() as CFString, prompt)
-//
-//                if err == 0 {
-//                    TCSLogWithMark("SecACLSetContents success")
-//                }
-//                else {
-//                    TCSLogWithMark("error SecACLSetContents")
-//                }
-                
                 
                 // pull in the description that's really a functional plist <sigh>
                 let rawData = Data.init(fromHexEncodedString: desc! as String)
@@ -315,32 +273,16 @@ class KeychainUtil {
                 
 
                 err = SecKeychainItemSetAccessWithPassword(secKeychainItem, itemAccess, UInt32(strlen(keychainPassword.cString(using: .utf8) ?? [])), keychainPassword.cString(using: .utf8) ?? [] )
-
-
-
             }
-
-            
         }
 
-        /*
-         */
-
-        
-        
-
-//
 
         return secKeychainItem
 
 
-//        myErr = SecKeychainAddGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(accountName.count), accountName,UInt32(strlen(pass.cString(using: .utf8) ?? [])), pass.cString(using: .utf8) ?? [], &myKeychainItem)
-//
-//
-//        return myErr
     }
 
-    func updatePassword(serviceName:String, accountName: String, pass: String, shouldUpdateACL:Bool=false, keychainPassword:String ) -> Bool {
+    func updatePassword(serviceName:String, accountName: String, pass: String, keychainPassword:String ) -> Bool {
         let passwordItem = findPassword(serviceName: serviceName, accountName: accountName)
         if let passwordItem = passwordItem {
             TCSLogWithMark("Deleting password")
@@ -354,20 +296,6 @@ class KeychainUtil {
             return false
         }
         TCSLogWithMark("setting new password success")
-
-//        if shouldUpdateACL==true {
-//            if let secKeychainItem = secKeychainItem {
-//                TCSLogWithMark("Updating ACL for \(accountName)")
-//
-//                updateACL(password:pass, keychainItem: secKeychainItem)
-//            }
-//            else {
-//                TCSLogErrorWithMark("ERROR Updating ACL")
-//
-//                return false
-//            }
-//            
-//        }
         return true
     }
 
@@ -390,264 +318,4 @@ class KeychainUtil {
         }
         return true //on password found so don't delete and return true
     }
-        @available(macOS, deprecated: 11)
-    func updateACL(password:String, keychainItem:SecKeychainItem){
-        var myACLs : CFArray? = nil
-        var itemAccess: SecAccess? = nil
-
-//        guard let keychainItem = myKeychainItem else {
-//            TCSLogWithMark("Keychain item not found")
-//            return
-//        }
-        var err = SecKeychainItemCopyAccess(keychainItem, &itemAccess)
-
-        guard let itemAccess = itemAccess else {
-            TCSLogWithMark("item access invalid")
-            return
-        }
-
-        SecAccessCopyACLList(itemAccess, &myACLs)
-
-        var appList: CFArray? = nil
-        var desc: CFString? = nil
-
-        var prompt = SecKeychainPromptSelector()
-        var secApps = [ SecTrustedApplication ]()
-
-        var trust : SecTrustedApplication? = nil
-        if FileManager.default.fileExists(atPath: "/Applications/XCreds.app", isDirectory: nil) {
-            err = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app", &trust)
-            if err == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error appending trust for XCreds.app")
-
-            }
-        }
-        if FileManager.default.fileExists(atPath: "/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", isDirectory: nil) {
-            err = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", &trust)
-            if err == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error appending trust for autofill")
-
-            }
-        }
-        if FileManager.default.fileExists(atPath: "/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", isDirectory: nil) {
-            err = SecTrustedApplicationCreateFromPath("/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.x86_64.xpc", &trust)
-            if err == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error appending trust for authorizationhost")
-                
-            }
-        }
-        if FileManager.default.fileExists(atPath: "/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.arm64.xpc", isDirectory: nil) {
-            err = SecTrustedApplicationCreateFromPath("/System/Library/Frameworks/Security.framework/Versions/A/MachServices/authorizationhost.bundle/Contents/XPCServices/authorizationhosthelper.arm64.xpc", &trust)
-            if err == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error appending trust for authorizationhost")
-                
-            }
-
-        }
-
-        for acl in myACLs as! Array<SecACL> {
-            SecACLCopyContents(acl, &appList, &desc, &prompt)
-            let authArray = SecACLCopyAuthorizations(acl)
-
-            var descr:CFString?
-            var appList:CFArray?
-
-            SecACLCopyContents(acl, &appList, &descr, &prompt)
-TCSLogWithMark()
-            
-            if (authArray as! [String]).contains("ACLAuthorizationPartitionID") {
-                            TCSLogWithMark("Found ACLAuthorizationPartitionID.")
-                            
-            }
-            
-            
-            
-                
-//            if (authArray as! [String]).contains("ACLAuthorizationDecrypt") {
-//
-//                TCSLogWithMark("Found ACLAuthorizationDecrypt.")
-//
-//                SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
-//                continue
-//            }
-//
-//            if !(authArray as! [String]).contains("ACLAuthorizationPartitionID") {
-//                TCSLogWithMark("Found ACLAuthorizationPartitionID.")
-//                continue
-//            }
-//
-//
-//            // pull in the description that's really a functional plist <sigh>
-//            let rawData = Data.init(fromHexEncodedString: desc! as String)
-//            var format: PropertyListSerialization.PropertyListFormat = .xml
-//
-//            var propertyListObject = [ String: [String]]()
-//
-//            do {
-//                propertyListObject = try PropertyListSerialization.propertyList(from: rawData!, options: [], format: &format) as! [ String: [String]]
-//            } catch {
-//                TCSLogWithMark("No teamid in ACLAuthorizationPartitionID.")
-//            }
-//            let teamIds = [ "apple:", "teamid:UXP6YEHSPW" ]
-//
-//            propertyListObject["Partitions"] = teamIds
-//
-//            // now serialize it back into a plist
-//
-//            let xmlObject = try? PropertyListSerialization.data(fromPropertyList: propertyListObject as Any, format: format, options: 0)
-//
-//            // now that all ACLs has been adjusted, we can update the item
-//
-//            err = SecACLSetContents(acl, appList, xmlObject!.hexEncodedString() as CFString, prompt)
-//
-//            if err == 0 {
-//                TCSLogWithMark("SecACLSetContents success")
-//            }
-//            else {
-//                TCSLogWithMark("error SecACLSetContents")
-//            }
-//
-//            // smack it again to set the ACL
-
-            err = SecKeychainItemSetAccess(keychainItem, itemAccess )
-            
-            if err == 0 {
-                TCSLogWithMark("SecKeychainItemSetAccessWithPassword success")
-            }
-            else {
-                
-                TCSLogWithMark("error SecKeychainItemSetAccessWithPassword \(err)")
-            }
-
-
-
-        }
-    }
-//
-//    // return the last expiration date for any certs that match the domain and user
-//
-//    func findCertExpiration(_ identifier: String, defaultNamingContext: String) -> Date? {
-//
-//        var matchingCerts = [certDates]()
-//        var myCert: SecCertificate? = nil
-//        var searchReturn: AnyObject? = nil
-//        var lastExpire = Date.distantPast
-//
-//        // create a search dictionary to find Identitys with Private Keys and returning all matches
-//
-//        /*
-//         @constant kSecMatchIssuers Specifies a dictionary key whose value is a
-//         CFArray of X.500 names (of type CFDataRef). If provided, returned
-//         certificates or identities will be limited to those whose
-//         certificate chain contains one of the issuers provided in this list.
-//         */
-//
-//        // build our search dictionary
-//
-//        let identitySearchDict: [String:AnyObject] = [
-//            kSecClass as String: kSecClassIdentity,
-//            kSecAttrKeyClass as String: kSecAttrKeyClassPrivate as String as String as AnyObject,
-//
-//            // this matches e-mail address
-//            //kSecMatchEmailAddressIfPresent as String : identifier as CFString,
-//
-//            // this matches Common Name
-//            //kSecMatchSubjectContains as String : identifier as CFString,
-//
-//            kSecReturnRef as String: true as AnyObject,
-//            kSecMatchLimit as String : kSecMatchLimitAll as AnyObject
-//        ]
-//
-//        myErr = 0
-//
-//
-//        // look for all matches
-//
-//        myErr = SecItemCopyMatching(identitySearchDict as CFDictionary, &searchReturn)
-//
-//        if myErr != 0 {
-//            return nil
-//        }
-//
-//        let foundCerts = searchReturn as! CFArray as Array
-//
-//        if foundCerts.count == 0 {
-//            return nil
-//        }
-//
-//        for cert in foundCerts {
-//
-//            myErr = SecIdentityCopyCertificate(cert as! SecIdentity, &myCert)
-//
-//            if myErr != 0 {
-//                return nil
-//            }
-//
-//                    // get the full OID set for the cert
-//
-//                    let myOIDs : NSDictionary = SecCertificateCopyValues(myCert!, nil, nil)!
-//
-//            // look at the NT Principal name
-//
-//            if myOIDs["2.5.29.17"] != nil {
-//                let SAN = myOIDs["2.5.29.17"] as! NSDictionary
-//                let SANValues = SAN["value"]! as! NSArray
-//                for values in SANValues {
-//                    let value = values as! NSDictionary
-//                    if String(_cocoaString: value["label"]! as AnyObject) == "1.3.6.1.4.1.311.20.2.3" {
-//                        if let myNTPrincipal = value["value"] {
-//                            // we have an NT Principal, let's see if it's Kerberos Principal we're looking for
-//                            TCSLogWithMark("Certificate NT Principal: " + String(describing: myNTPrincipal) )
-//                            if String(describing: myNTPrincipal) == identifier {
-//TCSLogWithMark("Found cert match")
-//
-//
-//                                                // we have a match now gather the expire date and the serial
-//
-//                                                let expireOID : NSDictionary = myOIDs["2.5.29.24"]! as! NSDictionary
-//                                                let expireDate = expireOID["value"]! as! Date
-//
-//                                                // this finds the serial
-//
-//                                                let serialDict : NSDictionary = myOIDs["2.16.840.1.113741.2.1.1.1.3"]! as! NSDictionary
-//                                                let serial = serialDict["value"]! as! String
-//
-//                                                // pack the data up into a certDate
-//
-//                                                let certificate = certDates( serial: serial, expireDate: expireDate)
-//
-//                                                if lastExpire.timeIntervalSinceNow < expireDate.timeIntervalSinceNow {
-//                                                    lastExpire = expireDate
-//                                                }
-//
-//                                                // append to the list
-//
-//                                                matchingCerts.append(certificate)
-//
-//                            } else {
-//TCSLogWithMark("Certificate doesn't match current user principal.")
-//                            }
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//            }
-//        TCSLogWithMark("Found " + String(matchingCerts.count) + " certificates.")
-//        TCSLogWithMark("Found certificates: " + String(describing: matchingCerts) )
-//        return lastExpire
-//    }
 }

@@ -331,7 +331,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 return (nil,nil)
 
             }
-            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:localUsername, pass:localPassword, shouldUpdateACL: true, keychainPassword: localPassword)
+            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:localUsername, pass:localPassword, keychainPassword: localPassword)
             if err == false {
                 TCSLogWithMark("Failed to store password in keychain")
                 return (nil,nil)
@@ -502,7 +502,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if localPassword==nil {
                 localPassword = localAccountAndPassword.1
             }
-            if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localPassword ) == false {
+            if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, password:localPassword ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
 

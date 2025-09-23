@@ -110,13 +110,13 @@ class TokenManager:DSQueryable {
 
     }
 
-    static func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String) -> Bool {
+    static func saveTokensToKeychain(creds:Creds, password:String) -> Bool {
         let keychainUtil = KeychainUtil()
 
         if  password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating password")
 
                 return false
@@ -126,7 +126,7 @@ class TokenManager:DSQueryable {
 
         if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
-            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.accessToken.rawValue),accountName:PrefKeys.accessToken.rawValue, pass: accessToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.accessToken.rawValue),accountName:PrefKeys.accessToken.rawValue, pass: accessToken, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating Access Token")
 
                 return false
@@ -135,7 +135,7 @@ class TokenManager:DSQueryable {
         }
         if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating idToken Token")
 
                 return false
@@ -146,7 +146,7 @@ class TokenManager:DSQueryable {
         if let refreshToken = creds.refreshToken, refreshToken.count>0 {
             TCSLogWithMark("Saving refresh Token")
 
-            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue, pass: refreshToken,shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue, pass: refreshToken, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating refreshToken Token")
 
                 return false
