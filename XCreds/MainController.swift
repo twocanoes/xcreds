@@ -304,14 +304,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         let keychainUtil = KeychainUtil()
         var accountName=""
-        let accountInfo = try? keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+        let passwordItem = keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
 
 
-        if let accountInfo=accountInfo, let account=accountInfo.0, let password = accountInfo.1 {
-            accountName = account
+        if let passwordItem=passwordItem {
+            accountName=passwordItem.username
+            let password = passwordItem.password
+            
 
             if case .success = PasswordUtils.isLocalPasswordValid(userName: PasswordUtils.currentConsoleUserName, userPass: password){
-                return (account,password)
+                return (accountName,password)
             }
         }
         TCSLogWithMark()
@@ -324,12 +326,14 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         switch  promptPasswordWindowController.promptForLocalAccountAndChangePassword(username: PasswordUtils.currentConsoleUserName, newPassword: nil, shouldUpdatePassword: false) {
 
         case .success(let localUsernamePassword):
-            guard let localPassword = localUsernamePassword?.password else {
+            guard let localPassword = localUsernamePassword?.password, let localUsername = localUsernamePassword?.username else {
+                TCSLogWithMark( "No password returned")
                 return (nil,nil)
 
             }
-            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:accountName, pass:localPassword, shouldUpdateACL: true, keychainPassword: localPassword)
+            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:localUsername, pass:localPassword, shouldUpdateACL: true, keychainPassword: localPassword)
             if err == false {
+                TCSLogWithMark("Failed to store password in keychain")
                 return (nil,nil)
             }
             return (accountName,localPassword)
@@ -498,7 +502,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if localPassword==nil {
                 localPassword = localAccountAndPassword.1
             }
-            if TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localPassword ) == false {
+            if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, setACL: true, password:localPassword ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
 
@@ -583,13 +587,13 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
         let keychainUtil = KeychainUtil()
 
-        guard let idToken = try? keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken").1 else {
+        guard let passwordItem = keychainUtil.findPassword(serviceName: "xcreds idToken", accountName: "idToken")?.password else {
             TCSLogWithMark("cannot find ID token")
 
             return nil
         }
 
-        let idTokenInfo = jwtDecode(value: idToken)  //dictionary for mapping
+        let idTokenInfo = jwtDecode(value: passwordItem)  //dictionary for mapping
 
         guard let idTokenInfo = idTokenInfo else {
             TCSLogWithMark("idTokenInfo invalid")

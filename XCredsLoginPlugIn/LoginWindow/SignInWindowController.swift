@@ -1386,7 +1386,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         TCSLogWithMark("Getting account info.")
 
-        guard let password = accountInfo.1 else {
+        guard let password = accountInfo?.password else {
             TCSLogWithMark("no password in keychain.")
             throw PasswordError.invalidResult("no password in keychain")
 

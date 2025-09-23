@@ -110,8 +110,19 @@ class TokenManager:DSQueryable {
 
     }
 
-    static func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String?=nil) -> Bool {
+    static func saveTokensToKeychain(creds:Creds, setACL:Bool=false, password:String) -> Bool {
         let keychainUtil = KeychainUtil()
+
+        if  password.count>0 {
+            TCSLogWithMark("Saving cloud password")
+
+            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password,shouldUpdateACL: setACL, keychainPassword:password) == false {
+                TCSLogErrorWithMark("Error Updating password")
+
+                return false
+            }
+
+        }
 
         if let accessToken = creds.accessToken, accessToken.count>0{
             TCSLogWithMark("Saving Access Token")
@@ -124,7 +135,7 @@ class TokenManager:DSQueryable {
         }
         if let idToken = creds.idToken, idToken.count>0{
             TCSLogWithMark("Saving idToken Token")
-            if  keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
+            if keychainUtil.updatePassword(serviceName: "xcreds ".appending(PrefKeys.idToken.rawValue),accountName:PrefKeys.idToken.rawValue, pass: idToken, shouldUpdateACL: setACL, keychainPassword:password) == false {
                 TCSLogErrorWithMark("Error Updating idToken Token")
 
                 return false
@@ -144,16 +155,6 @@ class TokenManager:DSQueryable {
 
 
 
-        if let password = password, password.count>0 {
-            TCSLogWithMark("Saving cloud password")
-
-            if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password,shouldUpdateACL: setACL, keychainPassword:password) == false {
-                TCSLogErrorWithMark("Error Updating password")
-
-                return false
-            }
-
-        }
         return true
     }
 
@@ -202,16 +203,14 @@ class TokenManager:DSQueryable {
         TCSLogWithMark()
 
         let clientID = defaults.string(forKey: PrefKeys.clientID.rawValue)
-        let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+        let passwordItem =  keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
 
         TCSLogWithMark()
         //ropg
         var oidcUsername = ""
         if
-            let keychainAccountAndPassword = keychainAccountAndPassword,
-            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true,
-
-                let keychainPassword = keychainAccountAndPassword.1{
+            let passwordItem = passwordItem,
+            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true{
             TCSLogWithMark("Checking credentials using ROPG")
             let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
             if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first
@@ -237,30 +236,28 @@ class TokenManager:DSQueryable {
                 overrrideErrorArray.append(contentsOf: ropgResponseValueArray)
             }
 
-           let tokenResponse = try await oidc().requestTokenWithROPG(username: oidcUsername, password: keychainPassword, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
+            let tokenResponse = try await oidc().requestTokenWithROPG(username: oidcUsername, password: passwordItem.password, basicAuth: shouldUseBasicAuthWithROPG, overrideErrors: overrrideErrorArray)
 
             TCSLogWithMark("ROPG successful. Returning credentials for tokenInfo")
 
             if let tokenResponse = tokenResponse {
-                return Creds(password: keychainPassword, tokens:tokenResponse )
+                return Creds(password: passwordItem.password, tokens:tokenResponse )
             }
             return nil
 
 
 
         } //use the refresh token
-        else if let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue), let refreshToken = refreshAccountAndToken.1 {
+        else if let passwordItem =  keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue){
+            
+            let refreshToken = passwordItem.password
 
             TCSLogWithMark("Using refresh token")
             let tokenInfo = try await oidc().refreshTokens(refreshToken)
             TCSLogWithMark("Got tokens")
 
-            if let keychainPassword = keychainAccountAndPassword?.1 {
-                return Creds(password: keychainPassword, tokens: tokenInfo)
-            }
-            TCSLogWithMark("No passwork in keychain")
+            return Creds(password: passwordItem.password, tokens: tokenInfo)
 
-            return nil
         } // nothing. let delegate know
         else if DefaultsOverride.standardOverride.value(forKey: PrefKeys.discoveryURL.rawValue) == nil {
 
@@ -268,7 +265,7 @@ class TokenManager:DSQueryable {
 
          }
         else {
-            TCSLogWithMark("clientID or refreshToken blank. clientid: \(clientID ?? "empty")")
+            TCSLogWithMark("clientID or refreshToken blank, or not foud it keychain. clientid: \(clientID ?? "empty")")
             throw ProcessTokenResult.error("no refresh token")
 
         }

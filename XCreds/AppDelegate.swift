@@ -856,6 +856,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        
+//        if let ki = KeychainUtil().setPassword(serviceName: "test", accountName: "test", pass: "test"){
+//            KeychainUtil().updateACL(password: "test", keychainItem: ki)
+//        }
         NetworkMonitor.shared.startMonitoring()
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
