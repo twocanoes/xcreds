@@ -101,34 +101,10 @@ class KeychainUtil {
         }
     }
 
-
-    // set the password
-
-    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String) -> SecKeychainItem? {
-
-        TCSLogWithMark("Setting password for account:\(accountName) service:(serviceName)")
-
-        let account = accountName
-        let password = pass.data(using: String.Encoding.utf8)!
-        var secAccess:SecAccess?
+    func trustedApps() -> [SecTrustedApplication] {
         var trust : SecTrustedApplication? = nil
         var secApps = [ SecTrustedApplication ]()
 
-        var keychainItem:CFTypeRef?
-        
-        
-        if FileManager.default.fileExists(atPath: Bundle.main.bundlePath, isDirectory: nil) {
-            let status = SecTrustedApplicationCreateFromPath(Bundle.main.bundlePath, &trust)
-            if status == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error appending trust for XCreds.app")
-
-            }
-        }
-        
-        
         if FileManager.default.fileExists(atPath: "/Applications/XCreds.app", isDirectory: nil) {
             let status = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app", &trust)
             if status == 0 {
@@ -170,78 +146,121 @@ class KeychainUtil {
             }
 
         }
-        
-        TCSLogWithMark("Creating ACL")
-        SecAccessCreate(accountName as CFString, nil, &secAccess)
+        return secApps
+    }
+
+    // set the password
+
+    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String) -> SecKeychainItem? {
+
+        TCSLogWithMark("Setting password for account:\(accountName) service:(serviceName)")
+
+        let account = accountName
+        let passwordData = pass.data(using: String.Encoding.utf8)!
+        var secAccess:SecAccess?
+        var keychainItem:CFTypeRef?
         var prompt = SecKeychainPromptSelector()
+        var aclArray : CFArray? = nil
+        var appList: CFArray? = nil
+        var desc: CFString? = nil
+
+        TCSLogWithMark("Creating ACL")
+        
+        //create the default ACLs as SecAccess so we can modify them
+        SecAccessCreate(accountName as CFString, nil, &secAccess)
+        
         guard let secAccess = secAccess else {
             TCSLogWithMark("Error setting ACL")
             return nil
         
         }
-        var myACLs : CFArray? = nil
-
-        SecAccessCopyACLList(secAccess, &myACLs)
-        var appList: CFArray? = nil
-        var desc: CFString? = nil
-
-        for acl in myACLs as! Array<SecACL> {
+        
+        //In order to not get prompted, the app that are allowed to use the
+        // ACLAuthorizationDecrypt operation
+        //must be included when the ACLs are created.
+        //convert the ACLs to a list and then go through them
+        //and modify ACLAuthorizationDecrypt. ACLAuthorizationDecrypt is the right
+        //that is needed to give apps access to a password
+        //adding the app path is not enough; the team id needs to
+        //be added to the partition ACL, but we can't create that ACL.
+        //We have create the ACLs and then the partition ACL gets added.
+        //We then loop over, find it, and modify it.
+        
+        //convert opaque secAccess to an array
+        SecAccessCopyACLList(secAccess, &aclArray)
+        //get a list of the trusted apps to share the password
+        let secApps = trustedApps()
+         
+        //loop over them looking for ACLAuthorizationDecrypt
+        for acl in aclArray as! Array<SecACL> {
             SecACLCopyContents(acl, &appList, &desc, &prompt)
             let authArray = SecACLCopyAuthorizations(acl)
             
-            
+            //set the apps that are allowed to have access to the password item
             if (authArray as! [String]).contains("ACLAuthorizationDecrypt") {
                 
                 TCSLogWithMark("Found ACLAuthorizationDecrypt.")
-                
                 SecACLSetContents(acl, secApps as CFArray, "" as CFString, prompt)
                 continue
             }
         }
-        
-
-
-        SecAccessCopyACLList(secAccess, &myACLs)
-
-        for acl in myACLs as! Array<SecACL> {
-            SecACLCopyContents(acl, &appList, &desc, &prompt)
-            let authArray = SecACLCopyAuthorizations(acl)
-            print(authArray)
-            
-        }
-        
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                
+        let attributes: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: account,
                                     kSecAttrService as String: serviceName,
-                                    kSecValueData as String: password,
+                                    kSecValueData as String: passwordData,
                                     kSecAttrAccess as String: secAccess as SecAccess,
                                     kSecReturnRef as String: true
         ]
-        TCSLogWithMark("Calling SecItemAdd")
-
-        let res = SecItemAdd(query as CFDictionary, &keychainItem)
+        
+        TCSLogWithMark("Calling SecItemAdd, returning new keychain item (generic password)")
+        let res = SecItemAdd(attributes as CFDictionary, &keychainItem)
         if  res != OSStatus(errSecSuccess)  {
             TCSLogWithMark("Error SecItemAdd: \(res) ")
             return nil
         }
-        TCSLogWithMark("Returning keychain item")
-      
+        
         let secKeychainItem = keychainItem as! SecKeychainItem
+        var accessControlList: SecAccess? = nil
 
-//        let res2 = SecKeychainItemSetAccess(secKeychainItem, secAccess )
-        var itemAccess: SecAccess? = nil
+        
+        var err = SecKeychainItemCopyAccess(secKeychainItem, &accessControlList)
+        
+        guard let accessControlList = accessControlList else {
+            
+            TCSLogWithMark("invalid accessControlList: \(err)")
+            return nil
 
-        var err = SecKeychainItemCopyAccess(secKeychainItem, &itemAccess)
-        SecAccessCopyACLList(itemAccess!, &myACLs)
+        }
+        //turn the opaque accessControlList to an array of secACLs
+        //so we can iterate over them
+        SecAccessCopyACLList(accessControlList, &aclArray)
 
-        for acl in myACLs as! Array<SecACL> {
+        //iterate over the acls in the array
+        //when the acl in the array changes, it changes the items
+        //in the accessControlList but doesn't change the
+        //access control list in the secKeychainItem until
+        //SecKeychainItemSetAccessWithPassword is called
+        
+        for acl in aclArray as! Array<SecACL> {
+            
+            //each ACL has one or more auth operations
+            //a list of apps that have access to those operations
+            //and a prompt selector. the prompt selector is the default
+            //since macOS seems to want to prompt on everything regardless
+            
             SecACLCopyContents(acl, &appList, &desc, &prompt)
+            
+            //For this ACL, get the operations that it covers
+            
             let authArray = SecACLCopyAuthorizations(acl)
-            print(authArray)
+            
+            //see if it is ACLAuthorizationPartitionID, which is the
+            //ACL that allows access by team id.
             if (authArray as! [String]).contains("ACLAuthorizationPartitionID") {
                 TCSLogWithMark("Found ACLAuthorizationPartitionID.")
                 
-                // pull in the description that's really a functional plist <sigh>
+                // pull in the description that is a plist
                 let rawData = Data.init(fromHexEncodedString: desc! as String)
                 var format: PropertyListSerialization.PropertyListFormat = .xml
                 
@@ -272,10 +291,22 @@ class KeychainUtil {
                 }
                 
 
-                err = SecKeychainItemSetAccessWithPassword(secKeychainItem, itemAccess, UInt32(strlen(keychainPassword.cString(using: .utf8) ?? [])), keychainPassword.cString(using: .utf8) ?? [] )
             }
+            
         }
+        
+        
+        //we really should be using SecKeychainItemSetAccess but it always errors if you change
+        //the partition ID.
+        
+        err = SecKeychainItemSetAccessWithPassword(secKeychainItem, accessControlList, UInt32(strlen(keychainPassword.cString(using: .utf8) ?? [])), keychainPassword.cString(using: .utf8) ?? [] )
 
+        if err == 0 {
+            TCSLogWithMark("SecKeychainItemSetAccessWithPassword success")
+        }
+        else {
+            TCSLogWithMark("error SecKeychainItemSetAccessWithPassword: \(err)")
+        }
 
         return secKeychainItem
 
