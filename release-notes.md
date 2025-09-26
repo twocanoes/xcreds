@@ -1,3 +1,12 @@
+## tag-5.6(8963) (2025-09-23)
+
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/b24eee69e9ebd29cf9b6a32a5b00322aaae9fbc7)
+*  updated profile with fixes when getting ready to submit [View](https://github.com/twocanoes/xcreds/commit/92fd8dfbfdd080e26213888bcdba4bff387ebbc1)
+*  fixed issue with tahoe 26.1 [View](https://github.com/twocanoes/xcreds/commit/4b98046158426b12014d4ec1d791924513d86a97)
+*  cleaned up test code [View](https://github.com/twocanoes/xcreds/commit/17218d01f5cebb033a261aea8ce37599af70ba13)
+*  more cleanup [View](https://github.com/twocanoes/xcreds/commit/c1215216a9e914ad51950429d4ce4b6a4d8dac81)
+
+
 ## tag-5.6(8920) (2025-09-11)
 
 *  bumped build to 9000 [View](https://github.com/twocanoes/xcreds/commit/6cabaa338c049d6887d23f466e42bca7d4e4850a)

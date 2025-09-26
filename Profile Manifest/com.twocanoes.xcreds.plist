@@ -5,7 +5,7 @@
 	<key>pfm_app_url</key>
 	<string>https://github.com/twocanoes/xcreds</string>
 	<key>pfm_description</key>
-	<string>XCreds 5.6 (8920) OAuth Settings</string>
+	<string>XCreds 5.5 (8916) OAuth Settings</string>
 	<key>pfm_documentation_url</key>
 	<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 	<key>pfm_domain</key>
@@ -13,7 +13,7 @@
 	<key>pfm_format_version</key>
 	<integer>1</integer>
 	<key>pfm_last_modified</key>
-	<date>2025-09-11T23:09:13Z</date>
+	<date>2025-09-24T03:33:53Z</date>
 	<key>pfm_platforms</key>
 	<array>
 		<string>macOS</string>
@@ -580,7 +580,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_title</key>
 			<string>Login Window Background Image Alpha</string>
 			<key>pfm_type</key>
-			<string>float</string>
+			<string>real</string>
 		</dict>
 		<dict>
 			<key>pfm_app_min</key>
@@ -660,7 +660,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_title</key>
 			<string>Menu Item Background Image Alpha</string>
 			<key>pfm_type</key>
-			<string>float</string>
+			<string>real</string>
 		</dict>
 		<dict>
 			<key>pfm_default</key>
@@ -710,7 +710,7 @@ A profile can consist of payloads with different version numbers. For example, c
 			<key>pfm_title</key>
 			<string>Login Window Secondary Monitors Background Image Alpha</string>
 			<key>pfm_type</key>
-			<string>float</string>
+			<string>real</string>
 		</dict>
 		<dict>
 			<key>pfm_app_min</key>
@@ -837,7 +837,7 @@ Provide the following values the follow IdPs:
 Google: profile openid email
 Azure: profile openid offline_access
 
-Note that Google does not support the offline_access scope so instead use the preference shouldSetGoogleAccessTypeToOffline. Azure provides unique_name which is mapped to the local user account by using the prefix before “@” in unique_name and matching to the short name of a user account. Google provides “email” and is matched in the same way.</string>
+Note that Google does not support the offline_access scope so instead use the preference shouldSetGoogleAccessTypeToOffline. Azure provides unique_name which is mapped to the local user account by using the prefix before "@" in unique_name and matching to the short name of a user account. Google provides "email" and is matched in the same way.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -852,6 +852,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_default</key>
 			<false/>
+			<key>pfm_app_max</key>
+			<string>5.4</string>
 			<key>pfm_description</key>
 			<string>When using Google IdP, a refresh token may need be requested in a non-standard way.</string>
 			<key>pfm_documentation_url</key>
@@ -924,6 +926,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_app_max</key>
 			<string>3.2.1</string>
+			<key>pfm_app_deprecated</key>
+			<string>4.0</string>
 			<key>pfm_default</key>
 			<false/>
 			<key>pfm_description</key>
@@ -956,6 +960,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_app_max</key>
 			<string>3.2.1</string>
+			<key>pfm_app_deprecated</key>
+			<string>4.0</string>
 			<key>pfm_description</key>
 			<string>(Deprecated in v4.0) ROPG Client ID for use when checking password.</string>
 			<key>pfm_documentation_url</key>
@@ -970,6 +976,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_app_max</key>
 			<string>3.2.1</string>
+			<key>pfm_app_deprecated</key>
+			<string>4.0</string>
 			<key>pfm_description</key>
 			<string>(Deprecated in v4.0) ROPG Client Secret for use when checking password.</string>
 			<key>pfm_documentation_url</key>
@@ -1376,6 +1384,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_app_max</key>
 			<string>5.4</string>
+			<key>pfm_app_deprecated</key>
+			<string>5.4</string>
 			<key>pfm_default</key>
 			<true/>
 			<key>pfm_description</key>
@@ -1418,6 +1428,8 @@ Note that Google does not support the offline_access scope so instead use the pr
 		<dict>
 			<key>pfm_default</key>
 			<false/>
+			<key>pfm_app_max</key>
+			<string>5.4</string>
 			<key>pfm_description</key>
 			<string>When a local user password does not match the cloud or AD password, this key will allow the user to select a Reset button to set their password to match their AD/cloud password, move their current keychain aside and create a new keychain. If XCreds does not have access to local admin credentials set from the XCreds command line tools, the user will prompted to enter local admin credentials.</string>
 			<key>pfm_documentation_url</key>
@@ -1684,7 +1696,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 
 document.getElementById('passwordID').value
 
-changing “passwordID” to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.</string>
+changing "passwordID" to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1698,7 +1710,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>given_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC/AD Mapping for First Name. Default value: “given_name” (OIDC), “givenName” (AD). map_firstname should be set to an OIDC claim/AD Attribute for first name.</string>
+			<string>Local DS to OIDC/AD Mapping for First Name. Default value: "given_name" (OIDC), "givenName" (AD). map_firstname should be set to an OIDC claim/AD Attribute for first name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1714,7 +1726,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>family_name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC/AD Mapping for Last Name. Default value: “family_name” (OIDC), "sn" (AD). map_lastname should be set to an OIDC claim for last name.</string>
+			<string>Local DS to OIDC/AD Mapping for Last Name. Default value: "family_name" (OIDC), "sn" (AD). map_lastname should be set to an OIDC claim for last name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1730,7 +1742,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC/AD Attribute Mapping for Full Name. Default value: “name”(OIDC), "displayName" (AD). map_fullname should be set to an OIDC claim/AD Attribute for full name.</string>
+			<string>Local DS to OIDC/AD Attribute Mapping for Full Name. Default value: "name"(OIDC), "displayName" (AD). map_fullname should be set to an OIDC claim/AD Attribute for full name.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1746,7 +1758,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping/AD Attribute for Name. Default value: “name” (OIDC), "userPrincipalName" (AD). map_username should be set to an OIDC claim/AD Attribute for name. The macOS username will be set as the portion of this value before an @ symbol if present.</string>
+			<string>Local DS to OIDC Mapping/AD Attribute for Name. Default value: "name" (OIDC), "userPrincipalName" (AD). map_username should be set to an OIDC claim/AD Attribute for name. The macOS username will be set as the portion of this value before an @ symbol if present.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -1764,7 +1776,7 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<key>pfm_default</key>
 			<string>name</string>
 			<key>pfm_description</key>
-			<string>Local DS to OIDC Mapping for Full Username (for example, freddy@twocanoes.com) Default value: “unique_name”. map_username should be set to an OIDC claim for full username.</string>
+			<string>Local DS to OIDC Mapping for Full Username (for example, freddy@twocanoes.com) Default value: "unique_name". map_username should be set to an OIDC claim for full username.</string>
 			<key>pfm_documentation_url</key>
 			<string>https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences</string>
 			<key>pfm_name</key>
@@ -2041,8 +2053,12 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<string>array</string>
 		</dict>
 		<dict>
+			<key>pfm_default</key>
+			<true/>
 			<key>pfm_description</key>
 			<string>Show and mount home directory from AD profile if defined.</string>
+			<key>pfm_default</key>
+			<true/>
 			<key>pfm_name</key>
 			<string>HomeMountEnabled</string>
 			<key>pfm_title</key>
@@ -2051,6 +2067,10 @@ changing “passwordID” to the correct element ID. If the value you typed into
 			<string>boolean</string>
 		</dict>
 		<dict>
+			<key>pfm_default</key>
+			<false/>
+			<key>pfm_app_max</key>
+			<string>5.4</string>
 			<key>pfm_description</key>
 			<string>Append the domain name to the share defined in the profile.</string>
 			<key>pfm_name</key>
