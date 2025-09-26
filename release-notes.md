@@ -1,3 +1,8 @@
+## tag-5.6(8967) (2025-09-26)
+
+*  fixing error checking [View](https://github.com/twocanoes/xcreds/commit/72459545788c73c41dbb4674cf0f5b48175b0e89)
+
+
 ## tag-5.6(8966) (2025-09-26)
 
 *  added more error messages [View](https://github.com/twocanoes/xcreds/commit/119277a843f1126855ef68236c398da76c3e8493)
