@@ -1,3 +1,12 @@
+## tag-5.6(8964) (2025-09-25)
+
+*  updated manifest with max and deprecated [View](https://github.com/twocanoes/xcreds/commit/8ce9ebf3de98fc0bf69ebbd6efd6f1f93045cac1)
+*  resolved issue #355 dont replace good password [View](https://github.com/twocanoes/xcreds/commit/f03a810a964671a012661d094f96a4e2e66d785a)
+*  [Feature Request] Better handling of deployment to FileVault-enabled laptops #354 [View](https://github.com/twocanoes/xcreds/commit/eda1f963313b6d9e0f820e24f44e82fdbc81b426)
+*  Clarify manifest #352 [View](https://github.com/twocanoes/xcreds/commit/b6f367d206bfdc68b027bcdc446a63ba244d5693)
+*  [Feature Request] Add an extra line or two in the UI for resetPasswordDialogTitle #350 [View](https://github.com/twocanoes/xcreds/commit/2446f9936e2b823ee07c348f7a3cb5bf2123afb3)
+
+
 ## tag-5.6(8963) (2025-09-23)
 
 *  bumped [View](https://github.com/twocanoes/xcreds/commit/b24eee69e9ebd29cf9b6a32a5b00322aaae9fbc7)

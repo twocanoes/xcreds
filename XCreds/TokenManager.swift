@@ -234,8 +234,11 @@ class TokenManager:DSQueryable {
             var overrrideErrorArray = [String]()
             let ropgResponseValue = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ropgResponseValue.rawValue)
 
+
             if let ropgResponseValue = ropgResponseValue {
                 overrrideErrorArray.append(ropgResponseValue)
+                TCSLogWithMark("ropgResponseValue: \(ropgResponseValue)")
+
             }
             else if let ropgResponseValueArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.ropgResponseValue.rawValue) as? [String] {
                 overrrideErrorArray.append(contentsOf: ropgResponseValueArray)
