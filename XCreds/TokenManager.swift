@@ -113,7 +113,9 @@ class TokenManager:DSQueryable {
     static func saveTokensToKeychain(creds:Creds, password:String) -> Bool {
         let keychainUtil = KeychainUtil()
 
-        if  password.count>0 {
+        let passwordItem =  keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+
+        if  let currentPassword=passwordItem?.password, currentPassword != password, password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
             if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password, keychainPassword:password) == false {
@@ -122,6 +124,9 @@ class TokenManager:DSQueryable {
                 return false
             }
 
+        }
+        else {
+            TCSLogWithMark("Password update not required")
         }
 
         if let accessToken = creds.accessToken, accessToken.count>0{
