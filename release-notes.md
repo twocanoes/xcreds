@@ -1,3 +1,8 @@
+## tag-5.6(8965) (2025-09-26)
+
+*  added more error messages [View](https://github.com/twocanoes/xcreds/commit/1067d4ab8d380328f9bdd38d4dfee254c215383e)
+
+
 ## tag-5.6(8964) (2025-09-25)
 
 *  updated manifest with max and deprecated [View](https://github.com/twocanoes/xcreds/commit/8ce9ebf3de98fc0bf69ebbd6efd6f1f93045cac1)
