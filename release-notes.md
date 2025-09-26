@@ -1,3 +1,8 @@
+## tag-5.6(8968) (2025-09-26)
+
+*  updated OIDCLite for better ROPG/Entra support [View](https://github.com/twocanoes/xcreds/commit/dd651e2f776ebfc7a5b2c3f8dfe598f4d1570274)
+
+
 ## tag-5.6(8967) (2025-09-26)
 
 *  fixing error checking [View](https://github.com/twocanoes/xcreds/commit/72459545788c73c41dbb4674cf0f5b48175b0e89)
