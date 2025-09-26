@@ -1,3 +1,8 @@
+## tag-5.6(8969) (2025-09-26)
+
+*  updated manifest [View](https://github.com/twocanoes/xcreds/commit/6f1119cbf44bfb4800c5ee5bbbefeedf6d40acce)
+
+
 ## tag-5.6(8968) (2025-09-26)
 
 *  updated OIDCLite for better ROPG/Entra support [View](https://github.com/twocanoes/xcreds/commit/dd651e2f776ebfc7a5b2c3f8dfe598f4d1570274)

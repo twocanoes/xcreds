@@ -957,7 +957,7 @@ Note that Google does not support the offline_access scope so instead use the pr
 			<key>pfm_app_max</key>
 			<string>3.2.1</string>
 			<key>pfm_app_deprecated</key>
-			<string>3.2.1/string>
+			<string>3.2.1</string>
 			<key>pfm_description</key>
 			<string>(Removed in v4.0) ROPG Client ID for use when checking password.</string>
 			<key>pfm_documentation_url</key>
