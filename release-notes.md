@@ -1,3 +1,8 @@
+## tag-5.6(8970) (2025-09-26)
+
+*  fixed typo [View](https://github.com/twocanoes/xcreds/commit/91890600eb68f45222fdf5c55e57c2084defc634)
+
+
 ## tag-5.6(8969) (2025-09-26)
 
 *  updated manifest [View](https://github.com/twocanoes/xcreds/commit/6f1119cbf44bfb4800c5ee5bbbefeedf6d40acce)
