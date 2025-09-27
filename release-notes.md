@@ -1,3 +1,17 @@
+## tag-5.6(8975) (2025-09-26)
+
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/16396110e09d6f1c1f2a05774effa0a408366952)
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/9f87cb98981d24cd11cbb66db90194b320d24899)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/366f8c4c1c1cc399f890f9a917a8653ddd5a900d)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/3f18acb5cc5378da2e7379f5949fa8b95d68c3bd)
+
+
+## tag-5.6(8974) (2025-09-26)
+
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
+
+
 ## tag-5.6(8970) (2025-09-26)
 
 *  fixed typo [View](https://github.com/twocanoes/xcreds/commit/91890600eb68f45222fdf5c55e57c2084defc634)
