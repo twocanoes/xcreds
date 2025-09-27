@@ -115,7 +115,8 @@ class TokenManager:DSQueryable {
 
         let passwordItem =  keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
 
-        if  let currentPassword=passwordItem?.password, currentPassword != password, password.count>0 {
+        let currentPassword=passwordItem?.password ?? ""
+        if  password.count>0, currentPassword != password, password.count>0 {
             TCSLogWithMark("Saving cloud password")
 
             if keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue, pass: password, keychainPassword:password) == false {
