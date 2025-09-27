@@ -316,6 +316,11 @@ class KeychainUtil {
     func updatePassword(serviceName:String, accountName: String, pass: String, keychainPassword:String ) -> Bool {
         let passwordItem = findPassword(serviceName: serviceName, accountName: accountName)
         if let passwordItem = passwordItem {
+            
+            if passwordItem.password.count>0, passwordItem.password == pass {
+                TCSLogWithMark("password unchanged so not saving")
+                return true
+            }
             TCSLogWithMark("Deleting password")
             let _ = deletePassword(keychainItem: passwordItem.keychainItem)
         }
