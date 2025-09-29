@@ -1,3 +1,8 @@
+## tag-5.6(8977) (2025-09-26)
+
+*  fixed dont replace good password #355 [View](https://github.com/twocanoes/xcreds/commit/22494f104e33afb5d294987f14354055c62523ec)
+
+
 ## tag-5.6(8976) (2025-09-26)
 
 *  bump [View](https://github.com/twocanoes/xcreds/commit/9bf44ea57ecfcc1dee139ade914e395310ef7fbc)
