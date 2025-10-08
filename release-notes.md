@@ -1,3 +1,9 @@
+## tag-5.6(8979) (2025-10-07)
+
+*  added save to system keychain [View](https://github.com/twocanoes/xcreds/commit/ef40190c5c18394599babbb27264f7228e57a846)
+*  fixed issue setting new password in keychain [View](https://github.com/twocanoes/xcreds/commit/a2f727ac2552c35d4d55315f174b9cc77ff3013d)
+
+
 ## tag-5.6(8978) (2025-09-29)
 
 *  reverted issue #355 due to keychain prompting issues; removed logging statement [View](https://github.com/twocanoes/xcreds/commit/76517681f918a0f4e9ae59fd7cf309abc47c9ddd)
