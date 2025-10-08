@@ -59,9 +59,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     @IBAction func passwordSelected(_ sender: AnyObject?) {
         let keychainUtil = KeychainUtil()
 
-        let keychainAccountAndPassword = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+        let passwordItem = keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
 
-        guard let keychainAccountAndPassword = keychainAccountAndPassword  else {
+        guard let passwordItem = passwordItem  else {
             TCSLogWithMark("No keychainAccountAndPassword")
             self.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
 
@@ -86,7 +86,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             return
         }
 
-        let passwordCredential = ASPasswordCredential(user: dsUsername, password: keychainAccountAndPassword.1 ?? "")
+        let passwordCredential = ASPasswordCredential(user: dsUsername, password: passwordItem.password)
 
 
         let context = LAContext()

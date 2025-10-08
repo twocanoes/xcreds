@@ -61,16 +61,30 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                 case .success:
                     isDone = true
                    let localUser = try? PasswordUtils.getLocalRecord(localUsername)
-                    guard let _ = localUser else {
+                    guard let localUser = localUser else {
 
                         isDone = true
                         TCSLogErrorWithMark("localUser is not set")
                         return .error("local user not set")
 
                     }
-                    TCSLogWithMark("Changing password")
-                    return .successful(localUsername)
+                    do {
+                        TCSLogWithMark("Changing password")
+                        if localPassword == newPassword {
+                            TCSLogWithMark("cloud password is already the local password.")
 
+                            return .successful(localUsername)
+                        }
+                        try localUser.changePassword(localPassword, toPassword: newPassword)
+
+                        TCSLogWithMark("local password set successfully to network / cloud password")
+                        return .successful(localUsername)
+
+                    }
+                    catch {
+                        TCSLogErrorWithMark("Error setting local password to cloud password")
+                        return .error("Error setting local password to cloud password")
+                    }
 
                 case .accountLocked:
                     TCSLogErrorWithMark("Account Locked")

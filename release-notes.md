@@ -1,3 +1,107 @@
+## tag-5.6(8977) (2025-09-26)
+
+*  fixed dont replace good password #355 [View](https://github.com/twocanoes/xcreds/commit/22494f104e33afb5d294987f14354055c62523ec)
+
+
+## tag-5.6(8976) (2025-09-26)
+
+*  bump [View](https://github.com/twocanoes/xcreds/commit/9bf44ea57ecfcc1dee139ade914e395310ef7fbc)
+
+
+## tag-5.6(8975) (2025-09-26)
+
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/16396110e09d6f1c1f2a05774effa0a408366952)
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/9f87cb98981d24cd11cbb66db90194b320d24899)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/366f8c4c1c1cc399f890f9a917a8653ddd5a900d)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/3f18acb5cc5378da2e7379f5949fa8b95d68c3bd)
+
+
+## tag-5.6(8974) (2025-09-26)
+
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
+
+
+## tag-5.6(8970) (2025-09-26)
+
+*  fixed typo [View](https://github.com/twocanoes/xcreds/commit/91890600eb68f45222fdf5c55e57c2084defc634)
+
+
+## tag-5.6(8969) (2025-09-26)
+
+*  updated manifest [View](https://github.com/twocanoes/xcreds/commit/6f1119cbf44bfb4800c5ee5bbbefeedf6d40acce)
+
+
+## tag-5.6(8968) (2025-09-26)
+
+*  updated OIDCLite for better ROPG/Entra support [View](https://github.com/twocanoes/xcreds/commit/dd651e2f776ebfc7a5b2c3f8dfe598f4d1570274)
+
+
+## tag-5.6(8967) (2025-09-26)
+
+*  fixing error checking [View](https://github.com/twocanoes/xcreds/commit/72459545788c73c41dbb4674cf0f5b48175b0e89)
+
+
+## tag-5.6(8966) (2025-09-26)
+
+*  added more error messages [View](https://github.com/twocanoes/xcreds/commit/119277a843f1126855ef68236c398da76c3e8493)
+
+
+## tag-5.6(8965) (2025-09-26)
+
+*  added more error messages [View](https://github.com/twocanoes/xcreds/commit/1067d4ab8d380328f9bdd38d4dfee254c215383e)
+
+
+## tag-5.6(8964) (2025-09-25)
+
+*  updated manifest with max and deprecated [View](https://github.com/twocanoes/xcreds/commit/8ce9ebf3de98fc0bf69ebbd6efd6f1f93045cac1)
+*  resolved issue #355 dont replace good password [View](https://github.com/twocanoes/xcreds/commit/f03a810a964671a012661d094f96a4e2e66d785a)
+*  [Feature Request] Better handling of deployment to FileVault-enabled laptops #354 [View](https://github.com/twocanoes/xcreds/commit/eda1f963313b6d9e0f820e24f44e82fdbc81b426)
+*  Clarify manifest #352 [View](https://github.com/twocanoes/xcreds/commit/b6f367d206bfdc68b027bcdc446a63ba244d5693)
+*  [Feature Request] Add an extra line or two in the UI for resetPasswordDialogTitle #350 [View](https://github.com/twocanoes/xcreds/commit/2446f9936e2b823ee07c348f7a3cb5bf2123afb3)
+
+
+## tag-5.6(8963) (2025-09-23)
+
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/b24eee69e9ebd29cf9b6a32a5b00322aaae9fbc7)
+*  updated profile with fixes when getting ready to submit [View](https://github.com/twocanoes/xcreds/commit/92fd8dfbfdd080e26213888bcdba4bff387ebbc1)
+*  fixed issue with tahoe 26.1 [View](https://github.com/twocanoes/xcreds/commit/4b98046158426b12014d4ec1d791924513d86a97)
+*  cleaned up test code [View](https://github.com/twocanoes/xcreds/commit/17218d01f5cebb033a261aea8ce37599af70ba13)
+*  more cleanup [View](https://github.com/twocanoes/xcreds/commit/c1215216a9e914ad51950429d4ce4b6a4d8dac81)
+
+
+## tag-5.6(8920) (2025-09-11)
+
+*  bumped build to 9000 [View](https://github.com/twocanoes/xcreds/commit/6cabaa338c049d6887d23f466e42bca7d4e4850a)
+
+
+## tag-5.6(8919) (2025-09-11)
+
+*  only show id token in log [View](https://github.com/twocanoes/xcreds/commit/e8d94102eb8663186e1706acc109ef2656a6b48d)
+
+
+## tag-5.6(8918) (2025-09-11)
+
+*  fixed issue with select account in AD [View](https://github.com/twocanoes/xcreds/commit/3e378272a36162c0b35838dce0bcdc0fddad5783)
+
+
+## tag-5.5(8916) (2025-09-11)
+
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
+*  fixed keychain password reset moving keychain aside issue [View](https://github.com/twocanoes/xcreds/commit/a4d2d6f0dce8820be0b4926371bd915b1e59f6d0)
+*  bumped [View](https://github.com/twocanoes/xcreds/commit/7ea958960354fdf6fc119b39eaf92911f8e18767)
+
+
+## tag-5.5(8915) (2025-09-11)
+
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
+
+
+## tag-5.5(8914) (2025-09-10)
+
+*  fixed min version [View](https://github.com/twocanoes/xcreds/commit/8a9150af3dc3265b41d054e2cdb63d28fca3ee47)
+
+
 ## tag-5.5(8913) (2025-09-10)
 
 *  reverted password js [View](https://github.com/twocanoes/xcreds/commit/87e876a60d6cc29157db2c303fd73ddcbaab7a0e)

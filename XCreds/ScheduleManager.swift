@@ -206,13 +206,12 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
             let keychainUtil = KeychainUtil()
 
-            let refreshAccountAndToken = try? keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
+            let passwordItem =  keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue)
             var hasValidRefreshToken = false
 
             if  let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue),
-                let refreshAccountAndToken = refreshAccountAndToken,
-                let refreshToken = refreshAccountAndToken.1,
-
+                let refreshAccountAndToken = passwordItem,
+                let refreshToken = passwordItem?.password,
                     refreshToken != ""  {
                 hasValidRefreshToken = true
             }
@@ -267,8 +266,8 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         TCSLogWithMark("success. Setting new token.")
                         ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-                        let creds = try? keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
-                        if let localPassword = creds?.1 {
+                        let passwordItem = keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+                        if let localPassword = passwordItem?.password {
                             feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
                         }
 

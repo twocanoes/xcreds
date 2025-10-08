@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.5 (8913) OAuth Settings",
+    "description": "XCreds 5.6 (8977) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -117,7 +117,7 @@
                 "type": "string"
             },
             "title": "Allow Login If Member Of Group",
-            "description": "List of groups whose members should be allowed to login. If the user is a member of any of these groups they can login regardless (including creating new local account) if authorization succeeds. If a local account exists but the user is no longer part of a group the login will be denied.",
+            "description": "(OIDC Only) List of groups whose members should be allowed to login. If the user is a member of any of these groups they can login regardless (including creating new local account) if authorization succeeds. If a local account exists but the user is no longer part of a group the login will be denied.",
             "property_order": 50
         },
         "CreateAdminIfGroupMember": {
@@ -527,7 +527,7 @@
             "type": "string",
             "title": "Scopes",
             "default": "profile openid offline_access",
-            "description": "Scopes tell the identify provider what information to return. Note that the values are provided with a single space between them.\n\nProvide the following values the follow IdPs:\n\nGoogle: profile openid email\nAzure: profile openid offline_access\n\nNote that Google does not support the offline_access scope so instead use the preference shouldSetGoogleAccessTypeToOffline. Azure provides unique_name which is mapped to the local user account by using the prefix before “@” in unique_name and matching to the short name of a user account. Google provides “email” and is matched in the same way.",
+            "description": "Scopes tell the identify provider what information to return. Note that the values are provided with a single space between them.\n\nProvide the following values the follow IdPs:\n\nGoogle: profile openid email\nAzure: profile openid offline_access\n\nNote that Google does not support the offline_access scope so instead use the preference shouldSetGoogleAccessTypeToOffline. Azure provides unique_name which is mapped to the local user account by using the prefix before \"@\" in unique_name and matching to the short name of a user account. Google provides \"email\" and is matched in the same way.",
             "links": [
                 {
                     "rel": "More information",
@@ -630,7 +630,7 @@
         "ropgClientID": {
             "type": "string",
             "title": "ROPG Client ID",
-            "description": "(Deprecated in v4.0) ROPG Client ID for use when checking password.",
+            "description": "(Removed in v4.0) ROPG Client ID for use when checking password.",
             "links": [
                 {
                     "rel": "More information",
@@ -642,7 +642,7 @@
         "ropgClientSecret": {
             "type": "string",
             "title": "ROPG Client Secret",
-            "description": "(Deprecated in v4.0) ROPG Client Secret for use when checking password.",
+            "description": "(Removed in v4.0) ROPG Client Secret for use when checking password.",
             "links": [
                 {
                     "rel": "More information",
@@ -1000,7 +1000,7 @@
             "type": "boolean",
             "title": "Show Version and Build Number",
             "default": true,
-            "description": "(Deprecated in v5.4 and replaced by shouldActivateSystemInfoButton) Show the version number and build number in the lower left corner of XCreds Login.",
+            "description": "(Removed in v5.4 and replaced by shouldActivateSystemInfoButton) Show the version number and build number in the lower left corner of XCreds Login.",
             "links": [
                 {
                     "rel": "More information",
@@ -1242,7 +1242,7 @@
         "passwordElementID": {
             "type": "string",
             "title": "Password Element ID",
-            "description": "Password element id of the html element that has the password. It is read by using JavaScript to get the value (for example, for Azure, the JavaScript document.getElementById('i0118').value is sent. If this default is not set, standard values for Azure and Google Cloud will be used. To find out this value, use a browser to inspect the source of the page that has the password on it. Find the id of the textfield that has the password. Fill in the password and then open the JavaScript console. Run:\n\ndocument.getElementById('passwordID').value\n\nchanging “passwordID” to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.",
+            "description": "Password element id of the html element that has the password. It is read by using JavaScript to get the value (for example, for Azure, the JavaScript document.getElementById('i0118').value is sent. If this default is not set, standard values for Azure and Google Cloud will be used. To find out this value, use a browser to inspect the source of the page that has the password on it. Find the id of the textfield that has the password. Fill in the password and then open the JavaScript console. Run:\n\ndocument.getElementById('passwordID').value\n\nchanging \"passwordID\" to the correct element ID. If the value you typed into the textfield is returned, this is the correct ID.",
             "links": [
                 {
                     "rel": "More information",
@@ -1255,7 +1255,7 @@
             "type": "string",
             "title": "First Name OIDC Mapping/AD Attribute",
             "default": "given_name",
-            "description": "Local DS to OIDC/AD Mapping for First Name. Default value: “given_name” (OIDC), “givenName” (AD). map_firstname should be set to an OIDC claim/AD Attribute for first name.",
+            "description": "Local DS to OIDC/AD Mapping for First Name. Default value: \"given_name\" (OIDC), \"givenName\" (AD). map_firstname should be set to an OIDC claim/AD Attribute for first name.",
             "links": [
                 {
                     "rel": "More information",
@@ -1268,7 +1268,7 @@
             "type": "string",
             "title": "Last Name OIDC Mapping",
             "default": "family_name",
-            "description": "Local DS to OIDC/AD Mapping for Last Name. Default value: “family_name” (OIDC), \"sn\" (AD). map_lastname should be set to an OIDC claim for last name.",
+            "description": "Local DS to OIDC/AD Mapping for Last Name. Default value: \"family_name\" (OIDC), \"sn\" (AD). map_lastname should be set to an OIDC claim for last name.",
             "links": [
                 {
                     "rel": "More information",
@@ -1281,7 +1281,7 @@
             "type": "string",
             "title": "Full Name OIDC Mapping/AD Attribute",
             "default": "name",
-            "description": "Local DS to OIDC/AD Attribute Mapping for Full Name. Default value: “name”(OIDC), \"displayName\" (AD). map_fullname should be set to an OIDC claim/AD Attribute for full name.",
+            "description": "Local DS to OIDC/AD Attribute Mapping for Full Name. Default value: \"name\"(OIDC), \"displayName\" (AD). map_fullname should be set to an OIDC claim/AD Attribute for full name.",
             "links": [
                 {
                     "rel": "More information",
@@ -1294,7 +1294,7 @@
             "type": "string",
             "title": "Username OIDC Mapping/AD Attribute",
             "default": "name",
-            "description": "Local DS to OIDC Mapping/AD Attribute for Name. Default value: “name” (OIDC), \"userPrincipalName\" (AD). map_username should be set to an OIDC claim/AD Attribute for name. The macOS username will be set as the portion of this value before an @ symbol if present.",
+            "description": "Local DS to OIDC Mapping/AD Attribute for Name. Default value: \"name\" (OIDC), \"userPrincipalName\" (AD). map_username should be set to an OIDC claim/AD Attribute for name. The macOS username will be set as the portion of this value before an @ symbol if present.",
             "links": [
                 {
                     "rel": "More information",
@@ -1307,7 +1307,7 @@
             "type": "string",
             "title": "Full Username OIDC Mapping/AD Attribute",
             "default": "name",
-            "description": "Local DS to OIDC Mapping for Full Username (for example, freddy@twocanoes.com) Default value: “unique_name”. map_username should be set to an OIDC claim for full username.",
+            "description": "Local DS to OIDC Mapping for Full Username (for example, freddy@twocanoes.com) Default value: \"unique_name\". map_username should be set to an OIDC claim for full username.",
             "links": [
                 {
                     "rel": "More information",
@@ -1462,12 +1462,14 @@
         "HomeMountEnabled": {
             "type": "boolean",
             "title": "Home Mount Enabled",
+            "default": true,
             "description": "Show and mount home directory from AD profile if defined.",
             "property_order": 565
         },
         "HomeAppendDomain": {
             "type": "boolean",
             "title": "Home Append Domain",
+            "default": false,
             "description": "Append the domain name to the share defined in the profile.",
             "property_order": 570
         },

@@ -1386,7 +1386,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
         TCSLogWithMark("Getting account info.")
 
-        guard let password = accountInfo.1 else {
+        guard let password = accountInfo?.password else {
             TCSLogWithMark("no password in keychain.")
             throw PasswordError.invalidResult("no password in keychain")
 
@@ -1400,7 +1400,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         //change entry in keychain to match new password
         TCSLogWithMark("change entry in keychain to match new password")
 
-        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, shouldUpdateACL: true, keychainPassword: updatedPassword) == false {
+        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, keychainPassword: updatedPassword) == false {
             throw PasswordError.invalidResult("Error updating password in keychain")
 
         }
