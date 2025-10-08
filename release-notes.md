@@ -1,3 +1,8 @@
+## tag-5.6(8978) (2025-09-29)
+
+*  reverted issue #355 due to keychain prompting issues; removed logging statement [View](https://github.com/twocanoes/xcreds/commit/76517681f918a0f4e9ae59fd7cf309abc47c9ddd)
+
+
 ## tag-5.6(8977) (2025-09-26)
 
 *  fixed dont replace good password #355 [View](https://github.com/twocanoes/xcreds/commit/22494f104e33afb5d294987f14354055c62523ec)

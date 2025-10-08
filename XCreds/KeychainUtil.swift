@@ -151,7 +151,7 @@ class KeychainUtil {
 
     // set the password
 
-    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String) -> SecKeychainItem? {
+    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String, keychain:SecKeychain?=nil) -> SecKeychainItem? {
 
         TCSLogWithMark("Setting password for account:\(accountName) service:(serviceName)")
 

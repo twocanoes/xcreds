@@ -1382,7 +1382,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
     }
     func updateCurrentUserKeychain(updatedPassword:String) throws  {
-        let accountInfo = try KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+        let accountInfo = KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
 
         TCSLogWithMark("Getting account info.")
 
