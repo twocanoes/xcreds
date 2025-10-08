@@ -1,3 +1,9 @@
+## tag-5.7(8980) (2025-10-07)
+
+*  bumped to 5.7 [View](https://github.com/twocanoes/xcreds/commit/917a61d740f358edda392085412d923c4f5909e1)
+*  updated cartfile to use binary [View](https://github.com/twocanoes/xcreds/commit/2a9161c914568370d746d3bed0ab4c2c41cc3cb2)
+
+
 ## tag-5.6(8979) (2025-10-07)
 
 *  added save to system keychain [View](https://github.com/twocanoes/xcreds/commit/ef40190c5c18394599babbb27264f7228e57a846)
