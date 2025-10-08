@@ -266,11 +266,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         TCSLogWithMark("success. Setting new token.")
                         ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-                        let passwordItem = keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
-                        if let localPassword = passwordItem?.password {
-                            feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:localPassword, jsonDict: [:]))
-                        }
-
+                        feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
                     }
                     catch let error  {
 
