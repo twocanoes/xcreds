@@ -297,11 +297,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
     func localAccountAndPassword() -> (String?,String?) {
 
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
-            return (nil,nil)
-
-        }
-
+        
         let keychainUtil = KeychainUtil()
         var accountName=""
         let passwordItem = keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
@@ -313,10 +309,21 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             
 
             if case .success = PasswordUtils.isLocalPasswordValid(userName: PasswordUtils.currentConsoleUserName, userPass: password){
+                TCSLogWithMark("account name and password found: \(accountName)")
                 return (accountName,password)
             }
         }
+        else {
+            TCSLogWithMark("invalid password item")
+        
+        }
         TCSLogWithMark()
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
+            TCSLogWithMark("Suppressing local password prompt")
+            return (nil,nil)
+
+        }
+
         let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
         
@@ -375,6 +382,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     func credentialsUpdated(_ credentials:Creds) {
+        
+        // this gets called with an empty Creds if ROPG is used and we get back a
+        // code that says auth was successfull but we have not tokens so
+        // we proceed
         DispatchQueue.main.async {
             UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
@@ -445,10 +456,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 }
 
             }
+            else {
+                TCSLogWithMark("no idTokenInfo")
+            
+            }
 
             self.windowController.window?.close()
             
             let localAccountAndPassword = self.localAccountAndPassword()
+            
+            TCSLogWithMark("local account: \(localAccountAndPassword.0 ?? "") password:\((localAccountAndPassword.1 ?? "").count)")
             if credentials.password != nil, let localPassword=localAccountAndPassword.1{
                 if localPassword != credentials.password{
                     TCSLogWithMark("localPassword and credentials.password do not match")

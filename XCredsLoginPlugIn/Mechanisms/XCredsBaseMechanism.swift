@@ -177,7 +177,7 @@ import OpenDirectory
                 return .failure(message)
 
             }
-            TCSLogWithMark("checking local password for username:\(username) and password length: \(password.count)");
+            TCSLogWithMark("checking local password for username:\(username)");
 
             let  passwordCheckStatus =  PasswordUtils.isLocalPasswordValid(userName: username, userPass: password)
             var accountLocked = false

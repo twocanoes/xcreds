@@ -1,3 +1,8 @@
+## tag-5.7(8981) (2025-10-07)
+
+*  reorged projecdt [View](https://github.com/twocanoes/xcreds/commit/20dbeded4e35e385def5ad612a2a309bf69c6d21)
+
+
 ## tag-5.7(8980) (2025-10-07)
 
 *  bumped to 5.7 [View](https://github.com/twocanoes/xcreds/commit/917a61d740f358edda392085412d923c4f5909e1)

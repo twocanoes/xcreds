@@ -64,10 +64,11 @@ class KeychainUtil {
         if myErr == OSStatus(errSecSuccess) {
             let password = NSString(bytes: passPtr!, length: Int(passLength), encoding: String.Encoding.utf8.rawValue)
             guard let password = password, (password as String).isEmpty == false else {
+                TCSLogWithMark("invalid password format")
                 return nil
             }
             TCSLogWithMark("\(serviceName) found in keychain")
-
+            
 
             var account=""
             if let keychainItem=keychainItem {
@@ -83,18 +84,22 @@ class KeychainUtil {
                 let accountAttribute = attrList?.pointee.attr?.pointee
                 
                 if let data=accountAttribute?.data {
+                    TCSLogWithMark("Data found")
                     account = String(bytesNoCopy: data, length: Int((accountAttribute?.length)!),
                                      encoding: String.Encoding.utf8, freeWhenDone: false)!
                 }
                 
                 
                 
-                TCSLogWithMark()
+                TCSLogWithMark("account: \(account)")
                 
                 
                 return PasswordItem(username: account, password: password as String, keychainItem: keychainItem)
             }
-            return nil
+            else {
+                TCSLogWithMark("invalid keychain item")
+                return nil
+            }
         } else {
             TCSLogErrorWithMark("\(serviceName) not found in keychain")
             return nil
