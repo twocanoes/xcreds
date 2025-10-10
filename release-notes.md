@@ -1,3 +1,8 @@
+## tag-5.7(30) (2025-10-09)
+
+*  set skip install on new targets [View](https://github.com/twocanoes/xcreds/commit/acd16de3fe0cc8f9a902c281a112423980371d37)
+
+
 ## tag-5.7(29) (2025-10-09)
 
 *  fixed ropg prompting issue [View](https://github.com/twocanoes/xcreds/commit/58633f3a0e5716a154fc31c12a26d282c999ad8b)
