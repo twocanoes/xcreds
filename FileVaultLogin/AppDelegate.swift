@@ -33,7 +33,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         case .requiresApproval:
             TCSLogWithMark("Service requires approval. Please select Allow in the notification or open System Preferences->Login Items and allow the service")
 
-//            NSAlert.showAlert(title: "Error",message:"Service requires approval. Please select Allow in the notification or open System Preferences->Login Items and allow the service.")
             SMAppService.openSystemSettingsLoginItems()
             return
         case .notFound:

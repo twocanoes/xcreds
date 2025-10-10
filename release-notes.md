@@ -1,3 +1,9 @@
+## tag-5.7(9001) (2025-10-09)
+
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/68e5141e5ce00f73dd461a1139d9e1979b3d2c80)
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/73f70a0f9cd97aac25992257a39625ed43ed1224)
+
+
 ## tag-5.7(30) (2025-10-09)
 
 *  set skip install on new targets [View](https://github.com/twocanoes/xcreds/commit/acd16de3fe0cc8f9a902c281a112423980371d37)

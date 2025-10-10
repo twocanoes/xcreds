@@ -91,7 +91,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         self.hasCredential = hasCredential
         super.init()
         scheduleManager.feedbackDelegate=self
-
+        updateFileVaultSkip()
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
         if isLocalOnlyAccount() == false || shouldShowMenuBarSignInWithoutLoginWindowSignin==true {
@@ -509,6 +509,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     if updatePassword {
                         if let cloudPassword = credentials.password {
                             try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword: cloudPassword)
+                            self.updateFileVaultSkip()
 
                         }
                     }
@@ -563,12 +564,27 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
+    func updateFileVaultSkip() {
+        
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == false {
+            TCSLogWithMark( "Skipping FileVault login since updateFileVaultSkip pref is set")
+            return
+        }
+        FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
+            
+            if result == false {
+                TCSLogWithMark(error ?? "Unknown error")
+            }
+        }
+
+    }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
         hasKerberosTicket=true
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
 
         kerberosCredentialStatus="Valid kerberos tickets"
+        updateFileVaultSkip()
     }
     func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
 

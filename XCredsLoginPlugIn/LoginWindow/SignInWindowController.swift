@@ -1404,6 +1404,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
             throw PasswordError.invalidResult("Error updating password in keychain")
 
         }
+        
     }
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {
