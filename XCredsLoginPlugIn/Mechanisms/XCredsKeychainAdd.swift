@@ -149,7 +149,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
             XCredsAudit().tokensUpdated(idToken:tokenArray[0])
             let xcredsCreds = Creds(accessToken: tokenArray[2], idToken: tokenArray[0], refreshToken: tokenArray[1], password: userpass, jsonDict: Dictionary())
             TCSLogWithMark("saving tokens to keychain")
-            if TokenManager.saveTokensToKeychain(creds: xcredsCreds, password:userpass )==false {
+            if TokenManager.saveTokensToKeychain(creds: xcredsCreds, keychainPassword:userpass )==false {
                 TCSLogErrorWithMark("Error saving tokens to keychain")
             }
 
@@ -158,7 +158,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         else if let domainName = domainName, domainName.count>0{
             TCSLogWithMark("AD Login with domain: \(domainName)")
 
-            if let shortName=shortName, KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:shortName+"@"+domainName, pass: userpass, keychainPassword:userpass) == false {
+            if let shortName=shortName, KeychainUtil().updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass: userpass, keychainPassword:userpass) == false {
                 TCSLogErrorWithMark("Error Updating password in keychain")
 
             }

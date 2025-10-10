@@ -1,3 +1,8 @@
+## tag-5.7(8992) (2025-10-08)
+
+*  fixed issue with not prompting and password changing [View](https://github.com/twocanoes/xcreds/commit/a1e5efa2f9b786244f431e5b332b0d1b9384f227)
+
+
 ## tag-5.7(8981) (2025-10-07)
 
 *  reorged projecdt [View](https://github.com/twocanoes/xcreds/commit/20dbeded4e35e385def5ad612a2a309bf69c6d21)

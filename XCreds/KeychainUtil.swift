@@ -57,8 +57,11 @@ class KeychainUtil {
         var passLength: UInt32 = 0
         var passPtr: UnsafeMutableRawPointer? = nil
         var keychainItem: SecKeychainItem?
-        TCSLogWithMark("Finding \(serviceName) in keychain")
-        let myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, 0, nil, &passLength, &passPtr, &keychainItem)
+        
+        let accountLength = accountName?.count ?? 0
+        
+        TCSLogWithMark("Finding \(serviceName):\(accountName ?? "") in keychain")
+        let myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, UInt32(accountLength), accountName, &passLength, &passPtr, &keychainItem)
 
 
         if myErr == OSStatus(errSecSuccess) {
@@ -117,6 +120,16 @@ class KeychainUtil {
             }
             else {
                 TCSLogWithMark("error appending trust for XCreds.app")
+
+            }
+        }
+        if FileManager.default.fileExists(atPath: "/Applications/XCreds.app/Contents/Resources/FileVaultLogin.app", isDirectory: nil) {
+            let status = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app/Contents/Resources/FileVaultLogin.app", &trust)
+            if status == 0 {
+                secApps.append(trust!)
+            }
+            else {
+                TCSLogWithMark("FileVaultLogin.app")
 
             }
         }
@@ -323,7 +336,7 @@ class KeychainUtil {
         if let passwordItem = passwordItem {
             let _ = deletePassword(keychainItem: passwordItem.keychainItem)
         }
-        TCSLogWithMark("setting new password for \(accountName) \(serviceName)")
+        TCSLogWithMark("setting new password for \(accountName):\(serviceName)")
 
         let secKeychainItem = setPassword(serviceName: serviceName, accountName: accountName, pass: pass, keychainPassword: keychainPassword)
         if secKeychainItem == nil {

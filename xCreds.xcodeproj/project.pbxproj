@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 73;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -89,6 +89,18 @@
 		764D8133284D14A500B3EE54 /* Credits.txt in Resources */ = {isa = PBXBuildFile; fileRef = 764D8132284D14A500B3EE54 /* Credits.txt */; };
 		7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDEC2A1451590075980B /* LocalUsersViewController.xib */; };
 		7651EDF72A1474330075980B /* LoginWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7651EDF62A1474330075980B /* LoginWebViewController.xib */; };
+		7653487F2E9736FF00FECD7C /* NSAlert+showAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D66642E961F8F009CE2BF /* NSAlert+showAlert.swift */; };
+		765348802E97375D00FECD7C /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
+		765348812E97376800FECD7C /* KeychainUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767116B2284B045800CCD6FF /* KeychainUtil.swift */; };
+		765348822E97377700FECD7C /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D66622E961F8F009CE2BF /* LoggerHelper.swift */; };
+		765348832E97377700FECD7C /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D66732E961F8F009CE2BF /* TCSUnifiedLogger.m */; };
+		765348842E9739C600FECD7C /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
+		765348872E973B0800FECD7C /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D66622E961F8F009CE2BF /* LoggerHelper.swift */; };
+		765348882E973B0F00FECD7C /* TCSUnifiedLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D66732E961F8F009CE2BF /* TCSUnifiedLogger.m */; };
+		7653488D2E973B6300FECD7C /* FileVaultLogin.app in Resources */ = {isa = PBXBuildFile; fileRef = 765348652E97361F00FECD7C /* FileVaultLogin.app */; };
+		7653488F2E973BA000FECD7C /* FileVaultLoginHelper in Embed Helper Tools */ = {isa = PBXBuildFile; fileRef = 765348762E97363900FECD7C /* FileVaultLoginHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		765348952E973C7200FECD7C /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D666C2E961F8F009CE2BF /* NSFileManager+TCSRealHomeFolder.m */; };
+		765348962E973C7200FECD7C /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D666C2E961F8F009CE2BF /* NSFileManager+TCSRealHomeFolder.m */; };
 		7657DEAF2B3503BF003A23DB /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEAE2B3503BF003A23DB /* SessionManager.swift */; };
 		7657DEB02B3503BF003A23DB /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEAE2B3503BF003A23DB /* SessionManager.swift */; };
 		7657DEB32B350476003A23DB /* NoMADSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DEB22B350476003A23DB /* NoMADSession.swift */; };
@@ -347,6 +359,20 @@
 			remoteGlobalIDString = 7631935C287D22C700D36BF7;
 			remoteInfo = authrights;
 		};
+		765348892E973B3B00FECD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 765348752E97363900FECD7C;
+			remoteInfo = FilevaultLoginHelper;
+		};
+		7653488B2E973B4100FECD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 765348642E97361F00FECD7C;
+			remoteInfo = FileVaultLogin;
+		};
 		76A2475F2C22747400859E0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -383,6 +409,36 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		765348742E97363900FECD7C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		7653488E2E973B8700FECD7C /* Embed Helper Tools */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				7653488F2E973BA000FECD7C /* FileVaultLoginHelper in Embed Helper Tools */,
+			);
+			name = "Embed Helper Tools";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348902E973BAB00FECD7C /* Copy LaunchDaemons Property Lists */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = Contents/Library/LaunchDaemons;
+			dstSubfolderSpec = 1;
+			files = (
+			);
+			name = "Copy LaunchDaemons Property Lists";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		766CC42C29D3A3DC009BC526 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -451,14 +507,11 @@
 		760291FA2C116EDB0075FBD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CredentialProviderViewController.xib; sourceTree = "<group>"; };
 		760291FC2C116EDB0075FBD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		760291FD2C116EDB0075FBD8 /* XCreds_AutoFill_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = XCreds_AutoFill_Extension.entitlements; sourceTree = "<group>"; };
-		760418CE2A1332210051411B /* SignIn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignIn.xib; sourceTree = "<group>"; };
 		760418CF2A1332210051411B /* SignInWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWindowController.swift; sourceTree = "<group>"; };
 		760418D42A1332520051411B /* DS+AD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DS+AD.swift"; sourceTree = "<group>"; };
 		760418D62A1332660051411B /* DSQueryable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSQueryable.swift; sourceTree = "<group>"; };
 		760418D82A1332770051411B /* SystemInfoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemInfoHelper.swift; sourceTree = "<group>"; };
 		760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCheckAndMigrate.swift; sourceTree = "<group>"; };
-		760418DC2A1334210051411B /* NoLoMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoLoMechanism.swift; sourceTree = "<group>"; };
-		760418DE2A1334D00051411B /* CheckAD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckAD.swift; sourceTree = "<group>"; };
 		760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "com.twocanoes.xcreds-launchagent.plist"; sourceTree = "<group>"; };
 		7611CEBF288B75140063A644 /* XCredsCreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsCreateUser.swift; sourceTree = "<group>"; };
 		7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsEnableFDE.swift; sourceTree = "<group>"; };
@@ -488,6 +541,8 @@
 		764D8132284D14A500B3EE54 /* Credits.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Credits.txt; sourceTree = "<group>"; };
 		7651EDEC2A1451590075980B /* LocalUsersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalUsersViewController.xib; sourceTree = "<group>"; };
 		7651EDF62A1474330075980B /* LoginWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginWebViewController.xib; sourceTree = "<group>"; };
+		765348652E97361F00FECD7C /* FileVaultLogin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileVaultLogin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		765348762E97363900FECD7C /* FileVaultLoginHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FileVaultLoginHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		7657DEAE2B3503BF003A23DB /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		7657DEB22B350476003A23DB /* NoMADSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoMADSession.swift; sourceTree = "<group>"; };
 		7657DEB52B3504A6003A23DB /* UserRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRecord.swift; sourceTree = "<group>"; };
@@ -622,8 +677,8 @@
 		76E466642B1A4C16006529B6 /* UpdatePasswordWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordWindowController.swift; sourceTree = "<group>"; };
 		76E466652B1A4C16006529B6 /* UpdatePasswordWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UpdatePasswordWindowController.xib; sourceTree = "<group>"; };
 		76E74DCE2B3902F0004C6429 /* XCredsMechanismProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCredsMechanismProtocol.swift; sourceTree = "<group>"; };
-		76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TCSLoginWindowUtilities.h; path = XCreds/TCSLoginWindowUtilities.h; sourceTree = "<group>"; };
-		76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TCSLoginWindowUtilities.m; path = XCreds/TCSLoginWindowUtilities.m; sourceTree = "<group>"; };
+		76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSLoginWindowUtilities.h; sourceTree = "<group>"; };
+		76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCSLoginWindowUtilities.m; sourceTree = "<group>"; };
 		76EAAFD62CEFE22000A5FEE3 /* XCredsUserSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCredsUserSetup.swift; sourceTree = "<group>"; };
 		76EAAFD82CEFED3800A5FEE3 /* SecretKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretKeeper.swift; sourceTree = "<group>"; };
 		76EAAFD92CEFED3800A5FEE3 /* UserSecretManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecretManager.swift; sourceTree = "<group>"; };
@@ -647,6 +702,21 @@
 		76FDC5D92B235A4F0035D61E /* StatusMenuWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusMenuWindowController.xib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		7653490E2E976A5A00FECD7C /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 765348902E973BAB00FECD7C /* Copy LaunchDaemons Property Lists */;
+			membershipExceptions = (
+				com.twocanoes.FileVaultLoginHelper.plist,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		765348662E97361F00FECD7C /* FileVaultLogin */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7653490E2E976A5A00FECD7C /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = FileVaultLogin; sourceTree = "<group>"; };
+		765348772E97363900FECD7C /* FilevaultLoginHelper */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FilevaultLoginHelper; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		760291DD2C116E450075FBD8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -669,6 +739,20 @@
 			files = (
 				76AB89E32A12FB4900529D90 /* ArgumentParser in Frameworks */,
 				76AB89E12A12FAF900529D90 /* OIDCLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348622E97361F00FECD7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348732E97363900FECD7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -751,23 +835,12 @@
 		760418CC2A1331710051411B /* NomadLogin */ = {
 			isa = PBXGroup;
 			children = (
-				760418DE2A1334D00051411B /* CheckAD.swift */,
-				760418DC2A1334210051411B /* NoLoMechanism.swift */,
 				760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */,
 				760418D82A1332770051411B /* SystemInfoHelper.swift */,
 				760418D62A1332660051411B /* DSQueryable.swift */,
 				760418D42A1332520051411B /* DS+AD.swift */,
-				760418CD2A1332210051411B /* UI */,
 			);
 			path = NomadLogin;
-			sourceTree = "<group>";
-		};
-		760418CD2A1332210051411B /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				760418CE2A1332210051411B /* SignIn.xib */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		7631935E287D22C700D36BF7 /* authrights */ = {
@@ -1000,8 +1073,6 @@
 				76C63A312A22872700810C53 /* History.md */,
 				760418CC2A1331710051411B /* NomadLogin */,
 				760291E12C116E450075FBD8 /* XCreds AutoFill */,
-				76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */,
-				76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */,
 				76DB5CF32A09AE9A0014F8E1 /* get_pw.js */,
 				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				7614D03B2B181A5D006EAF36 /* icon_128x128.png */,
@@ -1010,6 +1081,8 @@
 				7675444428918CD100613840 /* Info.plist */,
 				760291F62C116EDB0075FBD8 /* XCreds AutoFill Extension */,
 				76A247562C22747400859E0A /* tap */,
+				765348662E97361F00FECD7C /* FileVaultLogin */,
+				765348772E97363900FECD7C /* FilevaultLoginHelper */,
 				76DD6D15285997F300A700ED /* Frameworks */,
 				76DD6D112859978F00A700ED /* Packages */,
 				766355C72870D1B5002E3867 /* XCredsLogin */,
@@ -1032,6 +1105,8 @@
 				760291E02C116E450075FBD8 /* XCreds Login Autofill.app */,
 				760291F42C116EDB0075FBD8 /* XCreds Login Password.appex */,
 				76A247532C22747400859E0A /* xcredstap.appex */,
+				765348652E97361F00FECD7C /* FileVaultLogin.app */,
+				765348762E97363900FECD7C /* FileVaultLoginHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1039,6 +1114,8 @@
 		76EE069C27FD1D00009E0F3A /* XCreds */ = {
 			isa = PBXGroup;
 			children = (
+				76E9CE6E2A0DC6E30060220C /* TCSLoginWindowUtilities.h */,
+				76E9CE6F2A0DC6E30060220C /* TCSLoginWindowUtilities.m */,
 				766C602C2D3F409D0033E274 /* XCredsAudit.swift */,
 				766F1E552D495BBF00AA5637 /* com.twocanoes.xcreds.json */,
 				766184B72DCE5DB5009D5A8C /* colorline.png */,
@@ -1151,6 +1228,53 @@
 			productReference = 7631935D287D22C700D36BF7 /* authrights */;
 			productType = "com.apple.product-type.tool";
 		};
+		765348642E97361F00FECD7C /* FileVaultLogin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7653486F2E97362100FECD7C /* Build configuration list for PBXNativeTarget "FileVaultLogin" */;
+			buildPhases = (
+				765348612E97361F00FECD7C /* Sources */,
+				765348622E97361F00FECD7C /* Frameworks */,
+				765348632E97361F00FECD7C /* Resources */,
+				7653488E2E973B8700FECD7C /* Embed Helper Tools */,
+				765348902E973BAB00FECD7C /* Copy LaunchDaemons Property Lists */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7653488A2E973B3B00FECD7C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				765348662E97361F00FECD7C /* FileVaultLogin */,
+			);
+			name = FileVaultLogin;
+			packageProductDependencies = (
+			);
+			productName = FileVaultLogin;
+			productReference = 765348652E97361F00FECD7C /* FileVaultLogin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		765348752E97363900FECD7C /* FileVaultLoginHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7653487A2E97363900FECD7C /* Build configuration list for PBXNativeTarget "FileVaultLoginHelper" */;
+			buildPhases = (
+				765348722E97363900FECD7C /* Sources */,
+				765348732E97363900FECD7C /* Frameworks */,
+				765348742E97363900FECD7C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				765348772E97363900FECD7C /* FilevaultLoginHelper */,
+			);
+			name = FileVaultLoginHelper;
+			packageProductDependencies = (
+			);
+			productName = FilevaultLoginHelper;
+			productReference = 765348762E97363900FECD7C /* FileVaultLoginHelper */;
+			productType = "com.apple.product-type.tool";
+		};
 		766355BC2870CA6A002E3867 /* XCredsLoginPlugin */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 766355C02870CA6A002E3867 /* Build configuration list for PBXNativeTarget "XCredsLoginPlugin" */;
@@ -1237,6 +1361,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7653488C2E973B4100FECD7C /* PBXTargetDependency */,
 				760292062C116EEE0075FBD8 /* PBXTargetDependency */,
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
 				76319376287E19A500D36BF7 /* PBXTargetDependency */,
@@ -1262,7 +1387,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1610;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					760291DF2C116E450075FBD8 = {
@@ -1273,6 +1398,12 @@
 					};
 					7631935C287D22C700D36BF7 = {
 						CreatedOnToolsVersion = 13.4.1;
+					};
+					765348642E97361F00FECD7C = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					765348752E97363900FECD7C = {
+						CreatedOnToolsVersion = 16.4;
 					};
 					766355BC2870CA6A002E3867 = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -1293,7 +1424,6 @@
 				};
 			};
 			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
-			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1305,6 +1435,7 @@
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
+			preferredProjectObjectVersion = 55;
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1317,6 +1448,8 @@
 				760291DF2C116E450075FBD8 /* XCreds Login Autofill */,
 				760291F32C116EDB0075FBD8 /* XCreds Login Password */,
 				76A247522C22747400859E0A /* xcredstap */,
+				765348642E97361F00FECD7C /* FileVaultLogin */,
+				765348752E97363900FECD7C /* FileVaultLoginHelper */,
 			);
 		};
 /* End PBXProject section */
@@ -1336,6 +1469,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				760291FB2C116EDB0075FBD8 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348632E97361F00FECD7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1397,6 +1537,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7653488D2E973B6300FECD7C /* FileVaultLogin.app in Resources */,
 				766F1E562D495BBF00AA5637 /* com.twocanoes.xcreds.json in Resources */,
 				766184B82DCE5DB5009D5A8C /* colorline.png in Resources */,
 				760769C12D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist in Resources */,
@@ -1482,6 +1623,30 @@
 				766D66932E962120009CE2BF /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				766D66A42E962186009CE2BF /* TCSUnifiedLogger.m in Sources */,
 				766D667D2E961FDB009CE2BF /* LoggerHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348612E97361F00FECD7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7653487F2E9736FF00FECD7C /* NSAlert+showAlert.swift in Sources */,
+				765348952E973C7200FECD7C /* NSFileManager+TCSRealHomeFolder.m in Sources */,
+				765348822E97377700FECD7C /* LoggerHelper.swift in Sources */,
+				765348832E97377700FECD7C /* TCSUnifiedLogger.m in Sources */,
+				765348802E97375D00FECD7C /* UNIXUtilities.swift in Sources */,
+				765348842E9739C600FECD7C /* DataExtension.swift in Sources */,
+				765348812E97376800FECD7C /* KeychainUtil.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765348722E97363900FECD7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				765348872E973B0800FECD7C /* LoggerHelper.swift in Sources */,
+				765348882E973B0F00FECD7C /* TCSUnifiedLogger.m in Sources */,
+				765348962E973C7200FECD7C /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1731,6 +1896,16 @@
 			target = 7631935C287D22C700D36BF7 /* authrights */;
 			targetProxy = 76319378287E204500D36BF7 /* PBXContainerItemProxy */;
 		};
+		7653488A2E973B3B00FECD7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 765348752E97363900FECD7C /* FileVaultLoginHelper */;
+			targetProxy = 765348892E973B3B00FECD7C /* PBXContainerItemProxy */;
+		};
+		7653488C2E973B4100FECD7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 765348642E97361F00FECD7C /* FileVaultLogin */;
+			targetProxy = 7653488B2E973B4100FECD7C /* PBXContainerItemProxy */;
+		};
 		76A247602C22747400859E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 76A247522C22747400859E0A /* xcredstap */;
@@ -1789,7 +1964,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1829,7 +2004,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1861,7 +2036,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1898,7 +2073,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1955,13 +2130,141 @@
 			};
 			name = Release;
 		};
+		765348702E97362100FECD7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = FileVaultLogin/FileVaultLogin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"FILEVAULTLOGIN_TARGET=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.FileVaultLogin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		765348712E97362100FECD7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = FileVaultLogin/FileVaultLogin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "FILEVAULTLOGIN_TARGET=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.FileVaultLogin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7653487B2E97363900FECD7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"FILEVAULTLOGINHELPER_TARGET=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7653487C2E97363900FECD7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UXP6YEHSPW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "FILEVAULTLOGINHELPER_TARGET=1";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCreds-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		766355BE2870CA6A002E3867 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1999,7 +2302,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2065,7 +2368,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2098,7 +2401,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2130,7 +2433,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2165,7 +2468,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2225,7 +2528,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2291,7 +2594,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2326,7 +2629,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2369,7 +2672,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8991;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2429,6 +2732,24 @@
 			buildConfigurations = (
 				76319361287D22C700D36BF7 /* Debug */,
 				76319362287D22C700D36BF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7653486F2E97362100FECD7C /* Build configuration list for PBXNativeTarget "FileVaultLogin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				765348702E97362100FECD7C /* Debug */,
+				765348712E97362100FECD7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7653487A2E97363900FECD7C /* Build configuration list for PBXNativeTarget "FileVaultLoginHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7653487B2E97363900FECD7C /* Debug */,
+				7653487C2E97363900FECD7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

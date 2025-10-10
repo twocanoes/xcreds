@@ -59,7 +59,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     @IBAction func passwordSelected(_ sender: AnyObject?) {
         let keychainUtil = KeychainUtil()
 
-        let passwordItem = keychainUtil.findPassword(serviceName: "xcreds local password",accountName:PrefKeys.password.rawValue)
+        let passwordItem = keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue)
 
         guard let passwordItem = passwordItem  else {
             TCSLogWithMark("No keychainAccountAndPassword")
