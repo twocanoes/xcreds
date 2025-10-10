@@ -1,3 +1,9 @@
+## tag-5.7(29) (2025-10-09)
+
+*  fixed ropg prompting issue [View](https://github.com/twocanoes/xcreds/commit/58633f3a0e5716a154fc31c12a26d282c999ad8b)
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/fb82b4096acd045a205ab6347f2a2a0879b31d9c)
+
+
 ## tag-5.7(8992) (2025-10-08)
 
 *  fixed issue with not prompting and password changing [View](https://github.com/twocanoes/xcreds/commit/a1e5efa2f9b786244f431e5b332b0d1b9384f227)
