@@ -19,7 +19,7 @@
                BlueprintIdentifier = "76A247522C22747400859E0A"
                BuildableName = "xcredstap.appex"
                BlueprintName = "xcredstap"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -33,7 +33,7 @@
                BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
                BuildableName = "XCreds.app"
                BlueprintName = "XCreds"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
             BuildableName = "XCreds.app"
             BlueprintName = "XCreds"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -83,7 +83,7 @@
             BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
             BuildableName = "XCreds.app"
             BlueprintName = "XCreds"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

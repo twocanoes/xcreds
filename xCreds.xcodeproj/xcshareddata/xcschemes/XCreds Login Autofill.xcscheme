@@ -18,7 +18,7 @@
                BlueprintIdentifier = "760291DF2C116E450075FBD8"
                BuildableName = "XCreds Login Autofill.app"
                BlueprintName = "XCreds Login Autofill"
-               ReferencedContainer = "container:XCreds.xcodeproj">
+               ReferencedContainer = "container:xCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,7 +47,7 @@
             BlueprintIdentifier = "760291DF2C116E450075FBD8"
             BuildableName = "XCreds Login Autofill.app"
             BlueprintName = "XCreds Login Autofill"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -70,7 +70,7 @@
             BlueprintIdentifier = "760291DF2C116E450075FBD8"
             BuildableName = "XCreds Login Autofill.app"
             BlueprintName = "XCreds Login Autofill"
-            ReferencedContainer = "container:XCreds.xcodeproj">
+            ReferencedContainer = "container:xCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

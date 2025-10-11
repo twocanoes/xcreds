@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 73;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -110,7 +110,6 @@
 		7657DECD2B35061E003A23DB /* SiteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DECB2B35061E003A23DB /* SiteManager.swift */; };
 		7657DED92B351B5B003A23DB /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
 		7657DEDA2B351B5B003A23DB /* UNIXUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7657DED82B351B5B003A23DB /* UNIXUtilities.swift */; };
-		7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */; };
 		766184B82DCE5DB5009D5A8C /* colorline.png in Resources */ = {isa = PBXBuildFile; fileRef = 766184B72DCE5DB5009D5A8C /* colorline.png */; };
 		766184B92DCE5DB5009D5A8C /* colorline.png in Resources */ = {isa = PBXBuildFile; fileRef = 766184B72DCE5DB5009D5A8C /* colorline.png */; };
 		76634F372D05FFA3000A63E8 /* LogOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76634F362D05FFA3000A63E8 /* LogOnly.swift */; };
@@ -543,7 +542,6 @@
 		7657DED32B35064E003A23DB /* krb5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = krb5.h; sourceTree = "<group>"; };
 		7657DED52B351A67003A23DB /* KerbUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KerbUtil.h; sourceTree = "<group>"; };
 		7657DED82B351B5B003A23DB /* UNIXUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UNIXUtilities.swift; sourceTree = "<group>"; };
-		7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBackground.png; sourceTree = "<group>"; };
 		766184B72DCE5DB5009D5A8C /* colorline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colorline.png; sourceTree = "<group>"; };
 		76634F362D05FFA3000A63E8 /* LogOnly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOnly.swift; sourceTree = "<group>"; };
 		766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XCredsLoginPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -690,18 +688,8 @@
 		76FDC5D92B235A4F0035D61E /* StatusMenuWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusMenuWindowController.xib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		767917012E994EE200D99062 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 767916FF2E994EC300D99062 /* Copy LaunchDaemons Property Lists */;
-			membershipExceptions = (
-				com.twocanoes.FileVaultLoginHelper.plist,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		765348662E97361F00FECD7C /* FileVaultLogin */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (767917012E994EE200D99062 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = FileVaultLogin; sourceTree = "<group>"; };
+		765348662E97361F00FECD7C /* FileVaultLogin */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FileVaultLogin; sourceTree = "<group>"; };
 		765348772E97363900FECD7C /* FilevaultLoginHelper */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FilevaultLoginHelper; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -1055,7 +1043,6 @@
 				760418CC2A1331710051411B /* NomadLogin */,
 				760291E12C116E450075FBD8 /* XCreds AutoFill */,
 				76DB5CF32A09AE9A0014F8E1 /* get_pw.js */,
-				7659CA06298E1BB6005D1AA3 /* DefaultBackground.png */,
 				7614D03B2B181A5D006EAF36 /* icon_128x128.png */,
 				76833EF12D95D4B500375CA4 /* icon_64x64.png */,
 				766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */,
@@ -1379,7 +1366,8 @@
 					};
 				};
 			};
-			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
+			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1391,7 +1379,6 @@
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
-			preferredProjectObjectVersion = 55;
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1435,7 +1422,6 @@
 				764297AE2D015AB800678928 /* SetupCardWindowController.xib in Resources */,
 				766355D928711C51002E3867 /* defaults.plist in Resources */,
 				7613FDF7289E114F00340CCD /* loadpage.html in Resources */,
-				7659CA07298E1BB6005D1AA3 /* DefaultBackground.png in Resources */,
 				76CCF5452B12E478003F85E9 /* SelectLocalAccountWindowController.xib in Resources */,
 				7651EDED2A1451590075980B /* LocalUsersViewController.xib in Resources */,
 				766184B92DCE5DB5009D5A8C /* colorline.png in Resources */,
@@ -2636,7 +2622,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */ = {
+		76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "xCreds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76EE06A527FD1D01009E0F3A /* Debug */,
