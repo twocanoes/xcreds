@@ -36,11 +36,13 @@ xcodebuild -resolvePackageDependencies
 
 
 agvtool next-version -all
+git commit -a -m 'updated build number'
 
 buildNumber=$(agvtool what-version -terse)
 version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING_VERSION =')
 git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
 git push --tags
+git push
 ./release_notes.sh  > release-notes.md
 
 
