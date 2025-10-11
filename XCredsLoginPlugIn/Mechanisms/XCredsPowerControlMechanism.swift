@@ -47,22 +47,6 @@ class XCredsPowerControlMechanism: XCredsBaseMechanism {
 
         case SpecialUsers.standardLoginWindow.rawValue:
             TCSLogWithMark("mechanism right to boot back to mac login window (SpecialUsers.standardLoginWindow)")
-//            if
-//                AuthorizationDBManager.shared.rightExists(right: "XCredsLoginPlugin:LoginWindow")==true{
-//                if AuthorizationDBManager.shared.replace(right:"XCredsLoginPlugin:LoginWindow", withNewRight: "loginwindow:login") == false {
-//                    TCSLogWithMark("could not replace loginwindow:login with XCredsLoginPlugin:LoginWindow")
-//                }
-//            }
-//            for right in ["XCredsLoginPlugin:UserSetup,privileged","XCredsLoginPlugin:PowerControl,privileged","XCredsLoginPlugin:KeychainAdd,privileged","XCredsLoginPlugin:CreateUser,privileged","XCredsLoginPlugin:EnableFDE,privileged","XCredsLoginPlugin:LoginDone"] {
-//
-//                if AuthorizationDBManager.shared.rightExists(right:right)==true {
-//                    if AuthorizationDBManager.shared.remove(right: right)
-//                        == false {
-//                        TCSLogWithMark("could not remove loginwindow right \(right)")
-//                    }
-//                }
-//
-//            }
             try? StateFileHelper().createFile(.returnType)
            let _ = AuthRightsHelper.resetRights()
             if UserDefaults.standard.bool(forKey: "slowReboot")==true {

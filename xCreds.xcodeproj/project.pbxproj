@@ -46,6 +46,7 @@
 		7611CEC2288B96760063A644 /* XCredsEnableFDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */; };
 		7613FDF7289E114F00340CCD /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
 		7614D03C2B181A5D006EAF36 /* icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7614D03B2B181A5D006EAF36 /* icon_128x128.png */; };
+		76189C782E9A021D00BEF023 /* com.twocanoes.FileVaultLoginHelper.plist in Copy LaunchDaemons Property Lists */ = {isa = PBXBuildFile; fileRef = 76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */; };
 		761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486B28A3575000C6A02B /* XCredsLoginDone.swift */; };
 		762177E62B7144460051B756 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 762177E52B7144460051B756 /* OIDCLite */; };
 		7623384C2B53029D00F2D714 /* ShareMounterMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763DDF152B4F100D000D48CC /* ShareMounterMenu.swift */; };
@@ -464,6 +465,7 @@
 			dstPath = Contents/Library/LaunchDaemons;
 			dstSubfolderSpec = 1;
 			files = (
+				76189C782E9A021D00BEF023 /* com.twocanoes.FileVaultLoginHelper.plist in Copy LaunchDaemons Property Lists */,
 			);
 			name = "Copy LaunchDaemons Property Lists";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,6 +505,7 @@
 		7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsEnableFDE.swift; sourceTree = "<group>"; };
 		7613FDF6289E114F00340CCD /* loadpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = loadpage.html; sourceTree = "<group>"; };
 		7614D03B2B181A5D006EAF36 /* icon_128x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_128x128.png; path = XCreds/Assets.xcassets/AppIcon.appiconset/icon_128x128.png; sourceTree = "<group>"; };
+		76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = com.twocanoes.FileVaultLoginHelper.plist; sourceTree = "<group>"; };
 		761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginProgressWindowController.xib; path = XCredsLoginPlugIn/LoginProgressWindowController.xib; sourceTree = SOURCE_ROOT; };
 		761B486B28A3575000C6A02B /* XCredsLoginDone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsLoginDone.swift; sourceTree = "<group>"; };
 		7631935D287D22C700D36BF7 /* authrights */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = authrights; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1035,6 +1038,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */,
 				766D66782E961F8F009CE2BF /* tools */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
 				76C4BAB92B353B3F007B2C57 /* NoMAD */,

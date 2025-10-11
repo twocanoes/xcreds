@@ -158,18 +158,20 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
         else if let domainName = domainName, domainName.count>0{
             TCSLogWithMark("AD Login with domain: \(domainName)")
 
-            if let shortName=shortName, KeychainUtil().updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass: userpass, keychainPassword:userpass) == false {
+            if KeychainUtil().updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass: userpass, keychainPassword:userpass) == false {
                 TCSLogErrorWithMark("Error Updating password in keychain")
 
             }
             allowLogin()
         }
         else {
-            TCSLogWithMark("Local login so passing through")
+            TCSLogWithMark("Local login so saving password to keychain and passing through")
+            if KeychainUtil().updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass: userpass, keychainPassword:userpass) == false {
+                TCSLogErrorWithMark("Error Updating password in keychain")
+
+            }
             allowLogin()
         }
-
-
     }
 
     // Create keychain item
