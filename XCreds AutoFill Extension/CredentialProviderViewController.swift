@@ -79,6 +79,10 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             dsUsername = username
 
         }
+        else {
+            
+            dsUsername=currentUser?.recordName
+        }
         guard let dsUsername = dsUsername else {
             TCSLogWithMark("Invalid dsUsername")
             self.extensionContext.cancelRequest(withError: NSError(domain: "none", code: -1))
