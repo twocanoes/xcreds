@@ -1,3 +1,15 @@
+## tag-5.7(9006) (2025-10-11)
+
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/7b8c10567ffe64291f02a908246821d6fbedbf94)
+*  updated build number [View](https://github.com/twocanoes/xcreds/commit/106843bb816077f5936c99e78ae3e3793d13bd44)
+*  updated build number [View](https://github.com/twocanoes/xcreds/commit/4d81b4c6d5d41686450ce5c16b091e9543c1c198)
+
+
+## tag-5.7(9005) (2025-10-11)
+
+*  changed project name case; minor fix in autofill for nonxcreds user [View](https://github.com/twocanoes/xcreds/commit/302d7efc640e1a37c50d116dbadfe1d5140884df)
+
+
 ## tag-5.7(9004) (2025-10-10)
 
 *  remove unused image [View](https://github.com/twocanoes/xcreds/commit/23d5d1597b5e33cf5273cd8c672951145d8b9989)
@@ -67,10 +79,16 @@
 
 ## tag-5.6(8975) (2025-09-26)
 
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
 *  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/16396110e09d6f1c1f2a05774effa0a408366952)
 *  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/9f87cb98981d24cd11cbb66db90194b320d24899)
 *  bump [View](https://github.com/twocanoes/xcreds/commit/366f8c4c1c1cc399f890f9a917a8653ddd5a900d)
 *  bump [View](https://github.com/twocanoes/xcreds/commit/3f18acb5cc5378da2e7379f5949fa8b95d68c3bd)
+
+
+## tag-5.6(8974) (2025-09-26)
+
+*  fixed issue with initial login password prompt [View](https://github.com/twocanoes/xcreds/commit/aa1ee07acb2890218331ddb8d69b87a4ccbe9119)
 
 
 ## tag-5.6(8970) (2025-09-26)
@@ -138,8 +156,14 @@
 
 ## tag-5.5(8916) (2025-09-11)
 
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
 *  fixed keychain password reset moving keychain aside issue [View](https://github.com/twocanoes/xcreds/commit/a4d2d6f0dce8820be0b4926371bd915b1e59f6d0)
 *  bumped [View](https://github.com/twocanoes/xcreds/commit/7ea958960354fdf6fc119b39eaf92911f8e18767)
+
+
+## tag-5.5(8915) (2025-09-11)
+
+*  added logging statement [View](https://github.com/twocanoes/xcreds/commit/f530f1e07f1e6fe70c13b695591851244d7e5e3d)
 
 
 ## tag-5.5(8914) (2025-09-10)
@@ -185,29 +209,11 @@
 
 ## tag-5.5(8831) (2025-08-28)
 
-*  added SLA to installer [View](https://github.com/twocanoes/xcreds/commit/890be5630564d53485db7b453c0c7c55519716ea)
-*  updated license [View](https://github.com/twocanoes/xcreds/commit/fb8480567655e1b1834d958d4c75e7d6a63c1434)
-*  updated carthfile to use binary [View](https://github.com/twocanoes/xcreds/commit/d09273dc0d72ed42b5d0b27c9f0736d946fe708f)
 *  updated manfest; added refresh after wake [View](https://github.com/twocanoes/xcreds/commit/6a95b84a0961f805471003c95a56d302eab6df8b)
 *  updated versioncheck to use framework [View](https://github.com/twocanoes/xcreds/commit/b2773d2b276e53a50ff70a104628ed4bae7d8263)
 *  changed manifest version [View](https://github.com/twocanoes/xcreds/commit/607aabcc0d53be3239d956c7665d659b209805d3)
 *  bumped [View](https://github.com/twocanoes/xcreds/commit/91c2decb24719eed16904d06ef650bc7aee5658e)
 *  changed build script to check git  earlier [View](https://github.com/twocanoes/xcreds/commit/cf7ef53ec75238ef82ba91d1884285ab63ba3b0c)
-
-
-## tag-5.5(8789) (2025-08-24)
-
-*  updated carthfile to use binary [View](https://github.com/twocanoes/xcreds/commit/d09273dc0d72ed42b5d0b27c9f0736d946fe708f)
-
-
-## tag-5.5(8788) (2025-08-24)
-
-*  updated license [View](https://github.com/twocanoes/xcreds/commit/fb8480567655e1b1834d958d4c75e7d6a63c1434)
-
-
-## tag-5.5(8787) (2025-08-24)
-
-*  added SLA to installer [View](https://github.com/twocanoes/xcreds/commit/890be5630564d53485db7b453c0c7c55519716ea)
 
 
 ## tag-5.5(8786) (2025-08-24)

@@ -36,13 +36,9 @@ xcodebuild -resolvePackageDependencies
 
 
 agvtool next-version -all
-git commit -a -m 'updated build number'
 
 buildNumber=$(agvtool what-version -terse)
 version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING_VERSION =')
-git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
-git push --tags
-git push
 ./release_notes.sh  > release-notes.md
 
 
@@ -65,6 +61,12 @@ if  [ -n "${update_manifest}" ];  then
 	echo "setting version to  : ${curr_vers}"
 	/usr/libexec/PlistBuddy   -c "Set :pfm_version ${curr_vers}" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"	
 fi
+
+
+git commit -a -m 'updated build number, manifest and other build files'
+git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
+git push --tags
+git push
 
 temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
 BUILD_FOLDER="${temp_folder}/build"
