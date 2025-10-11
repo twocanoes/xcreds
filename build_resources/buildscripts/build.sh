@@ -63,10 +63,6 @@ if  [ -n "${update_manifest}" ];  then
 fi
 
 
-git commit -a -m 'updated build number, manifest and other build files'
-git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
-git push --tags
-git push
 
 temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
 BUILD_FOLDER="${temp_folder}/build"
@@ -74,6 +70,12 @@ pushd "${PROJECT_FOLDER}/Profile Manifest"
 ./build.py . -o ./jamf/ --overwrite
 
 popd 
+
+
+git commit -a -m 'updated build number, manifest and other build files'
+git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
+git push --tags
+git push
 
 xcodebuild archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${PRODUCT_NAME}" -archivePath  "${temp_folder}/${PRODUCT_NAME}.xcarchive"
 
