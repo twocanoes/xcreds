@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.7 (9008) OAuth Settings",
+    "description": "XCreds 5.7 (9009) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -781,7 +781,7 @@
         "shouldSkipFileVaultLogin": {
             "type": "boolean",
             "title": "Skip FileVault Login",
-            "default": true,
+            "default": false,
             "description": "Skip filevault login during startup if filevault is enabled. The current username and password is used to tell fdesetup to use silently use the credentials during next reboot to unlock FileVault. Passthrough is also disabled and the user will see the XCreds Login Window. To avoid the user prompted for admin credentials, set the Login And Background Item Management management item (com.apple.servicemanagement) to allow teamid UXP6YEHSPW to have background tasks. Default value: false",
             "links": [
                 {

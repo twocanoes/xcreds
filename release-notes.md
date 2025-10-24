@@ -1,3 +1,9 @@
+## tag-5.7(9008) (2025-10-11)
+
+*  updated build info [View](https://github.com/twocanoes/xcreds/commit/ee0b960b4f42df74e90347c3b108da903a072445)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9d353132acbfd0096d369f64b0c5cc96163e842c)
+
+
 ## tag-5.7(9007) (2025-10-11)
 
 *  updated build info [View](https://github.com/twocanoes/xcreds/commit/1a32f1c44d84c64cf661858ec7123a0afeb27cf2)
