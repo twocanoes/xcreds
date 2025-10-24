@@ -80,8 +80,20 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 self.setHint(type: .localAdmin, hint: localAdmin)
             }
 
-            if let _ = getHint(type: .localAdmin) as? LocalAdminCredentials {
+            if let credentials = getHint(type: .localAdmin) as? LocalAdminCredentials {
                 TCSLogWithMark("local admin set in hints")
+
+                TCSLogWithMark("checking to see if we should skip filevault login by seeing if shouldSkipFileVaultLoginAdmin pref is true")
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue)==true,
+                   filevaultAuth(username: credentials.username, password: credentials.password) == true
+                {
+                    TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
+                }
+                else {
+                    TCSLogWithMark( "Failed to authenticate with FileVault.")
+                }
+                
+
             }
             else {
                 TCSLogWithMark("local admin not set in hints")
