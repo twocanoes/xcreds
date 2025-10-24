@@ -1,3 +1,9 @@
+## tag-5.7(9009) (2025-10-24)
+
+*  fixed default value for shouldSkipFileVaultLogin [View](https://github.com/twocanoes/xcreds/commit/47e2282a3255e27d16c7a3010a0b98d6ab5d97b6)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/1b5089b1869ae214a5d1591781d10491c1002aa0)
+
+
 ## tag-5.7(9008) (2025-10-11)
 
 *  updated build info [View](https://github.com/twocanoes/xcreds/commit/ee0b960b4f42df74e90347c3b108da903a072445)
