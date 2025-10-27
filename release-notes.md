@@ -1,3 +1,10 @@
+## tag-5.7(9010) (2025-10-24)
+
+*  added skip FV as admin pref and implemented [View](https://github.com/twocanoes/xcreds/commit/1bff20ee2a9b0f558e876efb3f46dc161026e22e)
+*  added javascript update issue #358: Cloud password detection can fail if login form has option to show password #358 [View](https://github.com/twocanoes/xcreds/commit/9cabc425bab0a833e12c2fb3c770b5ce4edc1160)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/fc5a0376860e95f301ff3e0ae160d54b53132a42)
+
+
 ## tag-5.7(9009) (2025-10-24)
 
 *  fixed default value for shouldSkipFileVaultLogin [View](https://github.com/twocanoes/xcreds/commit/47e2282a3255e27d16c7a3010a0b98d6ab5d97b6)
