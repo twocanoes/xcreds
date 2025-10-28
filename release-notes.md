@@ -1,3 +1,9 @@
+## tag-5.7(9011) (2025-10-27)
+
+*  reverted js [View](https://github.com/twocanoes/xcreds/commit/b43685451bb787cc0eb5e1f8c2fa93a275dd62ee)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/1dfd3d63618f7c01994e4fe7508d883108d24a52)
+
+
 ## tag-5.7(9010) (2025-10-24)
 
 *  added skip FV as admin pref and implemented [View](https://github.com/twocanoes/xcreds/commit/1bff20ee2a9b0f558e876efb3f46dc161026e22e)
