@@ -1,3 +1,9 @@
+## tag-5.7(9012) (2025-10-28)
+
+*  reverted trustedapp code due to bad merge [View](https://github.com/twocanoes/xcreds/commit/f219029e817aa1d549bb863c976a207ed039677d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/8a3284cb46559dac26369eb478254e79b5ec4db5)
+
+
 ## tag-5.7(9011) (2025-10-27)
 
 *  reverted js [View](https://github.com/twocanoes/xcreds/commit/b43685451bb787cc0eb5e1f8c2fa93a275dd62ee)
