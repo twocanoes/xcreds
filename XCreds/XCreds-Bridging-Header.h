@@ -25,5 +25,5 @@
 #import "krb5.h"
 
 #include <membership.h>
-
+#import "TCSTKSmartCard.h"
 #endif /* XCreds_Bridging_Header_h */

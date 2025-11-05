@@ -317,6 +317,8 @@
 		76EECCFE2873EA6500483C66 /* Window+Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764D8128284BCAB100B3EE54 /* Window+Shake.swift */; };
 		76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E128713C47002E3867 /* LoginWindow.swift */; };
 		76F0B6E02B421FC8008F7D71 /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
+		76F0D8552EBBECFF001DAC01 /* TCSTKSmartCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */; };
+		76F0D8562EBBEF2B001DAC01 /* TCSTKSmartCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */; };
 		76FDC5D62B22D47A0035D61E /* MainLoginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */; };
 		76FDC5D72B22D47A0035D61E /* MainLoginWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */; };
 		76FDC5DA2B235A4F0035D61E /* StatusMenuWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FDC5D82B235A4F0035D61E /* StatusMenuWindowController.swift */; };
@@ -684,6 +686,8 @@
 		76EE06B527FD1E79009E0F3A /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		76EE06B727FD1EB7009E0F3A /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		76EE06C127FD1F50009E0F3A /* StatusMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
+		76F0D8532EBBECFF001DAC01 /* TCSTKSmartCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSTKSmartCard.h; sourceTree = "<group>"; };
+		76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCSTKSmartCard.m; sourceTree = "<group>"; };
 		76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainLoginWindowController.swift; path = XCreds/MainLoginWindowController.swift; sourceTree = SOURCE_ROOT; };
 		76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainLoginWindowController.xib; path = XCredsLoginPlugIn/LoginWindow/MainLoginWindowController.xib; sourceTree = SOURCE_ROOT; };
 		76FDC5D82B235A4F0035D61E /* StatusMenuWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuWindowController.swift; sourceTree = SOURCE_ROOT; };
@@ -1037,6 +1041,8 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				76F0D8532EBBECFF001DAC01 /* TCSTKSmartCard.h */,
+				76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */,
 				76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */,
 				766D66782E961F8F009CE2BF /* tools */,
 				760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */,
@@ -1585,6 +1591,7 @@
 				76EECCFB2873DFFB00483C66 /* PasswordUtils.swift in Sources */,
 				76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */,
 				766D66B12E962231009CE2BF /* NSError+EasyError.m in Sources */,
+				76F0D8562EBBEF2B001DAC01 /* TCSTKSmartCard.m in Sources */,
 				7657DEB02B3503BF003A23DB /* SessionManager.swift in Sources */,
 				766D669F2E962157009CE2BF /* String+Base64URLEncoded.swift in Sources */,
 				766D668E2E9620F5009CE2BF /* NSData+SHA1.m in Sources */,
@@ -1720,6 +1727,7 @@
 				76E74DD22B39034B004C6429 /* SelectLocalAccountWindowController.swift in Sources */,
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
 				76EE06B827FD1EB7009E0F3A /* PreferencesWindowController.swift in Sources */,
+				76F0D8552EBBECFF001DAC01 /* TCSTKSmartCard.m in Sources */,
 				76EE06AE27FD1DC3009E0F3A /* PrefKeys.swift in Sources */,
 				766D66AD2E9621EC009CE2BF /* TCTaskWrapperWithBlocks.m in Sources */,
 				767116B3284B045800CCD6FF /* KeychainUtil.swift in Sources */,
