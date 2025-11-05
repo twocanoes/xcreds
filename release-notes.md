@@ -1,3 +1,11 @@
+## tag-5.7(9014) (2025-11-05)
+
+*  bumped manifest version: Bump manifest version #362 [View](https://github.com/twocanoes/xcreds/commit/f0fb5c810e9cdcc878205a4a235158c231c33de1)
+*  Fix typos for shouldSkipFileVaultLogin and shouldSkipFileVaultLoginAdmin descriptions #361 [View](https://github.com/twocanoes/xcreds/commit/046aa51a5e5160bb2dfd051dbe14510d1e18b6ac)
+*  Cloud password detection can fail if login form has option to show password #358 [View](https://github.com/twocanoes/xcreds/commit/f045b4323e434a0d0aa4aaaf3cc5ba056d85fb45)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/97d5b3c9a6bd0fab0b34b18d3cae3fb71f483629)
+
+
 ## tag-5.7(9013) (2025-10-28)
 
 *  updated js [View](https://github.com/twocanoes/xcreds/commit/91a9e47fddef2ece7f1855f727d4f2793f5ab78c)
