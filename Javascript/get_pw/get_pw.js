@@ -6,15 +6,8 @@ var result = {
 
 function watchWindow(){
   var passwordElements = document.querySelectorAll('[type="password"]');
-
-  if (passwordElements.length > 0) {
-    elements.add(...passwordElements);
-  }
-
+  passwordElements.forEach(i=>elements.add(i));
   var elementsArray = Array.from(elements);
-  elementsArray.filter(function(i){
-    return i.value !== "";
-  });
 
   if (elementsArray.length == 0) {
     console.log("No password fields found");
