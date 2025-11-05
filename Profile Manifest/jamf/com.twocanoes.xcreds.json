@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.7 (9013) OAuth Settings",
+    "description": "XCreds 5.7 (9014) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -782,7 +782,7 @@
             "type": "boolean",
             "title": "Skip FileVault Login",
             "default": false,
-            "description": "Skip filevault login during startup if filevault is enabled. The current username and password is used to tell fdesetup to use silently use the credentials during next reboot to unlock FileVault. Passthrough is also disabled and the user will see the XCreds Login Window. To avoid the user prompted for admin credentials, set the Login And Background Item Management management item (com.apple.servicemanagement) to allow teamid UXP6YEHSPW to have background tasks. Default value: false",
+            "description": "Skip FileVault login during startup if FileVault is enabled. The current username and password are used to tell fdesetup to silently use the credentials during next reboot to unlock FileVault. Passthrough is also disabled and the user will see the XCreds Login Window. To avoid the user being prompted for admin credentials, set the \"Login And Background Item Management\" management item (com.apple.servicemanagement) to allow teamid UXP6YEHSPW to have background tasks.",
             "links": [
                 {
                     "rel": "More information",
@@ -795,7 +795,7 @@
             "type": "boolean",
             "title": "Skip FileVault Login as Admin",
             "default": false,
-            "description": "Skip FileVault authentication at startup if filevault is enabled. The admin credentials will be used to tell fdesetup to use silently use the credentials during next reboot to unlock FileVault. Passthrough is also disabled and the user will see the XCreds Login Window. To avoid the user prompted for admin credentials, set the Login And Background Item Management management item (com.apple.servicemanagement) to allow teamid UXP6YEHSPW to have background tasks. Default value: false",
+            "description": "Skip FileVault authentication at startup if FileVault is enabled. The admin credentials will be used to tell fdesetup to silently use the credentials during next reboot to unlock FileVault. Passthrough is also disabled and the user will see the XCreds Login Window. To avoid the user being prompted for admin credentials, set the \"Login And Background Item Management\" management item (com.apple.servicemanagement) to allow teamid UXP6YEHSPW to have background tasks. Default value: false",
             "links": [
                 {
                     "rel": "More information",
