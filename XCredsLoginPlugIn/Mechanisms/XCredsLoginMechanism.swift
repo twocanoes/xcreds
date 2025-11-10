@@ -198,7 +198,6 @@ import Network
         loginWebViewController=nil
         signInViewController=nil
         
-        updateDSRecords()
         if useAutologin() {
             os_log("Using autologin", log: checkADLog, type: .debug)
             super.allowLogin()
@@ -409,58 +408,5 @@ import Network
 
         }
     }
-    func updateDSRecords() {
-        guard let nonSystemUsers = try? getAllNonSystemUsers() else{
-            TCSLogWithMark("could not get non system users")
-            return
-        }
-
-        for odRecord in nonSystemUsers {
-            let userDetails = try? odRecord.recordDetails(forAttributes: nil)
-            if let userDetails = userDetails {
-                if let _ = try? odRecord.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String]{
-                    TCSLogWithMark("user already has oidc full username")
-                    continue
-                }
-                TCSLogWithMark("searching for user in user account")
-                if let homeDirArray = userDetails["dsAttrTypeStandard:NFSHomeDirectory"] as? Array<String>, homeDirArray.count>0{
-                    let homeDir = homeDirArray[0]
-                    TCSLogWithMark("looking in \(homeDir) for ds_info.plist")
-                    let appSupportFolder = homeDir + "/Library/Application Support/XCreds"
-                    let plistPath = appSupportFolder + "/ds_info.plist"
-
-                    TCSLogWithMark("looking in path \(plistPath)")
-                    if FileManager.default.fileExists(atPath: plistPath){
-                        TCSLogWithMark("found ds_info.plist")
-                        do {
-                            TCSLogWithMark("reading plist")
-                            let dict = try PropertyListDecoder().decode([String:String].self, from: Data(contentsOf: URL(fileURLWithPath: plistPath)))
-                            if let currOIDCFullUsername = dict["_xcreds_oidc_full_username"],
-                               let oidcUsername = dict["_xcreds_oidc_username"],
-                               let subValue = dict["subValue"],
-                               let issuerValue = dict["issuerValue"]
-                            {
-                                TCSLogWithMark("updating user account info")
-                                try odRecord.setValue("1", forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal")
-
-                                try odRecord.setValue(currOIDCFullUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
-                                try odRecord.setValue(oidcUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
-                                try odRecord.setValue(subValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
-                                try odRecord.setValue(issuerValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
-
-                                TCSLogWithMark("removing file")
-                                try FileManager.default.removeItem(atPath: plistPath)
-
-                            }
-                        }
-                        catch {
-                            TCSLogWithMark("error decoding propertylist: \(error)")
-                        }
-
-                    }
-
-                }
-            }
-        }
-    }
+   
 }
