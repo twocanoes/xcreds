@@ -1,3 +1,10 @@
+## tag-5.7(9015) (2025-11-05)
+
+*  updated js; fixed ctk shim for tahoe [View](https://github.com/twocanoes/xcreds/commit/036bd7ac69a84d4e855713f40c42a4888574541b)
+*  updated open source tools [View](https://github.com/twocanoes/xcreds/commit/5e0a72ea62f7f3809d3d1cf5fbd8b801d789e84e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/93e60e1f67c192098b232330d2cb3538ac71b158)
+
+
 ## tag-5.7(9014) (2025-11-05)
 
 *  bumped manifest version: Bump manifest version #362 [View](https://github.com/twocanoes/xcreds/commit/f0fb5c810e9cdcc878205a4a235158c231c33de1)
