@@ -152,6 +152,8 @@ class XCredsUserSetup: XCredsBaseMechanism{
                         do {
                             TCSLogWithMark("reading plist")
                             let dict = try PropertyListDecoder().decode([String:String].self, from: Data(contentsOf: URL(fileURLWithPath: plistPath)))
+                            TCSLogWithMark("got plist")
+
                             if let currOIDCFullUsername = dict["_xcreds_oidc_full_username"],
                                let oidcUsername = dict["_xcreds_oidc_username"],
                                let subValue = dict["subValue"],
@@ -165,6 +167,10 @@ class XCredsUserSetup: XCredsBaseMechanism{
                                 try odRecord.setValue(subValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
                                 try odRecord.setValue(issuerValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
 
+                                
+                                if let currKerberosPrincipal = dict["_xcreds_activedirectory_kerberosPrincipal"] {
+                                    try odRecord.setValue(currKerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
+                                }
                                 TCSLogWithMark("removing file")
                                 try FileManager.default.removeItem(atPath: plistPath)
 

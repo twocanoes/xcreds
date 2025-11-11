@@ -428,7 +428,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                                     try FileManager.default.removeItem(at: URL(filePath: plistPath))
                                 }
                                 if let subValue = idTokenInfo["sub"] as? String, let issuerValue = idTokenInfo["iss"] as? String{
-                                    var dictToWrite = [" vi":username,
+                                    var dictToWrite = ["_xcreds_oidc_username":username,
                                                        "_xcreds_oidc_full_username":fullUsername,
                                                        "subValue":subValue,
                                                        "issuerValue":issuerValue,
