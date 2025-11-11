@@ -1,3 +1,9 @@
+## tag-5.7(9016) (2025-11-10)
+
+*  fixed regression of DS migrate [View](https://github.com/twocanoes/xcreds/commit/5aae0f125c70e46a6f5f193986d16cec94263fbf)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/46098e1e2a7eb6d768c8b7bcb683fcc17489431b)
+
+
 ## tag-5.7(9015) (2025-11-05)
 
 *  updated js; fixed ctk shim for tahoe [View](https://github.com/twocanoes/xcreds/commit/036bd7ac69a84d4e855713f40c42a4888574541b)
