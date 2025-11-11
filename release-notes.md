@@ -1,3 +1,9 @@
+## tag-5.7(9020) (2025-11-11)
+
+*  fixed issue with copying info to ds [View](https://github.com/twocanoes/xcreds/commit/7f51197c0ee91df24dd5e3ef748959654055f53a)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/38032c9649161e09451b103f6a33243c5e76fbf1)
+
+
 ## tag-5.7(9016) (2025-11-10)
 
 *  fixed regression of DS migrate [View](https://github.com/twocanoes/xcreds/commit/5aae0f125c70e46a6f5f193986d16cec94263fbf)
