@@ -25,6 +25,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         case Additional=13
         case SetupCardMenuItem=14
         case OIDCCredentialStatusMenuItem=15
+        case FileVaultAutoLoginMenuItem=16
+
 
     }
     enum MenuElements:String {
@@ -206,6 +208,13 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             }
             return false
 
+        case .FileVaultAutoLoginMenuItem:
+            menuItem.isHidden=true
+            if mainController?.fileVaultBypass==true{
+                menuItem.isHidden=false
+
+            }
+            break
 
         case .OIDCCredentialStatusMenuItem:
             menuItem.isHidden=false

@@ -17,6 +17,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         case usernamePassword
     }
 
+    var fileVaultBypass = false
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let scheduleManager = ScheduleManager()
@@ -571,9 +572,13 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             return
         }
         FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
-            
             if result == false {
+                self.fileVaultBypass=false
                 TCSLogWithMark(error ?? "Unknown error")
+            }
+            else {
+                self.fileVaultBypass=true
+            
             }
         }
 

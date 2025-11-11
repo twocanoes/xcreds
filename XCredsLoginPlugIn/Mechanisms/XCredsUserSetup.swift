@@ -79,6 +79,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
                 self.setHint(type: .localAdmin, hint: localAdmin)
             }
+            try? StateFileHelper().removeFile(.fileVaultLogin)
 
             if let credentials = getHint(type: .localAdmin) as? LocalAdminCredentials {
                 TCSLogWithMark("local admin set in hints")
@@ -88,9 +89,11 @@ class XCredsUserSetup: XCredsBaseMechanism{
                    filevaultAuth(username: credentials.username, password: credentials.password) == true
                 {
                     TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
+                    try? StateFileHelper().createFile(.fileVaultLogin)
                 }
                 else {
                     TCSLogWithMark( "Failed to authenticate with FileVault.")
+
                 }
                 
 

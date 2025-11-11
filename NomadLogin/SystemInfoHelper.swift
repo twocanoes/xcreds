@@ -48,6 +48,9 @@ class SystemInfoHelper {
         if let ssid = NetworkManager().getCurrentSSID(){
             info.append("SSID: \(ssid)")
         }
+        if StateFileHelper().fileExists(.fileVaultLogin){
+            info.append("FileVault AutoLogin Enabled")
+        }
 
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {

@@ -21,7 +21,6 @@ class FileVaultLoginHelper {
         case .notRegistered:
             TCSLogWithMark()
             
-//            NSAlert.showAlert(title: "Error", message:"Service is not registered")
             completion(false, "Service is not registered")
             
             return

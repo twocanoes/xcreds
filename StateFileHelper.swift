@@ -15,6 +15,7 @@ class StateFileHelper {
     enum StateFileType {
         case returnType
         case delayType
+        case fileVaultLogin
     }
 
     func paths(_ fileType:StateFileType) -> (folderPath:String, filePath:String){
@@ -28,6 +29,10 @@ class StateFileHelper {
         case .delayType:
             folderPath = "/usr/local/var/"
             filePath = "xcreds_delay"
+        case .fileVaultLogin:
+            folderPath = "/usr/local/var/"
+            filePath = "xcreds_filevaultlogin"
+
         }
         return (folderPath, filePath)
     }
