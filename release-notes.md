@@ -1,3 +1,9 @@
+## tag-5.7(9035) (2025-11-11)
+
+*  added emojis to popover to make it fancy [View](https://github.com/twocanoes/xcreds/commit/de4a4eed7eb22adc0cff953ca4eec1f2b0f6d63b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a658da59e4da3704ea1a84cd0861550772c69a81)
+
+
 ## tag-5.7(9022) (2025-11-11)
 
 *  added FV login indicator at login window and menu item [View](https://github.com/twocanoes/xcreds/commit/59a56aa533b233ca0cb6f130ebe78a1b5fa55bf5)
