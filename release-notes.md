@@ -1,3 +1,9 @@
+## tag-5.7(9036) (2025-11-12)
+
+*  added more logging [View](https://github.com/twocanoes/xcreds/commit/c2dac3ba6d052a7bd215c9bacfa4200ac4c8c4d6)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f82ca5967e33fc2a94773176365d12ca8ad6fcfa)
+
+
 ## tag-5.7(9035) (2025-11-11)
 
 *  added emojis to popover to make it fancy [View](https://github.com/twocanoes/xcreds/commit/de4a4eed7eb22adc0cff953ca4eec1f2b0f6d63b)
