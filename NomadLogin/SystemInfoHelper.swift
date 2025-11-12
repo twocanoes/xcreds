@@ -53,16 +53,20 @@ class SystemInfoHelper {
         if let ssid = NetworkManager().getCurrentSSID(){
             info.append("🛜 SSID: \(ssid)")
         }
-        if StateFileHelper().fileExists(.fileVaultLogin){
+        if StateFileHelper().fileExists(.fileVaultLogin)==true{
+            TCSLogWithMark( "adding FileVault AutoLogin Enabled")
+
             info.append("🔑 FileVault AutoLogin Enabled")
+        }
+        else {
+            TCSLogWithMark( "Not showing FileVault AutoLogin Enabled")
+
         }
 
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {
             info.append("🌐 IP Address: \(ipAddresses.joined(separator: ","))")
         }
-
-//        systemInfoAdditions
         if let systemInfoAdditionsArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.systemInfoAdditionsArray.rawValue) as? Array <String>, systemInfoAdditionsArray.count>0 {
 
             for line in systemInfoAdditionsArray {
