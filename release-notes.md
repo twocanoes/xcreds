@@ -1,3 +1,10 @@
+## tag-5.7(9022) (2025-11-11)
+
+*  added FV login indicator at login window and menu item [View](https://github.com/twocanoes/xcreds/commit/59a56aa533b233ca0cb6f130ebe78a1b5fa55bf5)
+*  added sample profile for fv skip [View](https://github.com/twocanoes/xcreds/commit/4209457d6a6f3b4715955268c87145d6fe59f82e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a892668be9e504dba44e9150e469b5beb11d10fa)
+
+
 ## tag-5.7(9020) (2025-11-11)
 
 *  fixed issue with copying info to ds [View](https://github.com/twocanoes/xcreds/commit/7f51197c0ee91df24dd5e3ef748959654055f53a)
