@@ -32,7 +32,6 @@ class StateFileHelper {
         case .fileVaultLogin:
             folderPath = "/usr/local/var/"
             filePath = "xcreds_filevaultlogin"
-
         }
         return (folderPath, filePath)
     }

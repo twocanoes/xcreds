@@ -568,7 +568,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func updateFileVaultSkip() {
         
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == false {
-            TCSLogWithMark( "Skipping FileVault login since updateFileVaultSkip pref is set")
+            TCSLogWithMark( "Skipping FileVault login since updateFileVaultSkip pref is unset")
             return
         }
         FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
@@ -578,7 +578,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             }
             else {
                 self.fileVaultBypass=true
-            
             }
         }
 

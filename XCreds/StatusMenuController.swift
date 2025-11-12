@@ -212,7 +212,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
             menuItem.isHidden=true
             if mainController?.fileVaultBypass==true{
                 menuItem.isHidden=false
-
+//                menuItem.isEnabled=false
+                return false
             }
             break
 
@@ -408,6 +409,10 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
         NSApp.terminate(self)
         
     }
+    @IBAction func fileVaultAutoLoginEnabledMenuItemSelected(_ sender:Any?)  {
+        
+    }
+
     @IBAction func nextPasswordCheckTimeMenuItemSelected(_ sender:Any?)  {
         
     }

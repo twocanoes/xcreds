@@ -716,6 +716,9 @@
                 </menuItem>
                 <menuItem title="FileVault AutoLogin Enabled" tag="16" enabled="NO" id="ft0-tf-SGP">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="fileVaultAutoLoginEnabledMenuItemSelected:" target="1OV-ou-Ss5" id="bGN-fT-F4J"/>
+                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Ura-vC-UQe"/>
                 <menuItem title="OIDC Credential Status: None" tag="15" enabled="NO" id="nNc-GI-Rm2">
