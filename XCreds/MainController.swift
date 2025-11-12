@@ -567,20 +567,33 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func updateFileVaultSkip() {
         
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == false {
-            TCSLogWithMark( "Skipping FileVault login since updateFileVaultSkip pref is unset")
-            return
-        }
-        FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
-            if result == false {
-                self.fileVaultBypass=false
-                TCSLogWithMark(error ?? "Unknown error")
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == true{
+            TCSLogWithMark("Setting filevault to unlock with user")
+            FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
+                if result == false {
+                    self.fileVaultBypass=false
+                    TCSLogWithMark(error ?? "Unknown error")
+                }
+                else {
+                    self.fileVaultBypass=true
+                }
             }
-            else {
-                self.fileVaultBypass=true
-            }
         }
-
+        
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue) == true{
+            TCSLogWithMark("Setting filevault to unlock with admin")
+            FileVaultLoginHelper.shared.skipFileVaultAuthAtNextRebootWithAdmin { result, error in
+                if result == false {
+                    self.fileVaultBypass=false
+                    TCSLogWithMark(error ?? "Unknown error")
+                }
+                else {
+                    self.fileVaultBypass=true
+                }
+            }
+            
+        }
+        
     }
     func kerberosTicketUpdated() {
         TCSLogWithMark()

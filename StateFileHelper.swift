@@ -30,7 +30,7 @@ class StateFileHelper {
             folderPath = "/usr/local/var/"
             filePath = "xcreds_delay"
         case .fileVaultLogin:
-            folderPath = "/usr/local/var/"
+            folderPath = "/Library/Application Support/XCreds/statefile/"
             filePath = "xcreds_filevaultlogin"
         }
         return (folderPath, filePath)

@@ -13,7 +13,7 @@ class FileVaultLoginHelper {
     static let shared = FileVaultLoginHelper()
 
     
-    func skipFileVaultAuthAtNextReboot(completion:(_ result:Bool, _ error:String?)->Void)   {
+    func skipFileVaultAuthAtNextReboot(completion:@escaping(_ result:Bool, _ error:String?)->Void)   {
         let helperToolManager = HelperToolManager()
 
         switch  helperToolManager.manageHelperTool(action: .install) {
@@ -57,15 +57,86 @@ class FileVaultLoginHelper {
         helperToolManager.runCommand(username:username, password:cred.password) { output in
             if output==true{
                 TCSLogWithMark("runCommand success")
+                TCSLogWithMark()
+                completion(true, "")
+
             }
             else {
                 TCSLogWithMark()
                 NSAlert.showAlert(title:"Error",message:"Cannot set filevault login")
+                TCSLogWithMark()
+                completion(false, "Cannot set filevault login")
             }
-        }
-        TCSLogWithMark()
-        completion(true, "")
 
+        }
+
+    }
+    func skipFileVaultAuthAtNextRebootWithAdmin( completion:@escaping(_ result:Bool, _ error:String?)->Void)   {
+        let helperToolManager = HelperToolManager()
+
+        switch  helperToolManager.manageHelperTool(action: .install) {
+            
+        case .notRegistered:
+            TCSLogWithMark()
+            
+            completion(false, "Service is not registered")
+            
+            return
+        case .enabled:
+            TCSLogWithMark()
+            
+            break
+        case .requiresApproval:
+            TCSLogWithMark("Service requires approval. Please select Allow in the notification or open System Preferences->Login Items and allow the service")
+            
+            completion(false, "Service requires approval. Please select Allow in the notification or open System Preferences->Login Items and allow the service")
+
+        case .notFound:
+            TCSLogWithMark("Service Not Found")
+            completion(false, "Service Not Found")
+
+        @unknown default:
+            TCSLogWithMark("Unknown Error")
+            completion(false, "Unknown Error")
+        }
+        
+        TCSLogWithMark()
+        do {
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            
+            if let adminUser = try userManager.adminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
+                
+            
+                helperToolManager.runCommand(username:adminUser.username, password:adminUser.password) { output in
+                    if output==true{
+                        TCSLogWithMark("runCommand success")
+                    }
+                    else {
+                        TCSLogWithMark()
+                        NSAlert.showAlert(title:"Error",message:"Cannot set filevault login as admin")
+                    }
+                    TCSLogWithMark()
+                    completion(true, "")
+                }
+               
+
+            }
+            else {
+                
+                TCSLogWithMark("no valid credentials for admin filevaulit unlock")
+                completion(false, "no valid credentials for admin filevaulit unlock")
+
+            }
+            
+        }
+        catch {
+            TCSLogWithMark("error setting filevault login as admin")
+            completion(false, "error setting filevault login as admin")
+
+        }
+
+      
     }
     
 }
