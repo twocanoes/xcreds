@@ -1,3 +1,9 @@
+## tag-5.7(9037) (2025-11-12)
+
+*  fixed FV unlock as admin when setup [View](https://github.com/twocanoes/xcreds/commit/a049f13e068e6bf56ea9a19e9f5e14d10581704b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f51112000a0340ece11c6f46d6acd3e385ac36b9)
+
+
 ## tag-5.7(9036) (2025-11-12)
 
 *  added more logging [View](https://github.com/twocanoes/xcreds/commit/c2dac3ba6d052a7bd215c9bacfa4200ac4c8c4d6)
