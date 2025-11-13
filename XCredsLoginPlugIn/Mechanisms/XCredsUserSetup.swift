@@ -91,10 +91,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
                     TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
                     try? StateFileHelper().createFile(.fileVaultLogin)
                 }
-                else {
-                    TCSLogWithMark( "Failed to authenticate with FileVault.")
-
-                }
+            
                 
 
             }
@@ -103,17 +100,17 @@ class XCredsUserSetup: XCredsBaseMechanism{
 
             }
             if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue){
-                TCSLogWithMark("username set: \(aUsername)")
+                TCSLogWithMark("localAdminUserName set: \(aUsername)")
             }
             else {
-                TCSLogWithMark("username not set")
+                TCSLogWithMark("localAdminUserName not set")
             }
             if let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-                TCSLogWithMark("password set")
+                TCSLogWithMark("localAdminPassword set")
 
             }
             else {
-                TCSLogWithMark("password not set")
+                TCSLogWithMark("localAdminPassword not set")
 
             }
 

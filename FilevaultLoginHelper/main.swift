@@ -12,10 +12,14 @@ let log = Logger(subsystem: "com.twocanoes.xcreds", category: "daemon")
 @objc(HelperToolProtocol)
 public protocol HelperToolProtocol {
     func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
+    func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void)
+
 }
 
 // XPC Communication setup
 class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
+    
+    
     // Accept new XPC connections by setting up the exported interface and object.
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
         // Validate that the main app and helper app have the same code signing identity, otherwise return
@@ -29,6 +33,7 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
         newConnection.resume()
         return true
     }
+
 
     // Execute the shell command and reply with output.
     func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void) {
@@ -54,6 +59,28 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
 
     }
 
+    func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void) {
+        do {
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            
+            let userManager = UserSecretManager(secretKeeper: secretKeeper)
+            
+            if let adminUser = try userManager.adminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
+                runCommand(username: adminUser.username, password: adminUser.password, withReply: reply)
+            }
+            else {
+                TCSLogWithMark("no valid admin credentials found to unlock FV")
+                reply(false)
+            }
+        }
+        catch {
+            TCSLogWithMark("Error with secret keeper:\(error)")
+            reply(false)
+            
+        }
+        
+
+    }
     // Check that the codesigning matches between the main app and the helper app
     private func isValidClient(connection: NSXPCConnection) -> Bool {
         do {

@@ -7,6 +7,10 @@ import ServiceManagement
 @objc(HelperToolProtocol)
 public protocol HelperToolProtocol {
     func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
+    
+    func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void)
+
+    
 }
 
 enum HelperToolAction {
@@ -88,6 +92,38 @@ class HelperToolManager: ObservableObject {
     // Function to open Settings > Login Items
     func openSMSettings() {
         SMAppService.openSystemSettingsLoginItems()
+    }
+
+    func authFVAsAdmin(withReply completion: @escaping (Bool) -> Void){
+        if !isHelperToolInstalled {
+            TCSLogWithMark()
+            completion(false)
+            return
+        }
+
+        guard let connection = getConnection() else {
+            TCSLogWithMark()
+            completion(false)
+            return
+        }
+
+        guard let proxy = connection.remoteObjectProxyWithErrorHandler({ error in
+            DispatchQueue.main.async {
+                TCSLogWithMark()
+                completion(false)
+            }
+        }) as? HelperToolProtocol else {
+            TCSLogWithMark()
+            completion(false)
+            return
+        }
+
+        proxy.authFVAsAdmin() { output in
+            DispatchQueue.main.async {
+                TCSLogWithMark()
+                completion(true)
+            }
+        }
     }
 
     // Function to run privileged commands

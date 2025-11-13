@@ -102,13 +102,8 @@ class FileVaultLoginHelper {
         
         TCSLogWithMark()
         do {
-            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
-            let userManager = UserSecretManager(secretKeeper: secretKeeper)
             
-            if let adminUser = try userManager.adminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
-                
-            
-                helperToolManager.runCommand(username:adminUser.username, password:adminUser.password) { output in
+                helperToolManager.authFVAsAdmin() { output in
                     if output==true{
                         TCSLogWithMark("runCommand success")
                     }
@@ -121,13 +116,13 @@ class FileVaultLoginHelper {
                 }
                
 
-            }
-            else {
-                
-                TCSLogWithMark("no valid credentials for admin filevaulit unlock")
-                completion(false, "no valid credentials for admin filevaulit unlock")
-
-            }
+//            }
+//            else {
+//                
+//                TCSLogWithMark("no valid credentials for admin filevault unlock")
+//                completion(false, "no valid credentials for admin filevaulit unlock")
+//
+//            }
             
         }
         catch {
