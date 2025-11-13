@@ -1,3 +1,9 @@
+## tag-5.7(9042) (2025-11-13)
+
+*  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/91fe95e249b0dc38f6bfbbb3bc3398df4f75e843)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/769f6087894692cc8bc6d29840887755a310c06d)
+
+
 ## tag-5.7(9041) (2025-11-12)
 
 *  fixed fv auth [View](https://github.com/twocanoes/xcreds/commit/77efa902d8e7977350a491cef99c47e4b9e4097d)
