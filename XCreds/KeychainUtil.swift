@@ -144,16 +144,7 @@ class KeychainUtil {
 
             }
         }
-        if FileManager.default.fileExists(atPath: "/Applications/XCreds.app/Contents/MacOS/FileVaultLoginHelper", isDirectory: nil) {
-            let status = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app/Contents/MacOS/FileVaultLoginHelper", &trust)
-            if status == 0 {
-                secApps.append(trust!)
-            }
-            else {
-                TCSLogWithMark("error trusting FileVaultLoginHelper")
-
-            }
-        }
+       
         
         if FileManager.default.fileExists(atPath: "/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", isDirectory: nil) {
             let res = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", &trust)
