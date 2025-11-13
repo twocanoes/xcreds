@@ -1,3 +1,9 @@
+## tag-5.7(9041) (2025-11-12)
+
+*  fixed fv auth [View](https://github.com/twocanoes/xcreds/commit/77efa902d8e7977350a491cef99c47e4b9e4097d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f1044dfa67b36391e959492d2fb67af32a20aa11)
+
+
 ## tag-5.7(9038) (2025-11-12)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d80dfc95388af248aca3b945d145451304e752dd)
