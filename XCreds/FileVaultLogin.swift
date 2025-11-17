@@ -63,7 +63,7 @@ class FileVaultLoginHelper {
             }
             else {
                 TCSLogWithMark()
-                NSAlert.showAlert(title:"Error",message:"Cannot set filevault login")
+//                NSAlert.showAlert(title:"Error",message:"Cannot set filevault login")
                 TCSLogWithMark()
                 completion(false, "Cannot set filevault login")
             }
@@ -103,16 +103,16 @@ class FileVaultLoginHelper {
         TCSLogWithMark()
         do {
             
-                helperToolManager.authFVAsAdmin() { output in
-                    if output==true{
+                helperToolManager.authFVAsAdmin() { success in
+                    if success==true{
                         TCSLogWithMark("runCommand success")
                     }
                     else {
-                        TCSLogWithMark()
-                        NSAlert.showAlert(title:"Error",message:"Cannot set filevault login as admin")
+                        TCSLogWithMark("Cannot set filevault login as admin")
+//                        NSAlert.showAlert(title:"Error",message:"Cannot set filevault login as admin")
                     }
                     TCSLogWithMark()
-                    completion(true, "")
+                    completion(success, "")
                 }
                
 
