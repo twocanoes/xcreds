@@ -1,3 +1,10 @@
+## tag-5.7(9043) (2025-11-13)
+
+*  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/27acbfdbbac014e725e466997826f0821b712dee)
+*  updated tools [View](https://github.com/twocanoes/xcreds/commit/57b813f1b8cc079b94c24a7a36674910be90cc39)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6f048ccee6a0dd4e44b31485cc96784fb9760bbe)
+
+
 ## tag-5.7(9042) (2025-11-13)
 
 *  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/91fe95e249b0dc38f6bfbbb3bc3398df4f75e843)

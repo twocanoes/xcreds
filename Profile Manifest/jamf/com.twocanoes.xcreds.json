@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.7 (9043) OAuth Settings",
+    "description": "XCreds 5.7 (9044) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
