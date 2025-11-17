@@ -151,10 +151,10 @@ class HelperToolManager: ObservableObject {
             return
         }
 
-        proxy.runCommand(username:username, password:password) { output in
+        proxy.runCommand(username:username, password:password) { success in
             DispatchQueue.main.async {
                 TCSLogWithMark()
-                completion(true)
+                completion(success)
             }
         }
     }

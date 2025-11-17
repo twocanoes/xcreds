@@ -54,8 +54,8 @@ class FileVaultLoginHelper {
             completion(false, "no valid password found")
             return
         }
-        helperToolManager.runCommand(username:username, password:cred.password) { output in
-            if output==true{
+        helperToolManager.runCommand(username:username, password:cred.password) { success in
+            if success==true{
                 TCSLogWithMark("runCommand success")
                 TCSLogWithMark()
                 completion(true, "")

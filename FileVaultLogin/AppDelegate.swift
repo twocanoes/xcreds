@@ -58,14 +58,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
             
         }
-        helperToolManager.runCommand(username:username, password:cred.password) { output in
-            if output==true{
+        helperToolManager.runCommand(username:username, password:cred.password) { success in
+            if success==true{
                 TCSLogWithMark("runCommand success")
                 NSApplication.shared.terminate(self)
             }
             else {
                 TCSLogWithMark()
-
                 NSAlert.showAlert(title:"Error",message:"Cannot set filevault login")
                 NSApplication.shared.terminate(self)
             }
