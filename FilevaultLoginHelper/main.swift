@@ -82,7 +82,7 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         TCSLogWithMark(output.isEmpty ? "No output" : output)
-        reply(false)
+        reply(process.terminationStatus==0 ? true : false)
 
     }
 
