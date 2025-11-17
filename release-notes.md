@@ -1,3 +1,9 @@
+## tag-5.7(9044) (2025-11-17)
+
+*  check for securetoken user [View](https://github.com/twocanoes/xcreds/commit/e03e7c88d07c85e90350a7ba522213567f9021f2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c93b6f2011681b48f7b83c55bd77d2fa8e121820)
+
+
 ## tag-5.7(9043) (2025-11-13)
 
 *  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/27acbfdbbac014e725e466997826f0821b712dee)
