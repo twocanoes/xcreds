@@ -1,3 +1,9 @@
+## tag-5.7(9045) (2025-11-17)
+
+*  fixed issue where auth fv is always true [View](https://github.com/twocanoes/xcreds/commit/26734d5b93ec1b87d109b25400f34f9c12bed965)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/bdedf07891bf775b21cbae674addb1a89ee5e9ed)
+
+
 ## tag-5.7(9044) (2025-11-17)
 
 *  check for securetoken user [View](https://github.com/twocanoes/xcreds/commit/e03e7c88d07c85e90350a7ba522213567f9021f2)
