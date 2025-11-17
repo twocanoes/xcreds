@@ -76,24 +76,7 @@ class PasswordUtils: NSObject {
 
         return nil
     }
-    class func GetSecureTokenUserList() -> [String] {
-        let launchPath = "/usr/bin/fdesetup"
-        let args = [
-            "list"
-        ]
-        let secureTokenListRaw = cliTask(launchPath, arguments: args, waitForTermination: true)
-        let partialList = secureTokenListRaw.components(separatedBy: "\n")
-        var secureTokenUsers = [String]()
-        for entry in partialList {
-            let username = entry.components(separatedBy: ",")[0].trimmingCharacters(in: .whitespacesAndNewlines)
-            if username != ""{
-                secureTokenUsers.append(entry.components(separatedBy: ",")[0])
-            }
-        }
-
-        return secureTokenUsers
-    }
-
+   
     
 //    class func verifyUser(name: String, auth: String) -> Bool {
 //        os_log("Finding user record", log: noLoMechlog, type: .debug)

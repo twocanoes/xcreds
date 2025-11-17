@@ -16,9 +16,28 @@ public protocol HelperToolProtocol {
 
 }
 
+
 // XPC Communication setup
 class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
     
+    func GetSecureTokenUserList() -> [String] {
+        let launchPath = "/usr/bin/fdesetup"
+        let args = [
+            "list"
+        ]
+        let secureTokenListRaw = cliTask(launchPath, arguments: args, waitForTermination: true)
+        let partialList = secureTokenListRaw.components(separatedBy: "\n")
+        var secureTokenUsers = [String]()
+        for entry in partialList {
+            let username = entry.components(separatedBy: ",")[0].trimmingCharacters(in: .whitespacesAndNewlines)
+            if username != ""{
+                secureTokenUsers.append(entry.components(separatedBy: ",")[0])
+            }
+        }
+
+        return secureTokenUsers
+    }
+
     
     // Accept new XPC connections by setting up the exported interface and object.
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
@@ -38,6 +57,14 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
     // Execute the shell command and reply with output.
     func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void) {
         
+        let stUsers = GetSecureTokenUserList()
+        
+        guard stUsers.contains(username) else {
+            TCSLogWithMark("user \(username) is not a secure token user. Not enabling authenticated reboot.")
+            reply(false)
+            return
+
+        }
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/fdesetup")
         process.arguments = ["authrestart", "-delayminutes","-1","-user",username,"-password",password]
