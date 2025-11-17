@@ -1,3 +1,9 @@
+## tag-5.7(9046) (2025-11-17)
+
+*  removed auth fv failure message [View](https://github.com/twocanoes/xcreds/commit/8e9814eac13c2426493f9323a1e4579adab82d56)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d75b420bf640599f901d65149d8f4c9d2eb0594e)
+
+
 ## tag-5.7(9045) (2025-11-17)
 
 *  fixed issue where auth fv is always true [View](https://github.com/twocanoes/xcreds/commit/26734d5b93ec1b87d109b25400f34f9c12bed965)
