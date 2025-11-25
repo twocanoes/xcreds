@@ -474,8 +474,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
-            self.localOnlyCheckBox.isHidden = isLocalOnly
-
         }
 
     }

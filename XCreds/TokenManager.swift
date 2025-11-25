@@ -210,21 +210,11 @@ class TokenManager:DSQueryable {
 
         TCSLogWithMark()
         //ropg
-        var oidcUsername = ""
         if
             let localCredFromKeychain = localCredFromKeychain,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true{
             TCSLogWithMark("Checking credentials using ROPG")
-            let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-            if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first
-            {
-                oidcUsername=username
-            }
-            else if let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_full_username" ), oidcUsernamePrefs.isEmpty == false {
-                oidcUsername=oidcUsernamePrefs
-
-            }
-            else {
+            guard let oidcUsername = currOidcUsername() else {
                 throw ProcessTokenResult.error("no username for oidc config")
             }
             let shouldUseBasicAuthWithROPG = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuthWithROPG.rawValue)
@@ -250,9 +240,6 @@ class TokenManager:DSQueryable {
                 return Creds(password: localCredFromKeychain.password, tokens:tokenResponse )
             }
             return nil
-
-
-
         } //use the refresh token
         else if let refreshTokenFromKeychain =  keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue){
             
@@ -275,6 +262,19 @@ class TokenManager:DSQueryable {
             throw ProcessTokenResult.error("no refresh token")
 
         }
+    }
+    func currOidcUsername() -> String?{
+        let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
+
+        if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], userNames.count>0, let username = userNames.first
+        {
+            return username
+        }
+        else if let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_full_username" ), oidcUsernamePrefs.isEmpty == false {
+            return oidcUsernamePrefs
+
+        }
+        return nil
     }
     func idTokenData(jwtString:String) throws -> Data {
         let array = jwtString.components(separatedBy: ".")

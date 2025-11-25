@@ -1,1 +1,1 @@
-binary "https://bitbucket.org/twocanoes/productlicense-public/downloads/productlicense.json" "1.4"
+git "git@bitbucket.org:twocanoes/productlicense.git" "3c172c1211d98ff39aab8cf73fe2c2e94ae8a8bc"

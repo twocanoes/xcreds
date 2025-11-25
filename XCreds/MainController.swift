@@ -458,7 +458,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
             }
             else {
-                TCSLogWithMark("no idTokenInfo")
+                TCSLogWithMark("no idTokenInfo because using LDAP, ROPG or issue with OIDC.")
             
             }
 

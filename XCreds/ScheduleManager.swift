@@ -215,9 +215,12 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     refreshToken != ""  {
                 hasValidRefreshToken = true
             }
-            if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) {
+            if hasValidRefreshToken ||
+                DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) ||
+                DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue)
+            {
 
-                TCSLogWithMark("We have a refresh token or are using ROPG for menu login.")
+                TCSLogWithMark("We have a refresh token or are using ROPG/LDAP for menu login.")
 
                 //check to make sure we are not in an error state
                 let dateFormatter = ISO8601DateFormatter()
@@ -259,6 +262,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     }
 
                 Task{
+                    if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
                     do{
                         try await tokenManager.oidc().getEndpoints()
                         TCSLogWithMark("requesting new access token")
@@ -268,20 +272,53 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
                         feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
                     }
-                    catch let error  {
+                        catch let error  {
+                            
+                            TCSLogWithMark("Error")
+                            switch error {
+                                
+                            case OIDCLiteError.authFailure(let mesg):
+                                TCSLogWithMark("invalid credentials: \(mesg)")
+                                TCSLogWithMark("Setting last failed login timestamp to now.")
+                                
+                                ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+                                feedbackDelegate?.invalidCredentials()
+                                
+                            default:
+                                TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
+                                nextTokenCheckTime=Date.distantPast
+                                
+                            }
+                        }
+                    }
+                    else if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue) == true {
+                        let localCredFromKeychain =  keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue)
 
-                        TCSLogWithMark("Error")
-                        switch error {
+                    
+                        guard let username = tokenManager.currOidcUsername(), let password  = localCredFromKeychain?.password else {
+                            TCSLogWithMark("no oidc username or password found so punting on checking via LDAP")
+                            return
+                        }
+                        TCSLogWithMark("Checking password via Google LDAP")
 
-                        case OIDCLiteError.authFailure(let mesg):
-                            TCSLogWithMark("invalid credentials: \(mesg)")
+                        switch GoogleLDAP().verifyPasswordGoogleLDAP(username: username, password: password) {
+                            
+                        
+                        case .PasswordValid:
+                            TCSLogWithMark("Password Valid")
+
+                            feedbackDelegate?.credentialsUpdated(Creds(accessToken: nil, idToken: nil, refreshToken: nil, password:password, jsonDict: [:]))
+
+                        case .PasswordInvalid:
+                            TCSLogWithMark("invalid credentials via ldap")
                             TCSLogWithMark("Setting last failed login timestamp to now.")
-
+                            
                             ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
                             feedbackDelegate?.invalidCredentials()
+                            
 
-                        default:
-                            TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
+                        case .OtherError:
+                            TCSLogWithMark("Delaying check for ldap didn't get success or failure.")
                             nextTokenCheckTime=Date.distantPast
 
                         }
@@ -299,9 +336,6 @@ class ScheduleManager:NoMADUserSessionDelegate {
         }
         feedbackDelegate?.kerberosTicketUpdated()
         session?.userInfo()
-
-
-
     }
 
     func NoMADAuthenticationFailed(error: NoMADSessionError, description: String) {
