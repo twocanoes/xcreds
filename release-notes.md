@@ -1,3 +1,9 @@
+## tag-5.7(9047) (2025-11-17)
+
+*  fixed term status of fdesetup [View](https://github.com/twocanoes/xcreds/commit/4710a271b6a1ccae6a985a3101c91284b5f3f22c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ab11496bf65746b085b0e13f61e5f576c580fe94)
+
+
 ## tag-5.7(9046) (2025-11-17)
 
 *  removed auth fv failure message [View](https://github.com/twocanoes/xcreds/commit/8e9814eac13c2426493f9323a1e4579adab82d56)
