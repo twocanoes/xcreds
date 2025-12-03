@@ -109,7 +109,17 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             }
 
         }
-        self.systemInfoTextField?.stringValue = sysInfo
+        let bold14:NSFont = NSFont.systemFont(ofSize: 14.0)
+        let textColor:NSColor = NSColor.black
+        let textParagraph:NSMutableParagraphStyle = NSMutableParagraphStyle()
+        textParagraph.lineSpacing = 10.0  /*this sets the space BETWEEN lines to 10points*/
+        textParagraph.maximumLineHeight = 12.0/*this sets the MAXIMUM height of the lines to 12points*/
+        let attribs = [NSAttributedString.Key.font:bold14,NSAttributedString.Key.foregroundColor:textColor,NSAttributedString.Key.paragraphStyle:textParagraph]
+        let attrString:NSAttributedString = NSAttributedString.init(string: sysInfo, attributes: attribs)
+        self.systemInfoTextField?.attributedStringValue = attrString
+
+        
+//        self.systemInfoTextField?.stringValue = sysInfo
         self.systemInfoPopover.delegate=self
         systemInfoPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .maxY)
     }

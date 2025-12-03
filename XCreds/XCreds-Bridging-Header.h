@@ -12,7 +12,7 @@
 #import "TCSKeychain.h"
 #import "TCSUnifiedLogger.h"
 #import "TCTaskHelper.h"
-#ifndef AUTOFILL_TARGET
+#if !defined(AUTOFILL_TARGET) && !defined(FILEVAULTLOGIN_TARGET) && !defined(FILEVAULTLOGINHELPER_TARGET)
 #import <ProductLicense/ProductLicense.h>
 #endif
 #import "TCSLoginWindowUtilities.h"
@@ -25,5 +25,5 @@
 #import "krb5.h"
 
 #include <membership.h>
-
+#import "TCSTKSmartCard.h"
 #endif /* XCreds_Bridging_Header_h */

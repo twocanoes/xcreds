@@ -79,26 +79,38 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
                 self.setHint(type: .localAdmin, hint: localAdmin)
             }
+            try? StateFileHelper().removeFile(.fileVaultLogin)
 
-            if let _ = getHint(type: .localAdmin) as? LocalAdminCredentials {
+            if let credentials = getHint(type: .localAdmin) as? LocalAdminCredentials {
                 TCSLogWithMark("local admin set in hints")
+
+                TCSLogWithMark("checking to see if we should skip filevault login by seeing if shouldSkipFileVaultLoginAdmin pref is true")
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue)==true,
+                   filevaultAuth(username: credentials.username, password: credentials.password) == true
+                {
+                    TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
+                    try? StateFileHelper().createFile(.fileVaultLogin)
+                }
+            
+                
+
             }
             else {
                 TCSLogWithMark("local admin not set in hints")
 
             }
             if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue){
-                TCSLogWithMark("username set: \(aUsername)")
+                TCSLogWithMark("localAdminUserName set: \(aUsername)")
             }
             else {
-                TCSLogWithMark("username not set")
+                TCSLogWithMark("localAdminUserName not set")
             }
             if let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-                TCSLogWithMark("password set")
+                TCSLogWithMark("localAdminPassword set")
 
             }
             else {
-                TCSLogWithMark("password not set")
+                TCSLogWithMark("localAdminPassword not set")
 
             }
 
@@ -107,12 +119,71 @@ class XCredsUserSetup: XCredsBaseMechanism{
             TCSLogWithMark(error.localizedDescription)
         }
 
+        updateDSRecords()
 
         let _ = allowLogin()
-//        updateDSRecords()
 
 
     }
     
+    func updateDSRecords() {
+        guard let nonSystemUsers = try? getAllNonSystemUsers() else{
+            TCSLogWithMark("could not get non system users")
+            return
+        }
 
+        for odRecord in nonSystemUsers {
+            let userDetails = try? odRecord.recordDetails(forAttributes: nil)
+            if let userDetails = userDetails {
+                if let _ = try? odRecord.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String]{
+                    TCSLogWithMark("user already has oidc full username")
+                    continue
+                }
+                TCSLogWithMark("searching for user in user account")
+                if let homeDirArray = userDetails["dsAttrTypeStandard:NFSHomeDirectory"] as? Array<String>, homeDirArray.count>0{
+                    let homeDir = homeDirArray[0]
+                    TCSLogWithMark("looking in \(homeDir) for ds_info.plist")
+                    let appSupportFolder = homeDir + "/Library/Application Support/XCreds"
+                    let plistPath = appSupportFolder + "/ds_info.plist"
+
+                    TCSLogWithMark("looking in path \(plistPath)")
+                    if FileManager.default.fileExists(atPath: plistPath){
+                        TCSLogWithMark("found ds_info.plist")
+                        do {
+                            TCSLogWithMark("reading plist")
+                            let dict = try PropertyListDecoder().decode([String:String].self, from: Data(contentsOf: URL(fileURLWithPath: plistPath)))
+                            TCSLogWithMark("got plist")
+
+                            if let currOIDCFullUsername = dict["_xcreds_oidc_full_username"],
+                               let oidcUsername = dict["_xcreds_oidc_username"],
+                               let subValue = dict["subValue"],
+                               let issuerValue = dict["issuerValue"]
+                            {
+                                TCSLogWithMark("updating user account info")
+                                try odRecord.setValue("1", forAttribute: "dsAttrTypeNative:_xcreds_oidc_updatedfromlocal")
+
+                                try odRecord.setValue(currOIDCFullUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username")
+                                try odRecord.setValue(oidcUsername, forAttribute: "dsAttrTypeNative:_xcreds_oidc_username")
+                                try odRecord.setValue(subValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_sub")
+                                try odRecord.setValue(issuerValue, forAttribute: "dsAttrTypeNative:_xcreds_oidc_iss")
+
+                                
+                                if let currKerberosPrincipal = dict["_xcreds_activedirectory_kerberosPrincipal"] {
+                                    try odRecord.setValue(currKerberosPrincipal, forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal")
+                                }
+                                TCSLogWithMark("removing file")
+                                try FileManager.default.removeItem(atPath: plistPath)
+
+                            }
+                        }
+                        catch {
+                            TCSLogWithMark("error decoding propertylist: \(error)")
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
 }

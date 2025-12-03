@@ -14,3 +14,4 @@
 #import "KerbUtil.h"
 #import "GSSItem.h"
 #import "krb5.h"
+#import "TCSTKSmartCard.h"

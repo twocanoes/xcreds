@@ -9,7 +9,7 @@ import Cocoa
 
 class DefaultsHelper: NSObject {
 
-    static func backgroundImage(includeDefault:Bool=true) -> NSImage? {
+    static func backgroundImage() -> NSImage? {
         let coreServicesDefaultImagePathUrl: String = "file:///System/Library/CoreServices/DefaultDesktop.heic"
         TCSLogWithMark()
         if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
@@ -20,33 +20,7 @@ class DefaultsHelper: NSObject {
             TCSLogWithMark("Using CoreServices Default Desktop image")
             return coreServicesDefaultImage
         }
-        if includeDefault == true {
-
-            let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-            guard let bundle = bundle else {
-                return nil
-            }
-
-            TCSLogWithMark()
-            if let imagePath = bundle.path(forResource: "DefaultBackground", ofType: "png") {
-
-                if FileManager.default.fileExists(atPath: imagePath){
-                    let image = NSImage.init(byReferencingFile: imagePath)
-                    TCSLogWithMark()
-
-                    if let image = image {
-                        return image
-                    }
-                }
-                else {
-                    TCSLogWithMark("No image found at \(imagePath)")
-                }
-
-                TCSLogWithMark()
-            }
-
-        }
+       
         return nil
     }
 
@@ -56,7 +30,7 @@ class DefaultsHelper: NSObject {
         if let imagePathURL = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowSecondaryMonitorsBackgroundImageURL.rawValue), let image = NSImage.imageFromPathOrURL(pathURLString: imagePathURL){
             return image
         }
-        return backgroundImage(includeDefault: includeDefault)
+        return backgroundImage()
 
     }
 

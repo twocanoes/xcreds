@@ -342,7 +342,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
     }
     func resetUserPassword(adminUserName:String, adminPassword:String) {
         do {
-            TCSLogWithMark("secure token admin user \(adminUserName) and password \(adminPassword.count) obtained")
+            TCSLogWithMark("secure token admin user \(adminUserName) and password obtained")
 
             let node = try ODNode.init(session: session, type: ODNodeType(kODNodeTypeLocalNodes))
             TCSLogWithMark()

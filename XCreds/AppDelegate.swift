@@ -721,13 +721,6 @@ extension xcreds {
                         }
                         try userManager.setUIDUser(fullName: fullname, rfidUID: rfidUidData, username: username, password: password, uid: NSNumber(value: Int(uid)), pin: pin)
 
-//                        let (hashedUID,salt) = try PasswordCryptor().hashSecretWithKeyStretchingAndSalt(secret: rfidUidData,salt: nil)
-//
-//                        print(rfidUidData.hexEncodedString()) 
-//                        print(hashedUID.hexEncodedString())
-//                        print(salt.hexEncodedString())
-//                        
-//                        rfidUsers.userDict?[salt+hashedUID] = try SecretKeeperUser(fullName: fullname, username: username, password: password, uid: NSNumber(value: Int(uid)), rfidUID: rfidUidData, pin: pin)
                         count += 1
                     }
 
@@ -857,6 +850,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()
+        
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true

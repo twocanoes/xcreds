@@ -474,8 +474,6 @@ protocol UpdateCredentialsFeedbackProtocol {
 
             let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
-            self.localOnlyCheckBox.isHidden = isLocalOnly
-
         }
 
     }
@@ -1382,7 +1380,7 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
     }
     func updateCurrentUserKeychain(updatedPassword:String) throws  {
-        let accountInfo = try KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
+        let accountInfo = KeychainUtil().findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
 
         TCSLogWithMark("Getting account info.")
 
@@ -1400,10 +1398,11 @@ extension SignInViewController: NoMADUserSessionDelegate {
         //change entry in keychain to match new password
         TCSLogWithMark("change entry in keychain to match new password")
 
-        if KeychainUtil().updatePassword(serviceName: "xcreds local password",accountName:PasswordUtils.currentConsoleUserName, pass:updatedPassword, keychainPassword: updatedPassword) == false {
+        if KeychainUtil().updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass:updatedPassword, keychainPassword: updatedPassword) == false {
             throw PasswordError.invalidResult("Error updating password in keychain")
 
         }
+        
     }
 //callback from ADAuth framework when userInfo returns
     func NoMADUserInformation(user: ADUserRecord) {

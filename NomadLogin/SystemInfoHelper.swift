@@ -39,22 +39,34 @@ class SystemInfoHelper {
             info.append(versionInfo)
 
         }
-        info.append("macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
-        info.append("Serial: \(getSerial())")
+        info.append(" ⌘  macOS \(ProcessInfo.processInfo.operatingSystemVersionString)")
+        
+        let serial = getSerial()
+        
+        if serial.isEmpty==false {
+            info.append("#️⃣ Serial: \(serial)")
+        }
 //        info.append("MAC: \(getMAC())")
-        info.append("Computer Name: \(Host.current().localizedName!)")
-        info.append("Hostname: \(ProcessInfo.processInfo.hostName)")
+        info.append("💻 Computer Name: \(Host.current().localizedName!)")
+        info.append("👤 Hostname: \(ProcessInfo.processInfo.hostName)")
 
         if let ssid = NetworkManager().getCurrentSSID(){
-            info.append("SSID: \(ssid)")
+            info.append("🛜 SSID: \(ssid)")
+        }
+        if StateFileHelper().fileExists(.fileVaultLogin)==true{
+            TCSLogWithMark( "adding FileVault AutoLogin Enabled")
+
+            info.append("🔑 FileVault AutoLogin Enabled")
+        }
+        else {
+            TCSLogWithMark( "Not showing FileVault AutoLogin Enabled")
+
         }
 
         let ipAddresses = getIFAddresses()
         if ipAddresses.count > 0 {
-            info.append("IP Address: \(ipAddresses.joined(separator: ","))")
+            info.append("🌐 IP Address: \(ipAddresses.joined(separator: ","))")
         }
-
-//        systemInfoAdditions
         if let systemInfoAdditionsArray = DefaultsOverride.standardOverride.array(forKey: PrefKeys.systemInfoAdditionsArray.rawValue) as? Array <String>, systemInfoAdditionsArray.count>0 {
 
             for line in systemInfoAdditionsArray {

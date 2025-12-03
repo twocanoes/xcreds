@@ -23,7 +23,7 @@ enum KeychainError: Error {
 }
 
 
-
+import OSLog
 import Foundation
 import Security
 
@@ -38,7 +38,6 @@ struct PasswordItem{
     var keychainItem: SecKeychainItem
     
 }
-@available(macOS, deprecated: 11)
 class KeychainUtil {
 
 //    var myErr: OSStatus
@@ -50,15 +49,45 @@ class KeychainUtil {
 //        myErr = 0
 //    }
 
+  
+
     // find if there is an existing account password and return it or throw
-    @available(macOS, deprecated: 11)
-    func findPassword(serviceName:String, accountName:String?) -> PasswordItem? {
+    @available(macOS, deprecated: 10.10)
+    func findPassword(serviceName:String, accountName:String?,keychain:SecKeychain?=nil) -> PasswordItem? {
 
         var passLength: UInt32 = 0
         var passPtr: UnsafeMutableRawPointer? = nil
         var keychainItem: SecKeychainItem?
         TCSLogWithMark("Finding \(serviceName) in keychain")
-        let myErr = SecKeychainFindGenericPassword(nil, UInt32(serviceName.count), serviceName, 0, nil, &passLength, &passPtr, &keychainItem)
+        
+        var keychainToUse:SecKeychain?
+        var userKeychain:SecKeychain?
+        
+        TCSLogWithMark("find password for account:\(String(describing: accountName)) service:(serviceName)")
+
+        
+        if let keychain = keychain {
+            os_log("using provided keychain")
+            keychainToUse=keychain
+        }
+        else {
+            os_log("using user keychain")
+
+            if SecKeychainCopyDomainDefault(SecPreferencesDomain.user, &userKeychain) != errSecSuccess {
+                os_log("error getting user keychain")
+                return nil
+            }
+
+            if let userKeychain = userKeychain {
+                keychainToUse = userKeychain
+            }
+            else {
+                os_log("keychain is nil. returning.")
+                return nil
+            }
+        }
+        
+        let myErr = SecKeychainFindGenericPassword(keychainToUse, UInt32(serviceName.count), serviceName, UInt32((accountName ?? "").count), accountName, &passLength, &passPtr, &keychainItem)
 
 
         if myErr == OSStatus(errSecSuccess) {
@@ -115,6 +144,8 @@ class KeychainUtil {
 
             }
         }
+       
+        
         if FileManager.default.fileExists(atPath: "/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", isDirectory: nil) {
             let res = SecTrustedApplicationCreateFromPath("/Applications/XCreds.app/Contents/Resources/XCreds Login Autofill.app/Contents/PlugIns/XCreds Login Password.appex", &trust)
             if res == 0 {
@@ -151,10 +182,9 @@ class KeychainUtil {
 
     // set the password
 
-    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String) -> SecKeychainItem? {
-
-        TCSLogWithMark("Setting password for account:\(accountName) service:(serviceName)")
-
+    func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String, keychain:SecKeychain?=nil) -> SecKeychainItem? {
+        
+        
         let account = accountName
         let passwordData = pass.data(using: String.Encoding.utf8)!
         var secAccess:SecAccess?
@@ -163,9 +193,37 @@ class KeychainUtil {
         var aclArray : CFArray? = nil
         var appList: CFArray? = nil
         var desc: CFString? = nil
+        
+        var keychainToUse:SecKeychain
+        var userKeychain:SecKeychain?
+        
+        TCSLogWithMark("Setting password for account:\(accountName) service:(serviceName)")
+
+        
+        if let keychain = keychain {
+            os_log("using provided keychain")
+            keychainToUse=keychain
+        }
+        else {
+            os_log("using user keychain")
+
+            if SecKeychainCopyDomainDefault(SecPreferencesDomain.user, &userKeychain) != errSecSuccess {
+                os_log("error getting user keychain")
+                return nil
+            }
+
+            if let userKeychain = userKeychain {
+
+                keychainToUse = userKeychain
+            }
+            else {
+                os_log("keychain is nil. returning.")
+                return nil
+            }
+        }
+
 
         TCSLogWithMark("Creating ACL")
-        
         //create the default ACLs as SecAccess so we can modify them
         SecAccessCreate(accountName as CFString, nil, &secAccess)
         
@@ -210,6 +268,7 @@ class KeychainUtil {
                                     kSecAttrService as String: serviceName,
                                     kSecValueData as String: passwordData,
                                     kSecAttrAccess as String: secAccess as SecAccess,
+                                     kSecUseKeychain as String:keychainToUse as Any,
                                     kSecReturnRef as String: true
         ]
         
@@ -313,14 +372,14 @@ class KeychainUtil {
 
     }
 
-    func updatePassword(serviceName:String, accountName: String, pass: String, keychainPassword:String ) -> Bool {
-        let passwordItem = findPassword(serviceName: serviceName, accountName: accountName)
+    func updatePassword(serviceName:String, accountName: String, pass: String, keychainPassword:String, keychain:SecKeychain?=nil) -> Bool {
+        let passwordItem = findPassword(serviceName: serviceName, accountName: accountName, keychain: keychain)
         if let passwordItem = passwordItem {
             let _ = deletePassword(keychainItem: passwordItem.keychainItem)
         }
         TCSLogWithMark("setting new password for \(accountName) \(serviceName)")
 
-        let secKeychainItem = setPassword(serviceName: serviceName, accountName: accountName, pass: pass, keychainPassword: keychainPassword)
+        let secKeychainItem = setPassword(serviceName: serviceName, accountName: accountName, pass: pass, keychainPassword: keychainPassword,keychain: keychain)
         if secKeychainItem == nil {
             TCSLogErrorWithMark("setting new password FAILURE: accountname:\(accountName)")
             return false
@@ -336,15 +395,24 @@ class KeychainUtil {
 
     }
 
+    @available(macOS, deprecated: 10.10)
+    func clearPasswords(serviceName:String,keychain:SecKeychain?=nil) -> Bool {
+        findAndDelete(serviceName: serviceName, accountName: nil, keychain: keychain)
+    }
     // convience functions
     @available(macOS, deprecated: 11)
-    func findAndDelete(serviceName: String, accountName: String) -> Bool {
-        if let passwordItem = findPassword(serviceName: serviceName, accountName:accountName) {
-            if ( deletePassword(keychainItem: passwordItem.keychainItem) == 0 ) {
-                return true
-            } else {
+    func findAndDelete(serviceName: String, accountName: String?, keychain:SecKeychain?=nil) -> Bool {
+        
+        while true {
+            guard let passwordItem = findPassword(serviceName: serviceName, accountName:accountName,keychain: keychain) else {
+                break
+            }
+            let res = deletePassword(keychainItem: passwordItem.keychainItem)
+            if res != 0  {
                 return false
             }
+                      
+
         }
         return true //on password found so don't delete and return true
     }

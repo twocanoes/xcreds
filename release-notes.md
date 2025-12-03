@@ -1,3 +1,215 @@
+## tag-5.7(9047) (2025-11-17)
+
+*  fixed term status of fdesetup [View](https://github.com/twocanoes/xcreds/commit/4710a271b6a1ccae6a985a3101c91284b5f3f22c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ab11496bf65746b085b0e13f61e5f576c580fe94)
+
+
+## tag-5.7(9046) (2025-11-17)
+
+*  removed auth fv failure message [View](https://github.com/twocanoes/xcreds/commit/8e9814eac13c2426493f9323a1e4579adab82d56)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d75b420bf640599f901d65149d8f4c9d2eb0594e)
+
+
+## tag-5.7(9045) (2025-11-17)
+
+*  fixed issue where auth fv is always true [View](https://github.com/twocanoes/xcreds/commit/26734d5b93ec1b87d109b25400f34f9c12bed965)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/bdedf07891bf775b21cbae674addb1a89ee5e9ed)
+
+
+## tag-5.7(9044) (2025-11-17)
+
+*  check for securetoken user [View](https://github.com/twocanoes/xcreds/commit/e03e7c88d07c85e90350a7ba522213567f9021f2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c93b6f2011681b48f7b83c55bd77d2fa8e121820)
+
+
+## tag-5.7(9043) (2025-11-13)
+
+*  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/27acbfdbbac014e725e466997826f0821b712dee)
+*  updated tools [View](https://github.com/twocanoes/xcreds/commit/57b813f1b8cc079b94c24a7a36674910be90cc39)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6f048ccee6a0dd4e44b31485cc96784fb9760bbe)
+
+
+## tag-5.7(9042) (2025-11-13)
+
+*  updated trusted apps [View](https://github.com/twocanoes/xcreds/commit/91fe95e249b0dc38f6bfbbb3bc3398df4f75e843)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/769f6087894692cc8bc6d29840887755a310c06d)
+
+
+## tag-5.7(9041) (2025-11-12)
+
+*  fixed fv auth [View](https://github.com/twocanoes/xcreds/commit/77efa902d8e7977350a491cef99c47e4b9e4097d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f1044dfa67b36391e959492d2fb67af32a20aa11)
+
+
+## tag-5.7(9038) (2025-11-12)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d80dfc95388af248aca3b945d145451304e752dd)
+
+
+## tag-5.7(9037) (2025-11-12)
+
+*  fixed FV unlock as admin when setup [View](https://github.com/twocanoes/xcreds/commit/a049f13e068e6bf56ea9a19e9f5e14d10581704b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f51112000a0340ece11c6f46d6acd3e385ac36b9)
+
+
+## tag-5.7(9036) (2025-11-12)
+
+*  added more logging [View](https://github.com/twocanoes/xcreds/commit/c2dac3ba6d052a7bd215c9bacfa4200ac4c8c4d6)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f82ca5967e33fc2a94773176365d12ca8ad6fcfa)
+
+
+## tag-5.7(9035) (2025-11-11)
+
+*  added emojis to popover to make it fancy [View](https://github.com/twocanoes/xcreds/commit/de4a4eed7eb22adc0cff953ca4eec1f2b0f6d63b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a658da59e4da3704ea1a84cd0861550772c69a81)
+
+
+## tag-5.7(9022) (2025-11-11)
+
+*  added FV login indicator at login window and menu item [View](https://github.com/twocanoes/xcreds/commit/59a56aa533b233ca0cb6f130ebe78a1b5fa55bf5)
+*  added sample profile for fv skip [View](https://github.com/twocanoes/xcreds/commit/4209457d6a6f3b4715955268c87145d6fe59f82e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a892668be9e504dba44e9150e469b5beb11d10fa)
+
+
+## tag-5.7(9020) (2025-11-11)
+
+*  fixed issue with copying info to ds [View](https://github.com/twocanoes/xcreds/commit/7f51197c0ee91df24dd5e3ef748959654055f53a)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/38032c9649161e09451b103f6a33243c5e76fbf1)
+
+
+## tag-5.7(9016) (2025-11-10)
+
+*  fixed regression of DS migrate [View](https://github.com/twocanoes/xcreds/commit/5aae0f125c70e46a6f5f193986d16cec94263fbf)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/46098e1e2a7eb6d768c8b7bcb683fcc17489431b)
+
+
+## tag-5.7(9015) (2025-11-05)
+
+*  updated js; fixed ctk shim for tahoe [View](https://github.com/twocanoes/xcreds/commit/036bd7ac69a84d4e855713f40c42a4888574541b)
+*  updated open source tools [View](https://github.com/twocanoes/xcreds/commit/5e0a72ea62f7f3809d3d1cf5fbd8b801d789e84e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/93e60e1f67c192098b232330d2cb3538ac71b158)
+
+
+## tag-5.7(9014) (2025-11-05)
+
+*  bumped manifest version: Bump manifest version #362 [View](https://github.com/twocanoes/xcreds/commit/f0fb5c810e9cdcc878205a4a235158c231c33de1)
+*  Fix typos for shouldSkipFileVaultLogin and shouldSkipFileVaultLoginAdmin descriptions #361 [View](https://github.com/twocanoes/xcreds/commit/046aa51a5e5160bb2dfd051dbe14510d1e18b6ac)
+*  Cloud password detection can fail if login form has option to show password #358 [View](https://github.com/twocanoes/xcreds/commit/f045b4323e434a0d0aa4aaaf3cc5ba056d85fb45)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/97d5b3c9a6bd0fab0b34b18d3cae3fb71f483629)
+
+
+## tag-5.7(9013) (2025-10-28)
+
+*  updated js [View](https://github.com/twocanoes/xcreds/commit/91a9e47fddef2ece7f1855f727d4f2793f5ab78c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/284ac6f723e68ec0c633a17c4736d94b4324649a)
+
+
+## tag-5.7(9012) (2025-10-28)
+
+*  reverted trustedapp code due to bad merge [View](https://github.com/twocanoes/xcreds/commit/f219029e817aa1d549bb863c976a207ed039677d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/8a3284cb46559dac26369eb478254e79b5ec4db5)
+
+
+## tag-5.7(9011) (2025-10-27)
+
+*  reverted js [View](https://github.com/twocanoes/xcreds/commit/b43685451bb787cc0eb5e1f8c2fa93a275dd62ee)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/1dfd3d63618f7c01994e4fe7508d883108d24a52)
+
+
+## tag-5.7(9010) (2025-10-24)
+
+*  added skip FV as admin pref and implemented [View](https://github.com/twocanoes/xcreds/commit/1bff20ee2a9b0f558e876efb3f46dc161026e22e)
+*  added javascript update issue #358: Cloud password detection can fail if login form has option to show password #358 [View](https://github.com/twocanoes/xcreds/commit/9cabc425bab0a833e12c2fb3c770b5ce4edc1160)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/fc5a0376860e95f301ff3e0ae160d54b53132a42)
+
+
+## tag-5.7(9009) (2025-10-24)
+
+*  fixed default value for shouldSkipFileVaultLogin [View](https://github.com/twocanoes/xcreds/commit/47e2282a3255e27d16c7a3010a0b98d6ab5d97b6)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/1b5089b1869ae214a5d1591781d10491c1002aa0)
+
+
+## tag-5.7(9008) (2025-10-11)
+
+*  updated build info [View](https://github.com/twocanoes/xcreds/commit/ee0b960b4f42df74e90347c3b108da903a072445)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9d353132acbfd0096d369f64b0c5cc96163e842c)
+
+
+## tag-5.7(9007) (2025-10-11)
+
+*  updated build info [View](https://github.com/twocanoes/xcreds/commit/1a32f1c44d84c64cf661858ec7123a0afeb27cf2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9522d01a296ca20a64a833defd2bdf86b5af5038)
+
+
+## tag-5.7(9006) (2025-10-11)
+
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/7b8c10567ffe64291f02a908246821d6fbedbf94)
+*  updated build number [View](https://github.com/twocanoes/xcreds/commit/106843bb816077f5936c99e78ae3e3793d13bd44)
+*  updated build number [View](https://github.com/twocanoes/xcreds/commit/4d81b4c6d5d41686450ce5c16b091e9543c1c198)
+
+
+## tag-5.7(9005) (2025-10-11)
+
+*  changed project name case; minor fix in autofill for nonxcreds user [View](https://github.com/twocanoes/xcreds/commit/302d7efc640e1a37c50d116dbadfe1d5140884df)
+
+
+## tag-5.7(9004) (2025-10-10)
+
+*  remove unused image [View](https://github.com/twocanoes/xcreds/commit/23d5d1597b5e33cf5273cd8c672951145d8b9989)
+*  save password to user keychain for local users [View](https://github.com/twocanoes/xcreds/commit/b352e2e349d62c9e784df3136b237bd938616f02)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/3a28398f8f1adcce2ad7ad5bf02e075b6c45f9bd)
+
+
+## tag-5.7(9003) (2025-10-10)
+
+*  moved filevaultlogin to main app [View](https://github.com/twocanoes/xcreds/commit/1ab0adfac89e3340d3d32adb174edab038d896bc)
+*  bump [View](https://github.com/twocanoes/xcreds/commit/b4ef828176d23cee17777e2119b35d294bce55ea)
+
+
+## tag-5.7(9001) (2025-10-09)
+
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/68e5141e5ce00f73dd461a1139d9e1979b3d2c80)
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/73f70a0f9cd97aac25992257a39625ed43ed1224)
+
+
+## tag-5.7(30) (2025-10-09)
+
+*  set skip install on new targets [View](https://github.com/twocanoes/xcreds/commit/acd16de3fe0cc8f9a902c281a112423980371d37)
+
+
+## tag-5.7(29) (2025-10-09)
+
+*  fixed ropg prompting issue [View](https://github.com/twocanoes/xcreds/commit/58633f3a0e5716a154fc31c12a26d282c999ad8b)
+*  fixed build number [View](https://github.com/twocanoes/xcreds/commit/fb82b4096acd045a205ab6347f2a2a0879b31d9c)
+
+
+## tag-5.7(8992) (2025-10-08)
+
+*  fixed issue with not prompting and password changing [View](https://github.com/twocanoes/xcreds/commit/a1e5efa2f9b786244f431e5b332b0d1b9384f227)
+
+
+## tag-5.7(8981) (2025-10-07)
+
+*  reorged projecdt [View](https://github.com/twocanoes/xcreds/commit/20dbeded4e35e385def5ad612a2a309bf69c6d21)
+
+
+## tag-5.7(8980) (2025-10-07)
+
+*  bumped to 5.7 [View](https://github.com/twocanoes/xcreds/commit/917a61d740f358edda392085412d923c4f5909e1)
+*  updated cartfile to use binary [View](https://github.com/twocanoes/xcreds/commit/2a9161c914568370d746d3bed0ab4c2c41cc3cb2)
+
+
+## tag-5.6(8979) (2025-10-07)
+
+*  added save to system keychain [View](https://github.com/twocanoes/xcreds/commit/ef40190c5c18394599babbb27264f7228e57a846)
+*  fixed issue setting new password in keychain [View](https://github.com/twocanoes/xcreds/commit/a2f727ac2552c35d4d55315f174b9cc77ff3013d)
+
+
+## tag-5.6(8978) (2025-09-29)
+
+*  reverted issue #355 due to keychain prompting issues; removed logging statement [View](https://github.com/twocanoes/xcreds/commit/76517681f918a0f4e9ae59fd7cf309abc47c9ddd)
+
+
 ## tag-5.6(8977) (2025-09-26)
 
 *  fixed dont replace good password #355 [View](https://github.com/twocanoes/xcreds/commit/22494f104e33afb5d294987f14354055c62523ec)

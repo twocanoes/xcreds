@@ -39,8 +39,6 @@ agvtool next-version -all
 
 buildNumber=$(agvtool what-version -terse)
 version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING_VERSION =')
-git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
-git push --tags
 ./release_notes.sh  > release-notes.md
 
 
@@ -64,6 +62,8 @@ if  [ -n "${update_manifest}" ];  then
 	/usr/libexec/PlistBuddy   -c "Set :pfm_version ${curr_vers}" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"	
 fi
 
+
+
 temp_folder=$(mktemp -d "/tmp/${PRODUCT_NAME}.XXXXXXXX")
 BUILD_FOLDER="${temp_folder}/build"
 pushd "${PROJECT_FOLDER}/Profile Manifest"
@@ -71,7 +71,13 @@ pushd "${PROJECT_FOLDER}/Profile Manifest"
 
 popd 
 
-xcodebuild ONLY_ACTIVE_ARCH=NO archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${PRODUCT_NAME}" -archivePath  "${temp_folder}/${PRODUCT_NAME}.xcarchive"
+
+git commit -a -m 'updated build number, manifest and other build files'
+git tag -a "tag-${version}(${buildNumber})" -m "tag-${version}(${buildNumber})"
+git push --tags
+git push
+
+xcodebuild archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${PRODUCT_NAME}" -archivePath  "${temp_folder}/${PRODUCT_NAME}.xcarchive"
 
 
 xcodebuild -exportArchive -archivePath "${temp_folder}/${PRODUCT_NAME}.xcarchive"  -exportOptionsPlist "${SRC_PATH}/build_resources/exportOptions.plist" -exportPath "${BUILD_FOLDER}" -allowProvisioningUpdates 

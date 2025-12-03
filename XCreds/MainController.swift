@@ -17,6 +17,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         case usernamePassword
     }
 
+    var fileVaultBypass = false
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let scheduleManager = ScheduleManager()
@@ -91,7 +92,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         self.hasCredential = hasCredential
         super.init()
         scheduleManager.feedbackDelegate=self
-
+        updateFileVaultSkip()
         let shouldShowMenuBarSignInWithoutLoginWindowSignin = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowMenuBarSignInWithoutLoginWindowSignin.rawValue)
 
         if isLocalOnlyAccount() == false || shouldShowMenuBarSignInWithoutLoginWindowSignin==true {
@@ -297,11 +298,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     //get local password either from keychain or prompt. If prompt, then it will save in keychain for next time. if keychain, get keychain and test to make sure it is valid.
     func localAccountAndPassword() -> (String?,String?) {
 
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
-            return (nil,nil)
-
-        }
-
+        
         let keychainUtil = KeychainUtil()
         var accountName=""
         let passwordItem = keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName: nil)
@@ -313,10 +310,21 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             
 
             if case .success = PasswordUtils.isLocalPasswordValid(userName: PasswordUtils.currentConsoleUserName, userPass: password){
+                TCSLogWithMark("account name and password found: \(accountName)")
                 return (accountName,password)
             }
         }
+        else {
+            TCSLogWithMark("invalid password item")
+        
+        }
         TCSLogWithMark()
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSuppressLocalPasswordPrompt.rawValue)==true {
+            TCSLogWithMark("Suppressing local password prompt")
+            return (nil,nil)
+
+        }
+
         let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 
         
@@ -331,7 +339,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 return (nil,nil)
 
             }
-            let err = keychainUtil.updatePassword(serviceName: "xcreds local password",accountName:localUsername, pass:localPassword, keychainPassword: localPassword)
+            let err = keychainUtil.updatePassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue, pass:localPassword, keychainPassword: localPassword)
             if err == false {
                 TCSLogWithMark("Failed to store password in keychain")
                 return (nil,nil)
@@ -375,6 +383,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     func credentialsUpdated(_ credentials:Creds) {
+        
+        // this gets called with an empty Creds if ROPG is used and we get back a
+        // code that says auth was successfull but we have not tokens so
+        // we proceed
         DispatchQueue.main.async {
             UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
@@ -445,11 +457,17 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 }
 
             }
+            else {
+                TCSLogWithMark("no idTokenInfo because using LDAP, ROPG or issue with OIDC.")
+            
+            }
 
             self.windowController.window?.close()
             
             let localAccountAndPassword = self.localAccountAndPassword()
-            if credentials.password != nil, let localPassword=localAccountAndPassword.1{
+            
+            TCSLogWithMark("local account: \(localAccountAndPassword.0 ?? "")")
+            if credentials.password != nil, let localPassword=localAccountAndPassword.1, localPassword.count>0{
                 if localPassword != credentials.password{
                     TCSLogWithMark("localPassword and credentials.password do not match")
 
@@ -492,6 +510,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     if updatePassword {
                         if let cloudPassword = credentials.password {
                             try? PasswordUtils.changeLocalUserAndKeychainPassword(localPassword, newPassword: cloudPassword)
+                            self.updateFileVaultSkip()
 
                         }
                     }
@@ -502,7 +521,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if localPassword==nil {
                 localPassword = localAccountAndPassword.1
             }
-            if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, password:localPassword ) == false {
+            if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, keychainPassword:localPassword ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
 
@@ -546,12 +565,43 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         }
 
     }
+    func updateFileVaultSkip() {
+        
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == true{
+            TCSLogWithMark("Setting filevault to unlock with user")
+            FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
+                if result == false {
+                    self.fileVaultBypass=false
+                    TCSLogWithMark(error ?? "Unknown error")
+                }
+                else {
+                    self.fileVaultBypass=true
+                }
+            }
+        }
+        
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue) == true{
+            TCSLogWithMark("Setting filevault to unlock with admin")
+            FileVaultLoginHelper.shared.skipFileVaultAuthAtNextRebootWithAdmin { result, error in
+                if result == false {
+                    self.fileVaultBypass=false
+                    TCSLogWithMark(error ?? "Unknown error")
+                }
+                else {
+                    self.fileVaultBypass=true
+                }
+            }
+            
+        }
+        
+    }
     func kerberosTicketUpdated() {
         TCSLogWithMark()
         hasKerberosTicket=true
         (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
 
         kerberosCredentialStatus="Valid kerberos tickets"
+        updateFileVaultSkip()
     }
     func kerberosTicketCheckFailed(_ error: NoMADSessionError) {
 
