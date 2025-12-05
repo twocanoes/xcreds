@@ -1,3 +1,9 @@
+## tag-5.8(9050) (2025-11-24)
+
+*  added password check with google ldap [View](https://github.com/twocanoes/xcreds/commit/5d8e9c480dc43d563c4ce03e526028fdad671e5b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/57b17e5a8323b2dc28110a9f74ba4f75c3c9ec26)
+
+
 ## tag-5.7(9047) (2025-11-17)
 
 *  fixed term status of fdesetup [View](https://github.com/twocanoes/xcreds/commit/4710a271b6a1ccae6a985a3101c91284b5f3f22c)
