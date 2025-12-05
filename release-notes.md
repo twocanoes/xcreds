@@ -1,3 +1,10 @@
+## tag-5.8(9051) (2025-12-05)
+
+*  updated oss tools [View](https://github.com/twocanoes/xcreds/commit/cd58a599764a11604a90bff11a1ea27ab0a6c399)
+*  fixed refresh token when not LDAP or ROPG [View](https://github.com/twocanoes/xcreds/commit/0c9baba20c3c17f4f23dc9a813d52190d01fb30b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/faf6edc93eecf31555e61ae00bbe37bb3ef641ac)
+
+
 ## tag-5.8(9050) (2025-11-24)
 
 *  added password check with google ldap [View](https://github.com/twocanoes/xcreds/commit/5d8e9c480dc43d563c4ce03e526028fdad671e5b)
