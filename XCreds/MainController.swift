@@ -577,7 +577,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
                 if result == false {
                     TCSLogWithMark(error ?? "Unknown error")
-                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error: \(error ?? "")"
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error. check log)"
                 }
                 else {
                     self.fileVaultMenuItemText = self.standardFilevaultAutologinText
@@ -592,7 +592,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
             FileVaultLoginHelper.shared.skipFileVaultAuthAtNextRebootWithAdmin { result, error in
                 if result == false {
-                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error: \(error ?? "")"
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error. check log)"
                     TCSLogWithMark(error ?? "Unknown error")
                     
                 }
