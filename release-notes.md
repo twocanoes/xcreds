@@ -1,3 +1,9 @@
+## tag-5.8(9054) (2025-12-09)
+
+*  fixed plist [View](https://github.com/twocanoes/xcreds/commit/2b073e43781130a2f3178877826b60a24d35f39e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/23f97d5f94e34bfd9c28de290bb4ddfb159450a0)
+
+
 ## tag-5.8(9053) (2025-12-09)
 
 *  fixed fdesetup [View](https://github.com/twocanoes/xcreds/commit/7e90c73d7cba021073bbf0ad3cff625fac151eb2)
