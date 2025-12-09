@@ -118,10 +118,10 @@ class HelperToolManager: ObservableObject {
             return
         }
 
-        proxy.authFVAsAdmin() { output in
+        proxy.authFVAsAdmin() { success in
             DispatchQueue.main.async {
                 TCSLogWithMark()
-                completion(true)
+                completion(success)
             }
         }
     }

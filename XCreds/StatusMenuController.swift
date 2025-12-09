@@ -54,6 +54,8 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     @IBOutlet var credentialStatusMenuItem:NSMenuItem!
     @IBOutlet var statusMenu:NSMenu!
     @IBOutlet var sharesMenuItem:NSMenuItem!
+    
+    @IBOutlet weak var filevaultLoginEnabledMenuItem: NSMenuItem!
     override func awakeFromNib() {
 
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
@@ -210,8 +212,9 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
         case .FileVaultAutoLoginMenuItem:
             menuItem.isHidden=true
-            if mainController?.fileVaultBypass==true{
+            if mainController?.shouldShowFilevaultBypassMenuItem==true{
                 menuItem.isHidden=false
+                menuItem.title=mainController?.fileVaultMenuItemText ?? ""
 //                menuItem.isEnabled=false
                 return false
             }

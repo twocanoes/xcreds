@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24128" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24412" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24128"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24412"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -781,6 +781,7 @@
                 <outlet property="aboutMenuItemSeparator" destination="Uvh-o1-mcs" id="FhI-xC-w67"/>
                 <outlet property="changePasswordMenuItem" destination="F1e-WL-4b2" id="5ah-PL-qxX"/>
                 <outlet property="credentialStatusMenuItem" destination="YLv-mh-piZ" id="zOP-7p-XcI"/>
+                <outlet property="filevaultLoginEnabledMenuItem" destination="ft0-tf-SGP" id="SG9-7I-stn"/>
                 <outlet property="nextPasswordCheckMenuItem" destination="7wW-bt-MeR" id="mLr-Dz-KFF"/>
                 <outlet property="quitMenuItem" destination="OM5-mb-fFV" id="M6F-cZ-LFl"/>
                 <outlet property="quitMenuItemSeparator" destination="op6-Hq-2li" id="zC1-TH-cF8"/>
