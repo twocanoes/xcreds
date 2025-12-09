@@ -1,3 +1,8 @@
+## tag-5.8(9056) (2025-12-09)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c33928f67341be20344c0f9de3feb2405932548a)
+
+
 ## tag-5.8(9055) (2025-12-09)
 
 *  fixed refactor issue [View](https://github.com/twocanoes/xcreds/commit/acaf8e24cbc7408f157cc7650690ae213d3145a0)
