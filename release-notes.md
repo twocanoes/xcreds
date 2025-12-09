@@ -1,3 +1,9 @@
+## tag-5.8(9053) (2025-12-09)
+
+*  fixed fdesetup [View](https://github.com/twocanoes/xcreds/commit/7e90c73d7cba021073bbf0ad3cff625fac151eb2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a11dc2499dfaf5bb293df58f346d44e66d52fa17)
+
+
 ## tag-5.8(9052) (2025-12-05)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/b40b50b8c2b10183dc90f5fd5c7f4820dfe12d80)
