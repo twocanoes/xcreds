@@ -1,3 +1,8 @@
+## tag-5.8(9052) (2025-12-05)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/b40b50b8c2b10183dc90f5fd5c7f4820dfe12d80)
+
+
 ## tag-5.8(9051) (2025-12-05)
 
 *  updated oss tools [View](https://github.com/twocanoes/xcreds/commit/cd58a599764a11604a90bff11a1ea27ab0a6c399)
