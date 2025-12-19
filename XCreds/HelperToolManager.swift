@@ -6,8 +6,8 @@ import ServiceManagement
 
 @objc(HelperToolProtocol)
 public protocol HelperToolProtocol {
-    func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
-    
+    func authFV(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
+
     func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void)
 
     
@@ -118,10 +118,10 @@ class HelperToolManager: ObservableObject {
             return
         }
 
-        proxy.authFVAsAdmin() { output in
+        proxy.authFVAsAdmin() { success in
             DispatchQueue.main.async {
                 TCSLogWithMark()
-                completion(true)
+                completion(success)
             }
         }
     }
@@ -151,7 +151,7 @@ class HelperToolManager: ObservableObject {
             return
         }
 
-        proxy.runCommand(username:username, password:password) { success in
+        proxy.authFV(username:username, password:password) { success in
             DispatchQueue.main.async {
                 TCSLogWithMark()
                 completion(success)

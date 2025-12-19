@@ -1,3 +1,50 @@
+## tag-5.8(9057) (2025-12-09)
+
+*  added error message for fv not skipped [View](https://github.com/twocanoes/xcreds/commit/375954f4e6cf797f1aa88b7bff6d6edd232138e2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ca7e7a9d6e2eeec84500e60d689078b487559602)
+
+
+## tag-5.8(9056) (2025-12-09)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c33928f67341be20344c0f9de3feb2405932548a)
+
+
+## tag-5.8(9055) (2025-12-09)
+
+*  fixed refactor issue [View](https://github.com/twocanoes/xcreds/commit/acaf8e24cbc7408f157cc7650690ae213d3145a0)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/b41547b22ff2505430be4ebecd88c0c89fac1284)
+
+
+## tag-5.8(9054) (2025-12-09)
+
+*  fixed plist [View](https://github.com/twocanoes/xcreds/commit/2b073e43781130a2f3178877826b60a24d35f39e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/23f97d5f94e34bfd9c28de290bb4ddfb159450a0)
+
+
+## tag-5.8(9053) (2025-12-09)
+
+*  fixed fdesetup [View](https://github.com/twocanoes/xcreds/commit/7e90c73d7cba021073bbf0ad3cff625fac151eb2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a11dc2499dfaf5bb293df58f346d44e66d52fa17)
+
+
+## tag-5.8(9052) (2025-12-05)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/b40b50b8c2b10183dc90f5fd5c7f4820dfe12d80)
+
+
+## tag-5.8(9051) (2025-12-05)
+
+*  updated oss tools [View](https://github.com/twocanoes/xcreds/commit/cd58a599764a11604a90bff11a1ea27ab0a6c399)
+*  fixed refresh token when not LDAP or ROPG [View](https://github.com/twocanoes/xcreds/commit/0c9baba20c3c17f4f23dc9a813d52190d01fb30b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/faf6edc93eecf31555e61ae00bbe37bb3ef641ac)
+
+
+## tag-5.8(9050) (2025-11-24)
+
+*  added password check with google ldap [View](https://github.com/twocanoes/xcreds/commit/5d8e9c480dc43d563c4ce03e526028fdad671e5b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/57b17e5a8323b2dc28110a9f74ba4f75c3c9ec26)
+
+
 ## tag-5.7(9047) (2025-11-17)
 
 *  fixed term status of fdesetup [View](https://github.com/twocanoes/xcreds/commit/4710a271b6a1ccae6a985a3101c91284b5f3f22c)

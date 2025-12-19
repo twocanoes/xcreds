@@ -17,7 +17,10 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
         case usernamePassword
     }
 
-    var fileVaultBypass = false
+    let standardFilevaultAutologinText = "FileVault AutoLogin Enabled"
+    var fileVaultMenuItemText = "FileVault AutoLogin Enabled"
+
+    var shouldShowFilevaultBypassMenuItem = false
     var passwordCheckTimer:Timer?
     var feedbackDelegate:TokenManagerFeedbackDelegate?
     let scheduleManager = ScheduleManager()
@@ -568,27 +571,34 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     func updateFileVaultSkip() {
         
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLogin.rawValue) == true{
+            self.shouldShowFilevaultBypassMenuItem=true
+
             TCSLogWithMark("Setting filevault to unlock with user")
             FileVaultLoginHelper.shared.skipFileVaultAuthAtNextReboot { result, error in
                 if result == false {
-                    self.fileVaultBypass=false
                     TCSLogWithMark(error ?? "Unknown error")
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error. check log)"
                 }
                 else {
-                    self.fileVaultBypass=true
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText
                 }
+                
             }
         }
         
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue) == true{
             TCSLogWithMark("Setting filevault to unlock with admin")
+            self.shouldShowFilevaultBypassMenuItem=true
+
             FileVaultLoginHelper.shared.skipFileVaultAuthAtNextRebootWithAdmin { result, error in
                 if result == false {
-                    self.fileVaultBypass=false
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText+" (error. check log)"
                     TCSLogWithMark(error ?? "Unknown error")
+                    
                 }
                 else {
-                    self.fileVaultBypass=true
+                    self.fileVaultMenuItemText = self.standardFilevaultAutologinText
+
                 }
             }
             

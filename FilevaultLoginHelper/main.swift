@@ -11,7 +11,7 @@ import os.log
 let log = Logger(subsystem: "com.twocanoes.xcreds", category: "daemon")
 @objc(HelperToolProtocol)
 public protocol HelperToolProtocol {
-    func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
+    func authFV(username:String, password:String, withReply reply: @escaping (Bool) -> Void)
     func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void)
 
 }
@@ -55,7 +55,7 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
 
 
     // Execute the shell command and reply with output.
-    func runCommand(username:String, password:String, withReply reply: @escaping (Bool) -> Void) {
+    func authFV(username:String, password:String, withReply reply: @escaping (Bool) -> Void) {
         
         let stUsers = GetSecureTokenUserList()
         
@@ -65,25 +65,15 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
             return
 
         }
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/fdesetup")
-        process.arguments = ["authrestart", "-delayminutes","-1","-user",username,"-password",password]
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError = pipe
-        do {
-            try process.run()
-            process.waitUntilExit()
-        } catch {
-            TCSLogWithMark("Failed to run command: \(error.localizedDescription)")
-            reply(false)
-            return
+        if filevaultAuth(username: username, password: password) == true {
+            TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
+            reply(true)     
         }
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        TCSLogWithMark(output.isEmpty ? "No output" : output)
-        reply(process.terminationStatus==0 ? true : false)
-
+        else {
+            TCSLogWithMark("Error running fdesetup.")
+            reply(false)
+            
+        }
     }
 
     func authFVAsAdmin(withReply reply: @escaping (Bool) -> Void) {
@@ -93,7 +83,7 @@ class HelperToolDelegate: NSObject, NSXPCListenerDelegate, HelperToolProtocol {
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
             
             if let adminUser = try userManager.adminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
-                runCommand(username: adminUser.username, password: adminUser.password, withReply: reply)
+                authFV(username: adminUser.username, password: adminUser.password, withReply: reply)
             }
             else {
                 TCSLogWithMark("no valid admin credentials found to unlock FV")
