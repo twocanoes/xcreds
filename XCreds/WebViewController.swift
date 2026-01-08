@@ -108,7 +108,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
                 TCSLogWithMark("getOidcLoginURL");
 
                 let url = try await self.getOidcLoginURL()
-                TCSLogWithMark("load");
+                TCSLogWithMark("URL: \(url)");
 
                 self.webView.load(URLRequest(url: url))
                 NetworkMonitor.shared.stopMonitoring()
