@@ -1,3 +1,9 @@
+## tag-5.8(9058) (2025-12-09)
+
+*  added error message for fv not skipped [View](https://github.com/twocanoes/xcreds/commit/e99aae77f256b73568ab63b1feb6d96d366efcbb)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d14cba7ebf125d81b9bac2af5ab39079fb8a3622)
+
+
 ## tag-5.8(9057) (2025-12-09)
 
 *  added error message for fv not skipped [View](https://github.com/twocanoes/xcreds/commit/375954f4e6cf797f1aa88b7bff6d6edd232138e2)
