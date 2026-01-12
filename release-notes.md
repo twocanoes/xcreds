@@ -1,3 +1,11 @@
+## tag-5.8(9059) (2026-01-08)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/fe405264c1c511ec622f006e1d375ffe6dbb03b7)
+*  Fixed typo [View](https://github.com/twocanoes/xcreds/commit/0524215913edef3e67295f9f0e1aac647fa9972d)
+*  added more logging [View](https://github.com/twocanoes/xcreds/commit/ec624156733cb4d97c0b3afe4125286671b2e125)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/81a1e16ad2bcbee81cd4a081996394e2347a8b45)
+
+
 ## tag-5.8(9058) (2025-12-09)
 
 *  added error message for fv not skipped [View](https://github.com/twocanoes/xcreds/commit/e99aae77f256b73568ab63b1feb6d96d366efcbb)
