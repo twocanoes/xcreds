@@ -370,7 +370,7 @@ extension WebViewController: WKNavigationDelegate {
 
                         
                         do {
-                            let tokenResponse = try await tokenManager.oidc().getToken(code: code)
+                            let tokenResponse = try await tokenManager.oidc().getToken(code: code, basicAuth: true)
                             TCSLogWithMark("got token. Token ID: \(tokenResponse.idToken ?? "" )")
                             tokenManager.tokenResponse(tokens: tokenResponse)
 
