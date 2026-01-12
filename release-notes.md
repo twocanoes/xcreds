@@ -1,3 +1,10 @@
+## tag-5.9(9060) (2026-01-12)
+
+*  add error checking from oidclite [View](https://github.com/twocanoes/xcreds/commit/2a982b320d50ca8de4c4d9019ad5b54bc0dadd60)
+*  bumped to 5.9 [View](https://github.com/twocanoes/xcreds/commit/41a4a4b847f531f3d95bb503ae4382cc5126a39f)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/30e3f4d14051c313a54280fcf09a5b6e125c0738)
+
+
 ## tag-5.8(9059) (2026-01-08)
 
 *  wip [View](https://github.com/twocanoes/xcreds/commit/fe405264c1c511ec622f006e1d375ffe6dbb03b7)
