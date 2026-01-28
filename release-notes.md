@@ -1,3 +1,11 @@
+## tag-5.9(9087) (2026-01-28)
+
+*  added shouldSetAdminSecureToken [View](https://github.com/twocanoes/xcreds/commit/798bbaa4bde5e406ebffc2bdfab218f929de5563)
+*  added ability give local admin specified in xcreds a secure token [View](https://github.com/twocanoes/xcreds/commit/013649544d69655e00a205ac440f31ceb63f39cf)
+*  updated OSS tools and added sample config for onelogin [View](https://github.com/twocanoes/xcreds/commit/5ca9c966bcc5f74276604b7768c4e01d23634441)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f3ab2e10d1e123dad3b416acef6589ca4219699e)
+
+
 ## tag-5.9(9061) (2026-01-12)
 
 *  test with basic token [View](https://github.com/twocanoes/xcreds/commit/1c2aaaa459daa02287e0d03616f2cc230cb97965)
