@@ -11,6 +11,12 @@ class XCredsLoginDone: XCredsBaseMechanism {
     @objc override func run() {
         TCSLogWithMark("XCredsLoginDone mech starting")
 
+        if  getHint(type: .shouldSetAdminSecureToken) as? Bool == true {
+            TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
+            super.denyLogin(message: nil)
+
+        }
+
         let isAccountCreationPending = getHint(type: .isAccountCreationPending) as? Bool ?? false
 
         if isAccountCreationPending==true {

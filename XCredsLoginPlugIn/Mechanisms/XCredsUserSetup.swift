@@ -66,9 +66,34 @@ class XCredsUserSetup: XCredsBaseMechanism{
             }
             TCSLogWithMark("checking to see if we should set admin credentials")
             if let adminUser = try userManager.adminCredentials(){
-
+                
                 TCSLogWithMark("Setting Admin User from secure file for keychain reset")
                 self.setHint(type: .localAdmin, hint: adminUser )
+                
+                TCSLogWithMark("We have local admin. checking if it has a secure token")
+                
+                TCSLogWithMark("Checking preference for shouldSetSecureTokenForAdmin")
+
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetSecureTokenForAdmin.rawValue)==true{
+                    
+                    TCSLog("checking for secure token")
+                    if let secureTokenUsers = try? secureTokenUsers(){
+                        
+                        TCSLogWithMark("Secure Token users obtained. Checking if our admin has a secure token, bootstrapTokenStatus, and is escrowed")
+                
+
+                        if secureTokenUsers.keys.contains(adminUser.username)==false, let status = try? bootstrapTokenStatus(), status.isEscrowed==true {
+                            TCSLogWithMark("We have an escrowed bootstrap token so setting up to autologin with admin user and then return to login window before getting to desktop")
+                            
+                            self.setHint(type: .localAdmin, hint: adminUser )
+                            self.setHint(type: .shouldSetAdminSecureToken,hint:true as NSSecureCoding)
+                            
+                            self.setHint(type: .user, hint: adminUser as NSSecureCoding)
+                            self.setHint(type: .pass, hint: adminUser.password as NSSecureCoding)
+                            
+                        }
+                    }
+                }
             }
 
             else if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =

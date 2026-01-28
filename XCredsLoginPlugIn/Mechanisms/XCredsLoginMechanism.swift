@@ -204,6 +204,11 @@ import Network
             return
         }
 
+        if  getHint(type: .shouldSetAdminSecureToken) as? Bool == true {
+            TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
+            super.allowLogin()
+
+        }
 
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
