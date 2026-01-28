@@ -65,17 +65,30 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 self.setHint(type: .rfidUsers, hint: users as NSSecureCoding)
             }
             TCSLogWithMark("checking to see if we should set admin credentials")
-            if let adminUser = try userManager.adminCredentials(){
+            var adminUser = try? userManager.adminCredentials()
+            
+            if adminUser==nil{
+                adminUser=localAdminCredentialsFromPrefs()
+            }
+            if let adminUser = adminUser{
                 
                 TCSLogWithMark("Setting Admin User from secure file for keychain reset")
                 self.setHint(type: .localAdmin, hint: adminUser )
                 
                 TCSLogWithMark("We have local admin. checking if it has a secure token")
                 
-                TCSLogWithMark("Checking preference for shouldSetSecureTokenForAdmin")
+                TCSLogWithMark("Checking preference for shouldSkipSettingSecureTokenForAdmin")
 
-                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetSecureTokenForAdmin.rawValue)==true{
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipSettingSecureTokenForAdmin.rawValue)==false, StateFileHelper().fileExists(.secureTokenAttempted)==false{
                     
+                    if let _ = try? StateFileHelper().createFile(.secureTokenAttempted){
+                        
+                        TCSLogWithMark("Created dot file for secureTokenAttempted to make sure we don't loop if it doesn't work")
+                    }
+                    else {
+                        TCSLogWithMark("error creating dot file for secureTokenAttempted")
+
+                    }
                     TCSLog("checking for secure token")
                     if let secureTokenUsers = try? secureTokenUsers(){
                         
@@ -88,22 +101,14 @@ class XCredsUserSetup: XCredsBaseMechanism{
                             self.setHint(type: .localAdmin, hint: adminUser )
                             self.setHint(type: .shouldSetAdminSecureToken,hint:true as NSSecureCoding)
                             
-                            self.setHint(type: .user, hint: adminUser as NSSecureCoding)
-                            self.setHint(type: .pass, hint: adminUser.password as NSSecureCoding)
+                            
+                            
                             
                         }
                     }
                 }
             }
 
-            else if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
-                DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
-
-                TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
-
-                let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
-                self.setHint(type: .localAdmin, hint: localAdmin)
-            }
             try? StateFileHelper().removeFile(.fileVaultLogin)
 
             if let credentials = getHint(type: .localAdmin) as? LocalAdminCredentials {
@@ -150,7 +155,18 @@ class XCredsUserSetup: XCredsBaseMechanism{
 
 
     }
-    
+    func localAdminCredentialsFromPrefs() -> LocalAdminCredentials? {
+        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
+
+            TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
+
+            let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
+            return localAdmin
+        }
+        return nil
+    }
+
     func updateDSRecords() {
         guard let nonSystemUsers = try? getAllNonSystemUsers() else{
             TCSLogWithMark("could not get non system users")

@@ -56,7 +56,7 @@
 	<string>Enter Username</string>
 	<key>shouldShowLocalOnlyCheckbox</key>
 	<true/>
-	<key>shouldSetSecureTokenForAdmin</key>
+	<key>shouldSkipSettingSecureTokenForAdmin</key>
 	<false/>
 	<key>shouldUseBasicAuth</key>
 	<false/>

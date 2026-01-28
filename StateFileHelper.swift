@@ -16,6 +16,7 @@ class StateFileHelper {
         case returnType
         case delayType
         case fileVaultLogin
+        case secureTokenAttempted
     }
 
     func paths(_ fileType:StateFileType) -> (folderPath:String, filePath:String){
@@ -32,6 +33,10 @@ class StateFileHelper {
         case .fileVaultLogin:
             folderPath = "/Library/Application Support/XCreds/statefile/"
             filePath = "xcreds_filevaultlogin"
+        case .secureTokenAttempted:
+            folderPath = "/private/tmp/"
+            filePath = "xcreds_secureTokenAttempted"
+
         }
         return (folderPath, filePath)
     }

@@ -72,6 +72,14 @@ import Network
         os_log("XCreds, trying autologin", log: checkADLog, type: .debug)
 
         updateRunDict(dict: Dictionary())
+        
+        if let username = getContextString(type: HintType.filevaultUsername.rawValue),
+           let password = getContextString(type: HintType.filevaultPassword.rawValue){
+            TCSLogWithMark("found filevault username and password from sticky value, so setting it and allowing autologin")
+            setContextString(type: kAuthorizationEnvironmentUsername, value: username)
+            setContextString(type: kAuthorizationEnvironmentPassword, value: password)
+            return true
+        }
         if let username = getContextString(type: "fvusername") {
             TCSLogWithMark("got username = \(username)")
         }
@@ -101,7 +109,7 @@ import Network
                 }
             }
         }
-        return true
+        return false
     }
     fileprivate func getEFIUUID() -> String? {
         TCSLogWithMark("getEFIUUID")
@@ -193,23 +201,65 @@ import Network
 
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
-
-
+        
+        
         loginWebViewController=nil
         signInViewController=nil
         
-        if useAutologin() {
+        let shouldSetSecureToken = self.getHint(type: .shouldSetAdminSecureToken) as? Bool
+        
+        if shouldSetSecureToken == true {
+            let timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false) { timer in
+                NotificationCenter.default.removeObserver(self, name: .connectivityStatus, object: nil)
+
+                self.setupWindow()
+            }
+
+            NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
+                timer.invalidate()
+                TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
+                
+                let adminUser = self.getHint(type: .localAdmin) as? LocalAdminCredentials
+                if let adminUser = adminUser {
+                        TCSLogWithMark("retrieved admin user and setting context string")
+
+                    //save fvusername and password to use the next time around.
+                    if let username = self.getContextString(type: "fvusername"), let password = self.getContextString(type: "fvpassword") {
+                        self.setStickyContextString(type: HintType.filevaultUsername.rawValue, value: username)
+                        self.setStickyContextString(type: HintType.filevaultPassword.rawValue, value: password)
+                    }
+                    self.setContextString(type: kAuthorizationEnvironmentUsername, value: adminUser.username)
+                    self.setContextString(type: kAuthorizationEnvironmentPassword, value: adminUser.password)
+                    super.allowLogin()
+                    return
+
+                }
+                else {
+                    TCSLogWithMark("could not get admin user so moving on")
+
+                    self.setupWindow()
+
+                }
+                
+            }
+            NetworkMonitor.shared.startMonitoring()
+
+        }
+        else {
+            NetworkMonitor.shared.startMonitoring()
+
+            setupWindow()
+            
+        }
+    }
+   
+    func setupWindow() {
+        
+        if useAutologin()   {
             os_log("Using autologin", log: checkADLog, type: .debug)
             super.allowLogin()
             return
         }
-
-        if  getHint(type: .shouldSetAdminSecureToken) as? Bool == true {
-            TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
-            super.allowLogin()
-
-        }
-
         if mainLoginWindowController == nil {
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
@@ -222,7 +272,6 @@ import Network
             
             sleep(UInt32(showLoginWindowDelaySeconds))
         }
-        NetworkMonitor.shared.startMonitoring()
         selectAndShowLoginWindow()
         
         TCSLogWithMark("Verifying if we should show cloud login.")
@@ -234,71 +283,69 @@ import Network
             TCSLogWithMark("xcreds_return does NOT exist")
         }
         if StateFileHelper().fileExists(.returnType) == false,
-            DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+           DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             setContextString(type: kAuthorizationEnvironmentUsername, value: SpecialUsers.standardLoginWindow.rawValue)
             TCSLogWithMark("marking to show standard login window")
-
+            
             do {
                 try StateFileHelper().createFile(.returnType)
             }
             catch {
                 TCSLogWithMark("error creating return file")
-
+                
             }
             allowLogin()
             return
         }
-
+        
         if StateFileHelper().fileExists(.returnType)==true{
             TCSLogWithMark("xcreds_return exists, removing")
             do {
-
+                
                 try StateFileHelper().removeFile(.returnType)
             }
             catch {
-
+                
                 TCSLogWithMark("Could not remove /usr/local/var/xcreds_return")
-
+                
             }
-
+            
         }
-
+        
         TCSLogWithMark("Showing XCreds Login Window")
-
+        
         //for some reason, software update activates and gets in the way. so we delay for 3 seconds before coming back to front
         timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
             NSApp.activate(ignoringOtherApps: true)
         }
         
-
+        
         if let runDict = runDict() {
-
+            
             TCSLogWithMark("Run dict = \(runDict.debugDescription)")
         }
-
+        
         if let errorMessage = getContextString(type: "ErrorMessage"){
             TCSLogWithMark("Sticky error message = \(errorMessage)")
-
+            
             let alert = NSAlert()
             alert.addButton(withTitle: "OK")
             alert.messageText=errorMessage
-
+            
             alert.window.canBecomeVisibleWithoutLogin=true
-
+            
             let bundle = Bundle.findBundleWithName(name: "XCreds")
-
+            
             if let bundle = bundle {
                 TCSLogWithMark("Found bundle")
-
+                
                 alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
-
+                
             }
             alert.runModal()
-
+            
         }
-
     }
-   
     override func allowLogin() {
         TCSLogWithMark("Allowing Login")
 
