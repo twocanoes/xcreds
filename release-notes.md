@@ -1,3 +1,9 @@
+## tag-5.9(9061) (2026-01-12)
+
+*  test with basic token [View](https://github.com/twocanoes/xcreds/commit/1c2aaaa459daa02287e0d03616f2cc230cb97965)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/34c959e5a29af08964a1d2484d2ac385f5baefce)
+
+
 ## tag-5.9(9060) (2026-01-12)
 
 *  add error checking from oidclite [View](https://github.com/twocanoes/xcreds/commit/2a982b320d50ca8de4c4d9019ad5b54bc0dadd60)
