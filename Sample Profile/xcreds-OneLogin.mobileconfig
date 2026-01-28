@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>XCreds</string>
+			<key>PayloadIdentifier</key>
+			<string>com.twocanoes.xcreds.07C53DE9-CA33-4E52-A008-F5EA5068D819</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.twocanoes.xcreds</string>
+			<key>PayloadUUID</key>
+			<string>07C53DE9-CA33-4E52-A008-F5EA5068D819</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>clientID</key>
+			<string>97c8c570-d210-013e-ddfd-5d901efb585c254554</string>
+			<key>clientSecret</key>
+			<string>REDACTED</string>
+			<key>idpHostName</key>
+			<string>twocanoes.onelogin.com</string>
+			<key>discoveryURL</key>
+			<string>https://twocanoes.onelogin.com/oidc/2/.well-known/openid-configuration</string>
+			<key>redirectURI</key>
+			<string>https://twocanoes.com/xcreds-redirect/</string>
+			<key>scopes</key>
+			<string>profile openid</string>
+			<key>shouldUseROPGForPasswordChangeChecking</key>
+			<true/>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>OnePassword OIDC</string>
+	<key>PayloadIdentifier</key>
+	<string>86350731-1130-4F85-AAA8-A99BBBD55F8E</string>
+	<key>PayloadOrganization</key>
+	<string>Twocanoes Software, Inc</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>86350731-1130-4F85-AAA8-A99BBBD55F8E</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
