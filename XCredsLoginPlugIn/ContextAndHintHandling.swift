@@ -78,7 +78,7 @@ enum HintType: String,CaseIterable {
     case shouldSetAdminSecureToken
     case filevaultUsername
     case filevaultPassword
-
+    case secureTokenError
 
 }
 

@@ -45,6 +45,7 @@ import Network
     }
 
     override func reload() {
+
         if self.loginWindowType == .cloud {
             TCSLogWithMark("reload in controller")
             mainLoginWindowController?.setupLoginWindowAppearance()
@@ -202,7 +203,7 @@ import Network
     @objc override func run() {
         TCSLogWithMark("~~~~~~~~~~~~~~~~~~~ XCredsLoginMechanism mech starting ~~~~~~~~~~~~~~~~~~~")
         
-        
+
         loginWebViewController=nil
         signInViewController=nil
         
@@ -264,7 +265,12 @@ import Network
             mainLoginWindowController = MainLoginWindowController.init(windowNibName: "MainLoginWindowController")
         }
         mainLoginWindowController?.mechanism=self
-        
+        if let secureTokenError = self.getHint(type: .secureTokenError) as? Bool {
+            TCSLogWithMark("adding secure token users to mainLoginWindowController:\(secureTokenError)")
+            mainLoginWindowController?.secureTokenError=secureTokenError
+            
+        }
+
         let showLoginWindowDelaySeconds = DefaultsOverride.standardOverride.integer(forKey: PrefKeys.showLoginWindowDelaySeconds.rawValue)
         
         if showLoginWindowDelaySeconds > 0 {

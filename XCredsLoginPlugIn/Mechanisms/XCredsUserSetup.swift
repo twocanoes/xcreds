@@ -55,6 +55,20 @@ class XCredsUserSetup: XCredsBaseMechanism{
             }
         }
 
+        let secureTokenUsers = try? SecureToken().secureTokenUsers()
+        if let numberOfUsersWithoutSecureTokens = SecureToken().numberOfUsersWithSecureTokens(),
+        DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideSecureTokenStatus.rawValue)==false,
+           let secureTokenUsers = secureTokenUsers,
+            secureTokenUsers.count>0{
+            var secureTokenError = false
+            if numberOfUsersWithoutSecureTokens != 0{
+                secureTokenError=true
+            }
+            TCSLogWithMark("We have secure token users. setting hint")
+            
+            self.setHint(type: .secureTokenError,hint:secureTokenError as NSSecureCoding )
+        }
+
         do {
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
@@ -90,12 +104,12 @@ class XCredsUserSetup: XCredsBaseMechanism{
 
                     }
                     TCSLog("checking for secure token")
-                    if let secureTokenUsers = try? secureTokenUsers(){
+                    if let secureTokenUsers = secureTokenUsers {
                         
                         TCSLogWithMark("Secure Token users obtained. Checking if our admin has a secure token, bootstrapTokenStatus, and is escrowed")
                 
 
-                        if secureTokenUsers.keys.contains(adminUser.username)==false, let status = try? bootstrapTokenStatus(), status.isEscrowed==true {
+                        if secureTokenUsers.keys.contains(adminUser.username)==false, let status = try? SecureToken().bootstrapTokenStatus(), status.isEscrowed==true {
                             TCSLogWithMark("We have an escrowed bootstrap token so setting up to autologin with admin user and then return to login window before getting to desktop")
                             
                             self.setHint(type: .localAdmin, hint: adminUser )
@@ -129,20 +143,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 TCSLogWithMark("local admin not set in hints")
 
             }
-            if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue){
-                TCSLogWithMark("localAdminUserName set: \(aUsername)")
-            }
-            else {
-                TCSLogWithMark("localAdminUserName not set")
-            }
-            if let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-                TCSLogWithMark("localAdminPassword set")
-
-            }
-            else {
-                TCSLogWithMark("localAdminPassword not set")
-
-            }
+           
 
         }
         catch {
