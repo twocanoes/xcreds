@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PSSOUrlPathString</key>
+	<string>https://idp.twocanoes.com/psso/</string>
+	<key>TokenEndpoint</key>
+	<string>token</string>
+	<key>JwksEndpoint</key>
+	<string>.well-known/jwks.json</string>
+	<key>NonceEndpoint</key>
+	<string>nonce</string>
+	<key>RegistrationEndpoint</key>
+	<string>register</string>
+	<key>CallbackURLString</key>
+	<string>https://idp.twocanoes.com</string>
+	<key>Username</key>
+	<string>jappleseed@twocanoes.com</string>
+</dict>
+</plist>

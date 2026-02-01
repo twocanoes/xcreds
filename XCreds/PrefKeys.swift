@@ -182,6 +182,18 @@ enum PrefKeys: String {
     case wifiNetworks = "WifiNetworks"
     case x509CA = "X509CA"
     case x509Name = "X509Name"
+    
+    
+    // PSSO
+    
+    case PSSOUrlPathString = "PSSOUrlPathString"
+    case TokenEndpoint = "TokenEndpoint"
+    case JwksEndpoint = "JwksEndpoint"
+    case NonceEndpoint = "NonceEndpoint"
+    case RegistrationEndpoint = "RegistrationEndpoint"
+    case CallbackURLString = "CallbackURLString"
+    case IssuerString = "IssuerString"
+    case Username = "Username"
 
 }
 func getManagedPreference(key: Preferences) -> Any? {
@@ -349,6 +361,8 @@ enum Preferences: String {
 
     case PasswordOverwriteSilent // will silently update user password to new one
     case PasswordOverwriteOptional // allow the user to stomp on the password if interested
+
+    
 
 }
 

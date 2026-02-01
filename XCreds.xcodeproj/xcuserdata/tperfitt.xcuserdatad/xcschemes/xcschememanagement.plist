@@ -7,7 +7,7 @@
 		<key>FileVaultLoginHelper.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>11</integer>
 		</dict>
 		<key>FilevaultLoginHelper.xcscheme_^#shared#^_</key>
 		<dict>
@@ -44,6 +44,11 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>XCreds-PSSO.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>XCreds.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -62,12 +67,17 @@
 		<key>auth_mech_fixup.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>10</integer>
 		</dict>
 		<key>authrights.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
+		</dict>
+		<key>sso.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
 		</dict>
 		<key>tapgo.xcscheme_^#shared#^_</key>
 		<dict>

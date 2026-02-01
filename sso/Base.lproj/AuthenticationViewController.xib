@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="24506"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AuthenticationViewController" customModule="sso" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="webView" destination="0Wy-tT-cRn" id="HjR-2g-ZIe"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="564" height="409"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Wy-tT-cRn">
+                    <rect key="frame" x="0.0" y="58" width="564" height="351"/>
+                    <wkWebViewConfiguration key="configuration">
+                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                        <wkPreferences key="preferences"/>
+                    </wkWebViewConfiguration>
+                </wkWebView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EpD-ze-eSg">
+                    <rect key="frame" x="482" y="14" width="62" height="24"/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Vx-Ke-VIu">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="62" id="nhy-fh-seE"/>
+                    </constraints>
+                    <connections>
+                        <action selector="cancelButtonPressed:" target="-2" id="sh3-FJ-1qc"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="0Wy-tT-cRn" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="Naz-vm-R7d"/>
+                <constraint firstAttribute="trailing" secondItem="0Wy-tT-cRn" secondAttribute="trailing" id="SBF-hP-cpo"/>
+                <constraint firstAttribute="bottom" secondItem="EpD-ze-eSg" secondAttribute="bottom" constant="14" id="Y25-AB-7nd"/>
+                <constraint firstItem="0Wy-tT-cRn" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="eaa-EN-va8"/>
+                <constraint firstAttribute="trailing" secondItem="EpD-ze-eSg" secondAttribute="trailing" constant="20" symbolic="YES" id="f4c-fQ-r1y"/>
+                <constraint firstItem="EpD-ze-eSg" firstAttribute="top" secondItem="0Wy-tT-cRn" secondAttribute="bottom" constant="20" symbolic="YES" id="rPJ-pw-bsB"/>
+            </constraints>
+            <point key="canvasLocation" x="174" y="52.5"/>
+        </customView>
+    </objects>
+</document>
