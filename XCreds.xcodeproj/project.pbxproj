@@ -944,9 +944,9 @@
 				761B486B28A3575000C6A02B /* XCredsLoginDone.swift */,
 				7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */,
 				7611CEBF288B75140063A644 /* XCredsCreateUser.swift */,
+				76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */,
 				7632E39E287347C100E37923 /* XCredsKeychainAdd.swift */,
 				76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */,
-				76BEF7EA28724A0B0013E2A1 /* XCredsLoginMechanism.swift */,
 				76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */,
 			);
 			path = Mechanisms;
