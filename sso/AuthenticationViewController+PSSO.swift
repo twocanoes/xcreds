@@ -7,6 +7,7 @@
 
 import AuthenticationServices
 import CryptoKit
+import OIDCLite
 
 //
 //extension AuthenticationViewController: ASAuthorizationProviderExtensionAuthorizationRequestHandler {
@@ -35,6 +36,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         let deviceEncryptionKey: String
         let signKeyID: String
         let encKeyID: String
+        let codeVerifier:String
 //        let user: String
 
         enum CodingKeys: String, CodingKey {
@@ -43,6 +45,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
             case deviceEncryptionKey = "DeviceEncryptionKey"
             case signKeyID = "SignKeyID"
             case encKeyID = "EncKeyID"
+            case codeVerifier = "CodeVerifier"
         }
     }
 
@@ -104,7 +107,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
                 await self.setLoginConfig(loginManager: loginManager)
                 
                 //send the public keys and ids to the server
-                try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash))
+                try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, codeVerifier: oidcLite?.codeVerifier ?? ""))
                 deviceRegisterCompletion?(.success)
             }
         }
@@ -187,8 +190,8 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         NSLog("LoginSSOE sendRegistration")
 
         let encoder = JSONEncoder()
+        let urlPath = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
 
-        let urlPath = "https://psso.twocanoes.com/"
         
         let registrationEndpoint = UserDefaults().string(forKey:PrefKeys.RegistrationEndpoint.rawValue ) ?? "register"
         let registrationURL = URL(string: urlPath + registrationEndpoint)
