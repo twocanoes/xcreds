@@ -1,3 +1,9 @@
+## tag-5.9(9119) (2026-02-01)
+
+*  put prefs inside ssoe profile [View](https://github.com/twocanoes/xcreds/commit/0ec915719754058c2194e16daf935939a5fc192c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/eb3d13aea80b26e959ea523c1ab7f772b35ca1fc)
+
+
 ## tag-5.9(9118) (2026-02-01)
 
 *  tweaked build scripts [View](https://github.com/twocanoes/xcreds/commit/583d3ed232d68cb7bba800700bd1f3dc5492e755)
