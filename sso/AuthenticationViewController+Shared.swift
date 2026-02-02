@@ -36,20 +36,40 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
 
     func setupWebViewAndDelegate() {
         
-        let discoveryURL = UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? ""
-
-        let clientID = UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? ""
-
-        let redirectURI = UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? ""
+        if let tDiscoveryURL = loginManager?.extensionData[PrefKeys.discoveryURL.rawValue] as? String {
+            discoveryURLString = tDiscoveryURL
+        }
         
-        let scopes = UserDefaults.standard.array(forKey: PrefKeys.scopes.rawValue) as? [String]
+        if let tRedirectURI = loginManager?.extensionData[PrefKeys.redirectURI.rawValue] as? String {
+            redirectURI = tRedirectURI
+        }
+        if let tClientSecret = loginManager?.extensionData[PrefKeys.clientSecret.rawValue] as? String {
+            clientSecret = tClientSecret
+        }
+        
+        if let tClientID = loginManager?.extensionData[PrefKeys.clientID.rawValue] as? String {
+            clientID = tClientID
+        }
+        
+        if let tAdditionalParameters = loginManager?.extensionData[PrefKeys.AdditionalParameters.rawValue] as? [String:String] {
+            additionalParameters = tAdditionalParameters
+        }
 
-        let clientSecret = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue) ?? ""
+//
+//        let discoveryURL = UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? ""
+//
+//        let clientID = UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? ""
+//
+//        let redirectURI = UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? ""
+//        
+//        let scopes = UserDefaults.standard.array(forKey: PrefKeys.scopes.rawValue) as? [String]
+//
+//        let clientSecret = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue) ?? ""
 
         
-       let additionalParameters = ["access_type":"offline"]
+//       let additionalParameters = ["access_type":"offline"]
 
-        oidcLite = OIDCLite(discoveryURL: discoveryURL, clientID:clientID, clientSecret: clientSecret, redirectURI: redirectURI, scopes: scopes, additionalParameters: additionalParameters)
+        oidcLite = OIDCLite(discoveryURL: discoveryURLString, clientID:clientID, clientSecret: clientSecret, redirectURI: redirectURI, scopes: scopes, additionalParameters: additionalParameters)
         guard let oidcLite = oidcLite else {
             return
         }

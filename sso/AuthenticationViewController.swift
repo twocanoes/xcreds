@@ -17,21 +17,35 @@ class AuthenticationViewController: NSViewController {
     var url:URL?
     var loginManager:ASAuthorizationProviderExtensionLoginManager?
     var authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest?
+    var urlPath = ""
+    var tokenEndpoint = ""
+    var issuer = ""
+    var jwksEndpoint = ""
+    var nonceEndpont = ""
+    var clientID = "psso"
+    var registrationEndpoint = "register"
 
+    var redirectURI = ""
+    var discoveryURLString = ""
+    var scopes:[String] = []
+    
+    var additionalParameters:[String:String] = [:]
+    var clientSecret = ""
+    
     @IBOutlet weak var webView: WKWebView!
-    override func viewDidLoad() {
-        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
-            let defaultsInfoPlist = NSDictionary(contentsOfFile: path)
-            UserDefaults.standard.register(defaults: defaultsInfoPlist as! [String : Any])
-        }
-
-    }
+//    override func viewDidLoad() {
+//        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
+//            let defaultsInfoPlist = NSDictionary(contentsOfFile: path)
+//            UserDefaults.standard.register(defaults: defaultsInfoPlist as! [String : Any])
+//        }
+//
+//    }
     override func viewDidAppear() {
         super.viewDidAppear()
-        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
-            let defaultsInfoPlist = NSDictionary(contentsOfFile: path)
-            UserDefaults.standard.register(defaults: defaultsInfoPlist as! [String : Any])
-        }
+//        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
+//            let defaultsInfoPlist = NSDictionary(contentsOfFile: path)
+//            UserDefaults.standard.register(defaults: defaultsInfoPlist as! [String : Any])
+//        }
         
 
         setupWebViewAndDelegate()

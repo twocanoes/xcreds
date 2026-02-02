@@ -120,10 +120,10 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         }
 
         do {
-            let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.Username.rawValue) ?? ""
-            let user = userName ?? defaultsUsername
+//            let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.Username.rawValue) ?? ""
+//            let user = userName ?? defaultsUsername
 
-            let config = ASAuthorizationProviderExtensionUserLoginConfiguration(loginUserName: user )
+            let config = ASAuthorizationProviderExtensionUserLoginConfiguration(loginUserName: "" )
             try loginManager.saveUserLoginConfiguration(config)
         } catch {
             NSLog("LoginSSOE: error saving user login config: \(error)")
@@ -140,15 +140,36 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
     func setLoginConfig(loginManager: ASAuthorizationProviderExtensionLoginManager) async {
 
-        let urlPath = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
-        let tokenEndpoint = UserDefaults().string(forKey:PrefKeys.TokenEndpoint.rawValue ) ?? "token"
+        let data = loginManager.extensionData
+        TCSLogWithMark("extension data is \(data)")
+        if let tUrlPath = data[PrefKeys.PSSOUrlPathString.rawValue] as? String{
+            urlPath=tUrlPath
+        }
+        if let tTokenEndpoint = data[PrefKeys.TokenEndpoint.rawValue] as? String{
+            tokenEndpoint=tTokenEndpoint
+        }
+        if let tIssuer = data[PrefKeys.IssuerString.rawValue] as? String{
+            issuer=tIssuer
+        }
+        if let tJwksEndpoint = data[PrefKeys.JwksEndpoint.rawValue] as? String{
+            jwksEndpoint=tJwksEndpoint
+        }
         
-        let issuer = UserDefaults().string(forKey:PrefKeys.IssuerString.rawValue ) ?? ""
+        if let tNonceEndpont = data[PrefKeys.NonceEndpoint.rawValue] as? String{
+            nonceEndpont=tNonceEndpont
+        }
+        if let tClientID = data[PrefKeys.NonceEndpoint.rawValue] as? String{
+            clientID=tClientID
+        }
+//         = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
+//        let tokenEndpoint = UserDefaults().string(forKey:PrefKeys.TokenEndpoint.rawValue ) ?? "token"
+        
+//        let issuer = UserDefaults().string(forKey:PrefKeys.IssuerString.rawValue ) ?? ""
 
-        let jwksEndpoint = UserDefaults().string(forKey:PrefKeys.JwksEndpoint.rawValue ) ?? ".well-known/jwks.json"
-        let nonceEndpont = UserDefaults().string(forKey:PrefKeys.NonceEndpoint.rawValue ) ?? "nonce"
+//        let jwksEndpoint = UserDefaults().string(forKey:PrefKeys.JwksEndpoint.rawValue ) ?? ".well-known/jwks.json"
+//        let nonceEndpont = UserDefaults().string(forKey:PrefKeys.NonceEndpoint.rawValue ) ?? "nonce"
         
-        let clientID = UserDefaults().string(forKey:PrefKeys.clientID.rawValue ) ?? "psso"
+//        let clientID = UserDefaults().string(forKey:PrefKeys.clientID.rawValue ) ?? "psso"
 
         if let tokenEndpoint = URL(string: urlPath + tokenEndpoint),
            let jwksEndpoint = URL(string: urlPath + jwksEndpoint),
@@ -190,10 +211,10 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         NSLog("LoginSSOE sendRegistration")
 
         let encoder = JSONEncoder()
-        let urlPath = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
+//        let urlPath = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
 
         
-        let registrationEndpoint = UserDefaults().string(forKey:PrefKeys.RegistrationEndpoint.rawValue ) ?? "register"
+//        let registrationEndpoint = UserDefaults().string(forKey:PrefKeys.RegistrationEndpoint.rawValue ) ?? "register"
         let registrationURL = URL(string: urlPath + registrationEndpoint)
        if let data = try? encoder.encode(body), let registrationURL = registrationURL{
 

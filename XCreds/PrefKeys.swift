@@ -194,7 +194,7 @@ enum PrefKeys: String {
     case CallbackURLString = "CallbackURLString"
     case IssuerString = "IssuerString"
     case Username = "Username"
-
+    case AdditionalParameters = "AdditionalParameters"
 }
 func getManagedPreference(key: Preferences) -> Any? {
 
