@@ -1,3 +1,10 @@
+## tag-5.9(9118) (2026-02-01)
+
+*  tweaked build scripts [View](https://github.com/twocanoes/xcreds/commit/583d3ed232d68cb7bba800700bd1f3dc5492e755)
+*  updated registration [View](https://github.com/twocanoes/xcreds/commit/29b10c9b68f59163a15272da59231130a1c702a5)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/2373f2be3f32a6443fde992b924e268aa3fc0041)
+
+
 ## tag-5.9(9112) (2026-02-01)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/da2164cfb2df5b6d780ba1563b98edbf981a203b)
