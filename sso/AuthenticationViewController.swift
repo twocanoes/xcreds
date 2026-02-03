@@ -18,10 +18,10 @@ class AuthenticationViewController: NSViewController {
     var loginManager:ASAuthorizationProviderExtensionLoginManager?
     var authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest?
     var urlPath = ""
-    var tokenEndpoint = ""
+    var tokenEndpoint = "token"
     var issuer = ""
-    var jwksEndpoint = ""
-    var nonceEndpont = ""
+    var jwksEndpoint = ".well-known/jwks.json"
+    var nonceEndpont = "nonce"
     var clientID = "psso"
     var registrationEndpoint = "register"
 

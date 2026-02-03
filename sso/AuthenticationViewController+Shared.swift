@@ -54,6 +54,11 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
         if let tAdditionalParameters = loginManager?.extensionData[PrefKeys.AdditionalParameters.rawValue] as? [String:String] {
             additionalParameters = tAdditionalParameters
         }
+        
+        if let tScopes = loginManager?.extensionData[PrefKeys.scopes.rawValue] as? [String] {
+            scopes = tScopes
+        }
+
 
 //
 //        let discoveryURL = UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? ""
@@ -81,12 +86,13 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
             if let url = url {
                 webView.navigationDelegate=oidcLite
                 var request = URLRequest(url: url)
-//                let cookies = getCookies()
+                let cookies = getCookies()
                 
-//                if let cookies = cookies {
-//                    request.setValue(combineCookies(cookies: cookies), forHTTPHeaderField: "Cookie")
-//                }
-//                request.httpShouldHandleCookies=true
+                if let cookies = cookies {
+                    request.setValue(combineCookies(cookies: cookies), forHTTPHeaderField: "Cookie")
+                }
+                request.httpShouldHandleCookies=true
+                
                 webView.load(request)
             }
         }

@@ -52,6 +52,8 @@
 		7613FDF7289E114F00340CCD /* loadpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 7613FDF6289E114F00340CCD /* loadpage.html */; };
 		7614D03C2B181A5D006EAF36 /* icon_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 7614D03B2B181A5D006EAF36 /* icon_128x128.png */; };
 		76189C782E9A021D00BEF023 /* com.twocanoes.FileVaultLoginHelper.plist in Copy LaunchDaemons Property Lists */ = {isa = PBXBuildFile; fileRef = 76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */; };
+		7619C6542F316AAD0037A82E /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D666C2E961F8F009CE2BF /* NSFileManager+TCSRealHomeFolder.m */; };
+		7619C6552F316AAD0037A82E /* NSFileManager+TCSRealHomeFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 766D666C2E961F8F009CE2BF /* NSFileManager+TCSRealHomeFolder.m */; };
 		761B486C28A3575000C6A02B /* XCredsLoginDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761B486B28A3575000C6A02B /* XCredsLoginDone.swift */; };
 		762177E62B7144460051B756 /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 762177E52B7144460051B756 /* OIDCLite */; };
 		7621EBB32F2FE25A008D7E03 /* XCreds-PSSO.app in Resources */ = {isa = PBXBuildFile; fileRef = 76F657412F2EFA5D0084C375 /* XCreds-PSSO.app */; };
@@ -1993,6 +1995,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				763956852F2FB4B0006A0F7D /* UNIXUtilities.swift in Sources */,
+				7619C6552F316AAD0037A82E /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 				763956862F2FB4E2006A0F7D /* TCSUnifiedLogger.m in Sources */,
 				763956832F2FB418006A0F7D /* TCSLoginWindowUtilities.m in Sources */,
 				763956812F2FB3BA006A0F7D /* PrefKeys.swift in Sources */,
@@ -2005,6 +2008,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7619C6542F316AAD0037A82E /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2814,7 +2818,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso.sso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso3.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -2865,7 +2869,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso.sso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso3.sso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -2908,7 +2912,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
@@ -2953,7 +2957,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.psso3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
