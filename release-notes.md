@@ -1,3 +1,9 @@
+## tag-5.9(9120) (2026-02-02)
+
+*  fixed bundle id issue [View](https://github.com/twocanoes/xcreds/commit/c795619f0c6cbda6e0d892f0a5fb4a41f35f612b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6bdcf6ef51764814eefe4e75ebd4d10f76fc9d7c)
+
+
 ## tag-5.9(9119) (2026-02-01)
 
 *  put prefs inside ssoe profile [View](https://github.com/twocanoes/xcreds/commit/0ec915719754058c2194e16daf935939a5fc192c)
