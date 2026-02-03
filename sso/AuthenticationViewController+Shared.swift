@@ -18,15 +18,53 @@ protocol ExtensionAuthorizationRequestProtocol {
 
 extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
     func tokenFailure(message: String) {
-        if let deviceRegisterCompletion = deviceRegisterCompletion {
-            deviceRegisterCompletion(.failed)
+        switch extensionState{
+            
+        case .none:
+            break
+        case .deviceRegistering:
+            if let deviceRegisterCompletion = deviceRegisterCompletion {
+                deviceRegisterCompletion(.failed)
+            }
+        case .essoProcessing:
+            //maybe redirect to essoURL?
+            self.authorizationRequest?.complete(error: NSError(domain: "tcs", code: -1, userInfo: [NSLocalizedDescriptionKey:"userAuth failure"]))
         }
+       
 
     }
     
     func tokenResponse(tokens: OIDCLite.TokenResponse) {
-            deviceRegister()
         
+        switch extensionState{
+            
+        case .none:
+            break
+        case .deviceRegistering:
+            deviceRegister()
+            
+        case .essoProcessing:
+            var headers:[String:String]? = nil
+            if let accessToken = tokens.accessToken{
+                headers=["Bearer":accessToken]
+            }
+            
+
+
+            if let url = self.url, let response = HTTPURLResponse.init(url: url, statusCode: 302, httpVersion: nil, headerFields: headers) {
+                self.authorizationRequest?.complete(httpResponse: response, httpBody: nil)
+            }
+
+        }
+        
+//        let headers: [String:String] = [
+//            "Location": webViewURL.absoluteString,
+//            "Set-Cookie": combineCookies(cookies: cookies)
+//        ]
+//        storeCookies(cookies)
+        
+        
+
     }
     
 
@@ -60,18 +98,6 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
         }
 
 
-//
-//        let discoveryURL = UserDefaults.standard.string(forKey: PrefKeys.discoveryURL.rawValue) ?? ""
-//
-//        let clientID = UserDefaults.standard.string(forKey: PrefKeys.clientID.rawValue) ?? ""
-//
-//        let redirectURI = UserDefaults.standard.string(forKey: PrefKeys.redirectURI.rawValue) ?? ""
-//        
-//        let scopes = UserDefaults.standard.array(forKey: PrefKeys.scopes.rawValue) as? [String]
-//
-//        let clientSecret = UserDefaults.standard.string(forKey: PrefKeys.clientSecret.rawValue) ?? ""
-
-        
 //       let additionalParameters = ["access_type":"offline"]
 
         oidcLite = OIDCLite(discoveryURL: discoveryURLString, clientID:clientID, clientSecret: clientSecret, redirectURI: redirectURI, scopes: scopes, additionalParameters: additionalParameters)
@@ -111,7 +137,7 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
 //                    "Set-Cookie": combineCookies(cookies: cookies)
 //                ]
 //                storeCookies(cookies)
-//                if let response = HTTPURLResponse.init(url: url, statusCode: 302, httpVersion: nil, headerFields: headers) {
+//                if let url = self.url, let response = HTTPURLResponse.init(url: url, statusCode: 302, httpVersion: nil, headerFields: headers) {
 //                    self.authorizationRequest?.complete(httpResponse: response, httpBody: nil)
 //                }
 //            })
@@ -119,22 +145,32 @@ extension AuthenticationViewController:WKNavigationDelegate, OIDCLiteDelegate {
 //
 //    }
 }
-//extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
+extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
+
+    func process(_ request:ASAuthorizationProviderExtensionAuthorizationRequest){
+        essoURL=request.url
+        request.presentAuthorizationViewController(completion: { (success, error) in
+//            let urlRequest = URLRequest(url: self.url!)
 //
-//    func process(_ request:ASAuthorizationProviderExtensionAuthorizationRequest){
-//        url=request.url
-//        request.presentAuthorizationViewController(completion: { (success, error) in
-//            if error != nil {
-//                request.complete(error: error!)
-//            }
-//        })
-//    }
-//}
+//            self.webView.load(urlRequest)
+            
+            if error != nil {
+                request.complete(error: error!)
+                return
+            }
+            self.setupWebViewAndDelegate()
+
+        })
+    }
+}
 extension AuthenticationViewController: ASAuthorizationProviderExtensionAuthorizationRequestHandler {
 
-    public func beginAuthorization(with request: ASAuthorizationProviderExtensionAuthorizationRequest) {
-        self.authorizationRequest = request
-        request.doNotHandle()
-//        process(request)
+    public func beginAuthorization(with authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest) {
+        oidcLite?.delegate=self
+        
+        extensionState = .essoProcessing
+        self.authorizationRequest = authorizationRequest
+//        request.doNotHandle()
+        process(authorizationRequest)
     }
 }

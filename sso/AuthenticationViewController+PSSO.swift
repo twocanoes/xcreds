@@ -63,6 +63,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         if options.contains(.userInteractionEnabled) {
             NSLog("LoginSSOE: userInteractionEnabled device configuration enabled")
 
+            extensionState = .deviceRegistering
             loginManager.presentRegistrationViewController { err in
                 
             }
@@ -161,16 +162,8 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         if let tClientID = data[PrefKeys.NonceEndpoint.rawValue] as? String{
             clientID=tClientID
         }
-//         = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
-//        let tokenEndpoint = UserDefaults().string(forKey:PrefKeys.TokenEndpoint.rawValue ) ?? "token"
-        
-//        let issuer = UserDefaults().string(forKey:PrefKeys.IssuerString.rawValue ) ?? ""
 
-//        let jwksEndpoint = UserDefaults().string(forKey:PrefKeys.JwksEndpoint.rawValue ) ?? ".well-known/jwks.json"
-//        let nonceEndpont = UserDefaults().string(forKey:PrefKeys.NonceEndpoint.rawValue ) ?? "nonce"
         
-//        let clientID = UserDefaults().string(forKey:PrefKeys.clientID.rawValue ) ?? "psso"
-
         if let tokenEndpoint = URL(string: urlPath + tokenEndpoint),
            let jwksEndpoint = URL(string: urlPath + jwksEndpoint),
            let nonceEndpoint = URL(string: urlPath + nonceEndpont) {

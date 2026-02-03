@@ -12,9 +12,15 @@ import CryptoKit
 import OIDCLite
 class AuthenticationViewController: NSViewController {
 
+    enum ExtensionState {
+        case none
+        case deviceRegistering
+        case essoProcessing
+    }
     var deviceRegisterCompletion:((ASAuthorizationProviderExtensionRegistrationResult) -> Void)?
     var oidcLite:OIDCLite? = nil
     var url:URL?
+    var essoURL:URL?
     var loginManager:ASAuthorizationProviderExtensionLoginManager?
     var authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest?
     var urlPath = ""
@@ -27,11 +33,12 @@ class AuthenticationViewController: NSViewController {
 
     var redirectURI = ""
     var discoveryURLString = ""
-    var scopes:[String] = []
+    var scopes:[String]? = nil
     
     var additionalParameters:[String:String] = [:]
     var clientSecret = ""
     
+    var extensionState:ExtensionState = .none
     @IBOutlet weak var webView: WKWebView!
 //    override func viewDidLoad() {
 //        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
