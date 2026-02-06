@@ -22,6 +22,17 @@ import OIDCLite
 
 extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistrationHandler {
 
+    /*
+     try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, code: code))
+
+     */
+    struct PSSOKeys{
+        var deviceUUID:String
+        var deviceSigningKey:String
+        var deviceEncryptionKey:String
+        var signKeyID:String
+        var encKeyID:String
+    }
     enum PSSORegistrationResult: String {
         case cancel, success, resetUserKeys, resetDeviceKeys
     }
@@ -36,7 +47,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         let deviceEncryptionKey: String
         let signKeyID: String
         let encKeyID: String
-        let codeVerifier:String
+        let code:String
 //        let user: String
 
         enum CodingKeys: String, CodingKey {
@@ -45,7 +56,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
             case deviceEncryptionKey = "DeviceEncryptionKey"
             case signKeyID = "SignKeyID"
             case encKeyID = "EncKeyID"
-            case codeVerifier = "CodeVerifier"
+            case code = "code"
         }
     }
 
@@ -53,6 +64,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
     func beginDeviceRegistration(loginManager: ASAuthorizationProviderExtensionLoginManager, options: ASAuthorizationProviderExtensionRequestOptions = [], completion: @escaping (ASAuthorizationProviderExtensionRegistrationResult) -> Void) {
 
         self.loginManager=loginManager
+        extensionData=loginManager.extensionData
         deviceRegisterCompletion=completion
         NSLog("LoginSSOE: Catching device registration request")
 
@@ -63,9 +75,14 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         if options.contains(.userInteractionEnabled) {
             NSLog("LoginSSOE: userInteractionEnabled device configuration enabled")
 
+            
             extensionState = .deviceRegistering
-            loginManager.presentRegistrationViewController { err in
+            loginManager.presentRegistrationViewController { [self] err in
                 
+                if let urlString = extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: urlString){
+                    self.setupWebViewAndDelegate(withURL: url)
+                }
+
             }
             
         } else {
@@ -73,58 +90,61 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         }
     }
 
-    func deviceRegister(){
+    
+    func pssoKeys()-> PSSOKeys? {
         // get deviceSigningPublicKey
         guard let loginManagerDeviceSigningKey = loginManager?.key(for: .userDeviceSigning), let deviceSigningPublicKey = publicKeyPEMFromPrivateKey(key: loginManagerDeviceSigningKey,keyOperation: .Signing) else {
             NSLog("LoginSSOE: Unable to get deviceSigningKey.")
             deviceRegisterCompletion?(.failed)
-            return
+            return nil
         }
-
+        
         // get deviceSigningPublicKeyHash
         guard let deviceSigningPublicKeyHash = base64EncodedSHA256PublicKeyHash(loginManagerDeviceSigningKey) else {
             NSLog("LoginSSOE: Unable to get loginManagerDeviceSigningKey .")
             deviceRegisterCompletion?(.failed)
-            return
+            return nil
         }
-
+        
         // get deviceEncryptionPublicKey
         guard let loginManagerDeviceEncryptionKey = loginManager?.key(for: .userDeviceEncryption), let deviceEncryptionPublicKey = publicKeyPEMFromPrivateKey(key: loginManagerDeviceEncryptionKey, keyOperation: .KeyAgreement) else {
             NSLog("LoginSSOE: Unable to get deviceEncKey.")
             deviceRegisterCompletion?(.failed)
-            return
+            return nil
         }
-
+        
         // get deviceEncryptionPublicKeyHash
         guard let deviceEncryptionPublicKeyHash = base64EncodedSHA256PublicKeyHash(loginManagerDeviceEncryptionKey) else {
             NSLog("LoginSSOE: Unable to get deviceEncKey hash.")
             deviceRegisterCompletion?(.failed)
-            return
+            return nil
         }
+        //deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, code: code))
 
-        Task {
-            //configure PSSO
-            if let loginManager = loginManager{
-                await self.setLoginConfig(loginManager: loginManager)
-                
-                //send the public keys and ids to the server
-                try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, codeVerifier: oidcLite?.codeVerifier ?? ""))
-                deviceRegisterCompletion?(.success)
-            }
-        }
+        return PSSOKeys(deviceUUID: self.getSystemUUID() ?? "unknown" , deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey:deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash)
     }
+        
+//        Task {
+//            //configure PSSO
+//            if let loginManager = loginManager{
+//                
+//                //send the public keys and ids to the server
+//                try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, code: code))
+//                deviceRegisterCompletion?(.success)
+//            }
+//        }
+    
     func beginUserRegistration(loginManager: ASAuthorizationProviderExtensionLoginManager, userName: String?, method authenticationMethod: ASAuthorizationProviderExtensionAuthenticationMethod, options: ASAuthorizationProviderExtensionRequestOptions = [], completion: @escaping (ASAuthorizationProviderExtensionRegistrationResult) -> Void) {
         NSLog("LoginSSOE: beginUserRegistration")
 
         if options.contains(.registrationRepair) {
             NSLog("LoginSSOE: Options: beginUserRegistration Requires Repair")
         }
-
         do {
 //            let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.Username.rawValue) ?? ""
 //            let user = userName ?? defaultsUsername
 
-            let config = ASAuthorizationProviderExtensionUserLoginConfiguration(loginUserName: "" )
+            let config = ASAuthorizationProviderExtensionUserLoginConfiguration(loginUserName: ""  )
             try loginManager.saveUserLoginConfiguration(config)
         } catch {
             NSLog("LoginSSOE: error saving user login config: \(error)")
@@ -139,27 +159,27 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         NSLog("LoginSSOE: Registration completed")
     }
 
-    func setLoginConfig(loginManager: ASAuthorizationProviderExtensionLoginManager) async {
+    func setPSSOLoginConfig(loginManager: ASAuthorizationProviderExtensionLoginManager) async {
 
-        let data = loginManager.extensionData
-        TCSLogWithMark("extension data is \(data)")
-        if let tUrlPath = data[PrefKeys.PSSOUrlPathString.rawValue] as? String{
+        extensionData = loginManager.extensionData
+        TCSLogWithMark("extension data is \(extensionData)")
+        if let tUrlPath = extensionData[PrefKeys.PSSOUrlPathString.rawValue] as? String{
             urlPath=tUrlPath
         }
-        if let tTokenEndpoint = data[PrefKeys.TokenEndpoint.rawValue] as? String{
+        if let tTokenEndpoint = extensionData[PrefKeys.TokenEndpoint.rawValue] as? String{
             tokenEndpoint=tTokenEndpoint
         }
-        if let tIssuer = data[PrefKeys.IssuerString.rawValue] as? String{
+        if let tIssuer = extensionData[PrefKeys.IssuerString.rawValue] as? String{
             issuer=tIssuer
         }
-        if let tJwksEndpoint = data[PrefKeys.JwksEndpoint.rawValue] as? String{
+        if let tJwksEndpoint = extensionData[PrefKeys.JwksEndpoint.rawValue] as? String{
             jwksEndpoint=tJwksEndpoint
         }
         
-        if let tNonceEndpont = data[PrefKeys.NonceEndpoint.rawValue] as? String{
+        if let tNonceEndpont = extensionData[PrefKeys.NonceEndpoint.rawValue] as? String{
             nonceEndpont=tNonceEndpont
         }
-        if let tClientID = data[PrefKeys.NonceEndpoint.rawValue] as? String{
+        if let tClientID = extensionData[PrefKeys.NonceEndpoint.rawValue] as? String{
             clientID=tClientID
         }
 

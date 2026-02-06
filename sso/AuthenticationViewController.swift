@@ -18,7 +18,7 @@ class AuthenticationViewController: NSViewController {
         case essoProcessing
     }
     var deviceRegisterCompletion:((ASAuthorizationProviderExtensionRegistrationResult) -> Void)?
-    var oidcLite:OIDCLite? = nil
+//    var oidcLite:OIDCLite? = nil
     var url:URL?
     var essoURL:URL?
     var loginManager:ASAuthorizationProviderExtensionLoginManager?
@@ -31,13 +31,12 @@ class AuthenticationViewController: NSViewController {
     var clientID = "psso"
     var registrationEndpoint = "register"
 
-    var redirectURI = ""
     var discoveryURLString = ""
     var scopes:[String]? = nil
     
     var additionalParameters:[String:String] = [:]
     var clientSecret = ""
-    
+    var extensionData: [AnyHashable : Any] = [:]
     var extensionState:ExtensionState = .none
     @IBOutlet weak var webView: WKWebView!
 //    override func viewDidLoad() {
@@ -55,7 +54,6 @@ class AuthenticationViewController: NSViewController {
 //        }
         
 
-        setupWebViewAndDelegate()
 
         view.window?.setContentSize(NSMakeSize(600, 600))
 

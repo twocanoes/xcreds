@@ -39,6 +39,9 @@ xcodebuild archive -project "${SRC_PATH}/${PRODUCT_NAME}.xcodeproj" -scheme "${P
 xcodebuild -exportArchive -archivePath "${temp_folder}/${PRODUCT_NAME}.xcarchive"  -exportOptionsPlist "${SRC_PATH}/build_resources/exportOptions.plist" -exportPath "${BUILD_FOLDER}" -allowProvisioningUpdates 
 
 pushd "${BUILD_FOLDER}"
+if [ ! -e /tmp/xcreds ]; then 
+	mkdir /tmp/xcreds
+fi
 zip -r /tmp/xcreds/xcreds.zip XCreds.app
 popd 
 ssh  root@"${REMOTE_MAC}" 'bash -c "if [ -e "/Applications/XCreds.app" ] ; then echo removing; rm -rf "/Applications/XCreds.app"; fi"'
