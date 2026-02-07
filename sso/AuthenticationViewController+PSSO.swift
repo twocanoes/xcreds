@@ -66,14 +66,14 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         self.loginManager=loginManager
         extensionData=loginManager.extensionData
         deviceRegisterCompletion=completion
-        NSLog("LoginSSOE: Catching device registration request")
+        TCSLogWithMark("LoginSSOE: Catching device registration request")
 
         if options.contains(.registrationRepair) {
-            NSLog("LoginSSOE: Options: Requires Repair")
+            TCSLogWithMark("LoginSSOE: Options: Requires Repair")
         }
 
         if options.contains(.userInteractionEnabled) {
-            NSLog("LoginSSOE: userInteractionEnabled device configuration enabled")
+            TCSLogWithMark("LoginSSOE: userInteractionEnabled device configuration enabled")
 
             
             extensionState = .deviceRegistering
@@ -94,28 +94,28 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
     func pssoKeys()-> PSSOKeys? {
         // get deviceSigningPublicKey
         guard let loginManagerDeviceSigningKey = loginManager?.key(for: .userDeviceSigning), let deviceSigningPublicKey = publicKeyPEMFromPrivateKey(key: loginManagerDeviceSigningKey,keyOperation: .Signing) else {
-            NSLog("LoginSSOE: Unable to get deviceSigningKey.")
+            TCSLogWithMark("LoginSSOE: Unable to get deviceSigningKey.")
             deviceRegisterCompletion?(.failed)
             return nil
         }
         
         // get deviceSigningPublicKeyHash
         guard let deviceSigningPublicKeyHash = base64EncodedSHA256PublicKeyHash(loginManagerDeviceSigningKey) else {
-            NSLog("LoginSSOE: Unable to get loginManagerDeviceSigningKey .")
+            TCSLogWithMark("LoginSSOE: Unable to get loginManagerDeviceSigningKey .")
             deviceRegisterCompletion?(.failed)
             return nil
         }
         
         // get deviceEncryptionPublicKey
         guard let loginManagerDeviceEncryptionKey = loginManager?.key(for: .userDeviceEncryption), let deviceEncryptionPublicKey = publicKeyPEMFromPrivateKey(key: loginManagerDeviceEncryptionKey, keyOperation: .KeyAgreement) else {
-            NSLog("LoginSSOE: Unable to get deviceEncKey.")
+            TCSLogWithMark("LoginSSOE: Unable to get deviceEncKey.")
             deviceRegisterCompletion?(.failed)
             return nil
         }
         
         // get deviceEncryptionPublicKeyHash
         guard let deviceEncryptionPublicKeyHash = base64EncodedSHA256PublicKeyHash(loginManagerDeviceEncryptionKey) else {
-            NSLog("LoginSSOE: Unable to get deviceEncKey hash.")
+            TCSLogWithMark("LoginSSOE: Unable to get deviceEncKey hash.")
             deviceRegisterCompletion?(.failed)
             return nil
         }
@@ -135,10 +135,10 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 //        }
     
     func beginUserRegistration(loginManager: ASAuthorizationProviderExtensionLoginManager, userName: String?, method authenticationMethod: ASAuthorizationProviderExtensionAuthenticationMethod, options: ASAuthorizationProviderExtensionRequestOptions = [], completion: @escaping (ASAuthorizationProviderExtensionRegistrationResult) -> Void) {
-        NSLog("LoginSSOE: beginUserRegistration")
+        TCSLogWithMark("LoginSSOE: beginUserRegistration")
 
         if options.contains(.registrationRepair) {
-            NSLog("LoginSSOE: Options: beginUserRegistration Requires Repair")
+            TCSLogWithMark("LoginSSOE: Options: beginUserRegistration Requires Repair")
         }
         do {
 //            let defaultsUsername = UserDefaults.standard.string(forKey: PrefKeys.Username.rawValue) ?? ""
@@ -147,7 +147,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
             let config = ASAuthorizationProviderExtensionUserLoginConfiguration(loginUserName: ""  )
             try loginManager.saveUserLoginConfiguration(config)
         } catch {
-            NSLog("LoginSSOE: error saving user login config: \(error)")
+            TCSLogWithMark("LoginSSOE: error saving user login config: \(error)")
             completion(.failed)
             return
         }
@@ -156,7 +156,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
     }
 
     func registrationDidComplete() {
-        NSLog("LoginSSOE: Registration completed")
+        TCSLogWithMark("LoginSSOE: Registration completed")
     }
 
     func setPSSOLoginConfig(loginManager: ASAuthorizationProviderExtensionLoginManager) async {
@@ -194,15 +194,15 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
                 
                 try loginManager.saveLoginConfiguration(config)
             } catch {
-                NSLog("LoginSSOE: error saving config: \(error)")
+                TCSLogWithMark("LoginSSOE: error saving config: \(error)")
             }
         } else {
-            NSLog("LoginSSOE: Unable to make URLs :(")
+            TCSLogWithMark("LoginSSOE: Unable to make URLs :(")
         }
     }
 
     func supportedGrantTypes() -> ASAuthorizationProviderExtensionSupportedGrantTypes {
-        NSLog("LoginSSOE: checking grant types")
+        TCSLogWithMark("LoginSSOE: checking grant types")
 
         //tell PSSO that our service supports password grant type
         let types:ASAuthorizationProviderExtensionSupportedGrantTypes = .password
@@ -215,13 +215,13 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
     //we support version 2 so let PSSO know
     func protocolVersion() -> ASAuthorizationProviderExtensionPlatformSSOProtocolVersion {
-        NSLog("LoginSSOE: checking protocol version")
+        TCSLogWithMark("LoginSSOE: checking protocol version")
         return .version2_0
     }
 
     //sen registration to our service.
     private func sendRegistration(body: PSSORegistration) async throws {
-        NSLog("LoginSSOE sendRegistration")
+        TCSLogWithMark("LoginSSOE sendRegistration")
 
         let encoder = JSONEncoder()
 //        let urlPath = UserDefaults().string(forKey:PrefKeys.PSSOUrlPathString.rawValue ) ?? ""
@@ -233,7 +233,7 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
             var request = URLRequest(url: registrationURL)
             request.httpMethod = "POST"
-            NSLog("LoginSSOE POSTING sendRegistration")
+           TCSLogWithMark("LoginSSOE POSTING sendRegistration")
 
             let (_, _) = try await URLSession.shared.upload(
                 for: request,
@@ -258,11 +258,11 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
         var err: Unmanaged<CFError>?
         guard let publicKey = SecKeyCopyPublicKey(key) else {
-            NSLog("LoginSSOE: Unable to get publicKey.")
+            TCSLogWithMark("LoginSSOE: Unable to get publicKey.")
             return nil
         }
         guard  let pubKeyData = SecKeyCopyExternalRepresentation(publicKey, &err) as Data? else {
-            NSLog("LoginSSOE: error in SecKeyCopyExternalRepresentation.")
+            TCSLogWithMark("LoginSSOE: error in SecKeyCopyExternalRepresentation.")
             return nil
 
         }
@@ -286,11 +286,11 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         var err: Unmanaged<CFError>?
 
         guard let publicKey = SecKeyCopyPublicKey(key) else {
-            NSLog("LoginSSOE: Unable to get publicKey.")
+            TCSLogWithMark("LoginSSOE: Unable to get publicKey.")
             return nil
         }
         guard let pubKeyData  = SecKeyCopyExternalRepresentation(publicKey, &err) as Data? else {
-            NSLog("LoginSSOE: Unable to SecKeyCopyExternalRepresentation.")
+            TCSLogWithMark("LoginSSOE: Unable to SecKeyCopyExternalRepresentation.")
 
             return nil
         }

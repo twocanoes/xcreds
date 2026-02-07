@@ -58,14 +58,14 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
     func loadPage() {
         Task{ @MainActor in
             TCSLogWithMark("Clearing cookies")
-            self.webView.cleanAllCookies()
+//            self.webView.cleanAllCookies()
             TCSLogWithMark()
             let licenseState = LicenseChecker().currentLicenseState()
 
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self
             //            TokenManager.shared.oidc().delegate = self
-            self.clearCookies()
+//            self.clearCookies()
             TCSLogWithMark()
             switch licenseState {
 
@@ -152,22 +152,22 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
 
 
-    private func clearCookies() {
-        let dataStore = WKWebsiteDataStore.default()
-        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-                                 for: records,
-                                 completionHandler: {
-                print("Removing Cookie")
-            })
-        }
-
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            for cookie in cookies {
-                HTTPCookieStorage.shared.deleteCookie(cookie)
-            }
-        }
-    }
+//    private func clearCookies() {
+//        let dataStore = WKWebsiteDataStore.default()
+//        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+//            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+//                                 for: records,
+//                                 completionHandler: {
+//                print("Removing Cookie")
+//            })
+//        }
+//
+//        if let cookies = HTTPCookieStorage.shared.cookies {
+//            for cookie in cookies {
+//                HTTPCookieStorage.shared.deleteCookie(cookie)
+//            }
+//        }
+//    }
    
     func showErrorMessageAndDeny(_ message:String){
     }

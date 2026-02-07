@@ -17,58 +17,6 @@ protocol ExtensionAuthorizationRequestProtocol {
 }
 
 extension AuthenticationViewController:WKNavigationDelegate {
-//    func tokenFailure(message: String) {
-//        switch extensionState{
-//            
-//        case .none:
-//            break
-//        case .deviceRegistering:
-//            if let deviceRegisterCompletion = deviceRegisterCompletion {
-//                deviceRegisterCompletion(.failed)
-//            }
-//        case .essoProcessing:
-//            //maybe redirect to essoURL?
-//            self.authorizationRequest?.complete(error: NSError(domain: "tcs", code: -1, userInfo: [NSLocalizedDescriptionKey:"userAuth failure"]))
-//        }
-//       
-//
-//    }
-//    
-//    func tokenResponse(tokens: OIDCLite.TokenResponse) {
-//        
-//        switch extensionState{
-//            
-//        case .none:
-//            break
-//        case .deviceRegistering:
-//            deviceRegister()
-//            
-//        case .essoProcessing:
-//            var headers:[String:String] =  [:]
-//            
-//            if let url = url, let accessToken = tokens.accessToken {
-//                headers["Location"]=url.absoluteString+"?code="+accessToken
-//            }
-////            if let accessToken = tokens.accessToken{
-////                headers["Bearer"]=accessToken
-////            }
-//            
-//            if let url = self.url, let response = HTTPURLResponse.init(url: url, statusCode: 302, httpVersion: nil, headerFields: headers) {
-//                self.authorizationRequest?.complete(httpResponse: response, httpBody: nil)
-//            }
-//
-//        }
-//        
-////        let headers: [String:String] = [
-////            "Location": webViewURL.absoluteString,
-////            "Set-Cookie": combineCookies(cookies: cookies)
-////        ]
-////        storeCookies(cookies)
-//        
-//        
-//
-//    }
-//    
 
     @IBAction func cancelButtonPressed(_ sender: Any) {
         self.authorizationRequest?.doNotHandle()
@@ -76,13 +24,13 @@ extension AuthenticationViewController:WKNavigationDelegate {
 
     func setupWebViewAndDelegate(withURL url:URL ) {
         let dataStore = WKWebsiteDataStore.default()
-        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-                                 for: records,
-                                 completionHandler: {
-                print("Removing Cookie")
-            })
-        }
+//        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+//            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+//                                 for: records,
+//                                 completionHandler: {
+//                print("Removing Cookie")
+//            })
+//        }
 
 //        if let cookies = HTTPCookieStorage.shared.cookies {
 //            for cookie in cookies {
@@ -144,119 +92,136 @@ extension AuthenticationViewController:WKNavigationDelegate {
         guard let webViewURL = webView.url else {
             return
         }
+        TCSLogWithMark("redirect: \(webViewURL.absoluteString)")
+
         var codeValue:String?
         let components = URLComponents(url: webViewURL, resolvingAgainstBaseURL: false)
         if let code = components?.queryItems?.first(where: { item in
+            
             item.name=="code"
         }){
+            TCSLogWithMark("setting code value to \(code.value ?? "")")
             codeValue = code.value
         }
-        
-        
-        
-//
-//        switch extensionState{
-//            
-//        case .none:
-//            break
-//        case .deviceRegistering:
-//        case .deviceRegistering:
-//            deviceRegister()
-//            
-//        case .essoProcessing:
-//            var headers:[String:String] =  [:]
-//            
-//            if let url = url {
-//                headers["Location"]=url.absoluteString+"?code="+accessToken
-//            }
-            //            if let accessToken = tokens.accessToken{
-            //                headers["Bearer"]=accessToken
-            //            }
+        switch extensionState{
             
-//            if let url = self.url, let response = HTTPURLResponse.init(url: url, statusCode: 302, httpVersion: nil, headerFields: headers) {
-//                self.authorizationRequest?.complete(httpResponse: response, httpBody: nil)
-//            }
-//            
-        
-        
-        if let _=codeValue, let callbackURLString = extensionData["redirectURI"] as? String, webViewURL.absoluteString.starts(with: callbackURLString) == true {
-            //            deviceRegister(code: codeValue)
-            guard let pssoKeys =  pssoKeys() else {
-                return
-            }
-            Task{
-                if let loginManager = loginManager {
-                    await self.setPSSOLoginConfig(loginManager: loginManager)
-                }
-                
-                
-                
-                /*
-                 var deviceUUID:String
-                 var deviceSigningKey:String
-                 var deviceEncryptionKey:String
-                 var signKeyID:String
-                 var encKeyID:String
-                 
-                 */
-                
-                
-                guard  var components = URLComponents(url: webViewURL, resolvingAgainstBaseURL: false) else {
+        case .none:
+            TCSLogWithMark("nothing to process")
+            break
+        case .deviceRegistering:
+            TCSLogWithMark("deviceRegistering")
+            if let _=codeValue, let callbackURLString = extensionData["redirectURI"] as? String, webViewURL.absoluteString.starts(with: callbackURLString) == true {
+                guard let pssoKeys =  pssoKeys() else {
+                    TCSLogWithMark("no psso keys")
                     return
                 }
-                
+                Task{
+                    TCSLogWithMark("gettihng loginManager")
+                    if let loginManager = loginManager {
+                        TCSLogWithMark("setPSSOLoginConfig")
+                        await self.setPSSOLoginConfig(loginManager: loginManager)
+                    }
+                    
+                    guard  var components = URLComponents(url: webViewURL, resolvingAgainstBaseURL: false) else {
+                        TCSLogWithMark("no components")
 
-                var cs = CharacterSet.urlQueryAllowed
-                cs.remove("+")
-
-                let queryParams = ["deviceUUID":pssoKeys.deviceUUID, "deviceSigningKey": pssoKeys.deviceSigningKey,
-                                   "deviceEncryptionKey": pssoKeys.deviceEncryptionKey,
-                                   "signKeyID": pssoKeys.signKeyID,
-                                   "encKeyID": pssoKeys.encKeyID]
-                                   
-
-                components.host = "psso.twocanoes.com"
-                components.path = "/register"
-                components.scheme = "https"
-                
-//                components.queryItems?.append(URLQueryItem(name: "deviceUUID", value: pssoKeys.deviceUUID))
-//                components.queryItems?.append(URLQueryItem(name: "deviceSigningKey", value: pssoKeys.deviceSigningKey))
-//                components.queryItems?.append(URLQueryItem(name: "deviceEncryptionKey", value: pssoKeys.deviceEncryptionKey))
-//                components.queryItems?.append(URLQueryItem(name: "signKeyID", value: pssoKeys.signKeyID))
-//                components.queryItems?.append(URLQueryItem(name: "encKeyID", value: pssoKeys.encKeyID))
-                let percentEncoded = queryParams.map {
-                    $0.addingPercentEncoding(withAllowedCharacters: cs)!
-                    + "=" + $1.addingPercentEncoding(withAllowedCharacters: cs)!
-                }.joined(separator: "&")
-                
-                if let percentEncodedQuery = components.percentEncodedQuery {
-                    components.percentEncodedQuery =  percentEncodedQuery + "&" + percentEncoded
-                }
-
-                
-                guard let componentsURL = components.url else {
-                    return
-                }
-                
-                var request = URLRequest(url: componentsURL)
-                request.httpShouldHandleCookies=true
-                do {
+                        return
+                    }
+                    
+                    var cs = CharacterSet.urlQueryAllowed
+                    cs.remove("+")
+                    
+                    let queryParams = ["deviceUUID":pssoKeys.deviceUUID, "deviceSigningKey": pssoKeys.deviceSigningKey,
+                                       "deviceEncryptionKey": pssoKeys.deviceEncryptionKey,
+                                       "signKeyID": pssoKeys.signKeyID,
+                                       "encKeyID": pssoKeys.encKeyID]
                     
                     
-                    let (data, _) = try await URLSession.shared.data(for: request)
-                    TCSLogWithMark(data.base64EncodedString())
-                    deviceRegisterCompletion?(.success)
+                    components.host = "psso.twocanoes.com"
+                    components.path = "/register"
+                    components.scheme = "https"
+                    
+                    let percentEncoded = queryParams.map {
+                        $0.addingPercentEncoding(withAllowedCharacters: cs)!
+                        + "=" + $1.addingPercentEncoding(withAllowedCharacters: cs)!
+                    }.joined(separator: "&")
+                    
+                    if let percentEncodedQuery = components.percentEncodedQuery {
+                        components.percentEncodedQuery =  percentEncodedQuery + "&" + percentEncoded
+                    }
+                    
+                    
+                    guard let componentsURL = components.url else {
+                        return
+                    }
+                    TCSLogWithMark("sending url request")
 
-                }
-                catch {
-                    deviceRegisterCompletion?(.failed)
+                    var request = URLRequest(url: componentsURL)
+                    request.httpShouldHandleCookies=true
+                    do {
+                        
+                        
+                        let (_, _) = try await URLSession.shared.data(for: request)
+                        deviceRegisterCompletion?(.success)
+                        TCSLogWithMark("deviceRegisterCompletion success")
+                        extensionState = .none
 
+                    }
+                    catch {
+                        TCSLogWithMark("deviceRegisterCompletion failed: \(error.localizedDescription)")
+
+                        deviceRegisterCompletion?(.failed)
+                        
+                    }
+                    
+                    //            webView.load(request)
+                    //                self.authorizationRequest?.complete()
                 }
-//                webView.load(request)
-                
-                //            webView.load(request)
-                //                self.authorizationRequest?.complete()
             }
+            else {
+                TCSLogWithMark("No code so not catching redirect")
+            }
+            
+        case .essoProcessing:
+            if let _=codeValue, let callbackURLString = extensionData["redirectURI"] as? String, webViewURL.absoluteString.starts(with: callbackURLString) == true {
+                
+                TCSLogWithMark("essoProcessing")
+                
+                var headers:[String:String] =  [:]
+                
+                TCSLogWithMark("url = \(url?.debugDescription ?? "")")
+                TCSLogWithMark("codeValue = \(codeValue?.debugDescription ?? "")")
+                
+                if let url = url, let codeValue = codeValue {
+                    TCSLogWithMark()
+                    let redirectURLString = url.absoluteString + "?code=" + codeValue
+                    let redirectURL = URL(string: redirectURLString)
+                    headers["Location"]=redirectURLString
+                    TCSLogWithMark(headers["Location"] ?? "")
+                    
+                    //                        if let accessToken = tokens.accessToken{
+                    //                            headers["Bearer"]=accessToken
+                    //                        }
+                    TCSLogWithMark("Url : \(url.description )")
+                    
+                    
+                    if let redirectURL=redirectURL, let response = HTTPURLResponse.init(url: redirectURL, statusCode: 302, httpVersion: nil, headerFields: headers) {
+                        TCSLogWithMark()
+                        
+                        if let authorizationRequest = self.authorizationRequest {
+                            TCSLogWithMark("Completing authorization request")
+                            authorizationRequest.complete(httpResponse: response, httpBody: nil)
+                        }
+                        TCSLogWithMark()
+                        
+                    }
+                    TCSLogWithMark()
+                }
+            }
+            else {
+                TCSLogWithMark("No code so not catching redirect")
+            }
+
         }
 
     }
@@ -264,22 +229,30 @@ extension AuthenticationViewController:WKNavigationDelegate {
 extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
 
     func process(_ request:ASAuthorizationProviderExtensionAuthorizationRequest){
-        essoURL=request.url
+        TCSLogWithMark()
+        
         extensionData = request.extensionData
 
         request.presentAuthorizationViewController(completion: { (success, error) in
+            TCSLogWithMark()
 //            let urlRequest = URLRequest(url: self.url!)
 //
 //            self.webView.load(urlRequest)
             
             if error != nil {
+                TCSLogWithMark()
                 request.complete(error: error!)
                 return
             }
             
             if let urlString = self.extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: urlString){
+                TCSLogWithMark(urlString)
                 self.setupWebViewAndDelegate(withURL: url)
             }
+            else {
+                TCSLogWithMark()
+            }
+            TCSLogWithMark()
 
         })
     }
@@ -287,16 +260,20 @@ extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
 extension AuthenticationViewController: ASAuthorizationProviderExtensionAuthorizationRequestHandler {
 
     public func beginAuthorization(with authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest) {
+        TCSLogWithMark()
         if authorizationRequest.url.absoluteString.contains("code="){
+            TCSLogWithMark("code found, so not handling")
             extensionState = .none
             authorizationRequest.doNotHandle()
             return
         }
 //        oidcLite?.delegate=self
+        TCSLogWithMark()
         self.authorizationRequest=authorizationRequest
         self.url=authorizationRequest.url
         extensionState = .essoProcessing
 //        request.doNotHandle()
+        TCSLogWithMark()
         process(authorizationRequest)
     }
 }
