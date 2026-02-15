@@ -62,7 +62,10 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
 
     func beginDeviceRegistration(loginManager: ASAuthorizationProviderExtensionLoginManager, options: ASAuthorizationProviderExtensionRequestOptions = [], completion: @escaping (ASAuthorizationProviderExtensionRegistrationResult) -> Void) {
-
+        if TCSBetaCheckController().isExpired()==true {
+            TCSLogWithMark("Beta expired")
+            return
+        }
         self.loginManager=loginManager
         extensionData=loginManager.extensionData
         deviceRegisterCompletion=completion
@@ -76,10 +79,14 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
             TCSLogWithMark("LoginSSOE: userInteractionEnabled device configuration enabled")
 
             
+            
             extensionState = .deviceRegistering
             loginManager.presentRegistrationViewController { [self] err in
                 
-                if let urlString = extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: urlString){
+                
+                if let issuer=extensionData["IssuerHostname"] as? String, let registrationPath = extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: "https://\(issuer)/\(registrationPath)"){
+                    TCSLogWithMark("Loading registration endpoint, which should trigger ESSO");
+                    TCSLogWithMark(url.absoluteString)
                     self.setupWebViewAndDelegate(withURL: url)
                 }
 
@@ -163,13 +170,10 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
 
         extensionData = loginManager.extensionData
         TCSLogWithMark("extension data is \(extensionData)")
-        if let tUrlPath = extensionData[PrefKeys.PSSOUrlPathString.rawValue] as? String{
-            urlPath=tUrlPath
-        }
         if let tTokenEndpoint = extensionData[PrefKeys.TokenEndpoint.rawValue] as? String{
             tokenEndpoint=tTokenEndpoint
         }
-        if let tIssuer = extensionData[PrefKeys.IssuerString.rawValue] as? String{
+        if let tIssuer = extensionData[PrefKeys.IssuerHostname.rawValue] as? String{
             issuer=tIssuer
         }
         if let tJwksEndpoint = extensionData[PrefKeys.JwksEndpoint.rawValue] as? String{
@@ -182,6 +186,8 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         if let tClientID = extensionData[PrefKeys.NonceEndpoint.rawValue] as? String{
             clientID=tClientID
         }
+
+        urlPath = "https://\(issuer)/"
 
         
         if let tokenEndpoint = URL(string: urlPath + tokenEndpoint),

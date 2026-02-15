@@ -186,13 +186,13 @@ enum PrefKeys: String {
     
     // PSSO
     
-    case PSSOUrlPathString = "PSSOUrlPathString"
+//    case PSSOUrlPathString = "PSSOUrlPathString"
     case TokenEndpoint = "TokenEndpoint"
     case JwksEndpoint = "JwksEndpoint"
     case NonceEndpoint = "NonceEndpoint"
     case RegistrationEndpoint = "RegistrationEndpoint"
     case CallbackURLString = "CallbackURLString"
-    case IssuerString = "IssuerString"
+    case IssuerHostname = "IssuerHostname"
     case Username = "Username"
     case AdditionalParameters = "AdditionalParameters"
 }

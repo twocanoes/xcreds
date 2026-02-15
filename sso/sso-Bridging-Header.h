@@ -3,3 +3,4 @@
 //
 
 #import "TCSUnifiedLogger.h"
+#import "TCSBetaCheckController.h"

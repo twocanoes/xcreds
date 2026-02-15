@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  xCreds
+//  XCreds
 //
 //  Created by Timothy Perfitt on 4/5/22.
 //

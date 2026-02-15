@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 73;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -753,6 +753,13 @@
 			);
 			target = 76F657402F2EFA5D0084C375 /* XCreds-PSSO */;
 		};
+		76EFD8622F415022003D47CA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TCSBetaCheckController.m,
+			);
+			target = 76F6571E2F2EF52A0084C375 /* sso */;
+		};
 		76F6572B2F2EF52A0084C375 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -762,11 +769,21 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		76EFD8662F4151F1003D47CA /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 76F6573D2F2EFA5D0084C375 /* Sources */;
+			membershipExceptions = (
+				"XCreds-PSSO-Bridging-Header.h",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		765348662E97361F00FECD7C /* FileVaultLogin */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FileVaultLogin; sourceTree = "<group>"; };
 		765348772E97363900FECD7C /* FilevaultLoginHelper */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FilevaultLoginHelper; sourceTree = "<group>"; };
 		76F657212F2EF52A0084C375 /* sso */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (763956802F2FB250006A0F7D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 76F6572B2F2EF52A0084C375 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = sso; sourceTree = "<group>"; };
-		76F657422F2EFA5D0084C375 /* XCreds-PSSO */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "XCreds-PSSO"; sourceTree = "<group>"; };
+		76F657422F2EFA5D0084C375 /* XCreds-PSSO */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (76EFD8662F4151F1003D47CA /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, 76EFD8622F415022003D47CA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "XCreds-PSSO"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1529,7 +1546,6 @@
 				};
 			};
 			buildConfigurationList = 76EE069527FD1D00009E0F3A /* Build configuration list for PBXProject "XCreds" */;
-			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1541,6 +1557,7 @@
 				76319364287D24E100D36BF7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				76477E022C626B5D00F01D56 /* XCRemoteSwiftPackageReference "OIDCLite" */,
 			);
+			preferredProjectObjectVersion = 55;
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -2923,6 +2940,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds-PSSO/XCreds-PSSO-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2967,6 +2985,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds-PSSO/XCreds-PSSO-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};

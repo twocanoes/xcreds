@@ -48,6 +48,9 @@ class AuthenticationViewController: NSViewController {
 //    }
     override func viewDidAppear() {
         super.viewDidAppear()
+        if TCSBetaCheckController().isExpired()==true {
+            TCSLogWithMark("Beta expired")
+        }
 //        if let path = Bundle.main.path(forResource: "defaults", ofType: "plist"){
 //            let defaultsInfoPlist = NSDictionary(contentsOfFile: path)
 //            UserDefaults.standard.register(defaults: defaultsInfoPlist as! [String : Any])

@@ -21,73 +21,22 @@ extension AuthenticationViewController:WKNavigationDelegate {
     @IBAction func cancelButtonPressed(_ sender: Any) {
         self.authorizationRequest?.doNotHandle()
     }
-
+    
     func setupWebViewAndDelegate(withURL url:URL ) {
-        let dataStore = WKWebsiteDataStore.default()
-//        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-//            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-//                                 for: records,
-//                                 completionHandler: {
-//                print("Removing Cookie")
-//            })
-//        }
-
-//        if let cookies = HTTPCookieStorage.shared.cookies {
-//            for cookie in cookies {
-//                HTTPCookieStorage.shared.deleteCookie(cookie)
-//            }
-//        }
-
-//        if let tDiscoveryURL = extensionData[PrefKeys.discoveryURL.rawValue] as? String {
-//            discoveryURLString = tDiscoveryURL
-//        }
-//        
-//        if let tRedirectURI = extensionData[PrefKeys.redirectURI.rawValue] as? String {
-//            redirectURI = tRedirectURI
-//        }
-//        if let tClientSecret = extensionData[PrefKeys.clientSecret.rawValue] as? String {
-//            clientSecret = tClientSecret
-//        }
-//        
-//        if let tClientID = extensionData[PrefKeys.clientID.rawValue] as? String {
-//            clientID = tClientID
-//        }
-//        
-//        if let tAdditionalParameters = extensionData[PrefKeys.AdditionalParameters.rawValue] as? [String:String] {
-//            additionalParameters = tAdditionalParameters
-//        }
-//        
-//        if let tScopes = extensionData[PrefKeys.scopes.rawValue] as? [String] {
-//            scopes = tScopes
-//        }
-
-
-////       let additionalParameters = ["access_type":"offline"]
-//
-//        oidcLite = OIDCLite(discoveryURL: discoveryURLString, clientID:clientID, clientSecret: clientSecret, redirectURI: redirectURI, scopes: scopes, additionalParameters: additionalParameters)
-//        guard let oidcLite = oidcLite else {
-//            return
-//        }
+        if TCSBetaCheckController().isExpired()==true {
+            TCSLogWithMark("Beta expired")
+            return
+        }
         Task{
-//            oidcLite.delegate = self
-//            try? await oidcLite.getEndpoints()
-//            let url = oidcLite.createLoginURL()
-            //        let url = URL(string: urlString)
-                webView.navigationDelegate=self
-                var request = URLRequest(url: url)
-//                let cookies = getCookies()
-//                
-//                if let cookies = cookies {
-//                    request.setValue(combineCookies(cookies: cookies), forHTTPHeaderField: "Cookie")
-//                }
-                request.httpShouldHandleCookies=true
-        
-            
-                webView.load(request)
+            webView.navigationDelegate=self
+            TCSLogWithMark("loading request");
+            var request = URLRequest(url: url)
+            request.httpShouldHandleCookies=true
+            webView.load(request)
             
         }
     }
-
+    
     public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         guard let webViewURL = webView.url else {
             return
@@ -136,10 +85,22 @@ extension AuthenticationViewController:WKNavigationDelegate {
                                        "signKeyID": pssoKeys.signKeyID,
                                        "encKeyID": pssoKeys.encKeyID]
                     
+                    TCSLogWithMark("getting deviceRegistrationEndpoint")
                     
-                    components.host = "psso.twocanoes.com"
-                    components.path = "/register"
-                    components.scheme = "https"
+                    
+                        
+                    guard  let issuer=self.extensionData["IssuerHostname"] as? String, let deviceRegistrationEndpointPath = self.extensionData["deviceRegistrationEndpoint"] as? String, let registerPrefsComponent = URL(string: "https://\(issuer)/\(deviceRegistrationEndpointPath)") else {
+
+                        TCSLogWithMark("error getting deviceRegistrationEndpoint. extension data:\(extensionData)")
+
+                        deviceRegisterCompletion?(.failed)
+                        return
+                    }
+                   
+                    
+                    components.host = registerPrefsComponent.host
+                    components.path = registerPrefsComponent.path
+                    components.scheme = registerPrefsComponent.scheme
                     
                     let percentEncoded = queryParams.map {
                         $0.addingPercentEncoding(withAllowedCharacters: cs)!
@@ -174,8 +135,6 @@ extension AuthenticationViewController:WKNavigationDelegate {
                         
                     }
                     
-                    //            webView.load(request)
-                    //                self.authorizationRequest?.complete()
                 }
             }
             else {
@@ -235,9 +194,6 @@ extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
 
         request.presentAuthorizationViewController(completion: { (success, error) in
             TCSLogWithMark()
-//            let urlRequest = URLRequest(url: self.url!)
-//
-//            self.webView.load(urlRequest)
             
             if error != nil {
                 TCSLogWithMark()
@@ -245,8 +201,11 @@ extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
                 return
             }
             
-            if let urlString = self.extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: urlString){
-                TCSLogWithMark(urlString)
+            if let issuer=self.extensionData["IssuerHostname"] as? String, let deviceRegistrationEndpointPath = self.extensionData["deviceRegistrationEndpoint"] as? String, let url = URL(string: "https://\(issuer)/\(deviceRegistrationEndpointPath)"){
+               
+                
+                TCSLogWithMark("Loading webview from url: \(url.absoluteString)")
+                TCSLogWithMark(url.absoluteString)
                 self.setupWebViewAndDelegate(withURL: url)
             }
             else {
@@ -260,6 +219,12 @@ extension AuthenticationViewController:ExtensionAuthorizationRequestProtocol {
 extension AuthenticationViewController: ASAuthorizationProviderExtensionAuthorizationRequestHandler {
 
     public func beginAuthorization(with authorizationRequest: ASAuthorizationProviderExtensionAuthorizationRequest) {
+        if TCSBetaCheckController().isExpired()==true {
+            TCSLogWithMark("Beta expired")
+            return
+        }
+
+        
         TCSLogWithMark()
         if authorizationRequest.url.absoluteString.contains("code="){
             TCSLogWithMark("code found, so not handling")
