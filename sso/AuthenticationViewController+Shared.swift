@@ -65,7 +65,7 @@ extension AuthenticationViewController:WKNavigationDelegate {
                     return
                 }
                 Task{
-                    TCSLogWithMark("gettihng loginManager")
+                    TCSLogWithMark("getting loginManager")
                     if let loginManager = loginManager {
                         TCSLogWithMark("setPSSOLoginConfig")
                         await self.setPSSOLoginConfig(loginManager: loginManager)
@@ -117,23 +117,47 @@ extension AuthenticationViewController:WKNavigationDelegate {
                     }
                     TCSLogWithMark("sending url request")
 
-                    var request = URLRequest(url: componentsURL)
+                    TCSLogWithMark("moving cookies from WKWebView to request")
+
+                     let httpCookies = await webView.configuration.websiteDataStore.httpCookieStore.allCookies()
+                      var request = URLRequest(url: componentsURL)
                     request.httpShouldHandleCookies=true
-                    do {
-                        
-                        
-                        let (_, _) = try await URLSession.shared.data(for: request)
-                        deviceRegisterCompletion?(.success)
-                        TCSLogWithMark("deviceRegisterCompletion success")
-                        extensionState = .none
+
+                    for cookie in httpCookies {
+                        if let host = components.host {
+                            let cookieProperties: [HTTPCookiePropertyKey: Any] = [
+                                .name: cookie.name,
+                                .value: cookie.value,
+                                .domain: host,
+                                .path: "/",
+                                .secure: "TRUE", // Use "TRUE" for a secure cookie
+                                .expires: NSDate(timeIntervalSinceNow: 3600) // Cookie expires in 1 hour
+                            ]
+                            if let cookie = HTTPCookie(properties: cookieProperties) {
+                                HTTPCookieStorage.shared.setCookie(cookie)
+                            }
+                        }
+
 
                     }
-                    catch {
-                        TCSLogWithMark("deviceRegisterCompletion failed: \(error.localizedDescription)")
+//                      request.setValue(combineCookies(cookies: httpCookies), forHTTPHeaderField: "Cookie")
+                      do {
+                          
+                          
+                          let (_, _) = try await URLSession.shared.data(for: request)
+                          deviceRegisterCompletion?(.success)
+                          TCSLogWithMark("deviceRegisterCompletion success")
+                          extensionState = .none
 
-                        deviceRegisterCompletion?(.failed)
-                        
-                    }
+                      }
+                      catch {
+                          TCSLogWithMark("deviceRegisterCompletion failed: \(error.localizedDescription)")
+
+                          deviceRegisterCompletion?(.failed)
+                          
+                      }
+
+                   
                     
                 }
             }
