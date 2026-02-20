@@ -7,7 +7,7 @@
 		<key>FileVaultLoginHelper.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>9</integer>
 		</dict>
 		<key>FilevaultLoginHelper.xcscheme_^#shared#^_</key>
 		<dict>
@@ -62,7 +62,7 @@
 		<key>auth_mech_fixup.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>10</integer>
 		</dict>
 		<key>authrights.xcscheme_^#shared#^_</key>
 		<dict>

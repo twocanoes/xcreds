@@ -1,3 +1,58 @@
+## tag-5.9(9123) (2026-02-02)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3392696e7148bdcc8962636c74360799afdeeb51)
+
+
+## tag-5.9(9122) (2026-02-02)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/1ceb6053a2d309828543d60c037b775257816d10)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f41fe1e803b3f023a4d440b6cf1a32fc6c8b27e4)
+
+
+## tag-5.9(9121) (2026-02-02)
+
+*  wip [View](https://github.com/twocanoes/xcreds/commit/624cd997a65226338adddedec9820a4ec891bfea)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/4bc9866393c54b58dc5f8c7b6861b9a32f42bca0)
+
+
+## tag-5.9(9120) (2026-02-02)
+
+*  fixed bundle id issue [View](https://github.com/twocanoes/xcreds/commit/c795619f0c6cbda6e0d892f0a5fb4a41f35f612b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6bdcf6ef51764814eefe4e75ebd4d10f76fc9d7c)
+
+
+## tag-5.9(9119) (2026-02-01)
+
+*  put prefs inside ssoe profile [View](https://github.com/twocanoes/xcreds/commit/0ec915719754058c2194e16daf935939a5fc192c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/eb3d13aea80b26e959ea523c1ab7f772b35ca1fc)
+
+
+## tag-5.9(9118) (2026-02-01)
+
+*  tweaked build scripts [View](https://github.com/twocanoes/xcreds/commit/583d3ed232d68cb7bba800700bd1f3dc5492e755)
+*  updated registration [View](https://github.com/twocanoes/xcreds/commit/29b10c9b68f59163a15272da59231130a1c702a5)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/2373f2be3f32a6443fde992b924e268aa3fc0041)
+
+
+## tag-5.9(9112) (2026-02-01)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/da2164cfb2df5b6d780ba1563b98edbf981a203b)
+
+
+## tag-5.9(9111) (2026-02-01)
+
+*  bump [View](https://github.com/twocanoes/xcreds/commit/ed8cbaf7d4eea87d07f82d1e9ca7b57f9f1533b8)
+*  psso [View](https://github.com/twocanoes/xcreds/commit/4c623846c554ec1bc162dff9c30f5c244f0a24e3)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/06be38ca18684f6a520823962670237da945685e)
+
+
+## tag-5.9(9101) (2026-01-28)
+
+*  added in status of secure token [View](https://github.com/twocanoes/xcreds/commit/cb3aef3f1e834f89bc8e1dd646d214662d9a90ff)
+*  updated oss tools [View](https://github.com/twocanoes/xcreds/commit/193a09d85c5088435c4e30ad7602c88f4df3a907)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/80516f27ab829a323d0b9bc81a5aae03aa374c56)
+
+
 ## tag-5.9(9088) (2026-01-28)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/7a50cd6716f85ad4bcdd6be83455eaedc5b0fa9d)
