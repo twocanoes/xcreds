@@ -131,15 +131,6 @@ extension AuthenticationViewController: ASAuthorizationProviderExtensionRegistra
         return PSSOKeys(deviceUUID: self.getSystemUUID() ?? "unknown" , deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey:deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash)
     }
         
-//        Task {
-//            //configure PSSO
-//            if let loginManager = loginManager{
-//                
-//                //send the public keys and ids to the server
-//                try? await self.sendRegistration(body: PSSORegistration(deviceUUID: self.getSystemUUID() ?? "unknown", deviceSigningKey: deviceSigningPublicKey, deviceEncryptionKey: deviceEncryptionPublicKey, signKeyID: deviceSigningPublicKeyHash, encKeyID: deviceEncryptionPublicKeyHash, code: code))
-//                deviceRegisterCompletion?(.success)
-//            }
-//        }
     
     func beginUserRegistration(loginManager: ASAuthorizationProviderExtensionLoginManager, userName: String?, method authenticationMethod: ASAuthorizationProviderExtensionAuthenticationMethod, options: ASAuthorizationProviderExtensionRequestOptions = [], completion: @escaping (ASAuthorizationProviderExtensionRegistrationResult) -> Void) {
         TCSLogWithMark("LoginSSOE: beginUserRegistration")

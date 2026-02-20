@@ -18,36 +18,6 @@
             endingLineNumber = "147"
             landmarkName = "webView(_:didReceiveServerRedirectForProvisionalNavigation:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "1775A937-785D-4B5E-B111-FA3D05B83773 - e3b816910692327a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(5) suspend resume partial function for closure #2 () async -&gt; () in sso.AuthenticationViewController.webView(_: __C.WKWebView, didReceiveServerRedirectForProvisionalNavigation: Swift.Optional&lt;__C.WKNavigation&gt;) -&gt; ()"
-                  moduleName = "sso.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/sso/AuthenticationViewController+Shared.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147">
-               </Location>
-               <Location
-                  uuid = "1775A937-785D-4B5E-B111-FA3D05B83773 - 11162d8bb2f62359"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(6) await resume partial function for closure #2 () async -&gt; () in sso.AuthenticationViewController.webView(_: __C.WKWebView, didReceiveServerRedirectForProvisionalNavigation: Swift.Optional&lt;__C.WKNavigation&gt;) -&gt; ()"
-                  moduleName = "sso.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/sso/AuthenticationViewController+Shared.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
