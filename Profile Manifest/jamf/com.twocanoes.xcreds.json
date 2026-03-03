@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.9 (9104) OAuth Settings",
+    "description": "XCreds 5.9 (9105) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -1548,14 +1548,20 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 590
+            "property_order": 600
         },
-        "allowEmptyLocalPassword": {
+        "shouldAllowEmptyLocalPassword": {
             "type": "boolean",
-            "title": "Allow Empty Local Password",
+            "title": "Should Allow Empty Local Password",
             "default": false,
             "description": "Allow local user with empty password to log in",
-            "property_order": 595
-        },
+            "links": [
+                {
+                    "rel": "More information",
+                    "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
+                }
+            ],
+            "property_order": 605
+        }
     }
 }
