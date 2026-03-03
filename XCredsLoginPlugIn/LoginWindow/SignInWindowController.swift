@@ -604,7 +604,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No username entered")
             return
         }
-        else if (passString.isEmpty && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.allowEmptyLocalPassword.rawValue) == false){
+        else if (passString.isEmpty && DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowEmptyLocalPassword.rawValue) == false){
             passwordTextField.shake(self)
             view.window?.makeFirstResponder(passwordTextField)
 
