@@ -75,7 +75,10 @@ enum HintType: String,CaseIterable {
     case rfidPIN
     case oidcLastLoginTimestamp
     case isAccountCreationPending
-
+    case shouldSetAdminSecureToken
+    case filevaultUsername
+    case filevaultPassword
+    case secureTokenError
 
 }
 

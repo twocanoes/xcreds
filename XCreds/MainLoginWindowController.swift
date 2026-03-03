@@ -10,6 +10,8 @@ import Cocoa
 class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     var controlsViewController: ControlsViewController?
     var setupDone=false
+    var secureTokenError:Bool?
+
     @IBOutlet weak var backgroundImageView: NSImageView!
 //    var resolutionObserver:Any?
     var networkChangeObserver:Any?
@@ -69,6 +71,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
     }
     @objc func updateWindow() {
         TCSLogWithMark()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
             if self.window?.isVisible ?? true {
                 let screenRect = NSScreen.screens[0].frame
@@ -105,6 +108,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         self.window?.setFrame(screenRect, display: true, animate: false)
         let rect = NSMakeRect(0, 0, self.window?.contentView?.frame.size.width ?? 100,117)
 
+        
+
         self.controlsViewController?.view.frame=rect
 
         TCSLogWithMark()
@@ -115,6 +120,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         else {
             self.controlsViewController!.view.removeFromSuperview()
         }
+        self.controlsViewController?.secureTokenError=self.secureTokenError
 
         guard let controlsViewController = self.controlsViewController else {
             return

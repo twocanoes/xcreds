@@ -55,6 +55,20 @@ class XCredsUserSetup: XCredsBaseMechanism{
             }
         }
 
+        let secureTokenUsers = try? SecureToken().secureTokenUsers()
+        if let numberOfUsersWithoutSecureTokens = SecureToken().numberOfUsersWithSecureTokens(),
+        DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideSecureTokenStatus.rawValue)==false,
+           let secureTokenUsers = secureTokenUsers,
+            secureTokenUsers.count>0{
+            var secureTokenError = false
+            if numberOfUsersWithoutSecureTokens != 0{
+                secureTokenError=true
+            }
+            TCSLogWithMark("We have secure token users. setting hint")
+            
+            self.setHint(type: .secureTokenError,hint:secureTokenError as NSSecureCoding )
+        }
+
         do {
             let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
@@ -65,20 +79,50 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 self.setHint(type: .rfidUsers, hint: users as NSSecureCoding)
             }
             TCSLogWithMark("checking to see if we should set admin credentials")
-            if let adminUser = try userManager.adminCredentials(){
-
+            var adminUser = try? userManager.adminCredentials()
+            
+            if adminUser==nil{
+                adminUser=localAdminCredentialsFromPrefs()
+            }
+            if let adminUser = adminUser{
+                
                 TCSLogWithMark("Setting Admin User from secure file for keychain reset")
                 self.setHint(type: .localAdmin, hint: adminUser )
+                
+                TCSLogWithMark("We have local admin. checking if it has a secure token")
+                
+                TCSLogWithMark("Checking preference for shouldSkipSettingSecureTokenForAdmin")
+
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipSettingSecureTokenForAdmin.rawValue)==false, StateFileHelper().fileExists(.secureTokenAttempted)==false{
+                    
+                    if let _ = try? StateFileHelper().createFile(.secureTokenAttempted){
+                        
+                        TCSLogWithMark("Created dot file for secureTokenAttempted to make sure we don't loop if it doesn't work")
+                    }
+                    else {
+                        TCSLogWithMark("error creating dot file for secureTokenAttempted")
+
+                    }
+                    TCSLog("checking for secure token")
+                    if let secureTokenUsers = secureTokenUsers {
+                        
+                        TCSLogWithMark("Secure Token users obtained. Checking if our admin has a secure token, bootstrapTokenStatus, and is escrowed")
+                
+
+                        if secureTokenUsers.keys.contains(adminUser.username)==false, let status = try? SecureToken().bootstrapTokenStatus(), status.isEscrowed==true {
+                            TCSLogWithMark("We have an escrowed bootstrap token so setting up to autologin with admin user and then return to login window before getting to desktop")
+                            
+                            self.setHint(type: .localAdmin, hint: adminUser )
+                            self.setHint(type: .shouldSetAdminSecureToken,hint:true as NSSecureCoding)
+                            
+                            
+                            
+                            
+                        }
+                    }
+                }
             }
 
-            else if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
-                DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
-
-                TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
-
-                let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
-                self.setHint(type: .localAdmin, hint: localAdmin)
-            }
             try? StateFileHelper().removeFile(.fileVaultLogin)
 
             if let credentials = getHint(type: .localAdmin) as? LocalAdminCredentials {
@@ -99,20 +143,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 TCSLogWithMark("local admin not set in hints")
 
             }
-            if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue){
-                TCSLogWithMark("localAdminUserName set: \(aUsername)")
-            }
-            else {
-                TCSLogWithMark("localAdminUserName not set")
-            }
-            if let _ = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue){
-                TCSLogWithMark("localAdminPassword set")
-
-            }
-            else {
-                TCSLogWithMark("localAdminPassword not set")
-
-            }
+           
 
         }
         catch {
@@ -125,7 +156,18 @@ class XCredsUserSetup: XCredsBaseMechanism{
 
 
     }
-    
+    func localAdminCredentialsFromPrefs() -> LocalAdminCredentials? {
+        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
+
+            TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
+
+            let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
+            return localAdmin
+        }
+        return nil
+    }
+
     func updateDSRecords() {
         guard let nonSystemUsers = try? getAllNonSystemUsers() else{
             TCSLogWithMark("could not get non system users")

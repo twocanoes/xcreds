@@ -37,6 +37,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
     var controlKeyDown = false
     var allowPopoverClose:Bool = true
     var keyCodesPressed:[UInt16:Bool]=[:]
+    var secureTokenError:Bool?
 
     static func initFromPlugin() -> ControlsViewController?{
 
@@ -93,8 +94,11 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             systemInfoPopover.performClose(self)
             return
         }
+        let systemInfo = SystemInfoHelper()
+       
+        systemInfo.secureTokenError = secureTokenError
         
-        var sysInfo = SystemInfoHelper().info().joined(separator: "\n")
+        var sysInfo = systemInfo.info().joined(separator: "\n")
 
         if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
 

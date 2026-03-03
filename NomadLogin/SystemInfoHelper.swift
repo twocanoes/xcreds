@@ -1,9 +1,6 @@
 //
 //  SystemInfoHelper.swift
-//  NoMADLoginAD
 //
-//  Created by Joel Rennich on 3/31/20.
-//  Copyright © 2020 Orchard & Grove. All rights reserved.
 //
 
 import Foundation
@@ -15,6 +12,7 @@ import IOKit.ps
 class SystemInfoHelper {
     enum BatteryError: Error { case error }
 
+    var secureTokenError:Bool?
     func appVersion() -> String? {
         let bundle = Bundle.findBundleWithName(name: "XCreds")
 
@@ -72,10 +70,19 @@ class SystemInfoHelper {
             for line in systemInfoAdditionsArray {
                 info.append(line)
             }
-
-
-            
         }
+#if arch(arm64)
+        if let secureTokenError = secureTokenError {
+            TCSLogWithMark("token users found, adding to menu")
+            if secureTokenError==false {
+                info.append("🪙 All Users have Secure tokens")
+
+            }
+            else {
+                info.append("🚫 Some users do not have Secure tokens")
+            }
+        }
+#endif // arch(arm64)
         return info
     }
     

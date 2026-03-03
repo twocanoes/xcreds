@@ -368,10 +368,18 @@ extension WebViewController: WKNavigationDelegate {
                         code = part.replacingOccurrences(of: redirectURI + "?" , with: "").replacingOccurrences(of: "code=", with: "")
                         TCSLogWithMark("getting tokens")
 
-                        let tokenResponse = try await tokenManager.oidc().getToken(code: code)
-                        TCSLogWithMark("got token. Token ID: \(tokenResponse.idToken ?? "" )")
+                        
+                        do {
+                            let shouldUseBasicAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuth.rawValue)
+                            let tokenResponse = try await tokenManager.oidc().getToken(code: code, basicAuth: shouldUseBasicAuth)
+                            TCSLogWithMark("got token. Token ID: \(tokenResponse.idToken ?? "" )")
+                            tokenManager.tokenResponse(tokens: tokenResponse)
 
-                        tokenManager.tokenResponse(tokens: tokenResponse)
+                        }
+                        catch{
+                            TCSLogWithMark("error: \(error)")
+                        }
+
                         return
                     }
                 }
