@@ -1548,7 +1548,14 @@
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
                 }
             ],
-            "property_order": 600
-        }
+            "property_order": 590
+        },
+        "allowEmptyLocalPassword": {
+            "type": "boolean",
+            "title": "Allow Empty Local Password",
+            "default": false,
+            "description": "Allow local user with empty password to log in",
+            "property_order": 595
+        },
     }
 }
