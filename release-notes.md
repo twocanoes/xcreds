@@ -1,3 +1,12 @@
+## tag-5.9(9105) (2026-03-03)
+
+*  Add check for allowing empty local password [View](https://github.com/twocanoes/xcreds/commit/0cf7fe876722c4eda2e14c34a726944eb62360e7)
+*  Add "Allow Empty Local Password" key [View](https://github.com/twocanoes/xcreds/commit/bfeeefea4d63210a40ab08490d8a4dfc52693340)
+*  Add "Allow Empty Local Password" Key [View](https://github.com/twocanoes/xcreds/commit/c2e8fc9d7f8be3cea9b342a35d62fc2bb216ac64)
+*  updated pref name and added pref [View](https://github.com/twocanoes/xcreds/commit/c1cfe2399d852ea114cbbff3b6cf8c66ad25697f)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/744330ef81cc585c37440c1a529d4f2925e9611d)
+
+
 ## tag-5.9(9104) (2026-02-20)
 
 *  bump [View](https://github.com/twocanoes/xcreds/commit/ed8cbaf7d4eea87d07f82d1e9ca7b57f9f1533b8)
