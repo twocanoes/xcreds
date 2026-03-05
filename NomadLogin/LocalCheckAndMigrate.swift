@@ -62,12 +62,19 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                 return .userMatchSkipMigration
 
             } else {
-                
                 TCSLogWithMark("Local name matches, but not password")
                 
-                if DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
-                    DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil &&
-                    getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false  && isInUserSpace == false {
+                let localAdminCreds = delegate?.getHint(type: .localAdmin) as? LocalAdminCredentials
+
+                let hasAdminFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue) != nil &&
+                   DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue) != nil
+                if localAdminCreds == nil && hasAdminFromPrefs == false  {
+                    TCSLogWithMark("No local admin. prompting")
+                    return .syncPassword
+
+                }
+                
+                if getManagedPreference(key: .PasswordOverwriteSilent) as? Bool ?? false  && isInUserSpace == false {
                     TCSLogWithMark("Set to write keychain silently and we have admin. Skipping.")
                     TCSLogWithMark("Setting password to be overwritten.")
                     delegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
@@ -78,6 +85,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                     return .syncPassword
                 }
             }
+        
         } catch DSQueryableErrors.notLocalUser {
             TCSLogWithMark("User is not a local user")
             
