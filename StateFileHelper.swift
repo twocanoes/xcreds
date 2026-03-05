@@ -70,7 +70,13 @@ class StateFileHelper {
         let (folderPath, filePath) = paths(fileType)
 
         let fullPath = folderPath + filePath
-        return FileManager.default.fileExists(atPath: fullPath)
+        TCSLogWithMark("path to check is \(fullPath)")
+        let exists = FileManager.default.fileExists(atPath: fullPath)
+        
+        if exists == true {
+            TCSLogWithMark("\(fullPath) exists")
+        }
+        return exists
     }
     func removeFile(_ fileType:StateFileType) throws {
         TCSLogWithMark()

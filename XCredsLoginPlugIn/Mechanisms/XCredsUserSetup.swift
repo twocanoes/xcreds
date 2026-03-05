@@ -93,6 +93,15 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 
                 TCSLogWithMark("Checking preference for shouldSkipSettingSecureTokenForAdmin")
 
+                if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipSettingSecureTokenForAdmin.rawValue)==false{
+                    TCSLogWithMark("shouldSkipSettingSecureTokenForAdmin false")
+
+                }
+                if StateFileHelper().fileExists(.secureTokenAttempted)==false {
+                    TCSLogWithMark("secureTokenAttempted false")
+
+                }
+                
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipSettingSecureTokenForAdmin.rawValue)==false, StateFileHelper().fileExists(.secureTokenAttempted)==false{
                     
                     if let _ = try? StateFileHelper().createFile(.secureTokenAttempted){
