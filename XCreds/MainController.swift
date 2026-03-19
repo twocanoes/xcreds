@@ -77,9 +77,6 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             let controller = SignInViewController(nibName: "LocalUsersViewController", bundle:bundle)
             controller.isInUserSpace = true
             controller.updateCredentialsFeedbackDelegate=self
-
-
-
             return controller;
         }
         return nil
@@ -159,7 +156,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             DefaultsOverride.standardOverride.value(forKey: PrefKeys.clientID.rawValue) != nil ,
             DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == false  {
             TCSLogWithMark()
-
+            self.signInViewController?.view.isHidden=true
             Task{ @MainActor in
                 do{
                     let tokenManager = TokenManager()
@@ -194,6 +191,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 TCSLogWithMark("No window or signInViewController")
                 return
             }
+            self.signInViewController?.view.isHidden=false
+
 
             signInViewController.hadPasswordFailure = hadPasswordFailure
             DispatchQueue.main.async {
