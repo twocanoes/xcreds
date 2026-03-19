@@ -70,7 +70,7 @@ class ShareMounter {
 
     let fm = FileManager.default
     let ws = NSWorkspace.shared
-    let sharePrefs = UserDefaults.standard
+    let sharePrefs = DefaultsOverride.standardOverride
 
     var mountedShares = [URL]()
     var mountedOriginalShares = [String]()
