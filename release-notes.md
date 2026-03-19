@@ -1,3 +1,10 @@
+## tag-5.9(9106) (2026-03-05)
+
+*  added additional logging [View](https://github.com/twocanoes/xcreds/commit/34206761e146f3862a5abe379fec9834d4ad7232)
+*  fixed issue with AD and force overwrite [View](https://github.com/twocanoes/xcreds/commit/d87a02d4f85ce6433d9e5e1de9920ebf7ca3f927)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/45ba574f9073a56efc9d3e2503c8324068a879fc)
+
+
 ## tag-5.9(9105) (2026-03-03)
 
 *  Add check for allowing empty local password [View](https://github.com/twocanoes/xcreds/commit/0cf7fe876722c4eda2e14c34a726944eb62360e7)
