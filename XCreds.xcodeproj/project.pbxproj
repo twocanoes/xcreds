@@ -257,6 +257,8 @@
 		76C661D92D3974910005F2CD /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C661D62D3974910005F2CD /* PinPromptWindowController.swift */; };
 		76C661DA2D3974F30005F2CD /* SetupCardWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764297A92D015AB800678928 /* SetupCardWindowController.swift */; };
 		76C661DB2D3975010005F2CD /* PinPromptWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C661D62D3974910005F2CD /* PinPromptWindowController.swift */; };
+		76C7A9FC2F6BA24E00B03AE1 /* UsernamePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D67772E96249A009CE2BF /* UsernamePassword.swift */; };
+		76C7A9FD2F6BA26C00B03AE1 /* UsernamePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D67772E96249A009CE2BF /* UsernamePassword.swift */; };
 		76C840882D03BFF400E41802 /* PinSetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinSetWindowController.xib */; };
 		76C840892D03BFF400E41802 /* PinSetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C840862D03BFF400E41802 /* PinSetWindowController.swift */; };
 		76C8408A2D03BFF400E41802 /* PinSetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C840872D03BFF400E41802 /* PinSetWindowController.xib */; };
@@ -1546,6 +1548,7 @@
 				766D66802E961FDB009CE2BF /* LoggerHelper.swift in Sources */,
 				760292172C1176BE0075FBD8 /* DataExtension.swift in Sources */,
 				7602920E2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */,
+				76C7A9FD2F6BA26C00B03AE1 /* UsernamePassword.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1563,6 +1566,7 @@
 				7602921E2C117B490075FBD8 /* DSQueryable.swift in Sources */,
 				7602920D2C1175D20075FBD8 /* DefaultsOverride.swift in Sources */,
 				766D66812E961FDB009CE2BF /* LoggerHelper.swift in Sources */,
+				76C7A9FC2F6BA24E00B03AE1 /* UsernamePassword.swift in Sources */,
 				766D66AC2E962198009CE2BF /* TCTaskHelper.m in Sources */,
 				760292182C1176BF0075FBD8 /* DataExtension.swift in Sources */,
 				760292122C1176010075FBD8 /* UNIXUtilities.swift in Sources */,

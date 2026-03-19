@@ -82,7 +82,7 @@ class XCredsUserSetup: XCredsBaseMechanism{
             var adminUser = try? userManager.adminCredentials()
             
             if adminUser==nil{
-                adminUser=localAdminCredentialsFromPrefs()
+                adminUser=PasswordUtils().localAdminCredentialsFromPrefs()
             }
             if let adminUser = adminUser{
                 
@@ -164,17 +164,6 @@ class XCredsUserSetup: XCredsBaseMechanism{
         let _ = allowLogin()
 
 
-    }
-    func localAdminCredentialsFromPrefs() -> LocalAdminCredentials? {
-        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
-            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
-
-            TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
-
-            let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
-            return localAdmin
-        }
-        return nil
     }
 
     func updateDSRecords() {

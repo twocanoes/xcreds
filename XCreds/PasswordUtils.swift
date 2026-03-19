@@ -49,6 +49,18 @@ class PasswordUtils: NSObject, DSQueryable {
     static let currentConsoleUserName: String = NSUserName()
     static let uid: String = String(getuid())
 
+    func localAdminCredentialsFromPrefs() -> LocalAdminCredentials? {
+        if let aUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminUserName.rawValue), let aPassword =
+            DefaultsOverride.standardOverride.string(forKey: PrefKeys.localAdminPassword.rawValue), aUsername.isEmpty==false, aPassword.isEmpty==false{
+
+            TCSLogWithMark("Setting Admin User from prefs / override script for keychain reset")
+
+            let localAdmin = LocalAdminCredentials(username: aUsername, password: aPassword)
+            return localAdmin
+        }
+        return nil
+    }
+
     func isAdminUser(username:String) -> Bool{
         
         do {
