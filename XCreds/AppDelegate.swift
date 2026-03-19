@@ -422,7 +422,7 @@ extension xcreds {
     }
 }
 @available(macOS, deprecated: 11)
-extension xcreds {
+extension xcreds:DSQueryable {
     struct SetAdminUser:ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Set the current admin user used for resetting keychain.")
 
@@ -438,10 +438,42 @@ extension xcreds {
                 print("This operation requires root. Please run with sudo.")
                 NSApplication.shared.terminate(self)
             }
+            do {
+                let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                let verificationResults = PasswordUtils.isLocalPasswordValid(userName: adminusername, userPass: adminpassword)
+                
+                switch verificationResults {
+                    
+                case .success:
+                    break
+                case .incorrectPassword:
+                    print("incorrect password")
+                    return
+                case .accountDoesNotExist:
+                    print("account does not exist")
+                    return
+                case .accountLocked:
+                    print("account locked")
+                    return
+                case .other(let msg):
+                    print(msg)
+                    return
+                    
+                }
+                
+                
+                if PasswordUtils().isAdminUser(username: adminusername) == false {
+                    print("user is not an admin user!")
+                    return 
 
-            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
-            let userManager = UserSecretManager(secretKeeper: secretKeeper)
-            try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data(), pin: nil))
+                }
+                try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data(), pin: nil))
+            }
+            catch {
+                print("Error setting admin credentials: \(error)")
+
+            }
         }
 
     }

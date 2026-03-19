@@ -44,11 +44,25 @@ struct SecureTokenCredential {
     var username:String
     var password:String
 }
-class PasswordUtils: NSObject {
+class PasswordUtils: NSObject, DSQueryable {
 
     static let currentConsoleUserName: String = NSUserName()
     static let uid: String = String(getuid())
 
+    func isAdminUser(username:String) -> Bool{
+        
+        do {
+            let record = try getLocalRecord(username)
+            
+            if self.isAdmin(record)==true {
+               return true
+            }
+        }
+        catch {
+            return false
+        }
+        return false
+    }
     class func getCurrentConsoleUserRecord() -> ODRecord? {
         // Get ODRecords where record name is equal to the Current Console User's username
         let session = ODSession.default()

@@ -219,7 +219,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
                     TCSLogWithMark("resetting password with admin username and password")
 
-                    resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
+                   let res=resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
+                    
+                    if res==false {
+                        denyLogin(message:"error setting user password with local admin")
+                        return
+                    }
 
                 }
                 else {
@@ -340,7 +345,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
         let _ = allowLogin()
         os_log("CreateUser mech complete", log: createUserLog, type: .debug)
     }
-    func resetUserPassword(adminUserName:String, adminPassword:String) {
+    func resetUserPassword(adminUserName:String, adminPassword:String)->Bool {
         do {
             TCSLogWithMark("secure token admin user \(adminUserName) and password obtained")
 
@@ -353,10 +358,12 @@ class XCredsCreateUser: XCredsBaseMechanism {
             TCSLogWithMark("changing password with secure token admin")
             try user.changePassword(nil, toPassword: xcredsPass!)
             TCSLogWithMark()
+            return true
         }
         catch {
             TCSLogErrorWithMark("error: \(error.localizedDescription)")
         }
+        return false
     }
 
     func updateOIDCInfo(user: String, localOnly: Bool) -> Bool {
