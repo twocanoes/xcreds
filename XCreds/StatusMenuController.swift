@@ -319,9 +319,6 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
 
             }
 
-            if let shareMenuItemTitle = DefaultsOverride.standardOverride.value(forKey: PrefKeys.shareMenuItemName.rawValue) as? String {
-                menuItem.title = shareMenuItemTitle
-            }
             return true
         case .Additional:
             return true

@@ -465,7 +465,7 @@ extension xcreds:DSQueryable {
                 
                 if PasswordUtils().isAdminUser(username: adminusername) == false {
                     print("user is not an admin user!")
-                    return 
+                    return
 
                 }
                 try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: adminusername, password: adminpassword, uid: NSNumber(value: -1), rfidUID: Data(), pin: nil))
@@ -806,7 +806,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
 
+
+        
         if let sharesMenuItem = statusMenu.item(withTag: StatusMenuController.StatusMenuItemType.SharesMenuItem.rawValue) {
+
+            if let shareMenuItemTitle = DefaultsOverride.standardOverride.value(forKey: PrefKeys.shareMenuItemName.rawValue) as? String {
+                sharesMenuItem.title = shareMenuItemTitle
+            }
 
             if shareMenu?.items.count==0{
                 sharesMenuItem.isHidden=true
