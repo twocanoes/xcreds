@@ -76,7 +76,7 @@ class TokenManager:DSQueryable {
     private var oidcLocal:OIDCLite?
     func oidc() async throws -> OIDCLite {
         var scopes: [String]?
-        var additionalParameters:[String:String]? = nil
+        var additionalParameters:[String:String] = [:]
 
         if let oidcPrivate = oidcLocal {
            try await oidcPrivate.getEndpoints()
@@ -99,10 +99,17 @@ class TokenManager:DSQueryable {
         //
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
 
-            additionalParameters = ["access_type":"offline"]
+            additionalParameters["access_type"]="offline"
         }
         
-        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters, resource: resource)
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleHDParam.rawValue) == true,
+            let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+        {
+                additionalParameters = ["hd":oidcUsernamePrefs]
+
+        }
+
+        let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters.count==0 ? nil:additionalParameters, resource: resource)
         try await oidcLite.getEndpoints()
         oidcLocal = oidcLite
         return oidcLite
