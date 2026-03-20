@@ -130,6 +130,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
+        if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  ud.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue) == true, ud.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
+            TCSLogWithMark("Setting filevault to unlock with admin in overlay since the security mech is not showing")
+            if let secretKeeper = try? SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor") {
+                
+                let userManager = UserSecretManager(secretKeeper: secretKeeper)
+                
+                if let adminUser = try? userManager.adminCredentials(), !adminUser.username.isEmpty, !adminUser.password.isEmpty {
+                    if filevaultAuth(username: adminUser.username, password: adminUser.password) == true {
+                        TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
+                        
+                    }
+                    else {
+                        TCSLogWithMark("Error running fdesetup.")
+                    }
+                }
+            }
+        }
         TCSLogWithMark("starting overlay")
         UserDefaults.standard.addSuite(named: "com.twocanoes.xcreds")
 

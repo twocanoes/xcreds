@@ -289,6 +289,11 @@
 		76DC0A7E288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DC0A7D288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift */; };
 		76DC0A83288382D2007C42B2 /* returnArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 76DC0A7628837028007C42B2 /* returnArrow.png */; };
 		76DC0A8428838375007C42B2 /* AuthorizationDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */; };
+		76DCF3452F6D84E4003E25C1 /* SecretKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EAAFD82CEFED3800A5FEE3 /* SecretKeeper.swift */; };
+		76DCF3462F6D84FA003E25C1 /* UserSecretManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EAAFD92CEFED3800A5FEE3 /* UserSecretManager.swift */; };
+		76DCF3472F6D8505003E25C1 /* UsernamePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D67772E96249A009CE2BF /* UsernamePassword.swift */; };
+		76DCF3482F6D8511003E25C1 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
+		76DCF34D2F6D85DE003E25C1 /* FDESetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A35FD12EAC0DC400099940 /* FDESetupHelper.swift */; };
 		76DD6D17285997F300A700ED /* OIDCLite in Frameworks */ = {isa = PBXBuildFile; productRef = 76DD6D16285997F300A700ED /* OIDCLite */; };
 		76DF1D5B2A2AD42C00770690 /* LocalCheckAndMigrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */; };
 		76DF50B62A1C5EFF007BC708 /* DefaultsOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FD60C2A1B06AC00C8F244 /* DefaultsOverride.swift */; };
@@ -1724,16 +1729,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				764447232CF830CB00E6289E /* DefaultsOverride.swift in Sources */,
+				76DCF34D2F6D85DE003E25C1 /* FDESetupHelper.swift in Sources */,
 				76A52FDB2CF625EC00591252 /* Logger.swift in Sources */,
 				76DC0A7328836EFE007C42B2 /* TCSReturnWindow.m in Sources */,
 				76DC0A8428838375007C42B2 /* AuthorizationDBManager.swift in Sources */,
+				76DCF3472F6D8505003E25C1 /* UsernamePassword.swift in Sources */,
 				76DC0A7E288376BC007C42B2 /* TCSXCredsLoginOverlayWindow.swift in Sources */,
 				766D66A52E962186009CE2BF /* TCSUnifiedLogger.m in Sources */,
 				767C42842AC6645700542099 /* AuthRightsHelper.swift in Sources */,
 				764447212CF8307200E6289E /* StateFileHelper.swift in Sources */,
+				76DCF3462F6D84FA003E25C1 /* UserSecretManager.swift in Sources */,
+				76DCF3482F6D8511003E25C1 /* DataExtension.swift in Sources */,
 				766D667E2E961FDB009CE2BF /* LoggerHelper.swift in Sources */,
 				764447222CF830A700E6289E /* PrefKeys.swift in Sources */,
 				76C4BABC2B3544C6007B2C57 /* UNIXUtilities.swift in Sources */,
+				76DCF3452F6D84E4003E25C1 /* SecretKeeper.swift in Sources */,
 				76DC0A6828836EB1007C42B2 /* AppDelegate.swift in Sources */,
 				766D66942E962120009CE2BF /* NSFileManager+TCSRealHomeFolder.m in Sources */,
 			);
