@@ -1,3 +1,15 @@
+## tag-5.9(9107) (2026-03-18)
+
+*  Implement "hd" URI parameter for Google OpenID connection #380 [View](https://github.com/twocanoes/xcreds/commit/8062ed4850f8501f8ba4c8706e94695b1e0ebfeb)
+*  Set Shares in Override Script #373 [View](https://github.com/twocanoes/xcreds/commit/51188290253a6694957b86402a3e39e7653ee76c)
+*  Add feature to verify credentials for set-admin-user #372 [View](https://github.com/twocanoes/xcreds/commit/18a4157eaa2d64b554a89b382e62347ca7f168d0)
+*  FileVault Unlock preferences need pfm_app_min #367 [View](https://github.com/twocanoes/xcreds/commit/a8e369326cb2b024e9c9f7fdc843a16cf21389e0)
+*  shareMenuItemName does not change text #338 [View](https://github.com/twocanoes/xcreds/commit/6b85257b59dc61d7cab3d86963d0d59068c34162)
+*  PasswordOverwriteSilent not working using set-admin-username/password #337 [View](https://github.com/twocanoes/xcreds/commit/030b9052100fa4b886a856f4283712e310dbe0a3)
+*  Menubar sign-in window can sometime display multiple overlapping UI elements #339 [View](https://github.com/twocanoes/xcreds/commit/577e458b254878dd84ebc1b98962746548405d42)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ee921d0f96525bc970568318285f2374e18dd38d)
+
+
 ## tag-5.9(9106) (2026-03-05)
 
 *  added additional logging [View](https://github.com/twocanoes/xcreds/commit/34206761e146f3862a5abe379fec9834d4ad7232)
