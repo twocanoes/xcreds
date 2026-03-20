@@ -1,3 +1,9 @@
+## tag-5.9(9109) (2026-03-20)
+
+*  shouldSkipFileVaultLoginAdmin #375 [View](https://github.com/twocanoes/xcreds/commit/0439525c1911fc4b1578ad71add7503845f75333)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/5db49d2b0a17fd98f739b33f4524ef5ba75f4e74)
+
+
 ## tag-5.9(9108) (2026-03-19)
 
 *  Issue with reading smart card values #369 [View](https://github.com/twocanoes/xcreds/commit/b868d81df8bcd3aeb4d9f41f5b176cd2fda1db1e)
