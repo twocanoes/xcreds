@@ -1,3 +1,9 @@
+## tag-5.9(9108) (2026-03-19)
+
+*  Issue with reading smart card values #369 [View](https://github.com/twocanoes/xcreds/commit/b868d81df8bcd3aeb4d9f41f5b176cd2fda1db1e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/5a06ccfa8566291e86ec338c293a2b5088a9b4cc)
+
+
 ## tag-5.9(9107) (2026-03-18)
 
 *  Implement "hd" URI parameter for Google OpenID connection #380 [View](https://github.com/twocanoes/xcreds/commit/8062ed4850f8501f8ba4c8706e94695b1e0ebfeb)
