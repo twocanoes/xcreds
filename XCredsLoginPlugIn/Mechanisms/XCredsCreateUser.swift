@@ -222,7 +222,7 @@ class XCredsCreateUser: XCredsBaseMechanism {
                    let res=resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
                     
                     if res==false {
-                        denyLogin(message:"error setting user password with local admin")
+                        denyLogin(message:"The user's password could not be reset. Please ask the administrator to verify the local admin username and password in the setup.")
                         return
                     }
 

@@ -73,6 +73,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         TCSLogWithMark()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+
             if self.window?.isVisible ?? true {
                 let screenRect = NSScreen.screens[0].frame
                 let screenWidth = screenRect.width
@@ -86,6 +87,7 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
 
                     self.controlsViewController?.view.frame=rect
                 }
+                self.controlsViewController?.view.alphaValue=1.0
                 self.recenterCenterView()
                 self.updateBackground()
 
@@ -349,7 +351,8 @@ class MainLoginWindowController: NSWindowController,NSWindowDelegate {
         if let controlsView = controlsViewController?.view {
             controlsView.removeFromSuperview()
             self.window?.contentView?.addSubview(controlsView)
-
+            controlsView.setFrameOrigin(NSMakePoint(0,0))
+            controlsView.alphaValue=1.0
         }
     }
     func addCenterView(_ centerView:NSView){
