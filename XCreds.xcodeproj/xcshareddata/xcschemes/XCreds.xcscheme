@@ -75,7 +75,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "rfid-listener --reader-name &quot;Feitian R502 Contactless Reader&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

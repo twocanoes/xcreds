@@ -123,8 +123,70 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
                 loadPageInfo = loadPageInfo + "<br><br>" + (error as? WebViewControllerError ?? WebViewControllerError(errorDescription: error.localizedDescription)).errorDescription
 
-                let html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
+                var html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
 
+                
+                let defaultsPath = Bundle(for: type(of: self)).path(forResource: "defaults", ofType: "plist")
+
+                //if the user has not modified the screen, then we use our fancy new one.
+                if let defaultsPath = defaultsPath, let defaultsDict = NSDictionary(contentsOfFile: defaultsPath) as? Dictionary<String, Any>, let defaultsPageTitle=defaultsDict["loadPageTitle"] as? String, defaultsPageTitle==loadPageTitle, let defaultsPageInfo=defaultsDict["loadPageInfo"] as? String, defaultsPageInfo==loadPageInfo{
+                        
+                        html = """
+                <html>
+                  <head>
+                    <title>XCreds Network Loading</title>
+                    <style>
+                      body {
+                        font-family: sans-serif;
+                        background-image: linear-gradient(rgba(153, 202, 248, 0.65), rgba(255, 255, 255, 1));
+                        position: relative;
+                      }
+                      .center-screen {
+                        text-align: center;
+                        background: #ffffff;
+                        display: table;
+                        margin: 0 auto;
+                        padding: 1em;
+                        border-radius: 1.4em;
+                        position: absolute;
+                        top: 30%;
+                        transform: translate(-50%);
+                        left: 50%;
+                      }
+
+                      .fade-element {
+                        opacity: 0;
+                        animation-name: fadeIn;
+                        animation-duration: 2s;
+                        animation-delay: 2s;
+                        animation-fill-mode: forwards;
+                      }
+
+                      @keyframes fadeIn {
+                        from {
+                          opacity: 0;
+                        }
+                        to {
+                          opacity: 1;
+                      }
+
+                      .readable {
+                        max-width: 32em;
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="center-screen">
+                      <h1>One Moment...</h1>
+                      <p class="readable fade-element" style="animation-delay: 2s;">Please wait one moment to check for a network connection.</p>
+                      <p class="readable fade-element" style="animation-delay: 6s;">Sometimes it takes a few seconds to confirm that network access is available.</p>
+                      <p style="animation-delay: 10s;" class="readable fade-element">If this page does not reload in a few seconds with the login screen, please check the network connection.</p>
+                      <p style="animation-delay: 20s; font-weight: bold; font-size: 1.5em" class="readable fade-element">Ok it may be best to check the network connection now.</p>
+                    </div>
+                  </body>
+                </html>
+"""
+                    }
                 self.webView.loadHTMLString(html, baseURL: nil)
 
             }

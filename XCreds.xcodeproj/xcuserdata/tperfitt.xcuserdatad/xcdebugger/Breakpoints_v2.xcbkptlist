@@ -7,48 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C1B8EF96-B656-4343-959B-EFDBDA886047"
+            uuid = "60B1D88A-E1F5-4398-8170-1894DA045E63"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "tcsopensourcetools/TCSOpenSourceTools/tools/CCIDCardReader.swift"
+            filePath = "XCreds/PasswordUtils.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "sendAPDU(cla:ins:p1:p2:lcByteLength:data:le:leByteLength:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E3176CDD-49C3-4700-BA43-897A671E2770"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "tcsopensourcetools/TCSOpenSourceTools/tools/CCIDCardReader.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "sendAPDU(cla:ins:p1:p2:lcByteLength:data:le:leByteLength:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "04FA54D2-4AEA-408B-8C0E-129C66C1B1B5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TCSTKSmartCard.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "-sendIns:p1:p2:data:le:sw2:error:"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
+            landmarkName = "kerberosPrincipalFromCurrentLoggedInUser()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
