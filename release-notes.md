@@ -1,3 +1,9 @@
+## tag-5.9(9110) (2026-03-20)
+
+*  added trust for overlay [View](https://github.com/twocanoes/xcreds/commit/3018aa50ef6e7932e15feef9ed03797b1fcbcbe5)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/e83077d8e6afbc122ddbe604104a5e6dc8238aa3)
+
+
 ## tag-5.9(9109) (2026-03-20)
 
 *  shouldSkipFileVaultLoginAdmin #375 [View](https://github.com/twocanoes/xcreds/commit/0439525c1911fc4b1578ad71add7503845f75333)
