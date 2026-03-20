@@ -247,6 +247,9 @@ extension xcreds {
 
             let watcher = TKTokenWatcher()
             watcher.setInsertionHandler({ tokenID in
+                if tokenID.contains("xcredstap") == false {
+                    return
+                }
                 print("card inserted")
 
                 watcher.addRemovalHandler({ tokenID in

@@ -2253,6 +2253,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = tap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = xcredstap;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2260,7 +2262,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.tap;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds-tap";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -2286,6 +2288,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = tap/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = xcredstap;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2293,7 +2297,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 5.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.twocanoes.xcreds.tap;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.twocanoes.xcreds-tap";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

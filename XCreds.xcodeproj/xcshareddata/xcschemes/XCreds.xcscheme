@@ -17,7 +17,7 @@
                      BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
                      BuildableName = "XCreds.app"
                      BlueprintName = "XCreds"
-                     ReferencedContainer = "container:xCreds.xcodeproj">
+                     ReferencedContainer = "container:XCreds.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
                BuildableName = "XCreds.app"
                BlueprintName = "XCreds"
-               ReferencedContainer = "container:xCreds.xcodeproj">
+               ReferencedContainer = "container:XCreds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
             BuildableName = "XCreds.app"
             BlueprintName = "XCreds"
-            ReferencedContainer = "container:xCreds.xcodeproj">
+            ReferencedContainer = "container:XCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -75,7 +75,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "rfid-listener --reader-name &quot;Feitian R502 Contactless Reader&quot;"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
@@ -92,7 +92,7 @@
             BlueprintIdentifier = "76EE069927FD1D00009E0F3A"
             BuildableName = "XCreds.app"
             BlueprintName = "XCreds"
-            ReferencedContainer = "container:xCreds.xcodeproj">
+            ReferencedContainer = "container:XCreds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
