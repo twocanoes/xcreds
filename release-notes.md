@@ -1,3 +1,9 @@
+## tag-5.9(9126) (2026-03-20)
+
+*  fixed missing control bar #375 [View](https://github.com/twocanoes/xcreds/commit/83aa6b06389fc7732e3acad48e22940ebb64832e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/38b3fffe56363187dfef432de2b0204cf9911791)
+
+
 ## tag-5.9(9110) (2026-03-20)
 
 *  added trust for overlay [View](https://github.com/twocanoes/xcreds/commit/3018aa50ef6e7932e15feef9ed03797b1fcbcbe5)
