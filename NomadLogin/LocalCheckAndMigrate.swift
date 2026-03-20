@@ -64,9 +64,10 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
             } else {
                 TCSLogWithMark("Local name matches, but not password")
                 
-                let adminCreds =  PasswordUtils().localAdminCredentialsFromPrefs()
+                let localAdmin = delegate?.getHint(type: .localAdmin) as? LocalAdminCredentials
+
                 
-                guard let adminCreds = adminCreds else {
+                guard let _ = localAdmin else {
                     TCSLogWithMark("No local admin. prompting")
                     return .syncPassword
                 }
@@ -76,7 +77,6 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
                     TCSLogWithMark("Setting password to be overwritten.")
                     delegate?.setHint(type: .passwordOverwrite, hint: true as NSSecureCoding)
                     TCSLogWithMark("Hint set")
-                    delegate?.setHint(type: .localAdmin, hint: adminCreds )
                     
                     return .complete
                 } else {
