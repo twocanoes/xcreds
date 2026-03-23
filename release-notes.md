@@ -1,3 +1,10 @@
+## tag-5.9(9129) (2026-03-20)
+
+*  added updated load page [View](https://github.com/twocanoes/xcreds/commit/cdbac64764461c840cda1bdea482f515d52d031c)
+*  PasswordOverwriteSilent not working using set-admin-username/password #337 [View](https://github.com/twocanoes/xcreds/commit/61f1fc1a6ecb4eecabde27b3f867beeb1b3f2eef)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a1641a7bd5c848a128b4624431352fe4d8668ece)
+
+
 ## tag-5.9(9126) (2026-03-20)
 
 *  fixed missing control bar #375 [View](https://github.com/twocanoes/xcreds/commit/83aa6b06389fc7732e3acad48e22940ebb64832e)
