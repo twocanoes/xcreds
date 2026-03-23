@@ -1,3 +1,9 @@
+## tag-5.9(9130) (2026-03-23)
+
+*  updated scheme [View](https://github.com/twocanoes/xcreds/commit/67e05e780963a1e90fced6eb3e04e4142f5a7428)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/fb1387319c3fb25152553996b05e04e2d0faa5b8)
+
+
 ## tag-5.9(9129) (2026-03-20)
 
 *  added updated load page [View](https://github.com/twocanoes/xcreds/commit/cdbac64764461c840cda1bdea482f515d52d031c)
