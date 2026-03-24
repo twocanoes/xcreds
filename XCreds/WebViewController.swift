@@ -512,6 +512,7 @@ extension WKWebView {
             }
         }
     }
+    @available(macOS, deprecated: 12.0)
 
     func refreshCookies() {
         self.configuration.processPool = WKProcessPool()

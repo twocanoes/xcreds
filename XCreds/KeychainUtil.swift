@@ -129,6 +129,7 @@ class KeychainUtil {
             return nil
         }
     }
+    @available(macOS, deprecated: 10.10)
 
     func trustedApps() -> [SecTrustedApplication] {
         var trust : SecTrustedApplication? = nil
@@ -181,6 +182,7 @@ class KeychainUtil {
     }
 
     // set the password
+    @available(macOS, deprecated: 10.10)
 
     func setPassword(serviceName:String, accountName: String, pass: String, keychainPassword:String, keychain:SecKeychain?=nil) -> SecKeychainItem? {
         
@@ -371,6 +373,7 @@ class KeychainUtil {
 
 
     }
+    @available(macOS, deprecated: 10.10)
 
     func updatePassword(serviceName:String, accountName: String, pass: String, keychainPassword:String, keychain:SecKeychain?=nil) -> Bool {
         let passwordItem = findPassword(serviceName: serviceName, accountName: accountName, keychain: keychain)

@@ -16,7 +16,7 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, RunApp.self],
+        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, ClearSecrets.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -421,6 +421,28 @@ extension xcreds {
             let userManager = UserSecretManager(secretKeeper: secretKeeper)
             try userManager.updateLocalAdminCredentials(user: SecretKeeperUser(fullName: "", username: "", password: "", uid: -1, rfidUID: Data(), pin: nil))
 
+        }
+    }
+}
+@available(macOS, deprecated: 11)
+extension xcreds {
+    struct ClearSecrets:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Clear all secrets and the private key from the system keychain.")
+
+        func run() throws {
+            TCSUnifiedLogger.shared().suppressDebug=true
+
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+            let secretKeeper = try SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor")
+            if secretKeeper.deleteSecrets()==false {
+                print("Error deleting secrets. Please manually remove the private key \"XCreds Encryptor\" from the keychain and the /usr/local/var/twocanoes/secrets.bin file.")
+                
+            }
+            
         }
     }
 }
