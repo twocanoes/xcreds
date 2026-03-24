@@ -1,3 +1,9 @@
+## tag-5.9(9131) (2026-03-23)
+
+*  added in more logging to OIDCLite [View](https://github.com/twocanoes/xcreds/commit/db1e32d16ecb8b3308ec9fb46cbec5bfa2e6deba)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c03332176720d30d66c4bb0cea348c507fe10f53)
+
+
 ## tag-5.9(9130) (2026-03-23)
 
 *  updated scheme [View](https://github.com/twocanoes/xcreds/commit/67e05e780963a1e90fced6eb3e04e4142f5a7428)
