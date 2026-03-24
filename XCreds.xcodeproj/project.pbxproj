@@ -39,6 +39,8 @@
 		760418E02A133A370051411B /* DSQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760418D62A1332660051411B /* DSQueryable.swift */; };
 		760769C12D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist in Resources */ = {isa = PBXBuildFile; fileRef = 760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */; };
 		760B6B732EE890FE000C7E9B /* FDESetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A35FD12EAC0DC400099940 /* FDESetupHelper.swift */; };
+		760BAF3F2F7311E500C18A6A /* XCredsLoggingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760BAF3E2F7311D400C18A6A /* XCredsLoggingHelper.swift */; };
+		760BAF402F7311E500C18A6A /* XCredsLoggingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760BAF3E2F7311D400C18A6A /* XCredsLoggingHelper.swift */; };
 		760D8D5A2EC5757B00252828 /* UserSecretManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EAAFD92CEFED3800A5FEE3 /* UserSecretManager.swift */; };
 		760D8D5C2EC5760E00252828 /* UsernamePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766D67772E96249A009CE2BF /* UsernamePassword.swift */; };
 		760D8D5D2EC5769B00252828 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632909B2876673500CF8857 /* DataExtension.swift */; };
@@ -518,6 +520,7 @@
 		760418D82A1332770051411B /* SystemInfoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemInfoHelper.swift; sourceTree = "<group>"; };
 		760418DA2A13328C0051411B /* LocalCheckAndMigrate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCheckAndMigrate.swift; sourceTree = "<group>"; };
 		760769C02D9120C1006A1F4E /* com.twocanoes.xcreds-launchagent.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "com.twocanoes.xcreds-launchagent.plist"; sourceTree = "<group>"; };
+		760BAF3E2F7311D400C18A6A /* XCredsLoggingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCredsLoggingHelper.swift; sourceTree = "<group>"; };
 		7611CEBF288B75140063A644 /* XCredsCreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsCreateUser.swift; sourceTree = "<group>"; };
 		7611CEC1288B96760063A644 /* XCredsEnableFDE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsEnableFDE.swift; sourceTree = "<group>"; };
 		7613FDF6289E114F00340CCD /* loadpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = loadpage.html; sourceTree = "<group>"; };
@@ -1088,6 +1091,7 @@
 				76DC0A6628836EB1007C42B2 /* XCreds Login Overlay */,
 				76786F542A27C36A00AA8DB9 /* auth_mech_fixup */,
 				76EE069B27FD1D00009E0F3A /* Products */,
+				760BAF3E2F7311D400C18A6A /* XCredsLoggingHelper.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1652,6 +1656,7 @@
 				76E466662B1A4C16006529B6 /* UpdatePasswordWindowController.swift in Sources */,
 				766D66902E9620FA009CE2BF /* NSData+HexString.m in Sources */,
 				76EECCFD2873E9ED00483C66 /* VerifyLocalPasswordWindowController.swift in Sources */,
+				760BAF402F7311E500C18A6A /* XCredsLoggingHelper.swift in Sources */,
 				76EAAFD72CEFE22100A5FEE3 /* XCredsUserSetup.swift in Sources */,
 				76BEF7EC28724A0B0013E2A1 /* XCredsLoginMechanism.swift in Sources */,
 				76C4BAB02B353A30007B2C57 /* KlistUtil.swift in Sources */,
@@ -1835,6 +1840,7 @@
 				76D175712B23C2DB00E64A62 /* AuthorizationDBManager.swift in Sources */,
 				767B939C2A28279E0038935E /* View+Shake.swift in Sources */,
 				76A35FD22EAC0DC400099940 /* FDESetupHelper.swift in Sources */,
+				760BAF3F2F7311E500C18A6A /* XCredsLoggingHelper.swift in Sources */,
 				766D66792E961FA9009CE2BF /* CCIDCardReader.swift in Sources */,
 				766D66832E962019009CE2BF /* NSAlert+showAlert.swift in Sources */,
 			);
@@ -1926,7 +1932,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1966,7 +1972,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1998,7 +2004,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2035,7 +2041,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2064,7 +2070,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -2081,7 +2087,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -2101,7 +2107,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2128,7 +2134,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2149,7 +2155,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2187,7 +2193,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2224,7 +2230,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2238,7 +2244,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2255,7 +2261,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2290,7 +2296,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2324,7 +2330,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2359,7 +2365,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2419,7 +2425,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2485,7 +2491,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2520,7 +2526,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2563,7 +2569,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9131;
+				CURRENT_PROJECT_VERSION = 9136;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
