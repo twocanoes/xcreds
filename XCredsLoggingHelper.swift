@@ -36,9 +36,10 @@ func xcredsSetup()  {
             TCSUnifiedLogger.shared().logString("view previous 30 minutes of events with:", level: LOGLEVELDEBUG, forceWriteToFile: true)
             TCSUnifiedLogger.shared().logString("log show -last 30m --predicate '(message contains \"XCREDS\" or message contains \"OIDCLITE\")'", level: LOGLEVELDEBUG, forceWriteToFile: true)
 
+            TCSUnifiedLogger.shared().logString("To see all logging options, go to https://twocanoes.com/knowledge-base/capturing-xcreds-logs/", level: LOGLEVELDEBUG, forceWriteToFile: true)
 
-            TCSLogInfoWithMark("To see all logging options, go to https://twocanoes.com/knowledge-base/capturing-xcreds-logs/")
-            TCSLogInfoWithMark("------------------------------------------------------------------")
+            TCSUnifiedLogger.shared().logString("------------------------------------------------------------------", level: LOGLEVELDEBUG, forceWriteToFile: true)
+
 
         }
     }
