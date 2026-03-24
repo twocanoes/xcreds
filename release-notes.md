@@ -1,3 +1,10 @@
+## tag-5.9(9137) (2026-03-24)
+
+*  added clear secrets command [View](https://github.com/twocanoes/xcreds/commit/b246b1611adb979aa7da179a981514c3519c2fda)
+*  added more logging options and ability to remove db in secretskeeper [View](https://github.com/twocanoes/xcreds/commit/9f79e2ba496f96f9f453d3b8431274db071e579e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/623e3650f32a01d2f1bfdc4e8fbb182444b5311c)
+
+
 ## tag-5.9(9131) (2026-03-23)
 
 *  added in more logging to OIDCLite [View](https://github.com/twocanoes/xcreds/commit/db1e32d16ecb8b3308ec9fb46cbec5bfa2e6deba)
