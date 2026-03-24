@@ -1,3 +1,8 @@
+## tag-5.9(9142) (2026-03-24)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ea0591e6b2183646e46aa3cd8aeee160e23afb7e)
+
+
 ## tag-5.9(9141) (2026-03-24)
 
 *  fixed manifest and fixed google hd hint [View](https://github.com/twocanoes/xcreds/commit/0ebb0b30cabb22970a124a8ea4469a08b16bd576)
