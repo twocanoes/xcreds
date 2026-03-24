@@ -1,3 +1,9 @@
+## tag-5.9(9141) (2026-03-24)
+
+*  fixed manifest and fixed google hd hint [View](https://github.com/twocanoes/xcreds/commit/0ebb0b30cabb22970a124a8ea4469a08b16bd576)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3b58ac3b0eaaa1a473ac64a109db38e8c989d8d9)
+
+
 ## tag-5.9(9140) (2026-03-24)
 
 *  reverted change to okta.com suffix [View](https://github.com/twocanoes/xcreds/commit/51d1b9dc2e6f59af9d1c7dc2c97ffe98e71a56d3)
