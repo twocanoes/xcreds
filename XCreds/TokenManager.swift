@@ -103,9 +103,10 @@ class TokenManager:DSQueryable {
         }
         
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleHDParam.rawValue) == true,
-            let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_username" )
+            let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_full_username" ),
+           let domain = oidcUsernamePrefs.components(separatedBy: "@").last, domain.isEmpty==false
         {
-                additionalParameters = ["hd":oidcUsernamePrefs]
+            additionalParameters = ["hd":domain]
 
         }
 
