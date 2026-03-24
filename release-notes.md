@@ -1,3 +1,8 @@
+## tag-5.9(9138) (2026-03-24)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/8290a1893ef09197c3acac026887790767830bf2)
+
+
 ## tag-5.9(9137) (2026-03-24)
 
 *  added clear secrets command [View](https://github.com/twocanoes/xcreds/commit/b246b1611adb979aa7da179a981514c3519c2fda)
