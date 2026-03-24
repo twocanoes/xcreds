@@ -282,7 +282,7 @@ extension WebViewController: WKNavigationDelegate {
                         foundHostname=host
 
                     }
-                    else if ["login.microsoftonline.com", "login.live.com", "accounts.google.com"].contains(host) || host.hasSuffix("okta.com"){
+                    else if ["login.microsoftonline.com", "login.live.com", "accounts.google.com"].contains(host) || host.contains("okta.com"){
                         foundHostname=host
 
                     }
