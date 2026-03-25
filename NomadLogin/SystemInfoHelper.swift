@@ -75,7 +75,7 @@ class SystemInfoHelper {
         if let secureTokenError = secureTokenError {
             TCSLogWithMark("token users found, adding to menu")
             if secureTokenError==false {
-                info.append("🪙 All Users have Secure tokens")
+                info.append("🪙 All users have Secure tokens")
 
             }
             else {
