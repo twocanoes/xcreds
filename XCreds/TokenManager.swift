@@ -102,9 +102,7 @@ class TokenManager:DSQueryable {
             additionalParameters["access_type"]="offline"
         }
         
-        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleHDParam.rawValue) == true,
-            let oidcUsernamePrefs = UserDefaults.standard.string(forKey:"_xcreds_oidc_full_username" ),
-           let domain = oidcUsernamePrefs.components(separatedBy: "@").last, domain.isEmpty==false
+        if let domain=DefaultsOverride.standardOverride.string(forKey: PrefKeys.googleHostDomain.rawValue), domain.isEmpty==false
         {
             additionalParameters = ["hd":domain]
 
