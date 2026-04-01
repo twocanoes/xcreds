@@ -1,3 +1,9 @@
+## tag-5.9(9146) (2026-03-30)
+
+*  Implement "hd" URI parameter for Google OpenID connection #380 [View](https://github.com/twocanoes/xcreds/commit/d756a70321f35941898015865f98ffa04a16cae3)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/56fd00138cd80464fe71b78c148db0c398cf1ab9)
+
+
 ## tag-5.9(9145) (2026-03-26)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/ce307250657e9379eaaba6de70f9d78ea7c8c386)
