@@ -104,7 +104,7 @@ class TokenManager:DSQueryable {
         
         if let domain=DefaultsOverride.standardOverride.string(forKey: PrefKeys.googleHostDomain.rawValue), domain.isEmpty==false
         {
-            additionalParameters = ["hd":domain]
+            additionalParameters["hd"]=domain
 
         }
 

@@ -100,6 +100,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
             do {
+                throw NSError(domain: "", code: 1) as Error
 //                guard let discoveryURL = discoveryURL else {
 //                    TCSLogWithMark("discoveryURL not defined");
 //
@@ -118,10 +119,10 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 
                 let loadPageTitle = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageTitle.rawValue)?.stripped ?? "loadPageTitle"
 
-                var loadPageInfo = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)?.stripped ?? "loadPageInfo"
+                let loadPageInfoFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loadPageInfo.rawValue)?.stripped ?? "loadPageInfo"
 
 
-                loadPageInfo = loadPageInfo + "<br><br>" + (error as? WebViewControllerError ?? WebViewControllerError(errorDescription: error.localizedDescription)).errorDescription
+               let  loadPageInfo = loadPageInfoFromPrefs + "<br><br>" + (error as? WebViewControllerError ?? WebViewControllerError(errorDescription: error.localizedDescription)).errorDescription
 
                 var html = "<!DOCTYPE html><html><head><style>.center-screen { display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 100vh;}</style></head><body><div class=\"center-screen\"> <h1>\(loadPageTitle)</h1><p>\(loadPageInfo)</p></div></body></html>"
 
@@ -129,7 +130,11 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
                 let defaultsPath = Bundle(for: type(of: self)).path(forResource: "defaults", ofType: "plist")
 
                 //if the user has not modified the screen, then we use our fancy new one.
-                if let defaultsPath = defaultsPath, let defaultsDict = NSDictionary(contentsOfFile: defaultsPath) as? Dictionary<String, Any>, let defaultsPageTitle=defaultsDict["loadPageTitle"] as? String, defaultsPageTitle==loadPageTitle, let defaultsPageInfo=defaultsDict["loadPageInfo"] as? String, defaultsPageInfo==loadPageInfo{
+                if let defaultsPath = defaultsPath,
+                    let defaultsDict = NSDictionary(contentsOfFile: defaultsPath) as? Dictionary<String, Any>,
+                   let defaultsPageTitle=defaultsDict["loadPageTitle"] as? String, defaultsPageTitle==loadPageTitle,
+                   let defaultsPageInfo=defaultsDict["loadPageInfo"] as? String,
+                    defaultsPageInfo==loadPageInfoFromPrefs{
                         
                         html = """
                 <html>

@@ -174,12 +174,8 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                     }
                     NSApp.activate(ignoringOtherApps: true)
                 }
-
             }
-
-
         }
-
         else if (DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForMenuLogin.rawValue) == true || DefaultsOverride.standardOverride.value(forKey: PrefKeys.aDDomain.rawValue) != nil )
         {
             if let webView = windowController.webViewController?.webView {
