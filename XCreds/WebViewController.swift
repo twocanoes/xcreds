@@ -100,7 +100,6 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             TCSLogWithMark("Network monitor: adding connectivity status change observer")
 
             do {
-                throw NSError(domain: "", code: 1) as Error
 //                guard let discoveryURL = discoveryURL else {
 //                    TCSLogWithMark("discoveryURL not defined");
 //
