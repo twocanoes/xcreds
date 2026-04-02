@@ -1,3 +1,9 @@
+## tag-5.9(9147) (2026-04-01)
+
+*  fixed default load page and google hd domain issue [View](https://github.com/twocanoes/xcreds/commit/63282842fa59497180ae6b3ec2d0a62f29cb9fd2)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/561bbae76cbe2ea80ab9e87d841ce0ead7e4cd84)
+
+
 ## tag-5.9(9146) (2026-03-30)
 
 *  Implement "hd" URI parameter for Google OpenID connection #380 [View](https://github.com/twocanoes/xcreds/commit/d756a70321f35941898015865f98ffa04a16cae3)
