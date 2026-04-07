@@ -1,3 +1,9 @@
+## tag-5.9(9148) (2026-04-02)
+
+*  removed debug code [View](https://github.com/twocanoes/xcreds/commit/4ec1c14742028323f655b70d9303a705a7895c0c)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/db5443759de59f9feaa54a390ede4910f2c9f30d)
+
+
 ## tag-5.9(9147) (2026-04-01)
 
 *  fixed default load page and google hd domain issue [View](https://github.com/twocanoes/xcreds/commit/63282842fa59497180ae6b3ec2d0a62f29cb9fd2)
