@@ -262,7 +262,8 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     }
 
                 Task{
-                    if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
+                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue) == true {
+                        
                     do{
                         try await tokenManager.oidc().getEndpoints()
                         TCSLogWithMark("requesting new access token")
@@ -291,7 +292,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                             }
                         }
                     }
-                    else if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue) == true {
+                    else if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
                         let localCredFromKeychain =  keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue)
 
                     

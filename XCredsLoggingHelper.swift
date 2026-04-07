@@ -18,16 +18,16 @@ func xcredsSetup()  {
                 print(isSuccess)
             }
             
-            TCSLogInfoWithMark("------------------------------------------------------------------")
-            TCSLogInfoWithMark("XCreds Login \(version).\(build)")
+            TCSUnifiedLogger.shared().logString("------------------------------------------------------------------",level: LOGLEVELDEBUG, forceWriteToFile: true)
+            TCSUnifiedLogger.shared().logString("XCreds Login \(version).\(build)",level: LOGLEVELDEBUG, forceWriteToFile: true)
             if DefaultsOverride.standardOverride.bool(forKey: "showDebug")==false {
-                TCSLogInfoWithMark("Log showing only basic info and errors.")
-                TCSLogInfoWithMark("Set debugLogging to true to show verbose logging with")
-                TCSLogInfoWithMark("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true")
+                TCSUnifiedLogger.shared().logString("Log showing only basic info and errors.",level: LOGLEVELDEBUG, forceWriteToFile: true)
+                TCSUnifiedLogger.shared().logString("Set debugLogging to true to show verbose logging with",level: LOGLEVELDEBUG, forceWriteToFile: true)
+                TCSUnifiedLogger.shared().logString("sudo defaults write /Library/Preferences/com.twocanoes.xcreds showDebug -bool true",level: LOGLEVELDEBUG, forceWriteToFile: true)
             }
             else {
-                TCSLogInfoWithMark("To disable verbose logging:")
-                TCSLogInfoWithMark("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug")
+                TCSUnifiedLogger.shared().logString("To disable verbose logging:",level: LOGLEVELDEBUG, forceWriteToFile: true)
+                TCSUnifiedLogger.shared().logString("sudo defaults delete /Library/Preferences/com.twocanoes.xcreds showDebug",level: LOGLEVELDEBUG, forceWriteToFile: true)
 
             }
             TCSUnifiedLogger.shared().logString("NOTE: LOGGING HAS MOVED TO MACOS SYSTEM LOGGING ONLY", level: LOGLEVELDEBUG, forceWriteToFile: true)
