@@ -1,3 +1,9 @@
+## tag-6.1(9151) (2026-04-15)
+
+*  bump [View](https://github.com/twocanoes/xcreds/commit/62c82808ea56a0758493ef8eed8ad04328604752)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/17b9843ab1f598a3ad3155bebcc62790db6bcf98)
+
+
 ## tag-6.1(9150) (2026-04-15)
 
 *  fixed issue with secure token and autologin [View](https://github.com/twocanoes/xcreds/commit/25a05abe68b0fc324cccb7ef3f9cdf0698cb7338)
