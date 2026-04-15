@@ -1,3 +1,9 @@
+## tag-5.9.1(9155) (2026-04-15)
+
+*  bump [View](https://github.com/twocanoes/xcreds/commit/d80591b9ebf746d95b0063ddec04ed8d1750f9b6)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a91323cc225ddfdcf1d7d8830a185d2fbcaee553)
+
+
 ## tag-6.1(9154) (2026-04-15)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/c353c5c7e52674063db9ace525771d52247c4369)
