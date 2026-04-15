@@ -1,3 +1,9 @@
+## tag-6.0(9149) (2026-04-07)
+
+*  bumped version to 6.0. added command in logging to show where to turn on [View](https://github.com/twocanoes/xcreds/commit/49e64e9ce36837d1f300d30cb7fe765b3b69d436)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/cb8c19906387003f3640bf17bd6ea81f9345607f)
+
+
 ## tag-5.9(9148) (2026-04-02)
 
 *  removed debug code [View](https://github.com/twocanoes/xcreds/commit/4ec1c14742028323f655b70d9303a705a7895c0c)
