@@ -217,29 +217,37 @@ import Network
             }
 
             NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
-                timer.invalidate()
-                TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
                 
-                let adminUser = self.getHint(type: .localAdmin) as? LocalAdminCredentials
-                if let adminUser = adminUser {
+                //remove the observer so we don't get called again.
+                NotificationCenter.default.removeObserver(self, name: .connectivityStatus, object: nil)
+                let shouldSetSecureToken = self.getHint(type: .shouldSetAdminSecureToken) as? Bool
+
+                //check again since it could have been set later.
+                if shouldSetSecureToken == true {
+                    timer.invalidate()
+                    TCSLogWithMark("shouldSetAdminSecureToken set to true so not showing login window and moving along")
+                    
+                    let adminUser = self.getHint(type: .localAdmin) as? LocalAdminCredentials
+                    if let adminUser = adminUser {
                         TCSLogWithMark("retrieved admin user and setting context string")
-
-                    //save fvusername and password to use the next time around.
-                    if let username = self.getContextString(type: "fvusername"), let password = self.getContextString(type: "fvpassword") {
-                        self.setStickyContextString(type: HintType.filevaultUsername.rawValue, value: username)
-                        self.setStickyContextString(type: HintType.filevaultPassword.rawValue, value: password)
+                        
+                        //save fvusername and password to use the next time around.
+                        if let username = self.getContextString(type: "fvusername"), let password = self.getContextString(type: "fvpassword") {
+                            self.setStickyContextString(type: HintType.filevaultUsername.rawValue, value: username)
+                            self.setStickyContextString(type: HintType.filevaultPassword.rawValue, value: password)
+                        }
+                        self.setContextString(type: kAuthorizationEnvironmentUsername, value: adminUser.username)
+                        self.setContextString(type: kAuthorizationEnvironmentPassword, value: adminUser.password)
+                        super.allowLogin()
+                        return
+                        
                     }
-                    self.setContextString(type: kAuthorizationEnvironmentUsername, value: adminUser.username)
-                    self.setContextString(type: kAuthorizationEnvironmentPassword, value: adminUser.password)
-                    super.allowLogin()
-                    return
-
-                }
-                else {
-                    TCSLogWithMark("could not get admin user so moving on")
-
-                    self.setupWindow()
-
+                    else {
+                        TCSLogWithMark("could not get admin user so moving on")
+                        
+                        self.setupWindow()
+                        
+                    }
                 }
                 
             }
@@ -248,7 +256,6 @@ import Network
         }
         else {
             NetworkMonitor.shared.startMonitoring()
-
             setupWindow()
             
         }
