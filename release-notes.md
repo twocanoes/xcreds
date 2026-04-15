@@ -1,3 +1,9 @@
+## tag-6.1(9150) (2026-04-15)
+
+*  fixed issue with secure token and autologin [View](https://github.com/twocanoes/xcreds/commit/25a05abe68b0fc324cccb7ef3f9cdf0698cb7338)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a7399e99159fd5fe5f47590ec9cda12ec4edb8f9)
+
+
 ## tag-6.0(9149) (2026-04-07)
 
 *  bumped version to 6.0. added command in logging to show where to turn on [View](https://github.com/twocanoes/xcreds/commit/49e64e9ce36837d1f300d30cb7fe765b3b69d436)
