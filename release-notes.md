@@ -1,3 +1,9 @@
+## tag-5.9.1(9158) (2026-05-07)
+
+*  fixed package identifier [View](https://github.com/twocanoes/xcreds/commit/e69cd7b3d9ae2d64210ddfbf5678b7938abf3023)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9d653ae43e7af497094b8c704da211aa94f61298)
+
+
 ## tag-5.9.1(9157) (2026-04-15)
 
 *  reverted LDAP fix [View](https://github.com/twocanoes/xcreds/commit/54fe8ffe4b461f0b3ee5282d3fb909fe5382d033)
