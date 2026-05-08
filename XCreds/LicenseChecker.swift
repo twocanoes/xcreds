@@ -62,7 +62,6 @@ class LicenseChecker: NSObject {
         default:
             return trialState
         }
-
     }
 
 }

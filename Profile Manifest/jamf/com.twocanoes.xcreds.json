@@ -643,7 +643,7 @@
             "type": "string",
             "title": "ROPG Client ID",
             "description": "(Removed in v4.0) ROPG Client ID for use when checking password.",
-            "links": [
+            "links": [          
                 {
                     "rel": "More information",
                     "href": "https://twocanoes.com/knowledge-base/xcreds-admin-guide/#preferences"
