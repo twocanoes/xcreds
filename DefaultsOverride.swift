@@ -66,7 +66,18 @@ public class DefaultsOverride: UserDefaults {
 
             }
             
-            let scriptRes=cliTask(prefScriptPath)
+            // Pass an explicit (empty) arguments array so cliTask takes its
+            // no-split branch. The single-string overload splits `command` by
+            // " " to derive launchPath, which breaks any path containing a
+            // space — including the Apple-conventional installer location
+            // /Library/Application Support/<vendor>/<helper>. With the bare
+            // call, NSConcreteTask throws "launch path not accessible" and
+            // takes down the SecurityAgent auth chain on every loginwindow
+            // cycle. cliTask already handles arguments != nil by using the
+            // command verbatim as launchPath, which is what we want here:
+            // settingsOverrideScriptPath is documented as the *path* to the
+            // helper, not a shell command line.
+            let scriptRes=cliTask(prefScriptPath, arguments: [])
 
                 if scriptRes.count==0{
                     TCSLogErrorWithMark("script did not return anything")
