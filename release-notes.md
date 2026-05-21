@@ -1,3 +1,9 @@
+## tag-6.0(9159) (2026-05-07)
+
+*  put version to 6 [View](https://github.com/twocanoes/xcreds/commit/375bfeb3e1a12ef40acd1d14496fc9480dfa4570)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/09c0513460f6934ccc55d977d6630e7adf7e7670)
+
+
 ## tag-5.9.1(9158) (2026-05-07)
 
 *  fixed package identifier [View](https://github.com/twocanoes/xcreds/commit/e69cd7b3d9ae2d64210ddfbf5678b7938abf3023)
