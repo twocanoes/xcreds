@@ -684,8 +684,8 @@ public class NoMADSession: NSObject {
 
                 var shortName = userPrincipalShort
 
-                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey]  {
-                    shortName=mapValue
+                if let mapKey = DefaultsOverride.standardOverride.object(forKey: PrefKeys.mapUserName.rawValue)  as? String, mapKey.count>0, let mapValue = ldapResult[mapKey], let leftSide = mapValue.components(separatedBy: "@").first, leftSide.count>0  {
+                    shortName=leftSide
                 }
 
 
