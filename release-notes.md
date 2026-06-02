@@ -1,3 +1,9 @@
+## tag-6.0(9161) (2026-06-02)
+
+*  fixed ldap password checking when a token exists [View](https://github.com/twocanoes/xcreds/commit/e8b428eed4551700731fd6e24177ed3e89cbfe1f)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/d880912bfb2960f4eef653f719bfc09f0ff4743f)
+
+
 ## tag-6.0(9160) (2026-05-21)
 
 *  fixed stripping of username in AD [View](https://github.com/twocanoes/xcreds/commit/d68248ddefb4413dccfd431544ba355d14563c0f)
