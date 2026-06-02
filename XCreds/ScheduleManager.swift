@@ -262,36 +262,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     }
 
                 Task{
-                    if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
-                    do{
-                        try await tokenManager.oidc().getEndpoints()
-                        TCSLogWithMark("requesting new access token")
-                        let tokenResponse = try await tokenManager.getNewAccessToken()
-                        TCSLogWithMark("success. Setting new token.")
-                        ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
-
-                        feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
-                    }
-                        catch let error  {
-                            
-                            TCSLogWithMark("Error")
-                            switch error {
-                                
-                            case OIDCLiteError.authFailure(let mesg):
-                                TCSLogWithMark("invalid credentials: \(mesg)")
-                                TCSLogWithMark("Setting last failed login timestamp to now.")
-                                
-                                ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
-                                feedbackDelegate?.invalidCredentials()
-                                
-                            default:
-                                TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
-                                nextTokenCheckTime=Date.distantPast
-                                
-                            }
-                        }
-                    }
-                    else if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue) == true {
+                    if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseLDAPForPasswordChangeChecking.rawValue) == true {
                         let localCredFromKeychain =  keychainUtil.findPassword(serviceName: PrefKeys.password.rawValue,accountName:PrefKeys.password.rawValue)
 
                     
@@ -323,6 +294,36 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
                         }
                     }
+                    else if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
+                    do{
+                        try await tokenManager.oidc().getEndpoints()
+                        TCSLogWithMark("requesting new access token")
+                        let tokenResponse = try await tokenManager.getNewAccessToken()
+                        TCSLogWithMark("success. Setting new token.")
+                        ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+
+                        feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
+                    }
+                        catch let error  {
+                            
+                            TCSLogWithMark("Error")
+                            switch error {
+                                
+                            case OIDCLiteError.authFailure(let mesg):
+                                TCSLogWithMark("invalid credentials: \(mesg)")
+                                TCSLogWithMark("Setting last failed login timestamp to now.")
+                                
+                                ud.setValue(ISO8601DateFormatter().string(from: Date()), forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+                                feedbackDelegate?.invalidCredentials()
+                                
+                            default:
+                                TCSLogWithMark("Delaying check for oidc tokens because endpoints are not available yet. Error: \(error)")
+                                nextTokenCheckTime=Date.distantPast
+                                
+                            }
+                        }
+                    }
+                    
                 }
             }
         }
