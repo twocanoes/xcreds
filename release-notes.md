@@ -1,3 +1,9 @@
+## tag-6.0(9160) (2026-05-21)
+
+*  fixed stripping of username in AD [View](https://github.com/twocanoes/xcreds/commit/d68248ddefb4413dccfd431544ba355d14563c0f)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/8d88eabed15d4f6033d1e2af22fd89eba905d2c2)
+
+
 ## tag-6.0(9159) (2026-05-07)
 
 *  put version to 6 [View](https://github.com/twocanoes/xcreds/commit/375bfeb3e1a12ef40acd1d14496fc9480dfa4570)
