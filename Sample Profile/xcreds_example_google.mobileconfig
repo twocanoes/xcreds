@@ -21,8 +21,6 @@
 			<integer>1</integer>
 			<key>clientID</key>
 			<string>421164668086-v3ocec44vrmgjjh41h9r2hj6cjh5erpk.apps.googleusercontent.com</string>
-			<key>clientSecret</key>
-			<string></string>
 			<key>discoveryURL</key>
 			<string>https://accounts.google.com/.well-known/openid-configuration</string>
 			<key>redirectURI</key>
