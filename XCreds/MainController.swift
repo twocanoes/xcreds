@@ -378,44 +378,48 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
 
 
     }
+    
 
+    func credentialsUpdated(_ credentials:Creds) async {
+        TCSLogWithMark()
+        await (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
+        self.tokenCredentialStatus="Valid Tokens"
 
-    func credentialsUpdated(_ credentials:Creds) {
         
         // this gets called with an empty Creds if ROPG is used and we get back a
         // code that says auth was successfull but we have not tokens so
         // we proceed
-        DispatchQueue.main.async {
-            UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
-
-            self.hasCredential=true
-            self.tokenCredentialStatus="Valid Tokens"
-            (NSApp.delegate as? AppDelegate)?.updateStatusMenuIcon(showDot:true)
-            let tokenManager = TokenManager()
-
-            if  let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials){
+        UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+        
+        self.hasCredential=true
+        
+        let tokenManager = TokenManager()
+        
+        if  let idTokenInfo =  try? await tokenManager.tokenInfo(fromCredentials: credentials){
+            TCSLogWithMark("tokenInfo from credentials.")
                 let userInfoResult = tokenManager.setupUserAccountInfo(idTokenInfo: idTokenInfo)
-
+                
                 switch userInfoResult {
-
+                    
                 case .success(let retUserAccountInfo):
                     let userInfo = retUserAccountInfo
-
-                    if let username = userInfo.username, let fullUsername = userInfo.fullUsername {
+                    
+                    if let username = userInfo.username {
+                        let fullUsername = userInfo.fullUsername ?? username
                         UserDefaults.standard.set(username, forKey:"_xcreds_oidc_username")
                         UserDefaults.standard.set(fullUsername, forKey:"_xcreds_oidc_full_username")
-
+                        
                         //if user oidc username doesn't exist in DS, write to a file in ~/L/AS for login window to migrate
                         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
                         if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
                             TCSLogWithMark("Found existing username \(username) in DS")
-
+                            
                         }
                         else {
                             TCSLogWithMark("No _xcreds_oidc_username found in DS so setting migrate file");
                             let appSupportFolder = NSHomeDirectory() + "/Library/Application Support/XCreds"
                             let plistPath = appSupportFolder + "/ds_info.plist"
-
+                            
                             do {
                                 //check to see if appSupportFolder exists and if not, create
                                 if !FileManager.default.fileExists(atPath: appSupportFolder) {
@@ -432,7 +436,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                                                        "subValue":subValue,
                                                        "issuerValue":issuerValue,
                                                        "localuser":PasswordUtils.currentConsoleUserName]
-
+                                    
                                     if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
                                         dictToWrite["_xcreds_activedirectory_kerberosPrincipal"] = kerberosPrincipalName
                                     }
@@ -444,7 +448,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                             catch {
                                 TCSLogWithMark("Error saving migrate file: \(error)")
                             }
-
+                            
                         }
                         if let kerberosPrincipalName = userInfo.kerberosPrincipalName {
                             UserDefaults.standard.set(kerberosPrincipalName, forKey:"_xcreds_activedirectory_kerberosPrincipal")
@@ -453,12 +457,20 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
                 case .error(let message):
                     TCSLogWithMark("Error getting infoResult: \(message)")
                 }
+                self.loginCompleted(credentials: credentials)
 
-            }
-            else {
-                TCSLogWithMark("no idTokenInfo because using LDAP, ROPG or issue with OIDC.")
             
-            }
+            
+        }
+        else {
+            TCSLogWithMark("no idTokenInfo because using LDAP, ROPG or issue with OIDC.")
+            loginCompleted(credentials: credentials)
+
+        }
+        
+    }
+    func loginCompleted(credentials:Creds){
+        DispatchQueue.main.async {
 
             self.windowController.window?.close()
             
@@ -468,16 +480,16 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if credentials.password != nil, let localPassword=localAccountAndPassword.1, localPassword.count>0{
                 if localPassword != credentials.password{
                     TCSLogWithMark("localPassword and credentials.password do not match")
-
+                    
                     var updatePassword = true
                     if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.verifyPassword.rawValue)==true {
                         let verifyOIDPassword = VerifyOIDCPasswordWindowController.init(windowNibName: NSNib.Name("VerifyOIDCPassword"))
                         NSApp.activate(ignoringOtherApps: true)
-
+                        
                         while true {
                             let response = NSApp.runModal(for: verifyOIDPassword.window!)
                             if response == .cancel {
-
+                                
                                 let alert = NSAlert()
                                 alert.addButton(withTitle: "Skip Updating Password")
                                 alert.addButton(withTitle: "Cancel")
@@ -522,16 +534,12 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
             if let localPassword = localPassword, TokenManager.saveTokensToKeychain(creds: credentials, keychainPassword:localPassword ) == false {
                 TCSLogErrorWithMark("error saving tokens to keychain")
             }
-
-            self.scheduleManager.startCredentialCheck()
-
+            
+            //delay startup to give network time to settle.
+            Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { timer in
+                self.scheduleManager.startCredentialCheck()
+            }
         }
-
-        //delay startup to give network time to settle.
-        Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { timer in
-            self.scheduleManager.startCredentialCheck()
-        }
-
     }
     func invalidCredentials() {
         TCSLogWithMark()

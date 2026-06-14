@@ -7,32 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C556A3FE-C1A0-45E1-A2DB-47DF413DB63F"
-            shouldBeEnabled = "Yes"
+            uuid = "9A58AE78-50CE-4003-A3DA-FD047C6B29BF"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCreds/WebViewController.swift"
+            filePath = "../OIDCLite/Sources/OIDCLite/OIDCLite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "loadPage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F204FE51-D173-4E07-A89F-B41D901F4534"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "XCreds/TokenManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
-            landmarkName = "tokenInfo(fromCredentials:)"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "createLoginURL()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

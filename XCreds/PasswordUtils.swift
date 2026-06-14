@@ -202,6 +202,7 @@ class PasswordUtils: NSObject, DSQueryable {
         if (err == noErr) {
             return
         } else if ( err == errSecAuthFailed ) {
+            TCSLogWithMark("errSecAuthFailed")
             return
         } else {
             // If we got any other error, we don't know if the password is good or not because we probably couldn't find the keychain.

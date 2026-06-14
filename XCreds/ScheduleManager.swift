@@ -15,8 +15,8 @@ class ScheduleManager:NoMADUserSessionDelegate {
 
     }
 
-    func credentialsUpdated(_ credentials: Creds) {
-        feedbackDelegate?.credentialsUpdated(credentials)
+    func credentialsUpdated(_ credentials: Creds) async {
+        await feedbackDelegate?.credentialsUpdated(credentials)
     }
 
 
@@ -278,7 +278,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         case .PasswordValid:
                             TCSLogWithMark("Password Valid")
 
-                            feedbackDelegate?.credentialsUpdated(Creds(accessToken: nil, idToken: nil, refreshToken: nil, password:password, jsonDict: [:]))
+                           await feedbackDelegate?.credentialsUpdated(Creds(accessToken: nil, idToken: nil, refreshToken: nil, password:password, jsonDict: [:]))
 
                         case .PasswordInvalid:
                             TCSLogWithMark("invalid credentials via ldap")
@@ -302,7 +302,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         TCSLogWithMark("success. Setting new token.")
                         ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-                        feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
+                       await feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
                     }
                         catch let error  {
                             

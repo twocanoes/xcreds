@@ -25,14 +25,14 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
         
     }
 
-    func credentialsUpdated(_ credentials: Creds) {
+    func credentialsUpdated(_ credentials: Creds) async {
         TCSLogWithMark()
         var credWithPass = credentials
         credWithPass.password = self.password
 //        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
 //                       )
 
-        updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
+        await updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
     }
   
     @IBOutlet weak var refreshTitleTextField: NSTextField?
@@ -439,7 +439,7 @@ extension WebViewController: WKNavigationDelegate {
                             let shouldUseBasicAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseBasicAuth.rawValue)
                             let tokenResponse = try await tokenManager.oidc().getToken(code: code, basicAuth: shouldUseBasicAuth)
                             TCSLogWithMark("got token. Token ID: \(tokenResponse.idToken ?? "" )")
-                            tokenManager.tokenResponse(tokens: tokenResponse)
+                            await tokenManager.tokenResponse(tokens: tokenResponse)
 
                         }
                         catch{

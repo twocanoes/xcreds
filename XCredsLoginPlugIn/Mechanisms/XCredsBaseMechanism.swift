@@ -25,11 +25,13 @@ import OpenDirectory
     func run(){
         fatalError("superclass must implement")
     }
-    func setupHints(fromCredentials credentials:Creds, password:String) -> ErrorResult {
+    func setupHints(fromCredentials credentials:Creds, password:String) async -> ErrorResult {
 
         TCSLogWithMark("Checking for allow login preference")
         let tokenManager = TokenManager()
-        let idTokenInfo = try? tokenManager.tokenInfo(fromCredentials: credentials)
+        var idTokenInfo:Dictionary<String,Any>?
+        
+        idTokenInfo = try? await  tokenManager.tokenInfo(fromCredentials: credentials)
 
         if let allowUsersClaim = DefaultsOverride.standardOverride.string(forKey: PrefKeys.allowUsersClaim.rawValue), let allowedUsersArray  = DefaultsOverride.standardOverride.array(forKey: PrefKeys.allowedUsersArray.rawValue) as? Array<String>, allowedUsersArray.count>0, let tokenInfo = idTokenInfo, let userValue = tokenInfo[allowUsersClaim] as? String {
 
@@ -52,7 +54,6 @@ import OpenDirectory
         do {
 
             let tokenManager = TokenManager()
-            let idTokenInfo = try tokenManager.tokenInfo(fromCredentials: credentials)
 
             //no need to send back message because failure will show it.
 

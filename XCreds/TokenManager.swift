@@ -39,7 +39,7 @@ enum StringOrArray:Decodable{
 }
 protocol TokenManagerFeedbackDelegate {
     func tokenError(_ err:String)
-    func credentialsUpdated(_ credentials:Creds)
+    func credentialsUpdated(_ credentials:Creds) async
     func invalidCredentials()
 
 
@@ -98,7 +98,7 @@ class TokenManager:DSQueryable {
 
         //
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue) == true {
-
+            TCSLogWithMark("setting google override")
             additionalParameters["access_type"]="offline"
         }
         
@@ -107,8 +107,6 @@ class TokenManager:DSQueryable {
             additionalParameters["hd"]=domain
 
         }
-
-        
         let oidcLite = OIDCLite(discoveryURL: DefaultsOverride.standardOverride.string(forKey: PrefKeys.discoveryURL.rawValue) ?? "NONE", clientID: clientID ?? "NONE", clientSecret: clientSecret, redirectURI: DefaultsOverride.standardOverride.string(forKey: PrefKeys.redirectURI.rawValue), scopes: scopes, additionalParameters:additionalParameters.count==0 ? nil:additionalParameters, resource: resource,         debugLogging: DefaultsOverride.standardOverride.bool(forKey: "showDebug"))
         try await oidcLite.getEndpoints()
         oidcLocal = oidcLite
@@ -300,9 +298,56 @@ class TokenManager:DSQueryable {
         return data
 
     }
-    func tokenInfo(fromCredentials credentials:Creds) throws -> Dictionary<String, Any>? {
-        //if we have tokens, that means that authentication was successful.
+    private func resolveUserInfo(creds:Creds, inTokenInfo:Dictionary<String, Any>) async -> (Dictionary<String, Any>)  {
+        if let altUserEndpointURLString = UserDefaults.standard.string(forKey: PrefKeys.altUserEndpointURL.rawValue),
+           let altUserEndpointURL = URL(string: altUserEndpointURLString){
+            TCSLogWithMark("altUserEndpointURLString defined.")
 
+                guard let accessToken = creds.accessToken else {
+                    TCSLogWithMark("No access token so returning unchanged tokenInfo.")
+                    return inTokenInfo
+                }
+                var req = URLRequest(url: altUserEndpointURL)
+                req.allHTTPHeaderFields = [
+                    "Authorization": "Bearer \(accessToken)"
+                ]
+            
+                req.httpMethod = "GET"
+            
+                TCSLogWithMark("sending request to find alt Token Info.")
+            do {
+                let (data, response) = try await URLSession.shared.data(for: req)
+                if let response = response as? HTTPURLResponse, response.statusCode<299 ,
+                   let updatedIdToken = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]{
+                    TCSLogWithMark("got updatedIdToken: \(updatedIdToken.debugDescription)")
+                    TCSLogWithMark("merging into : \(inTokenInfo)")
+                    
+                    
+                    let updatedIdTokenInfo = inTokenInfo.merging(updatedIdToken) { (_, new) in new }
+                    
+                    return updatedIdTokenInfo
+                }
+                else {
+                    TCSLogWithMark("issue getting altTokenInfo: \(response.debugDescription)")
+                    return inTokenInfo
+                    
+                }
+            }
+            catch{
+                TCSLogWithMark("issue calling URLSession.")
+                return inTokenInfo
+
+            }
+            
+            
+        }
+        else {
+            TCSLogWithMark("no altUserEndpointURLString defined.")
+            return inTokenInfo
+        }
+    }
+    func tokenInfo(fromCredentials credentials:Creds) async throws  -> Dictionary<String, Any>? {
+        //if we have tokens, that means that authentication was successful.
 
         guard let idToken = credentials.idToken else {
             TCSLogErrorWithMark("invalid idToken")
@@ -335,6 +380,8 @@ class TokenManager:DSQueryable {
         }
 
         idTokenInfo["idToken"]=idTokenObject
+        idTokenInfo = await resolveUserInfo(creds: credentials, inTokenInfo: idTokenInfo)
+
         return idTokenInfo
     }
     func findUserAndUpdatePassword(idTokenInfo:Dictionary<String, Any>,newPassword:String) -> SelectLocalAccountWindowController.VerifyLocalCredentialsResult?{
@@ -373,10 +420,10 @@ class TokenManager:DSQueryable {
 
         TCSLogWithMark()
         var userAccountInfo = UserAccountInfo()
-        guard let idTokenObject = idTokenInfo["idToken"] as? IDToken else {
-            return .error("invalid token object")
-
-        }
+//        guard let idTokenObject = idTokenInfo["idToken"] as? IDToken else {
+//            return .error("invalid token object")
+//
+//        }
         let defaultsUsername = DefaultsOverride.standardOverride.string(forKey: PrefKeys.username.rawValue)
 
         // username static map
@@ -393,14 +440,18 @@ class TokenManager:DSQueryable {
             TCSLogWithMark()
             var emailString:String
 
-            if let email = idTokenObject.email, email.count>0  {
+            if let email = idTokenInfo["email"] as? String, email.count>0  {
                 emailString=email.lowercased()
             }
-            else if let uniqueName=idTokenObject.unique_name, uniqueName.count>0 {
+            else if let uniqueName=idTokenInfo["unique_name"] as? String, uniqueName.count>0 {
                 emailString=uniqueName
             }
 
             else {
+                guard let idTokenObject = idTokenInfo["idToken"] as? IDToken else {
+                    return .error("invalid token object")
+
+                }
                 TCSLogWithMark("no username found. Using sub.")
                 emailString=idTokenObject.sub
             }
@@ -420,7 +471,7 @@ class TokenManager:DSQueryable {
             
         }
 
-        else if let email = idTokenObject.email {
+        else if let email = idTokenInfo["email"] as? String {
             TCSLogWithMark()
             userAccountInfo.fullUsername = email.lowercased()
 
@@ -467,7 +518,7 @@ class TokenManager:DSQueryable {
 
         }
 
-        else if let firstName = idTokenObject.given_name, let lastName = idTokenObject.family_name {
+        else if let firstName = idTokenInfo["given_name"] as? String, let lastName = idTokenInfo["family_name"] as? String {
             TCSLogWithMark("firstName: \(firstName)")
             TCSLogWithMark("lastName: \(lastName)")
             userAccountInfo.fullName = "\(firstName) \(lastName)"
@@ -482,7 +533,7 @@ class TokenManager:DSQueryable {
             userAccountInfo.firstName = mapValue
         }
 
-        else if let given_name = idTokenObject.given_name {
+        else if let given_name = idTokenInfo["given_name"] as? String {
             TCSLogWithMark("firstName from token: \(given_name)")
             userAccountInfo.firstName = given_name
 
@@ -496,7 +547,7 @@ class TokenManager:DSQueryable {
             userAccountInfo.lastName = mapValue
         }
 
-        else if let familyName = idTokenObject.family_name {
+        else if let familyName = idTokenInfo["family_name"] as? String {
             TCSLogWithMark("lastName from token: \(familyName)")
             userAccountInfo.lastName = familyName
 
@@ -560,12 +611,9 @@ extension TokenManager {
         feedbackDelegate?.tokenError(message)
     }
 
-    func tokenResponse(tokens: OIDCLite.TokenResponse) {
-
-
+    func tokenResponse(tokens: OIDCLite.TokenResponse) async {
 
         TCSLogWithMark("======== tokenResponse =========")
-        RunLoop.main.perform {
             let googleAuth = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSetGoogleAccessTypeToOffline.rawValue)
 
 
@@ -590,7 +638,7 @@ extension TokenManager {
 
             if xcredCreds.hasAccessAndRefresh() || (googleAuth && xcredCreds.hasAccess()) {
                 XCredsAudit().refreshTokenUpdated(true)
-                self.feedbackDelegate?.credentialsUpdated(xcredCreds)
+                await self.feedbackDelegate?.credentialsUpdated(xcredCreds)
             }
 //            else if let dict = tokens.jsonDict, let error = dict["error"] as? String, error == ropgResponseValue ?? "interaction_required" {
 //                TCSLogWithMark("ropgResponseValue matched to \(error)")
@@ -610,7 +658,7 @@ extension TokenManager {
                 self.feedbackDelegate?.tokenError(err)
             }
 
-        }
+        
     }
 }
 

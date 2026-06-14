@@ -19,7 +19,7 @@ let checkADLog = OSLog(subsystem: "menu.nomad.login.ad", category: "CheckADMech"
 protocol UpdateCredentialsFeedbackProtocol {
 
     func passwordExpiryUpdate(_ passwordExpires:Date)
-    func credentialsUpdated(_ credentials:Creds)
+    func credentialsUpdated(_ credentials:Creds) async
     func credentialsCheckFailed()
     func invalidCredentials()
     func kerberosTicketUpdated()
@@ -103,10 +103,10 @@ protocol UpdateCredentialsFeedbackProtocol {
         shakeWindowAndShowError()
     }
 
-    func credentialsUpdated(_ credentials:Creds){
+    func credentialsUpdated(_ credentials:Creds) async {
 
-        updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
-        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
+        await updateCredentialsFeedbackDelegate?.credentialsUpdated(credentials)
+        if let res = await mechanismDelegate?.setupHints(fromCredentials: credentials, password: passString ){
             switch res {
                 
             case .success, .userCancelled:

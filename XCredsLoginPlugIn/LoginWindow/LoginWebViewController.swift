@@ -93,9 +93,10 @@ class LoginWebViewController: WebViewController, DSQueryable {
         }
 
 
-    override func credentialsUpdated(_ credentials:Creds){
+    override func credentialsUpdated(_ credentials:Creds) async {
         
-        if let res = mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ){
+        TCSLogWithMark()
+        if let res = await mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ){
 
             switch res {
 
