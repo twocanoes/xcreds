@@ -1,3 +1,8 @@
+## tag-6.0(9162) (2026-06-02)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6f7d91de5cedf4c31d1ec08a138f0984834f980f)
+
+
 ## tag-6.0(9161) (2026-06-02)
 
 *  fixed ldap password checking when a token exists [View](https://github.com/twocanoes/xcreds/commit/e8b428eed4551700731fd6e24177ed3e89cbfe1f)
