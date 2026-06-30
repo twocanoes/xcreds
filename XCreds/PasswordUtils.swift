@@ -308,7 +308,7 @@ class PasswordUtils: NSObject, DSQueryable {
                 TCSLogWithMark("No local account for user: \(userName) is not valid.")
                 return .accountDoesNotExist
             case Int(kODErrorCredentialsAccountLocked.rawValue):
-                TCSLogWithMark("No Account for user: \(userName) is not locked.")
+                TCSLogWithMark("No Account for user: \(userName) is locked.")
                 return .accountLocked
 
             case Int(kODErrorCredentialsAccountTemporarilyLocked.rawValue):

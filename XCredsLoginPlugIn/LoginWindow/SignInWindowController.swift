@@ -1292,7 +1292,19 @@ extension SignInViewController: NoMADUserSessionDelegate {
         }
             // need to ensure the right password is stashed
 
+        TCSLogWithMark("verifying local password matches the password given, otherwise mark as password failure to prompt")
+
         
+        if let isPasswordValid=try? isLocalPasswordValid(userName: shortName, userPass: passString), isPasswordValid==false {
+            TCSLogWithMark("local password doesn't match the network password. marking to change")
+            self.hadPasswordFailure=true
+        }
+      
+
+        //try to change the password, but if the admin changed it out of band, we don't
+        //fail here and prompt later
+
+
         if isInUserSpace==true {
             if hadPasswordFailure==true {
                 TCSLogWithMark("had password failure, updating keychain with new password")
@@ -1472,7 +1484,9 @@ extension SignInViewController: NoMADUserSessionDelegate {
                     promptPasswordWindowController.showResetButton=false
 
                 }
-                var currUser = user.shortName
+                //TODO: remove spaces from username
+                var currUser = user.shortName.replacingOccurrences(of: " ", with: "")
+
                 TCSLogWithMark("switch  promptPasswordWindowController")
                 if isInUserSpace == true {
                     let consoleUser = getConsoleUser()
