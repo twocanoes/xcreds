@@ -1,3 +1,11 @@
+## tag-6.0(9169) (2026-06-13)
+
+*  added altuserinfo endpoint [View](https://github.com/twocanoes/xcreds/commit/461b0c40ff72b3a8cf390dc3beb32673fb8dbe5b)
+*  removed client secret [View](https://github.com/twocanoes/xcreds/commit/0f84dc0849c3ac20f238f81d4c1773b9f0d6baeb)
+*  removed client secret [View](https://github.com/twocanoes/xcreds/commit/991232c7bba109b072b478371c031d4369e3166e)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3bdf98338bbb1c0faff4b7f541aa8bcc11e384e5)
+
+
 ## tag-6.0(9162) (2026-06-02)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6f7d91de5cedf4c31d1ec08a138f0984834f980f)
