@@ -94,43 +94,44 @@ class LoginWebViewController: WebViewController, DSQueryable {
 
 
     override func credentialsUpdated(_ credentials:Creds) async {
-        
-        TCSLogWithMark()
-        if let res = await mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ){
-
-            switch res {
-
-            case .success:
-                break
-            case .failure(let message):
-                TCSLogWithMark("error setting up hints, reloading page:\(message)")
-                let alert = NSAlert()
-                alert.addButton(withTitle: "OK")
-                alert.messageText=message
-
-                alert.window.canBecomeVisibleWithoutLogin=true
-
-                let bundle = Bundle.findBundleWithName(name: "XCreds")
-
-                if let bundle = bundle {
-                    TCSLogWithMark("Found bundle")
-
-                    alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
-
+        Task { @MainActor in
+            TCSLogWithMark()
+            if let res = await mechanismDelegate?.setupHints(fromCredentials: credentials, password: password ?? "" ){
+                
+                switch res {
+                    
+                case .success:
+                    break
+                case .failure(let message):
+                    TCSLogWithMark("error setting up hints, reloading page:\(message)")
+                    let alert = NSAlert()
+                    alert.addButton(withTitle: "OK")
+                    alert.messageText=message
+                    
+                    alert.window.canBecomeVisibleWithoutLogin=true
+                    
+                    let bundle = Bundle.findBundleWithName(name: "XCreds")
+                    
+                    if let bundle = bundle {
+                        TCSLogWithMark("Found bundle")
+                        
+                        alert.icon=bundle.image(forResource: NSImage.Name("icon_128x128"))
+                        
+                    }
+                    alert.runModal()
+                    
+                    self.updateView()
+                    
+                    
+                case .userCancelled:
+                    TCSLogWithMark("user cancelled")
+                    
+                    self.updateView()
+                    
                 }
-                alert.runModal()
-
-                self.updateView()
-
-
-            case .userCancelled:
-                TCSLogWithMark("user cancelled")
-
-                self.updateView()
-
             }
+            
         }
-
     }
 
 }

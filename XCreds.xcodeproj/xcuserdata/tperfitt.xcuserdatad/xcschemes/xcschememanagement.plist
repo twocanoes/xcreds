@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
+		<key>SecurityAgentHelper-arm64-2026-07-13-155822.ips.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>Send To Test.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>

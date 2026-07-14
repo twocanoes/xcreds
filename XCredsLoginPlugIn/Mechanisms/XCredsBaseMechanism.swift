@@ -216,7 +216,7 @@ import OpenDirectory
                     TCSLogWithMark("prompting for password")
                     //if the info in DS was provided from a user account file, we don't want to allow admin override to force the user to prove they know
                     //the password to the account.
-                    switch unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: isSuspect==false ? localAdmin : nil,showResetButton: !isSuspect){
+                    switch await unsyncedPasswordPrompt(username: username, password: password, accountLocked: accountLocked, localAdmin: isSuspect==false ? localAdmin : nil,showResetButton: !isSuspect){
 
                     case .success:
                         break
@@ -278,7 +278,7 @@ import OpenDirectory
 
         }
     }
-    func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?, showResetButton:Bool=true) ->ErrorResult {
+    @MainActor func unsyncedPasswordPrompt(username: String, password: String,accountLocked:Bool, localAdmin: LocalAdminCredentials?, showResetButton:Bool=true) ->ErrorResult {
         TCSLogWithMark()
         let promptPasswordWindowController = VerifyLocalPasswordWindowController()
 

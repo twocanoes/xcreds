@@ -32,7 +32,10 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
 //        NotificationCenter.default.post(name: Notification.Name("TCSTokensUpdated"), object: self, userInfo:["credentials":credWithPass]
 //                       )
 
-        await updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
+        Task { @MainActor in
+            
+            await updateCredentialsFeedbackDelegate?.credentialsUpdated(credWithPass)
+        }
     }
   
     @IBOutlet weak var refreshTitleTextField: NSTextField?
