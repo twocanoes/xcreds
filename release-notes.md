@@ -1,3 +1,9 @@
+## tag-6.0(9181) (2026-07-13)
+
+*  fixed issue with prompting for password change at login window not on main thread [View](https://github.com/twocanoes/xcreds/commit/20d391d89e999485f0848a1424b9ee6f718c7423)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/0ae387778199a534e94320abdff33ea5529e4d56)
+
+
 ## tag-6.0(9171) (2026-06-29)
 
 *  strip spaces from ad username; change ad password bug resolved [View](https://github.com/twocanoes/xcreds/commit/f0a3a91814e5f1509ae2cef73b77b585ea948f0b)
