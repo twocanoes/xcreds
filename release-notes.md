@@ -1,3 +1,9 @@
+## tag-6.0(9171) (2026-06-29)
+
+*  strip spaces from ad username; change ad password bug resolved [View](https://github.com/twocanoes/xcreds/commit/f0a3a91814e5f1509ae2cef73b77b585ea948f0b)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/e1b86dbf760cce9ed997f2097b4445af7d990fb2)
+
+
 ## tag-6.0(9169) (2026-06-13)
 
 *  added altuserinfo endpoint [View](https://github.com/twocanoes/xcreds/commit/461b0c40ff72b3a8cf390dc3beb32673fb8dbe5b)
