@@ -220,7 +220,16 @@ class XCredsCreateUser: XCredsBaseMechanism {
                     TCSLogWithMark("resetting password with admin username and password")
 
                    let res=resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
-                    
+                    let username = usernameContext ?? ""
+
+                    let (_, homeDir) = checkUIDandHome(name: username)
+
+                    if let homeDir = homeDir {
+                        TCSLogWithMark("clear keychain")
+
+                        clearKeychain(path: homeDir as String, userpass: localAdmin.password)
+                    }
+
                     if res==false {
                         denyLogin(message:"The user's password could not be reset. Please ask the administrator to verify the local admin username and password in the setup.")
                         return
