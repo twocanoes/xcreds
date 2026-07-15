@@ -1,3 +1,8 @@
+## tag-6.0(9182) (2026-07-13)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/48387422aa2525247b7d03fcfccd1afd1c233aa7)
+
+
 ## tag-6.0(9181) (2026-07-13)
 
 *  fixed issue with prompting for password change at login window not on main thread [View](https://github.com/twocanoes/xcreds/commit/20d391d89e999485f0848a1424b9ee6f718c7423)
