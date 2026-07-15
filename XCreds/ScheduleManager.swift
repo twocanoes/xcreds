@@ -298,11 +298,15 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     do{
                         try await tokenManager.oidc().getEndpoints()
                         TCSLogWithMark("requesting new access token")
-                        let tokenResponse = try await tokenManager.getNewAccessToken()
+                        guard let tokenResponse = try await tokenManager.getNewAccessToken(), tokenResponse.hasAccess() else {
+                            throw OIDCLiteError.authFailure("no access token")
+
+                        }
+                        
                         TCSLogWithMark("success. Setting new token.")
                         ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
-                       await feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse?.accessToken, idToken: tokenResponse?.idToken, refreshToken: tokenResponse?.refreshToken, password:tokenResponse?.password, jsonDict: [:]))
+                       await feedbackDelegate?.credentialsUpdated(Creds(accessToken: tokenResponse.accessToken, idToken: tokenResponse.idToken, refreshToken: tokenResponse.refreshToken, password:tokenResponse.password, jsonDict: [:]))
                     }
                         catch let error  {
                             

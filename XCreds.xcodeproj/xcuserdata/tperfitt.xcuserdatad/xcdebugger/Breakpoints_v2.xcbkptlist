@@ -148,5 +148,93 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCreds/ScheduleManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
+            landmarkName = "checkToken()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931 - 9d2c595884d9d70"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for function signature specialization &lt;Arg[5] = Value Promoted from Box&gt; of closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299">
+               </Location>
+               <Location
+                  uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931 - 3d48f29ae7f2608a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) await resume partial function for function signature specialization &lt;Arg[5] = Value Promoted from Box&gt; of closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299">
+               </Location>
+               <Location
+                  uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931 - 8226272dec28b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) await resume partial function for function signature specialization &lt;Arg[5] = Value Promoted from Box&gt; of closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299">
+               </Location>
+               <Location
+                  uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931 - 1205b4276dad676d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for function signature specialization &lt;Arg[5] = Value Promoted from Box&gt; of closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299">
+               </Location>
+               <Location
+                  uuid = "33B6E148-D32D-4CC5-9DA9-24471EAF6931 - 4c54fd5cf5a08d68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for function signature specialization &lt;Arg[5] = Value Promoted from Box&gt; of closure #1 () async -&gt; () in XCreds.ScheduleManager.checkToken() -&gt; ()"
+                  moduleName = "XCreds.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tperfitt/Documents/Projects/xcreds/XCreds/ScheduleManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "299"
+                  endingLineNumber = "299">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
