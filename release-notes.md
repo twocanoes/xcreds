@@ -1,3 +1,9 @@
+## tag-6.0(9184) (2026-07-14)
+
+*  fixed password reset issue [View](https://github.com/twocanoes/xcreds/commit/421c3925c176bb838808593a63a0b737852e5088)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9bed2f8465c7c89aa03b833ecdf086cf465e4915)
+
+
 ## tag-6.0(9182) (2026-07-13)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/48387422aa2525247b7d03fcfccd1afd1c233aa7)
