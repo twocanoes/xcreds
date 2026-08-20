@@ -35,7 +35,7 @@ ssh root@"${REMOTE_MAC}" unzip /tmp/xcreds.zip -d /Applications
 ssh root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -r
 
 ssh  root@"${REMOTE_MAC}" /Applications/XCreds.app/Contents/Resources/xcreds_login.sh -i
-
+scp -r Sample\ Profile root@test.local:/Users/Shared/
 #ssh  root@"${REMOTE_MAC}" killall -9 SecurityAgent || echo "unable to kill"
 ssh root@"${REMOTE_MAC}" reboot
 exit 0
