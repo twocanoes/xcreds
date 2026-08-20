@@ -16,7 +16,7 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, ClearSecrets.self, ClearTokensFromKeychain.self, RunApp.self],
+        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, ClearSecrets.self, ClearTokensFromKeychain.self, ClearDSEntries.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -343,6 +343,32 @@ extension xcreds {
                 print("admin user not set")
             }
 
+        }
+    }
+}
+
+@available(macOS, deprecated: 11)
+extension xcreds {
+    struct ClearDSEntries:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "Clear _xcreds entries in Directory Services to allow reselecting account during login")
+        
+        @Option(help: "Username to clear xcreds-specific entries")
+        var username:String
+        
+        func run() throws {
+            if geteuid() != 0  {
+                print("This operation requires root. Please run with sudo.")
+                NSApplication.shared.terminate(self)
+
+            }
+            if clearEntriesFromUser(user: username)==false {
+                print("error clearing entries")
+                NSApplication.shared.terminate(self)
+
+            }
+            
+
+            
         }
     }
 }
@@ -1071,6 +1097,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
 
     }
 
+    
+    
+
     func updatePrefsFromDS(){
         if let currentUser = PasswordUtils.getCurrentConsoleUserRecord() {
 
@@ -1091,5 +1120,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
 
     }
+}
+func clearEntriesFromUser(user: String)->Bool{
+    if let user = try? PasswordUtils.getLocalRecord(user) {
+
+        do {
+            let attributesArray = try  user.recordDetails(forAttributes: nil)
+            for currAttribute in attributesArray {
+                if let key = currAttribute.key as? String, key.hasPrefix("dsAttrTypeNative:_xcreds"){
+                    try user.removeValues(forAttribute: key)
+                }
+            }
+            return true
+        }
+        catch {
+            return false
+        }
+    }
+    return false
+
 }
 
