@@ -16,7 +16,7 @@ struct xcreds:ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Command line interface for XCreds.",
-        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, ClearSecrets.self, RunApp.self],
+        subcommands: [Status.self,ImportRFIDUsers.self, ShowTemplate.self,SetRFIDUser.self, ShowRFIDUser.self,ShowRFIDUsers.self, RemoveRFIDUser.self,SetAdminUser.self,ShowAdminUser.self, ClearAdminUser.self,ClearRFIDUsers.self, ListReaders.self,RFIDListener.self, ClearSecrets.self, ClearTokensFromKeychain.self, RunApp.self],
         defaultSubcommand: RunApp.self)
 
 }
@@ -381,6 +381,36 @@ extension xcreds {
             catch {
                 print(error.localizedDescription)
             }
+        }
+    }
+}
+
+@available(macOS, deprecated: 11)
+extension xcreds {
+    struct ClearTokensFromKeychain:ParsableCommand {
+        static var configuration = CommandConfiguration(abstract: "clear xcreds token items and password in keychain")
+        
+        func run() throws {
+            if KeychainUtil().clearPasswords(serviceName: "xcreds accessToken")==false {
+                print("error clearing xcreds accessToken.")
+
+            }
+            if KeychainUtil().clearPasswords(serviceName: "xcreds idToken")==false {
+                print("error clearing xcreds idToken.")
+
+            }
+
+            if KeychainUtil().clearPasswords(serviceName: "xcreds refreshToken")==false {
+                print("error clearing xcreds refreshToken.")
+
+            }
+
+            if KeychainUtil().clearPasswords(serviceName: "xcreds local password")==false {
+                print("error clearing local password.")
+
+            }
+
+            
         }
     }
 }
