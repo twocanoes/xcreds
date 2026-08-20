@@ -1,3 +1,9 @@
+## tag-6.0(9185) (2026-07-15)
+
+*  fixed issue with azure password expiring [View](https://github.com/twocanoes/xcreds/commit/23225affba70d184cb321a1660ba46ca5bccd496)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/7ea9730eefa668295ef52427ad65def9450f1048)
+
+
 ## tag-6.0(9184) (2026-07-14)
 
 *  fixed password reset issue [View](https://github.com/twocanoes/xcreds/commit/421c3925c176bb838808593a63a0b737852e5088)
