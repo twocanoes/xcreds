@@ -1,3 +1,11 @@
+## tag-6.0(9192) (2026-08-19)
+
+*  update app build file [View](https://github.com/twocanoes/xcreds/commit/cb359f0b7e119db1a7d6c939a0eb9cb04f21277e)
+*  added command line to remove xcreds items in login keychain [View](https://github.com/twocanoes/xcreds/commit/f6db531616174da1f29e5678c08db30673319486)
+*  Add deprovisioning feature #397 [View](https://github.com/twocanoes/xcreds/commit/46aa1f47876b7be76b9f3ca4d50088425be2724d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/11632d788a920167ccc7039a566fec64ffc4e450)
+
+
 ## tag-6.0(9185) (2026-07-15)
 
 *  fixed issue with azure password expiring [View](https://github.com/twocanoes/xcreds/commit/23225affba70d184cb321a1660ba46ca5bccd496)
