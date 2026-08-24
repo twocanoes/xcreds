@@ -34,3 +34,7 @@ OIDCLite is Copyright (c) 2022 Joel Rennich (https://gitlab.com/Mactroll/OIDCLit
 XCreds is licensed under BSD Open Source License.
 
 
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
