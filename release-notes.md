@@ -1,3 +1,8 @@
+## tag-6.0(9194) (2026-08-24)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/db021aa7f5baf0283b60ee8c15699a55d289a497)
+
+
 ## tag-6.0(9193) (2026-08-23)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/2be19297e3de960e5ff448c722f2fef0b152bdf0)
