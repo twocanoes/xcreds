@@ -135,7 +135,7 @@ import OpenDirectory
                 setHint(type: .uid, hint: uid as NSSecureCoding )
             }
 
-            let findUserAndUpdatePasswordResult = tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
+            let findUserAndUpdatePasswordResult = await tokenManager.findUserAndUpdatePassword(idTokenInfo: idTokenInfo, newPassword: password)
             guard let findUserAndUpdatePasswordResult = findUserAndUpdatePasswordResult else {
                 //no need to send back message because failure will show it.
 
