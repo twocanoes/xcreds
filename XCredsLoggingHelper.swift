@@ -14,8 +14,9 @@ func xcredsSetup()  {
             let build = infoPlist["CFBundleVersion"] as? String,
             let version = infoPlist["CFBundleShortVersionString"] as? String {
             
-            VersionCheck.shared.reportLicenseUsage(identifier: "com.twocanoes.xcreds", appVersion:version,buildNumber: build, event: .checkin) { isSuccess in
-                print(isSuccess)
+
+            Task {
+                await VersionCheck.shared.reportLicenseUsage(event: .checkin)
             }
             
             TCSUnifiedLogger.shared().logString("------------------------------------------------------------------",level: LOGLEVELDEBUG, forceWriteToFile: true)

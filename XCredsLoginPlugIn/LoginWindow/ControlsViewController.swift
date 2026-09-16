@@ -221,7 +221,7 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged, handler: commandKey(evt:))
 
 
-        let licenseState = LicenseChecker().currentLicenseState()
+        let licenseState = LicenseChecker.currentLicenseState(bundleID: "com.twocanes.xcreds")
         self.trialVersionStatusTextField?.isHidden = false
 
         switch licenseState {
@@ -266,6 +266,8 @@ class ControlsViewController: NSViewController, NSPopoverDelegate {
             self.trialVersionStatusTextField?.isHidden = false
             self.trialVersionStatusTextField.stringValue = "Invalid License. Please visit twocanoes.com for more information."
 
+        @unknown default:
+            fatalError()
         }
         TCSLogWithMark()
         setupLoginWindowControlsAppearance()

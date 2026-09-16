@@ -52,7 +52,7 @@ extension xcreds {
                         }
                     }
 
-                    let licenseState = LicenseChecker().currentLicenseState()
+                    let licenseState = LicenseChecker.currentLicenseState(bundleID: "com.twocanes.xcreds")
 
                     switch licenseState {
 
@@ -73,6 +73,8 @@ extension xcreds {
                     case .expired:
                         xcredLicenseStatus="expired"
 
+                    @unknown default:
+                        fatalError()
                     }
                 }
 
@@ -970,40 +972,40 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NetworkMonitor.shared.startMonitoring()
         xcredsSetup()
-
+        
         updatePrefsFromDS()
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusBarItem?.isVisible=true
         statusBarItem?.menu = statusMenu
-
-
-
+        
+        
+        
         if let iconData=DefaultsOverride.standardOverride.data(forKey: PrefKeys.menuItemIconData.rawValue), let image = NSImage(data: iconData) {
             image.size=NSMakeSize(16, 16)
-
+            
             self.statusBarItem?.button?.image=image
         }
         else {
             self.statusBarItem?.button?.image=NSImage(named: "xcreds menu icon")
         }
         let shareMounter = ShareMounter()
-
+        
         shareMounterMenu = ShareMounterMenu()
         shareMounterMenu?.shareMounter = shareMounter
         shareMounterMenu?.updateShares(connected: true)
         shareMenu = shareMounterMenu?.buildMenu(connected: true)
-//
+        //
         let defaultsPath = Bundle.main.path(forResource: "defaults", ofType: "plist")
-
+        
         if let defaultsPath = defaultsPath {
-
+            
             let defaultsDict = NSDictionary(contentsOfFile: defaultsPath)
             TCSLogWithMark()
             DefaultsOverride.standardOverride.register(defaults: defaultsDict as! [String : Any])
         }
-
-        VersionCheck.shared.reportLicenseUsage(event: .checkin) { isSuccess in
-            print(isSuccess)
+        
+        Task{
+            await VersionCheck.shared.reportLicenseUsage(event: .checkin)
         }
 
         let infoPlist = Bundle.main.infoDictionary
@@ -1045,10 +1047,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         if let thisAppVersion = thisAppVersion, let thisAppBundleID = thisAppBundleID,
            let thisAppVersionFloat = Float(thisAppVersion){
 
-            VersionCheck.shared.versionForIdentifier(identifier: thisAppBundleID, version: thisAppVersion) { isSuccess, version in
-
-                if let versionFloat = Float(version),!thisAppVersion.isEmpty, !version.isEmpty, thisAppVersionFloat < versionFloat {
-                    TCSLogErrorWithMark("New version available: \(thisAppVersion) < \(version)")
+            Task{
+                await VersionCheck.shared.versionForIdentifier(identifier: thisAppBundleID, version: thisAppVersion) { isSuccess, version in
+                    
+                    if let versionFloat = Float(version),!thisAppVersion.isEmpty, !version.isEmpty, thisAppVersionFloat < versionFloat {
+                        TCSLogErrorWithMark("New version available: \(thisAppVersion) < \(version)")
+                    }
                 }
             }
         }

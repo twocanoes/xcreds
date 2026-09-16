@@ -5,8 +5,10 @@
 //  Created by Timothy Perfitt on 6/3/22.
 //
 
+
 #ifndef XCreds_Bridging_Header_h
 #define XCreds_Bridging_Header_h
+
 #import "SecurityPrivateAPI.h"
 #import "XCredsLoginPlugin.h"
 #import "TCSKeychain.h"
@@ -26,4 +28,6 @@
 
 #include <membership.h>
 #import "TCSTKSmartCard.h"
+
+
 #endif /* XCreds_Bridging_Header_h */

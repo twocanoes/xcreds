@@ -63,7 +63,7 @@ class WebViewController: NSViewController, TokenManagerFeedbackDelegate {
             TCSLogWithMark("Clearing cookies")
             self.webView.cleanAllCookies()
             TCSLogWithMark()
-            let licenseState = LicenseChecker().currentLicenseState()
+            let licenseState = LicenseChecker.currentLicenseState(bundleID: "com.twocanes.xcreds")
 
             self.webView.navigationDelegate = self
             self.tokenManager.feedbackDelegate=self

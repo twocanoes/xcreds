@@ -611,7 +611,9 @@ protocol UpdateCredentialsFeedbackProtocol {
             TCSLogWithMark("No password entered")
             return
         }
-        if (self.localOnlyCheckBox.state == .off)  {
+        let adDomainFromPrefs = DefaultsOverride.standardOverride.string(forKey: PrefKeys.aDDomain.rawValue)
+
+        if self.localOnlyCheckBox.state == .off, let adDomainFromPrefs = adDomainFromPrefs, adDomainFromPrefs.isEmpty==false {
             updateLoginWindowInfo()
         }
         else {

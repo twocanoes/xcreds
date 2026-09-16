@@ -134,8 +134,6 @@
 		766355E5287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
 		766355E6287148C1002E3867 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766355E4287148C1002E3867 /* Tokens.swift */; };
 		76673CD229D3CFF900452848 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
-		76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
-		76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76673CD429D3D5F500452848 /* LicenseChecker.swift */; };
 		766C602D2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
 		766C602E2D3F409D0033E274 /* XCredsAudit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766C602C2D3F409D0033E274 /* XCredsAudit.swift */; };
 		766CC43829D3AED2009BC526 /* errorpage.html in Resources */ = {isa = PBXBuildFile; fileRef = 766CC43729D3AED2009BC526 /* errorpage.html */; };
@@ -219,6 +217,8 @@
 		76833EF22D95D4B500375CA4 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 76833EF12D95D4B500375CA4 /* icon_64x64.png */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
 		76873E302A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
+		769215DB305B43B600B327EE /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769215C5305B42E300B327EE /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		76921768305B4DCE00B327EE /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769215C5305B42E300B327EE /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76A247552C22747400859E0A /* CryptoTokenKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76A247542C22747400859E0A /* CryptoTokenKit.framework */; };
 		76A247582C22747400859E0A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247572C22747400859E0A /* Token.swift */; };
 		76A2475A2C22747400859E0A /* TokenDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247592C22747400859E0A /* TokenDriver.swift */; };
@@ -314,11 +314,9 @@
 		76EAAFDC2CEFED3800A5FEE3 /* SecretKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EAAFD82CEFED3800A5FEE3 /* SecretKeeper.swift */; };
 		76EAAFDD2CEFED3800A5FEE3 /* UserSecretManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EAAFD92CEFED3800A5FEE3 /* UserSecretManager.swift */; };
 		76EB23E02CC898D7003F82CB /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
-		76EB23E12CC898D7003F82CB /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76EB23E22CC8A232003F82CB /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
 		76EB23E32CC8A232003F82CB /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76EB23E42CC8A3CB003F82CB /* ProductLicense.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; };
-		76EB23E52CC8A3CB003F82CB /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 766CC42229D3A321009BC526 /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76EE069E27FD1D00009E0F3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE069D27FD1D00009E0F3A /* AppDelegate.swift */; };
 		76EE06A027FD1D01009E0F3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EE069F27FD1D01009E0F3A /* Assets.xcassets */; };
 		76EE06A327FD1D01009E0F3A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76EE06A127FD1D01009E0F3A /* MainMenu.xib */; };
@@ -379,6 +377,27 @@
 			remoteGlobalIDString = 765348752E97363900FECD7C;
 			remoteInfo = FileVaultLoginHelper;
 		};
+		769215C4305B42E300B327EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AADB87F61FE9B8780055CE94;
+			remoteInfo = ProductLicense;
+		};
+		769215C6305B42E300B327EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AADB87FF1FE9B8780055CE94;
+			remoteInfo = ProductLicenseTests;
+		};
+		769215DC305B43CA00B327EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AADB87F51FE9B8780055CE94;
+			remoteInfo = ProductLicense;
+		};
 		76A2475F2C22747400859E0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -431,7 +450,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				76EB23E12CC898D7003F82CB /* ProductLicense.framework in Embed Frameworks */,
+				769215DB305B43B600B327EE /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +461,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				76EB23E52CC8A3CB003F82CB /* ProductLicense.framework in Embed Frameworks */,
+				76921768305B4DCE00B327EE /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,6 +654,7 @@
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.info; fileEncoding = 4; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
 		76833EF12D95D4B500375CA4 /* icon_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64x64.png; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsHelper.swift; sourceTree = "<group>"; };
+		769215BF305B42E200B327EE /* ProductLicense.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProductLicense.xcodeproj; path = ../productlicense/ProductLicense.xcodeproj; sourceTree = SOURCE_ROOT; };
 		76A247532C22747400859E0A /* xcredstap.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = xcredstap.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A247542C22747400859E0A /* CryptoTokenKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoTokenKit.framework; path = System/Library/Frameworks/CryptoTokenKit.framework; sourceTree = SDKROOT; };
 		76A247572C22747400859E0A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
@@ -934,6 +954,15 @@
 			path = auth_mech_fixup;
 			sourceTree = "<group>";
 		};
+		769215C0305B42E200B327EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				769215C5305B42E300B327EE /* ProductLicense.framework */,
+				769215C7305B42E300B327EE /* ProductLicenseTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		76A247562C22747400859E0A /* tap */ = {
 			isa = PBXGroup;
 			children = (
@@ -1064,6 +1093,7 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
+				769215BF305B42E200B327EE /* ProductLicense.xcodeproj */,
 				76F0D8532EBBECFF001DAC01 /* TCSTKSmartCard.h */,
 				76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */,
 				76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */,
@@ -1340,6 +1370,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				769215DD305B43CA00B327EE /* PBXTargetDependency */,
 				767917032E994F0300D99062 /* PBXTargetDependency */,
 				760292062C116EEE0075FBD8 /* PBXTargetDependency */,
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
@@ -1414,6 +1445,12 @@
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 769215C0305B42E200B327EE /* Products */;
+					ProjectRef = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				76EE069927FD1D00009E0F3A /* XCreds */,
@@ -1428,6 +1465,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		769215C5305B42E300B327EE /* ProductLicense.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ProductLicense.framework;
+			remoteRef = 769215C4305B42E300B327EE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		769215C7305B42E300B327EE /* ProductLicenseTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ProductLicenseTests.xctest;
+			remoteRef = 769215C6305B42E300B327EE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		760291DE2C116E450075FBD8 /* Resources */ = {
@@ -1672,7 +1726,6 @@
 				76EAAFDA2CEFED3800A5FEE3 /* SecretKeeper.swift in Sources */,
 				76EAAFDB2CEFED3800A5FEE3 /* UserSecretManager.swift in Sources */,
 				760418D92A1332770051411B /* SystemInfoHelper.swift in Sources */,
-				76673CD629D3D5F500452848 /* LicenseChecker.swift in Sources */,
 				767B939D2A28289E0038935E /* View+Shake.swift in Sources */,
 				760418D22A1332210051411B /* SignInWindowController.swift in Sources */,
 				7611CEC0288B75140063A644 /* XCredsCreateUser.swift in Sources */,
@@ -1762,7 +1815,6 @@
 				766D66842E96203C009CE2BF /* NetworkManager.swift in Sources */,
 				76E74DD32B390358004C6429 /* LoginWebViewController.swift in Sources */,
 				76EECD0228752C1F00483C66 /* LoginWindow.swift in Sources */,
-				76673CD529D3D5F500452848 /* LicenseChecker.swift in Sources */,
 				761121B82B3D26F5005F7D02 /* LocalCheckAndMigrate.swift in Sources */,
 				76E74DD22B39034B004C6429 /* SelectLocalAccountWindowController.swift in Sources */,
 				767116A7284AABC500CCD6FF /* NotifyManager.swift in Sources */,
@@ -1874,6 +1926,11 @@
 			target = 765348752E97363900FECD7C /* FileVaultLoginHelper */;
 			targetProxy = 767917022E994F0300D99062 /* PBXContainerItemProxy */;
 		};
+		769215DD305B43CA00B327EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ProductLicense;
+			targetProxy = 769215DC305B43CA00B327EE /* PBXContainerItemProxy */;
+		};
 		76A247602C22747400859E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 76A247522C22747400859E0A /* xcredstap */;
@@ -1932,7 +1989,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1972,7 +2029,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill/XCreds_AutoFill.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2004,7 +2061,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2041,7 +2098,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "XCreds AutoFill Extension/XCreds_AutoFill_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2070,7 +2127,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -2088,7 +2145,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Carthage/Build/Mac\"";
@@ -2109,7 +2166,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2137,7 +2194,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2159,7 +2216,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2197,7 +2254,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2234,7 +2291,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MARKETING_VERSION = 6.0;
@@ -2249,7 +2306,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MARKETING_VERSION = 6.0;
@@ -2267,7 +2324,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2302,7 +2359,7 @@
 				CODE_SIGN_ENTITLEMENTS = tap/tap.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2336,7 +2393,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2371,7 +2428,7 @@
 				CODE_SIGN_ENTITLEMENTS = "XCreds Login Overlay/XCreds_Login_Overlay.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2431,7 +2488,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2497,7 +2554,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2532,7 +2589,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2575,7 +2632,7 @@
 				CODE_SIGN_ENTITLEMENTS = XCreds/xCreds.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9199;
+				CURRENT_PROJECT_VERSION = 9202;
 				DEVELOPMENT_TEAM = UXP6YEHSPW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
