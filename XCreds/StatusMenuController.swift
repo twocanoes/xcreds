@@ -59,7 +59,11 @@ class StatusMenuController: NSObject, NSMenuItemValidation {
     override func awakeFromNib() {
 
         let currentUser = PasswordUtils.getCurrentConsoleUserRecord()
-        if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
+        if let fullUserNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_full_username") as? [String], fullUserNames.count>0, let username = fullUserNames.first {
+            oidcUsername = username
+
+        }
+        else if let userNames = try? currentUser?.values(forAttribute: "dsAttrTypeNative:_xcreds_oidc_username") as? [String], userNames.count>0, let username = userNames.first {
             oidcUsername = username
 
         }
