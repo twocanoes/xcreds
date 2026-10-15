@@ -46,7 +46,6 @@ version=$(xcodebuild -showBuildSettings |grep MARKETING_VERSION|tr -d 'MARKETING
 buildNumber=$(agvtool what-version -terse)
 popd
 
-marketing_version=$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' "${PROJECT_FOLDER}"/XCreds.xcodeproj/project.pbxproj)
 
 date=$(date)
 

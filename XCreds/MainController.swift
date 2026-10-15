@@ -471,6 +471,7 @@ class MainController: NSObject, UpdateCredentialsFeedbackProtocol {
     }
     func loginCompleted(credentials:Creds){
         DispatchQueue.main.async {
+//            UserDefaults.standard.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
 
             self.windowController.window?.close()
             
