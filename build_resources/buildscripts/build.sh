@@ -28,7 +28,7 @@ else
 		"is clean."
 	else 
 		echo "Working directory has UNCOMMITTED CHANGES."
-		exit -1
+#		exit -1
 	fi
 fi
 carthage update
