@@ -18,7 +18,7 @@ fi
 
 pushd ../..
 
-
+git status
 if [ "${1}" == "--force" ] ; then
 	echo skipping clean check
 else
