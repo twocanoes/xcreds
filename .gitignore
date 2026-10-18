@@ -54,4 +54,5 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
+default
+*Package.resolved
