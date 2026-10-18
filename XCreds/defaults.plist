@@ -135,6 +135,8 @@
 	<true/>
 	<key>shouldDisableMenuItemAutoLaunch</key>
 	<false/>
+	<key>precreateTempAccounts</key>
+	<true/>
 	<key>shouldUseADNativePasswordChangeMenuItem</key>
 	<false/>
 	<key>shouldHideLoginWindowLogo</key>

@@ -24,7 +24,33 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 TCSLogWithMark("error removing launch agent: \(error)")
             }
         }
+        TCSLogWithMark("checking to see if need precreate accounts")
 
+        if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.precreateTempAccounts.rawValue)==true{
+            TCSLogWithMark("checking to see if need precreate accounts in DS")
+            
+            let namePrefix = "tempuser"
+            for i in 0..<25{
+                let currName = "\(namePrefix)\(i)"
+                
+                
+                if let isLocal = try? isUserLocal(currName), isLocal==false{
+                    TCSLogWithMark("need to create")
+                    TCSLogWithMark("setting kAuthorizationEnvironment to create  temp user")
+                    
+                    self.setContextString(type: kAuthorizationEnvironmentUsername, value: currName)
+                    self.setContextString(type: kAuthorizationEnvironmentPassword, value: "abc123")
+                    self.setHint(type: .shouldCreateTempAccount,hint:true as NSSecureCoding)
+                    setHint(type: .user, hint:  currName as NSSecureCoding)
+                    setHint(type: .pass, hint: "abc123" as NSSecureCoding)
+                    let _ = allowLogin()
+                    
+                    return;
+                }
+            }
+        }
+
+            
         let secureTokenUsers = try? SecureToken().secureTokenUsers()
         if let numberOfUsersWithoutSecureTokens = SecureToken().numberOfUsersWithSecureTokens(),
         DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideSecureTokenStatus.rawValue)==false,
@@ -69,7 +95,6 @@ class XCredsUserSetup: XCredsBaseMechanism{
                 }
                 if StateFileHelper().fileExists(.secureTokenAttempted)==false {
                     TCSLogWithMark("secureTokenAttempted false")
-
                 }
                 
                 if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldSkipSettingSecureTokenForAdmin.rawValue)==false, StateFileHelper().fileExists(.secureTokenAttempted)==false{
@@ -93,10 +118,6 @@ class XCredsUserSetup: XCredsBaseMechanism{
                             
                             self.setHint(type: .localAdmin, hint: adminUser )
                             self.setHint(type: .shouldSetAdminSecureToken,hint:true as NSSecureCoding)
-                            
-                            
-                            
-                            
                         }
                     }
                 }
@@ -114,16 +135,11 @@ class XCredsUserSetup: XCredsBaseMechanism{
                     TCSLogWithMark("Successfully authenticated with FileVault using local admin.")
                     try? StateFileHelper().createFile(.fileVaultLogin)
                 }
-            
-                
-
             }
             else {
                 TCSLogWithMark("local admin not set in hints")
 
             }
-           
-
         }
         catch {
             TCSLogWithMark(error.localizedDescription)

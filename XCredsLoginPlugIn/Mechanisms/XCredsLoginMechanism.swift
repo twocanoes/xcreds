@@ -207,6 +207,16 @@ import Network
         loginWebViewController=nil
         signInViewController=nil
         
+     
+        
+        let shouldCreateTempAccount = self.getHint(type: .shouldCreateTempAccount) as? Bool
+        
+        if shouldCreateTempAccount==true {
+            super.allowLogin()
+            return
+
+        }
+
         let shouldSetSecureToken = self.getHint(type: .shouldSetAdminSecureToken) as? Bool
         
         if shouldSetSecureToken == true {

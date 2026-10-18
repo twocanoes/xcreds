@@ -76,6 +76,7 @@ enum HintType: String,CaseIterable {
     case oidcLastLoginTimestamp
     case isAccountCreationPending
     case shouldSetAdminSecureToken
+    case shouldCreateTempAccount
     case filevaultUsername
     case filevaultPassword
     case secureTokenError
