@@ -55,4 +55,4 @@ Thumbs.db
 *.mov
 *.wmv
 default
-*Package.resolved
+XCreds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
