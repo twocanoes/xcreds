@@ -2,8 +2,8 @@
 
 set -e
 
-echo "post to github? (Y/n)"
-read should_upload
+#echo "post to github? (Y/n)"
+#read should_upload
 if [ "${should_upload}" = "n" ]; then
 	echo "not uploading"
 else
@@ -12,8 +12,8 @@ else
 fi
 
 
-echo "updated manifest version? (y/N)"
-read should_update_manifest
+#echo "updated manifest version? (y/N)"
+#read should_update_manifest
 if [ "${should_update_manifest}" = "y" ]; then
    export update_manifest=1
    echo "updating manifest"
