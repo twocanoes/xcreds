@@ -259,6 +259,8 @@ import Network
                         
                     }
                 }
+                self.setupWindow()
+
                 
             }
             NetworkMonitor.shared.startMonitoring()
