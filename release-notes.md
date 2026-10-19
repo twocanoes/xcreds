@@ -1,3 +1,9 @@
+## tag-6.0(9199) (2026-08-27)
+
+*  fixed Fail with shouldPromptForMigration #404 [View](https://github.com/twocanoes/xcreds/commit/2c7b6fe7a7aa60af41d50c79bd6df9617e512a40)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/1629fab7bb46b6957471ec2927a73091a4bdd146)
+
+
 ## tag-6.0(9195) (2026-08-24)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/f86dde597a6eaa8ae3eaa962d6e50396231f6ec6)
