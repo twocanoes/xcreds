@@ -31,7 +31,7 @@ else
 #		exit -1
 	fi
 fi
-carthage update
+carthage update --use-xcframeworks
 xcodebuild -resolvePackageDependencies
 
 
