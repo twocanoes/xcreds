@@ -16,7 +16,9 @@ func xcredsSetup()  {
             
 
             Task {
-                await VersionCheck.shared.reportLicenseUsage(event: .checkin)
+                VersionCheck.shared.reportLicenseUsage(event: .checkin) { isSuccess in
+                    
+                }
             }
             
             TCSUnifiedLogger.shared().logString("------------------------------------------------------------------",level: LOGLEVELDEBUG, forceWriteToFile: true)

@@ -1005,7 +1005,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, DSQueryable {
         }
         
         Task{
-            await VersionCheck.shared.reportLicenseUsage(event: .checkin)
+            VersionCheck.shared.reportLicenseUsage(event: .checkin) { isSuccess in
+                
+            }
         }
 
         let infoPlist = Bundle.main.infoDictionary
