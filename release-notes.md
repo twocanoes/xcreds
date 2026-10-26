@@ -1,3 +1,9 @@
+## tag-5.10(9220) (2026-10-26)
+
+*  updated min required to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/d4b5d0122739c9d12cfddae4a1a8b051522e83a9)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/06c4905a1c198c01c029bacde64b562548a5ef75)
+
+
 ## tag-5.10(9219) (2026-10-26)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6254dd87bdc8d08b1d8063bd28e552055f3af97f)
