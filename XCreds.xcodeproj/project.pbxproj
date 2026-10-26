@@ -217,8 +217,6 @@
 		76833EF22D95D4B500375CA4 /* icon_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 76833EF12D95D4B500375CA4 /* icon_64x64.png */; };
 		76873E2F2A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
 		76873E302A107736001418A9 /* DefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76873E2E2A107736001418A9 /* DefaultsHelper.swift */; };
-		769215DB305B43B600B327EE /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769215C5305B42E300B327EE /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		76921768305B4DCE00B327EE /* ProductLicense.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769215C5305B42E300B327EE /* ProductLicense.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76A247552C22747400859E0A /* CryptoTokenKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76A247542C22747400859E0A /* CryptoTokenKit.framework */; };
 		76A247582C22747400859E0A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247572C22747400859E0A /* Token.swift */; };
 		76A2475A2C22747400859E0A /* TokenDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A247592C22747400859E0A /* TokenDriver.swift */; };
@@ -377,27 +375,6 @@
 			remoteGlobalIDString = 765348752E97363900FECD7C;
 			remoteInfo = FileVaultLoginHelper;
 		};
-		769215C4305B42E300B327EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AADB87F61FE9B8780055CE94;
-			remoteInfo = ProductLicense;
-		};
-		769215C6305B42E300B327EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AADB87FF1FE9B8780055CE94;
-			remoteInfo = ProductLicenseTests;
-		};
-		769215DC305B43CA00B327EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AADB87F51FE9B8780055CE94;
-			remoteInfo = ProductLicense;
-		};
 		76A2475F2C22747400859E0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76EE069227FD1D00009E0F3A /* Project object */;
@@ -450,7 +427,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				769215DB305B43B600B327EE /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,7 +437,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				76921768305B4DCE00B327EE /* ProductLicense.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -654,7 +629,6 @@
 		7681FEC82A4CFEA200F91CD1 /* com.twocanoes.xcreds.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.info; fileEncoding = 4; name = com.twocanoes.xcreds.plist; path = "Profile Manifest/com.twocanoes.xcreds.plist"; sourceTree = "<group>"; };
 		76833EF12D95D4B500375CA4 /* icon_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_64x64.png; sourceTree = "<group>"; };
 		76873E2E2A107736001418A9 /* DefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsHelper.swift; sourceTree = "<group>"; };
-		769215BF305B42E200B327EE /* ProductLicense.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProductLicense.xcodeproj; path = ../productlicense/ProductLicense.xcodeproj; sourceTree = SOURCE_ROOT; };
 		76A247532C22747400859E0A /* xcredstap.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = xcredstap.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A247542C22747400859E0A /* CryptoTokenKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoTokenKit.framework; path = System/Library/Frameworks/CryptoTokenKit.framework; sourceTree = SDKROOT; };
 		76A247572C22747400859E0A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
@@ -954,15 +928,6 @@
 			path = auth_mech_fixup;
 			sourceTree = "<group>";
 		};
-		769215C0305B42E200B327EE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				769215C5305B42E300B327EE /* ProductLicense.framework */,
-				769215C7305B42E300B327EE /* ProductLicenseTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		76A247562C22747400859E0A /* tap */ = {
 			isa = PBXGroup;
 			children = (
@@ -1093,7 +1058,6 @@
 		76EE069127FD1D00009E0F3A = {
 			isa = PBXGroup;
 			children = (
-				769215BF305B42E200B327EE /* ProductLicense.xcodeproj */,
 				76F0D8532EBBECFF001DAC01 /* TCSTKSmartCard.h */,
 				76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */,
 				76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */,
@@ -1370,7 +1334,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				769215DD305B43CA00B327EE /* PBXTargetDependency */,
 				767917032E994F0300D99062 /* PBXTargetDependency */,
 				760292062C116EEE0075FBD8 /* PBXTargetDependency */,
 				76DC0A7B28837152007C42B2 /* PBXTargetDependency */,
@@ -1445,12 +1408,6 @@
 			);
 			productRefGroup = 76EE069B27FD1D00009E0F3A /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 769215C0305B42E200B327EE /* Products */;
-					ProjectRef = 769215BF305B42E200B327EE /* ProductLicense.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				76EE069927FD1D00009E0F3A /* XCreds */,
@@ -1465,23 +1422,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		769215C5305B42E300B327EE /* ProductLicense.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ProductLicense.framework;
-			remoteRef = 769215C4305B42E300B327EE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		769215C7305B42E300B327EE /* ProductLicenseTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ProductLicenseTests.xctest;
-			remoteRef = 769215C6305B42E300B327EE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		760291DE2C116E450075FBD8 /* Resources */ = {
@@ -1925,11 +1865,6 @@
 			isa = PBXTargetDependency;
 			target = 765348752E97363900FECD7C /* FileVaultLoginHelper */;
 			targetProxy = 767917022E994F0300D99062 /* PBXContainerItemProxy */;
-		};
-		769215DD305B43CA00B327EE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ProductLicense;
-			targetProxy = 769215DC305B43CA00B327EE /* PBXContainerItemProxy */;
 		};
 		76A247602C22747400859E0A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2491,7 +2426,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.10;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2551,7 +2486,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "©  2025 Twocanoes Software, Inc";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Detect if there is a connection to the internets";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MARKETING_VERSION = 5.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
