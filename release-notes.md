@@ -1,3 +1,19 @@
+## tag-6.0(9215) (2026-10-19)
+
+*  fixed alias without AD [View](https://github.com/twocanoes/xcreds/commit/99bd58c740b94ce661bd96a05df6bf3d61ff1071)
+*  changed menu to show OIDC full username instead of just username [View](https://github.com/twocanoes/xcreds/commit/c493d214499f14e81c09c8a10e1b6ca177fefa61)
+*  updated build script and bumped min os to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/0f4b55359d0e1f23f35356d02a1cceaf88925c3e)
+*  added cicd github file [View](https://github.com/twocanoes/xcreds/commit/8f39f9f8e93dabb438034998b32ff2d49f1da0b2)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/49b84bbdb5e416d49d94fbe779622404d3af3e09)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/2aa9cfd7f301dd4516dca0af7f20632358bb5a31)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/1d7f245b7777817c1b3a256d681b1985d5f5c61f)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/1c8b70e5a55204c18fb4a9a0cf0204a40e931e93)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/0de4454f833376b931aef790ff783497955dac31)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/54d2169617d404a9567688ecec764161c30235ef)
+*  setup login window on network change [View](https://github.com/twocanoes/xcreds/commit/b2f8de4c4836d8a26387572084ac54ca934eb24d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/afb57b3a8ca929e85cec9db8b06a13d8f8582d77)
+
+
 ## tag-6.0(9199) (2026-08-27)
 
 *  fixed Fail with shouldPromptForMigration #404 [View](https://github.com/twocanoes/xcreds/commit/2c7b6fe7a7aa60af41d50c79bd6df9617e512a40)
