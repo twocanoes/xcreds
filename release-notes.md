@@ -1,3 +1,10 @@
+## tag-5.10(9218) (2026-10-26)
+
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/a5c486fd44eb8518a1b23e2a9532de5d87de9f73)
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/26f2d60c84e83122621cdcd9c567dae797e9c853)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3aafce3881bc7f72b25d36854b4b3b781ca76aad)
+
+
 ## tag-5.10(9217) (2026-10-26)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/94f4cd444baba995eec629799e52b7379a68d2e9)
