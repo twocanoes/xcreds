@@ -1,3 +1,9 @@
+## tag-5.10(9216) (2026-10-26)
+
+*  cleaned up [View](https://github.com/twocanoes/xcreds/commit/7ffd4747164cc36548387ba93cb032d6fcf4d984)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a7e99eaab04c5ec7083b6b99907439b4f6ddd7e3)
+
+
 ## tag-6.0(9215) (2026-10-19)
 
 *  fixed alias without AD [View](https://github.com/twocanoes/xcreds/commit/99bd58c740b94ce661bd96a05df6bf3d61ff1071)
