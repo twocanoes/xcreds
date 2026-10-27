@@ -1,3 +1,22 @@
+## tag-6.0(9216) (2026-10-26)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a7e99eaab04c5ec7083b6b99907439b4f6ddd7e3)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/94f4cd444baba995eec629799e52b7379a68d2e9)
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/a5c486fd44eb8518a1b23e2a9532de5d87de9f73)
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/26f2d60c84e83122621cdcd9c567dae797e9c853)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3aafce3881bc7f72b25d36854b4b3b781ca76aad)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6254dd87bdc8d08b1d8063bd28e552055f3af97f)
+*  updated min required to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/d4b5d0122739c9d12cfddae4a1a8b051522e83a9)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/06c4905a1c198c01c029bacde64b562548a5ef75)
+*  updated min required to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/a8b9271861ea5baf9ee6934b13a952774e123851)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/27b8136aefff4c08ce93c1b3fefb189b15278514)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/405ba7a43e2f5e7072ccdd462c562b474e0f2b8f)
+*  updated checkin [View](https://github.com/twocanoes/xcreds/commit/9e3fa6f8ada77c6d8605de92912cf2ac2647c738)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/de5cff815073cff6bd7debc2110fce3a26c88d47)
+*  fixed pref issue [View](https://github.com/twocanoes/xcreds/commit/37fd8b76020cb81067762e24e1c4fdf50d8d6c0f)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/db96fccd1bf33ad3bf21aeaabb5a0a89c2e99595)
+
+
 ## tag-5.10(9222) (2026-10-26)
 
 *  updated checkin [View](https://github.com/twocanoes/xcreds/commit/9e3fa6f8ada77c6d8605de92912cf2ac2647c738)
