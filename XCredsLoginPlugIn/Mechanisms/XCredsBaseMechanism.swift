@@ -146,8 +146,13 @@ import OpenDirectory
 
             switch findUserAndUpdatePasswordResult {
 
-            case .successful(let username):
+            case .successful(let username, let password):
                 userInfo.username = username
+                TCSLogWithMark("settings existing local user password")
+                if let password = password {
+                    setHint(type: .existingLocalUserPassword, hint: password as NSSecureCoding)
+                }
+
                 break
             case .canceled:
                 //no need to send back message because failure will show it.
@@ -729,6 +734,8 @@ import OpenDirectory
         }
     }
     func clearKeychain(path: String, userpass:String) {
+        os_log("Resetting keychain.", log: "")
+        SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
 
         // find the hardware UUID to kill the local items keychain
         let service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
@@ -740,16 +747,22 @@ import OpenDirectory
             os_log("Removing local items keychain in order to purge it.", log: "")
             do {
                 let fm = FileManager.default
+                TCSLogWithMark("removing \(path + "/Library/Keychains/" + uuid)")
 
                 try fm.removeItem(atPath: path + "/Library/Keychains/" + uuid)
+                
+                if fm.fileExists(atPath: path + "/Library/Keychains/" + uuid) {
+                    TCSLogWithMark("folder still exists")
+                }
+                else {
+                    TCSLogWithMark("folder gone")
+                }
             } catch {
                 os_log("Unable to remove Local Items folder.", log: "")
             }
         }
 
-        os_log("Resetting keychain.", log: "")
 
-        SecKeychainResetLogin(UInt32(userpass.count), userpass, true)
     }
 
 

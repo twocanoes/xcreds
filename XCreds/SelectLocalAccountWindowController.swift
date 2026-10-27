@@ -19,7 +19,7 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
     var shouldShowCreateNewAccountButton:Bool?=true
 
     enum VerifyLocalCredentialsResult {
-        case successful(String)
+        case successful(String,String?)
         case canceled
         case createNewAccount
         case error(String)
@@ -73,12 +73,12 @@ class SelectLocalAccountWindowController: NSWindowController, NSWindowDelegate {
                         if localPassword == newPassword {
                             TCSLogWithMark("cloud password is already the local password.")
 
-                            return .successful(localUsername)
+                            return .successful(localUsername,localPassword)
                         }
                         try localUser.changePassword(localPassword, toPassword: newPassword)
 
                         TCSLogWithMark("local password set successfully to network / cloud password")
-                        return .successful(localUsername)
+                        return .successful(localUsername,localPassword)
 
                     }
                     catch {

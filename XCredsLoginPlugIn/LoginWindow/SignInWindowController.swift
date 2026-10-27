@@ -569,7 +569,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             alertTextField.stringValue = "Authentication Failed"
         }
         else {
-            alertTextField.stringValue = message ?? "Authentication Failed or Network Unavailable"
+            alertTextField.stringValue = message ?? "Authentication Failed"
         }
         setLoginWindowState(enabled: true)
         view.window?.makeFirstResponder(passwordTextField)
@@ -1040,9 +1040,13 @@ protocol UpdateCredentialsFeedbackProtocol {
         TCSLogWithMark()
         switch SelectLocalAccountWindowController.selectLocalAccountAndUpdate(newPassword: password) {
 
-        case .successful(let username):
+        case .successful(let username, let password):
             TCSLogWithMark("Successful local account verification. Allowing")
             shortName = username
+            if let password = password {
+                mechanismDelegate?.setHint(type: .existingLocalUserPassword, hint: password as NSSecureCoding)
+            }
+    
             setRequiredHintsAndContext()
             completeLogin(authResult: .allow)
             return

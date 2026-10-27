@@ -106,7 +106,7 @@ class XCredsKeychainAdd : XCredsBaseMechanism {
                 err = SecKeychainChangePassword(myKeychain, UInt32(resetPass.count), resetPass, UInt32(strlen(userpass.cString(using: .utf8) ?? [] )), userpass.cString(using: .utf8) ?? [] )
 
                 if err != 0 {
-                    TCSLogWithMark("Unable to reset keychain with migrated user/pass.")
+                    TCSLogWithMark("Unable to reset keychain with migrated user/pass.\(err.debugDescription)")
                     
                 }
             }

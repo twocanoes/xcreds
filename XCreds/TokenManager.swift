@@ -405,7 +405,7 @@ class TokenManager:DSQueryable {
         if  let existingUser = existingUser, let odUsername = existingUser.recordName  {
             TCSLogWithMark("prior local user found. using.")
 
-            return .successful(odUsername)
+            return .successful(odUsername,nil)
         }
         else if let nonSystemUsers = nonSystemUsers, nonSystemUsers.count>0, shouldPromptForMigration == true {
 

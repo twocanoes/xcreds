@@ -139,7 +139,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
             return false
         }
         
-        //os_log("Local password changed.", log: uiLog, type: .default)
+        TCSLogWithMark()
         delegate?.setHint(type: .existingLocalUserPassword, hint: oldPass as NSSecureCoding)
         return true
     }
