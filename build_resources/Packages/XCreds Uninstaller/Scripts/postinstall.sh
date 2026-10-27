@@ -24,3 +24,5 @@ if [ -e  "${target_volume}"/Applications/XCreds.app ]; then
 	rm -rf "${target_volume}"/Applications/XCreds.app
 	
 fi
+
+/usr/sbin/pkgutil --forget com.twocanoes.xcreds
