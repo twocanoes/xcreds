@@ -1,3 +1,61 @@
+## tag-5.10(9222) (2026-10-26)
+
+*  updated checkin [View](https://github.com/twocanoes/xcreds/commit/9e3fa6f8ada77c6d8605de92912cf2ac2647c738)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/de5cff815073cff6bd7debc2110fce3a26c88d47)
+
+
+## tag-5.10(9221) (2026-10-26)
+
+*  updated min required to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/a8b9271861ea5baf9ee6934b13a952774e123851)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/27b8136aefff4c08ce93c1b3fefb189b15278514)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/405ba7a43e2f5e7072ccdd462c562b474e0f2b8f)
+
+
+## tag-5.10(9220) (2026-10-26)
+
+*  updated min required to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/d4b5d0122739c9d12cfddae4a1a8b051522e83a9)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/06c4905a1c198c01c029bacde64b562548a5ef75)
+
+
+## tag-5.10(9219) (2026-10-26)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/6254dd87bdc8d08b1d8063bd28e552055f3af97f)
+
+
+## tag-5.10(9218) (2026-10-26)
+
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/a5c486fd44eb8518a1b23e2a9532de5d87de9f73)
+*  updated deployment target [View](https://github.com/twocanoes/xcreds/commit/26f2d60c84e83122621cdcd9c567dae797e9c853)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3aafce3881bc7f72b25d36854b4b3b781ca76aad)
+
+
+## tag-5.10(9217) (2026-10-26)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/94f4cd444baba995eec629799e52b7379a68d2e9)
+
+
+## tag-5.10(9216) (2026-10-26)
+
+*  cleaned up [View](https://github.com/twocanoes/xcreds/commit/7ffd4747164cc36548387ba93cb032d6fcf4d984)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/a7e99eaab04c5ec7083b6b99907439b4f6ddd7e3)
+
+
+## tag-6.0(9215) (2026-10-19)
+
+*  fixed alias without AD [View](https://github.com/twocanoes/xcreds/commit/99bd58c740b94ce661bd96a05df6bf3d61ff1071)
+*  changed menu to show OIDC full username instead of just username [View](https://github.com/twocanoes/xcreds/commit/c493d214499f14e81c09c8a10e1b6ca177fefa61)
+*  updated build script and bumped min os to macOS 15 [View](https://github.com/twocanoes/xcreds/commit/0f4b55359d0e1f23f35356d02a1cceaf88925c3e)
+*  added cicd github file [View](https://github.com/twocanoes/xcreds/commit/8f39f9f8e93dabb438034998b32ff2d49f1da0b2)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/49b84bbdb5e416d49d94fbe779622404d3af3e09)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/2aa9cfd7f301dd4516dca0af7f20632358bb5a31)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/1d7f245b7777817c1b3a256d681b1985d5f5c61f)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/1c8b70e5a55204c18fb4a9a0cf0204a40e931e93)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/0de4454f833376b931aef790ff783497955dac31)
+*  updated build script [View](https://github.com/twocanoes/xcreds/commit/54d2169617d404a9567688ecec764161c30235ef)
+*  setup login window on network change [View](https://github.com/twocanoes/xcreds/commit/b2f8de4c4836d8a26387572084ac54ca934eb24d)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/afb57b3a8ca929e85cec9db8b06a13d8f8582d77)
+
+
 ## tag-6.0(9199) (2026-08-27)
 
 *  fixed Fail with shouldPromptForMigration #404 [View](https://github.com/twocanoes/xcreds/commit/2c7b6fe7a7aa60af41d50c79bd6df9617e512a40)
