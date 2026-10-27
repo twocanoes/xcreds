@@ -545,7 +545,7 @@
 		7613FDF6289E114F00340CCD /* loadpage.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = loadpage.html; sourceTree = "<group>"; };
 		7614D03B2B181A5D006EAF36 /* icon_128x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_128x128.png; path = XCreds/Assets.xcassets/AppIcon.appiconset/icon_128x128.png; sourceTree = "<group>"; };
 		76189C6F2E99FF8800BEF023 /* com.twocanoes.FileVaultLoginHelper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = com.twocanoes.FileVaultLoginHelper.plist; sourceTree = "<group>"; };
-		761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginProgressWindowController.xib; path = XCredsLoginPlugin/LoginProgressWindowController.xib; sourceTree = SOURCE_ROOT; };
+		761B486728A34CC900C6A02B /* LoginProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginProgressWindowController.xib; path = ../LoginProgressWindowController.xib; sourceTree = "<group>"; };
 		761B486B28A3575000C6A02B /* XCredsLoginDone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsLoginDone.swift; sourceTree = "<group>"; };
 		7631935D287D22C700D36BF7 /* authrights */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = authrights; sourceTree = BUILT_PRODUCTS_DIR; };
 		7631935F287D22C700D36BF7 /* authrights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authrights.swift; sourceTree = "<group>"; };
@@ -588,10 +588,10 @@
 		766184B72DCE5DB5009D5A8C /* colorline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colorline.png; sourceTree = "<group>"; };
 		76634F362D05FFA3000A63E8 /* LogOnly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOnly.swift; sourceTree = "<group>"; };
 		766355BD2870CA6A002E3867 /* XCredsLoginPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XCredsLoginPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugin/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
-		766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCredsLoginPlugin.m; path = XCredsLoginPlugin/XCredsLoginPlugin.m; sourceTree = SOURCE_ROOT; };
-		766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCredsLoginPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
-		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWebViewController.swift; path = XCredsLoginPlugin/LoginWindow/LoginWebViewController.swift; sourceTree = SOURCE_ROOT; };
+		766355C12870CB6F002E3867 /* XCredsLoginPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XCredsLoginPlugin.h; path = XCredsLoginPlugIn/XCredsLoginPlugin.h; sourceTree = SOURCE_ROOT; };
+		766355C22870CB6F002E3867 /* XCredsLoginPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XCredsLoginPlugin.m; path = XCredsLoginPlugIn/XCredsLoginPlugin.m; sourceTree = SOURCE_ROOT; };
+		766355C42870CCC3002E3867 /* XCredsLoginPlugIn-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCredsLoginPlugIn-Bridging-Header.h"; sourceTree = "<group>"; };
+		766355DA287132E9002E3867 /* LoginWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWebViewController.swift; sourceTree = "<group>"; };
 		766355E128713C47002E3867 /* LoginWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
 		766355E4287148C1002E3867 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tokens.swift; path = Shared/Tokens.swift; sourceTree = SOURCE_ROOT; };
 		76673CD429D3D5F500452848 /* LicenseChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseChecker.swift; sourceTree = "<group>"; };
@@ -635,7 +635,7 @@
 		767116AE284AB5D900CCD6FF /* XCreds-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCreds-Bridging-Header.h"; sourceTree = "<group>"; };
 		767116B0284B021500CCD6FF /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		767116B2284B045800CCD6FF /* KeychainUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainUtil.swift; sourceTree = "<group>"; };
-		7675444428918CD100613840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = XCredsLoginPlugin/Info.plist; sourceTree = "<group>"; };
+		7675444428918CD100613840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = XCredsLoginPlugIn/Info.plist; sourceTree = "<group>"; };
 		7677908328908E40004E7085 /* WifiWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiWindowController.swift; sourceTree = "<group>"; };
 		7677908528908E40004E7085 /* WifiWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiWindowController.xib; sourceTree = "<group>"; };
 		767832732C234A6200E31295 /* tap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "tap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -676,7 +676,7 @@
 		76BEF7EB28724A0B0013E2A1 /* XCredsBaseMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsBaseMechanism.swift; sourceTree = "<group>"; };
 		76BEF7F228724F120013E2A1 /* XCredsPowerControlMechanism.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCredsPowerControlMechanism.swift; sourceTree = "<group>"; };
 		76BEF7F72872504C0013E2A1 /* ContextAndHintHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextAndHintHandling.swift; sourceTree = "<group>"; };
-		76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthorizationDBManager.swift; path = XCredsLoginPlugin/LoginWindow/AuthorizationDBManager.swift; sourceTree = SOURCE_ROOT; };
+		76BEF7F928726C700013E2A1 /* AuthorizationDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthorizationDBManager.swift; path = XCredsLoginPlugIn/LoginWindow/AuthorizationDBManager.swift; sourceTree = SOURCE_ROOT; };
 		76BEF7FE2872A3030013E2A1 /* loginwindow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginwindow@2x.png"; sourceTree = "<group>"; };
 		76BEF7FF2872A3030013E2A1 /* loginwindow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginwindow.png; sourceTree = "<group>"; };
 		76C084092A9A2635008039FA /* ControlsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ControlsViewController.xib; sourceTree = "<group>"; };
@@ -730,7 +730,7 @@
 		76F0D8532EBBECFF001DAC01 /* TCSTKSmartCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSTKSmartCard.h; sourceTree = "<group>"; };
 		76F0D8542EBBECFF001DAC01 /* TCSTKSmartCard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCSTKSmartCard.m; sourceTree = "<group>"; };
 		76FDC5D42B22D47A0035D61E /* MainLoginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainLoginWindowController.swift; path = XCreds/MainLoginWindowController.swift; sourceTree = SOURCE_ROOT; };
-		76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainLoginWindowController.xib; path = XCredsLoginPlugin/LoginWindow/MainLoginWindowController.xib; sourceTree = SOURCE_ROOT; };
+		76FDC5D52B22D47A0035D61E /* MainLoginWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainLoginWindowController.xib; path = XCredsLoginPlugIn/LoginWindow/MainLoginWindowController.xib; sourceTree = SOURCE_ROOT; };
 		76FDC5D82B235A4F0035D61E /* StatusMenuWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuWindowController.swift; sourceTree = SOURCE_ROOT; };
 		76FDC5D92B235A4F0035D61E /* StatusMenuWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusMenuWindowController.xib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -878,7 +878,7 @@
 			path = headers;
 			sourceTree = "<group>";
 		};
-		766355C72870D1B5002E3867 /* XCredsLogin */ = {
+		766355C72870D1B5002E3867 /* XCredsLoginPlugIn */ = {
 			isa = PBXGroup;
 			children = (
 				764297A92D015AB800678928 /* SetupCardWindowController.swift */,
@@ -899,8 +899,7 @@
 				76C661D62D3974910005F2CD /* PinPromptWindowController.swift */,
 				76C661D72D3974910005F2CD /* PinPromptWindowController.xib */,
 			);
-			name = XCredsLogin;
-			path = XCredsLoginPlugin;
+			path = XCredsLoginPlugIn;
 			sourceTree = "<group>";
 		};
 		766D66782E961F8F009CE2BF /* tools */ = {
@@ -1115,7 +1114,7 @@
 				765348772E97363900FECD7C /* FilevaultLoginHelper */,
 				76DD6D15285997F300A700ED /* Frameworks */,
 				76DD6D112859978F00A700ED /* Packages */,
-				766355C72870D1B5002E3867 /* XCredsLogin */,
+				766355C72870D1B5002E3867 /* XCredsLoginPlugIn */,
 				76EE069C27FD1D00009E0F3A /* XCreds */,
 				7631935E287D22C700D36BF7 /* authrights */,
 				76DC0A6628836EB1007C42B2 /* XCreds Login Overlay */,
@@ -1194,7 +1193,7 @@
 				76EE069F27FD1D01009E0F3A /* Assets.xcassets */,
 				76EE06A127FD1D01009E0F3A /* MainMenu.xib */,
 				76EE06A427FD1D01009E0F3A /* xCreds.entitlements */,
-				766355C42870CCC3002E3867 /* XCredsLoginPlugin-Bridging-Header.h */,
+				766355C42870CCC3002E3867 /* XCredsLoginPlugIn-Bridging-Header.h */,
 				76873E2E2A107736001418A9 /* DefaultsHelper.swift */,
 			);
 			path = XCreds;
@@ -2136,7 +2135,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugIn-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -2154,7 +2153,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugIn-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -2240,7 +2239,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugIn-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -2278,7 +2277,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugin-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "XCreds/XCredsLoginPlugIn-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
 			};
