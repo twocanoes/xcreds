@@ -45,7 +45,7 @@ class AuthRightsHelper: NSObject {
         return true
 
     }
-    static func verifyRights() -> Bool {
+    static func verifyRights(isUpgrading:Bool=false) -> Bool {
         var foundRights=0
 
         for right in rightsArray {
@@ -56,7 +56,11 @@ class AuthRightsHelper: NSObject {
 
         }
         if foundRights == 0 && AuthorizationDBManager.shared.rightExists(right: "loginwindow:login")==true {
-//            TCSLogWithMark("no xcreds rights but loginwindow:login exists, so we are good")
+            if isUpgrading==true {
+                TCSLogWithMark("we are upgrading so resetting")
+
+                return false
+            }
             return true
         }
         else if foundRights == rightsArray.count && AuthorizationDBManager.shared.rightExists(right: "loginwindow:login")==false{

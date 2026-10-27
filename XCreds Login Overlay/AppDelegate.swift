@@ -29,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var window: NSWindow!
     @IBOutlet var waitWindow: NSWindow!
     var returnFileExistedOnStart = false
+    var isUpgrading = false
 
     var timer:Timer?
     @IBAction func cloudLoginButtonPressed(_ sender: Any) {
@@ -129,7 +130,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+            
+        let currentSystemVersionString = ProcessInfo.processInfo.operatingSystemVersionString
+
+        if let lastSeenOSVersion = UserDefaults.standard.string(forKey: PrefKeys.osVersion.rawValue), currentSystemVersionString != lastSeenOSVersion {
+            isUpgrading=true
+        }
         
+        
+        UserDefaults.standard.set(currentSystemVersionString, forKey: PrefKeys.osVersion.rawValue)
         if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"),  ud.bool(forKey: PrefKeys.shouldSkipFileVaultLoginAdmin.rawValue) == true, ud.bool(forKey: PrefKeys.shouldShowCloudLoginByDefault.rawValue) == false {
             TCSLogWithMark("Setting filevault to unlock with admin in overlay since the security mech is not showing")
             if let secretKeeper = try? SecretKeeper(label: "XCreds Encryptor", tag: "XCreds Encryptor") {
@@ -175,13 +184,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     }
     func checkStatus()  {
-        if  AuthRightsHelper.verifyRights() == false {
+        if  AuthRightsHelper.verifyRights(isUpgrading: isUpgrading) == false {
             TCSLogWithMark("rights are not correct. Fixing setting to xcloud. if mac login window is forced, will bounce back there after the cloud window shows.")
             let _ = AuthRightsHelper.resetRights()
 
+            if isUpgrading==true {
+                repopulateRights()
+            }
             StateFileHelper().killOrReboot()
             return
         }
+        isUpgrading=false
 
         if let ud = UserDefaults(suiteName: "com.twocanoes.xcreds"){
 
@@ -189,21 +202,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                returnFileExistedOnStart == false,
                AuthorizationDBManager.shared.rightExists(right: "loginwindow:login")==true
             {
-                TCSLogWithMark("we should be at XCreds window but we are at mac login window. Resetting and rebooting")
-
-                let _ = AuthRightsHelper.addRights()
-                TCSLogWithMark("XCreds rights added. Rebooting")
-                if UserDefaults.standard.bool(forKey: "slowReboot")==true {
-                   sleep(30)
-                }
+                repopulateRights()
                 StateFileHelper().killOrReboot()
                 return
             }
 
         }
-//        else {
-//            TCSLogWithMark("rights correct")
-//        }
 
         if AuthorizationDBManager.shared.rightExists(right: "loginwindow:login") == true {
 
@@ -220,6 +224,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     }
 
+    func repopulateRights(){
+        TCSLogWithMark("we should be at XCreds window but we are at mac login window. Resetting and rebooting")
+
+        let _ = AuthRightsHelper.addRights()
+        TCSLogWithMark("XCreds rights added. Rebooting")
+        if UserDefaults.standard.bool(forKey: "slowReboot")==true {
+           sleep(30)
+        }
+    }
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
