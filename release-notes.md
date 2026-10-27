@@ -1,3 +1,9 @@
+## tag-5.9.10(9222) (2026-10-26)
+
+*  upgraded autoheal to detect software updates [View](https://github.com/twocanoes/xcreds/commit/b94b1139490d4ab0d3ca9a1b34b2d6f945864576)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/93c2be876322836026bd1afdc375937fd183d5bf)
+
+
 ## tag-5.9.10(9217) (2026-10-26)
 
 *  changed version to 5.9.10 [View](https://github.com/twocanoes/xcreds/commit/090c4b27549205f607d0bb7efb169cb009ac220f)
