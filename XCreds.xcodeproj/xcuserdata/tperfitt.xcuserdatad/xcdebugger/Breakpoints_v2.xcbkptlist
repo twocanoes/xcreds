@@ -30,8 +30,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1397"
-            endingLineNumber = "1397"
+            startingLineNumber = "1440"
+            endingLineNumber = "1440"
             landmarkName = "updateCurrentUserKeychain(updatedPassword:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1338"
-            endingLineNumber = "1338"
+            startingLineNumber = "1381"
+            endingLineNumber = "1381"
             landmarkName = "changePassword()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1336"
-            endingLineNumber = "1336"
+            startingLineNumber = "1379"
+            endingLineNumber = "1379"
             landmarkName = "changePassword()"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "XCredsLoginPlugIn/LoginWindow/SignInWindowController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1310"
-            endingLineNumber = "1310"
+            startingLineNumber = "1353"
+            endingLineNumber = "1353"
             landmarkName = "NoMADAuthenticationSucceeded()"
             landmarkType = "7">
          </BreakpointContent>

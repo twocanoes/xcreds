@@ -159,19 +159,32 @@ protocol UpdateCredentialsFeedbackProtocol {
     //MARK: - UI Methods
 
     override func awakeFromNib() {
+        
         super.awakeFromNib()
         //awakeFromNib gets called multiple times. guard against that.
         if setupDone==true {
             return
         }
         setupDone=true
-
+        
         TCSLogWithMark()
         alertTextField.isHidden=true
-
+        
         if let prefDomainName=getManagedPreference(key: .ADDomain) as? String{
             domainName = prefDomainName
         }
+        NetworkMonitor.shared.startMonitoring()
+        
+        
+        NotificationCenter.default.addObserver(forName: .connectivityStatus, object: nil, queue: nil) { notification in
+            
+            //remove the observer so we don't get called again.
+            NotificationCenter.default.removeObserver(self, name: .connectivityStatus, object: nil)
+            self.setupLoginAppearance()
+
+            NetworkMonitor.shared.startMonitoring()
+        }
+    
         setupLoginAppearance()
 
         TCSLogWithMark("setting up smart card listener")
@@ -397,16 +410,30 @@ protocol UpdateCredentialsFeedbackProtocol {
         updateSize()
     }
 
-    @objc func setupLoginAppearance() {
+    @objc func setupLoginAppearance(networkChanged:Bool=false) {
+        if NetworkMonitor.shared.lastState != .satisfied {
+            alertTextField.stringValue = "Network Not Available"
+            alertTextField.isHidden=false
+            TCSLogWithMark()
+        }
+        else {
+            TCSLogWithMark()
+            alertTextField.isHidden=true
+
+        }
+        
         TCSLogWithMark()
         self.view.layer?.cornerRadius=15
         let ccidSlotName = DefaultsOverride.standardOverride.string(forKey: PrefKeys.ccidSlotName.rawValue)
+        TCSLogWithMark()
 
         let shouldAllowLoginCardSetup = DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldAllowLoginCardSetup.rawValue)
+        TCSLogWithMark()
 
         tapLoginLabel.isHidden=true
         loginCardSetupButton.isHidden=true
         self.loginCardSetupButton.state = .off
+        TCSLogWithMark()
 
         if let _ = ccidSlotName {
             if let _ = rfidUsers {
@@ -416,65 +443,81 @@ protocol UpdateCredentialsFeedbackProtocol {
             else {
                 tapLoginLabel.isHidden=true
             }
+            TCSLogWithMark()
 
             if shouldAllowLoginCardSetup == true {
                 tapLoginLabel.isHidden=false
-
+                
             }
-
+            
         }
+        TCSLogWithMark()
 
-        alertTextField.isHidden=true
-
+        
         self.usernameTextField.stringValue=""
         self.passwordTextField.stringValue=""
+        TCSLogWithMark()
 
         logoImageView.isHidden=false
+        TCSLogWithMark()
+
         if DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldHideLoginWindowLogo.rawValue) == true {
             logoImageView.isHidden=true
+            TCSLogWithMark()
 
+            
         }
         else if let loginWindowLogoPath = DefaultsOverride.standardOverride.string(forKey: PrefKeys.loginWindowLogoPath.rawValue){
+            TCSLogWithMark()
+
             if let image = NSImage.imageFromPathOrURL(pathURLString: loginWindowLogoPath){
                 logoImageView.image=image
             }
         }
+        TCSLogWithMark()
+
         self.usernameTextField.wantsLayer=true
         self.view.wantsLayer=true
-//        self.view.frame=CGRectInset(self.view.frame, 0,32+128-logoImageView.frame.height)
+        //        self.view.frame=CGRectInset(self.view.frame, 0,32+128-logoImageView.frame.height)
         self.view.layer?.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
         localOnlyCheckBox.isEnabled=true
         localOnlyCheckBox.isHidden=false
         // make things look better
         TCSLogWithMark("Tweaking appearance")
+        TCSLogWithMark()
 
         if let usernamePlaceholder = UserDefaults.standard.string(forKey: PrefKeys.usernamePlaceholder.rawValue){
             TCSLogWithMark("Setting username placeholder: \(usernamePlaceholder)")
             self.usernameTextField.placeholderString=usernamePlaceholder
         }
         self.usernameTextField.isEnabled=true
+        TCSLogWithMark()
 
         if let passwordPlaceholder = UserDefaults.standard.string(forKey: PrefKeys.passwordPlaceholder.rawValue){
             TCSLogWithMark("Setting password placeholder")
-
+            
             self.passwordTextField.placeholderString=passwordPlaceholder
-
+            
         }
         passwordTextField.isEnabled=true
         signIn.isEnabled=true
         TCSLogWithMark("Domain is \(domainName)")
         if UserDefaults.standard.bool(forKey: PrefKeys.shouldShowLocalOnlyCheckbox.rawValue) == false {
             TCSLogWithMark("hiding local only")
-
+            
             self.localOnlyCheckBox.isHidden = true
             self.localOnlyCheckBox.isHidden = true
         }
         else {
             //show based on if there is an AD domain or not
+            TCSLogWithMark()
 
             let isLocalOnly = self.domainName.isEmpty == true && UserDefaults.standard.bool(forKey: PrefKeys.shouldUseROPGForLoginWindowLogin.rawValue) == false
             self.localOnlyCheckBox.isHidden = isLocalOnly
         }
+    
+        TCSLogWithMark()
+
 
     }
 
@@ -526,7 +569,7 @@ protocol UpdateCredentialsFeedbackProtocol {
             alertTextField.stringValue = "Authentication Failed"
         }
         else {
-            alertTextField.stringValue = message ?? "Authentication Failed"
+            alertTextField.stringValue = message ?? "Authentication Failed or Network Unavailable"
         }
         setLoginWindowState(enabled: true)
         view.window?.makeFirstResponder(passwordTextField)
