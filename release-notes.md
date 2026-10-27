@@ -1,3 +1,9 @@
+## tag-5.9.10(9229) (2026-10-26)
+
+*  added check for network [View](https://github.com/twocanoes/xcreds/commit/39464746d4d44df48896d680ef51c62379a038bd)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/9188573ee542a0b86eb001535a3626cfb019bcb8)
+
+
 ## tag-5.9.10(9222) (2026-10-26)
 
 *  upgraded autoheal to detect software updates [View](https://github.com/twocanoes/xcreds/commit/b94b1139490d4ab0d3ca9a1b34b2d6f945864576)
