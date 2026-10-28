@@ -197,19 +197,21 @@ public extension DSQueryable {
     }
     func getUserRecord(kerberosPrincipalNameToFind:String) throws -> ODRecord {
         do {
+            TCSLogWithMark("getting non system users")
             os_log("getting non system users.", type: .info)
 
             let allRecords = try getAllNonSystemUsers()
-            os_log("filtering", type: .info)
+            
+            TCSLogWithMark("filtering")
 
             let matchingRecords = allRecords.filter { (record) -> Bool in
                 guard let foundKerberosPrincipal = try? record.values(forAttribute: "dsAttrTypeNative:_xcreds_activedirectory_kerberosPrincipal") as? [String] else {
                     return false
                 }
-
+                TCSLogWithMark("checking \(foundKerberosPrincipal)");
                 os_log("checking \(foundKerberosPrincipal)", type: .info)
 
-                return foundKerberosPrincipal.first == kerberosPrincipalNameToFind
+                return foundKerberosPrincipal.first?.lowercased() == kerberosPrincipalNameToFind.lowercased()
             }
             guard let userRecord = matchingRecords.first else {
                 TCSLogWithMark("no users match \(kerberosPrincipalNameToFind)")

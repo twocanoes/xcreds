@@ -1,3 +1,11 @@
+## tag-5.9.10(9247) (2026-10-27)
+
+*  fixed issue #402: Add content to uninstall script [View](https://github.com/twocanoes/xcreds/commit/8590d0c81232d30cfccb82ee914d1800a5523d71)
+*  fixed Keychain issue after migration #406 [View](https://github.com/twocanoes/xcreds/commit/f6b3aabe6153fb32056927c05bfc39514f25408b)
+*  updated oss tools and module [View](https://github.com/twocanoes/xcreds/commit/8f677bc55d765d1f49878ab51c3c7abb35f89f97)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/040644eeef63028f97977fba03e0b1628a63ebce)
+
+
 ## tag-5.9.10(9229) (2026-10-26)
 
 *  added check for network [View](https://github.com/twocanoes/xcreds/commit/39464746d4d44df48896d680ef51c62379a038bd)
