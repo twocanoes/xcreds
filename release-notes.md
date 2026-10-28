@@ -1,3 +1,8 @@
+## tag-5.9.10(9248) (2026-10-27)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3a6e833374bae7b023cd18f1d0780e316af627b4)
+
+
 ## tag-5.9.10(9247) (2026-10-27)
 
 *  fixed issue #402: Add content to uninstall script [View](https://github.com/twocanoes/xcreds/commit/8590d0c81232d30cfccb82ee914d1800a5523d71)
