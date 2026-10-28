@@ -15,7 +15,7 @@ enum MigrationType {
     case skipMigration // no need to migrate
     case syncPassword // local password needs to be synced with local
 //    case mappedUserFound(ODRecord)
-    case userMatchSkipMigration
+    case userMatchSkipMigration(String)
     case complete // all good
 }
 
@@ -59,7 +59,7 @@ class LocalCheckAndMigrate : NSObject, DSQueryable {
             if try isLocalPasswordValid(userName: user, userPass: passToCheck) {
 
                 TCSLogWithMark("Network creds match local creds, nothing to migrate or update.")
-                return .userMatchSkipMigration
+                return .userMatchSkipMigration(user)
 
             } else {
                 TCSLogWithMark("Local name matches, but not password")

@@ -1596,12 +1596,17 @@ extension SignInViewController: NoMADUserSessionDelegate {
 
             case .errorSkipMigration(let mesg):
                 mechanismDelegate?.denyLogin(message:mesg)
-            case .skipMigration, .userMatchSkipMigration, .complete:
+            case  .userMatchSkipMigration(let username):
+                shortName=username
+                setRequiredHintsAndContext()
+                TCSLogWithMark("Mapped user found: \(username)")
+                completeLogin(authResult: .allow)
+
+            case .skipMigration, .complete:
                 completeLogin(authResult: .allow)
 //            case .mappedUserFound(let foundODUserRecord):
 //                shortName = foundODUserRecord.recordName
 //                TCSLogWithMark("Mapped user found: \(shortName)")
-//                setRequiredHintsAndContext()
 //                completeLogin(authResult: .allow)
             }
         } else {
