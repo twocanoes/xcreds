@@ -215,8 +215,8 @@ class XCredsCreateUser: XCredsBaseMechanism {
                 TCSLogWithMark("Password Overwrite enabled and triggered, starting evaluation")
                 
                 TCSLogWithMark("trying to getting admin user and password")
-
-                if let localAdmin = getHint(type: .localAdmin) as? LocalAdminCredentials {
+                DefaultsOverride.standardOverride.refreshCachedPrefs()
+                if let localAdmin = PasswordUtils().localAdminCredentialsFromPrefs() ?? getHint(type: .localAdmin) as? LocalAdminCredentials {
                     TCSLogWithMark("resetting password with admin username and password")
 
                    let res=resetUserPassword(adminUserName: localAdmin.username, adminPassword: localAdmin.password)
