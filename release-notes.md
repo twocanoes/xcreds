@@ -1,3 +1,9 @@
+## tag-5.10(9252) (2026-10-30)
+
+*  changed marketing version to 5.10 [View](https://github.com/twocanoes/xcreds/commit/527106d605ad84a6854828d9b8dad750ade1dbea)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/e73022906117331d1b97840c75d0497c5eb112a6)
+
+
 ## tag-5.9.10(9251) (2026-10-27)
 
 *  fixed Issue with shouldPromptForMigration for AD #368 [View](https://github.com/twocanoes/xcreds/commit/71d036a3503427c4c24cb3b49b1d8d1d4957c856)
