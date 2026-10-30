@@ -1,3 +1,8 @@
+## tag-5.10(9253) (2026-10-30)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/316fe7ac6b5f07f14508ebad1b8af291d0ece77e)
+
+
 ## tag-5.10(9252) (2026-10-30)
 
 *  changed marketing version to 5.10 [View](https://github.com/twocanoes/xcreds/commit/527106d605ad84a6854828d9b8dad750ade1dbea)
