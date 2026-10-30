@@ -1,3 +1,9 @@
+## tag-5.9.10(9251) (2026-10-27)
+
+*  fixed Issue with shouldPromptForMigration for AD #368 [View](https://github.com/twocanoes/xcreds/commit/71d036a3503427c4c24cb3b49b1d8d1d4957c856)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/593ccf1671fd9fc52dd55ebdda67ab4e9325e546)
+
+
 ## tag-5.9.10(9248) (2026-10-27)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/3a6e833374bae7b023cd18f1d0780e316af627b4)
