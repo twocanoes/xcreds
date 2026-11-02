@@ -51,7 +51,7 @@ date=$(date)
 
 
 /usr/libexec/PlistBuddy   -c "Set :pfm_last_modified \"${date}\"" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"
-/usr/libexec/PlistBuddy   -c "Set :pfm_description  \"XCreds ${marketing_version} (${buildNumber}) OAuth Settings\"" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"
+/usr/libexec/PlistBuddy   -c "Set :pfm_description  \"XCreds ${version} (${buildNumber}) OAuth Settings\"" "${PROJECT_FOLDER}/Profile Manifest/com.twocanoes.xcreds.plist"
 
 if  [ -n "${update_manifest}" ];  then
 	echo "getting current manifest version"
