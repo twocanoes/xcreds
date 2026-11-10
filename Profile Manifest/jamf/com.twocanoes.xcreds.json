@@ -1,6 +1,6 @@
 {
     "title": "XCreds (com.twocanoes.xcreds)",
-    "description": "XCreds 5.10 (9256) OAuth Settings",
+    "description": "XCreds 5.10 (9257) OAuth Settings",
     "properties": {
         "ADDomain": {
             "type": "string",
@@ -203,7 +203,7 @@
             "type": "string",
             "title": "Alternative User Endpoint URL",
             "default": "https://login.microsoftonline.com/common/.well-known/openid-configuration",
-            "description": "If this URL is set, the endpoint will be called with a GET request with the access token as the bear token to get id token information.",
+            "description": "If this URL is set, the endpoint will be called with a GET request with the access token as the bearer token to get id token information.",
             "links": [
                 {
                     "rel": "More information",

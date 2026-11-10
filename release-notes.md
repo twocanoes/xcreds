@@ -1,3 +1,9 @@
+## tag-5.10(9256) (2026-11-01)
+
+*  added adminpasswordpath for setting admin password on command line [View](https://github.com/twocanoes/xcreds/commit/fd7c307d45135989259521b9abaf0c66549ca709)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/b46d2ab0c671801f07fb897ac108a5c008a8b6dd)
+
+
 ## tag-5.10(9255) (2026-10-30)
 
 *  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/653b731fc5279de0f62c932b53eef1d494e118db)
