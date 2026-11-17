@@ -414,7 +414,7 @@ protocol UpdateCredentialsFeedbackProtocol {
         if NetworkMonitor.shared.lastState != .satisfied {
             alertTextField.stringValue = "Network Not Available"
             alertTextField.isHidden=false
-            TCSLogWithMark()
+            TCSLogErrorWithMark("Network not available when showing login window.")
         }
         else {
             TCSLogWithMark()
