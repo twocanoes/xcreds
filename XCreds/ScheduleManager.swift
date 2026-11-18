@@ -298,7 +298,7 @@ class ScheduleManager:NoMADUserSessionDelegate {
                     do{
                         try await tokenManager.oidc().getEndpoints()
                         TCSLogWithMark("requesting new access token")
-                        guard let tokenResponse = try await tokenManager.getNewAccessToken(), tokenResponse.hasAccess() else {
+                        guard let tokenResponse = try await tokenManager.getNewAccessToken(), tokenResponse.hasAccess() || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == false else {
                             throw OIDCLiteError.authFailure("no access token")
 
                         }
