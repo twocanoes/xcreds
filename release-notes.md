@@ -1,3 +1,8 @@
+## tag-5.10(9258) (2026-11-10)
+
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/67a8caf5c4d9673dfae13d23b0cf21f396faceaa)
+
+
 ## tag-5.10(9257) (2026-11-10)
 
 *  updated manifest [View](https://github.com/twocanoes/xcreds/commit/255c217bfac513ab5133b992899bb61a6cad86e2)
