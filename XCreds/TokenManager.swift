@@ -256,6 +256,11 @@ class TokenManager:DSQueryable {
             TCSLogWithMark("Using refresh token")
             let tokenInfo = try await oidc().refreshTokens(refreshToken)
             TCSLogWithMark("Got tokens")
+            
+            if tokenInfo.accessToken == nil || tokenInfo.accessToken?.count==0{
+                return nil
+
+            }
 
             return Creds(password: localCredFromKeychain?.password, tokens: tokenInfo)
 

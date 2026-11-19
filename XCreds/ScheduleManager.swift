@@ -295,18 +295,18 @@ class ScheduleManager:NoMADUserSessionDelegate {
                         }
                     }
                     else if hasValidRefreshToken || DefaultsOverride.standardOverride.bool(forKey: PrefKeys.shouldUseROPGForPasswordChangeChecking.rawValue) == true {
-                    do{
-                        try await tokenManager.oidc().getEndpoints()
-                        TCSLogWithMark("requesting new access token")
-                        guard let creds = try await tokenManager.getTokens() else {
-                            throw OIDCLiteError.authFailure("no access token")
+                        do{
+                            try await tokenManager.oidc().getEndpoints()
+                            TCSLogWithMark("requesting new access token")
+                            guard let creds = try await tokenManager.getTokens() else {
+                                throw OIDCLiteError.authFailure("no access token")
+                            }
+                            
+                            TCSLogWithMark("success. Setting new token.")
+                            ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
+                            
+                            await feedbackDelegate?.credentialsUpdated(creds)
                         }
-                        
-                        TCSLogWithMark("success. Setting new token.")
-                        ud.removeObject(forKey: PrefKeys.lastOIDCLoginFailTimestamp.rawValue)
-
-                       await feedbackDelegate?.credentialsUpdated(creds)
-                    }
                         catch let error  {
                             
                             TCSLogWithMark("Error")
