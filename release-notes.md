@@ -1,3 +1,9 @@
+## tag-5.10(9262) (2026-11-18)
+
+*  fixed issue with ROPG and accessToken [View](https://github.com/twocanoes/xcreds/commit/e29a1a324aec41ecc649b35e14ffb41dd77f8742)
+*  updated build number, manifest and other build files [View](https://github.com/twocanoes/xcreds/commit/5cfec798bf58aa6580e620d1d698bf12d6c5a1a2)
+
+
 ## tag-5.10(9261) (2026-11-18)
 
 *  fixed issue with ROPG and accessToken [View](https://github.com/twocanoes/xcreds/commit/a5a8b0d08f1d1a91d803e89922991fbd83e06b37)
