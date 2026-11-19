@@ -244,7 +244,10 @@ class TokenManager:DSQueryable {
             if let tokenResponse = tokenResponse {
                 return Creds(password: localCredFromKeychain.password, tokens:tokenResponse )
             }
-            return Creds(accessToken: nil, idToken: nil, refreshToken: nil, password: nil, jsonDict: [:])
+            else {
+                TCSLogWithMark("ROPG Matched override so allowing.")
+                return Creds(accessToken: nil, idToken: nil, refreshToken: nil, password: nil, jsonDict: [:])
+            }
         } //use the refresh token
         else if let refreshTokenFromKeychain =  keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue){
             
