@@ -183,7 +183,7 @@ class TokenManager:DSQueryable {
         Task{
             do {
                 //just care if we throw
-                let _ = try await getNewAccessToken()
+                let _ = try await getTokens()
 
             }
             catch let error as OIDCLiteError {
@@ -203,7 +203,7 @@ class TokenManager:DSQueryable {
             }
         }
     }
-    func getNewAccessToken() async throws -> Creds? {
+    func getTokens() async throws -> Creds? {
 
         TCSLogWithMark()
 
@@ -244,7 +244,7 @@ class TokenManager:DSQueryable {
             if let tokenResponse = tokenResponse {
                 return Creds(password: localCredFromKeychain.password, tokens:tokenResponse )
             }
-            return nil
+            return Creds(accessToken: nil, idToken: nil, refreshToken: nil, password: nil, jsonDict: [:])
         } //use the refresh token
         else if let refreshTokenFromKeychain =  keychainUtil.findPassword(serviceName: "xcreds ".appending(PrefKeys.refreshToken.rawValue),accountName:PrefKeys.refreshToken.rawValue){
             
